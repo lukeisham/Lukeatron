@@ -1,0 +1,96 @@
+# System/Skillbank/_index.yaml
+# On-demand skill catalog. Loaded at boot (triggers only); skill bodies load when a trigger fires.
+# Add a one-line entry here for every !SkillName/skill.md, or the skill is invisible.
+last_updated: 2026-07-14
+# Updated: !WhatsApp added 2026-06-22; !Dashboard added 2026-06-22; !IdeaWiki added 2026-06-23; !IdeaWiki v3.2.0 gated new-theme path added 2026-06-26; !SaleTracker added 2026-07-01, removed 2026-07-01 (PP-09 abandoned); !TechSpec added 2026-07-05, renamed !TechSpecSingleFeature 2026-07-06; !BookCover added 2026-07-05; !Specs added 2026-07-06 (from Inbox: Keiths Spec Skill), renamed !TechSpecFullProject 2026-07-06; 2026-07-14 — Wayfinder suite (from Keith, via Inbox) added: !Research, !Utopia, !MultiRepo, !Spike, !Ideation, !RepoRegistry, !Waypoint, !SkillDocs, !Readme, all under System/Skillbank/PersonalResearch/Wayfinder/ — !Ideation renamed from "ideas" (distinct from !IdeaWiki), !MultiRepo renamed from "meta", !RepoRegistry renamed from "repo", !SkillDocs renamed from "docs", !Waypoint renamed from a standalone "checkpoint" command to avoid colliding with Lukeatron's own !Checkpoint safety gate. Orphaned /specs-prd, /specs-architecture, /specs-depend commands filed into the existing !TechSpecFullProject/commands/.
+skills:
+  - name: "!BookCover"
+    path: "System/Skillbank/GeneralPurposeSkills/!BookCover/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Guarded OpenLibrary book-cover fetch (one search + one fetch cap) for LukeatronWiki pages — callable directly by !IdeaWiki's SET_THUMBNAIL ladder for the book branch."
+    triggers: ["fetch a book cover", "book cover", "openlibrary cover"]
+  - name: "!TechSpecFullProject"
+    path: "System/Skillbank/PersonalResearch/!TechSpecFullProject/skill.md"
+    domain: "PersonalResearch"
+    intent: "Full spec-driven development framework — four folders (_Spikes/_Builds/_Refactors/_Changes), typed .spec.md documents, per-subtask .plan.md files, folder-level _PLAN.md plans, and _Done/ completion lifecycle. Use for organising spikes, builds, refactors, or change requests; drafting spec/PRD/arch/prerequisites documents; or completing and moving subtasks to _Done/."
+    triggers: ["spec folder", "spec framework", "create a spike", "spike project", "build spec", "refactor spec", "change spec", "subtask spec", "plan a spec folder", "prerequisites spec", "arch spec", "DEPENDENTS.md", "spec lifecycle", "move to done", "complete a subtask", "spec workflow", "organise specs", "organize specs", "_Builds folder", "_Spikes folder", "_Refactors folder", "_Changes folder", "full spec project", "spec full project"]
+  - name: "!TechSpecSingleFeature"
+    path: "System/Skillbank/PersonalResearch/!TechSpecSingleFeature/skill.md"
+    domain: "PersonalResearch"
+    intent: "Simplified spec-driven development for a single feature — classify a coding task as Build/Refactor/Spike/Change, draft one traceable Specs/<name>.spec.md from Template_TechSpec.md for review before code, and move it to Specs/Done/ once its verification checklist passes."
+    triggers: ["write a spec", "tech spec", "specify this feature", "specify this refactor", "specify this spike", "specify this change", "spec before we build", "mark the spec done", "spec driven development", "single feature spec", "spec one feature"]
+  - name: "!IdeaWiki"
+    path: "System/Skillbank/GeneralPurposeSkills/!IdeaWiki/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Tend LukeatronWiki — absorb books/articles/links/videos to read/watch/write into pointer nodes whose verbatim content lives in the matching Long-Term store; work the backlog, explore connections, churn durable nodes. Full doctrine in the skill body + Memory/Long-Term/Lukeatron/memory-structure.md. NOT for tasks (those are Projects)."
+    triggers: ["add this to the wiki", "add to lukeatronwiki", "remember this book", "remember this video", "I want to read", "I want to watch", "I want to write", "save this idea", "save this link", "what should I read next", "what should I watch next", "what should I write next", "show the backlog", "what's in my queue", "what connects to", "what do I have on", "develop this idea", "promote this page", "show the wiki", "lukeatronwiki"]
+  - name: "!Dashboard"
+    path: "System/Skillbank/GeneralPurposeSkills/!Dashboard/skill.md"
+    domain: "PersonalProductivity"
+    intent: "Live project urgency dashboard — every active project as a row with square task dots (open/doing/done/blocked) and its nearest upcoming task date, ranked by urgency gravity. Reads _tracking.yaml + registries fresh, renders via show_widget. Interactive only (no email)."
+    triggers: ["show the dashboard", "project dashboard", "project overview", "where are my projects", "dashboard"]
+  - name: "!ThinPortal"
+    path: "System/Skillbank/GeneralPurposeSkills/!ThinPortal/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Build pattern for a new external-access portal skill (plumbing for other skills/sub-agents). The recipe behind !AgentMail, !HeadlessChromeBrowser, !Calendar."
+    triggers: ["build a skill for", "add a connector", "make a portal", "give the system access to", "rebuild this integration", "new external access", "build a pipe for"]
+  - name: "!PruneMemory"
+    path: "System/Skillbank/GeneralPurposeSkills/!PruneMemory/skill.md"
+    domain: "GeneralPurpose"
+    intent: "On-demand prune of Medium-Term/ memory — clear stale temp-skills and dormant/closed projects, PLUS orphaned plan files in System/Plans/New/ whose project is already closed/abandoned/completed — routing keepers to !ArchiveMemory first. Never automatic; always Luke-reviewed. (Long-Term is !ArchiveMemory's job.)"
+    triggers: ["prune memory", "prune the memory", "tidy medium-term", "clear out temp-skills", "clean up dormant projects", "sweep medium-term", "clear stale projects", "clear stale plans", "clean up old plans"]
+  - name: "!WhatsApp"
+    path: "System/Skillbank/GeneralPurposeSkills/!WhatsApp/skill.md"
+    domain: "PersonalProductivity"
+    intent: "Read-only portal to Luke's WhatsApp — list chats, search messages, retrieve contact history. SEND DISABLED at source level. Bridge must be running."
+    triggers: ["read my whatsapp", "check whatsapp", "whatsapp digest", "what's in whatsapp", "find a whatsapp message", "summarise my whatsapp", "what did [person] say on whatsapp", "whatsapp inbox", "whatsapp messages"]
+  - name: "!Research"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Research/skill.md"
+    domain: "PersonalResearch"
+    intent: "Open-ended, re-invocable research on a topic with no fixed deadline — dated audit trail in a Research folder, never overwritten on re-runs. Part of the Wayfinder suite."
+    triggers: ["research-scope", "research a topic", "investigate something open-ended", "track an evolving area", "keep tabs on", "ongoing research on"]
+  - name: "!Utopia"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Utopia/skill.md"
+    domain: "PersonalResearch"
+    intent: "Scaffold and maintain a coding product repo's seven PDLC phase folders (Ideation..Retirement) plus Projects/Evolutions/Recursions; generate/refresh <Product>.brief.md; convert a folder to a git submodule. Part of the Wayfinder suite."
+    triggers: ["utopia", "PDLC folders", "phase folders", "scaffold a product repo", "utopia init", "product brief", "convert to submodule"]
+  - name: "!MultiRepo"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!MultiRepo/skill.md"
+    domain: "PersonalResearch"
+    intent: "Extract a module shared by sibling product repos into a new/existing shared repo and wire it back as a package dependency into consumers. Renamed from Keith's 'meta' skill. Part of the Wayfinder suite."
+    triggers: ["share code between repos", "extract a module into its own repo", "shared-modules repo", "reuse this across repos"]
+  - name: "!Spike"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Spike/skill.md"
+    domain: "PersonalResearch"
+    intent: "Time-boxed investigation answering one question or picking the best of several options, closed with a go/no-go recommendation and an audit trail. Part of the Wayfinder suite."
+    triggers: ["spike-scope", "spike this", "prototype and compare", "bake-off", "timebox an investigation", "which of these should we use"]
+  - name: "!Ideation"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Ideation/skill.md"
+    domain: "PersonalResearch"
+    intent: "Turn a coding product's raw notes into a problem statement, candidate solutions, and reviewed feature ideas, with an issues register and optional phasing. Renamed from Keith's 'ideas' skill — distinct from !IdeaWiki (Luke's cross-topic idea graph). Part of the Wayfinder suite."
+    triggers: ["turn my notes into a problem", "propose solutions", "organize these into features", "which solution should we go with", "check the ideation space", "resolve this issue", "ideation space"]
+  - name: "!RepoRegistry"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!RepoRegistry/skill.md"
+    domain: "PersonalResearch"
+    intent: "Maintain ~/_REPOS.md (GitHub owners available for new repos) and the conventions /repo-new follows for default owner/visibility. Renamed from Keith's 'repo' skill. Part of the Wayfinder suite."
+    triggers: ["github repo owners", "add a new org to create repos under", "repo-new defaults", "which github account"]
+  - name: "!Waypoint"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Waypoint/skill.md"
+    domain: "PersonalResearch"
+    intent: "Overwrite a coding repo's WAYPOINT.md with a full session-state snapshot, commit and push. Renamed from Keith's standalone 'checkpoint' command to avoid colliding with Lukeatron's own !Checkpoint safety gate. Part of the Wayfinder suite."
+    triggers: ["save a waypoint", "snapshot this project", "checkpoint the repo", "resume this project cold"]
+  - name: "!SkillDocs"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!SkillDocs/skill.md"
+    domain: "PersonalResearch"
+    intent: "Generate/refresh a self-contained HTML documentation site for a skill (or all skills, or a commands folder) — one page per command. Renamed from Keith's 'docs' skill — distinct from !GenerateWiki (MLA-cited knowledge articles). Part of the Wayfinder suite."
+    triggers: ["document a skill", "generate a docs site", "write up a command's usage", "index the commands folder"]
+  - name: "!Readme"
+    path: "System/Skillbank/PersonalResearch/Wayfinder/!Readme/skill.md"
+    domain: "PersonalResearch"
+    intent: "Keep a coding product's root README.md current — intro plus folder-structure map; writes a separate plain-language README for a skill directory. Part of the Wayfinder suite."
+    triggers: ["update the readme", "explain the folder structure", "document the spaces", "readme needs a first draft"]
+  # - name: "!ExampleSkill"
+  #   path: "System/Skillbank/!ExampleSkill/skill.md"
+  #   domain: "Church"
+  #   intent: "One line on what it does and when to use it."
+  #   triggers: ["example phrase", "another trigger"]

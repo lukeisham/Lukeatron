@@ -1,0 +1,23 @@
+# Lukeatron: only System/ and .Claude/ are version-controlled.
+# Personal data (Memory/, Inbox/, Outbox/, Archive/) and local/secret state
+# (Sandbox/, Credentials/, local settings, temp files) never go to GitHub.
+
+/*
+!/System/
+!/.Claude/
+!/.gitignore
+
+# Within System/: exclude scratch and real secrets (keep the .example files)
+/System/Sandbox/**
+/System/Credentials/*
+!/System/Credentials/*.example.json
+!/System/Credentials/*.example.md
+
+# Within .Claude/: exclude local-only settings and temp files
+/.Claude/settings.local.json
+/.Claude/*.tmp
+
+# Junk / build artifacts, wherever they appear under the tracked trees
+.DS_Store
+__pycache__/
+*.pyc

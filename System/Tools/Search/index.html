@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search — mention tracker</title>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#171b21; --line:#262c35; --ink:#e7ecf2;
+    --dim:#94a0ad; --accent:#5aa9ff; --ok:#57d69a; --warn:#ffcf6b; --idle:#3a424d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  header{padding:22px 26px 10px}
+  h1{margin:0;font-size:20px;font-weight:650}
+  .sub{color:var(--dim);font-size:13px;margin-top:3px}
+  main{max-width:920px;margin:0 auto;padding:16px 26px 60px}
+  .searchbar{display:flex;gap:10px;margin:10px 0 22px}
+  .searchbar input{flex:1;padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);font-size:15px}
+  .searchbar input:focus{outline:none;border-color:var(--accent)}
+  button{cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    padding:10px 15px;border-radius:9px;font-size:14px;transition:.12s}
+  button:hover:not(:disabled){border-color:var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#06121f;font-weight:600}
+  .phase{border:1px solid var(--line);border-radius:12px;margin:0 0 16px;background:var(--panel);overflow:hidden}
+  .phead{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--idle);flex:none}
+  .phase.done .dot{background:var(--ok)} .phase.run .dot{background:var(--warn);animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .ptitle{font-weight:600} .pwhat{color:var(--dim);font-size:12.5px;font-weight:400;margin-left:2px}
+  .cost{margin-left:auto;font-size:12px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .cost b{color:var(--ink);font-weight:600}
+  .pbody{border-top:1px solid var(--line);padding:14px 16px;display:none}
+  .phase.open .pbody{display:block}
+  .actions{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .notes{font-size:12.5px;color:var(--dim);margin:2px 0 12px}
+  .notes div{margin:2px 0}
+  ul.links{list-style:none;margin:0;padding:0}
+  ul.links li{padding:9px 0;border-top:1px solid var(--line)}
+  ul.links li:first-child{border-top:none}
+  a.res{color:var(--accent);text-decoration:none;font-weight:550}
+  a.res:hover{text-decoration:underline}
+  .meta{font-size:12px;color:var(--dim);margin-top:2px}
+  .src{display:inline-block;background:#20262e;border-radius:5px;padding:1px 7px;margin-right:7px;color:#b6c2cf}
+  .badge{font-variant-numeric:tabular-nums}
+  .excerpt{font-size:12.5px;color:#b6c2cf;margin-top:4px;font-style:italic}
+  .empty{color:var(--dim);font-size:13px;padding:6px 0}
+  .flow{display:flex;gap:6px;align-items:center;color:var(--dim);font-size:12px;margin:0 0 14px}
+  .flow b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔎 Search — mention tracker</h1>
+  <div class="sub">Track down where one phrase or term is mentioned across social media &amp; comment-bearing news. Wide cheap pool → deep shortlist → confirmed matches.</div>
+</header>
+<main>
+  <div class="searchbar">
+    <input id="term" placeholder="Enter one phrase or term to track down…" autofocus>
+    <button class="primary" id="run1">Run search</button>
+  </div>
+  <div class="flow">Path of least resistance&nbsp; <b>Phase 1 pool</b> → <b>Phase 2 shortlist</b> → <b>Phase 3 confirmed</b> &nbsp;·&nbsp; run one phase at a time — pause between them, or repeat any phase.</div>
+
+  <!-- PHASE 1 -->
+  <section class="phase open" id="p1">
+    <div class="phead" onclick="toggle('p1')">
+      <span class="dot"></span>
+      <span class="ptitle">Phase 1 <span class="pwhat">— scrape the initial pool (wide, cheap)</span></span>
+      <span class="cost" id="cost1">—</span>
+    </div>
+    <div class="pbody">
+      <div class="actions">
+        <button class="primary" onclick="phase(1)">Run Phase 1</button>
+        <button onclick="phase(1)" id="rep1" disabled>Repeat</button>
+      </div>
+      <div class="notes" id="notes1"></div>
+      <ul class="links" id="list1"><li class="empty">No pool yet.</li></ul>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section class="phase" id="p2">
+    <div class="phead" onclick="toggle('p2')">
+      <span class="dot"></span>
+      <span class="ptitle">Phase 2 <span class="pwhat">— targeted deep search → shortlist (fetches pages)</span></span>
+      <span class="cost" id="cost2">—</span>
+    </div>
+    <div class="pbody">
+      <div class="actions">
+        <button class="primary" onclick="phase(2)" id="btn2" disabled>Run Phase 2</button>
+        <button onclick="phase(2)" id="rep2" disabled>Repeat</button>
+      </div>
+      <div class="notes" id="notes2"></div>
+      <ul class="links" id="list2"><li class="empty">Run Phase 1 first.</li></ul>
+    </div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section class="phase" id="p3">
+    <div class="phead" onclick="toggle('p3')">
+      <span class="dot"></span>
+      <span class="ptitle">Phase 3 <span class="pwhat">— confirm exact phrase → final results</span></span>
+      <span class="cost" id="cost3">—</span>
+    </div>
+    <div class="pbody">
+      <div class="actions">
+        <button class="primary" onclick="phase(3)" id="btn3" disabled>Run Phase 3</button>
+        <button onclick="phase(3)" id="rep3" disabled>Repeat</button>
+      </div>
+      <div class="notes" id="notes3"></div>
+      <ul class="links" id="list3"><li class="empty">Run Phase 2 first.</li></ul>
+    </div>
+  </section>
+</main>
+
+<script>
+const S = { term:"", pool:[], shortlist:[], results:[] };
+
+function toggle(id){ document.getElementById(id).classList.toggle('open'); }
+function fmt(n){ return n.toLocaleString(); }
+function costText(c){
+  if(!c) return "—";
+  return `<b>${c.seconds}s</b> · <b>${fmt(c.est_tokens)}</b> tok · ${c.http_requests} reqs · ${fmt(c.bytes_fetched)} B`;
+}
+function setState(p, cls){
+  const el = document.getElementById('p'+p);
+  el.classList.remove('run','done'); if(cls) el.classList.add(cls);
+}
+function renderNotes(p, notes){
+  document.getElementById('notes'+p).innerHTML =
+    (notes||[]).map(n=>`<div>• ${escapeHtml(n)}</div>`).join('');
+}
+function escapeHtml(s){ return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function renderList(elId, items, opts={}){
+  const el = document.getElementById(elId);
+  if(!items || !items.length){ el.innerHTML = `<li class="empty">${opts.empty||'Nothing.'}</li>`; return; }
+  el.innerHTML = items.map(it=>{
+    const badge = (it.score!==undefined) ? `<span class="badge">score ${it.score}</span>` :
+                  (it.confirmed!==undefined) ? `<span class="badge" style="color:var(--ok)">✓ confirmed</span>` : '';
+    const ex = it.excerpt ? `<div class="excerpt">“${escapeHtml(it.excerpt)}”</div>` : '';
+    return `<li>
+      <a class="res" href="${encodeURI(it.url)}" target="_blank" rel="noopener">${escapeHtml(it.title||it.url)}</a>
+      <div class="meta"><span class="src">${escapeHtml(it.source||'')}</span>${badge} ${escapeHtml(it.url)}</div>
+      ${ex}
+    </li>`;
+  }).join('');
+}
+
+async function phase(p){
+  const term = document.getElementById('term').value.trim();
+  if(!term){ document.getElementById('term').focus(); return; }
+  S.term = term;
+
+  if(p===2 && !S.pool.length){ alert('Run Phase 1 first.'); return; }
+  if(p===3 && !S.shortlist.length){ alert('Run Phase 2 first.'); return; }
+
+  setState(p,'run');
+  document.getElementById('p'+p).classList.add('open');
+  document.getElementById('cost'+p).innerHTML = 'running…';
+
+  const body = {term};
+  if(p===2) body.pool = S.pool;
+  if(p===3) body.shortlist = S.shortlist;
+
+  let data;
+  try{
+    const r = await fetch(`/api/phase${p}`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    data = await r.json();
+  }catch(e){
+    setState(p,''); document.getElementById('cost'+p).innerHTML='—';
+    renderNotes(p, ['Network error: '+e.message]); return;
+  }
+
+  document.getElementById('cost'+p).innerHTML = costText(data.cost);
+  if(data.error){ setState(p,''); renderNotes(p,['Error: '+data.error]); return; }
+  renderNotes(p, data.notes);
+  setState(p,'done');
+  document.getElementById('rep'+p).disabled = false;
+
+  if(p===1){
+    S.pool = data.pool||[]; S.shortlist=[]; S.results=[];
+    renderList('list1', S.pool, {empty:'Nothing found — try a broader term.'});
+    document.getElementById('btn2').disabled = !S.pool.length;
+    renderList('list2', [], {empty:'Run Phase 2.'}); renderList('list3', [], {empty:'Run Phase 2 first.'});
+    document.getElementById('btn3').disabled = true;
+  }
+  if(p===2){
+    S.shortlist = data.shortlist||[]; S.results=[];
+    renderList('list2', S.shortlist, {empty:'Nothing cleared the shortlist bar.'});
+    document.getElementById('btn3').disabled = !S.shortlist.length;
+    renderList('list3', [], {empty:'Run Phase 3.'});
+  }
+  if(p===3){
+    S.results = data.results||[];
+    renderList('list3', S.results, {empty:'No mention could be confirmed.'});
+  }
+}
+
+// "Run search" = start Phase 1 (then the user advances phase by phase).
+document.getElementById('run1').onclick = ()=>phase(1);
+document.getElementById('term').addEventListener('keydown', e=>{ if(e.key==='Enter') phase(1); });
+</script>
+</body>
+</html>

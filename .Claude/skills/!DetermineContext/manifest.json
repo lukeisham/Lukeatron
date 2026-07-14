@@ -1,0 +1,14 @@
+{
+  "name": "!DetermineContext",
+  "trigger": "/context",
+  "version": "1.0.0",
+  "description": "Selects the single most appropriate context for a task, loads that context's readme and relevant Memory, names secondary contexts, and flags low-confidence calls.",
+  "dependencies": [
+    "System/Context/personal-productivity.md",
+    "System/Context/church.md",
+    "System/Context/teaching.md",
+    "System/Context/personal-research.md"
+  ],
+  "output_path": "Logs/skills.log",
+  "eval": "skills/!DetermineContext/EVAL.md"
+}

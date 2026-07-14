@@ -1,0 +1,50 @@
+# !OutgoingContentCheck — Approval Whitelist (SUPERSEDED)
+# As of 2026-06-24, the tier model (interaction_tier field on Person records in
+# Memory/Long-Term/People/) is the primary gate. This file is kept as a legacy
+# fallback only — it is consulted only if the People store lookup fails entirely.
+# Do NOT add new entries here; set interaction_tier on the Person record instead.
+# Existing entries below are preserved for reference. Amy (AI79), Luke PCV (LI78),
+# and Keith (KF19) are now gold-tier on their Person records.
+#
+# Owner is always Luke. luke.isham@gmail.com is implicitly trusted and is NOT an
+# external recipient — sending to it never triggers this checkpoint.
+#
+# Each entry supports PARTIAL approval via `scope`:
+#   scope: full        → no approval needed for any action to this target
+#   scope: <list>      → only the listed action types skip approval; anything else
+#                        still prompts (e.g. an address cleared to receive a weekly
+#                        report but not arbitrary mail).
+# Optional `expires:` (YYYY-MM-DD) auto-retires an entry; omit for permanent.
+
+emails:
+  - address: amy.isham@gmail.com
+    name: Amy Isham
+    scope: full
+    added: 2026-06-22
+    note: ""
+  - address: luke.isham@pcv.org.au
+    name: Luke Isham (PCV / church)
+    scope: full
+    added: 2026-06-22
+    note: "Luke's own church address — added at Luke's request (email 2026-06-21)"
+  - address: keith@stkildapc.org
+    name: Keith Foster (Balaclava PC secretary)
+    scope: full
+    added: 2026-06-22
+    note: "Added at Luke's explicit request (Estuary planning-day task, 2026-06-22)"
+  # - address: example@church.org
+  #   scope: full              # or e.g. [reply, send] / [newsletter]
+  #   added: 2026-06-21
+  #   note: "Balaclava PC office — routine admin"
+
+websites: []
+  # - domain: example.com
+  #   scope: [read]            # read-only research vs [post, submit, login]
+  #   added: 2026-06-21
+  #   note: "trusted research source"
+
+actions: []
+  # - id: post-balaclava-roster
+  #   scope: full
+  #   added: 2026-06-21
+  #   note: "publishing the weekly roster to the church site"

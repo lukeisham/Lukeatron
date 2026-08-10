@@ -7,11 +7,10 @@
 !/.Claude/
 !/.gitignore
 
-# Within System/: exclude scratch and real secrets (keep the .example files)
+# Within System/: exclude scratch, and the entire Credentials/ directory
+# (all credential material stays local-only; nothing under it is ever pushed)
 /System/Sandbox/**
-/System/Credentials/*
-!/System/Credentials/*.example.json
-!/System/Credentials/*.example.md
+/System/Credentials/
 
 # Within .Claude/: exclude local-only settings and temp files
 /.Claude/settings.local.json

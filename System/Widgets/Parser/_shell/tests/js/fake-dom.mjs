@@ -17,6 +17,13 @@
 // by _shell/src/ui.js but not by the Spelling module's own ui.js, which
 // deliberately never uses innerHTML per AD-2) must be fixed here, once.
 
+function hasClass(el, className) {
+  return (el.className || "").split(/\s+/).includes(className);
+}
+
+// Supports the handful of selector shapes this repo's tests actually write:
+// tagName, #id, [attr]/[attr="value"], .class, and tag.class /
+// tag#id combos (checked left-to-right, each segment independently).
 function matchesSelector(el, selector) {
   const attrMatch = selector.match(/^\[([\w-]+)(?:="([^"]*)")?\]$/);
   if (attrMatch) {
@@ -24,12 +31,20 @@ function matchesSelector(el, selector) {
     const actual = el.getAttribute(attr);
     return value === undefined ? actual !== null : actual === value;
   }
-  if (selector.startsWith("#")) return el.id === selector.slice(1);
-  return el.tagName === selector;
+  const segments = selector.match(/(^[a-zA-Z][\w-]*)|(\.[\w-]+)|(#[\w-]+)/g);
+  if (!segments) return el.tagName === selector;
+  return segments.every((seg) => {
+    if (seg.startsWith(".")) return hasClass(el, seg.slice(1));
+    if (seg.startsWith("#")) return el.id === seg.slice(1);
+    return el.tagName === seg;
+  });
 }
 
 function walk(el, selector, results) {
-  for (const child of el.children) {
+  for (const child of el.children || []) {
+    // Skip non-element nodes (e.g. createTextNode()'s {nodeType:3,...}),
+    // which carry no .children array of their own.
+    if (!child || !Array.isArray(child.children)) continue;
     if (matchesSelector(child, selector)) results.push(child);
     walk(child, selector, results);
   }
@@ -90,6 +105,11 @@ function createFakeElement(tagName, doc, register) {
     },
     set innerHTML(value) {
       this._html = value;
+      // Real DOM: any innerHTML write discards the previous child elements.
+      // Mirror that much (without parsing `value` into new elements, TEST-8)
+      // so the common "container.innerHTML = ''; container.appendChild(x)"
+      // clear-and-replace idiom behaves the same as it does in a browser.
+      this.children = [];
     },
     appendChild(child) {
       child.parentNode = this;
@@ -102,6 +122,17 @@ function createFakeElement(tagName, doc, register) {
     },
     get firstChild() {
       return this.children[0] ?? null;
+    },
+    get parentElement() {
+      return this.parentNode;
+    },
+    replaceWith(node) {
+      const parent = this.parentNode;
+      if (!parent) return;
+      const idx = parent.children.indexOf(this);
+      if (idx !== -1) parent.children[idx] = node;
+      node.parentNode = parent;
+      this.parentNode = null;
     },
     get nextElementSibling() {
       const siblings = this.parentNode?.children ?? [];
@@ -215,5 +246,6 @@ export function createFakeDOM() {
   doc.body = doc.createElement("body");
   doc.body.id = "body";
   registry.body = doc.body;
+  doc.head = doc.createElement("head");
   return doc;
 }

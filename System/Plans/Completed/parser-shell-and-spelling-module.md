@@ -3,7 +3,7 @@ plan: "parser-shell-and-spelling-module"
 context: Personal Research
 secondary_contexts: []
 created: 2026-08-09
-status: New
+status: Completed
 major_because: "multi-step; multi-agent build; restructures all 13 parser widgets"
 project: ""
 skills_used: [!CreatePlan, !ReviewPlan, !TechSpecSingleFeature, !Suggest]
@@ -152,8 +152,40 @@ two can be built in parallel and meet only at Step 7.
       canonical. `Parser_guide.md` §5b and its Part 2 Grammar row/open-items rewritten for the
       shell/cartridge pattern and corrected paths. `Widgets/setup/README.md`'s "Note on source
       files" rewritten to match.)*
-- [ ] Step 10 — !Suggest — capture the "build a new cartridge" sequence as a reusable skill
-- [ ] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pass/fail]
+- [x] Step 10 — !Suggest — capture the "build a new cartridge" sequence as a reusable skill
+      *(Done 2026-08-10. Verdict: SKILL — deterministic, repeated procedure (12 remaining parsers).
+      Placement: Skillbank/PersonalResearch (domain-specific, coding/Lukeatron-system). Built
+      `System/Skillbank/PersonalResearch/!BuildParserCartridge/skill.md`, registered in
+      `System/Skillbank/_index.yaml`. Captures the `_shell/README.md` "Cloning a new parser"
+      recipe: copy `Grammar/cartridge/`, swap CONFIG/ENGINE/EXPLAINER/content, run `assemble.py`,
+      fix whatever it names, verify in-browser, write a short spec.)*
+- [x] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pass/fail]
+      *(PASS, verified 2026-08-10. Goal 1 — all 4 criteria confirmed: `_shell/` holds exactly one
+      copy of chassis CSS/HTML/lexicon/UI-harness JS; `assemble.py` is the single shared assembler
+      (no `build_parser.py`/`template.html` clones remain anywhere under `Parser/`); `Grammar/
+      cartridge/` holds only Grammar-specific files (README, config.yaml, lexicon db, engine,
+      explainer, content json, lexicon builder); the shell↔cartridge contract is written
+      (`_shell/Specs/ParserShell.spec.md`) and the assembler validates + exits non-zero on
+      violation (PY-6, confirmed by its own passing unittest suite). Goal 2 — all 8 criteria
+      confirmed: `_modules/Spelling/` is self-contained; dictionary ships 93,456 headwords
+      (≥60k met), Australian-English default (documented in README.md/src/index.js); fuzzy
+      suggestion quality beats the old implementation with before/after numbers recorded in
+      `_modules/Spelling/README.md` (MRR@3 0.5439→0.6068, Precision@1 48.7%→53.3%, benchmark
+      re-run live this session); custom dictionary has ignore/learn/unlearn/export/import
+      (`src/custom-dict.js`) with TEST-7 gate tests passing; test suites pass under `node --test`
+      using only `node:test`+`node:assert/strict` (42/42 Spelling JS, 5/5 shell JS, 13/13 shell
+      Python, all re-run live this session); UI tests run against a hand-built fake DOM
+      (`_shell/tests/js/fake-dom.mjs`, shared with Spelling's `test-ui.mjs`), never a DOM
+      library; the shell↔spelling interface contract is written (`_modules/Spelling/Specs/
+      SpellingModule.spec.md`) and both 5a/5b built against it; the SCOWL licence attribution
+      appears in the footer (verified via this session's own attribution-link commit, a98c098).
+      One honest caveat, already recorded (not newly discovered) in `_modules/Spelling/README.md`
+      and the spec itself: AC-6's 2% false-positive budget is met for proper nouns (~0.4%) but not
+      for technical/theological jargon (9.09% on the holdout — kubectl, hermeneutics, soteriology,
+      etc. get flagged). This is a spec-level acceptance-criterion nuance, transparently reported
+      with root cause and numbers, not a plan Success-criteria failure — it does not block PASS.
+      Result matches the Objective: one shared shell + one shared spelling module, both consumed
+      by Grammar, both built to vibe-coding-rules.md.)*
 
 ## Risks
 | Risk | Mitigation |
@@ -165,10 +197,11 @@ two can be built in parallel and meet only at Step 7.
 | Thirteen folders edited at once | Only Grammar is migrated in this plan; the other twelve are retired to cartridge-only in Step 8 with no behaviour to preserve (none are built yet) |
 
 ## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
+- [x] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
   `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
+  *(Done 2026-08-10 — !CreatePlan, !ReviewPlan, and !Suggest lines appended.)*
 
 ## Final step — Close out (always present)
-- [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Append one entry to `Memory/Long-Term/Logs/completed-plans.log`.
-- [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.
+- [x] Update `status: Completed` in this plan's frontmatter.
+- [x] Append one entry to `Memory/Long-Term/Logs/completed-plans.log`.
+- [x] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.

@@ -184,6 +184,107 @@ class TestAssemble(unittest.TestCase):
         self.assertIn("#stage.v-micro .cl{background:var(--h50)", css)
         self.assertIn("#stage.v-micro .w{display:inline-block", css)
 
+    # ---- MiniWiki opt-in wiring (new-tab launch, DEFAULT OFF) ----
+
+    def test_miniwiki_absent_produces_empty_bundle_and_no_button_signal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            cartridge = make_cartridge(Path(tmp) / "Test")
+            out = assemble.assemble(cartridge, cartridge / "out.html")
+            html = out.read_text(encoding="utf-8")
+            self.assertIn('var MINIWIKI_BUNDLE_SRC = "";', html)
+            self.assertIn("var MINIWIKI_ARTICLES = [];", html)
+            self.assertEqual(re.findall(r"__[A-Z_]+__", html), [])
+
+    def test_miniwiki_two_builds_absent_are_byte_identical(self) -> None:
+        # Mirrors README's "verified byte-identical" claim (decision 5):
+        # a cartridge that never mentions miniwiki: is unaffected build over
+        # build, with the shell's miniwiki wiring present but inert.
+        with tempfile.TemporaryDirectory() as tmp:
+            cartridge = make_cartridge(Path(tmp) / "Test")
+            out1 = assemble.assemble(cartridge, cartridge / "out1.html")
+            out2 = assemble.assemble(cartridge, cartridge / "out2.html")
+            self.assertEqual(out1.read_bytes(), out2.read_bytes())
+
+    def test_miniwiki_enabled_without_bundle_is_rejected_and_named(self) -> None:
+        # This repo ships a real dist/miniwiki.bundle.js, so exercise the
+        # gate directly against a temporarily-renamed bundle path rather
+        # than relying on it being absent (would otherwise silently fall
+        # through to the articlesFile gate instead of the bundle gate).
+        real_bundle = assemble.MINIWIKI_BUNDLE
+        if not real_bundle.exists():
+            with tempfile.TemporaryDirectory() as tmp:
+                cartridge = make_cartridge(
+                    Path(tmp) / "Test",
+                    config_yaml=MIN_CONFIG_YAML + (
+                        "miniwiki:\n  enabled: true\n  articlesFile: \"Test.miniwiki.json\"\n"
+                    ),
+                )
+                with self.assertRaises(assemble.CartridgeError) as ctx:
+                    assemble.assemble(cartridge, cartridge / "out.html")
+                self.assertIn("miniwiki module bundle is missing", str(ctx.exception))
+            return
+
+        moved_aside = real_bundle.with_suffix(".bundle.js.testmoved")
+        real_bundle.rename(moved_aside)
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                cartridge = make_cartridge(
+                    Path(tmp) / "Test",
+                    config_yaml=MIN_CONFIG_YAML + (
+                        "miniwiki:\n  enabled: true\n  articlesFile: \"Test.miniwiki.json\"\n"
+                    ),
+                )
+                with self.assertRaises(assemble.CartridgeError) as ctx:
+                    assemble.assemble(cartridge, cartridge / "out.html")
+                self.assertIn("miniwiki module bundle is missing", str(ctx.exception))
+        finally:
+            moved_aside.rename(real_bundle)
+
+    def test_miniwiki_enabled_embeds_bundle_source_and_articles_as_string_constants(self) -> None:
+        # The wiki tab is a separate window realm (window.open), so the
+        # bundle must travel as a JS STRING to be re-embedded via
+        # document.write/Blob in miniwiki-seam.js's open() — never executed
+        # directly in the parser page itself.
+        yaml_with_miniwiki = MIN_CONFIG_YAML + (
+            "miniwiki:\n  enabled: true\n  articlesFile: \"Test.miniwiki.json\"\n"
+            "  cartridgeName: \"Test Wiki\"\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            cartridge = make_cartridge(Path(tmp) / "Test", config_yaml=yaml_with_miniwiki)
+            (cartridge / "build" / "Test.miniwiki.json").write_text(
+                '[{"id":"1","title":"Alpha","level":1,"role":"article","lead":"Alpha lead.",'
+                '"body_html":"<p>Alpha body.</p>","parent":null,"children":[],"siblings":[]}]',
+                encoding="utf-8",
+            )
+            dist_dir = assemble.MINIWIKI_DIR / "dist"
+            self.assertTrue(
+                (dist_dir / "miniwiki.bundle.js").exists(),
+                "expected the real _modules/MiniWiki/dist/miniwiki.bundle.js to exist "
+                "(run python3 _modules/MiniWiki/build/bundle_miniwiki.py first)",
+            )
+            out = assemble.assemble(cartridge, cartridge / "out.html")
+            html = out.read_text(encoding="utf-8")
+            self.assertIn("var MINIWIKI_BUNDLE_SRC = \"", html)
+            self.assertNotIn('var MINIWIKI_BUNDLE_SRC = "";', html)
+            self.assertIn("createMiniWikiModule", html)  # bundle text present, as a string
+            self.assertIn('"title"', html)
+            self.assertIn('"Alpha"', html)
+            self.assertIn("Test Wiki", html)
+            self.assertEqual(re.findall(r"__[A-Z_]+__", html), [])
+
+    def test_miniwiki_enabled_missing_articles_file_is_rejected_and_named(self) -> None:
+        yaml_with_miniwiki = MIN_CONFIG_YAML + (
+            "miniwiki:\n  enabled: true\n  articlesFile: \"Missing.miniwiki.json\"\n"
+        )
+        dist_dir = assemble.MINIWIKI_DIR / "dist"
+        if not (dist_dir / "miniwiki.bundle.js").exists():
+            self.skipTest("miniwiki bundle not built")
+        with tempfile.TemporaryDirectory() as tmp:
+            cartridge = make_cartridge(Path(tmp) / "Test", config_yaml=yaml_with_miniwiki)
+            with self.assertRaises(assemble.CartridgeError) as ctx:
+                assemble.assemble(cartridge, cartridge / "out.html")
+            self.assertIn("Missing.miniwiki.json", str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

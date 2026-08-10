@@ -52,6 +52,8 @@ VENDOR_DIR = Path(__file__).resolve().parent / "vendor"
 SPELLING_DIR = Path(__file__).resolve().parents[2] / "_modules" / "Spelling"
 SPELLING_BUNDLE = SPELLING_DIR / "dist" / "spelling.bundle.js"
 SPELLING_DB_GZ = SPELLING_DIR / "data" / "spelling.db.gz"
+MINIWIKI_DIR = Path(__file__).resolve().parents[2] / "_modules" / "MiniWiki"
+MINIWIKI_BUNDLE = MINIWIKI_DIR / "dist" / "miniwiki.bundle.js"
 # Required footer attribution (_research/DECISION-dictionary-source.md,
 # verbatim from the release's own Copyright file) — every cartridge that
 # ships with spelling.enabled: true must show this string, not a
@@ -110,6 +112,7 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
     lexicon_js = _read(SHELL_DIR / "lexicon.js")
     ui_js = _read(SHELL_DIR / "ui.js")
     spelling_seam_js = _read(SHELL_DIR / "spelling-seam.js")
+    miniwiki_seam_js = _read(SHELL_DIR / "miniwiki-seam.js")
 
     engine_path = build_dir / config["files"]["engine"]
     explainer_path = build_dir / config["files"]["explainer"]
@@ -155,6 +158,41 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
     else:
         spelling_js = spelling_seam_js
 
+    # MiniWiki (decision 5 / requirement C): DEFAULT OFF — a cartridge opts
+    # in via miniwiki.enabled: true + miniwiki.articlesFile pointing at a
+    # build/*.miniwiki.json produced by _modules/MiniWiki/build/extract_articles.py.
+    # Grammar and every other cartridge that omits this block is byte-for-byte
+    # unaffected: miniwiki_bundle_src_js stays "" and the bundle is never read.
+    #
+    # Per Luke's correction, the wiki opens in a NEW TAB as its own complete
+    # document (miniwiki-seam.js's open()) rather than mounting into this
+    # page's DOM — so the bundle is embedded here as a JS STRING CONSTANT
+    # (MINIWIKI_BUNDLE_SRC), not executed in the parser page's own window.
+    # window.open() creates a separate realm; a function/closure can't be
+    # handed across that boundary, only source text can.
+    miniwiki_cfg = config.get("miniwiki") or {}
+    miniwiki_enabled = bool(miniwiki_cfg.get("enabled", False))
+    miniwiki_articles_json = "[]"
+    miniwiki_cartridge_name = json.dumps(miniwiki_cfg.get("cartridgeName", config["cartridge"]["name"]))
+    miniwiki_bundle_src_js = '""'
+    if miniwiki_enabled:
+        if not MINIWIKI_BUNDLE.exists():
+            raise CartridgeError(
+                f"miniwiki.enabled is true but the miniwiki module bundle is missing: "
+                f"{MINIWIKI_BUNDLE} (run python3 _modules/MiniWiki/build/bundle_miniwiki.py first)"
+            )
+        miniwiki_articles_json = embed_miniwiki_articles(build_dir, miniwiki_cfg)
+        bundle_text = _read(MINIWIKI_BUNDLE)
+        # Defensive, matching load_sqljs_vendor()'s identical escape: a raw
+        # "</script" inside this JS-string constant would still close the
+        # <script> tag early — the HTML parser doesn't know it's inside a
+        # string literal. The bundle has none today (grep-verified), but a
+        # future source edit could introduce one.
+        if "</script" in bundle_text.lower():
+            bundle_text = re.sub(r"</script", "<\\/script", bundle_text, flags=re.IGNORECASE)
+        miniwiki_bundle_src_js = json.dumps(bundle_text)
+    miniwiki_js = f"var MINIWIKI_BUNDLE_SRC = {miniwiki_bundle_src_js};\n" + miniwiki_seam_js
+
     config_js = build_config_js(config)
     build_date = datetime.date.today().isoformat()
 
@@ -187,6 +225,9 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
         "__ENGINE_JS__": engine_js,
         "__EXPLAINER_JS__": explainer_js,
         "__SPELLING_SEAM_JS__": spelling_js,
+        "__MINIWIKI_JS__": miniwiki_js,
+        "__MINIWIKI_ARTICLES__": miniwiki_articles_json,
+        "__MINIWIKI_CARTRIDGE_NAME__": miniwiki_cartridge_name,
         "__UI_JS__": ui_js,
     }
 
@@ -254,6 +295,7 @@ def build_config_js(config: dict) -> str:
     lexicon_cfg = config.get("lexicon") or {}
     spelling_cfg = config.get("spelling") or {}
     spelling_enabled = bool(spelling_cfg.get("enabled", False))
+    miniwiki_cfg = config.get("miniwiki") or {}
     tier_b_note = (config.get("tierB") or {}).get(
         "note", "Tier B (API/agent) slot present but disabled in this build."
     )
@@ -282,6 +324,9 @@ def build_config_js(config: dict) -> str:
         "spelling": {
             "enabled": spelling_enabled,
             "attribution": SPELLING_ATTRIBUTION if spelling_enabled else "",
+        },
+        "miniwiki": {
+            "enabled": bool(miniwiki_cfg.get("enabled", False)),
         },
     }
     if p.get("focusLabels"):
@@ -435,6 +480,31 @@ def embed_lexicon_db(build_dir: Path, lexicon_cfg: dict) -> str:
             )
 
     return base64.b64encode(db_path.read_bytes()).decode("ascii")
+
+
+def embed_miniwiki_articles(build_dir: Path, miniwiki_cfg: dict) -> str:
+    """Read a pre-built *.miniwiki.json (extract_articles.py's output — a
+    dict keyed by article id) and re-serialise it as a JSON ARRAY, which is
+    the shape MiniWikiModule.spec.md's createMiniWikiModule({articles})
+    expects (decision 5: articles come from build-time JSON only, never
+    hardcoded here or in JS)."""
+    articles_file = miniwiki_cfg.get("articlesFile")
+    if not articles_file:
+        raise CartridgeError("miniwiki.enabled is true but miniwiki.articlesFile is not set")
+    articles_path = build_dir / articles_file
+    if not articles_path.exists():
+        raise CartridgeError(
+            f"miniwiki.articlesFile not found: {articles_path} "
+            f"(run python3 _modules/MiniWiki/build/extract_articles.py first)"
+        )
+    try:
+        data = json.loads(articles_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise CartridgeError(f"miniwiki.articlesFile ({articles_path.name}) is not valid JSON: {exc}") from exc
+    articles = list(data.values()) if isinstance(data, dict) else data
+    if not isinstance(articles, list):
+        raise CartridgeError(f"miniwiki.articlesFile ({articles_path.name}) must be a JSON object or array")
+    return json.dumps(articles, ensure_ascii=False)
 
 
 def embed_spelling_db() -> str:

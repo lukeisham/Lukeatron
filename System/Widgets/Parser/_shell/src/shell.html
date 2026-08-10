@@ -29,9 +29,11 @@ __CARTRIDGE_CSS__
 <button id="btnAll">Display all</button>
 <button id="btnExplain">Explain</button>
 <button id="btnTierB" disabled title="Tier B (API/agent judgment) is not wired in this build — the offline Tier-A engine is fully functional.">Tier B check — off</button>
+<button id="btnMiniWiki" class="no-print" style="display:none;" title="Open the Mini-Wiki in a new tab">Mini-Wiki</button>
 <label class="muted" id="spellLabel" style="display:none;align-items:center;gap:6px;margin-left:auto;cursor:pointer;"><input type="checkbox" id="spellTog" checked> Spell check</label>
 <span class="muted" id="wcount">0 / __CAP__ words</span>
 </div>
+<div class="warn no-print" id="miniwikiwarn" style="display:none;">Your browser blocked the Mini-Wiki pop-up tab — allow pop-ups for this page and click Mini-Wiki again.</div>
 <div class="bar" id="focusbar" style="display:none;"></div>
 <div id="key" style="display:none;"></div>
 <div id="iconbar"></div>
@@ -79,6 +81,8 @@ var CONTENT = __CONTENT__;
 var SQLJS_WASM_B64 = "__WASM_B64__";
 var LEXDB_B64 = "__DB_B64__";
 var SPELLDB_B64 = "__SPELLDB_B64__";
+var MINIWIKI_ARTICLES = __MINIWIKI_ARTICLES__;
+var MINIWIKI_CARTRIDGE_NAME = __MINIWIKI_CARTRIDGE_NAME__;
 </script>
 <script>
 __SQLJS__
@@ -96,10 +100,21 @@ __EXPLAINER_JS__
 __SPELLING_SEAM_JS__
 </script>
 <script>
+__MINIWIKI_JS__
+</script>
+<script>
 __UI_JS__
 </script>
 <script>
 LEX.init(UI.init);
+if (typeof MiniWikiSeam !== "undefined" && MiniWikiSeam.isAvailable()) {
+  var btnMW = document.getElementById("btnMiniWiki");
+  btnMW.style.display = "";
+  btnMW.addEventListener("click", function () {
+    var opened = MiniWikiSeam.open();
+    document.getElementById("miniwikiwarn").style.display = opened ? "none" : "";
+  });
+}
 </script>
 </body>
 </html>

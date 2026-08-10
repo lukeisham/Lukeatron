@@ -3,7 +3,9 @@ name: "!Initiative"
 description: >
   The MinorTasks queue engine. Reads MinorTasks/queue.md; auto-actions Low-impact open rows
   unattended; proposes plans/sketches to Sandbox/ for High-impact rows (never executes them);
-  emails Luke a digest. Scope is the MinorTasks/ queue only — never touches Projects/,
+  reconciles any ☑ Done row missing from completed-minor-tasks.log (manual/dashboard
+  completions) so every completion is captured regardless of how it was marked Done; emails
+  Luke a digest. Scope is the MinorTasks/ queue only — never touches Projects/,
   registries, or _tracking.yaml. Triggers: "!Initiative", "run initiative", "work the queue",
   "clear the minor queue", or the scheduled initiative-sweep cron. Flag --dry → report
   what would happen, mutate nothing, send nothing.
@@ -41,6 +43,21 @@ UNATTENDED = (caller == "initiative-sweep") ? true : false
 ASSERT (this run will NOT read or write any file under Memory/Medium-Term/Projects/)
 ASSERT (this run will NOT invoke !ProjectSweep or modify _tracking.yaml or any registry.md)
 IF ASSERT fails: log "[AGENT: !Initiative] [FAIL] Scope violation aborted run" → RETURN
+
+// STEP 0 — RECONCILE MANUAL/DASHBOARD COMPLETIONS (runs every invocation, incl. --dry as report-only) ──
+// Catches rows Luke ticked directly in queue.md (or via a future dashboard edit path) that
+// bypassed this skill and so never got a completed-minor-tasks.log line. !Initiative remains
+// the sole owner of both queue.md and the log, so backfilling here — instead of a separate
+// watcher — keeps ownership intact. Runs before the ranked pass so a reconciled row can't also
+// be picked up as still-open.
+READ Memory/Long-Term/Logs/completed-minor-tasks.log → LOGGED_ROW_NUMBERS = set of every #{N} already present
+FOR EACH row IN queue.md WHERE Status == ☑ Done AND row.# NOT IN LOGGED_ROW_NUMBERS:
+  IF DRY:
+    APPEND "would backfill: #{row.#} — {row.Task} (manual/dashboard completion)" to dry_report
+  ELSE:
+    APPEND to Memory/Long-Term/Logs/completed-minor-tasks.log:
+      "[{date}] #{row.#} · {row.Task} | impact={row.Impact} | source={row.Source} | by=Luke (manual/dashboard) | notes={row.Notes or '-'} [backfilled by !Initiative reconciliation]"
+    APPEND row.# to reconciled
 
 // STEP 1 — READ AND RANK THE QUEUE ───────────────────────────────────────────────────────
 READ Memory/Medium-Term/MinorTasks/queue.md
@@ -106,6 +123,9 @@ ASSEMBLE digest:
     🟠 Held for you ({count held}):
       FOR EACH row in held: "  #{row.#} [{row.State}] {row.Task}" + Sandbox link if proposal exists
     📋 Queue summary: {total Open} open · {count auto_done} actioned today
+    IF reconciled is non-empty:
+      🗒️ Backfilled ({count reconciled}) — manual/dashboard completions logged retroactively:
+        FOR EACH #N in reconciled: "  #{N}"
     (Sent by Lukeatron Initiative — {date})
 
 DELEGATE to !AgentMail: send digest to luke.isham@gmail.com
@@ -122,7 +142,10 @@ Low-impact open rows executed in-system and marked ☑ Done — each also append
 `Memory/Long-Term/Logs/completed-minor-tasks.log` so the completion survives `!PruneMemory`;
 High-impact rows marked 🟠 with a Sandbox proposal at
 `System/Sandbox/initiative-proposal-{#}-{slug}.md`; `queue.md` updated; digest email sent to
-`luke.isham@gmail.com`. In `--dry` mode: a would-do report only, nothing mutated or sent.
+`luke.isham@gmail.com`. Every run also reconciles any `☑ Done` row (manual edit or dashboard)
+missing from the log, backfilling it with `by=Luke (manual/dashboard)` so no completion is lost
+to `!PruneMemory` regardless of how the row was marked Done. In `--dry` mode: a would-do
+report only, nothing mutated or sent.
 
 **Validation Check (Self-Test)**
 ```
@@ -130,6 +153,7 @@ VERIFY (no file under Memory/Medium-Term/Projects/ was read or written this run)
 VERIFY (no outgoing content left _Lukeatron/ without passing !Checkpoint or Luke's own address) ELSE log FAIL
 VERIFY (every auto-actioned row now has Status ☑ Done) ELSE log discrepancy
 VERIFY (every auto-actioned row produced one completed-minor-tasks.log line) ELSE log discrepancy
+VERIFY (no ☑ Done row in queue.md is missing from completed-minor-tasks.log after this run) ELSE log discrepancy
 VERIFY (--dry mode mutated zero files) ELSE log FAIL + alert Luke
 ```
 

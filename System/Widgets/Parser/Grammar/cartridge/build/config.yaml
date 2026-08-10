@@ -1,0 +1,82 @@
+---
+# Grammar cartridge manifest — ParserShell.spec.md §8.
+# Grammar is a cartridge, full stop (plan D-3): nothing in this folder is
+# importable by another parser, and nothing generic lives here.
+cartridge:
+  name: "Grammar parser"
+  id: "Grammar"
+  version: "1.0.0"
+  builtFrom: "Grammar_contents.md"
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%2326215C"/><text x="15" y="17.5" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="bold" fill="%23EEEDFE">G</text><rect x="6" y="22.5" width="6" height="2.6" rx="1.3" fill="%235DCAA5"/><rect x="13" y="22.5" width="5" height="2.6" rx="1.3" fill="%23FAC775"/><rect x="19" y="22.5" width="5.5" height="2.6" rx="1.3" fill="%23AFA9EC"/></svg>'
+
+parser:
+  inputUnit: "one sentence"
+  cap: 100
+  levels:
+    - sentential
+    - clausal
+    - phrasal
+    - lexical
+  tentativeThreshold: 0.7
+  focusLabels:
+    sentential: "Sentence focus"
+    clausal: "Clause focus"
+    phrasal: "Phrase focus"
+    lexical: "Word focus"
+
+tierB:
+  enabled: false
+  note: "Tier B (API/agent) slot present but disabled in this build."
+
+lexicon:
+  enabled: true
+  dbFile: "Grammar_lexicon.db"
+  schema: "word,pos,alt,feat,rank"
+  attribution: "Moby PD + FrequencyWords CC-BY-SA"
+
+spelling:
+  enabled: true
+
+colours:
+  palette:
+    - name: teal
+      h50: "#E1F5EE"
+      h100: "#9FE1CB"
+      h600: "#0F6E56"
+      h800: "#085041"
+      hf: "rgba(29,158,117,.12)"
+    - name: amber
+      h50: "#FAEEDA"
+      h100: "#FAC775"
+      h600: "#854F0B"
+      h800: "#633806"
+      hf: "rgba(239,159,39,.12)"
+    - name: purple
+      h50: "#EEEDFE"
+      h100: "#CECBF6"
+      h600: "#534AB7"
+      h800: "#3C3489"
+      hf: "rgba(127,119,221,.12)"
+    - name: pink
+      h50: "#FBEAF0"
+      h100: "#F4C0D1"
+      h600: "#993556"
+      h800: "#72243E"
+      hf: "rgba(212,83,126,.12)"
+    - name: coral
+      h50: "#FAECE7"
+      h100: "#F5C4B3"
+      h600: "#993C1D"
+      h800: "#4A1B0C"
+      hf: "rgba(216,90,48,.12)"
+    - name: blue
+      h50: "#E6F1FB"
+      h100: "#B5D4F4"
+      h600: "#185FA5"
+      h800: "#0C447C"
+      hf: "rgba(55,138,221,.12)"
+
+files:
+  engine: "grammar_engine.js"
+  explainer: "grammar_explainer.js"
+  content: "grammar_content.json"

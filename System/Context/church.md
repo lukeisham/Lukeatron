@@ -30,9 +30,9 @@ TONE         to-the-point, pastoral, faithful to the text — Luke's own voice
 
 The preaching and service-running work of Balaclava Presbyterian Church:
 
-- **📖 Sermon series prep** — planning and shaping a series (`SermonSeriesPrep.md` *(planned)*)
-- **🕊️ Individual sermon prep** — working a single preaching passage (`SermonPassagePrep.md`)
-- **🙏 Congregational prayers** — drafting prayers for the service (`CongregationalPrayer.md` *(planned)*)
+- **📖 Sermon series prep** — planning and shaping a series (`SermonSeriesPrep.md` *(planned — not yet on disk)*)
+- **🕊️ Individual sermon prep** — working a single preaching passage (`Template_SermonPrep.md`)
+- **🙏 Congregational prayers** — drafting prayers for the service (`CongregationalPrayer.md` *(planned — not yet on disk)*)
 - **🖼️ Slide shows** — building the Sunday service slides
 - **📣 Promotional material** — church promo and communications, both internal and external:
   - **Internal promotions** — congregation-facing notices: service slides, bulletins/newsletters, pulpit and email announcements, noticeboard items
@@ -57,7 +57,7 @@ If the primary goal serves Balaclava PC's preaching or Sunday gatherings, this i
 
 **Guardrails**
 - Never invent Scripture references or attribute quotes loosely.
-- Sermon work uses the `SermonSeriesPrep` *(planned)* / `SermonPassagePrep` / `CongregationalPrayer` *(planned)* templates.
+- Sermon work uses the `Template_SermonPrep.md` template (single passage); `SermonSeriesPrep.md` and `CongregationalPrayer.md` are *(planned — not yet on disk)*.
 
 ---
 
@@ -71,14 +71,14 @@ If the primary goal serves Balaclava PC's preaching or Sunday gatherings, this i
 
 | Need | Skill | Shell |
 | :--- | :--- | :--- |
-| Prepare a sermon | Major task using `SermonPassagePrep.md` (via `!CreatePlan`) | — |
+| Prepare a sermon | Major task using `Template_SermonPrep.md` (via `!CreatePlan`) | — |
 | Web research (commentaries, sources) | `!HeadlessChromeBrowser` | — |
 | Build a knowledge page | `!GenerateWiki` | — |
 | Send / receive church email | `!AgentMail` | — |
 | Manage service & roster dates | `!Calendar` | — |
 | Plan a major task | `!CreatePlan` → `!ReviewPlan` | — |
 
-Templates this context leans on: `SermonSeriesPrep.md` *(planned)*, `SermonPassagePrep.md`, `CongregationalPrayer.md` *(planned)*.
+Templates this context leans on: `Template_SermonPrep.md` (single-passage prep, on disk); `SermonSeriesPrep.md` and `CongregationalPrayer.md` are *(planned — not yet on disk)*.
 
 (Capability skills load on demand — only when the task reaches for them.)
 
@@ -91,11 +91,14 @@ Templates this context leans on: `SermonSeriesPrep.md` *(planned)*, `SermonPassa
 - `Memory/Long-Term/Bible/` — passages, references
 - `Memory/Long-Term/Theology/` — doctrinal grounding
 - `Memory/Long-Term/Church/` — broader church material
-- `Memory/Long-Term/Systematic Theology/` — Systematics, Ordo Salutis, doctrine-frequency, doctrines of grace (parser-tool build)
-- `Memory/Long-Term/Biblical Theology/` — biblical theology reference (parser-tool build)
-- `Memory/Long-Term/Greek and Hebrew/` — biblical-language reference (parser-tool build)
-- `Memory/Long-Term/Biblical symbols and cross-references/` — symbol/cross-reference reference (parser-tool build)
-- `Memory/Long-Term/Biblical Commentary/` — commentary reference (parser-tool build; raw material also in `Bible/CalvinCommentaries`, `Clarke`, `DTN`, `KingComments`, `RWP`, `Scofield`)
+
+> **Parser build material centralised 2026-08-09.** The five study-tool builds below now live under `System/Widgets/Parser/<Store>/` (build source, content draft, raw research) — not the Long-Term store, which currently holds only a pointer `_index.yaml` and stays reserved for any future non-parser domain content.
+
+- `System/Widgets/Parser/Systematic Theology/` — Systematics, Ordo Salutis, doctrine-frequency, doctrines of grace (parser-tool build)
+- `System/Widgets/Parser/Biblical Theology/` — biblical theology reference (parser-tool build)
+- `System/Widgets/Parser/Greek and Hebrew/` — biblical-language reference (parser-tool build)
+- `System/Widgets/Parser/Biblical symbols and cross-references/` — symbol/cross-reference reference (parser-tool build)
+- `System/Widgets/Parser/Biblical Commentary/` — commentary reference (parser-tool build; raw material — `CalvinCommentaries`, `Clarke`, `DTN`, `KingComments`, `RWP`, `Scofield` — moved here from `Bible/` on 2026-08-09)
 - `Memory/Long-Term/Boilerplate/recurring.md` — recurring service/roster elements
 
 > Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.

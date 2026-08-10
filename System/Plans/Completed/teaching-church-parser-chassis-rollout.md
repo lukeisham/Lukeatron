@@ -24,7 +24,7 @@ Give each of 12 subject stores (7 Teaching, 5 Church) a cloned Grammar-chassis d
 - `Memory/Long-Term/Lukeatron/memory-structure.md` unaffected (no change needed — stores already listed from the prior turn).
 
 ## Resources
-- **Memory to read:** `Memory/Long-Term/Grammar/build/` (chassis source), `Memory/Long-Term/Grammar/Specs/GrammarParser.spec.md`, `System/Suggestions/Parser_guide.md`, `Memory/Long-Term/Rhetoric/rhetoric_schema.map.md`, `Memory/Long-Term/Logic/Fallacies|Sylogisms and Fallacies Database|Ways of Thinking`, `Memory/Long-Term/Bible/CalvinCommentaries|Clarke|DTN|KingComments|RWP|Scofield` (raw material for Biblical Commentary)
+- **Memory to read:** `Memory/Long-Term/Grammar/build/` (chassis source), `Memory/Long-Term/Grammar/Specs/GrammarParser.spec.md`, `System/Suggestions/Parser_guide.md`, `Memory/Long-Term/Rhetoric/rhetoric_schema.map.md`, `Memory/Long-Term/Logic/Fallacies|Syllogisms and Fallacies Database|Ways of Thinking`, `Memory/Long-Term/Bible/CalvinCommentaries|Clarke|DTN|KingComments|RWP|Scofield` (raw material for Biblical Commentary)
 - **Capability skills:** none (no outgoing content, no email/calendar)
 - **Domain skills (Skillbank):** none
 - **Sub-agents:** none — mechanical file cloning + registry templating, no judgement calls needed for this pass
@@ -35,7 +35,7 @@ Give each of 12 subject stores (7 Teaching, 5 Church) a cloned Grammar-chassis d
 
 ### A — Chassis clone (mechanical, all 12 stores)
 - [x] Step A1 — For each of the 12 stores, created `Memory/Long-Term/<Store>/build/`, cloned `Grammar/build/template.html`, `build_parser.py`, `build_lexicon.py`, `README.md` (kept unprefixed filenames matching Grammar's own convention, not `<Aide>_template.html` — the folder namespace already disambiguates); prepended an adaptation banner to each README noting it still describes Grammar's build recipe verbatim and needs adapting as the "confirm chassis" task [runs: file copy]
-- [x] Step A2 — Seeded a starter `<Aide>_content.md` in each store's `build/` folder alongside the chassis clone: Rhetoric/Logic point to their existing raw material (`rhetoric_schema.map.md`; `Fallacies/`, `Sylogisms and Fallacies Database/`, `Ways of Thinking/`), Biblical Commentary points to `Bible/`'s existing commentary databases, all other 9 stores got a TODO stub per Parser_guide.md §5a [reads: Parser_guide.md §5a]
+- [x] Step A2 — Seeded a starter `<Aide>_content.md` in each store's `build/` folder alongside the chassis clone: Rhetoric/Logic point to their existing raw material (`rhetoric_schema.map.md`; `Fallacies/`, `Syllogisms and Fallacies Database/`, `Ways of Thinking/`), Biblical Commentary points to `Bible/`'s existing commentary databases, all other 9 stores got a TODO stub per Parser_guide.md §5a [reads: Parser_guide.md §5a]
 - [x] Verify — confirmed via `ls` that all 12 `build/` folders contain exactly 5 files (4 chassis + 1 content stub) [pass]
 
 ### B — Teaching-context projects

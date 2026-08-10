@@ -72,7 +72,7 @@ If the primary goal is developing one of these eight tools or the knowledge behi
 | Build a knowledge page | `!GenerateWiki` | — |
 | Plan a major task | `!CreatePlan` → `!ReviewPlan` | — |
 
-Templates this context leans on: the Grammar chassis (`Memory/Long-Term/Grammar/build/template.html`) is the reference clone-source for all eight tools; `Parser_guide.md` is the build playbook.
+Templates this context leans on: the Grammar cartridge (`System/Widgets/Parser/Grammar/cartridge/`), assembled against the shared shell (`System/Widgets/Parser/_shell/`), is the reference build for all eight tools; `Parser_guide.md` is the build playbook.
 
 (Capability skills load on demand — only when the task reaches for them.)
 
@@ -80,14 +80,16 @@ Templates this context leans on: the Grammar chassis (`Memory/Long-Term/Grammar/
 
 ## 🗃️ Memory this context leans on
 
-- `Memory/Long-Term/Grammar/` — grammar reference & rules (reference chassis)
-- `Memory/Long-Term/Rhetoric/` — rhetoric reference
-- `Memory/Long-Term/Logic/` — logic reference
-- `Memory/Long-Term/Interpretation/` — interpretation (hermeneutics) reference
-- `Memory/Long-Term/Style/` — prose style reference
-- `Memory/Long-Term/Story-tension/` — story tension/plot structure reference
-- `Memory/Long-Term/Tropes & symbols/` — literary trope/symbol reference
-- `Memory/Long-Term/Fact-checking/` — fact-checking sources & method
+> **Parser build material centralised 2026-08-09.** Each tool's build source, content draft, and raw research now live under `System/Widgets/Parser/<Store>/` — not the Long-Term store. The Long-Term store names below stay reserved for any future non-parser domain content; each currently holds only a pointer `_index.yaml`.
+
+- `System/Widgets/Parser/Grammar/` — grammar reference & rules (reference chassis, built)
+- `System/Widgets/Parser/Rhetoric/` — rhetoric reference
+- `System/Widgets/Parser/Logic/` — logic reference
+- `System/Widgets/Parser/Interpretation/` — interpretation (hermeneutics) reference
+- `System/Widgets/Parser/Style/` — prose style reference
+- `System/Widgets/Parser/Story-tension/` — story tension/plot structure reference
+- `System/Widgets/Parser/Tropes & symbols/` — literary trope/symbol reference
+- `System/Widgets/Parser/Fact-checking/` — fact-checking sources & method
 - `Memory/Long-Term/Teaching/` — teaching method & material
 - `Memory/Long-Term/Method/` — working methods that cut across the tools
 

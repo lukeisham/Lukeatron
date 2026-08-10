@@ -1,0 +1,3002 @@
+[
+  {
+    "correct": "concentrated",
+    "misspelling": "consentrated",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "firm",
+    "misspelling": "ferm",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "which",
+    "misspelling": "who",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "changing",
+    "misspelling": "changeing",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "arrive",
+    "misspelling": "arrives",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "painted",
+    "misspelling": "panted",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "message",
+    "misspelling": "mesage",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "football",
+    "misspelling": "footballs",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "knowledge",
+    "misspelling": "knoldelge",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "blew",
+    "misspelling": "belu",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "addition",
+    "misspelling": "add",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "though",
+    "misspelling": "tho",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "brand",
+    "misspelling": "brandt",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "planes",
+    "misspelling": "plains",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "plum",
+    "misspelling": "plom",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "embarrassed",
+    "misspelling": "embarressed",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "standard",
+    "misspelling": "standards",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "wound",
+    "misspelling": "wond",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "shakes",
+    "misspelling": "shake",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "unsatisfactory",
+    "misspelling": "unsatisfactor",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "psychologist",
+    "misspelling": "sicologist",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "continually",
+    "misspelling": "continualy",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "lay",
+    "misspelling": "lae",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "anything",
+    "misspelling": "anthing",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "manufacturers",
+    "misspelling": "manufactory",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "wore",
+    "misspelling": "ware",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "teacher",
+    "misspelling": "theacher",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "strange",
+    "misspelling": "streagh",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "suspicious",
+    "misspelling": "suspiscious",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "laughs",
+    "misspelling": "laugh",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "potatoes",
+    "misspelling": "potatos",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "thunder",
+    "misspelling": "thander",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "spelling",
+    "misspelling": "speling",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "high",
+    "misspelling": "highly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "worse",
+    "misspelling": "worstly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "families",
+    "misspelling": "famalies",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "radius",
+    "misspelling": "radiuss",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "watched",
+    "misspelling": "wached",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "greek",
+    "misspelling": "grec",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "faulty",
+    "misspelling": "false",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "collectivity",
+    "misspelling": "colectivity",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "miscellaneous",
+    "misspelling": "miscellanous",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "pump",
+    "misspelling": "pomp",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "nearest",
+    "misspelling": "nerest",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "prettier",
+    "misspelling": "prettyer",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "mysterious",
+    "misspelling": "mystery",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "through",
+    "misspelling": "throughout",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "important",
+    "misspelling": "importnat",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "onwards",
+    "misspelling": "onward",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "specs",
+    "misspelling": "spects",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "thanked",
+    "misspelling": "tanked",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "calling",
+    "misspelling": "colling",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "keen",
+    "misspelling": "ken",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "yard",
+    "misspelling": "yerd",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "starter",
+    "misspelling": "strater",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "machine",
+    "misspelling": "mashine",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "employed",
+    "misspelling": "imployed",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "stalk",
+    "misspelling": "stork",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "ditch",
+    "misspelling": "dicth",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "degree",
+    "misspelling": "decree",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "thought",
+    "misspelling": "thout",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "battles",
+    "misspelling": "battels",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "surrounded",
+    "misspelling": "surounded",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "aeroplane",
+    "misspelling": "air",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "satellite",
+    "misspelling": "saterlite",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "its",
+    "misspelling": "her",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "physical",
+    "misspelling": "psysical",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "flourished",
+    "misspelling": "florished",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "young",
+    "misspelling": "youn",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "entered",
+    "misspelling": "enter",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "gladly",
+    "misspelling": "glady",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "accordance",
+    "misspelling": "accourdance",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "settlement",
+    "misspelling": "settelment",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "done",
+    "misspelling": "odne",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "communication",
+    "misspelling": "comunication",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "whether",
+    "misspelling": "wether",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "whole",
+    "misspelling": "hole",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "studying",
+    "misspelling": "studiing",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "banner",
+    "misspelling": "baner",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "fairly",
+    "misspelling": "fairlu",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "call",
+    "misspelling": "caught",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "improve",
+    "misspelling": "inprove",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "wondering",
+    "misspelling": "wondring",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "runs",
+    "misspelling": "run",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sea",
+    "misspelling": "see",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "breaking",
+    "misspelling": "braking",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "scenery",
+    "misspelling": "scenary",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "quenched",
+    "misspelling": "queched",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "pudding",
+    "misspelling": "putting",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "won",
+    "misspelling": "wone",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "display",
+    "misspelling": "desplay",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "surprisingly",
+    "misspelling": "suprisingly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "provoked",
+    "misspelling": "provoketed",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "every",
+    "misspelling": "evry",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "unscrupulous",
+    "misspelling": "unscroupulous",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "omit",
+    "misspelling": "omite",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "enjoyable",
+    "misspelling": "enjoyabl",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "government",
+    "misspelling": "coverment",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "administration",
+    "misspelling": "addministration",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "candidate",
+    "misspelling": "candidit",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hear",
+    "misspelling": "heard",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "quit",
+    "misspelling": "quitted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "rhine",
+    "misspelling": "rhein",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "wastes",
+    "misspelling": "waste",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "bear",
+    "misspelling": "bar",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "men",
+    "misspelling": "man",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "friends",
+    "misspelling": "frends",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "griefs",
+    "misspelling": "grieves",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "overcoat",
+    "misspelling": "overcot",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "dirty",
+    "misspelling": "dirt",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "pharaonic",
+    "misspelling": "pharonic",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "family",
+    "misspelling": "familly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "luxurious",
+    "misspelling": "luxurios",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "took",
+    "misspelling": "tok",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "condition",
+    "misspelling": "conditions",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "inspection",
+    "misspelling": "inspections",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fantastic",
+    "misspelling": "fantastique",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "brother",
+    "misspelling": "brothers",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "murderer",
+    "misspelling": "murder",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "immediately",
+    "misspelling": "imiediatly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "beautiful",
+    "misspelling": "beautifull",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "eating",
+    "misspelling": "eaten",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "information",
+    "misspelling": "infromation",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "brief",
+    "misspelling": "breif",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "difference",
+    "misspelling": "diffrence",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "lichees",
+    "misspelling": "litchis",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "questions",
+    "misspelling": "question",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "never",
+    "misspelling": "ever",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "friends",
+    "misspelling": "friendly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "neighborhood",
+    "misspelling": "naborhood",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "propose",
+    "misspelling": "proppose",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "thumb",
+    "misspelling": "thum",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "terrible",
+    "misspelling": "terriable",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "medieval",
+    "misspelling": "medival",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "techniques",
+    "misspelling": "thecniques",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "human",
+    "misspelling": "humon",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "areas",
+    "misspelling": "areaes",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "cushion",
+    "misspelling": "cusion",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "accompany",
+    "misspelling": "acompan",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "put",
+    "misspelling": "putted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "niece",
+    "misspelling": "neice",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "clap",
+    "misspelling": "klap",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "payable",
+    "misspelling": "payible",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "moving",
+    "misspelling": "moveing",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "bussling",
+    "misspelling": "busling",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "scold",
+    "misspelling": "scolded",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "picture",
+    "misspelling": "picher",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "titles",
+    "misspelling": "tittles",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "discotheques",
+    "misspelling": "discoteques",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "respected",
+    "misspelling": "respectful",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "circulation",
+    "misspelling": "curculation",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "level",
+    "misspelling": "levely",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "representative",
+    "misspelling": "representor",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "return",
+    "misspelling": "returned",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "carrying",
+    "misspelling": "carring",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "wreck",
+    "misspelling": "reck",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "understood",
+    "misspelling": "undestood",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "quarrel",
+    "misspelling": "quarall",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "threw",
+    "misspelling": "throd",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "stop",
+    "misspelling": "stopp",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sailed",
+    "misspelling": "saild",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "manners",
+    "misspelling": "manors",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "outbreak",
+    "misspelling": "breakout",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "furiously",
+    "misspelling": "feriously",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "number",
+    "misspelling": "numbeer",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "economic",
+    "misspelling": "ecimomical",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sophisticated",
+    "misspelling": "sophistikated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "harsh",
+    "misspelling": "harshy",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "breadth",
+    "misspelling": "breath",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "wholly",
+    "misspelling": "wholy",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "therefore",
+    "misspelling": "therfor",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "realized",
+    "misspelling": "realiced",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "coffee",
+    "misspelling": "cofee",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "punishment",
+    "misspelling": "punnishment",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "bottom",
+    "misspelling": "botton",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "heartily",
+    "misspelling": "heartly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "raising",
+    "misspelling": "rasing",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "years",
+    "misspelling": "yers",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "breathe",
+    "misspelling": "breath",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "crop",
+    "misspelling": "crops",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "admit",
+    "misspelling": "admitt",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hope",
+    "misspelling": "hoped",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "beginning",
+    "misspelling": "begginning",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "dormatories",
+    "misspelling": "domatories",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "repair",
+    "misspelling": "repairing",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "spoil",
+    "misspelling": "spoiled",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "tablets",
+    "misspelling": "tables",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "owner",
+    "misspelling": "oner",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "pretend",
+    "misspelling": "pernated",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "millionaire",
+    "misspelling": "milliainere",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "loser",
+    "misspelling": "looser",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "emotional",
+    "misspelling": "emothional",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "poem",
+    "misspelling": "pome",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "blue",
+    "misspelling": "blew",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "distant",
+    "misspelling": "distent",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "emotionally",
+    "misspelling": "emotinally",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "diet",
+    "misspelling": "diete",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "ireland",
+    "misspelling": "irland",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "polite",
+    "misspelling": "pulit",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "designs",
+    "misspelling": "desigines",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "notice",
+    "misspelling": "notic",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "recent",
+    "misspelling": "resent",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "studying",
+    "misspelling": "studing",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "had",
+    "misspelling": "get",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "after",
+    "misspelling": "aftr",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "types",
+    "misspelling": "tupes",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "respond",
+    "misspelling": "response",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "alarm",
+    "misspelling": "alarmed",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "leisure",
+    "misspelling": "liesure",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "heel",
+    "misspelling": "hel",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "physical",
+    "misspelling": "phyisical",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "thanking",
+    "misspelling": "thinking",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "holy",
+    "misspelling": "holey",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "bleed",
+    "misspelling": "blead",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "curiosity",
+    "misspelling": "curiousity",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "dresses",
+    "misspelling": "dressing",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "noticed",
+    "misspelling": "notised",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "export",
+    "misspelling": "exporte",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "started",
+    "misspelling": "stated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "anger",
+    "misspelling": "angry",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "watch",
+    "misspelling": "watched",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "list",
+    "misspelling": "lits",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "affirmatively",
+    "misspelling": "affirmativelly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "reaches",
+    "misspelling": "reached",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "coloured",
+    "misspelling": "colow",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "reach",
+    "misspelling": "reaches",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "confirm",
+    "misspelling": "comfirm",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "glance",
+    "misspelling": "glanze",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hindrance",
+    "misspelling": "hinderance",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "catastrophe",
+    "misspelling": "catastrophy",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "injured",
+    "misspelling": "ingerd",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "kilometre",
+    "misspelling": "kilometer",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "purchase",
+    "misspelling": "purchage",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "damaged",
+    "misspelling": "damadged",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "neighbours",
+    "misspelling": "neighor",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "came",
+    "misspelling": "cam",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "guarantee",
+    "misspelling": "garanture",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "walked",
+    "misspelling": "walkt",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "cassettes",
+    "misspelling": "cassetes",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "talking",
+    "misspelling": "talk",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fair",
+    "misspelling": "fare",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "thought",
+    "misspelling": "througt",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "before",
+    "misspelling": "befour",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "evening",
+    "misspelling": "eveing",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "fortunately",
+    "misspelling": "fortunatly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "army",
+    "misspelling": "aray",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "exact",
+    "misspelling": "exat",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "profiting",
+    "misspelling": "profitting",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "bags",
+    "misspelling": "bogs",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "leave",
+    "misspelling": "leaves",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "usually",
+    "misspelling": "usualy",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "life",
+    "misspelling": "live",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "bore",
+    "misspelling": "board",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "age",
+    "misspelling": "aged",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "there",
+    "misspelling": "that",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "high",
+    "misspelling": "hight",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sincere",
+    "misspelling": "sincer",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "grip",
+    "misspelling": "gripe",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "smell",
+    "misspelling": "small",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "ducklings",
+    "misspelling": "duckrings",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "pleasure",
+    "misspelling": "plesure",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "measurement",
+    "misspelling": "measurment",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "lock",
+    "misspelling": "loack",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "barrier",
+    "misspelling": "barriere",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "you",
+    "misspelling": "your",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "list",
+    "misspelling": "lest",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "home",
+    "misspelling": "hone",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "musician",
+    "misspelling": "musican",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "rode",
+    "misspelling": "rod",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "fire",
+    "misspelling": "fir",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "true",
+    "misspelling": "truth",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "work",
+    "misspelling": "works",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "shelter",
+    "misspelling": "sheter",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "debate",
+    "misspelling": "debait",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "drunk",
+    "misspelling": "drank",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "dairy",
+    "misspelling": "diary",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "concept",
+    "misspelling": "consept",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "neat",
+    "misspelling": "net",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "barely",
+    "misspelling": "bearly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "ambulance",
+    "misspelling": "amblares",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "completely",
+    "misspelling": "completle",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "quite",
+    "misspelling": "quiet",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "complaint",
+    "misspelling": "complant",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "cheat",
+    "misspelling": "chet",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "take",
+    "misspelling": "taken",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "robbing",
+    "misspelling": "robering",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "expired",
+    "misspelling": "expaired",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "rectangular",
+    "misspelling": "rectacular",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "surrender",
+    "misspelling": "surender",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "swore",
+    "misspelling": "swear",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "proof",
+    "misspelling": "proff",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "mechanic",
+    "misspelling": "mecanic",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "imagination",
+    "misspelling": "imageration",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "scissors",
+    "misspelling": "cisers",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "frightful",
+    "misspelling": "frightfull",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "turn",
+    "misspelling": "turned",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "distributed",
+    "misspelling": "disturbuted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "get",
+    "misspelling": "got",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "delegates",
+    "misspelling": "delegats",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "stare",
+    "misspelling": "stear",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "employ",
+    "misspelling": "employe",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "receiving",
+    "misspelling": "recieving",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "apologise",
+    "misspelling": "appologize",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "wish",
+    "misspelling": "which",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "lantern",
+    "misspelling": "lanturn",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "branch",
+    "misspelling": "branche",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fancy",
+    "misspelling": "fance",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "practitioner",
+    "misspelling": "practictioner",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "stayed",
+    "misspelling": "stayd",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "architects",
+    "misspelling": "architectors",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "everybody",
+    "misspelling": "evrybody",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "entertainments",
+    "misspelling": "entertainment",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "imprisoned",
+    "misspelling": "prisoned",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sermon",
+    "misspelling": "serman",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "neighbours",
+    "misspelling": "neibours",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "equipped",
+    "misspelling": "equiped",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "advertisement",
+    "misspelling": "advertising",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "building",
+    "misspelling": "bullding",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "queer",
+    "misspelling": "quire",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "doubt",
+    "misspelling": "doupt",
+    "source": "APPLING1DAT.643"
+  },
+  {
+    "correct": "blossom",
+    "misspelling": "blossem",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "grass",
+    "misspelling": "gras",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "school",
+    "misspelling": "shool",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "portugal",
+    "misspelling": "portogul",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "losers",
+    "misspelling": "loosers",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "agreed",
+    "misspelling": "agree",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "were",
+    "misspelling": "had",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "spade",
+    "misspelling": "spad",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "expel",
+    "misspelling": "exspell",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "circle",
+    "misspelling": "cycle",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "responsibility",
+    "misspelling": "responsibillity",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "automatic",
+    "misspelling": "automatically",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "reference",
+    "misspelling": "refernce",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "forgotten",
+    "misspelling": "forget",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "remember",
+    "misspelling": "remenber",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "recognise",
+    "misspelling": "recognised",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "strictly",
+    "misspelling": "strict",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "thank",
+    "misspelling": "tank",
+    "source": "SUOMIDAT.643"
+  },
+  {
+    "correct": "poetry",
+    "misspelling": "poretry",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "miss",
+    "misspelling": "missed",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "boss",
+    "misspelling": "bose",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "endeavor",
+    "misspelling": "endever",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "business",
+    "misspelling": "bussiness",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "paralysed",
+    "misspelling": "paralised",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "dealer",
+    "misspelling": "dealor",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "eliminate",
+    "misspelling": "eleminate",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "depression",
+    "misspelling": "depreshtion",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "cleaning",
+    "misspelling": "clening",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "creating",
+    "misspelling": "created",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "burst",
+    "misspelling": "bursted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "punishment",
+    "misspelling": "punishements",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "scarcely",
+    "misspelling": "skisaly",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "good",
+    "misspelling": "well",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "road",
+    "misspelling": "rode",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "sad",
+    "misspelling": "sed",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "thanked",
+    "misspelling": "thanks",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "things",
+    "misspelling": "tings",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "preferable",
+    "misspelling": "preferrable",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "candidate",
+    "misspelling": "candidat",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "happened",
+    "misspelling": "hapened",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "desirable",
+    "misspelling": "desireable",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "this",
+    "misspelling": "these",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "lesson",
+    "misspelling": "lessen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "alive",
+    "misspelling": "alave",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "refugees",
+    "misspelling": "refugee",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "souvenir",
+    "misspelling": "suvenior",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "feel",
+    "misspelling": "fill",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "nevertheless",
+    "misspelling": "nevethless",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "together",
+    "misspelling": "togather",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "blurted",
+    "misspelling": "blurred",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "smoked",
+    "misspelling": "smoke",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "experience",
+    "misspelling": "expirience",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "unfortunately",
+    "misspelling": "unforunately",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "exemplified",
+    "misspelling": "exemplyfied",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "flies",
+    "misspelling": "flys",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "arrival",
+    "misspelling": "arriving",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "examination",
+    "misspelling": "examine",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "insult",
+    "misspelling": "insolt",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "succeed",
+    "misspelling": "success",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "chose",
+    "misspelling": "choosed",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "pressure",
+    "misspelling": "presure",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "persons",
+    "misspelling": "person",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "help",
+    "misspelling": "hlp",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "bothering",
+    "misspelling": "bodering",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "appetite",
+    "misspelling": "appetit",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hill",
+    "misspelling": "hil",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "arrange",
+    "misspelling": "arange",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "airplane",
+    "misspelling": "airplan",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "demands",
+    "misspelling": "demand",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "overcrowded",
+    "misspelling": "owercrowded",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "reflected",
+    "misspelling": "refleted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "courteous",
+    "misspelling": "curtious",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "medicine",
+    "misspelling": "medicen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "decorated",
+    "misspelling": "dicorated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "gloves",
+    "misspelling": "glovs",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "physically",
+    "misspelling": "phisically",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "drunkard",
+    "misspelling": "drunkhart",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "shining",
+    "misspelling": "shinning",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "contest",
+    "misspelling": "conest",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "working",
+    "misspelling": "work",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "month",
+    "misspelling": "months",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "comprehensive",
+    "misspelling": "comprehensiv",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "conch",
+    "misspelling": "consch",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "excitement",
+    "misspelling": "exitement",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "turned",
+    "misspelling": "turn",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "grateful",
+    "misspelling": "greatfull",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "schools",
+    "misspelling": "shools",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "reunion",
+    "misspelling": "renion",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "remittance",
+    "misspelling": "remitance",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "minister",
+    "misspelling": "minester",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "repeat",
+    "misspelling": "reapeat",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "pick",
+    "misspelling": "pluck",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "professor",
+    "misspelling": "proffessor",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "requiring",
+    "misspelling": "requireing",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "resemble",
+    "misspelling": "rezemble",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "human",
+    "misspelling": "humen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "examination",
+    "misspelling": "examinate",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "symptoms",
+    "misspelling": "symtom",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "elaborate",
+    "misspelling": "elaberate",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "ministers",
+    "misspelling": "ministeres",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "value",
+    "misspelling": "valiou",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "would",
+    "misspelling": "should",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "millionaire",
+    "misspelling": "millionair",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sympathetic",
+    "misspelling": "symphathetic",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "promotion",
+    "misspelling": "promition",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "reagan",
+    "misspelling": "reegan",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "burglars",
+    "misspelling": "bugglars",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fight",
+    "misspelling": "flight",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "decisions",
+    "misspelling": "descisions",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "stage",
+    "misspelling": "stag",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "junction",
+    "misspelling": "junctions",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "listen",
+    "misspelling": "lisen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "able",
+    "misspelling": "abule",
+    "source": "UPWARDDAT.643"
+  },
+  {
+    "correct": "continued",
+    "misspelling": "continout",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "railway",
+    "misspelling": "ralway",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "girl",
+    "misspelling": "gril",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "kept",
+    "misspelling": "kapt",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "bug",
+    "misspelling": "big",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "comparison",
+    "misspelling": "comparisson",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "citizen",
+    "misspelling": "citezen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "brand",
+    "misspelling": "bran",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "participants",
+    "misspelling": "partisipants",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "answers",
+    "misspelling": "answeres",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "either",
+    "misspelling": "eather",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "will",
+    "misspelling": "were",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "affect",
+    "misspelling": "effect",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "conveniently",
+    "misspelling": "conviniently",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "safe",
+    "misspelling": "safety",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "drunkard",
+    "misspelling": "drunkurd",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "benefit",
+    "misspelling": "benfit",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "include",
+    "misspelling": "included",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "experiencing",
+    "misspelling": "experient",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sugar",
+    "misspelling": "suger",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "round",
+    "misspelling": "rond",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "nobody",
+    "misspelling": "nobudy",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "peace",
+    "misspelling": "pice",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "discover",
+    "misspelling": "descover",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "isolated",
+    "misspelling": "isolited",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "moon",
+    "misspelling": "mon",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "positive",
+    "misspelling": "positiv",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "label",
+    "misspelling": "labell",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "civil",
+    "misspelling": "cival",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "separating",
+    "misspelling": "seperating",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "yearly",
+    "misspelling": "yearley",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "circumstances",
+    "misspelling": "circumsntances",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "annoyed",
+    "misspelling": "annoied",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "swede",
+    "misspelling": "sweede",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "which",
+    "misspelling": "whitch",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "nights",
+    "misspelling": "nigths",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "scarcely",
+    "misspelling": "scarcly",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "deserving",
+    "misspelling": "diserving",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "chopped",
+    "misspelling": "choped",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "harmonious",
+    "misspelling": "harmonous",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "mathematics",
+    "misspelling": "mathematic",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "beauty",
+    "misspelling": "bueaty",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "tiring",
+    "misspelling": "tirering",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "biscuits",
+    "misspelling": "bescuts",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "hurt",
+    "misspelling": "hurted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "few",
+    "misspelling": "view",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "cancelling",
+    "misspelling": "canceling",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "familiar",
+    "misspelling": "familier",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "superstitious",
+    "misspelling": "supertious",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "terms",
+    "misspelling": "term",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "jealousy",
+    "misspelling": "jalouseie",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "dividing",
+    "misspelling": "deviding",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "treated",
+    "misspelling": "treeted",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "assassinated",
+    "misspelling": "assasinated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "clean",
+    "misspelling": "clen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "pronouncements",
+    "misspelling": "pronouncments",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "submit",
+    "misspelling": "submite",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "manners",
+    "misspelling": "maners",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "time",
+    "misspelling": "tine",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "greeting",
+    "misspelling": "greeding",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "separate",
+    "misspelling": "seprate",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "penny",
+    "misspelling": "peny",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "reputation",
+    "misspelling": "repution",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "poverty",
+    "misspelling": "poverity",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "peaceful",
+    "misspelling": "peacefull",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "criticised",
+    "misspelling": "critizised",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "exist",
+    "misspelling": "existe",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "aggression",
+    "misspelling": "agression",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hardware",
+    "misspelling": "hardwear",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "governments",
+    "misspelling": "governements",
+    "source": "ABODAT.643"
+  },
+  {
+    "correct": "fine",
+    "misspelling": "find",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "successful",
+    "misspelling": "sucsesfull",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "basket",
+    "misspelling": "backet",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "alike",
+    "misspelling": "alick",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "patent",
+    "misspelling": "pattent",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "crowded",
+    "misspelling": "crowdy",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "caribbean",
+    "misspelling": "caribean",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "tourists",
+    "misspelling": "tourist",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "celebrated",
+    "misspelling": "celibrated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "museums",
+    "misspelling": "museaums",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "effort",
+    "misspelling": "efort",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "regretted",
+    "misspelling": "regreted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "obedience",
+    "misspelling": "obeyance",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "statements",
+    "misspelling": "stetemets",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "meals",
+    "misspelling": "meal",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "won",
+    "misspelling": "one",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "price",
+    "misspelling": "prize",
+    "source": "SUOMIDAT.643"
+  },
+  {
+    "correct": "correspondence",
+    "misspelling": "correspondance",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "unemployed",
+    "misspelling": "unploied",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "suffer",
+    "misspelling": "suffered",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "happen",
+    "misspelling": "hapen",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "properly",
+    "misspelling": "propely",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "often",
+    "misspelling": "oftently",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "various",
+    "misspelling": "varous",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "impracticable",
+    "misspelling": "impractible",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "representatives",
+    "misspelling": "represntatives",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "decorate",
+    "misspelling": "decorete",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "domestic",
+    "misspelling": "domistic",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "orders",
+    "misspelling": "oders",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "roaming",
+    "misspelling": "romming",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "become",
+    "misspelling": "became",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hid",
+    "misspelling": "hide",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "lokking",
+    "misspelling": "look",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "circle",
+    "misspelling": "circul",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "attache",
+    "misspelling": "atash",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "initials",
+    "misspelling": "inials",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "delight",
+    "misspelling": "delighted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "floor",
+    "misspelling": "flor",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "avoid",
+    "misspelling": "aviod",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "hook",
+    "misspelling": "hok",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "indicate",
+    "misspelling": "vindicate",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "affected",
+    "misspelling": "effeted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "faithfully",
+    "misspelling": "faithful",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "shell",
+    "misspelling": "shel",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "receipt",
+    "misspelling": "reseat",
+    "source": "APPLING2DAT.643"
+  },
+  {
+    "correct": "lived",
+    "misspelling": "leave",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "recently",
+    "misspelling": "resentely",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "development",
+    "misspelling": "developpement",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fundamental",
+    "misspelling": "fondamental",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "condemn",
+    "misspelling": "condemned",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "politicians",
+    "misspelling": "politicans",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "treatment",
+    "misspelling": "treatement",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "beginning",
+    "misspelling": "beging",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "narrow",
+    "misspelling": "norrow",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "protection",
+    "misspelling": "proction",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "colored",
+    "misspelling": "colerd",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "cultivated",
+    "misspelling": "calutivated",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "bad",
+    "misspelling": "badly",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "previous",
+    "misspelling": "preveous",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "compartment",
+    "misspelling": "compartiment",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "labourer",
+    "misspelling": "labour",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "traffic",
+    "misspelling": "trafic",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "beach",
+    "misspelling": "beech",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "trifle",
+    "misspelling": "triffle",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "pale",
+    "misspelling": "pail",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "assistant",
+    "misspelling": "assistent",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "sportsman",
+    "misspelling": "sprotsman",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "stupid",
+    "misspelling": "stuped",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "guarantee",
+    "misspelling": "garentee",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "small",
+    "misspelling": "little",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "confirm",
+    "misspelling": "conferm",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "squeeze",
+    "misspelling": "squized",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hole",
+    "misspelling": "hold",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "poisoning",
+    "misspelling": "poisining",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "silent",
+    "misspelling": "silently",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "passenger",
+    "misspelling": "passengers",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "apology",
+    "misspelling": "apoligy",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "ascertained",
+    "misspelling": "acsertained",
+    "source": "SHEFFIELDDAT.643"
+  },
+  {
+    "correct": "under",
+    "misspelling": "undr",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "learn",
+    "misspelling": "larn",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "double",
+    "misspelling": "duble",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "rhythm",
+    "misspelling": "rythm",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "built",
+    "misspelling": "builted",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "invokes",
+    "misspelling": "envokes",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "imagine",
+    "misspelling": "imagenine",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "whisper",
+    "misspelling": "wisper",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "countries",
+    "misspelling": "contries",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "soldiers",
+    "misspelling": "solgers",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "odor",
+    "misspelling": "oder",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "stealing",
+    "misspelling": "steeling",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "relations",
+    "misspelling": "rlation",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "hurry",
+    "misspelling": "hury",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "adolescence",
+    "misspelling": "adolecence",
+    "source": "TELEMARKDAT.643"
+  },
+  {
+    "correct": "widened",
+    "misspelling": "widen",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "indian",
+    "misspelling": "indain",
+    "source": "GATESDAT.643"
+  },
+  {
+    "correct": "wondered",
+    "misspelling": "wandered",
+    "source": "EXAMSDAT.643"
+  },
+  {
+    "correct": "fled",
+    "misspelling": "flead",
+    "source": "GATESDAT.643"
+  }
+]

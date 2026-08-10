@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Parser Shell — component patterns (readable reference)
+
+   CANONICAL SOURCE: ../../src/shell.css (minified, one selector per line,
+   no comments). This file expands the same rules with comments so a
+   cartridge author can read them without reverse-engineering the minified
+   original.
+
+   NOT a build input. _shell/build/assemble.py never reads this file — it
+   embeds ../../src/shell.css directly. Copy/adapt a block from here into a
+   cartridge's own files.styles CSS when you need a genuine override (see
+   StyleGuide/05-building-a-cartridge.md); never point a cartridge's
+   config.yaml at this file itself.
+
+   Every value below matches shell.css at the time this file was written.
+   If shell.css changes, update this file by hand — there is no automated
+   sync.
+   ========================================================================== */
+
+/* ---------- Buttons ----------
+   Three states: default, .primary (exactly one per screen — "Parse"),
+   :disabled. See StyleGuide/03-components.md. */
+button {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 14px;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+button:hover { background: #f4f3ee; }
+button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+button.primary:hover { background: #3a3a35; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Focus-level toggle family — generated one per CONFIG.levels entry,
+   exactly one carries .on at a time. Tighter padding absorbs the 1px→2px
+   border change without the button resizing. */
+button.fv.on { border: 2px solid var(--acc); color: var(--acc); padding: 5px 13px; }
+
+/* ---------- Input area ----------
+   contenteditable, not <textarea> — supports semi-plain formatting. */
+#input {
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  min-height: 64px;
+  font-size: 15px;
+  background: #fff;
+  outline: none;
+}
+#input:focus {
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--accbg);
+}
+
+/* ---------- Over-cap warning banner ----------
+   Hidden by default; the harness toggles it visible when word count
+   exceeds CONFIG.cap. Note: hardcoded colours, not tokens — see
+   StyleGuide/01-foundations.md "Known gaps" before copying these as-is
+   into a new context. */
+.warn {
+  background: #FCEBEB;
+  color: #791F1F;
+  border: 1px solid #F7C1C1;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 13px;
+  display: none;
+  margin: 8px 0;
+}
+
+/* ---------- Chip ----------
+   Shape only — never set a fixed background here. Colour comes inline,
+   per-clause, from the hue's h50/h800 (see 02-colour-model.md). */
+.chip {
+  border-radius: 4px;
+  padding: 1px 7px;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 1px 2px;
+}
+
+/* ---------- Colour key ---------- */
+#key {
+  font-size: 12px;
+  color: var(--ink2);
+  background: #f4f3ee;
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  margin: 10px 0;
+  min-height: 20px;
+}
+
+/* ---------- Icon bar + pure-CSS hover tooltip ----------
+   .tt sits inside .ic and reveals on :hover — no JS positioning needed,
+   unlike #tip/#ctx/#spelling-suggestions below. */
+#iconbar { font-size: 12.5px; color: var(--ink2); margin: 8px 0; display: flex; gap: 14px; flex-wrap: wrap; }
+#iconbar .ic { cursor: help; border-bottom: 1px dotted var(--line2); position: relative; }
+.tt {
+  visibility: hidden;
+  position: absolute;
+  bottom: 135%;
+  left: 0;
+  background: #fff;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 8px 11px;
+  font-size: 12px;
+  line-height: 1.5;
+  width: 280px;
+  color: var(--ink);
+  box-shadow: 0 4px 14px rgba(0,0,0,.1);
+  z-index: 55;
+}
+.ic:hover .tt { visibility: visible; }
+
+/* ---------- JS-positioned floating overlays ----------
+   #tip (hover pop-up), #ctx (right-click context menu),
+   #spelling-suggestions all share the same "white card + border + shadow"
+   language — the shell's only elevated (shadowed) surfaces. */
+#tip {
+  position: absolute;
+  display: none;
+  background: #fff;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 8px 11px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 300px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.09);
+  z-index: 50;
+  pointer-events: none; /* never intercepts the mouse event tracking the word beneath it */
+}
+#tip b {
+  display: block;
+  font-size: 11px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  margin-bottom: 2px;
+}
+
+#ctx {
+  position: absolute;
+  display: none;
+  background: #fff;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 6px 0;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  z-index: 60;
+  min-width: 200px;
+}
+#ctx div { padding: 5px 14px; }
+#ctx div.h { font-weight: 600; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+
+/* #spelling-suggestions's id is load-bearing — the Spelling module looks
+   it up by exact id and reuses it. Don't rename in a cartridge override. */
+#spelling-suggestions {
+  position: absolute;
+  display: none;
+  background: #fff;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 6px;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  z-index: 60;
+  max-width: 260px;
+}
+#spelling-suggestions [role="option"] {
+  border-radius: 4px;
+  padding: 2px 9px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 2px;
+  background: #f4f3ee;
+  color: var(--ink2);
+}
+#spelling-suggestions [role="option"]:first-child { background: var(--accbg); color: var(--acc); font-weight: 600; }
+#spelling-suggestions [role="option"][aria-selected="true"] { outline: 2px solid var(--acc); outline-offset: -2px; }
+#spelling-suggestions [role="option"][data-action] { border: 1px solid var(--line); background: #fff; }
+
+/* ---------- Explainer table ---------- */
+.xt { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+.xt th, .xt td { border: 1px solid var(--line); padding: 4px 7px; font-size: 12.5px; text-align: center; }
+.xt th { background: #f4f3ee; color: var(--ink2); font-weight: 600; text-align: left; white-space: nowrap; }
+
+/* ---------- Explainer rule list ---------- */
+#rules .cat { font-size: 12px; font-weight: 600; color: var(--ink2); margin: 10px 0 2px; text-transform: uppercase; letter-spacing: .4px; }
+#rules ul { margin: 0; padding-left: 20px; font-size: 13.5px; }
+#rules li { margin: 3px 0; }
+#rules .ex { color: var(--ink2); font-style: italic; }
+
+/* ---------- Utility text ---------- */
+.muted { font-size: 12px; color: var(--ink3); }

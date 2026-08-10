@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Parser Shell — design tokens (readable reference)
+
+   CANONICAL SOURCE: ../../src/shell.css's `:root` block (minified, one
+   line, no comments — that is what _shell/build/assemble.py actually
+   embeds into every shipped <Store>_parser.html).
+
+   This file is a documented, multi-line MIRROR for humans and future build
+   agents. It is NOT read by assemble.py and is NOT a build input. If
+   shell.css's :root changes, update this file by hand to match — there is
+   no automated sync. See StyleGuide/index.md.
+   ========================================================================== */
+
+:root {
+  /* ---- neutrals ---- */
+  --bg:     #faf9f5;  /* page background — warm off-white, never pure white */
+  --card:   #fff;     /* the one content card sitting on --bg */
+  --ink:    #1a1a17;  /* primary text; also the header badge fill and the
+                          .primary button fill */
+  --ink2:   #5f5e5a;  /* secondary text — meta labels, table headers */
+  --ink3:   #9a9891;  /* tertiary/faint text — placeholders, footer, counts */
+  --line:   #e3e1d9;  /* default 1px borders and dividers */
+  --line2:  #c9c7bd;  /* stronger borders — inputs, buttons, popovers */
+
+  /* ---- the one accent colour ---- */
+  --acc:    #185FA5;  /* focus ring, active focus-level toggle, selected
+                          suggestion. Not a coincidence: identical to the
+                          "blue" hue's h600 in Grammar's structural palette
+                          — see 02-colour-model.md */
+  --accbg:  #E6F1FB;  /* accent tint — focus-ring glow, selected background */
+
+  /* ---- the one semantic colour ---- */
+  --red:    #E24B4A;  /* spelling-error underline only — don't reuse for
+                          parse errors, warnings, etc. */
+
+  /* ---- shape ---- */
+  --radius: 8px;       /* default corner radius: buttons, inputs, popovers */
+
+  font-size: 16px;      /* root; everything else sizes in px off this */
+}
+
+/* ==========================================================================
+   Reference palette — Grammar's structural-kinship hue set
+
+   NOT part of shell.css's :root. Cartridge palettes live in each
+   cartridge's own config.yaml under colours.palette (YAML, not CSS) and
+   are injected per-clause as inline custom properties by ui.js at render
+   time (see 02-colour-model.md — "Hue assignment"). This block exists
+   purely so css/preview.html (and any future reference tooling) can render
+   swatches without duplicating the YAML by hand each time.
+
+   Each hue is five values: h50 (lightest tint) → h100 (full-intensity
+   background) → h600 (mid-tone / label / tentative-underline) → h800
+   (darkest / text-on-tint) → hf (translucent "unfocused" fade).
+   ========================================================================== */
+
+:root {
+  --teal-h50:   #E1F5EE; --teal-h100:   #9FE1CB; --teal-h600:   #0F6E56; --teal-h800:   #085041; --teal-hf:   rgba(29,158,117,.12);
+  --amber-h50:  #FAEEDA; --amber-h100:  #FAC775; --amber-h600:  #854F0B; --amber-h800:  #633806; --amber-hf:  rgba(239,159,39,.12);
+  --purple-h50: #EEEDFE; --purple-h100: #CECBF6; --purple-h600: #534AB7; --purple-h800: #3C3489; --purple-hf: rgba(127,119,221,.12);
+  --pink-h50:   #FBEAF0; --pink-h100:   #F4C0D1; --pink-h600:   #993556; --pink-h800:   #72243E; --pink-hf:   rgba(212,83,126,.12);
+  --coral-h50:  #FAECE7; --coral-h100:  #F5C4B3; --coral-h600:  #993C1D; --coral-h800:  #4A1B0C; --coral-hf:  rgba(216,90,48,.12);
+  --blue-h50:   #E6F1FB; --blue-h100:   #B5D4F4; --blue-h600:   #185FA5; --blue-h800:   #0C447C; --blue-hf:   rgba(55,138,221,.12);
+}

@@ -12,7 +12,12 @@ A self-contained interactive tool that runs in a browser tab. The default shape 
 
 - One `.html` file, double-clickable, no install, no build step.
 - All CSS and JavaScript inline; no external dependencies (no CDN links unless explicitly agreed — they break offline).
-- Lives in Dropbox like any other document; versioned by copying the file.
+- **Fully centralised under `System/Widgets/Parser/<Store>/`** (2026-08-09) — the shipped
+  widget (`<Store>_parser.html`), its editable source (`build/template.html`, build scripts,
+  `<Aide>_content.md`), and any raw research material that feeds the content file all live
+  together there; `build_parser.py` derives the output path automatically. The matching
+  `Memory/Long-Term/<Store>/` entry is a pointer only — reserved for future non-parser
+  content for that domain. Versioned by copying the file.
 - Works offline for everything except declared API-backed functions (see §4).
 
 Only escalate to a served app (a folder + `python3 serve.py`, like the Project Dashboard) when the asset needs to *read live files from disk* or persist data between sessions. Say so explicitly in the prompt if that's the case.
@@ -95,20 +100,20 @@ How it works:
 - For some assets the content file also lists **external websites the logic should consult** — e.g. TV Tropes for trope detection, or approved fact-checking sources. These are Tier-B territory (§4): the file names the site(s), and the API/agent call is what actually reaches them.
 - When requesting a new asset, either point Claude at an existing content file, or ask Claude to **draft the content file first** as its own reviewable step — approving the knowledge before it gets compiled into the tool is much cheaper than debugging the tool.
 
-## 5b. The chassis/cartridge pattern (spec-first builds)
+## 5b. The shell/cartridge pattern (spec-first builds)
 
-As of 2026-07-05, parser builds are **spec-first**: before any code, the build gets a `!TechSpec` spec (one reviewable `.spec.md` in the asset's `Specs/` folder) that pins the requirements, decisions, and worked-example acceptance criteria. The reference spec is **`Memory/Long-Term/Grammar/Specs/Done/GrammarParser.spec.md`** — read it before building any parser; it defines the shared architecture in full.
+As of 2026-07-05, parser builds are **spec-first**: before any code, the build gets a `!TechSpec` spec (one reviewable `.spec.md` in the asset's `Specs/` folder) that pins the requirements, decisions, and worked-example acceptance criteria. The reference spec is **`System/Widgets/Parser/Grammar/Specs/Done/GrammarParser.spec.md`** — read it before building any parser; it defines the shared architecture in full.
 
-The architecture it establishes, in brief — every parser is one HTML file split into two zones:
+**As of 2026-08-10** the chassis/cartridge split described by that spec is no longer baked into a per-widget `template.html` clone — it lives as a real shared module, **`System/Widgets/Parser/_shell/`**, that every cartridge is assembled against. Full contract and layout: `_shell/README.md` and `_shell/Specs/ParserShell.spec.md`. In brief, every parser is one shipped HTML file split into two zones:
 
-- **Chassis (never rewritten per parser):** the `UI` module (input area, display layers 1–3, a **focus-level selector** that renders the chosen structural level at full intensity with enclosing levels faded behind it, spell checker, export bar, custom context menu, footer) and the `HARNESS` (wires Parse → engine → result → display, enforces caps, hosts a disabled Tier-B slot). Colours follow **structural kinship**: each top unit gets a hue, sub-units get shades of it, words get tints — see the Grammar spec's AD-7.
-- **Cartridge (what each parser swaps):** `CONFIG` (name, cap, colour/icon maps, layer mapping), `CONTENT` (compiled from the asset's `<Aide>_content.md`), `ENGINE.rules` (the fuzzy passes), and `EXPLAINER.render` (that aide's explainer format).
+- **Shell (`_shell/`, never rewritten per parser):** the `UI` module (input area, display layers 1–3, a **focus-level selector** that renders the chosen structural level at full intensity with enclosing levels faded behind it, export bar, custom context menu, footer) and the `HARNESS` (wires Parse → engine → result → display, enforces caps, hosts a disabled Tier-B slot). Colours follow **structural kinship**: each top unit gets a hue, sub-units get shades of it, words get tints — see the Grammar spec's AD-7. Spell-check is also shell-consumed infrastructure, but lives in its own peer module, `_modules/Spelling/` (see its README), not inside `_shell/` itself.
+- **Cartridge (`<Store>/cartridge/`, what each parser provides):** `config.yaml` (name, cap, colour/icon maps, layer mapping), a compiled `<store>_content.json` (from the asset's `<Store>_contents.md`), `<store>_engine.js` (the fuzzy passes), and `<store>_explainer.js` (that aide's explainer format).
 
 The two zones communicate only through the shared **`ParseResult`** JSON contract (tokens → Layer 3, spans → Layer 1, findings → Layer 2, summary → header/exports); the schema is specified in the Grammar spec's AD-2. Content-file outline numbers are used verbatim as IDs end-to-end (AD-3), so every highlight can surface its definition and example.
 
-**Large lexicons stay single-file too.** If a parser needs a big tagged word list (Grammar's needs ~20,000 POS-tagged words), the pattern is: build it as a real, independently-maintainable SQLite `.db` during development, then embed it into the shipped HTML via [sql.js](https://sql.js.org/) (SQLite-as-WASM), base64-encoded alongside the WASM binary — see the Grammar spec's AD-1a and FR-19–21. This keeps the double-click/no-server chassis intact instead of escalating to a served folder (§1's exception clause), and avoids the `file://` CORS restriction that blocks fetching a local `.db` file directly. A dev-side build script (not shipped) does the sourcing/tagging/embedding and is saved beside the asset for future rebuilds.
+**Large lexicons stay single-file too.** If a parser needs a big tagged word list (Grammar's needs ~20,000 POS-tagged words), the pattern is: build it as a real, independently-maintainable SQLite `.db` during development, then embed it into the shipped HTML via [sql.js](https://sql.js.org/) (SQLite-as-WASM), base64-encoded alongside the WASM binary — see the Grammar spec's AD-1a and FR-19–21. This keeps the double-click/no-server chassis intact instead of escalating to a served folder (§1's exception clause), and avoids the `file://` CORS restriction that blocks fetching a local `.db` file directly. A dev-side build script (`build_lexicon.py`, kept beside the cartridge) does the sourcing/tagging/embedding for future rebuilds.
 
-**To build parser #2 onward:** clone `Grammar_parser.html`, replace the four cartridge blocks (guided by the banner comments in the file), draft that aide's `<Aide>_content.md` first as its own reviewable step, and write a short spec citing the Grammar spec as its prerequisite — mostly just the aide's FR-13..18 equivalents (content mapping, engine passes, layer mapping, explainer format) and its worked-example ACs.
+**To build parser #2 onward:** follow `_shell/README.md`'s "Cloning a new parser" section — copy `Grammar/cartridge/` as a starting skeleton, replace `build/config.yaml`, the engine, the explainer, and the content file with the new subject's own (nothing in `_shell/` changes), then run `python3 _shell/build/assemble.py <NewCartridge>/cartridge`. Draft that aide's `<Aide>_content.md` first as its own reviewable step, and write a short spec citing the Grammar spec as its prerequisite — mostly just the aide's FR-13..18 equivalents (content mapping, engine passes, layer mapping, explainer format) and its worked-example ACs.
 
 ## 6. Asking well — the request checklist
 
@@ -146,7 +151,7 @@ An on-call asset-generator display in a browser tab: **nine teaching aides shari
 | Fact-checking | one paragraph | 1000 w | first pass: split claim/source; second pass: search both | **B** |
 | Rhetoric | one paragraph | 1000 w | pattern match types of speech, then effect | A |
 | Grammar | one sentence | **100 w** | pass 1 bottom-up lexical; pass 2 top-down syntactic + semantic; pass 3 conventions | A |
-| | | | *↑ reference build — **BUILT 2026-07-05** (`Memory/Long-Term/Grammar/Grammar_parser.html`, v1.0.0, 2 MB single file, embedded 20k-word SQLite lexicon). Spec: `Memory/Long-Term/Grammar/Specs/Done/GrammarParser.spec.md`; editable source: `Grammar/build/template.html`; rebuild recipe: `Grammar/build/README.md`. All other parsers clone its chassis (§5b)* | |
+| | | | *↑ reference build — **BUILT 2026-07-05, rebuilt from the shell 2026-08-10** (`System/Widgets/Parser/Grammar/Grammar_parser.html`, v1.0.0, 4.18 MB single file, embedded 20k-word SQLite lexicon + central spelling dictionary). Spec: `System/Widgets/Parser/Grammar/Specs/Done/GrammarParser.spec.md`; editable source: `System/Widgets/Parser/Grammar/cartridge/` (see its README); rebuild recipe: `System/Widgets/Parser/_shell/README.md`. All other parsers are cartridges assembled against the same shell (§5b) — none are built yet* | |
 | Interpretation | one page | 1000 w | match named entities/phrases to methodology schema | A |
 | Story-tension | one scene | **5000 w** | trope check, plot summary, inciting incident, context, complication, resolution, unresolved matters | **B** |
 | Logic | one paragraph | 1000 w | terms (clear/unclear), judgements (contradictory?), arguments (valid/invalid) | A |
@@ -184,5 +189,5 @@ An on-call asset-generator display in a browser tab: **nine teaching aides shari
 - Tropes & symbols: parser logic and Explainer undefined (likely overlaps Story-tension's trope check — decide whether they share a rule set).
 - Style and Fact-checking: Explainer formats undefined.
 - API-key handling for the Tier-B aides (settings field vs `localStorage`).
-- Content source files: **Grammar's is drafted** (`System/Suggestions/Grammar_contents.md`) and its spec written (§5b). The other eight `<Aide>_content.md` files remain undrafted — drafting each (per §5a, as a reviewable step before any build) is the natural next move per aide, followed by a short spec citing the Grammar spec.
+- Content source files: **Grammar's is drafted** (`System/Widgets/Parser/Grammar/Grammar_contents.md`) and its spec written (§5b), and its cartridge is built. The other twelve `<Store>_content.md` files are also drafted (each lives at its widget's root, e.g. `System/Widgets/Parser/Logic/Logic_content.md`) — Fact-checking's is a short stub, the rest are substantial. None of the twelve has a `cartridge/` yet; building one per aide (per §5b, against `_shell/`) is the natural next move, followed by a short spec citing the Grammar spec.
 - Fact-checking: approved source list for its content file undefined.

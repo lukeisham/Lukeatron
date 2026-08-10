@@ -1,0 +1,316 @@
+{
+  "metadata": {
+    "title": "Textual Rhetoric Database",
+    "version": "1.0",
+    "created": "2026-04-23",
+    "description": "Comprehensive reference database for textual rhetorical analysis and construction",
+    "type": "textual"
+  },
+  "schema": {
+    "overview": "This part of rhetoric explains the systematic five-stage workflow used to transform an initial concept into a fully realized and delivered piece of communication.",
+    "core_question": "Through which specific phases of production must I progress to ensure my message is thoroughly researched, organized, and presented?",
+    "inventio": {
+      "name": "Invention/Discovery",
+      "definition": "The discovery and brainstorming phase where you identify the strongest arguments and evidence available for your subject.",
+      "key_characteristics": [
+        "Research and exploration of topics",
+        "Identification of main arguments",
+        "Discovery of supporting evidence",
+        "Analysis of available data and sources",
+        "Topic development and refinement"
+      ],
+      "examples": [
+        "A journalist researching multiple sources before writing an investigative article",
+        "A lawyer gathering case law and precedents before crafting an argument",
+        "A scientist reviewing literature before proposing a hypothesis"
+      ]
+    },
+    "dispositio": {
+      "name": "Arrangement",
+      "definition": "The strategic arrangement of those arguments into a coherent structure (such as introduction, body, and conclusion) to maximize impact.",
+      "key_characteristics": [
+        "Logical organization of ideas",
+        "Strategic sequencing of arguments",
+        "Structural frameworks (e.g., chronological, spatial, topical)",
+        "Transition management",
+        "Emphasis through placement"
+      ],
+      "examples": [
+        "An essay structured with introduction, three body paragraphs, and conclusion",
+        "A speech arranged to build from weakest to strongest argument",
+        "A report organized by problem-solution structure"
+      ]
+    },
+    "elocutio": {
+      "name": "Style",
+      "definition": "The stylistic 'texture' of the text, focusing on precise word choice and the application of rhetorical figures to suit the audience.",
+      "key_characteristics": [
+        "Diction and word choice",
+        "Sentence variety and rhythm",
+        "Tone and voice",
+        "Rhetorical figures and ornaments",
+        "Register and formality level"
+      ],
+      "examples": [
+        "Academic writing using formal, precise language",
+        "Marketing copy using vivid, emotive language",
+        "Technical documentation using clear, unambiguous terminology"
+      ]
+    },
+    "memoria": {
+      "name": "Memory",
+      "definition": "The use of mnemonic systems and cognitive techniques to internalize the content for a fluid, natural delivery.",
+      "key_characteristics": [
+        "Memory aids and techniques",
+        "Internalization of structure",
+        "Recall mechanisms",
+        "Cognitive frameworks",
+        "Thematic consistency"
+      ],
+      "examples": [
+        "A speaker using the method of loci to remember speech points",
+        "Repeated motifs in a novel that create thematic coherence",
+        "Acronyms or mnemonic devices embedded in educational content"
+      ]
+    },
+    "pronuntiatio": {
+      "name": "Delivery/Performance",
+      "definition": "The final execution of the message, focusing on physical appearance, vocal modulation, and the use of gesture to command the room.",
+      "key_characteristics": [
+        "Genre conventions",
+        "Medium-specific formatting",
+        "Presentation style",
+        "Performance elements",
+        "Publication/delivery method"
+      ],
+      "examples": [
+        "A TED talk delivered with confident body language and vocal variation",
+        "A poem performed with attention to rhythm and pause",
+        "A business presentation using professional slides and clear speaking"
+      ]
+    }
+  },
+  "proofs": {
+    "overview": "These represent the primary modes of persuasion used to establish validity and influence the perspective or behavior of an audience.",
+    "core_question": "What specific types of evidence and appeals must I employ to establish my authority and convince the audience that my claims are true?",
+    "ethos": {
+      "name": "Credibility/Character",
+      "definition": "Establishing credibility and trust by demonstrating the speaker's reliable character, expertise, and moral standing.",
+      "key_characteristics": [
+        "Demonstrating expertise and knowledge",
+        "Citing authoritative sources",
+        "Showing good moral character",
+        "Building trust with audience",
+        "Presenting credentials or experience"
+      ],
+      "examples": [
+        "A doctor citing medical research and professional experience",
+        "A witness testimony in court demonstrating personal reliability",
+        "An author establishing credentials in a preface or bio"
+      ]
+    },
+    "pathos": {
+      "name": "Emotion",
+      "definition": "Generating credibility and engagement by appealing to the audience's emotions, creating a visceral or empathetic connection to the topic.",
+      "key_characteristics": [
+        "Evoking emotional responses",
+        "Creating empathy and identification",
+        "Using vivid, sensory language",
+        "Telling stories or anecdotes",
+        "Appealing to values and beliefs"
+      ],
+      "examples": [
+        "Charity advertisements showing suffering to motivate donations",
+        "A memorial speech evoking grief and remembrance",
+        "Political rhetoric appealing to hope, fear, or anger"
+      ]
+    },
+    "logos": {
+      "name": "Logic/Reason",
+      "definition": "Building credibility through logical reasoning, the presentation of data, and the use of structured evidence to support a rational conclusion.",
+      "key_characteristics": [
+        "Logical argumentation",
+        "Evidence and data",
+        "Clear reasoning chains",
+        "Factual accuracy",
+        "Cause-and-effect relationships"
+      ],
+      "examples": [
+        "A scientific paper presenting data analysis and conclusions",
+        "A legal brief using precedents and logical reasoning",
+        "A financial report showing statistical trends and projections"
+      ]
+    }
+  },
+  "tropes": {
+    "overview": "This part of rhetoric focuses on the imaginative impact of the text, using non-literal ways to shift meaning and engage the audience's imagination.",
+    "core_question": "How can I transform standard language into imaginative figures to make a concept feel richer, more evocative, and conceptually deep?",
+    "resemblance": {
+      "name": "Metaphor/Simile",
+      "definition": "Figures like metaphor and simile that create meaning by comparing two distinct things based on shared traits.",
+      "key_characteristics": [
+        "Comparison of unlike things",
+        "'Like' or 'as' (simile) vs. direct equation (metaphor)",
+        "Creates new understanding through analogy",
+        "Transfers qualities from one domain to another"
+      ],
+      "examples": [
+        "Time is money (metaphor)",
+        "Her smile was as bright as the sun (simile)",
+        "The world is a stage (metaphor)"
+      ]
+    },
+    "association": {
+      "name": "Metonymy",
+      "definition": "Figures like metonymy that substitute a word for something closely related to it.",
+      "key_characteristics": [
+        "Substitution based on close relationship",
+        "Part-whole relationships",
+        "Cause-effect relationships",
+        "Container-content relationships"
+      ],
+      "examples": [
+        "The White House announced... (building for administration)",
+        "The pen is mightier than the sword (tools for writing/warfare)",
+        "Silicon Valley leads innovation (place for tech industry)"
+      ]
+    },
+    "naming": {
+      "name": "Synecdoche",
+      "definition": "Substituting labels to identify subjects indirectly, such as synecdoche, where a part represents the whole.",
+      "key_characteristics": [
+        "Part represents whole or vice versa",
+        "Specific for general or vice versa",
+        "Material for object",
+        "Creates focus or emphasis"
+      ],
+      "examples": [
+        "All hands on deck (hands for sailors)",
+        "Nice wheels! (wheels for car)",
+        "The law (the law for police/legal system)"
+      ]
+    },
+    "invention": {
+      "name": "Neologism/Creative Language",
+      "definition": "The creative stretching of language to describe the 'indescribable' or using parts of speech in new ways (e.g., turning a noun into a verb).",
+      "key_characteristics": [
+        "Creating new words or meanings",
+        "Converting parts of speech",
+        "Combining words in novel ways",
+        "Expressing the inexpressible"
+      ],
+      "examples": [
+        "Let's Google that (noun to verb)",
+        "The bling of the jewelry (onomatopoeia/new word)",
+        "Unfriend (creative combination)"
+      ]
+    },
+    "extendedmeaning": {
+      "name": "Allegory/Irony",
+      "definition": "Large-scale figures like allegory or irony where the surface meaning masks a deeper, sustained secondary interpretation.",
+      "key_characteristics": [
+        "Dual levels of meaning",
+        "Sustained symbolic narrative",
+        "Surface vs. deeper meaning",
+        "Often requires interpretation"
+      ],
+      "examples": [
+        "George Orwell's Animal Farm (political allegory)",
+        "Saying 'What lovely weather' during a storm (irony)",
+        "Biblical parables (allegorical teaching)"
+      ]
+    },
+    "ornamentalepithet": {
+      "name": "Descriptive Tags",
+      "definition": "The use of descriptive, often formulaic, adjectives or tags to characterize a person or object with vivid intensity.",
+      "key_characteristics": [
+        "Recurring descriptive phrases",
+        "Characterizing adjectives",
+        "Formulaic descriptions",
+        "Creates vivid identification"
+      ],
+      "examples": [
+        "Swift-footed Achilles (Homeric epithet)",
+        "The Great Emancipator (for Lincoln)",
+        "The rosy-fingered dawn (Homer)"
+      ]
+    }
+  },
+  "fallacies": {
+    "overview": "This part of rhetoric focuses on the rational impact of the text.",
+    "core_question": "Does my communication 'make sense'?",
+    "fallacy": {
+      "name": "Logical Errors",
+      "definition": "Identifying and labeling common errors in reasoning.",
+      "common_types": [
+        {
+          "name": "Ad Hominem",
+          "description": "Attacking the person rather than the argument",
+          "example": "You can't trust his climate research because he owns an SUV"
+        },
+        {
+          "name": "Straw Man",
+          "description": "Misrepresenting an argument to make it easier to attack",
+          "example": "Environmentalists want us all to live in caves"
+        },
+        {
+          "name": "False Dichotomy",
+          "description": "Presenting only two options when more exist",
+          "example": "You're either with us or against us"
+        },
+        {
+          "name": "Slippery Slope",
+          "description": "Arguing that one step will inevitably lead to extreme consequences",
+          "example": "If we allow same-sex marriage, people will want to marry animals"
+        },
+        {
+          "name": "Appeal to Authority",
+          "description": "Citing authority rather than evidence",
+          "example": "This must be true because a celebrity said it"
+        },
+        {
+          "name": "Hasty Generalization",
+          "description": "Drawing conclusions from insufficient evidence",
+          "example": "I met two rude people from that city, so everyone there must be rude"
+        },
+        {
+          "name": "Post Hoc",
+          "description": "Assuming causation from correlation",
+          "example": "I wore my lucky socks and we won, so the socks caused the victory"
+        },
+        {
+          "name": "Circular Reasoning",
+          "description": "Using the conclusion as a premise",
+          "example": "The Bible is true because it says so in the Bible"
+        },
+        {
+          "name": "Red Herring",
+          "description": "Introducing irrelevant information to distract",
+          "example": "Why worry about climate change when there are starving children?"
+        },
+        {
+          "name": "Appeal to Emotion",
+          "description": "Manipulating emotions instead of using logic",
+          "example": "Think of the children! (without relevant connection)"
+        }
+      ]
+    },
+    "fallacy_flipside": {
+      "name": "Legitimate Uses",
+      "definition": "Recognizing the legitimate versions of these rational mistakes.",
+      "key_characteristics": [
+        "Valid forms of seemingly fallacious reasoning",
+        "Context-dependent legitimacy",
+        "Strategic use of emotion or authority when appropriate",
+        "Distinction between formal and informal logic"
+      ],
+      "examples": [
+        "Character Assessment: When character is genuinely relevant (e.g., trustworthiness of a witness)",
+        "Expert Testimony: When proper authority is consulted appropriately",
+        "Emotional Appeals: When emotion is a legitimate component (e.g., ethical arguments)",
+        "Reasonable Consequences: When slippery slope is based on evidence",
+        "Practical Dichotomy: When choices are genuinely limited in context"
+      ]
+    }
+  }
+}

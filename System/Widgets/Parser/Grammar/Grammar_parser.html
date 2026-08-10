@@ -85,6 +85,9 @@ button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
 #rules li{margin:3px 0;}
 #rules .ex{color:var(--ink2);font-style:italic;}
 footer{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);margin-top:18px;padding-top:12px;font-size:12px;color:var(--ink3);flex-wrap:wrap;}
+footer a{color:inherit;text-decoration:underline dotted;text-underline-offset:2px;}
+footer a:hover,footer a:focus-visible{color:var(--acc);text-decoration-style:solid;}
+footer a:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:2px;}
 .tt{visibility:hidden;position:absolute;bottom:135%;left:0;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:8px 11px;font-size:12px;line-height:1.5;width:280px;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.1);z-index:55;}
 .ic:hover .tt{visibility:visible;}
 @media print{
@@ -166,7 +169,7 @@ footer{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);
 /* ============================================================
    CARTRIDGE · CONFIG — per-asset settings (ParserShell.spec.md FR-2)
    ============================================================ */
-var CONFIG = {"name": "Grammar parser", "version": "1.0.0", "builtFrom": "Grammar_contents.md", "inputUnit": "one sentence", "cap": 100, "levels": ["sentential", "clausal", "phrasal", "lexical"], "clausePalette": [{"h50": "#E1F5EE", "h100": "#9FE1CB", "h600": "#0F6E56", "h800": "#085041", "hf": "rgba(29,158,117,.12)", "name": "teal"}, {"h50": "#FAEEDA", "h100": "#FAC775", "h600": "#854F0B", "h800": "#633806", "hf": "rgba(239,159,39,.12)", "name": "amber"}, {"h50": "#EEEDFE", "h100": "#CECBF6", "h600": "#534AB7", "h800": "#3C3489", "hf": "rgba(127,119,221,.12)", "name": "purple"}, {"h50": "#FBEAF0", "h100": "#F4C0D1", "h600": "#993556", "h800": "#72243E", "hf": "rgba(212,83,126,.12)", "name": "pink"}, {"h50": "#FAECE7", "h100": "#F5C4B3", "h600": "#993C1D", "h800": "#4A1B0C", "hf": "rgba(216,90,48,.12)", "name": "coral"}, {"h50": "#E6F1FB", "h100": "#B5D4F4", "h600": "#185FA5", "h800": "#0C447C", "hf": "rgba(55,138,221,.12)", "name": "blue"}], "tentativeThreshold": 0.7, "tierB": {"enabled": false, "note": "Tier B (API/agent) slot present but disabled in this build."}, "lexicon": {"enabled": true, "attribution": "Moby PD + FrequencyWords CC-BY-SA"}, "spelling": {"enabled": true, "attribution": "Spelling dictionary: SCOWL 2020.12.07 © 2000–2018 Kevin Atkinson — permissive licence. http://wordlist.aspell.net/"}, "focusLabels": {"sentential": "Sentence focus", "clausal": "Clause focus", "phrasal": "Phrase focus", "lexical": "Word focus"}};
+var CONFIG = {"name": "Grammar parser", "version": "1.0.0", "builtFrom": "Grammar_contents.md", "inputUnit": "one sentence", "cap": 100, "levels": ["sentential", "clausal", "phrasal", "lexical"], "clausePalette": [{"h50": "#E1F5EE", "h100": "#9FE1CB", "h600": "#0F6E56", "h800": "#085041", "hf": "rgba(29,158,117,.12)", "name": "teal"}, {"h50": "#FAEEDA", "h100": "#FAC775", "h600": "#854F0B", "h800": "#633806", "hf": "rgba(239,159,39,.12)", "name": "amber"}, {"h50": "#EEEDFE", "h100": "#CECBF6", "h600": "#534AB7", "h800": "#3C3489", "hf": "rgba(127,119,221,.12)", "name": "purple"}, {"h50": "#FBEAF0", "h100": "#F4C0D1", "h600": "#993556", "h800": "#72243E", "hf": "rgba(212,83,126,.12)", "name": "pink"}, {"h50": "#FAECE7", "h100": "#F5C4B3", "h600": "#993C1D", "h800": "#4A1B0C", "hf": "rgba(216,90,48,.12)", "name": "coral"}, {"h50": "#E6F1FB", "h100": "#B5D4F4", "h600": "#185FA5", "h800": "#0C447C", "hf": "rgba(55,138,221,.12)", "name": "blue"}], "tentativeThreshold": 0.7, "tierB": {"enabled": false, "note": "Tier B (API/agent) slot present but disabled in this build."}, "lexicon": {"enabled": true, "attribution": "[Moby](https://www.gutenberg.org/ebooks/3203) [PD](https://en.wikipedia.org/wiki/Public_domain) + [FrequencyWords](https://github.com/hermitdave/FrequencyWords) [CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/)"}, "spelling": {"enabled": true, "attribution": "Spelling dictionary: SCOWL 2020.12.07 © 2000–2018 Kevin Atkinson — permissive licence. [http://wordlist.aspell.net/](http://wordlist.aspell.net/)"}, "focusLabels": {"sentential": "Sentence focus", "clausal": "Clause focus", "phrasal": "Phrase focus", "lexical": "Word focus"}};
 
 /* ============================================================
    CARTRIDGE · CONTENT — compiled outline taxonomy (FR-3)
@@ -2716,6 +2719,22 @@ var UI = (function () {
 
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  // Renders footer attribution text into safe HTML, turning any
+  // [label](url) markdown-style link into a real target=_blank anchor
+  // (e.g. "CC-BY-SA" -> a link to the licence's own description page).
+  // http(s)-only by construction: a non-http(s) "url" is left as literal
+  // escaped text rather than becoming a clickable href.
+  var LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+  function renderAttribution(text) {
+    var out = "", last = 0, m;
+    LINK_RE.lastIndex = 0;
+    while ((m = LINK_RE.exec(text))) {
+      out += esc(text.slice(last, m.index));
+      out += '<a href="' + esc(m[2]).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + "</a>";
+      last = m.index + m[0].length;
+    }
+    return out + esc(text.slice(last));
+  }
   function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function levelIndex(v) { return levels.indexOf(v); }
   function focusLabel(v) {
@@ -2762,9 +2781,12 @@ var UI = (function () {
     });
   }
   function runSpellCheck() {
-    if (!spelling || !$("spellTog").checked) { spellTokens = []; return; }
+    if (!spelling) { spellTokens = []; return; }
     var el = $("input");
-    spellTokens = spelling.check(el.innerText);
+    // Unchecked clears any highlights left over from before the toggle (and
+    // skips the check) rather than leaving stale, now-misaligned marks on
+    // screen — see spellTog's change listener below.
+    spellTokens = $("spellTog").checked ? spelling.check(el.innerText) : [];
     if (typeof spelling.renderHighlights === "function") spelling.renderHighlights(el, spellTokens);
   }
   /* Locate the flagged token under a click point. The Highlight API never
@@ -3004,13 +3026,13 @@ var UI = (function () {
     $("hdrname").textContent = CONFIG.name;
     var lexinfo = $("lexinfo");
     if (CONFIG.lexicon && CONFIG.lexicon.enabled) {
-      lexinfo.textContent = " · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : "");
+      lexinfo.innerHTML = renderAttribution(" · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : ""));
     }
     // AC-8: attribution is sourced from CONFIG.spelling.attribution, which
     // the assembler set from its own SPELLING_ATTRIBUTION constant — never
     // hardcoded per cartridge here.
     if (CONFIG.spelling && CONFIG.spelling.enabled && CONFIG.spelling.attribution) {
-      $("spellinfo").textContent = " · " + CONFIG.spelling.attribution;
+      $("spellinfo").innerHTML = renderAttribution(" · " + CONFIG.spelling.attribution);
     }
     buildFocusBar();
     $("stage").className = "v-" + view;
@@ -3021,7 +3043,7 @@ var UI = (function () {
     $("btnAll").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) { setView(levels[Math.min(1, levels.length - 1)]); explain(); window.scrollTo({ top: 0 }); } });
     $("btnExplain").addEventListener("click", function () { if (!R) parseNow(); explain(); });
     $("input").addEventListener("input", function () { updateCount(); clearTimeout(spellTimer); spellTimer = setTimeout(runSpellCheck, 600); });
-    $("spellTog").addEventListener("change", function () { if ($("spellTog").checked) runSpellCheck(); });
+    $("spellTog").addEventListener("change", runSpellCheck);
     $("btnPdf").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-chrome"; window.print(); });
     $("btnPdfBare").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-bare"; window.print(); });
     $("btnMd").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) copyText(EXPLAINER.toMarkdown(R), $("btnMd")); });

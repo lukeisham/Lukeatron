@@ -55,10 +55,14 @@ SPELLING_DB_GZ = SPELLING_DIR / "data" / "spelling.db.gz"
 # Required footer attribution (_research/DECISION-dictionary-source.md,
 # verbatim from the release's own Copyright file) — every cartridge that
 # ships with spelling.enabled: true must show this string, not a
-# per-cartridge restatement of it (AD-6/AC-8).
+# per-cartridge restatement of it (AD-6/AC-8). The trailing URL is wrapped
+# in [label](url) markdown-link syntax — _shell/src/ui.js's
+# renderAttribution() turns that into a real target=_blank anchor — but the
+# visible text is unchanged, character for character, from the verbatim
+# string this constant has always held.
 SPELLING_ATTRIBUTION = (
     "Spelling dictionary: SCOWL 2020.12.07 © 2000–2018 Kevin Atkinson "
-    "— permissive licence. http://wordlist.aspell.net/"
+    "— permissive licence. [http://wordlist.aspell.net/](http://wordlist.aspell.net/)"
 )
 
 REQUIRED_ENGINE_KEYS = {"parse", "tokenize", "CLOSED"}

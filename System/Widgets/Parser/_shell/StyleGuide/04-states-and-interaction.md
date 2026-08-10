@@ -12,10 +12,11 @@
 | `#tip`, `#ctx`, `#spelling-suggestions` | hidden (`display:none`) → shown + positioned | JS toggles `display` and sets inline `left`/`top` |
 | `#stage .cl/.ph/.w` | fade in/out across focus-level switches | CSS `transition`, JS toggles the `#stage` element's `v-<level>` class |
 | `#spellTog` checkbox | on/off, only visible when the cartridge's `spelling.enabled: true` | `#spellLabel` starts `display:none` in the shell skeleton, shown when the spelling module confirms it's wired in |
+| `footer a` (attribution links, see [03](03-components.md#footer)) | default (`--ink3`, dotted underline) → `:hover`/`:focus-visible` (`--acc`, solid underline + outline ring) | pure CSS |
 
-Nothing in the sheet uses `:active` or `:focus-visible` distinctly from
-`:focus`/`:hover` — keyboard-focus styling piggybacks on the same rules as
-mouse-hover/focus throughout.
+Nothing else in the sheet uses `:active` or `:focus-visible` distinctly
+from `:focus`/`:hover` — keyboard-focus styling piggybacks on the same
+rules as mouse-hover/focus everywhere but the footer's attribution links.
 
 ## Print
 

@@ -32,7 +32,11 @@ lexicon:
   enabled: true
   dbFile: "Grammar_lexicon.db"
   schema: "word,pos,alt,feat,rank"
-  attribution: "Moby PD + FrequencyWords CC-BY-SA"
+  # [label](url) markdown-link syntax — _shell/src/ui.js's renderAttribution()
+  # turns each into a real target=_blank anchor in the footer (source names
+  # link to their origin, licence abbreviations link to a description of
+  # the licence itself). Visible text is unchanged: "Moby PD + FrequencyWords CC-BY-SA".
+  attribution: "[Moby](https://www.gutenberg.org/ebooks/3203) [PD](https://en.wikipedia.org/wiki/Public_domain) + [FrequencyWords](https://github.com/hermitdave/FrequencyWords) [CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/)"
 
 spelling:
   enabled: true

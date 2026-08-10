@@ -18,6 +18,22 @@ var UI = (function () {
 
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  // Renders footer attribution text into safe HTML, turning any
+  // [label](url) markdown-style link into a real target=_blank anchor
+  // (e.g. "CC-BY-SA" -> a link to the licence's own description page).
+  // http(s)-only by construction: a non-http(s) "url" is left as literal
+  // escaped text rather than becoming a clickable href.
+  var LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+  function renderAttribution(text) {
+    var out = "", last = 0, m;
+    LINK_RE.lastIndex = 0;
+    while ((m = LINK_RE.exec(text))) {
+      out += esc(text.slice(last, m.index));
+      out += '<a href="' + esc(m[2]).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + "</a>";
+      last = m.index + m[0].length;
+    }
+    return out + esc(text.slice(last));
+  }
   function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function levelIndex(v) { return levels.indexOf(v); }
   function focusLabel(v) {
@@ -64,9 +80,12 @@ var UI = (function () {
     });
   }
   function runSpellCheck() {
-    if (!spelling || !$("spellTog").checked) { spellTokens = []; return; }
+    if (!spelling) { spellTokens = []; return; }
     var el = $("input");
-    spellTokens = spelling.check(el.innerText);
+    // Unchecked clears any highlights left over from before the toggle (and
+    // skips the check) rather than leaving stale, now-misaligned marks on
+    // screen — see spellTog's change listener below.
+    spellTokens = $("spellTog").checked ? spelling.check(el.innerText) : [];
     if (typeof spelling.renderHighlights === "function") spelling.renderHighlights(el, spellTokens);
   }
   /* Locate the flagged token under a click point. The Highlight API never
@@ -306,13 +325,13 @@ var UI = (function () {
     $("hdrname").textContent = CONFIG.name;
     var lexinfo = $("lexinfo");
     if (CONFIG.lexicon && CONFIG.lexicon.enabled) {
-      lexinfo.textContent = " · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : "");
+      lexinfo.innerHTML = renderAttribution(" · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : ""));
     }
     // AC-8: attribution is sourced from CONFIG.spelling.attribution, which
     // the assembler set from its own SPELLING_ATTRIBUTION constant — never
     // hardcoded per cartridge here.
     if (CONFIG.spelling && CONFIG.spelling.enabled && CONFIG.spelling.attribution) {
-      $("spellinfo").textContent = " · " + CONFIG.spelling.attribution;
+      $("spellinfo").innerHTML = renderAttribution(" · " + CONFIG.spelling.attribution);
     }
     buildFocusBar();
     $("stage").className = "v-" + view;
@@ -323,7 +342,7 @@ var UI = (function () {
     $("btnAll").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) { setView(levels[Math.min(1, levels.length - 1)]); explain(); window.scrollTo({ top: 0 }); } });
     $("btnExplain").addEventListener("click", function () { if (!R) parseNow(); explain(); });
     $("input").addEventListener("input", function () { updateCount(); clearTimeout(spellTimer); spellTimer = setTimeout(runSpellCheck, 600); });
-    $("spellTog").addEventListener("change", function () { if ($("spellTog").checked) runSpellCheck(); });
+    $("spellTog").addEventListener("change", runSpellCheck);
     $("btnPdf").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-chrome"; window.print(); });
     $("btnPdfBare").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-bare"; window.print(); });
     $("btnMd").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) copyText(EXPLAINER.toMarkdown(R), $("btnMd")); });

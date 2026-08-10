@@ -246,6 +246,33 @@ buttons on the left and the version/build/attribution string
 and spelling attribution spans) pushed right via `margin-left:auto` on that
 span.
 
+**Attribution links.** `CONFIG.lexicon.attribution` and
+`CONFIG.spelling.attribution` support inline `[label](url)` markdown-link
+syntax — `_shell/src/ui.js`'s `renderAttribution()` turns each into a real
+`<a target="_blank" rel="noopener noreferrer">` anchor when it populates
+`#lexinfo`/`#spellinfo` (`http(s)://` URLs only; anything else is left as
+literal text). Link whichever pieces of an attribution string point to
+genuinely relevant outside information — a licence abbreviation to a page
+describing that licence (e.g. `CC-BY-SA` → the Creative Commons BY-SA
+page), a named source to its origin (e.g. `SCOWL` → wordlist.aspell.net).
+Keep the visible label text identical to what an un-linked attribution
+would show — the markdown syntax adds a destination, it never changes what
+the footer says. See Grammar's `cartridge/build/config.yaml` (`lexicon.
+attribution`) and `_shell/build/assemble.py`'s `SPELLING_ATTRIBUTION`
+constant for worked examples.
+
+```css
+footer a { color:inherit; text-decoration:underline dotted; text-underline-offset:2px; }
+footer a:hover, footer a:focus-visible { color:var(--acc); text-decoration-style:solid; }
+footer a:focus-visible { outline:2px solid var(--acc); outline-offset:2px; border-radius:2px; }
+```
+
+Links inherit the footer's muted `--ink3` colour with a dotted underline
+(quiet, matching the icon-bar's dotted-underline hover-target convention —
+see [Icon bar](#icon-bar-iconbar-and-tooltips-tt) above) rather than
+shouting in `--acc` at rest; they switch to solid `--acc` on hover/focus so
+the affordance is unambiguous once a reader notices it.
+
 ## Spelling underline
 
 ```css

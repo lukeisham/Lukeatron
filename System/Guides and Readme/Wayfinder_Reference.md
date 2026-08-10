@@ -93,6 +93,12 @@ autonomous and worth gating before first live use.
 
 ## 4. Git location
 
-The Lukeatron repository is configured with `https://github.com/lukeisham/Lukeatron.git`
-as its `origin` remote (added 2026-07-14). See the git setup note in the accompanying
-report for status (init/remote-add vs. first push).
+`https://github.com/lukeisham/Lukeatron.git` (private) is the `origin` remote, set up
+2026-07-14. Scope is deliberately narrow — only `System/` and `.Claude/` (skills, templates,
+Skillbank, config) are tracked; `.gitignore` excludes `Memory/`, `Inbox/`, `Outbox/`,
+`Archive/`, `System/Sandbox/`, and real credentials (`System/Credentials/*`, keeping only
+the `.example.*` files) at the repo root. No personal data — People/, Contacts/, sermon
+prep, projects — is version-controlled. Initial commit pushed to `main`.
+
+One file worth a look if the repo's visibility ever changes: `.Claude/skills/!OutgoingContentCheck/whitelist.yaml`
+is tracked (it's system config, not Memory/) and may list real contact identifiers.

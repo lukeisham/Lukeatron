@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__ASSET_NAME__</title>
+<link rel="icon" href='__ICON_HREF__'>
+<style>
+__SHELL_CSS__
+__FOCUS_CSS__
+__CARTRIDGE_CSS__
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<header>
+<div class="brand">
+<span class="badge" aria-hidden="true">P</span>
+<span id="hdrname">__ASSET_NAME__</span>
+</div>
+<div class="meta" id="hdrmeta">Tier A · offline</div>
+</header>
+
+<div class="no-print">
+<div id="input" contenteditable="true" spellcheck="false" data-placeholder="Paste or type __INPUT_UNIT__…"></div>
+<div class="warn" id="capwarn"></div>
+<div class="bar">
+<button class="primary" id="btnParse">Parse</button>
+<button id="btnAll">Display all</button>
+<button id="btnExplain">Explain</button>
+<button id="btnTierB" disabled title="Tier B (API/agent judgment) is not wired in this build — the offline Tier-A engine is fully functional.">Tier B check — off</button>
+<label class="muted" id="spellLabel" style="display:none;align-items:center;gap:6px;margin-left:auto;cursor:pointer;"><input type="checkbox" id="spellTog" checked> Spell check</label>
+<span class="muted" id="wcount">0 / __CAP__ words</span>
+</div>
+<div class="bar" id="focusbar" style="display:none;"></div>
+<div id="key" style="display:none;"></div>
+<div id="iconbar"></div>
+<div id="sline"></div>
+<div id="stage"></div>
+<div class="muted" id="hoverhint" style="display:none;">Hover a word for its description at the selected focus level · right-click for word-class detail</div>
+</div>
+
+<div id="explainer">
+<h3>Explainer — the tabled sentence</h3>
+<div id="xtables"></div>
+<h3 style="margin-top:16px;">Explainer — relevant rules</h3>
+<div id="rules"></div>
+</div>
+
+<footer>
+<span class="no-print">Export explainer:</span>
+<button class="no-print" id="btnPdf">PDF</button>
+<button class="no-print" id="btnPdfBare" title="Prints the explainer without the app header/footer">PDF (bare)</button>
+<button class="no-print" id="btnMd">Copy Markdown</button>
+<button class="no-print" id="btnTxt">Copy plain text</button>
+<span style="margin-left:auto;">__ASSET_NAME__ v__ASSET_VERSION__ · built __BUILD_DATE__ from __BUILT_FROM__<span id="lexinfo"></span><span id="spellinfo"></span></span>
+</footer>
+</div></div>
+
+<div id="tip"></div>
+<div id="ctx"></div>
+<!-- Spelling module's suggestion popover mount (SpellingModule.spec.md FR-10
+     POPOVER_ID) — the module finds this by id and reuses it (styled by
+     shell.css) instead of creating its own unstyled body-appended div. -->
+<div id="spelling-suggestions"></div>
+
+<script>
+/* ============================================================
+   CARTRIDGE · CONFIG — per-asset settings (ParserShell.spec.md FR-2)
+   ============================================================ */
+var CONFIG = __CONFIG__;
+
+/* ============================================================
+   CARTRIDGE · CONTENT — compiled outline taxonomy (FR-3)
+   ============================================================ */
+var CONTENT = __CONTENT__;
+</script>
+<script>
+var SQLJS_WASM_B64 = "__WASM_B64__";
+var LEXDB_B64 = "__DB_B64__";
+var SPELLDB_B64 = "__SPELLDB_B64__";
+</script>
+<script>
+__SQLJS__
+</script>
+<script>
+__LEXICON_JS__
+</script>
+<script>
+__ENGINE_JS__
+</script>
+<script>
+__EXPLAINER_JS__
+</script>
+<script>
+__SPELLING_SEAM_JS__
+</script>
+<script>
+__UI_JS__
+</script>
+<script>
+LEX.init(UI.init);
+</script>
+</body>
+</html>

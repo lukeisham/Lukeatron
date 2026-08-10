@@ -18,6 +18,19 @@ PURPOSE
 
   Distinct from y (domain / content filter), which constrains *what* is communicated.
 
+AUTHORSHIP (the `authorship` field) — who appears to have WRITTEN the email
+  agent-disclosed (default)  Agent writes as itself and closes with the standard
+                             footer:  ---- Drafted by Lukeatron on Luke's behalf ----
+  luke-voice                 First-person AS Luke. No footer, no disclosure, no tells.
+
+  Set here, it applies to EVERY member of the group. An individual member's
+  People/<ID>/tone.md `authorship` always beats this value, so a group set to
+  luke-voice can still carry per-person exceptions.
+
+  ⚠️ luke-voice mail is NEVER auto-sent — always staged in Outbox/ for Luke to send
+     himself, whatever the member's trust tier. Not overridable.
+     See CLAUDE.md > Lukeatron Interactions > Authorship.
+
   Delete this comment block from the finished page.
 ================================================================================
 -->
@@ -27,6 +40,8 @@ name: ""          # group name exactly as it appears in Person records' group: f
 title: ""         # mirrors name — the OKF reserved field
 description: ""   # one-sentence OKF summary of who this group is / its role
 context: []       # which Lukeatron contexts this group most commonly appears in
+authorship: "agent-disclosed"   # agent-disclosed (default) | luke-voice — applies to every member
+                                # unless their own tone.md overrides it. See note above.
 updated: ""
 ---
 

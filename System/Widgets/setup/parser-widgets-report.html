@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Parser Widgets — Status Review</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --ink: #1c1e21;
+  --ink-soft: #52565c;
+  --ink-faint: #8a8f98;
+  --paper: #ffffff;
+  --paper-alt: #f6f7f9;
+  --line: #e2e5ea;
+  --line-strong: #c9cdd4;
+
+  --teaching: #2f6f4f;
+  --teaching-bg: #eaf5ee;
+  --teaching-border: #bfe0cc;
+  --church: #4a3f9e;
+  --church-bg: #eeecf9;
+  --church-border: #cdc7ec;
+
+  --status-done: #1f7a3d;
+  --status-done-bg: #e4f5e9;
+  --status-draft: #b8860b;
+  --status-draft-bg: #fbf2dd;
+  --status-stub: #a33a3a;
+  --status-stub-bg: #fbe8e8;
+  --status-blocked: #6b6f76;
+  --status-blocked-bg: #eceef1;
+
+  --radius: 8px;
+  --shadow: 0 1px 2px rgba(20,22,26,.06), 0 1px 1px rgba(20,22,26,.04);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2.5rem 1.5rem 4rem;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.report { max-width: 980px; margin: 0 auto; }
+
+.report-header { border-bottom: 3px solid var(--ink); padding-bottom: 1rem; margin-bottom: 2rem; }
+.report-header h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+.report-header .subtitle { color: var(--ink-soft); font-size: .95rem; }
+.report-header .meta { color: var(--ink-faint); font-size: .8rem; margin-top: .4rem; }
+
+section.block { margin: 2.5rem 0; }
+section.block h2 {
+  font-size: 1.15rem;
+  margin: 0 0 1rem;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--line);
+}
+section.block h3 { font-size: 1rem; margin: 1.2rem 0 .5rem; }
+section.block p { color: var(--ink-soft); }
+
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+.stat-tile {
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+}
+.stat-tile .num { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+.stat-tile .label { font-size: .78rem; color: var(--ink-soft); margin-top: .25rem; }
+
+.chip {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .15rem .55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip-done     { color: var(--status-done);    background: var(--status-done-bg); }
+.chip-draft    { color: var(--status-draft);   background: var(--status-draft-bg); }
+.chip-stub     { color: var(--status-stub);    background: var(--status-stub-bg); }
+.chip-blocked  { color: var(--status-blocked); background: var(--status-blocked-bg); }
+
+.chip-teaching { color: var(--teaching); background: var(--teaching-bg); border-color: var(--teaching-border); }
+.chip-church   { color: var(--church);   background: var(--church-bg);   border-color: var(--church-border); }
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  -webkit-overflow-scrolling: touch;
+}
+table.matrix {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 720px;
+  font-size: .85rem;
+}
+table.matrix th, table.matrix td {
+  padding: .55rem .7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+table.matrix thead th {
+  background: var(--paper-alt);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line-strong);
+  position: sticky;
+  top: 0;
+}
+table.matrix tbody tr:last-child td { border-bottom: none; }
+table.matrix tbody tr:hover { background: var(--paper-alt); }
+table.matrix td.context-teaching { border-left: 3px solid var(--teaching); }
+table.matrix td.context-church   { border-left: 3px solid var(--church); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.parser-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.1rem;
+}
+.parser-card.context-teaching { border-left-color: var(--teaching); }
+.parser-card.context-church   { border-left-color: var(--church); }
+
+.parser-card .card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.parser-card h4 { margin: 0; font-size: 1rem; }
+.parser-card .card-tags { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .3rem; }
+
+.parser-card dl.card-body { margin: .8rem 0 0; }
+.parser-card dl.card-body dt {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--ink-faint);
+  margin-top: .65rem;
+}
+.parser-card dl.card-body dt:first-child { margin-top: 0; }
+.parser-card dl.card-body dd {
+  margin: .15rem 0 0;
+  font-size: .87rem;
+  color: var(--ink);
+}
+.parser-card dl.card-body dd ul { margin: .2rem 0 0; padding-left: 1.1rem; }
+
+.parser-card > details > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  margin-top: .5rem;
+}
+.parser-card > details > summary::-webkit-details-marker { display: none; }
+.parser-card > details > summary::before { content: "▸ "; }
+.parser-card > details[open] > summary::before { content: "▾ "; }
+
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: stretch;
+  margin: 1rem 0;
+}
+.pipeline-step {
+  flex: 1 1 150px;
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .7rem .8rem;
+  position: relative;
+}
+.pipeline-step .step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: .75rem;
+  font-weight: 700;
+  margin-bottom: .4rem;
+}
+.pipeline-step .step-title { font-weight: 600; font-size: .85rem; }
+.pipeline-step .step-desc { font-size: .78rem; color: var(--ink-soft); margin-top: .2rem; }
+.pipeline-arrow {
+  align-self: center;
+  color: var(--ink-faint);
+  font-size: 1.2rem;
+  padding: 0 .1rem;
+}
+@media (max-width: 700px) {
+  .pipeline { flex-direction: column; }
+  .pipeline-arrow { transform: rotate(90deg); align-self: flex-start; margin-left: .6rem; }
+}
+
+ul.decisions { list-style: none; margin: 0; padding: 0; }
+ul.decisions li {
+  padding: .6rem .8rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--status-draft);
+  border-radius: var(--radius);
+  margin-bottom: .5rem;
+  font-size: .88rem;
+  background: var(--status-draft-bg);
+}
+ul.decisions li strong { display: block; font-size: .85rem; margin-bottom: .15rem; color: var(--ink); }
+
+.mockup-frame {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper-alt);
+  padding: 1rem;
+}
+.mockup-caption { font-size: .78rem; color: var(--ink-faint); margin-top: .5rem; text-align: center; }
+
+@media print {
+  body { padding: 0; font-size: 12px; }
+  .parser-card, table.matrix, .pipeline-step { box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
+}
+
+@media (prefers-color-scheme: dark) {
+  body { background: #16171a; color: #e7e9ec; }
+  .ink-soft-fix { color: #b7bac0; }
+  .stat-tile, table.matrix thead th, .pipeline-step, .parser-card, .mockup-frame { background: #1e2024; border-color: #33363c; }
+  table.matrix tbody tr:hover { background: #24262b; }
+  section.block h2 { border-bottom-color: #33363c; }
+  .report-header { border-bottom-color: #e7e9ec; }
+}
+
+.pw-widget { font-family: var(--font); font-size: .85rem; }
+.pw-input {
+  border: 1px solid var(--line-strong); border-radius: 6px;
+  background: var(--paper); padding: .6rem .75rem; margin-bottom: .8rem;
+  color: var(--ink-faint); font-style: italic;
+}
+.pw-text {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 6px; padding: .8rem .9rem; line-height: 1.9;
+  margin-bottom: .7rem;
+}
+.pw-span { padding: .05rem .15rem; border-radius: 3px; }
+.pw-noun    { background: #eaf5ee; border-bottom: 2px solid #2f6f4f; }
+.pw-verb    { background: #fbe8e8; border-bottom: 2px solid #a33a3a; }
+.pw-modifier{ background: #fbf2dd; border-bottom: 2px solid #b8860b; }
+.pw-conn    { background: #eeecf9; border-bottom: 2px solid #4a3f9e; }
+.pw-legend { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem; }
+.pw-chip { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; color: var(--ink-soft); }
+.pw-swatch { width: .6rem; height: .6rem; border-radius: 2px; display: inline-block; }
+.pw-layers { display: flex; gap: .4rem; margin-bottom: .8rem; flex-wrap: wrap; }
+.pw-layer-btn {
+  font-size: .72rem; padding: .3rem .6rem; border-radius: 6px;
+  border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink-soft);
+}
+.pw-layer-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pw-layer-btn.tier-b { color: var(--ink-faint); background: var(--paper-alt); border-style: dashed; }
+.pw-explainer { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.pw-explainer th, .pw-explainer td { border: 1px solid var(--line); padding: .35rem .5rem; text-align: left; }
+.pw-explainer th { background: var(--paper-alt); font-size: .68rem; text-transform: uppercase; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="report">
+
+  <header class="report-header">
+    <h1>Parser Widgets — Status Review</h1>
+    <div class="subtitle">Grammar chassis and its 12 in-progress clones, across Teaching and Church</div>
+    <div class="meta">Prepared for Luke · 2026-08-09 · 13 parsers reviewed</div>
+  </header>
+
+  <section class="block" id="summary">
+    <h2>Executive Summary</h2>
+    <div class="stat-tiles">
+      <div class="stat-tile"><div class="num">1</div><div class="label">Shipped &amp; accepted</div></div>
+      <div class="stat-tile"><div class="num">11</div><div class="label">Content drafted</div></div>
+      <div class="stat-tile"><div class="num">1</div><div class="label">Content still a stub</div></div>
+      <div class="stat-tile"><div class="num">13</div><div class="label">Parsers total</div></div>
+    </div>
+    <p>Grammar is the only finished parser — built, verified against AC-1–12, and accepted by Luke on 2026-07-05. It is the reference chassis all 12 clones inherit. Every clone is at the same structural stage: chassis files cloned verbatim from Grammar (still Grammar-branded — title, "G" glyph, output paths, README recipe) and a content-source file drafted (except Fact-checking, which is still a TODO stub). None has had its four cartridge blocks (CONFIG, CONTENT, ENGINE.rules, EXPLAINER.render) adapted, so nothing beyond Grammar is yet functional. All 11 drafted content files are awaiting Luke's review before build work can proceed.</p>
+  </section>
+
+  <section class="block" id="matrix">
+    <h2>Status Matrix</h2>
+    <div class="table-scroll">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Parser</th><th>Context</th><th>Project ID</th><th>Content maturity</th>
+            <th>Chassis adapted</th><th>Tier profile</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="context-teaching">Grammar</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>N/A — original</td>
+            <td>Shipped, 33.5&nbsp;KB / 113+ rule nodes</td>
+            <td>N/A — chassis source</td>
+            <td>Tier A (Tier B slot disabled)</td>
+            <td><span class="chip chip-done">Done</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Style</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-05</td>
+            <td>14 rules, 5 categories — draft</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Rhetoric</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-02</td>
+            <td>568 lines — draft, from real local databases</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Logic</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-04</td>
+            <td>390 lines — draft (8 formal + 42 informal fallacies, 24 syllogisms)</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Interpretation</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-03</td>
+            <td>27 methodology entries — draft; 2 columns deferred</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Story-tension</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-06</td>
+            <td>169 lines — draft, worked example included</td>
+            <td>Cloned, not adapted</td>
+            <td>A + B planned (trope check, overlap open)</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Tropes &amp; symbols</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-07</td>
+            <td>546 lines — draft; some sections outline-only</td>
+            <td>Cloned, not adapted</td>
+            <td>A + B planned (TV Tropes lookup)</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-teaching">Fact-checking</td>
+            <td><span class="chip chip-teaching">Teaching</span></td>
+            <td>TE-08</td>
+            <td>TODO stub only — least developed</td>
+            <td>Cloned, not adapted</td>
+            <td>B core (essential to function)</td>
+            <td><span class="chip chip-stub">Stub</span></td>
+          </tr>
+          <tr>
+            <td class="context-church">Greek and Hebrew</td>
+            <td><span class="chip chip-church">Church</span></td>
+            <td>CH-13</td>
+            <td>43&nbsp;KB — [PROPOSED SCOPE], awaiting sign-off</td>
+            <td>Cloned, not adapted</td>
+            <td>A proposed, B proposed (advanced analysis)</td>
+            <td><span class="chip chip-blocked">Blocked</span></td>
+          </tr>
+          <tr>
+            <td class="context-church">Systematic Theology</td>
+            <td><span class="chip chip-church">Church</span></td>
+            <td>CH-11</td>
+            <td>640 lines / 58&nbsp;KB — draft; 4 [UNVERIFIED] Scripture refs</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-church">Biblical Theology</td>
+            <td><span class="chip chip-church">Church</span></td>
+            <td>CH-12</td>
+            <td>262 lines — draft; no [UNVERIFIED] flags</td>
+            <td>Cloned, not adapted</td>
+            <td>A only</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-church">Biblical symbols and cross-references</td>
+            <td><span class="chip chip-church">Church</span></td>
+            <td>CH-14</td>
+            <td>1083 lines — largest draft; 6 [UNVERIFIED] entries</td>
+            <td>Cloned, not adapted</td>
+            <td>A + B planned (interpretive disputes)</td>
+            <td><span class="chip chip-draft">Draft</span></td>
+          </tr>
+          <tr>
+            <td class="context-church">Biblical Commentary</td>
+            <td><span class="chip chip-church">Church</span></td>
+            <td>CH-15</td>
+            <td>232 lines — draft, entirely UNVERIFIED (paraphrase, SWORD unparsed)</td>
+            <td>Cloned, not adapted</td>
+            <td>A declared not implemented, B declared not wired</td>
+            <td><span class="chip chip-blocked">Blocked</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block" id="mockup">
+    <h2>What a Parser Widget Looks Like</h2>
+    <p>Real screenshots exist only for Grammar; the mockup below illustrates the shared chassis UI every clone inherits: an input area, Layer&nbsp;1 inline colour highlighting with a legend/key, Layer&nbsp;2 icons and in-text expanders, Layer&nbsp;3 hover pop-ups and tokenized spans, a focus-level selector, a greyed-out Tier&nbsp;B button where that reasoning tier is disabled or not yet wired, and an explainer table feeding the export bar (PDF / Markdown / plain text).</p>
+    <div class="mockup-frame">
+      <div class="pw-widget">
+        <div class="pw-input">Paste or type a passage — up to 1000 words…</div>
+
+        <div class="pw-layers">
+          <span class="pw-layer-btn active">Focus: Parts of Speech</span>
+          <span class="pw-layer-btn">Focus: Clause Structure</span>
+          <span class="pw-layer-btn tier-b" title="Not wired for this parser">Tier B: Style Advisor</span>
+        </div>
+
+        <div class="pw-text">
+          <span class="pw-span pw-noun">The council</span>
+          <span class="pw-span pw-verb">reviewed</span>
+          the proposal
+          <span class="pw-span pw-conn">before</span>
+          <span class="pw-span pw-modifier">quietly</span>
+          adjourning.
+        </div>
+
+        <div class="pw-legend">
+          <span class="pw-chip"><span class="pw-swatch" style="background:#2f6f4f"></span>Noun phrase</span>
+          <span class="pw-chip"><span class="pw-swatch" style="background:#a33a3a"></span>Verb</span>
+          <span class="pw-chip"><span class="pw-swatch" style="background:#b8860b"></span>Modifier</span>
+          <span class="pw-chip"><span class="pw-swatch" style="background:#4a3f9e"></span>Connective</span>
+        </div>
+
+        <table class="pw-explainer">
+          <thead><tr><th>Token</th><th>Category</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>The council</td><td>Noun phrase</td><td>Subject, definite</td></tr>
+            <tr><td>reviewed</td><td>Verb</td><td>Past tense, transitive</td></tr>
+            <tr><td>quietly</td><td>Modifier</td><td>Adverb of manner</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mockup-caption">Illustrative mockup — colours/labels vary by parser</div>
+    </div>
+
+    <h3>Tier A vs Tier B — the reasoning model</h3>
+    <p><strong>Tier A</strong> is hardcoded JavaScript: patterns, taxonomies, and fuzzy-matching rules baked into the single HTML file at build time (per Grammar's three-pass engine — lexical, syntactic, conventions/errors). It runs entirely offline with zero external network requests, which is why Grammar and most clones can function as double-clickable files. <strong>Tier B</strong> is a live API/agent call, reserved for reasoning that needs world knowledge, live judgment, or content genuinely out of reach of hardcoded rules — trope lookup (Story-tension, Tropes &amp; symbols), source verification (Fact-checking), or advanced language/interpretive analysis (Greek and Hebrew, Biblical symbols). Tier B is disabled by default across the chassis (a visible "Tier B check — off" button reserves the slot) and, wherever it is wired, must degrade gracefully when offline or without an API key. Fact-checking is the one parser where Tier B is not optional but core to the tool's purpose.</p>
+  </section>
+
+  <section class="block" id="pipeline">
+    <h2>Remaining Build Pipeline (per clone)</h2>
+    <p>Every one of the 12 clones needs the same five steps to go from cloned chassis to a functioning parser.</p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <span class="step-num">1</span>
+        <div class="step-title">Adapt README + build scripts</div>
+        <div class="step-desc">Rename Grammar references, decide lexicon need</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="step-num">2</span>
+        <div class="step-title">Swap the four cartridges</div>
+        <div class="step-desc">CONFIG · CONTENT compile · ENGINE.rules · EXPLAINER.render</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="step-num">3</span>
+        <div class="step-title">Write short spec</div>
+        <div class="step-desc">Cites the Grammar spec as base</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="step-num">4</span>
+        <div class="step-title">Build</div>
+        <div class="step-desc">Run build_parser.py</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <span class="step-num">5</span>
+        <div class="step-title">Test &amp; freeze</div>
+        <div class="step-desc">Verify against sample input, lock version</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="details">
+    <h2>Parser Detail</h2>
+    <div class="card-grid">
+
+      <article class="parser-card context-teaching">
+        <details open>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Grammar (chassis original)</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-done">Done</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">N/A — original</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Single-file browser tool parsing one sentence (cap 100 words) across seven grammatical levels: sentential, clausal, phrasal, lexical, conventions, punctuation, common errors. Reference chassis for the other 12 parsers.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only — three-pass confidence-weighted engine (lexical via embedded 20k-word SQLite lexicon + morphology fallback; syntactic/semantic phrase &amp; clause classification; conventions/error checks). Tier B slot present but disabled.</dd>
+          <dt>Output / UI</dt>
+          <dd>Structural-kinship colour highlighting with colour key; click expanders + icon bar; right-click token menu + hover pop-ups; focus-level selector (Sentential/Clausal/Phrasal/Lexical/Display All); export bar (PDF/Markdown/plain text); two-part explainer (word-column table + deduplicated rules extract).</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Shipped: <code>Grammar_parser.html</code> (2.1&nbsp;MB, v1.0.0, fully offline)</li>
+              <li>20,000-row SQLite lexicon embedded (Moby POS + FrequencyWords)</li>
+              <li>113+ rule nodes compiled from <code>Grammar_contents.md</code></li>
+              <li>All acceptance criteria AC-1–12 passed, accepted by Luke 2026-07-05</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>None — future content corrections go through <code>Grammar_contents.md</code> then rebuild</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Style</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-05</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Prose-style pattern-matching tool — one paragraph (cap 1000 words) matched against a style schema.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only — hardcoded fuzzy-logic rules, fully offline.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis layers plus a spell checker with red fuzzy underline. Explainer format undefined.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned from Grammar 2026-07-06</li>
+              <li>14 rules across 5 categories drafted (Clarity, Brevity, Coherence, Voice, Diction), with before/after examples and a provenance table</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Adapt README/build scripts to Style; decide lexicon need</li>
+              <li>Write ENGINE.rules wiring the 14 rules to colour/icon assignments</li>
+              <li>Decide Explainer format (open per Parser_guide.md §2.4)</li>
+              <li>Luke review of draft content</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Rhetoric</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-02</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Analyzes persuasion and composition — speeches, written persuasion, visual rhetoric.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only — pattern-matches five canons, three appeals, tropes, and fallacies. No Tier B planned.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis stack; explainer table of canons × appeals × tropes by effect.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06; "confirm chassis" task marked done (only clone where this is true)</li>
+              <li>568-line content draft compiled from three real local Lukeatron databases; prior-art skills archived</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Repoint README/build scripts; adapt CONFIG (glyph, cap, levels, palette)</li>
+              <li>Compile content into CONTENT object; decide category hierarchy</li>
+              <li>Write three-pass ENGINE.rules and EXPLAINER.render table</li>
+              <li>Write short spec; test on a persuasive passage</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Logic</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-04</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Analyzes reasoning, argument structure, and fallacies — terms, judgements, arguments.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only, hardcoded pattern-matching; Tier B slot disabled.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis stack; explainer covers terms/judgements/arguments + fallacies + syllogisms as ASCII/PDF circles.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-05</li>
+              <li>390-line draft: 8 formal + 42 informal fallacies (4 categories), 24 syllogism forms, synthesised from standard public-domain references</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Confirm/adapt chassis and decide lexicon need</li>
+              <li>Adapt the four cartridge blocks, incl. ASCII-circle Explainer</li>
+              <li>Author fuzzy-logic rules against the 50-fallacy taxonomy and 24 syllogism forms</li>
+              <li>Write short spec; Luke review; assemble shipped asset</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Interpretation</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-03</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Matches texts against interpretive methodologies across social science and English literature.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only — fuzzy-logic matching of named entities/phrases against a 27-methodology schema. Tier B not declared.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis layers; explainer is a methodology table (method · proponents · quote snippet · matching elements).</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-05</li>
+              <li>27 methodology entries drafted (13 social science, 14 literature) from SEP/IEP/Oxford Bibliographies/primary texts; two columns deferred</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Adapt README/build scripts; decide lexicon question</li>
+              <li>Customize the four cartridge blocks; write three-pass engine</li>
+              <li>Populate deferred quote-snippet and matching-elements columns</li>
+              <li>Write short spec; build, test, freeze</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Story-tension</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-06</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Identifies the five stages of Freytag's Pyramid in a scene (cap 5000 words); plot summary + tension curve.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A: structural parsing, stage identification. Tier B (declared, not implemented): trope detection / TV Tropes lookup — disabled, must degrade gracefully offline.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis layers; explainer is an ASCII tension curve + 5-row plot summary table; PDF adds richer graph rendering.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>169-line content draft: Freytag schema, worked example ("The Last Letter"), open-items log</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Confirm/adapt build recipe; drop lexicon step if unneeded</li>
+              <li>Resolve TE-07 structural/trope overlap with Tropes &amp; symbols</li>
+              <li>Write three-pass ENGINE.rules and the tension-line ASCII EXPLAINER.render</li>
+              <li>Decide API-key handling for Tier B; write short spec</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Tropes &amp; symbols</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-07</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Detects literary tropes and symbols — natural/colour/animal/object/number symbolism, archetypes.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A: hardcoded fuzzy rules + fixed symbol/archetype taxonomy. Tier B (deferred): TV Tropes lookup at runtime, must degrade gracefully.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis layers. Explainer format undefined.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>546-line draft: natural symbols and 15 archetypes fully elaborated; colour/animal/object/number symbolism outline-only</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Elaborate outline-only symbolism sections</li>
+              <li>Adapt the four cartridge blocks; define Explainer format</li>
+              <li>Resolve overlap with Story-tension's trope rule set</li>
+              <li>Wire or disable Tier-B trope check with graceful degradation</li>
+              <li>Luke review of draft content</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-teaching">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Fact-checking</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-stub">Stub</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-teaching">Teaching</span>
+          <span class="chip">TE-08</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Splits claim from source, then searches both to verify — the only primarily Tier-B parser.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A: tokenize, split claim/source spans. Tier B: API call verifies both — essential to function, must degrade gracefully offline/no key.</dd>
+          <dt>Output / UI</dt>
+          <dd>Standard chassis layers. Explainer format undefined.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Project created 2026-07-06; chassis cloned; registry + notes in place</li>
+              <li>Content file is a TODO stub only — no material drafted, the least-developed of the 12 clones</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Draft <code>Fact-checking_content.md</code> from scratch — claim/source-splitting rules</li>
+              <li>Decide the approved source list (needs Luke's input)</li>
+              <li>Adapt ENGINE.rules as a claim/source split + API-call harness</li>
+              <li>Decide Explainer format and API-key storage; write spec; build and test</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-church">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Greek and Hebrew</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-blocked">Blocked</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-church">Church</span>
+          <span class="chip">CH-13</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Biblical-language study aide for sermon prep — Greek and Hebrew identification, vocabulary, morphology.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A (proposed): language ID, top-frequency vocab lookup, basic morphological parse. Tier B (proposed): rare/irregular forms, syntax, discourse, theological depth — would need an LLM call.</dd>
+          <dt>Output / UI</dt>
+          <dd>Proposed two-panel explainer: per-token table + summary prose (coverage %, vocabulary-range assessment).</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>43&nbsp;KB content draft marked [PROPOSED SCOPE — confirm before treating as final]: Greek alphabet/paradigms, ~50 top-frequency vocab; Hebrew alphabet/pointing, seven binyanim with paradigms</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li><strong>Scope sign-off by Luke required first</strong> — [PROPOSED SCOPE] flag</li>
+              <li>Build a genuine Greek/Hebrew gloss+parse lexicon (SQLite) — unlike most clones, this one needs one</li>
+              <li>Write Tier-A tokenization + morphological lookup rules for both languages</li>
+              <li>Cartridge swap; test with e.g. John 1:1 and Genesis 1:1</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-church">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Systematic Theology</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-church">Church</span>
+          <span class="chip">CH-11</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Eight major loci, nine-stage Ordo Salutis, TULIP doctrines, and theme-frequency scoring for doctrinal weight.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only, fully offline — taxonomy matching, theme-frequency scoring, Ordo Salutis and TULIP matching.</dd>
+          <dt>Output / UI</dt>
+          <dd>Chassis stack; focus levels TBD (Locus/Ordo Salutis/TULIP/theme-frequency); Explainer TBD, likely tabular.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>640-line / 58&nbsp;KB draft (loci, Ordo Salutis, TULIP, 7-step scoring algorithm) sourced from Berkhof, Grudem, Frame, Bavinck, Calvin, Westminster Standards</li>
+              <li>Four Scripture references flagged [UNVERIFIED]</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Adapt README/build scripts; CONFIG rename and focus levels/palette</li>
+              <li>Rewrite ENGINE.rules (loci/Ordo/TULIP mapping + doctrinal-consistency checks) and EXPLAINER.render</li>
+              <li>Luke review of draft plus the 4 [UNVERIFIED] references</li>
+              <li>Build, offline-test with a sermon passage, spec</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-church">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Biblical Theology</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-church">Church</span>
+          <span class="chip">CH-12</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Redemptive-historical, whole-Bible study aide, distinct from Systematic Theology's topic organisation.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A only — fuzzy-rule pattern/schema matching against the content data.</dd>
+          <dt>Output / UI</dt>
+          <dd>Chassis stack; explainer is a four-row table per matched concept (name, act/epoch + theme, exemplars, application).</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>262-line draft: Four-Act structure, 13-epoch narrative, six canon-tracing themes, hermeneutical commitments; sourced from Vos/Goldsworthy consensus, no [UNVERIFIED] flags</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>Adapt README/build scripts; decide lexicon question</li>
+              <li>Cartridge swap incl. church-context guardrails (law-gospel, Christological fulfilment)</li>
+              <li>Write spec; Luke review of draft; test with sermon texts; freeze version</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-church">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Biblical symbols and cross-references</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-draft">Draft</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-church">Church</span>
+          <span class="chip">CH-14</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Identifies symbolic language in a passage and surfaces related canonical cross-references.</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A: symbol detection, keyword/synonym match, cross-ref lookup, typological-chain filtering. Tier B (not wired): interpretive disputes — disabled slot.</dd>
+          <dt>Output / UI</dt>
+          <dd>Colour by symbol category; hover canon coordinates; click-through full symbol entries; three-level focus selector.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>Content seeded — 1083 lines, largest of all drafts: 13 major symbols, secondary symbols, 5 colour symbols, canonical index of 34 symbols</li>
+              <li>Six entries flagged [UNVERIFIED]</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li>README adaptation, drop lexicon step</li>
+              <li>CONTENT compile; ENGINE.rules (tokenize → stem/synonym match → weight by hierarchy/[UNVERIFIED] flags → typological hints)</li>
+              <li>EXPLAINER.render incl. optional typological-chain diagram</li>
+              <li>Luke review of DRAFT + [UNVERIFIED] entries</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+      <article class="parser-card context-church">
+        <details>
+        <summary style="margin-top:0;"><h4 style="display:inline; font-size:1rem;">Biblical Commentary</h4></summary>
+        <div class="card-head" style="margin-top:.5rem;">
+          <span class="chip chip-blocked">Blocked</span>
+        </div>
+        <div class="card-tags">
+          <span class="chip chip-church">Church</span>
+          <span class="chip">CH-15</span>
+        </div>
+        <dl class="card-body">
+          <dt>Purpose</dt>
+          <dd>Passage-level commentary lookup/synthesis across six SWORD-format commentaries (Calvin, Clarke, DTN, KingComments, RWP, Scofield).</dd>
+          <dt>Reasoning tiers</dt>
+          <dd>Tier A (declared, not implemented): pattern matching, tokenization, rule-based lookup. Tier B: declared not wired, disabled button.</dd>
+          <dt>Output / UI</dt>
+          <dd>Chassis stack, offline for Tier A. Explainer format undefined — likely table or side-by-side per commentator.</dd>
+          <dt>Work done</dt>
+          <dd>
+            <ul>
+              <li>Chassis cloned 2026-07-06</li>
+              <li>232-line draft: worked example for Ephesians 1:3–14 across all six commentaries — but marked DRAFT and UNVERIFIED throughout, since the SWORD ZIP/OSIS-XML modules could not be parsed in the draft pass and the text is paraphrase, not actual module text</li>
+              <li>Only Calvin's licence confirmed Public Domain; the other five [UNVERIFIED]</li>
+            </ul>
+          </dd>
+          <dt>Work remaining</dt>
+          <dd>
+            <ul>
+              <li><strong>Parse the SWORD modules</strong> — decompress OSIS XML, replace paraphrase with actual quoted text (Church charter requires faithfulness to text)</li>
+              <li>Verify licences and module identities (DTN, KingComments uncertain) from <code>.conf</code> files</li>
+              <li>Cartridge swap incl. tradition-recognition ENGINE.rules; define Explainer format</li>
+              <li>Write spec; implement engine; build and test</li>
+            </ul>
+          </dd>
+        </dl>
+        </details>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="block" id="decisions">
+    <h2>Open Decisions for Luke</h2>
+    <ul class="decisions">
+      <li><strong>Explainer format undefined</strong> — Style, Tropes &amp; symbols, Fact-checking, Biblical Commentary, and Systematic Theology all need this decided before EXPLAINER.render can be written.</li>
+      <li><strong>Story-tension ↔ Tropes &amp; symbols overlap</strong> — whether the two parsers share a trope rule set (TE-07) is unresolved.</li>
+      <li><strong>Fact-checking approved source list</strong> — the Tier-B source list for verification has not been chosen; content drafting can't start without it.</li>
+      <li><strong>Lexicon keep/drop per clone</strong> — only Greek and Hebrew clearly needs an embedded lexicon; every other clone's README/build scripts still assume Grammar's 20k-word lexicon step by default.</li>
+      <li><strong>Greek and Hebrew scope sign-off</strong> — the 43&nbsp;KB content draft is explicitly flagged [PROPOSED SCOPE — confirm before treating as final] and needs Luke's confirmation before build work proceeds.</li>
+      <li><strong>[UNVERIFIED] Scripture references</strong> — four in Systematic Theology, six in Biblical symbols and cross-references, all flagged for Luke's review before the content is trusted.</li>
+      <li><strong>Biblical Commentary SWORD parsing</strong> — all six commentary sources are currently paraphrase, not quoted text, because the SWORD ZIP/OSIS-XML modules haven't been parsed; per the Church charter (faithful to text, no loose quotes) this content cannot be treated as final until the modules are actually parsed and licences/identities verified.</li>
+    </ul>
+  </section>
+
+  <footer style="margin-top:3rem; font-size:.78rem; color:var(--ink-faint); border-top:1px solid var(--line); padding-top:1rem;">
+    Drafted by Lukeatron · parser-widgets status review · source research: <code>System/Widgets/setup/parser-widgets-research.md</code> — hand this file to any follow-up delegation task. Built widgets ship to <code>System/Widgets/Parser/</code>; this setup folder moves to <code>Trash/</code> once all thirteen are complete.
+  </footer>
+
+</div>
+</body>
+</html>

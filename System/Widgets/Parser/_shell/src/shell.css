@@ -1,0 +1,88 @@
+/* ============================================================
+   Parser Shell — generic chassis CSS
+   Never edited per-cartridge (ParserShell.spec.md §3-FR-9, D-3).
+   Focus-level CSS (.v-<level> rules) is NOT here — it is generated
+   at build time from CONFIG.levels by _shell/build/assemble.py
+   (AD-2) and appended after this file. A cartridge's own
+   files.styles CSS (optional) loads after the generated block and
+   may override any selector here.
+   ============================================================ */
+:root{--bg:#faf9f5;--card:#fff;--ink:#1a1a17;--ink2:#5f5e5a;--ink3:#9a9891;--line:#e3e1d9;--line2:#c9c7bd;--acc:#185FA5;--accbg:#E6F1FB;--red:#E24B4A;--radius:8px;font-size:16px;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;}
+.wrap{max-width:880px;margin:0 auto;padding:24px 20px 40px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+header .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;}
+header .brand .badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:bold;font-size:15px;}
+header .meta{font-size:12px;color:var(--ink3);}
+button{font:inherit;font-size:14px;padding:6px 14px;border:1px solid var(--line2);border-radius:var(--radius);background:#fff;color:var(--ink);cursor:pointer;}
+button:hover{background:#f4f3ee;}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+button.primary:hover{background:#3a3a35;}
+button:disabled{opacity:.45;cursor:not-allowed;}
+button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
+#input{border:1px solid var(--line2);border-radius:var(--radius);padding:12px 14px;min-height:64px;font-size:15px;background:#fff;outline:none;}
+#input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg);}
+/* Spelling module (SpellingModule.spec.md FR-9): CSS Custom Highlight API
+   is the primary rendering path (::highlight(spelling-misspelled), set via
+   CSS.highlights in _modules/Spelling/src/ui.js — no DOM mutation, so no
+   selector inside #input targets it); .spelling-mark styles the
+   non-mutating absolute-position overlay fallback for browsers without the
+   Highlight API. Neither existed in the pre-shell monolith's innerHTML+
+   TreeWalker approach (excluded outright, not offered as a fallback tier —
+   AD-2), so this is new chassis CSS, not a port of the old .miss rule. */
+::highlight(spelling-misspelled){text-decoration:underline wavy var(--red) 2px;text-underline-offset:3px;}
+.spelling-mark{border-bottom:2px wavy var(--red);}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;}
+.muted{font-size:12px;color:var(--ink3);}
+.warn{background:#FCEBEB;color:#791F1F;border:1px solid #F7C1C1;border-radius:var(--radius);padding:8px 12px;font-size:13px;display:none;margin:8px 0;}
+#key{font-size:12px;color:var(--ink2);background:#f4f3ee;border-radius:var(--radius);padding:6px 10px;margin:10px 0;min-height:20px;}
+.chip{border-radius:4px;padding:1px 7px;white-space:nowrap;display:inline-block;margin:1px 2px;}
+#iconbar{font-size:12.5px;color:var(--ink2);margin:8px 0;display:flex;gap:14px;flex-wrap:wrap;}
+#iconbar .ic{cursor:help;border-bottom:1px dotted var(--line2);position:relative;}
+#sline{font-size:13px;color:var(--ink3);margin:6px 0;}
+#stage{font-size:17.5px;line-height:2.4;margin:8px 0 4px;}
+#stage .cl{border-radius:4px;padding:2px 3px;transition:background .25s,color .25s;}
+#stage .ph{border-radius:4px;padding:1px 2px;transition:background .25s,color .25s;}
+#stage .w{transition:all .2s;}
+#stage .pos{display:none;}
+#stage .lbl{display:none;font-size:11px;font-weight:600;border-radius:4px;padding:0 5px;margin-right:4px;vertical-align:2px;}
+#stage .noclause{color:var(--ink2);}
+#tip{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:8px 11px;font-size:12.5px;line-height:1.5;max-width:300px;box-shadow:0 4px 14px rgba(0,0,0,.09);z-index:50;pointer-events:none;}
+#tip b{display:block;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+#ctx{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px 0;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;min-width:200px;}
+#ctx div{padding:5px 14px;}
+#ctx div.h{font-weight:600;border-bottom:1px solid var(--line);margin-bottom:4px;}
+/* Spelling module suggestion popover (SpellingModule.spec.md FR-10). The
+   module looks up this exact id (POPOVER_ID = "spelling-suggestions" in
+   _modules/Spelling/src/ui.js) and reuses it if found instead of creating
+   its own body-appended, unstyled div — so this id is load-bearing, not a
+   free choice. Children are plain `[role="option"]` spans (module's own
+   makeOption()); there is no .rep/.ign class in the shipped module, so
+   those old selectors (a design that was never actually produced by this
+   code) are gone, not renamed. */
+#spelling-suggestions{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;max-width:260px;}
+#spelling-suggestions [role="option"]{border-radius:4px;padding:2px 9px;cursor:pointer;display:inline-block;margin:2px;background:#f4f3ee;color:var(--ink2);}
+#spelling-suggestions [role="option"]:first-child{background:var(--accbg);color:var(--acc);font-weight:600;}
+#spelling-suggestions [role="option"][aria-selected="true"]{outline:2px solid var(--acc);outline-offset:-2px;}
+#spelling-suggestions [role="option"][data-action]{border:1px solid var(--line);background:#fff;}
+#explainer{display:none;border-top:1px solid var(--line);margin-top:18px;padding-top:16px;}
+#explainer h3{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:7px;}
+.xt{width:100%;border-collapse:collapse;margin-bottom:10px;}
+.xt th,.xt td{border:1px solid var(--line);padding:4px 7px;font-size:12.5px;text-align:center;}
+.xt th{background:#f4f3ee;color:var(--ink2);font-weight:600;text-align:left;white-space:nowrap;}
+#rules .cat{font-size:12px;font-weight:600;color:var(--ink2);margin:10px 0 2px;text-transform:uppercase;letter-spacing:.4px;}
+#rules ul{margin:0;padding-left:20px;font-size:13.5px;}
+#rules li{margin:3px 0;}
+#rules .ex{color:var(--ink2);font-style:italic;}
+footer{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);margin-top:18px;padding-top:12px;font-size:12px;color:var(--ink3);flex-wrap:wrap;}
+.tt{visibility:hidden;position:absolute;bottom:135%;left:0;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:8px 11px;font-size:12px;line-height:1.5;width:280px;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.1);z-index:55;}
+.ic:hover .tt{visibility:visible;}
+@media print{
+ body{background:#fff;}
+ body.print-bare .no-print,body.print-bare header,body.print-bare footer{display:none!important;}
+ body.print-chrome .no-print{display:none!important;}
+ #explainer{display:block!important;border:none;}
+ .card{border:none;padding:0;}
+}

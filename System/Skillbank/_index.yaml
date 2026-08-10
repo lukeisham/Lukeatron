@@ -1,9 +1,34 @@
 # System/Skillbank/_index.yaml
 # On-demand skill catalog. Loaded at boot (triggers only); skill bodies load when a trigger fires.
 # Add a one-line entry here for every !SkillName/skill.md, or the skill is invisible.
-last_updated: 2026-07-14
-# Updated: !WhatsApp added 2026-06-22; !Dashboard added 2026-06-22; !IdeaWiki added 2026-06-23; !IdeaWiki v3.2.0 gated new-theme path added 2026-06-26; !SaleTracker added 2026-07-01, removed 2026-07-01 (PP-09 abandoned); !TechSpec added 2026-07-05, renamed !TechSpecSingleFeature 2026-07-06; !BookCover added 2026-07-05; !Specs added 2026-07-06 (from Inbox: Keiths Spec Skill), renamed !TechSpecFullProject 2026-07-06; 2026-07-14 — Wayfinder suite (from Keith, via Inbox) added: !Research, !Utopia, !MultiRepo, !Spike, !Ideation, !RepoRegistry, !Waypoint, !SkillDocs, !Readme, all under System/Skillbank/PersonalResearch/Wayfinder/ — !Ideation renamed from "ideas" (distinct from !IdeaWiki), !MultiRepo renamed from "meta", !RepoRegistry renamed from "repo", !SkillDocs renamed from "docs", !Waypoint renamed from a standalone "checkpoint" command to avoid colliding with Lukeatron's own !Checkpoint safety gate. Orphaned /specs-prd, /specs-architecture, /specs-depend commands filed into the existing !TechSpecFullProject/commands/.
+last_updated: 2026-07-15
+# Updated: !WhatsApp added 2026-06-22; !Dashboard added 2026-06-22; !IdeaWiki added 2026-06-23; !IdeaWiki v3.2.0 gated new-theme path added 2026-06-26; !SaleTracker added 2026-07-01, removed 2026-07-01 (PP-09 abandoned); !TechSpec added 2026-07-05, renamed !TechSpecSingleFeature 2026-07-06; !BookCover added 2026-07-05; !Specs added 2026-07-06 (from Inbox: Keiths Spec Skill), renamed !TechSpecFullProject 2026-07-06; 2026-07-14 — Wayfinder suite (from Keith, via Inbox) added: !Research, !Utopia, !MultiRepo, !Spike, !Ideation, !RepoRegistry, !Waypoint, !SkillDocs, !Readme, all under System/Skillbank/PersonalResearch/Wayfinder/ — !Ideation renamed from "ideas" (distinct from !IdeaWiki), !MultiRepo renamed from "meta", !RepoRegistry renamed from "repo", !SkillDocs renamed from "docs", !Waypoint renamed from a standalone "checkpoint" command to avoid colliding with Lukeatron's own !Checkpoint safety gate. Orphaned /specs-prd, /specs-architecture, /specs-depend commands filed into the existing !TechSpecFullProject/commands/. 2026-07-15 — from Inbox: !write-a-skill, !teach, !grilling, !handoff added under GeneralPurposeSkills/; !grill-me stub discarded, its trigger folded into !grilling. !Darkfactory added 2026-07-15 under GeneralPurposeSkills/. !TheJesusWebsite added 2026-07-15 under Church/ — maintains the ranked Wikipedia-article list in Memory/Long-Term/The-Jesus-Website/; renamed !TheJesusWebsite-Wikipedia 2026-07-15. 2026-07-15 — The-Jesus-Website/ reorganized into per-tracker subfolders (Wikipedia/, Popular Challenges/, Academic Challenges/); !TheJesusWebsite-Wikipedia's files/paths moved into Wikipedia/ accordingly. !TheJesusWebsite-Challenges added under Church/ — sibling skill maintaining the two new Popular/Academic Challenges-to-historicity ranked lists (mode-switched, one skill for both).
 skills:
+  - name: "!Darkfactory"
+    path: "System/Skillbank/GeneralPurposeSkills/!Darkfactory/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Lights-out multi-agent factory over a clear purpose (gated by !Grilling if unclear) — an Opus boss coordinates and decides; Haiku subagents review/read/search internally; Sonnet subagents do internet research and building (on DeepSeek, tiering collapses: all subagents are the same model). Everything made is tested in Sandbox/ first; no permissions inside the factory except !Checkpoint always for computer modification, Long-Term/ memory changes, external emails, and internet interactions; results land in Outbox/ unless instructed otherwise."
+    triggers: ["darkfactory", "run the factory", "dark factory", "spin up agents on this", "build this with subagents", "agent factory"]
+  - name: "!write-a-skill"
+    path: "System/Skillbank/GeneralPurposeSkills/!write-a-skill/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Create a new agent skill with proper structure, progressive disclosure, and bundled resources — gathers requirements, drafts SKILL.md (+ reference files/scripts as needed), reviews with the user. Complements !Suggest (which outlines a reusable skill from repetitive work) by doing the actual authoring."
+    triggers: ["create a skill", "write a new skill", "build a new skill", "author a skill", "skill structure"]
+  - name: "!teach"
+    path: "System/Skillbank/GeneralPurposeSkills/!teach/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Stateful, multi-session teaching workspace for the user to learn a new skill or concept — tracks MISSION.md, resources, learning-records, glossary, and produces short self-contained HTML lessons tied to the mission and the user's zone of proximal development."
+    triggers: ["teach me", "teach me about", "I want to learn", "help me learn", "teach about"]
+  - name: "!grilling"
+    path: "System/Skillbank/GeneralPurposeSkills/!grilling/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Interview the user relentlessly about a plan or design until reaching shared understanding — walks each branch of the decision tree one question at a time, offering a recommended answer each time, exploring the codebase where a question can be answered that way."
+    triggers: ["grill me", "stress-test this plan", "stress-test this design", "get grilled on design", "pressure-test decisions", "pressure-test this plan"]
+  - name: "!handoff"
+    path: "System/Skillbank/GeneralPurposeSkills/!handoff/skill.md"
+    domain: "GeneralPurpose"
+    intent: "Compact the current conversation into a handoff document (saved to the OS temp directory, not the workspace) so a fresh agent can continue the work — includes a suggested-skills section, references existing artifacts instead of duplicating them, and redacts sensitive information."
+    triggers: ["handoff", "write a handoff", "hand this off", "summarise for the next session", "prep a handoff doc"]
   - name: "!BookCover"
     path: "System/Skillbank/GeneralPurposeSkills/!BookCover/skill.md"
     domain: "GeneralPurpose"
@@ -89,6 +114,16 @@ skills:
     domain: "PersonalResearch"
     intent: "Keep a coding product's root README.md current — intro plus folder-structure map; writes a separate plain-language README for a skill directory. Part of the Wayfinder suite."
     triggers: ["update the readme", "explain the folder structure", "document the spaces", "readme needs a first draft"]
+  - name: "!TheJesusWebsite-Wikipedia"
+    path: "System/Skillbank/Church/!TheJesusWebsite-Wikipedia/skill.md"
+    domain: "Church"
+    intent: "Maintain the ranked 250-article Wikipedia list for The Jesus Website (Memory/Long-Term/The-Jesus-Website/Wikipedia/) — tops up the list toward the ceiling by crawling/selecting/scoring only what's missing when short, or just checks the existing files for internal consistency when the ceiling is already met. Also permanently excludes named articles on request (rank_engine.py exclude), removing them from the live data, not just the denylist. Keeps Wikipedia Articles.csv, Wikipedia Articles - Scoring Detail.csv, and the plain-text end point wiki-bulk-paste.txt always in sync. Follows the pool/selection/ranking criteria documented in that folder's Wikipedia Articles - Reference.md. Sibling of !TheJesusWebsite-Challenges, which owns the separate Popular/Academic Challenges trackers in the same parent folder."
+    triggers: ["top up the jesus website list", "add more jesus wiki articles", "check the jesus article ranking", "refresh the jesus website list", "the jesus website", "jesus wikipedia list", "exclude this from the jesus list", "remove this jesus wiki article"]
+  - name: "!TheJesusWebsite-Challenges"
+    path: "System/Skillbank/Church/!TheJesusWebsite-Challenges/skill.md"
+    domain: "Church"
+    intent: "Maintain the two ranked-challenge lists for The Jesus Website — Popular Challenges (Memory/Long-Term/The-Jesus-Website/Popular Challenges/) and Academic Challenges (.../Academic Challenges/) to Jesus' historicity. One skill, mode-switched (--mode popular|academic): tops up whichever list is below its 10-challenge ceiling by searching/selecting/scoring only what's missing, or just checks internal consistency when the ceiling is already met. Popular is ranked by current YouTube/Reddit/forum/social-media popularity (academic sources excluded); Academic is ranked by persistence in scholarly literature over time (citation counts, publication span, distinct-era representation), popularity excluded. Also permanently excludes named challenges on request. Follows the search/ranking criteria documented in each mode's own Reference.md. Sibling of !TheJesusWebsite-Wikipedia, which owns the separate Wikipedia-article tracker in the same parent folder."
+    triggers: ["top up the popular challenges list", "top up the academic challenges list", "check the challenges ranking", "popular challenges to jesus historicity", "academic challenges to jesus historicity", "exclude this challenge", "the jesus website challenges"]
   # - name: "!ExampleSkill"
   #   path: "System/Skillbank/!ExampleSkill/skill.md"
   #   domain: "Church"

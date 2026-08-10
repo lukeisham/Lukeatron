@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "title": "Visual Rhetoric Database",
+    "version": "1.0",
+    "created": "2026-04-23",
+    "description": "Comprehensive reference database for visual rhetorical analysis and construction",
+    "type": "visual"
+  },
+  "schema": {
+    "overview": "This division governs the systematic five-stage workflow used to transform a visual concept into a fully realized and rendered piece of media (poster, film, or digital content).",
+    "core_question": "How do I turn an idea for a visual text into a finished artefact?",
+    "inventio": {
+      "name": "Invention/Discovery",
+      "definition": "The discovery and brainstorming phase where you identify the strongest visual motifs, subject matter, and data points available for your project.",
+      "key_characteristics": [
+        "Research of visual references and inspiration",
+        "Identification of key visual concepts",
+        "Discovery of relevant imagery and symbols",
+        "Analysis of visual data and source material",
+        "Mood boarding and concept development"
+      ],
+      "examples": [
+        "A filmmaker collecting reference images and creating a mood board before production",
+        "A graphic designer researching visual trends and competitor designs",
+        "A photographer scouting locations and planning shot lists"
+      ]
+    },
+    "dispositio": {
+      "name": "Arrangement",
+      "definition": "The strategic arrangement of visual elements into a coherent layout or sequence (such as shot composition, hierarchy, and editing) to maximize impact.",
+      "key_characteristics": [
+        "Visual hierarchy and composition",
+        "Layout and spatial organization",
+        "Sequential ordering (in film/animation)",
+        "Balance and symmetry",
+        "Eye flow and visual path"
+      ],
+      "examples": [
+        "A poster designed with clear visual hierarchy from headline to call-to-action",
+        "A film edited with strategic shot sequencing to build tension",
+        "A website layout using grid systems and visual flow"
+      ]
+    },
+    "elocutio": {
+      "name": "Style",
+      "definition": "The stylistic 'texture' of the visual, focusing on aesthetic choices like color grading, typography, lighting, and art direction to suit the target audience.",
+      "key_characteristics": [
+        "Color palette and grading",
+        "Typography and font choices",
+        "Lighting style and mood",
+        "Art direction and aesthetic",
+        "Texture and visual treatment"
+      ],
+      "examples": [
+        "Film noir using high-contrast black and white cinematography",
+        "A brand identity using specific color schemes and typefaces",
+        "Instagram filters creating a consistent aesthetic across images"
+      ]
+    },
+    "memoria": {
+      "name": "Memory",
+      "definition": "The use of visual motifs, brand guidelines, and thematic consistency to ensure the message remains recognizable and conceptually coherent across the entire work.",
+      "key_characteristics": [
+        "Recurring visual motifs",
+        "Brand consistency and guidelines",
+        "Thematic visual elements",
+        "Visual callbacks and references",
+        "Iconographic systems"
+      ],
+      "examples": [
+        "A film series using consistent color motifs (e.g., blue in The Matrix)",
+        "Corporate branding maintaining logo and color consistency",
+        "A director's signature visual style across multiple films"
+      ]
+    },
+    "pronuntiatio": {
+      "name": "Delivery/Performance",
+      "definition": "The final execution and exhibition of the media, focusing on technical resolution, audio-visual sync, performance, and the physical or digital delivery to the viewer.",
+      "key_characteristics": [
+        "Technical quality and resolution",
+        "Exhibition format and platform",
+        "Audio-visual synchronization",
+        "Performance and presentation",
+        "Distribution and delivery method"
+      ],
+      "examples": [
+        "A film released in IMAX format for maximum visual impact",
+        "A digital advertisement optimized for mobile viewing",
+        "A gallery exhibition with careful lighting and placement"
+      ]
+    }
+  },
+  "proofs": {
+    "overview": "These represent the primary modes of persuasion used to establish visual validity and influence the perspective or behavior of the viewer.",
+    "core_question": "What specific types of visual evidence and aesthetic appeals must I employ to establish my authority and convince the viewer that my message is true?",
+    "ethos": {
+      "name": "Visual Credibility",
+      "definition": "Establishing credibility and trust by using professional aesthetics, authoritative symbols (logos, uniforms), and high-production value to demonstrate expertise and reliability.",
+      "key_characteristics": [
+        "Professional production quality",
+        "Authoritative symbols and branding",
+        "Expert presentation and polish",
+        "Credentials displayed visually",
+        "Trust indicators (certifications, badges)"
+      ],
+      "examples": [
+        "A corporate video using high-end production and professional talent",
+        "A doctor wearing a white coat and stethoscope in medical advertising",
+        "News graphics using official logos and professional design"
+      ]
+    },
+    "pathos": {
+      "name": "Visual Emotion",
+      "definition": "Generating credibility and engagement by appealing to the viewer's emotions through visceral imagery, music, and color palettes that create an empathetic connection.",
+      "key_characteristics": [
+        "Emotionally evocative imagery",
+        "Color psychology application",
+        "Music and sound design",
+        "Human faces and expressions",
+        "Narrative storytelling through visuals"
+      ],
+      "examples": [
+        "Charity campaigns showing images of suffering to evoke compassion",
+        "Sunset imagery in romantic films creating warmth and nostalgia",
+        "Dark, desaturated colors in horror films evoking fear"
+      ]
+    },
+    "logos": {
+      "name": "Visual Logic",
+      "definition": "Building credibility through clear data visualization, infographics, and sequential logical flow in editing to support a rational, evidence-based conclusion.",
+      "key_characteristics": [
+        "Data visualization and charts",
+        "Clear infographics",
+        "Logical visual sequencing",
+        "Cause-and-effect demonstration",
+        "Step-by-step visual explanations"
+      ],
+      "examples": [
+        "An infographic showing statistical trends with clear graphs",
+        "A tutorial video showing step-by-step processes",
+        "Before-and-after images demonstrating product effectiveness"
+      ]
+    }
+  },
+  "tropes": {
+    "overview": "This division involves the creative 'turning' of imagery—using visual elements in non-literal ways to shift meaning and engage the viewer's imagination.",
+    "core_question": "How can I transform standard imagery into imaginative visual figures to make a concept feel richer, more evocative, and conceptually deep?",
+    "resemblance": {
+      "name": "Visual Metaphor",
+      "definition": "Visual metaphors or similes where two distinct images are juxtaposed or blended to create meaning based on shared traits (e.g., a melting clock).",
+      "key_characteristics": [
+        "Visual comparison of unlike elements",
+        "Juxtaposition for meaning",
+        "Morphing or blending imagery",
+        "Symbolic visual parallels"
+      ],
+      "examples": [
+        "Salvador Dalí's melting clocks (time as fluid/unstable)",
+        "A person's head replaced with a lightbulb (representing ideas)",
+        "Hands forming a dove shape (peace through unity)"
+      ]
+    },
+    "association": {
+      "name": "Visual Metonymy",
+      "definition": "Visual metonymy that uses a related object to represent a larger concept (e.g., showing a gavel to represent the entire judicial system).",
+      "key_characteristics": [
+        "Part representing whole",
+        "Associated objects for concepts",
+        "Iconic substitutions",
+        "Visual shorthand"
+      ],
+      "examples": [
+        "A gavel representing justice/law",
+        "A crown representing monarchy/royalty",
+        "The Eiffel Tower representing Paris/France"
+      ]
+    },
+    "naming": {
+      "name": "Visual Synecdoche",
+      "definition": "Visual synecdoche where a part of an object identifies the whole, such as showing only the wheels of a car to represent a journey.",
+      "key_characteristics": [
+        "Partial view suggesting whole",
+        "Detail standing for entirety",
+        "Focused framing on significant part",
+        "Symbolic fragments"
+      ],
+      "examples": [
+        "Showing only feet walking to represent a journey",
+        "Close-up of hands shaking to represent agreement",
+        "Just the wheels of a car to represent transportation"
+      ]
+    },
+    "invention": {
+      "name": "Visual Innovation",
+      "definition": "The creative stretching of visual 'grammar,' such as glitch art, surreal distortions, or using color in non-naturalistic ways to describe the 'indescribable.'",
+      "key_characteristics": [
+        "Breaking visual conventions",
+        "Surreal distortions",
+        "Non-naturalistic color use",
+        "Experimental techniques",
+        "Abstract visual language"
+      ],
+      "examples": [
+        "Glitch art using digital artifacts creatively",
+        "Abstract expressionism in visual design",
+        "Impossible architecture in M.C. Escher's work"
+      ]
+    },
+    "extendedmeaning": {
+      "name": "Visual Allegory",
+      "definition": "Large-scale visual figures like allegory or visual irony where the surface imagery masks a deeper, sustained secondary narrative.",
+      "key_characteristics": [
+        "Dual-level visual meaning",
+        "Sustained symbolic imagery",
+        "Hidden narratives",
+        "Interpretive depth",
+        "Coded visual messages"
+      ],
+      "examples": [
+        "Hieronymus Bosch paintings with moral allegories",
+        "Political cartoons with layered symbolism",
+        "Music videos with sustained metaphorical narratives"
+      ]
+    },
+    "ornamentalepithet": {
+      "name": "Visual Tags",
+      "definition": "The use of signature visual 'tags' or recurring stylistic flourishes that characterize a person or object with vivid, recognizable intensity.",
+      "key_characteristics": [
+        "Signature visual styles",
+        "Recurring visual flourishes",
+        "Identifying visual markers",
+        "Stylistic trademarks",
+        "Formulaic visual elements"
+      ],
+      "examples": [
+        "Wes Anderson's symmetrical framing and pastel palettes",
+        "Michael Bay's 'bayhem' explosion aesthetics",
+        "Banksy's stencil art style"
+      ]
+    }
+  },
+  "fallacies": {
+    "overview": "This division focuses on the coherence of the meaning or message being communicated.",
+    "core_question": "What sort of argument is being presented or failing to be presented?",
+    "fallacy": {
+      "name": "Visual Logical Errors",
+      "definition": "Identifying and labeling common errors in visual reasoning—such as misleading edits, out-of-context imagery, or deceptive 'Photoshopping'—that derail logical truth.",
+      "common_types": [
+        {
+          "name": "False Context",
+          "description": "Using images out of their original context to mislead",
+          "example": "A cropped photo removing context that changes the meaning"
+        },
+        {
+          "name": "Selective Framing",
+          "description": "Cropping to exclude important information",
+          "example": "Cropping out empty seats at a rally to suggest larger attendance"
+        },
+        {
+          "name": "Misleading Edit",
+          "description": "Sequential editing that creates false causation",
+          "example": "News footage edited to suggest false chronology or causation"
+        },
+        {
+          "name": "Manipulated Imagery",
+          "description": "Photoshopping to misrepresent reality",
+          "example": "Celebrity photos heavily retouched to set unrealistic standards"
+        },
+        {
+          "name": "False Scale",
+          "description": "Manipulating size relationships to deceive",
+          "example": "Graphs with manipulated scales to exaggerate trends"
+        },
+        {
+          "name": "Cherry-picked Visuals",
+          "description": "Showing only supporting evidence",
+          "example": "Before/after images using different lighting to exaggerate results"
+        },
+        {
+          "name": "Staged Authenticity",
+          "description": "Presenting staged scenes as candid",
+          "example": "Reality TV presented as unscripted when it's heavily produced"
+        },
+        {
+          "name": "Visual Straw Man",
+          "description": "Misrepresenting opponents through unflattering images",
+          "example": "Using unflattering freeze-frames of political opponents"
+        },
+        {
+          "name": "Emotional Manipulation",
+          "description": "Using visceral imagery to bypass logic",
+          "example": "Shocking images that provoke reaction without context"
+        },
+        {
+          "name": "False Equivalence",
+          "description": "Visual juxtaposition implying false equality",
+          "example": "Side-by-side images suggesting equal severity of unequal events"
+        }
+      ]
+    },
+    "fallacy_flipside": {
+      "name": "Legitimate Visual Techniques",
+      "definition": "Recognizing legitimate uses of visual simplification or understanding the strategic ways to counter 'fake' imagery and return the work to rational ground.",
+      "key_characteristics": [
+        "Artistic license vs. deception",
+        "Legitimate visual simplification",
+        "Context-appropriate manipulation",
+        "Transparent visual rhetoric",
+        "Ethical image use"
+      ],
+      "examples": [
+        "Artistic Compositing: Clearly artistic photo manipulations (album covers, art)",
+        "Accepted Enhancements: Standard color correction and exposure adjustment",
+        "Symbolic Simplification: Icons and diagrams that simplify for clarity",
+        "Dramatization Labels: Clearly labeled reenactments or dramatizations",
+        "Educational Visualization: Simplified models for teaching (not deception)",
+        "Creative Framing: Compositional choices for aesthetic (not deceptive) purposes"
+      ]
+    }
+  }
+}

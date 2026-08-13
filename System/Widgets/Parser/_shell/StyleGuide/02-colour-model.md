@@ -136,3 +136,36 @@ generated CSS, is in [`css/preview.html`](css/preview.html).
 4. Palette length should roughly match how many structural units your
    `inputUnit`/`cap` combination typically produces — see "Hue assignment"
    above.
+
+## The MiniWiki module reuses the shell tokens — no new palette
+
+`_modules/MiniWiki/` (the optional per-cartridge "Mini-Wiki" tab, see
+[03-components.md](03-components.md) and
+[05-building-a-cartridge.md](05-building-a-cartridge.md)) introduces **zero**
+new colours. Its own stylesheet, `_modules/MiniWiki/src/styles.js`'s
+`MINIWIKI_CSS`, is written entirely against the shell's existing tokens:
+`--bg`, `--card`, `--ink`, `--ink2`, `--ink3`, `--line`, `--line2`, `--acc`,
+`--accbg`, `--radius`. Confirmed by reading the file — every colour
+declaration in it is a `var(--...)` reference to one of those ten, plus
+`#fff` used the same way `shell.css` already uses it (as literal white text
+*on* an accent-filled surface — `.mw-copy-all` and `.mw-term-chip:hover`,
+mirroring `button.primary`'s `color:#fff` on `background:var(--ink)`), never
+as a new background colour of its own. `--red` (the one semantic colour,
+reserved for spelling) is **not** used — MiniWiki has no error state.
+
+This matters more than usual for MiniWiki specifically, because the wiki
+opens in a **separate browser tab/document** (`_shell/src/miniwiki-seam.js`),
+which cannot inherit the parser tab's `<style>` block. The seam re-declares
+the same ten token values verbatim in a small `:root{...}` string
+(`ROOT_TOKENS_CSS`) before injecting `MINIWIKI_CSS` into the new document —
+so if you ever change a token value in `shell.css`, **update
+`miniwiki-seam.js`'s `ROOT_TOKENS_CSS` to match**, or the wiki tab and the
+parser tab will silently drift apart in colour. `--red` is correctly absent
+from `ROOT_TOKENS_CSS` too, for the same "no error state" reason.
+
+If a future edit to `src/styles.js` ever hardcodes a colour that isn't one
+of the ten tokens above (or the `#fff`-on-accent convention already
+established by the shell), that is a CSS-2 violation and should be raised
+with Luke rather than silently accepted as "the module's own palette" — the
+whole point of the reuse is that MiniWiki reads as the same system as the
+rest of the widget, not a themed panel bolted onto it.

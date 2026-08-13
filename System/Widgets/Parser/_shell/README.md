@@ -2,13 +2,14 @@
 
 The shell is the shared chassis every parser widget is built from: display
 harness, focus-level renderer, lexicon portal, export bar, and the spelling
-module injection seam. **One copy, thirteen cartridges.** Full contract:
-`Specs/ParserShell.spec.md`.
+and MiniWiki module injection seams. **One copy, thirteen cartridges.** Full
+contract: `Specs/ParserShell.spec.md`.
 
 **The app's editable source is `src/`** — edit `shell.html` / `shell.css` /
-`lexicon.js` / `ui.js` / `spelling-seam.js` and rebuild every cartridge that
-uses it. Nothing in `src/` may reference Grammar or any other cartridge by
-name (D-3) — if it does, that's a shell bug, not a cartridge quirk.
+`lexicon.js` / `ui.js` / `spelling-seam.js` / `miniwiki-seam.js` and rebuild
+every cartridge that uses it. Nothing in `src/` may reference Grammar or any
+other cartridge by name (D-3) — if it does, that's a shell bug, not a
+cartridge quirk.
 
 ## Layout
 
@@ -19,7 +20,10 @@ _shell/
 │   ├── shell.css             generic layout/theme CSS
 │   ├── lexicon.js            LEX portal (sql.js-backed, FR-7)
 │   ├── ui.js                  display harness (FR-9/FR-10/FR-12)
-│   └── spelling-seam.js      spelling-module injection point (FR-11, D-1)
+│   ├── spelling-seam.js      spelling-module injection point (FR-11, D-1)
+│   └── miniwiki-seam.js      MiniWiki-module injection point — opens the
+│                              wiki as a NEW browser tab, not an in-page
+│                              panel (see below)
 ├── build/
 │   ├── assemble.py           the assembler (this is what you run)
 │   ├── miniyaml.py           stdlib-only YAML-subset parser (PY-1)
@@ -193,6 +197,47 @@ not the raw file size):
 
 Close to the ~4.1 MB ballpark; the small excess is the sql.js vendor
 JS/WASM payload (0.88 MB combined), which that estimate under-counted.
+
+**MiniWiki module:** a cartridge opts in with `miniwiki.enabled: true` +
+`miniwiki.articlesFile: "<name>.miniwiki.json"` in `config.yaml` (see
+`_modules/MiniWiki/README.md`). Unlike the spelling seam, MiniWiki does
+**not** render into the parser page's own DOM at all — it opens as a
+**complete, separate HTML document in a new browser tab**
+(`src/miniwiki-seam.js`'s `MiniWikiSeam.open()`), built at click time from
+three build-time-embedded pieces: the module's bundled JS as a string
+(`MINIWIKI_BUNDLE_SRC`), the pre-extracted article JSON
+(`MINIWIKI_ARTICLES`), and the cartridge's display name
+(`MINIWIKI_CARTRIDGE_NAME`). When set, the assembler:
+1. requires `_modules/MiniWiki/dist/miniwiki.bundle.js` to exist (build it
+   first with `python3 _modules/MiniWiki/build/bundle_miniwiki.py`) and
+   embeds it verbatim as a JS string constant — not executed in the parser
+   page's own window, only in the new tab's;
+2. reads `miniwiki.articlesFile` (produced by
+   `python3 _modules/MiniWiki/build/extract_articles.py <content.md> --out
+   build/<name>.miniwiki.json` — run this first) and embeds it as
+   `MINIWIKI_ARTICLES`;
+3. leaves `shell.html`'s `#btnMiniWiki` toolbar button `display:none` until
+   `MiniWikiSeam.isAvailable()` confirms a real bundle + non-empty article
+   list were embedded.
+
+Opening tries `Blob` + `URL.createObjectURL` + `window.open` first (works
+from `file://`, keeps the new tab's `document.write` surface out of the
+picture); if that throws, it falls back to `window.open("") +
+document.write()`. If `window.open` returns `null` either way (pop-up
+blocked), `open()` returns `false` and the parser page shows the inline
+`#miniwikiwarn` banner rather than failing silently. The new tab keeps its
+own hash routing (`#/1.1.1`) and history, fully independent of the parser
+tab — and cannot inherit the parser tab's `<style>`, so
+`miniwiki-seam.js` re-declares the same shell design tokens the wiki's own
+CSS (`_modules/MiniWiki/src/styles.js`) is written against (see
+`StyleGuide/02-colour-model.md`).
+
+Omitting `miniwiki.enabled` (or setting it `false`) ships the cartridge
+exactly as before — the button never appears, no MiniWiki bytes are
+embedded, and the build is byte-identical to a cartridge that never
+mentions the key. Any manifest field missing or the bundle/articles file
+not found fails the build loudly and non-zero (PY-6), the same discipline
+as the spelling seam above.
 
 ## Cloning a new parser (cartridge, not chassis — see Parser_guide.md §5b)
 

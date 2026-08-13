@@ -199,3 +199,117 @@ button.fv.on { border: 2px solid var(--acc); color: var(--acc); padding: 5px 13p
 
 /* ---------- Utility text ---------- */
 .muted { font-size: 12px; color: var(--ink3); }
+
+/* ==========================================================================
+   MiniWiki module patterns (readable reference)
+
+   CANONICAL SOURCE: ../../../_modules/MiniWiki/src/styles.js (MINIWIKI_CSS,
+   a JS string, not a linkable stylesheet — that is why css/preview.html's
+   MiniWiki demo below reproduces this block in its own <style> tag rather
+   than a <link>). This module opens in a SEPARATE browser tab
+   (_shell/src/miniwiki-seam.js) and is never present on the parser page
+   itself, so nothing here is reachable from shell.css's own cascade.
+
+   Every colour below is one of the shell's own tokens (see
+   StyleGuide/02-colour-model.md's "MiniWiki reuses the shell tokens"
+   section) — no new palette. If MINIWIKI_CSS changes, update this block by
+   hand, the same "no automated sync" rule the rest of this file follows.
+   ========================================================================== */
+
+.mw-root { display: flex; gap: 20px; }
+.mw-side-menu { flex: 0 0 260px; max-height: 70vh; overflow-y: auto; font-size: 13px; }
+.mw-menu-top { list-style: none; margin: 0 0 12px; padding: 0; }
+.mw-menu-top li { margin: 2px 0; }
+
+/* One link family, five selectors — side-menu items, tree items, the "All"
+   index, breadcrumb crumbs, and home-page category-card titles all share
+   the same default/hover/active treatment. */
+.mw-menu-link, .mw-tree-link, .mw-all-link, .mw-breadcrumb-link, .mw-home-card-title {
+  color: var(--ink); text-decoration: none; display: inline-block; padding: 3px 6px;
+  border-radius: 4px; word-break: break-word;
+}
+.mw-menu-link:hover, .mw-tree-link:hover, .mw-all-link:hover, .mw-home-card-title:hover {
+  background: var(--accbg); color: var(--acc);
+}
+/* Styled but not currently applied by src/ui.js or src/index.js — see
+   StyleGuide/04-states-and-interaction.md's MiniWiki section. Kept here
+   because it IS shipped CSS, just a dormant one. */
+.mw-menu-link.mw-active, .mw-tree-link.mw-active { background: var(--accbg); color: var(--acc); font-weight: 600; }
+
+.mw-menu-heading { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--ink3); margin: 12px 0 4px; }
+
+/* ---------- Outline tree — lazy expansion (decision 3) ---------- */
+.mw-menu-categories, .mw-tree, .mw-tree-children, .mw-all-list { list-style: none; margin: 0; padding: 0; }
+.mw-tree-children { padding-left: 14px; }
+.mw-tree-item { margin: 2px 0; }
+.mw-tree-toggle { background: none; border: none; color: var(--ink3); cursor: pointer; width: 16px; font-size: 11px; }
+.mw-tree-toggle:hover { color: var(--ink); }
+.mw-tree-leaf { display: inline-block; width: 16px; text-align: center; color: var(--ink3); }
+
+/* ---------- Article pane ---------- */
+.mw-article-pane { flex: 1; min-width: 0; }
+.mw-page { font-size: 14px; }
+.mw-title { font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--ink); }
+.mw-lead { font-size: 15px; font-weight: 500; margin: 0 0 14px; }
+.mw-breadcrumb { font-size: 12px; color: var(--ink2); margin-bottom: 10px; }
+.mw-breadcrumb .mw-breadcrumb-link { padding: 0 2px; }
+.mw-body p { font-size: 13.5px; line-height: 1.6; margin: 0 0 10px; }
+.mw-section-block { margin: 16px 0; }
+.mw-section-heading, .mw-reference-list + .mw-section-heading {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--ink2); margin: 0 0 6px;
+}
+.mw-characteristics, .mw-examples { font-size: 13.5px; margin: 0; padding-left: 20px; max-height: 320px; overflow-y: auto; }
+.mw-characteristics li, .mw-examples li { margin: 4px 0; line-height: 1.5; }
+.mw-worked-example { font-size: 13.5px; line-height: 1.6; background: var(--accbg); border-radius: var(--radius); padding: 10px 12px; }
+
+/* Inline auto-link — click navigates (autolink.js/ui.js); no hover-preview
+   popover exists despite the "help" cursor hinting at one. */
+.wikilink { color: var(--acc); text-decoration: none; cursor: help; }
+.wikilink:hover { text-decoration: underline; }
+
+/* ---------- Home / section landing pages ---------- */
+.mw-home-categories { display: grid; gap: 10px; }
+.mw-home-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.mw-home-card-lead { margin: 4px 0 0; font-size: 13px; color: var(--ink2); }
+
+/* ---------- MLA references (requirement 8, omitted when unsourceable) ---------- */
+.mw-reference-list { font-size: 12.5px; padding-left: 18px; color: var(--ink2); }
+.mw-reference-list li { margin: 4px 0; }
+
+/* ---------- Key search-terms box — the "special box" (requirement 9) ----------
+   The one deliberately tinted section on the page: full border PLUS an
+   accent-tinted background, versus every other section's plain-background
+   look. Its heading recolours to --acc too. */
+.mw-search-terms-box {
+  margin-top: 22px; padding: 14px; border: 1px solid var(--line2); border-radius: var(--radius);
+  background: var(--accbg);
+}
+.mw-search-terms-box .mw-section-heading { color: var(--acc); }
+.mw-term-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+/* The only fully-round (999px) pill anywhere in the shell or this module —
+   a deliberate departure from StyleGuide/01-foundations.md's radius table. */
+.mw-term-chip {
+  border: 1px solid var(--line2); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.mw-term-chip:hover { background: var(--acc); color: #fff; border-color: var(--acc); }
+.mw-copy-all {
+  border: 1px solid var(--acc); background: var(--acc); color: #fff; border-radius: 4px;
+  padding: 5px 12px; font-size: 12px; cursor: pointer;
+}
+.mw-copy-all:hover { opacity: .9; }
+
+/* ---------- Non-Latin script fallback (Greek and Hebrew cartridge only) ---------- */
+[data-mw-cartridge="Greek and Hebrew"] .mw-title,
+[data-mw-cartridge="Greek and Hebrew"] .mw-lead,
+[data-mw-cartridge="Greek and Hebrew"] .mw-body,
+[data-mw-cartridge="Greek and Hebrew"] .mw-characteristics,
+[data-mw-cartridge="Greek and Hebrew"] .mw-examples {
+  font-family: "Noto Serif Greek", "SBL BibLit", "Noto Sans Hebrew", "Times New Roman", serif;
+}
+
+/* ---------- Mobile — stacks, does not drawer ---------- */
+@media (max-width: 719px) {
+  .mw-root { flex-direction: column; }
+  .mw-side-menu { flex: none; max-height: none; }
+}

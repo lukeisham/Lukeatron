@@ -80,3 +80,29 @@ today.
 
 None of this is prescriptive — it's a factual inventory so a future pass
 (cartridge-level or shell-level) knows what's actually there versus assumed.
+
+## MiniWiki states and interaction
+
+MiniWiki (see [03-components.md](03-components.md#miniwiki-opens-in-a-new-browser-tab-not-this-pages-chrome))
+runs in its own document, so its states are independent of everything
+above — nothing here shares a stacking context, print mode, or `<body>`
+class with the parser page.
+
+| Element | States | Mechanism |
+| :--- | :--- | :--- |
+| `.mw-tree-toggle` | collapsed (▶) → expanded (▼), per node, independently | JS re-renders that node's `<ul>` in place on click; `aria-label` flips between "Expand `<title>`"/"Collapse `<title>`" |
+| `.mw-menu-link` / `.mw-tree-link` | default → `:hover` (`var(--accbg)` bg, `var(--acc)` text) → `.mw-active` (bold, same accent tint) | CSS `:hover`; `.mw-active` is applied by `src/nav-active.js`'s `setActiveNavLink()` on every navigation, matched via each link's `data-nav-id` attribute — only lights up a link that's actually rendered (a still-collapsed tree branch has none to mark) |
+| `.mw-search-box` | idle → typing (live-filtered results below) → cleared (menu restored) | `input` event → `search-ui.js`'s `applySearchQuery()`; hides `.mw-menu-body` while `.mw-search-results` is populated, shows a single "No matches." row for a query with no hits |
+| `.wikilink` / `.mw-see-also-link` (hover-preview targets) | default → `:hover`/`:focus` (after ~150ms, or immediately on focus) → `.mw-preview-popover` shown → `mouseout`/`blur` hides it | `popover.js`'s delegated `mouseover`/`mouseout`/`focusin`/`focusout` handlers on the article pane; position flips from above to below the link when there's no room above |
+| `.mw-term-chip` / `.mw-copy-all` (copy affordances) | idle (label = the term text, or "Copy all") → clicked → **"Copied!"** for 1200ms → reverts to idle label; or clicked → **"Copy failed"** for 1200ms → reverts, if the clipboard write is denied | `clipboard.js`'s `copyToClipboard` (Clipboard API, `document.execCommand` fallback) resolves a boolean; `ui.js`'s `flashCopied` sets `textContent` to one of the two literal strings above on a `setTimeout` — there is no third state (e.g. no in-flight/"Copying…" state) |
+| `#btnMiniWiki` (parser page, launch button) | plain shell `button` — default/`:hover`/`:disabled` per [03-components.md](03-components.md#buttons) — `display:none` until the cartridge's `miniwiki.enabled` build produces a working seam | pure CSS + one JS check (`MiniWikiSeam.isAvailable()`) at page load |
+| `#miniwikiwarn` (popup-blocked warning, parser page) | hidden → shown | `.warn` banner, same component as the over-cap warning (parser page's own `shell.css`, not MiniWiki's own CSS) — shown when `MiniWikiSeam.open()` returns `false` (Blob path *and* the `document.write` fallback both failed, almost always because the browser blocked the pop-up), so a blocked launch is reported inline rather than failing silently |
+| `.mw-side-menu` (mobile drawer) | wide layout (in-flow column) → narrow layout (`max-width:719px`): off-canvas, closed (`translateX(-100%)`) → `.mw-drawer-open` (`translateX(0)`, `.mw-nav-scrim` shows) → closed again | `drawer.js`'s `createDrawerController()`: `.mw-nav-toggle` click toggles; scrim click, Escape (while open), or selecting an article (`navigate()`'s `closeOnNavigate()`) all close it |
+
+Compare [01-foundations.md](01-foundations.md)'s "known gaps" habit
+(`#input`'s inert placeholder, the invalid `wavy` border fallback) — that
+pattern still holds elsewhere in this file, but the three MiniWiki rows it
+used to flag here (`.mw-active` no-op, no hover-preview, no mobile drawer)
+were closed in the 2026-08-10 audit-gap pass and are now working features,
+verified by reading `src/nav-active.js`, `src/popover.js`, and
+`src/drawer.js` directly, not carried forward as a stale gap list.

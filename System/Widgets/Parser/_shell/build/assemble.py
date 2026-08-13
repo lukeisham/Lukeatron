@@ -208,6 +208,11 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
         "__ASSET_NAME__": config["cartridge"]["name"],
         "__ASSET_VERSION__": config["cartridge"]["version"],
         "__BUILT_FROM__": config["cartridge"]["builtFrom"],
+        # In-page header badge (distinct from __ICON_HREF__, the browser-tab
+        # favicon) — first letter of cartridge.id, uppercased, so a
+        # cartridge's badge matches its own identity without a second
+        # manifest field to keep in sync with `icon`'s SVG glyph by hand.
+        "__BADGE_GLYPH__": (config["cartridge"]["id"][:1] or "P").upper(),
         "__CAP__": str(config["parser"]["cap"]),
         "__INPUT_UNIT__": config["parser"]["inputUnit"],
         "__BUILD_DATE__": build_date,
@@ -284,6 +289,12 @@ def validate_manifest(config: dict) -> None:
     if missing:
         raise CartridgeError("config.yaml missing/invalid required field(s): " + ", ".join(missing))
 
+    # FR-19: sweeps.items is required together with sweeps.enabled: true —
+    # absent/false by default, same contract miniwiki.enabled already uses.
+    sweeps_cfg = config.get("sweeps") or {}
+    if sweeps_cfg.get("enabled") and not sweeps_cfg.get("items"):
+        raise CartridgeError("sweeps.enabled is true but sweeps.items is missing/empty")
+
     for i, hue in enumerate(config["colours"]["palette"]):
         for field in ("h50", "h100", "h600", "h800", "hf", "name"):
             if field not in hue:
@@ -331,6 +342,13 @@ def build_config_js(config: dict) -> str:
     }
     if p.get("focusLabels"):
         obj["focusLabels"] = p["focusLabels"]
+    # FR-19/FR-20: sweeps is optional and cartridge-defined; passed through
+    # verbatim (the shell only reads item fields to render checkboxes — it
+    # never interprets CONTENT ids or sweep semantics itself, FR-9). Absent
+    # for every cartridge that doesn't declare it, Grammar included.
+    sweeps_cfg = config.get("sweeps") or {}
+    if sweeps_cfg.get("enabled") and sweeps_cfg.get("items"):
+        obj["sweeps"] = {"enabled": True, "items": sweeps_cfg["items"]}
     return json.dumps(obj, ensure_ascii=False)
 
 

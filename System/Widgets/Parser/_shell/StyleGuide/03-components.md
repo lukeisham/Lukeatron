@@ -289,3 +289,167 @@ Highlight API — but see the known-gap note in
 value currently invalidates the whole `border-bottom` declaration, so this
 fallback renders **no visible underline at all**, confirmed live in
 [`css/preview.html`](css/preview.html).
+
+## MiniWiki (opens in a new browser tab, not this page's chrome)
+
+`_modules/MiniWiki/` is an optional peer module, the same relationship
+`_modules/Spelling/` has to the shell — see
+[05-building-a-cartridge.md](05-building-a-cartridge.md) for the opt-in.
+Unlike every other component on this page, MiniWiki's components **do not
+live inside `.card`** — clicking the parser page's `#btnMiniWiki` toolbar
+button (a plain shell `button`, no bespoke CSS) builds a complete,
+self-contained HTML document at runtime and opens it in a **new tab**
+(`_shell/src/miniwiki-seam.js`). Everything below renders inside that new
+document, styled by `_modules/MiniWiki/src/styles.js`'s `MINIWIKI_CSS`
+(injected once, on mount) — not by `shell.css`. Selectors below are exactly
+what's in that file today; live renders of the same patterns:
+[`css/preview.html`](css/preview.html)'s MiniWiki section.
+
+**Layout root** — `.mw-root` is a two-column flex row: a fixed `260px` side
+menu (`.mw-side-menu`) and a flexible article pane (`.mw-article-pane`).
+Below `719px` it becomes an off-canvas drawer (below) rather than simply
+stacking — see
+[04-states-and-interaction.md](04-states-and-interaction.md) for the
+open/close states.
+
+**Side menu.** `.mw-search-wrap` (the live search box, below) sits above
+`.mw-menu-body`, which holds three fixed links — Home, All, Surprise
+me — followed by a `.mw-menu-heading` ("Categories") and the top-level
+category list (`.mw-menu-categories`), then a second heading ("Browse") and
+the outline tree (below). Every link in the menu shares one visual family —
+`.mw-menu-link` / `.mw-tree-link` / `.mw-all-link` / `.mw-breadcrumb-link` /
+`.mw-home-card-title` all resolve to the same rule: `color:var(--ink)`,
+`padding:3px 6px`, `border-radius:4px`, `var(--accbg)`/`var(--acc)` on
+hover. `.mw-menu-link.mw-active` / `.mw-tree-link.mw-active` add a bold
+accent-tinted "current page" treatment on top of the hover styling —
+`src/nav-active.js`'s `setActiveNavLink()` applies it, matching each link's
+`data-nav-id` attribute against the current view key (`"home"`, `"all"`, or
+an article id) on every navigation. It only lights up a link that is
+currently rendered in the DOM — an id inside a still-collapsed branch of
+the lazy tree has no link to mark, by design (the tree never auto-expands
+to chase it).
+
+**Live search box.** `.mw-search-box` — a plain text input, live-filtering
+on every keystroke via `src/search-ui.js`'s `applySearchQuery()` (backed by
+`index.js`'s `search(query)`, which has existed since the module shipped).
+A non-empty query hides `.mw-menu-body` and shows `.mw-search-results`
+(`.mw-search-result-item`s: bold title + a truncated lead snippet, or a
+single "No matches." row); clearing the box restores the normal menu.
+
+**Outline tree.** `.mw-tree` (and nested `.mw-tree-children`, indented
+`14px`) renders **lazily** — only a node's direct children exist in the DOM
+once its `.mw-tree-toggle` button (▶/▼ glyph, `aria-label` "Expand
+`<title>`"/"Collapse `<title>`") is clicked; a leaf node (no children) gets
+a plain centred `.mw-tree-leaf` dot instead of a toggle. This keeps the DOM
+bounded regardless of article count — the module's own tests confirm 7 DOM
+nodes at rest for a 155-article cartridge.
+
+**Breadcrumb.** `.mw-breadcrumb` — `12px`, `var(--ink2)` — a chain of
+`.mw-breadcrumb-link`s (root-first ancestor titles, each followed by a
+literal " › ") ending in the current article's plain-text title (not a
+link). Omitted entirely for a top-level article (no ancestors).
+
+**Article page.** `.mw-title` (`22px`/600) → optional `.mw-lead` (`15px`,
+medium weight, the lead sentence) → `.mw-body` (auto-linked prose, `13.5px`
+paragraphs, `line-height:1.6`) → zero or more `.mw-section-block`s, each
+with an uppercase `.mw-section-heading` ("Key characteristics", "Worked
+example", "Examples") over a `.mw-characteristics`/`.mw-examples` list or a
+tinted `.mw-worked-example` block (`background:var(--accbg)`) → an MLA
+references block (below) → `.mw-see-also` → `.mw-article-nav` (both below)
+→ the key-search-terms box (below), always last.
+`characteristics`/`worked_example`/`examples` are all optional per-article
+(absent in roughly 60% of real content) — their sections simply don't
+render when the source data has nothing for them; this is not a bug to
+"fix" by rendering an empty heading.
+
+**See also.** `.mw-see-also` (`src/article-nav.js`) — a tinted
+`background:var(--accbg)` block, `.mw-see-also-title` ("See also") over a
+`flex-wrap` row of `.mw-see-also-link` chips (bordered, `var(--card)`
+background, `var(--accbg)` on hover). Distinct from the key-search-terms
+box below it: this lists the current article's **siblings** (same parent),
+excluding itself, capped at 8 — the only "related article" relationship the
+build-time model actually carries (there is no curated `relatedLinks`
+field, unlike the mockup). Omitted entirely — not rendered empty — for a
+top-level article or an only child.
+
+**Prev/next sibling navigation.** `.mw-article-nav` (`src/article-nav.js`)
+— a flex row, `.mw-nav-prev` ("← *Title*") left, `.mw-nav-next`
+("*Title* →") right (`margin-left:auto`), both `.mw-nav-button`
+(`var(--acc)`, underline on hover). Walks the same sibling list as "See
+also," **wrapping** at the ends (last sibling's "next" is the first, and
+vice versa). Omitted entirely when the article has no siblings at all.
+
+**Section / landing page.** A category node with children and an empty body
+(`role: "section"`) renders as `.mw-page.mw-section` — breadcrumb, title,
+optional lead, then a grid of its **direct children** as `.mw-home-card`s
+(border `1px solid var(--line)`, `var(--radius)`, title + optional lead
+paragraph) — the same card component the generated home page uses (below),
+reused rather than duplicated. Never a stub article with empty section
+headings.
+
+**Home page.** `.mw-page.mw-home` — the cartridge name as `.mw-title`, a
+generated one-line lead, then `.mw-home-categories` (a `display:grid`
+gap-10px list of `.mw-home-card`s, one per top-level category). Entirely
+computed from the article tree at render time — never hand-authored per
+cartridge.
+
+**Inline auto-links (`wikilink`).** `.wikilink { color:var(--acc);
+text-decoration:none; cursor:help; }`, underlining only on `:hover`.
+`autolink.js` wires the click handler (navigates to the linked article);
+`cursor:help`'s "there's more here" signal is now backed by an actual
+hover/keyboard-focus preview — `src/popover.js`'s `.mw-preview-popover`
+(bold title + a truncated lead, `box-shadow`-lifted card). It appears
+~150ms after `mouseover` (or immediately on `focusin`, for keyboard users),
+positioned above the link and flipped below when that would overflow the
+viewport top, and disappears on `mouseout`/`focusout`. The same popover
+also serves `.mw-see-also-link` chips (above) — both selectors share one
+delegated listener pair on the article pane, wired once in `index.js`'s
+`mount()`.
+
+**MLA references block.** `.mw-reference-list` — an ordered list (`ol`),
+`12.5px`, `var(--ink2)`, hanging-indent via `padding-left:18px` — appears
+under an "References" `.mw-section-heading` only when the source content
+file's YAML frontmatter carried a `provenance` field (e.g. Rhetoric, 57/57
+articles sourced). **Omitted entirely, not rendered empty**, for a
+cartridge whose content has no frontmatter (Grammar) — see
+`_modules/MiniWiki/README.md`'s "never fabricate a citation" rule.
+
+**Key search-terms box — the "special box".** `.mw-search-terms-box` is
+the one deliberately distinct-looking block on the page: a full
+`1px solid var(--line2)` border plus a **tinted `var(--accbg)` background**
+(every other section on the page is unbordered, on the plain page
+background) — visually promoted the same way the shell's own accent-ring
+focus state stands out from everything flat around it
+([01-foundations.md](01-foundations.md)'s "one accent colour" rule extends
+here: the tint signals "this is interactive," not "this is a different
+topic"). Its own `.mw-section-heading` is recoloured `var(--acc)` (the only
+place a section heading isn't `var(--ink2)`) to match. Inside it:
+`.mw-term-list` (a `flex-wrap` row of pill-shaped `.mw-term-chip`s,
+`border-radius:999px` — the *one* place in either the shell or this module
+that uses a fully-round pill, a deliberate departure per
+[01-foundations.md](01-foundations.md)'s radius note) plus a solid-accent
+`.mw-copy-all` button below the chip row. Each chip and the copy-all button
+share one copy affordance (see
+[04-states-and-interaction.md](04-states-and-interaction.md) for the
+idle/copied feedback cycle).
+
+**Mobile off-canvas drawer.** Below `719px`, `.mw-side-menu` becomes a
+fixed-position off-canvas panel (`transform:translateX(-100%)`, sliding to
+`translateX(0)` when `.mw-drawer-open` is added). `src/drawer.js`'s
+`createDrawerController()` wires three ways to close it — the
+`.mw-nav-scrim` overlay (`rgba(0,0,0,.3)`, click to close), the Escape key,
+and selecting any article (`mount()`'s `navigate()` calls
+`closeOnNavigate()`) — plus one way to open it, `.mw-nav-toggle` (a `☰`
+button, `position:fixed` top-left at this breakpoint so it stays reachable
+regardless of where `mount()` happened to insert it in the DOM). The toggle
+and scrim are created at `mount()` time, not baked into
+`miniwiki-seam.js`'s static document template — that file's own launch
+logic (`open()`, the Blob/`document.write` path) is unchanged.
+
+**Non-Latin script fallback.** `[data-mw-cartridge="Greek and Hebrew"]`
+scopes an explicit serif fallback stack — `"Noto Serif Greek", "SBL
+BibLit", "Noto Sans Hebrew", "Times New Roman", serif` — onto
+`.mw-title`/`.mw-lead`/`.mw-body`/`.mw-characteristics`/`.mw-examples` for
+that one cartridge only. This is the module's only cartridge-specific
+selector; every other rule in `MINIWIKI_CSS` is generic across all thirteen
+widgets.

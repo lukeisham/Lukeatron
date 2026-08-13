@@ -165,6 +165,83 @@ the assembler concatenates to one HTML); **D-6** (focus-level CSS is generated f
   unchanged cartridge produces byte-identical output; importing `assemble.py` as a module
   performs no I/O.
 
+**MiniWiki module wiring (added post-approval — see note below FR-18)**
+
+- **FR-18** — The shell wires in the **MiniWiki module** (`_modules/MiniWiki/`) as a second
+  injected peer module, mirroring FR-11's spelling relationship but with a different delivery
+  mechanism: rather than mounting into the parser page's own DOM, `src/miniwiki-seam.js`
+  builds a complete, self-contained HTML document at click time and opens it in a **new
+  browser tab** (`Blob`+`URL.createObjectURL`+`window.open`, falling back to
+  `window.open("")+document.write()`), with its own independent hash routing and history. A
+  cartridge opts in with `miniwiki.enabled: true` + `miniwiki.articlesFile` in `config.yaml`
+  (default off — an omitting cartridge assembles byte-identically to one that never mentions
+  the key); the assembler embeds the module's bundled JS as a string constant
+  (`MINIWIKI_BUNDLE_SRC`, never executed in the parser page's own window) plus the
+  pre-extracted article JSON (`MINIWIKI_ARTICLES`, from
+  `_modules/MiniWiki/build/extract_articles.py`'s output). If `window.open` is blocked, the
+  shell shows an inline warning (`#miniwikiwarn`) rather than failing silently (JS-2).
+
+  *Note on this addition:* this spec (dated 2026-08-09) predates the MiniWiki module's build
+  and, as originally approved, names only the spelling module throughout §§1–8 — FR-18 and
+  the manifest/assembler-order updates below were added afterward to bring the written
+  contract in line with what `assemble.py`, `shell.html`, and `miniwiki-seam.js` actually
+  ship, per the documentation-must-match-the-code rule. The out-of-scope line in §2 excluding
+  "the spelling module's own interface" is unaffected — `MiniWikiModule.spec.md` is the
+  sibling spec for MiniWiki's own interface on the same basis.
+
+**Sweep-selector UI + `severity: 'na'` (added post-approval — Style origin, see note below FR-22)**
+
+- **FR-19** — A cartridge opts in to a **sweep selector** with `sweeps.enabled: true` +
+  `sweeps.items` (a list of `{id, label, category: "genre"|"register", hue, section,
+  oppositeId?, oppositeLabel?, oppositeSection?}` — `oppositeId`/`oppositeLabel`/
+  `oppositeSection` only meaningful, and only present, on `category: "genre"` items) in
+  `config.yaml` (default off — an omitting cartridge assembles byte-identically to one that
+  never mentions the key, same pattern as `miniwiki.enabled`/FR-18).
+- **FR-20** — When `sweeps.enabled`, the shell renders one checkbox per `sweeps.items` entry
+  above the input area (all unchecked by default — no sweep runs implicitly), plus a small
+  "Opposite" toggle beside any `category: "genre"` item's checkbox (enabled only once that
+  item's own checkbox is checked, defaulting off). At Parse time the shell builds a
+  `selection` object — `{ sweeps: { [id]: { on: boolean, opposite: boolean } } }` — from the
+  current checkbox/toggle state and calls `ENGINE.parse(text, selection)`, an **additive**
+  second argument to the existing one-argument `parse(text)` contract (FR-4): a cartridge
+  whose `ENGINE.parse` declares only one parameter is unaffected by the extra call-site
+  argument (ordinary JS call semantics), so `sweeps.enabled: false`/absent cartridges — every
+  cartridge as of this writing — need zero `ENGINE` changes. The shell reads only
+  `sweeps.items`' own declared fields to render; it never inspects `CONTENT` ids or infers
+  sweep semantics itself (FR-9's "none of this is cartridge code" holds for this addition too).
+- **FR-21** — `ParseResult.findings[].severity` gains a fourth legal value, `'na'` (§6's
+  schema updated above), for cartridges whose findings model includes a "not applicable"
+  state (e.g. a per-rule scorecard where a rule doesn't apply to the given input). The shell's
+  icon-bar renderer already resolves glyph/colour per finding from cartridge-supplied
+  `EXPLAINER` data rather than a hardcoded severity→colour switch, so no shell-side rendering
+  logic changes — this FR only widens the schema's legal value set.
+- **FR-22** — Three new CSS custom-property pairs are available to any cartridge's
+  `files.styles` override: `--tl-red`/`--tl-red-bg`, `--tl-amber`/`--tl-amber-bg`,
+  `--tl-grey`/`--tl-grey-bg` — deliberately **not** a reuse of the shell's existing `--red`,
+  which `01-foundations.md`/`03-components.md` reserve for spelling-error underlines only.
+  These three ship in `shell.css`'s `:root` unconditionally (harmless, unused custom
+  properties for a cartridge that never references them) rather than being generated
+  conditionally on `sweeps.enabled`, keeping the assembler's placeholder-substitution logic
+  unchanged for this addition.
+
+- **FR-23** — The in-page header badge (distinct from `__ICON_HREF__`, the browser-tab favicon
+  set from `cartridge.icon`) is generated from `__BADGE_GLYPH__`: the first character of
+  `cartridge.id`, uppercased. Previously hardcoded `P` for every cartridge (including Grammar,
+  whose own tab favicon already showed a custom "G") — this makes the in-page badge agree with
+  a cartridge's own identity without a second manifest field to hand-keep in sync with `icon`'s
+  SVG glyph.
+
+  *Note on this addition:* like FR-18 before it, this section was added after this spec's
+  original approval, to bring the written contract in line with the Style reference-slice
+  build (`Style/Specs/Done/StyleParser.spec.md`, which originates FR-19–23) — per the same
+  documentation-must-match-the-code rule FR-18's note already states. FR-19–22 are
+  regression-safe against Grammar the same way FR-18 was: Grammar's manifest declares neither
+  `sweeps` nor any `'na'` finding, so both are no-ops for it (proven by diff, not assumed — see
+  `Style/Specs/Done/StyleParser.spec.md` AC-S5). **FR-23 is a deliberate, visible exception** — it
+  changes Grammar's own shipped badge from `P` to `G` (a fix, not a regression: `G` now matches
+  Grammar's own tab favicon, which `P` never did) — confirmed by isolated diff and Luke's
+  explicit go-ahead (2026-08-12) before `Grammar/Grammar_parser.html` was rebuilt in place.
+
 **Acceptance criteria** (observable, testable):
 
 - **AC-1** — Feeding the assembler a `config.yaml` missing `parser.cap` exits non-zero and
@@ -185,6 +262,13 @@ the assembler concatenates to one HTML); **D-6** (focus-level CSS is generated f
   logic reachable from the shell's render loop — grep the shipped output for the local
   `shortPos`/`needSpace` re-implementations that exist in the current monolith
   (`template.html:1208–1220`) and confirm they are gone from the rebuilt shell code.
+- **AC-7** — Rebuilding Grammar's cartridge through the sweep-selector/`'na'`-extended
+  assembler (FR-19–22) produces byte-identical output to the currently-shipped
+  `Grammar_parser.html` — Grammar declares no `sweeps` key and emits no `'na'` finding, so
+  both additions must be no-ops for it, proven by diff. Full worked-example ACs for a
+  cartridge that *does* use FR-19–22 (checkbox rendering, opposite toggle, `'na'` glyph
+  rendering) live in `Style/Specs/Done/StyleParser.spec.md` §7 (AC-S1–AC-S6), the spec that
+  originates this section, per the same delegation AC-4 already uses for Grammar's own ACs.
 
 ## 4. Prerequisites & dependencies
 
@@ -315,7 +399,7 @@ the assembler concatenates to one HTML); **D-6** (focus-level CSS is generated f
     {
       "id": "string — CONTENT id",
       "label": "string",
-      "severity": "'check' | 'info' | 'flag'",
+      "severity": "'check' | 'info' | 'flag' | 'na'",
       "spanRef": "number, optional — index into spans[]",
       "start": "number, optional — token index (present when not span-backed)",
       "end": "number, optional — token index",
@@ -376,7 +460,11 @@ them, since the accepted Grammar build depends on their exact shape.
 `cartridge.version`, `cartridge.builtFrom`, `parser.inputUnit`, `parser.cap`,
 `parser.levels` (1+), `parser.tentativeThreshold`, `colours.palette` (1+ hue),
 `files.engine`, `files.explainer`. Optional: `parser.focusLabels`, `files.styles`,
-`files.content`, `lexicon.enabled` + `lexicon.dbFile` + `lexicon.schema`.
+`files.content`, `lexicon.enabled` + `lexicon.dbFile` + `lexicon.schema`,
+`spelling.enabled`, `miniwiki.enabled` + `miniwiki.articlesFile` +
+`miniwiki.cartridgeName` (FR-18 — required together if `miniwiki.enabled: true`,
+absent/false by default), `sweeps.enabled` + `sweeps.items` (FR-19/FR-20 — required
+together if `sweeps.enabled: true`, absent/false by default).
 
 **Injection order** (deterministic, single pass):
 1. Load `_shell/build/shell.html` (the never-rewritten chassis skeleton).
@@ -392,6 +480,10 @@ them, since the accepted Grammar build depends on their exact shape.
    opens as SQLite and matches `lexicon.schema` → fail closed on mismatch.
 8. Wire in the spelling module (D-1, `_modules/Spelling/` — its own build output, treated as
    an opaque injectable block by this assembler).
+8b. Wire in the MiniWiki module (FR-18, `_modules/MiniWiki/` — likewise an opaque build
+    output) if `miniwiki.enabled`: embed `dist/miniwiki.bundle.js` as a JS string constant and
+    the pre-extracted `articlesFile` JSON → fail closed, named field/file, if either is
+    missing while `miniwiki.enabled: true`.
 9. Substitute `__BUILD_DATE__` and any remaining shell placeholders.
 10. **Final validation pass:** regex-scan the assembled output for `__[A-Z_]+__` — any match
     is a hard failure (AC-3), non-zero exit, no file written.

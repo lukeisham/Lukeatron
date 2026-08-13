@@ -61,6 +61,55 @@ var UI = (function () {
     });
   }
 
+  /* ---- Sweep selector (FR-19/FR-20: built from CONFIG.sweeps.items, opt-in,
+     default off — a cartridge that omits CONFIG.sweeps never sees this bar) ---- */
+  function sweepsEnabled() { return !!(CONFIG.sweeps && CONFIG.sweeps.enabled && CONFIG.sweeps.items && CONFIG.sweeps.items.length); }
+  function buildSweepBar() {
+    if (!sweepsEnabled()) return;
+    var bar = $("sweepbar");
+    var html = '<span class="muted">Sweeps</span>';
+    CONFIG.sweeps.items.forEach(function (s) {
+      html += '<label class="muted" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;">' +
+        '<input type="checkbox" class="sweep-on" data-id="' + esc(s.id) + '"> ' + esc(s.label) + '</label>';
+      if (s.category === "genre" && s.oppositeLabel) {
+        html += '<label class="muted sweep-opp-label" data-for="' + esc(s.id) + '" style="display:none;align-items:center;gap:4px;cursor:pointer;font-size:12px;">' +
+          '<input type="checkbox" class="sweep-opp" data-id="' + esc(s.id) + '" disabled> Opposite (' + esc(s.oppositeLabel) + ')</label>';
+      }
+    });
+    bar.innerHTML = html;
+    bar.style.display = "flex";
+    // getAttribute("data-id"), not .dataset.id — .dataset is a live reflection
+    // of data-* attributes in a real DOM; reading through getAttribute avoids
+    // depending on that reflection existing at all (same information, one
+    // fewer browser-API assumption).
+    bar.querySelectorAll(".sweep-on").forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var id = cb.getAttribute("data-id");
+        var oppLabel = bar.querySelector('.sweep-opp-label[data-for="' + id + '"]');
+        if (oppLabel) {
+          oppLabel.style.display = cb.checked ? "inline-flex" : "none";
+          var oppCb = oppLabel.querySelector(".sweep-opp");
+          oppCb.disabled = !cb.checked;
+          if (!cb.checked) oppCb.checked = false;
+        }
+      });
+    });
+  }
+  // Builds the `selection` object ENGINE.parse's additive second argument
+  // reads (FR-20). Returns undefined (not {}) when sweeps aren't in play, so
+  // ENGINE.parse(text, undefined) behaves exactly like ENGINE.parse(text)
+  // for every cartridge that doesn't declare CONFIG.sweeps.
+  function readSweepSelection() {
+    if (!sweepsEnabled()) return undefined;
+    var sel = { sweeps: {} };
+    $("sweepbar").querySelectorAll(".sweep-on").forEach(function (cb) {
+      var id = cb.getAttribute("data-id");
+      var oppCb = $("sweepbar").querySelector('.sweep-opp[data-id="' + id + '"]');
+      sel.sweeps[id] = { on: cb.checked, opposite: !!(oppCb && oppCb.checked) };
+    });
+    return sel;
+  }
+
   /* ---- Spell check (delegates to the injected SpellingSeam — FR-11, D-5) ---- */
   var spelling = null;
   var spellTimer = null;
@@ -165,7 +214,15 @@ var UI = (function () {
         if (openCl) html += "</span>";
         ci = cx;
         if (cx !== null) {
-          var cl = clauses[cx], hue = pal[cx % pal.length];
+          // AD-S4 (StyleParser.spec.md): hue is looked up by which sweep a
+          // clause belongs to (cl.hueIndex), when a cartridge sets it,
+          // rather than always by array position — a clause-count-based
+          // hue cycle is wrong once a cartridge can have 2+ categorically
+          // distinct clause groups active at once (Style's multiple genre
+          // sweeps), unlike Grammar's structural-kinship model where array
+          // position IS the meaningful grouping. Additive: a cartridge
+          // whose clauses never set hueIndex (Grammar) is unaffected.
+          var cl = clauses[cx], hue = pal[(typeof cl.hueIndex === "number" ? cl.hueIndex : cx) % pal.length];
           var lbl = cl.abbr || (cl.role === "dependent" ? "DEP" : "IND " + (clauses.filter(function (c, k) { return !c.dep && k <= cx; }).length));
           html += '<span class="cl" data-ci="' + cx + '" style="--h50:' + hue.h50 + ';--h100:' + hue.h100 + ';--h600:' + hue.h600 + ';--h800:' + hue.h800 + ';--hf:' + hue.hf + ';"><span class="lbl">' + esc(lbl) + "</span>";
           openCl = true;
@@ -198,7 +255,7 @@ var UI = (function () {
   function buildClauseChips() {
     var pal = CONFIG.clausePalette;
     return (R._clauses || []).map(function (cl, cx) {
-      var hue = pal[cx % pal.length];
+      var hue = pal[(typeof cl.hueIndex === "number" ? cl.hueIndex : cx) % pal.length]; // AD-S4, see render()
       var label = cl.abbr ? cl.abbr : (cl.typeName || cl.type || "clause");
       return '<span class="chip" style="background:' + hue.h50 + ';color:' + hue.h800 + ';">' + esc(hue.name) + " — " + esc(String(label).toLowerCase()) + (cl.modifies ? " (modifies “" + esc(cl.modifies) + "”)" : "") + "</span>";
     }).join(" ");
@@ -300,7 +357,7 @@ var UI = (function () {
   function parseNow() {
     var text = getInputText();
     if (!text) return;
-    R = ENGINE.parse(text);
+    R = ENGINE.parse(text, readSweepSelection());
     window.ParserResult = { result: R, parse: ENGINE.parse };
     render();
   }
@@ -334,6 +391,7 @@ var UI = (function () {
       $("spellinfo").innerHTML = renderAttribution(" · " + CONFIG.spelling.attribution);
     }
     buildFocusBar();
+    buildSweepBar();
     $("stage").className = "v-" + view;
     initHoverAndContext();
     initSpelling();

@@ -15,6 +15,8 @@ import { buildLinkCatalogue, autolinkHtml } from "./autolink.js";
 import { generateSearchTerms } from "./search-terms.js";
 import { formatReferences } from "./references.js";
 import { copyToClipboard } from "./clipboard.js";
+import { renderSearchBox } from "./search-ui.js";
+import { renderSeeAlso, renderPrevNextNav } from "./article-nav.js";
 
 function el(doc, tag, className, text) {
   const e = doc.createElement(tag);
@@ -23,10 +25,11 @@ function el(doc, tag, className, text) {
   return e;
 }
 
-function linkItem(doc, label, onClick, className = "mw-menu-link") {
+function linkItem(doc, label, onClick, className = "mw-menu-link", navId) {
   const li = doc.createElement("li");
   const a = el(doc, "a", className, label);
   a.href = "#";
+  if (navId !== undefined) a.setAttribute("data-nav-id", navId);
   a.addEventListener("click", (e) => {
     e.preventDefault();
     onClick();
@@ -35,24 +38,34 @@ function linkItem(doc, label, onClick, className = "mw-menu-link") {
   return li;
 }
 
-/** Side menu (requirement 7): Home, All, Surprise me, category links, tree. */
+/** Side menu (requirement 7): search box, Home, All, Surprise me, category
+ * links, tree. `opts.search` (index.js's search(query)) backs the live
+ * search box (audit gap #1) — `menuBody` (everything below the box) is
+ * hidden while a query has the result list open, restored when cleared. */
 function renderSideMenu(doc, articlesById, opts) {
   const nav = el(doc, "nav", "mw-side-menu");
-  const top = el(doc, "ul", "mw-menu-top");
-  top.appendChild(linkItem(doc, "Home", opts.onHome));
-  top.appendChild(linkItem(doc, "All", opts.onAll));
-  top.appendChild(linkItem(doc, "Surprise me", opts.onSurprise));
-  nav.appendChild(top);
 
-  nav.appendChild(el(doc, "div", "mw-menu-heading", "Categories"));
+  const menuBody = el(doc, "div", "mw-menu-body");
+  const top = el(doc, "ul", "mw-menu-top");
+  top.appendChild(linkItem(doc, "Home", opts.onHome, "mw-menu-link", "home"));
+  top.appendChild(linkItem(doc, "All", opts.onAll, "mw-menu-link", "all"));
+  top.appendChild(linkItem(doc, "Surprise me", opts.onSurprise));
+  menuBody.appendChild(top);
+
+  menuBody.appendChild(el(doc, "div", "mw-menu-heading", "Categories"));
   const categoryList = el(doc, "ul", "mw-menu-categories");
   for (const cat of getTopLevel(articlesById)) {
-    categoryList.appendChild(linkItem(doc, cat.title, () => opts.onNavigate(cat.id)));
+    categoryList.appendChild(linkItem(doc, cat.title, () => opts.onNavigate(cat.id), "mw-menu-link", cat.id));
   }
-  nav.appendChild(categoryList);
+  menuBody.appendChild(categoryList);
 
-  nav.appendChild(el(doc, "div", "mw-menu-heading", "Browse"));
-  nav.appendChild(renderTree(doc, articlesById, opts.expandedIds, opts.onNavigate));
+  menuBody.appendChild(el(doc, "div", "mw-menu-heading", "Browse"));
+  menuBody.appendChild(renderTree(doc, articlesById, opts.expandedIds, opts.onNavigate));
+
+  if (opts.search) {
+    nav.appendChild(renderSearchBox(doc, { search: opts.search, onNavigate: opts.onNavigate, menuBody }));
+  }
+  nav.appendChild(menuBody);
   return nav;
 }
 
@@ -87,6 +100,7 @@ function renderTreeLevel(doc, articlesById, nodes, ul, expandedIds, onNavigate) 
     }
     const link = el(doc, "a", "mw-tree-link", a.title);
     link.href = "#/" + a.id;
+    link.setAttribute("data-nav-id", a.id);
     link.addEventListener("click", (e) => {
       e.preventDefault();
       onNavigate(a.id);
@@ -246,6 +260,14 @@ function renderArticlePage(doc, articlesById, article, linkCatalogue, onNavigate
     section.appendChild(ol);
     main.appendChild(section);
   }
+
+  // Audit gaps #3/#4: "See also" (sibling chips, distinct from the
+  // key-search-terms box below) and prev/next sibling navigation, both
+  // omitted entirely rather than rendered empty when there are no siblings.
+  const seeAlso = renderSeeAlso(doc, articlesById, article, onNavigate);
+  if (seeAlso) main.appendChild(seeAlso);
+  const prevNext = renderPrevNextNav(doc, articlesById, article, onNavigate);
+  if (prevNext) main.appendChild(prevNext);
 
   main.appendChild(renderSearchTermsBox(doc, article, getAncestors(articlesById, article.id)));
   return main;

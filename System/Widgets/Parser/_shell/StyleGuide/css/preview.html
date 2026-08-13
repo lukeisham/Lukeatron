@@ -253,6 +253,89 @@
   </div>
 </section>
 
+<!-- ================= MINIWIKI MODULE ================= -->
+<section class="sg-block">
+  <h2>MiniWiki module (opens in a new tab — reproduced here for reference)</h2>
+  <p class="sg-note">This section does <strong>not</strong> link a real stylesheet the way the
+  rest of this page links <code>shell.css</code> — MiniWiki's CSS
+  (<code>_modules/MiniWiki/src/styles.js</code>'s <code>MINIWIKI_CSS</code>) is a JS string
+  injected at runtime into a <em>separate</em> document, not a linkable file. The
+  <code>.mw-*</code> rules powering the demo below are reproduced by hand in this page's own
+  <code>&lt;style&gt;</code> block (kept in sync manually, same as
+  <a href="patterns.css">patterns.css</a>'s relationship to <code>shell.css</code>) — every
+  colour is still one of the same shell tokens. See
+  <a href="../03-components.md">03-components.md</a> and
+  <a href="../02-colour-model.md">02-colour-model.md</a>.</p>
+
+  <div class="card" style="padding:16px;">
+    <div class="mw-root">
+      <nav class="mw-side-menu">
+        <ul class="mw-menu-top">
+          <li><a href="#" class="mw-menu-link">Home</a></li>
+          <li><a href="#" class="mw-menu-link">All</a></li>
+          <li><a href="#" class="mw-menu-link">Surprise me</a></li>
+        </ul>
+        <div class="mw-menu-heading">Categories</div>
+        <ul class="mw-menu-categories">
+          <li><a href="#" class="mw-menu-link mw-active">Clauses</a></li>
+          <li><a href="#" class="mw-menu-link">Phrases</a></li>
+        </ul>
+        <div class="mw-menu-heading">Browse</div>
+        <ul class="mw-tree">
+          <li class="mw-tree-item">
+            <button type="button" class="mw-tree-toggle">▼</button><a href="#" class="mw-tree-link">Clauses</a>
+            <ul class="mw-tree-children">
+              <li class="mw-tree-item"><span class="mw-tree-leaf">·</span><a href="#" class="mw-tree-link">Independent clause</a></li>
+              <li class="mw-tree-item"><span class="mw-tree-leaf">·</span><a href="#" class="mw-tree-link">Relative clause</a></li>
+            </ul>
+          </li>
+          <li class="mw-tree-item"><button type="button" class="mw-tree-toggle">▶</button><a href="#" class="mw-tree-link">Phrases</a></li>
+        </ul>
+      </nav>
+      <div class="mw-article-pane">
+        <div class="mw-page mw-article">
+          <div class="mw-breadcrumb"><a href="#" class="mw-breadcrumb-link">Grammar</a> › <a href="#" class="mw-breadcrumb-link">Clauses</a> › Relative clause</div>
+          <h1 class="mw-title">Relative clause</h1>
+          <p class="mw-lead">A dependent clause that modifies a noun, introduced by a relative pronoun.</p>
+          <div class="mw-body">
+            <p>See also the <a href="#" class="wikilink">independent clause</a> it typically attaches to.</p>
+          </div>
+          <section class="mw-section-block">
+            <h2 class="mw-section-heading">Key characteristics</h2>
+            <ul class="mw-characteristics">
+              <li>Begins with a relative pronoun ("who," "which," "that").</li>
+              <li>Cannot stand alone as a sentence.</li>
+            </ul>
+          </section>
+          <section class="mw-references">
+            <h2 class="mw-section-heading">References</h2>
+            <ol class="mw-reference-list">
+              <li>Huddleston, Rodney, and Geoffrey K. Pullum. <em>The Cambridge Grammar of the English Language</em>. Cambridge UP, 2002.</li>
+            </ol>
+          </section>
+          <div class="mw-search-terms-box">
+            <h2 class="mw-section-heading">Key search terms</h2>
+            <div class="mw-term-list">
+              <button type="button" class="mw-term-chip">relative clause</button>
+              <button type="button" class="mw-term-chip">relative pronoun</button>
+              <button type="button" class="mw-term-chip">dependent clause</button>
+            </div>
+            <button type="button" class="mw-copy-all">Copy all</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-note"><code>.mw-menu-link.mw-active</code> above ("Clauses" in the category
+  list) shows the styled-but-dormant active state — see
+  <a href="../04-states-and-interaction.md">04-states-and-interaction.md</a> for why nothing
+  in the shipped module currently applies that class. The search-terms box's chips and "Copy
+  all" button are wired to real click handlers in the shipped module (clipboard write, then a
+  1200ms "Copied!"/"Copy failed" flash) — inert here since this page has no
+  <code>createMiniWikiModule</code> instance behind it, by design (a static reference page,
+  not a functional demo).</p>
+</section>
+
 <footer class="sg-footer">Parser Shell Style Guide — generated for reference, not shipped in any widget.</footer>
 </div>
 
@@ -311,6 +394,74 @@
 #demo-lexical .w{display:inline-block;background:var(--h100);color:var(--h800);border-radius:4px;padding:1px 6px;margin:2px 1px;text-align:center;}
 #demo-lexical .pos{display:block;font-size:11px;color:var(--h600);font-weight:600;line-height:1.2;padding-bottom:2px;}
 #demo-lexical .w.tentW{border-bottom:2px dashed var(--h600);}
+
+/* ---------------------------------------------------------------------
+   MiniWiki module CSS, reproduced by hand from
+   _modules/MiniWiki/src/styles.js's MINIWIKI_CSS — that file is a JS
+   string, not a linkable stylesheet, so it cannot be <link>ed the way
+   shell.css is above. Keep this block in sync with styles.js by hand,
+   same as patterns.css's relationship to shell.css.
+   --------------------------------------------------------------------- */
+.mw-root { display: flex; gap: 20px; }
+.mw-side-menu { flex: 0 0 260px; max-height: 70vh; overflow-y: auto; font-size: 13px; }
+.mw-menu-top { list-style: none; margin: 0 0 12px; padding: 0; }
+.mw-menu-top li { margin: 2px 0; }
+.mw-menu-link, .mw-tree-link, .mw-all-link, .mw-breadcrumb-link, .mw-home-card-title {
+  color: var(--ink); text-decoration: none; display: inline-block; padding: 3px 6px;
+  border-radius: 4px; word-break: break-word;
+}
+.mw-menu-link:hover, .mw-tree-link:hover, .mw-all-link:hover, .mw-home-card-title:hover {
+  background: var(--accbg); color: var(--acc);
+}
+.mw-menu-link.mw-active, .mw-tree-link.mw-active { background: var(--accbg); color: var(--acc); font-weight: 600; }
+.mw-menu-heading { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--ink3); margin: 12px 0 4px; }
+.mw-menu-categories, .mw-tree, .mw-tree-children, .mw-all-list { list-style: none; margin: 0; padding: 0; }
+.mw-tree-children { padding-left: 14px; }
+.mw-tree-item { margin: 2px 0; }
+.mw-tree-toggle { background: none; border: none; color: var(--ink3); cursor: pointer; width: 16px; font-size: 11px; }
+.mw-tree-toggle:hover { color: var(--ink); }
+.mw-tree-leaf { display: inline-block; width: 16px; text-align: center; color: var(--ink3); }
+.mw-article-pane { flex: 1; min-width: 0; }
+.mw-page { font-size: 14px; }
+.mw-title { font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--ink); }
+.mw-lead { font-size: 15px; font-weight: 500; margin: 0 0 14px; }
+.mw-breadcrumb { font-size: 12px; color: var(--ink2); margin-bottom: 10px; }
+.mw-breadcrumb .mw-breadcrumb-link { padding: 0 2px; }
+.mw-body p { font-size: 13.5px; line-height: 1.6; margin: 0 0 10px; }
+.mw-section-block { margin: 16px 0; }
+.mw-section-heading, .mw-reference-list + .mw-section-heading {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--ink2); margin: 0 0 6px;
+}
+.mw-characteristics, .mw-examples { font-size: 13.5px; margin: 0; padding-left: 20px; max-height: 320px; overflow-y: auto; }
+.mw-characteristics li, .mw-examples li { margin: 4px 0; line-height: 1.5; }
+.mw-worked-example { font-size: 13.5px; line-height: 1.6; background: var(--accbg); border-radius: var(--radius); padding: 10px 12px; }
+.wikilink { color: var(--acc); text-decoration: none; cursor: help; }
+.wikilink:hover { text-decoration: underline; }
+.mw-home-categories { display: grid; gap: 10px; }
+.mw-home-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.mw-home-card-lead { margin: 4px 0 0; font-size: 13px; color: var(--ink2); }
+.mw-reference-list { font-size: 12.5px; padding-left: 18px; color: var(--ink2); }
+.mw-reference-list li { margin: 4px 0; }
+.mw-search-terms-box {
+  margin-top: 22px; padding: 14px; border: 1px solid var(--line2); border-radius: var(--radius);
+  background: var(--accbg);
+}
+.mw-search-terms-box .mw-section-heading { color: var(--acc); }
+.mw-term-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.mw-term-chip {
+  border: 1px solid var(--line2); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.mw-term-chip:hover { background: var(--acc); color: #fff; border-color: var(--acc); }
+.mw-copy-all {
+  border: 1px solid var(--acc); background: var(--acc); color: #fff; border-radius: 4px;
+  padding: 5px 12px; font-size: 12px; cursor: pointer;
+}
+.mw-copy-all:hover { opacity: .9; }
+@media (max-width: 719px) {
+  .mw-root { flex-direction: column; }
+  .mw-side-menu { flex: none; max-height: none; }
+}
 </style>
 
 <script>

@@ -147,11 +147,12 @@ An on-call asset-generator display in a browser tab: **nine teaching aides shari
 
 | Aide | Input unit | Cap | Parser logic | Tier |
 | :--- | :--- | :--- | :--- | :--- |
-| Style | one paragraph | 1000 w | pattern matching to a style schema | A |
+| Style | one paragraph | 1000 w | pattern matching to a style schema — 7 independently-selectable sweeps (5 genres + antitheses, 2 registers) | A |
+| | | | *↑ **BUILT — all 7 sweeps** (`System/Widgets/Parser/Style/cartridge/Style_parser.html`, v1.0.0; reference slice — Clarity+Obscurity, Academic English — built 2026-08-12, extended to Brevity/Coherence/Voice/Diction + antitheses and Simple/Descriptive English 2026-08-13). Spec: `System/Widgets/Parser/Style/Specs/Done/StyleParser.spec.md`; editable source: `System/Widgets/Parser/Style/cartridge/`. First cartridge to use the shell's sweep-selector extension (`_shell/Specs/ParserShell.spec.md` FR-19–23)* | |
 | Fact-checking | one paragraph | 1000 w | first pass: split claim/source; second pass: search both | **B** |
 | Rhetoric | one paragraph | 1000 w | pattern match types of speech, then effect | A |
 | Grammar | one sentence | **100 w** | pass 1 bottom-up lexical; pass 2 top-down syntactic + semantic; pass 3 conventions | A |
-| | | | *↑ reference build — **BUILT 2026-07-05, rebuilt from the shell 2026-08-10** (`System/Widgets/Parser/Grammar/Grammar_parser.html`, v1.0.0, 4.18 MB single file, embedded 20k-word SQLite lexicon + central spelling dictionary). Spec: `System/Widgets/Parser/Grammar/Specs/Done/GrammarParser.spec.md`; editable source: `System/Widgets/Parser/Grammar/cartridge/` (see its README); rebuild recipe: `System/Widgets/Parser/_shell/README.md`. All other parsers are cartridges assembled against the same shell (§5b) — none are built yet* | |
+| | | | *↑ reference build — **BUILT 2026-07-05, rebuilt from the shell 2026-08-10** (`System/Widgets/Parser/Grammar/Grammar_parser.html`, v1.0.0, 4.18 MB single file, embedded 20k-word SQLite lexicon + central spelling dictionary). Spec: `System/Widgets/Parser/Grammar/Specs/Done/GrammarParser.spec.md`; editable source: `System/Widgets/Parser/Grammar/cartridge/` (see its README); rebuild recipe: `System/Widgets/Parser/_shell/README.md`. All other parsers are cartridges assembled against the same shell (§5b) — Style has a full 7-sweep cartridge built (below); the other eleven are not yet built* | |
 | Interpretation | one page | 1000 w | match named entities/phrases to methodology schema | A |
 | Story-tension | one scene | **5000 w** | trope check, plot summary, inciting incident, context, complication, resolution, unresolved matters | **B** |
 | Logic | one paragraph | 1000 w | terms (clear/unclear), judgements (contradictory?), arguments (valid/invalid) | A |
@@ -173,7 +174,7 @@ An on-call asset-generator display in a browser tab: **nine teaching aides shari
 
 | Aide | Explainer |
 | :--- | :--- |
-| Style | *(to be specified)* |
+| Style | Genre sweeps (Clarity/Brevity/Coherence/Voice/Diction + antitheses): Grammar-style two-part Explainer — findings table + deduplicated rules-extracted list — colour-coded per genre, drilled into via click (no focus-level zoom; Style has no structural nesting to zoom through). Register sweeps (Academic English, Simple/Descriptive English): a traffic-light scorecard (🟢🟡🔴⚪ per rule) with inline highlighting on 🔴/🟡 spans and click-to-expand suggestions. Full design: `System/Widgets/Parser/Style/Style_content.md`'s "Explainer format" section. |
 | Fact-checking | *(to be specified)* |
 | Rhetoric | table: types of speech × their effects |
 | Grammar | four-row table, one column per word — row 1 the sentence, rows 2–3 syntax, row 4 semantic meaning |
@@ -187,7 +188,7 @@ An on-call asset-generator display in a browser tab: **nine teaching aides shari
 
 - Greek & Hebrew: parser logic and Explainer undefined.
 - Tropes & symbols: parser logic and Explainer undefined (likely overlaps Story-tension's trope check — decide whether they share a rule set).
-- Style and Fact-checking: Explainer formats undefined.
+- Style: **all 7 sweeps built and browser-verified** (`Style/Specs/Done/StyleParser.spec.md`, AC-S1–AC-S12 all passing) — OQ-S1/OQ-S2 resolved (AD-S1/AD-S2); AD-S4 (the shared shell's hue-by-clause-index limitation) resolved 2026-08-13 via an additive `hueIndex` lookup in `_shell/src/ui.js`, proven not to affect Grammar. Known minor gaps (logged, not blocking): register findings' Layer-1 `--tl-red`/`--tl-amber` span highlighting was never wired up; a few Simple/Descriptive English rules compile to an empty definition string (cosmetic). Fact-checking: Explainer format still undefined.
 - API-key handling for the Tier-B aides (settings field vs `localStorage`).
 - Content source files: **Grammar's is drafted** (`System/Widgets/Parser/Grammar/Grammar_contents.md`) and its spec written (§5b), and its cartridge is built. The other twelve `<Store>_content.md` files are also drafted (each lives at its widget's root, e.g. `System/Widgets/Parser/Logic/Logic_content.md`) — Fact-checking's is a short stub, the rest are substantial. None of the twelve has a `cartridge/` yet; building one per aide (per §5b, against `_shell/`) is the natural next move, followed by a short spec citing the Grammar spec.
 - Fact-checking: approved source list for its content file undefined.

@@ -35,10 +35,10 @@ see [05](05-building-a-cartridge.md)).
 | # | File | Covers |
 | :-- | :--- | :--- |
 | 1 | [01-foundations.md](01-foundations.md) | Design tokens (colour, radius, font), typography scale, spacing, layout shell, the flat/offline design philosophy |
-| 2 | [02-colour-model.md](02-colour-model.md) | The structural-kinship hue model (AD-7), the six-hue palette shape, how focus-level CSS is generated (AD-2), how to pick a new cartridge's palette |
-| 3 | [03-components.md](03-components.md) | Every reusable UI piece — header, buttons, input, banner, chips, icon bar, stage renderer, tooltip, context menu, spelling popover, explainer, footer |
-| 4 | [04-states-and-interaction.md](04-states-and-interaction.md) | Hover/disabled/active states, print modes, responsiveness, accessibility — including the known gaps |
-| 5 | [05-building-a-cartridge.md](05-building-a-cartridge.md) | Practical checklist: `colours.palette` in `config.yaml`, when (rarely) to use `files.styles`, what never to touch |
+| 2 | [02-colour-model.md](02-colour-model.md) | The structural-kinship hue model (AD-7), the six-hue palette shape, how focus-level CSS is generated (AD-2), how to pick a new cartridge's palette, and confirmation that the MiniWiki module reuses the shell's tokens (no new palette) |
+| 3 | [03-components.md](03-components.md) | Every reusable UI piece — header, buttons, input, banner, chips, icon bar, stage renderer, tooltip, context menu, spelling popover, explainer, footer — plus the MiniWiki module's own components: side menu, outline tree, breadcrumb, article/section pages, MLA references, and the key-search-terms "special box" |
+| 4 | [04-states-and-interaction.md](04-states-and-interaction.md) | Hover/disabled/active states, print modes, responsiveness, accessibility — including the known gaps — plus MiniWiki's own states: tree expand/collapse, copy-button feedback, the pop-up-blocked warning, and its mobile reflow (no drawer) |
+| 5 | [05-building-a-cartridge.md](05-building-a-cartridge.md) | Practical checklist: `colours.palette` in `config.yaml`, when (rarely) to use `files.styles`, what never to touch, and how to opt into the MiniWiki module (`miniwiki` block, the two build steps, default-off byte-identical assembly) |
 
 ## `css/` — reference stylesheets
 

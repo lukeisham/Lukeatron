@@ -78,6 +78,54 @@ If you do add `files.styles`:
   interactive-accent system; don't repurpose `--acc` to mean "this
   cartridge's brand colour."
 
+## Opting into MiniWiki — `miniwiki` in `config.yaml`
+
+The Mini-Wiki tab (see [03-components.md](03-components.md#miniwiki-opens-in-a-new-browser-tab-not-this-pages-chrome)
+and [04-states-and-interaction.md](04-states-and-interaction.md#miniwiki-states-and-interaction))
+is, like the spelling module, an optional peer module the shell wires in —
+never shell code, never a required feature. **Default OFF.** A cartridge
+that omits the `miniwiki` block from its `config.yaml` entirely assembles
+**byte-identically** to one that was never touched (confirmed in
+`_shell/build/assemble.py`: `miniwiki_bundle_src_js` stays the JS literal
+`""` and `miniwiki_enabled` stays `false`, so `#btnMiniWiki` never becomes
+visible and no MiniWiki bytes are embedded).
+
+```yaml
+miniwiki:
+  enabled: true                          # default OFF — this is the opt-in
+  articlesFile: "logic.miniwiki.json"    # required if enabled — path relative to build/
+  cartridgeName: "Logic Mini-Wiki"       # optional, default cartridge.name
+```
+
+**Two build steps happen before `assemble.py`, not inside it:**
+
+1. Extract the cartridge's outline-numbered content into the article JSON
+   `assemble.py` embeds:
+   ```bash
+   python3 _modules/MiniWiki/build/extract_articles.py <Cartridge>_content.md \
+     --out build/<name>.miniwiki.json --cartridge-id <id>
+   ```
+2. Build (or rebuild, after any `_modules/MiniWiki/src/*.js` edit) the
+   module's own bundle — a separate artefact from the extracted JSON:
+   ```bash
+   python3 _modules/MiniWiki/build/bundle_miniwiki.py     # writes dist/miniwiki.bundle.js
+   ```
+
+`assemble.py` then reads both: `miniwiki.articlesFile` (validated as JSON,
+fails loudly and non-zero if missing or malformed — PY-6) and the shared
+`dist/miniwiki.bundle.js` (fails loudly if `miniwiki.enabled: true` but the
+bundle hasn't been built yet). Neither step is optional if `miniwiki.
+enabled: true` — see `_modules/MiniWiki/README.md` for the full pipeline
+(the five content-model decisions, both supported content dialects, and the
+"never fabricate a citation" MLA-references rule).
+
+**What you never do for MiniWiki specifically:** hand-write any of its
+CSS. `_modules/MiniWiki/src/styles.js`'s `MINIWIKI_CSS` is the one and only
+source of MiniWiki's styling (injected by the module's own `mount()`,
+independent of `files.styles`) — a cartridge cannot and should not target
+`.mw-*` selectors from its own `files.styles`, since that CSS never reaches
+the separate tab the wiki opens in.
+
 ## Before shipping — checklist
 
 - [ ] `colours.palette` has every hue's five values, validated by a

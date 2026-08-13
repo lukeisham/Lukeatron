@@ -1,0 +1,482 @@
+{
+  "1.1": {
+    "n": "Use the active voice",
+    "l": "clarity",
+    "d": "> \"The active voice is usually more direct and vigorous than the passive.\" > — Strunk & White, The Elements of Style (source) The passive voice is not grammatically wrong, but it often buries the agent, lengthens the sentence, and drains its energy. Prefer the active construction unless the agent is genuinely unknown, irrelevant, or best concealed.",
+    "e": [
+      "Before: The report was reviewed by the committee, and a decision was reached by them to approve the project. / After: The committee reviewed the report and approved the project."
+    ]
+  },
+  "1.2": {
+    "n": "Put statements in positive form",
+    "l": "clarity",
+    "d": "> \"Make definite assertions. Avoid tame, colorless, hesitating, non-committal language.\" > — Strunk & White, The Elements of Style (source) Use the word not as a means of denial or antithesis, never as a means of evasion. Readers grasp affirmative statements faster than negative ones.",
+    "e": [
+      "Before: He was not very often on time. / After: He usually came late.",
+      "Before: The data do not show that the treatment had no effect. / After: The data show that the treatment had an effect."
+    ]
+  },
+  "1.3": {
+    "n": "Use definite, specific, concrete language",
+    "l": "clarity",
+    "d": "> \"Prefer the specific to the general, the definite to the vague, the concrete to the abstract.\" > — Strunk & White, The Elements of Style (source) Abstract language forces the reader to supply the missing picture. Concrete detail grounds the argument and holds attention.",
+    "e": [
+      "Before: A period of unfavourable weather set in. / After: It rained every day for a week.",
+      "Before: He showed satisfaction as he took possession of his well-earned reward. / After: He grinned as he pocketed the coin."
+    ]
+  },
+  "1.4": {
+    "n": "Make characters the subjects of your sentences (paraphrase)",
+    "l": "clarity",
+    "d": "Paraphrased from Joseph Williams, Style: Lessons in Clarity and Grace. Readers follow prose more easily when the grammatical subject names the character performing the action. Avoid abstract nouns in the subject slot when a flesh-and-blood agent is doing the work. In Williams's terms: \"Express characters as subjects and their actions as verbs.\" (paraphrase)",
+    "e": [
+      "Before: Our lack of data prevented evaluation of the programme's effectiveness. / After: Because we lacked data, we could not evaluate how effective the programme was."
+    ]
+  },
+  "1.5": {
+    "n": "Express actions as verbs (paraphrase)",
+    "l": "clarity",
+    "d": "Paraphrased from Joseph Williams, Style: Lessons in Clarity and Grace. Avoid nominalisations — verbs disguised as nouns (evaluation, implementation, development) — which drain movement from a sentence. Williams: \"Turn nominalizations back into verbs wherever possible. Readers understand actions more quickly when they are expressed as verbs, not as abstract nouns.\" (paraphrase)",
+    "e": [
+      "Before: The committee will conduct an investigation into the matter and make a recommendation. / After: The committee will investigate the matter and recommend a course of action."
+    ]
+  },
+  "8": {
+    "n": "Obscurity",
+    "l": "clarity",
+    "d": "The antithesis sweep for Clarity — toggled in instead of §1, never alongside it. Obscurity recognises deliberate indirection, abstraction, and evasive construction as a register in its own right — bureaucratic, diplomatic, legal, or guarded prose — rather than flagging it as a fault to fix. Its rules therefore carry a single demonstrative example, not a Before/After correction pair: there is nothing here to correct toward."
+  },
+  "8.1": {
+    "n": "Passive voice as a distancing register (paraphrase)",
+    "l": "clarity",
+    "d": "Paraphrased from George Orwell, \"Politics and the English Language\" (1946). Where §1.1 treats the passive as a default to avoid, Obscurity treats it as a functional choice: the passive foregrounds the event and backgrounds — or omits entirely — who is responsible for it. Orwell named this as one of the era's prevailing vices: \"The passive voice is wherever possible used in preference to the active.\" (paraphrase, source named) Recognise it as diplomatic language, legal drafting, or institutional distancing, not an error.",
+    "e": [
+      "Errors were made, and lessons will be learned."
+    ]
+  },
+  "8.2": {
+    "n": "Abstraction as a deliberate screen (source, mirrored)",
+    "l": "clarity",
+    "d": "> \"Prefer the specific to the general, the definite to the vague, the concrete to the abstract.\" > — Strunk & White, The Elements of Style (source) — §1.3's rule, read here as the register it warns against. Generality, used deliberately, withholds detail from a reader who has not earned access to it, or states a claim broadly enough to survive more circumstances than a concrete example could. Recognise this in bureaucratic, actuarial, or diplomatic prose as a functional register.",
+    "e": [
+      "Certain operational adjustments may affect service levels in some regions during the coming period."
+    ]
+  },
+  "2.1": {
+    "n": "Omit needless words",
+    "l": "brevity",
+    "d": "> \"Vigorous writing is concise. A sentence should contain no unnecessary words, a paragraph no unnecessary sentences, for the same reason that a drawing should have no unnecessary lines and a machine no unnecessary parts.\" > — Strunk & White, The Elements of Style (source) Every word should pull its weight. Common offenders: the fact that, in the event that, due to the fact that, there is/are, and all manner of throat-clearing.",
+    "e": [
+      "Before: In light of the fact that the meeting has been postponed, it is necessary for us to reschedule our travel arrangements at this point in time. / After: Because the meeting has been postponed, we must reschedule our travel."
+    ]
+  },
+  "2.2": {
+    "n": "If it is possible to cut a word out, always cut it out (paraphrase)",
+    "l": "brevity",
+    "d": "Paraphrased from George Orwell, \"Politics and the English Language\" (1946). Orwell's fourth rule is an uncompromising version of the brevity principle. If a word does no demonstrable work — qualifying, hedging, or merely inflating — it should go. Orwell: \"If it is possible to cut a word out, always cut it out.\" (paraphrase, source named)",
+    "e": [
+      "Before: It is generally felt by many people that a fairly significant number of the proposed changes are, on the whole, perhaps somewhat unnecessary. / After: Many people feel that most of the proposed changes are unnecessary."
+    ]
+  },
+  "2.3": {
+    "n": "Never use a long word where a short one will do (paraphrase)",
+    "l": "brevity",
+    "d": "Paraphrased from George Orwell, \"Politics and the English Language\" (1946). Orwell's second rule favours the short, common word over the long, rare one — not to dumb down the prose, but to speed understanding. Orwell: \"Never use a long word where a short one will do.\" (paraphrase, source named)",
+    "e": [
+      "Before: The meteorological conditions precipitated the cancellation of the outdoor festivities. / After: The weather forced us to cancel the outdoor party."
+    ]
+  },
+  "9": {
+    "n": "Verbosity",
+    "l": "brevity",
+    "d": "The antithesis sweep for Brevity — toggled in instead of §2, never alongside it. Verbosity recognises deliberate elaboration and cumulative phrasing as a register in its own right — ceremonial, liturgical, legal, or incantatory prose, where amplitude is the point — rather than flagging it as padding to cut. Its rules carry a single demonstrative example, not a Before/After correction pair."
+  },
+  "9.1": {
+    "n": "Elaborate and qualify deliberately (paraphrase, mirrored)",
+    "l": "brevity",
+    "d": "Mirrors §2.1–2.2 (Strunk & White, source; Orwell, paraphrase), read here as the register they warn against. Amplitude, deployed on purpose, can build weight, ceremony, or rhythm that a single lean clause cannot — the cumulative and periodic sentence of oratory, liturgy, and formal address. Recognise sustained qualification and restatement as a chosen register, not a failure to cut.",
+    "e": [
+      "We gather, in this place, at this hour, to remember, to give thanks, and to commit ourselves anew."
+    ]
+  },
+  "9.2": {
+    "n": "Prefer the longer, more formal word (paraphrase, mirrored)",
+    "l": "brevity",
+    "d": "Mirrors §2.3 (Orwell, paraphrase), read here as the register it warns against. A longer, Latinate word can signal gravity, ceremony, or precision of register where a short one would sound casual — legal, liturgical, or academic prose often deploys this deliberately.",
+    "e": [
+      "The parties shall henceforth be deemed to have fulfilled their respective obligations\" rather than \"Both sides have done what they agreed."
+    ]
+  },
+  "3.1": {
+    "n": "Old information before new information (paraphrase)",
+    "l": "coherence",
+    "d": "Paraphrased from Joseph Williams, Style: Lessons in Clarity and Grace. Williams's most powerful single principle: begin each sentence with information the reader already knows (or can easily infer), then introduce new material at the end. This \"old-to-new\" flow reduces the cognitive load of reading and creates natural bridges between sentences. Williams: \"Put at the beginning of a sentence those ideas that you have already mentioned, referred to, or implied, or that you can reasonably assume your reader already knows.\" (paraphrase)",
+    "e": [
+      "Before: A radical shift in monetary policy was announced by the central bank yesterday. > Rising inflation had prompted the decision. / After: The central bank announced a radical shift in monetary policy yesterday. > The decision was prompted by rising inflation."
+    ]
+  },
+  "3.2": {
+    "n": "Build cohesive paragraphs (paraphrase)",
+    "l": "coherence",
+    "d": "Paraphrased from Joseph Williams, Style: Lessons in Clarity and Grace. Cohesion is the felt connection between sentences; coherence is the sense that all parts belong to a single whole. Williams: \"A paragraph coheres when the reader can see that every sentence serves a single, identifiable purpose.\" (paraphrase) Use topic strings — repeating or varying the key subject across sentences — and logical connectors (therefore, however, in addition) to make the thread visible.",
+    "e": [
+      "Before: The experiment lasted six months. Researchers collected data at three sites. > Funding came from the National Science Foundation. Previous studies had used > different protocols. / After: The experiment lasted six months and gathered data from three sites. > This design was funded by the National Science Foundation. It improved on > earlier protocols in several respects."
+    ]
+  },
+  "3.3": {
+    "n": "Keep related words together",
+    "l": "coherence",
+    "d": "> \"The position of the words in a sentence is the principal means of showing their relationship.\" > — Strunk & White, The Elements of Style (source) Modifiers should sit next to the words they modify. Separating a subject from its verb, or a modifier from its target, forces the reader to hold a grammatical gap open — and risks ambiguity.",
+    "e": [
+      "Before: He noticed a large stain in the rug that was right in the centre. / After: He noticed a large stain right in the centre of the rug.",
+      "Before: The committee, after reviewing all the evidence and consulting with outside experts over the course of three meetings, decided. / After: The committee decided after reviewing all the evidence and consulting with outside experts over three meetings."
+    ]
+  },
+  "3.4": {
+    "n": "Express coordinate ideas in similar form (parallelism)",
+    "l": "coherence",
+    "d": "> \"Express parallel ideas in parallel form. This principle, that of parallel construction, requires that expressions similar in content and function be outwardly similar.\" > — Strunk & White, The Elements of Style (source) Parallel structure helps the reader see the symmetry of related ideas at a glance. Break it and you create a small but real stumble.",
+    "e": [
+      "Before: The role involves writing reports, managing a team, and you must attend weekly meetings. / After: The role involves writing reports, managing a team, and attending weekly meetings."
+    ]
+  },
+  "10": {
+    "n": "Incoherence",
+    "l": "coherence",
+    "d": "The antithesis sweep for Coherence — toggled in instead of §3, never alongside it. Incoherence recognises deliberately withheld referents and disjointed juxtaposition as a technique in its own right — defamiliarisation, montage, stream-of-consciousness — rather than flagging it as a lapse to smooth over. Its rules carry a single demonstrative example, not a Before/After correction pair."
+  },
+  "10.1": {
+    "n": "New-before-old ordering, for defamiliarisation (paraphrase, mirrored)",
+    "l": "coherence",
+    "d": "Mirrors §3.1 (Williams, paraphrase), read here as the register it warns against. Opening with unplaced, unexplained new material — before the reader has the \"old\" referent to hang it on — is a deliberate technique in suspense, mystery, and poetry: it withholds orientation on purpose, to create disorientation or delay a reveal.",
+    "e": [
+      "It watched from the treeline for eleven minutes before the boy noticed. Nobody in the house knew what it was."
+    ]
+  },
+  "10.2": {
+    "n": "Deliberately disjointed juxtaposition (paraphrase, mirrored)",
+    "l": "coherence",
+    "d": "Mirrors §3.2 (Williams, paraphrase), read here as the register it warns against. Sentences placed side by side without an explicit topic string or connector — no therefore, no repeated subject — can produce a montage effect: the reader supplies the connection the prose withholds. This is a standing technique in modernist and stream-of-consciousness prose, not a cohesion failure.",
+    "e": [
+      "The kettle screamed. Somewhere, a door. Her mother's coat, still on the hook after all these years."
+    ]
+  },
+  "4.1": {
+    "n": "Never use the passive where you can use the active (paraphrase)",
+    "l": "voice",
+    "d": "Paraphrased from George Orwell, \"Politics and the English Language\" (1946). Orwell's third rule is a harder version of the active-voice principle (§1.1). Where Strunk frames the active voice as a preference, Orwell frames the passive as a moral hazard — a device that can obscure responsibility. Orwell: \"Never use the passive where you can use the active.\" (paraphrase, source named)",
+    "e": [
+      "Before: Mistakes were made during the audit process. / After: The audit team made mistakes."
+    ]
+  },
+  "4.2": {
+    "n": "Write in a way that comes naturally",
+    "l": "voice",
+    "d": "> \"Write in a way that comes naturally... Do not attempt to be folksy or assume a breezy manner that does not befit who you are.\" > — Strunk & White, The Elements of Style (source) Affectation — whether pretentious or faux-humble — breaks the reader's trust. The goal is not to sound \"writerly\" but to sound like a clear-minded person who has something worth saying.",
+    "e": [
+      "Before: One cannot but be struck by the manifold splendours of the aforementioned vista. / After: The view was beautiful."
+    ]
+  },
+  "4.3": {
+    "n": "Do not overwrite",
+    "l": "voice",
+    "d": "> \"Do not overwrite. Rich, ornate prose is hard to digest, generally unwholesome, and sometimes nauseating.\" > — Strunk & White, The Elements of Style (source) Overwriting calls attention to the writer at the expense of the subject. Prefer the plain style; ornament should be earned, not default.",
+    "e": [
+      "Before: The resplendent, golden orb of day sank slowly and majestically beneath the cerulean horizon, painting the heavens with hues of crimson and amber. / After: The sun set."
+    ]
+  },
+  "11": {
+    "n": "Affectation",
+    "l": "voice",
+    "d": "The antithesis sweep for Voice — toggled in instead of §4, never alongside it. Affectation recognises a deliberately adopted persona or elevated register as a technique in its own right — pastiche, archaism, a distinct narratorial voice — rather than flagging it as a lapse from the writer's natural manner. Its rules carry a single demonstrative example, not a Before/After correction pair."
+  },
+  "11.1": {
+    "n": "Adopt a mannered or period voice (paraphrase, mirrored)",
+    "l": "voice",
+    "d": "Mirrors §4.2 (Strunk & White, source), read here as the register it warns against. Writing deliberately \"unnaturally\" — in a borrowed period idiom, a formal courtly register, or a fixed narratorial persona distinct from the writer's own voice — is a standing technique in pastiche, epistolary fiction, and character narration, not a failure to write naturally.",
+    "e": [
+      "I do confess, gentle reader, that I had not the smallest notion of the peril that awaited me beyond that door."
+    ]
+  },
+  "11.2": {
+    "n": "Elevated, ornate prose for atmosphere (source, mirrored)",
+    "l": "voice",
+    "d": "> \"Rich, ornate prose is hard to digest, generally unwholesome, and sometimes nauseating.\" > — Strunk & White, The Elements of Style (source) — §4.3's rule, read here as the register it warns against. Where §4.3 treats ornament as excess, Affectation treats sustained, earned richness as the point — an immersive, atmosphere-first passage where the density of the prose is doing the work a plainer sentence could not.",
+    "e": [
+      "The resplendent, golden orb of day sank slowly and majestically beneath the cerulean horizon, painting the heavens with hues of crimson and amber."
+    ]
+  },
+  "5.1": {
+    "n": "Avoid dead metaphors and clichéd similes (paraphrase)",
+    "l": "diction",
+    "d": "Paraphrased from George Orwell, \"Politics and the English Language\" (1946). Orwell's first rule — his most famous — targets the prefabricated phrase. A metaphor or simile that you are used to seeing in print has lost its power to evoke; the reader glances past it without forming a mental image. Orwell: \"Never use a metaphor, simile, or other figure of speech which you are used to seeing in print.\" (paraphrase, source named)",
+    "e": [
+      "Before: The project was a baptism of fire, but we kept our nose to the grindstone and left no stone unturned. / After: The project was punishing, but we worked relentlessly and checked every detail."
+    ]
+  },
+  "5.2": {
+    "n": "Prefer the standard to the offbeat",
+    "l": "diction",
+    "d": "> \"Prefer the standard to the offbeat.\" > — Strunk & White, The Elements of Style (source) Novelty for its own sake distracts. Standard English, deployed with precision, outperforms a thesaurus-driven search for the unusual. Let the idea be fresh; the language need not draw attention to itself.",
+    "e": [
+      "Before: The professor's allocution anent the examination's modalities eventuated in considerable discombobulation among the matriculants. / After: The professor's remarks about the exam format confused the students."
+    ]
+  },
+  "5.3": {
+    "n": "Use figures of speech sparingly",
+    "l": "diction",
+    "d": "> \"Use figures of speech sparingly. The simile is a common device and a useful one, but similes coming in rapid fire, one right on top of another, are more distracting than illuminating.\" > — Strunk & White, The Elements of Style (source) One well-chosen comparison can illuminate. A cascade of them buries meaning. When you do reach for a figure of speech, make it one you have thought up yourself — vivid, apt, and singular.",
+    "e": [
+      "Before: The meeting was a perfect storm: a minefield of competing agendas, a pressure cooker of tension, and a tightrope walk over a sea of discontent. / After: The meeting was a tug of war between two competing visions."
+    ]
+  },
+  "12": {
+    "n": "Ornament",
+    "l": "diction",
+    "d": "The antithesis sweep for Diction — toggled in instead of §5, never alongside it. Ornament recognises dense, sustained, original figuration and elevated word choice as a deliberate register — worldbuilding, poetic, or gothic prose — not as an error. It still requires freshness (§5.1's ban on dead metaphor is not lifted); what it permits, and §5 discourages, is density and reach. Its rules carry a single demonstrative example, not a Before/After correction pair."
+  },
+  "12.1": {
+    "n": "Dense, sustained original figuration (paraphrase, mirrored)",
+    "l": "diction",
+    "d": "Mirrors §5.1 and §5.3 (Orwell, paraphrase; Strunk & White, source), read here as the register they warn against. Where §5.3 asks for one apt comparison and no more, Ornament asks for several, compounding — provided each is freshly made, not received. This is a standing technique in poetic and gothic prose, where the accumulation of original figures builds atmosphere.",
+    "e": [
+      "The house exhaled dust with every closing door, its windows clouded like the eyes of something long past seeing."
+    ]
+  },
+  "12.2": {
+    "n": "Reach for the unusual or elevated word (paraphrase, mirrored)",
+    "l": "diction",
+    "d": "Mirrors §5.2 (Strunk & White, source), read here as the register it warns against. Where §5.2 prefers the standard word, Ornament reaches for the rare, archaic, or technical one deliberately, for texture — provided it is precise, not merely decorative for its own sake (the distinction Orwell's rule still draws).",
+    "e": [
+      "The physician's diagnosis was couched in the driest nosology, each Latinate term a small, exact cruelty."
+    ]
+  },
+  "6.1": {
+    "n": "Tense precision",
+    "l": "academic-english",
+    "d": "Past tense for methodology and completed findings; present tense reserved for established facts or for discussing figures and tables.",
+    "e": [
+      "We measured cortisol levels at three time points.\" / \"Figure 2 illustrates the dose-response curve."
+    ]
+  },
+  "6.2": {
+    "n": "Quantification over qualification",
+    "l": "academic-english",
+    "d": "Subjective qualifiers (\"large increase,\" \"often,\" \"significant\" without statistical backing) are prohibited. Central tendencies (mean, median) are paired with a measure of dispersion (standard deviation, interquartile range, or confidence interval).",
+    "e": [
+      "The mean score increased by 4.2 points (SD = 1.1)\" rather than \"scores increased significantly."
+    ]
+  },
+  "6.3": {
+    "n": "Non-evaluative language",
+    "l": "academic-english",
+    "d": "Value-laden adjectives (dramatic, surprising, disappointing) are eliminated. Findings are stated neutrally.",
+    "e": [
+      "The parameter decreased by 14%\" rather than \"The parameter saw a concerning drop."
+    ]
+  },
+  "6.4": {
+    "n": "Precise relational verbs",
+    "l": "academic-english",
+    "d": "Mathematically descriptive verbs (plateaued, diverged, fluctuated, monotonically increased) replace generic motion verbs (went up, shifted, changed).",
+    "e": [
+      "Response rates plateaued after week six\" rather than \"Response rates changed after week six."
+    ]
+  },
+  "6.5": {
+    "n": "Dual absolute and relative framing",
+    "l": "academic-english",
+    "d": "Percentages are paired with absolute values to prevent misleading contextualisation.",
+    "e": [
+      "Increased by 50% (from 2 to 3 participants)\" rather than \"Increased by 50%."
+    ]
+  },
+  "6.6": {
+    "n": "Agentless, data-centric framing",
+    "l": "academic-english",
+    "d": "Results reporting keeps the analytical focus on the data, not the researchers.",
+    "e": [
+      "An inverse relationship was observed between X and Y\" rather than \"We found an inverse relationship between X and Y."
+    ]
+  },
+  "6.7": {
+    "n": "Epistemic hedging",
+    "l": "academic-english",
+    "d": "Modal verbs (may, might, could) and tentative verbs (suggests, indicates, appears to align with) express degrees of certainty without claiming absolute proof.",
+    "e": [
+      "These results suggest that X may moderate Y."
+    ]
+  },
+  "6.8": {
+    "n": "Causal versus associative distinction",
+    "l": "academic-english",
+    "d": "Causal verbs (causes, drives, induces) are reserved for controlled experimental or causal-inference designs. Associative framing (is correlated with, co-varies with, is associated with) is used for observational or cross-sectional data.",
+    "e": [
+      "X is associated with Y\" (observational) versus \"X induced a reduction in Y\" (controlled experiment)."
+    ]
+  },
+  "6.9": {
+    "n": "Boundary and scope framing",
+    "l": "academic-english",
+    "d": "Concessive clauses explicitly mark the limits of an interpretation.",
+    "e": [
+      "While these results demonstrate X in model A, direct application to system B requires further validation."
+    ]
+  },
+  "6.10": {
+    "n": "Attribution and epistemic distance",
+    "l": "academic-english",
+    "d": "New findings are framed against the existing literature, marking clearly where established fact ends and new hypothesis begins.",
+    "e": [
+      "In contrast to the linear framework established by Lee et al., these observations point toward a threshold effect."
+    ]
+  },
+  "7.1": {
+    "n": "Use the approved technical term",
+    "l": "simple-descriptive-english",
+    "d": "Use the correct, established technical term for the context — never an invented or borrowed synonym.",
+    "e": [
+      "hydraulic fluid\" (approved), not \"hydraulic juice."
+    ]
+  },
+  "7.2": {
+    "n": "Prefer the short, familiar word",
+    "l": "simple-descriptive-english",
+    "d": "Choose the shortest, most easily understood technical term available.",
+    "e": [
+      "use\" rather than \"utilize."
+    ]
+  },
+  "7.3": {
+    "n": "No compound verb constructions",
+    "l": "simple-descriptive-english",
+    "d": "Do not build complex verb phrases with auxiliary verbs.",
+    "e": [
+      "Remove the panel\" rather than \"The panel should be removed."
+    ]
+  },
+  "7.4": {
+    "n": "Use the active voice",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Tighten the bolt\" rather than \"The bolt should be tightened."
+    ]
+  },
+  "7.5": {
+    "n": "Use a verb to describe an action",
+    "l": "simple-descriptive-english",
+    "d": "Do not turn the action into a noun.",
+    "e": [
+      "Inspect the seal\" rather than \"Do an inspection of the seal."
+    ]
+  },
+  "7.6": {
+    "n": "Approved verb forms only",
+    "l": "simple-descriptive-english",
+    "d": "Infinitive (base verb), imperative (commands), simple present, simple past, simple future, and past participle used as an adjective — no other verb form.",
+    "e": [
+      "Install the filter\" (imperative) / \"the installed filter\" (past participle as adjective)."
+    ]
+  },
+  "7.7": {
+    "n": "Short, clear sentences, no more than 20 words",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Remove the four screws. Lift the cover away."
+    ]
+  },
+  "7.8": {
+    "n": "No contractions, no omitted words",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Do not\" rather than \"Don't\"; state the full subject and verb rather than eliding them."
+    ]
+  },
+  "7.9": {
+    "n": "Vertical lists for complex text",
+    "l": "simple-descriptive-english",
+    "d": "Break a complex instruction into a numbered or bulleted list rather than one dense sentence."
+  },
+  "7.10": {
+    "n": "Connecting words link related sentences",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Remove the cover. Then disconnect the cable."
+    ]
+  },
+  "7.11": {
+    "n": "Use an article or demonstrative adjective where applicable",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Remove the cover\" rather than \"Remove cover."
+    ]
+  },
+  "7.12": {
+    "n": "Separate descriptive context from instructions",
+    "l": "simple-descriptive-english",
+    "d": "State the background fact and the instruction as separate sentences, not folded into one.",
+    "e": [
+      "The panel is hot after operation. Wait ten minutes before you remove it."
+    ]
+  },
+  "7.13": {
+    "n": "One instruction per sentence",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Remove the cover. Disconnect the cable.\" rather than \"Remove the cover and disconnect the cable."
+    ]
+  },
+  "7.14": {
+    "n": "Write instructions in the imperative",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Close the valve,\" not \"The valve should be closed\" or \"You should close the valve."
+    ]
+  },
+  "7.15": {
+    "n": "Give information gradually",
+    "l": "simple-descriptive-english",
+    "d": "Introduce one new fact or step at a time, in the order the reader needs it."
+  },
+  "7.16": {
+    "n": "Use key words for structure",
+    "l": "simple-descriptive-english",
+    "d": "Repeat the same term for the same concept throughout, rather than varying it for elegance."
+  },
+  "7.17": {
+    "n": "One topic per paragraph, no more than five sentences",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "a five-sentence paragraph covering removal, cleaning, inspection, refitting, and torque — split into two paragraphs if a sixth step is needed."
+    ]
+  },
+  "7.18": {
+    "n": "No phrasal verbs",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "Remove\" rather than \"take off."
+    ]
+  },
+  "7.19": {
+    "n": "Consistent terminology",
+    "l": "simple-descriptive-english",
+    "d": "Use the same term for the same part or action every time it appears."
+  },
+  "7.20": {
+    "n": "No Latin abbreviations",
+    "l": "simple-descriptive-english",
+    "d": "",
+    "e": [
+      "for example\" rather than \"e.g.\"; \"that is\" rather than \"i.e."
+    ]
+  }
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example 3: Odd</title> One Out</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; color: #222; padding: 24px; display: flex; justify-content: center; }
+  .container { max-width: 750px; width: 100%; }
+  .card { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  h1 { font-size: 1.3rem; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.85rem; margin-bottom: 16px; }
+  .question-svg { text-align: center; margin: 8px 0; overflow-x: auto; }
+  .question-svg svg { max-width: 100%; height: auto; min-width: 500px; }
+  h2 { font-size: 1rem; margin-bottom: 12px; color: #333; }
+  .options { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .option { border: 2px solid #ddd; border-radius: 10px; padding: 14px 12px; text-align: center; cursor: pointer; transition: all 0.15s; background: #fafafa; position: relative; min-width: 80px; }
+  .option:hover { border-color: #888; background: #f5f5f5; }
+  .option.selected-correct { border-color: #27ae60; background: #eafaf1; }
+  .option.selected-wrong { border-color: #e74c3c; background: #fdedec; }
+  .option.reveal-correct { border-color: #27ae60; background: #eafaf1; }
+  .option .label { font-weight: 700; font-size: 1.1rem; color: #555; margin-bottom: 8px; }
+  .option svg { display: block; margin: 0 auto; }
+  .badge { position: absolute; top: 6px; right: 8px; font-size: 1.1rem; font-weight: 700; }
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; display: none; }
+  .feedback.correct { background: #eafaf1; color: #1e7e34; display: block; border: 1px solid #a3d9b1; }
+  .feedback.wrong { background: #fdedec; color: #b03a2e; display: block; border: 1px solid #f5b7b1; }
+  .explanation { margin-top: 10px; font-size: 0.85rem; color: #555; display: none; }
+  .explanation.visible { display: block; }
+  .btn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-size: 0.8rem; border: 1px solid #bbb; border-radius: 6px; background: #fff; cursor: pointer; color: #555; }
+  .btn:hover { background: #f0f0f0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card">
+    <h1></h1>Example 3: Odd One Out</h1>
+    <p class="subtitle">Classification — "Which figure does not belong?"</p>
+
+    <div class="question-svg">
+      <svg viewBox="0 0 650 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="650" height="160" fill="#ffffff"/>
+        <!-- A -->
+        <g transform="translate(40, 15)">
+          <rect x="0" y="0" width="110" height="130" fill="none" stroke="#ccc" stroke-width="1.5" rx="4"/>
+          <text x="55" y="18" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#555">A</text>
+          <circle cx="55" cy="70" r="32" fill="#fff" stroke="#333" stroke-width="2.5"/>
+          <polygon points="55,57 72,88 38,88" fill="#fff" stroke="#333" stroke-width="2" transform="translate(0, 3)"/>
+        </g>
+        <!-- B -->
+        <g transform="translate(165, 15)">
+          <rect x="0" y="0" width="110" height="130" fill="none" stroke="#ccc" stroke-width="1.5" rx="4"/>
+          <text x="55" y="18" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#555">B</text>
+          <rect x="22" y="37" width="66" height="66" fill="#fff" stroke="#333" stroke-width="2.5"/>
+          <circle cx="55" cy="70" r="17" fill="#fff" stroke="#333" stroke-width="2"/>
+        </g>
+        <!-- C -->
+        <g transform="translate(290, 15)">
+          <rect x="0" y="0" width="110" height="130" fill="none" stroke="#ccc" stroke-width="1.5" rx="4"/>
+          <text x="55" y="18" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#555">C</text>
+          <polygon points="55,35 90,98 20,98" fill="#fff" stroke="#333" stroke-width="2.5"/>
+          <rect x="39" y="60" width="32" height="32" fill="#fff" stroke="#333" stroke-width="2" transform="rotate(45, 55, 76)"/>
+        </g>
+        <!-- D (odd) -->
+        <g transform="translate(415, 15)">
+          <rect x="0" y="0" width="110" height="130" fill="none" stroke="#ccc" stroke-width="1.5" rx="4"/>
+          <text x="55" y="18" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#555">D</text>
+          <rect x="22" y="37" width="66" height="66" fill="#fff" stroke="#333" stroke-width="2.5"/>
+          <rect x="40" y="55" width="30" height="30" fill="#fff" stroke="#333" stroke-width="2"/>
+        </g>
+        <!-- E -->
+        <g transform="translate(540, 15)">
+          <rect x="0" y="0" width="110" height="130" fill="none" stroke="#ccc" stroke-width="1.5" rx="4"/>
+          <text x="55" y="18" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="bold" fill="#555">E</text>
+          <polygon points="55,38 82,60 73,92 37,92 28,60" fill="#fff" stroke="#333" stroke-width="2.5"/>
+          <circle cx="55" cy="70" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Which one</h2> is the odd one out?</h2>
+    <div class="options" id="options">
+      <div class="option" data-answer="wrong"><div class="label">A</div></div>
+      <div class="option" data-answer="wrong"><div class="label">B</div></div>
+      <div class="option" data-answer="wrong"><div class="label">C</div></div>
+      <div class="option" data-answer="correct"><div class="label">D</div></div>
+      <div class="option" data-answer="wrong"><div class="label">E</div></div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="explanation" id="explanation">
+      <strong></strong>Rule:</strong> In figures A, B, C, and E, the <strong>inner</strong> shape is different</strong> from the outer shape (e.g., circle contains a triangle; square contains a circle). Figure <strong>D</strong></strong> breaks the rule — both the outer and inner shapes are squares.
+    </div>
+    <button class="btn" id="showExplain" style="display:none;">Show explanation</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var answered = false;
+  var options = document.querySelectorAll('.option');
+  var feedback = document.getElementById('feedback');
+  var explanation = document.getElementById('explanation');
+  var showBtn = document.getElementById('showExplain');
+
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.getAttribute('data-answer') === 'correct';
+
+      if (isCorrect) {
+        opt.classList.add('selected-correct');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10003;</span>');
+        feedback.textContent = 'Correct! Figure D is the odd one out — it is the only one where the inner and outer shapes are the same.';
+        feedback.className = 'feedback correct';
+      } else {
+        opt.classList.add('selected-wrong');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10007;</span>');
+        feedback.textContent = 'Look more closely — compare what is inside each figure with what surrounds it.';
+        feedback.className = 'feedback wrong';
+        options.forEach(function(o) {
+          if (o.getAttribute('data-answer') === 'correct') o.classList.add('reveal-correct');
+        });
+      }
+
+      explanation.classList.add('visible');
+      showBtn.style.display = 'none';
+    });
+  });
+
+  showBtn.addEventListener('click', function() {
+    explanation.classList.add('visible');
+    showBtn.style.display = 'none';
+  });
+
+  setTimeout(function() {
+    if (!answered) showBtn.style.display = 'inline-block';
+  }, 3000);
+})();
+</script>
+</body>
+</html>

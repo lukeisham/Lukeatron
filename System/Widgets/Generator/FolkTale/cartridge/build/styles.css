@@ -1,0 +1,41 @@
+/* FolkTale generator — present-mode item display.
+   Shape only: colour comes from CONFIG.clausePalette, set inline per beat
+   by engine.js (mirrors Grammar's clause-chip pattern — "chips are
+   unstyled for colour; ui.js sets background/color inline"). This file
+   never hardcodes a beat colour (CSS-2). */
+
+.ft-legend {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.ft-chip {
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ft-title {
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.ft-meta {
+  font-size: 12px;
+  color: var(--ink2);
+  margin: 0 0 16px;
+}
+
+.ft-tale {
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.ft-beat {
+  border-radius: 4px;
+  padding: 1px 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

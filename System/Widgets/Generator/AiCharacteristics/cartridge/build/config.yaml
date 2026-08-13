@@ -1,0 +1,91 @@
+cartridge:
+  name: "AI Characteristics"
+  id: "AiCharacteristics"
+  version: "1.0.0"
+  builtFrom: "ai-characteristics.md (_research/seed) + content.json"
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%231a1a17"/><text x="15" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="%23faf9f5">A</text></svg>'
+
+parser:
+  inputUnit: "up to one page of text"
+  cap: 700
+  levels:
+    - overview
+    - detail
+  tentativeThreshold: 0.55
+  focusLabels:
+    overview: "Overview"
+    detail: "Characteristic detail"
+
+tierB:
+  enabled: false
+  note: "Tier B (API/agent) slot present but disabled in this build."
+
+lexicon:
+  enabled: false
+
+spelling:
+  enabled: false
+
+colours:
+  palette:
+    - name: teal
+      h50: "#E1F5EE"
+      h100: "#9FE1CB"
+      h600: "#0F6E56"
+      h800: "#085041"
+      hf: "rgba(15,110,86,.12)"
+    - name: amber
+      h50: "#FAEEDA"
+      h100: "#FAC775"
+      h600: "#854F0B"
+      h800: "#633806"
+      hf: "rgba(133,79,11,.12)"
+    - name: purple
+      h50: "#EEEDFE"
+      h100: "#CECBF6"
+      h600: "#534AB7"
+      h800: "#3C3489"
+      hf: "rgba(83,74,183,.12)"
+    - name: rose
+      h50: "#FDECEE"
+      h100: "#F5B8C4"
+      h600: "#A32447"
+      h800: "#7A1935"
+      hf: "rgba(163,36,71,.12)"
+    - name: coral
+      h50: "#FEEEE7"
+      h100: "#F8C0A8"
+      h600: "#B5501F"
+      h800: "#8A3B15"
+      hf: "rgba(181,80,31,.12)"
+    - name: blue
+      h50: "#E6F1FB"
+      h100: "#A9CBEA"
+      h600: "#185FA5"
+      h800: "#10456F"
+      hf: "rgba(24,95,165,.12)"
+    - name: moss
+      h50: "#EEF3E2"
+      h100: "#C4D79B"
+      h600: "#52691E"
+      h800: "#3B4B15"
+      hf: "rgba(82,105,30,.12)"
+    - name: slate
+      h50: "#EAEDF1"
+      h100: "#B7C1CE"
+      h600: "#3D4E63"
+      h800: "#2A3646"
+      hf: "rgba(61,78,99,.12)"
+
+miniwiki:
+  enabled: true
+  articlesFile: "aicharacteristics.miniwiki.json"
+  cartridgeName: "AI Characteristics — glossary"
+
+files:
+  engine: "engine.js"
+  explainer: "explainer.js"
+  content: "content.json"
+
+generator:
+  mode: analyse

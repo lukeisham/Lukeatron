@@ -1,0 +1,65 @@
+# Cartridge manifest — GeneratorShell.spec.md §3b/§8.
+# Psychometric is a present-mode cartridge (DECISIONS.md D-1): Generate
+# pulls an item from the baked pool, per-category clue/answer/explainer
+# controls engage, Copy puts the plain question text on the clipboard.
+
+cartridge:
+  name: "Psychometric practice generator"
+  id: "Psychometric"
+  version: "1.0.0"
+  builtFrom: "_research/seed/psychometrics.md (60 original items)"
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%23185FA5"/><text x="15" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="%23E6F1FB">Ψ</text></svg>'
+
+parser:
+  inputUnit: "one item"
+  cap: 1
+  levels:
+    - item
+  tentativeThreshold: 0.5
+
+tierB:
+  enabled: false
+  note: "Tier B (API/agent) slot present but disabled in this build."
+
+lexicon:
+  enabled: false
+
+spelling:
+  enabled: false
+
+colours:
+  palette:
+    - name: blue
+      h50: "#E6F1FB"
+      h100: "#B7D7F0"
+      h600: "#185FA5"
+      h800: "#0F3E6B"
+      hf: "rgba(24,95,165,.12)"
+
+miniwiki:
+  enabled: true
+  articlesFile: "psychometric.miniwiki.json"
+  cartridgeName: "Psychometric item catalogue"
+
+files:
+  engine: "engine.js"
+  explainer: "explainer.js"
+  content: "pool.json"
+  styles: "styles.css"
+
+generator:
+  mode: present
+  clue: true
+  answer: true
+  explainer: true
+  categories:
+    - id: situational-judgement
+      label: "Situational Judgement"
+    - id: verbal-critical-reasoning
+      label: "Verbal Critical Reasoning"
+    - id: abstract-reasoning
+      label: "Abstract / Diagrammatic Reasoning"
+    - id: deductive-analytical
+      label: "Deductive & Analytical Reasoning"
+    - id: data-interpretation
+      label: "Data Interpretation & Quantitative Reasoning"

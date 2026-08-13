@@ -1,0 +1,113 @@
+/* Psychometric cartridge — present-mode display styling. Shell tokens only
+   (CSS-2): --ink, --ink2, --ink3, --line, --line2, --card, --accbg,
+   --radius. Under 150 lines (CSS-1); low specificity, single classes,
+   no !important (CSS-5). */
+
+.psy-stimulus {
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+
+.psy-question {
+  margin: 0 0 10px;
+}
+
+.psy-meta {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: var(--ink3);
+}
+
+.psy-options {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.psy-options li {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px 11px;
+  font-size: 14px;
+}
+
+.psy-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 0 8px;
+  font-size: 12.5px;
+}
+
+.psy-table th,
+.psy-table td {
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  text-align: right;
+}
+
+.psy-table th:first-child,
+.psy-table td:first-child {
+  text-align: left;
+}
+
+.psy-table th {
+  background: var(--accbg);
+  color: var(--ink2);
+}
+
+.psy-table-note {
+  margin: 4px 0 10px;
+  font-size: 12.5px;
+  color: var(--ink2);
+}
+
+.ar-puzzle svg,
+.ar-option svg {
+  display: block;
+  background: var(--card);
+}
+
+.ar-puzzle {
+  margin-bottom: 12px;
+  max-width: 420px;
+}
+
+.ar-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ar-option {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px;
+  width: 110px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink2);
+}
+
+.ar-letter {
+  display: block;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.ar-option-label {
+  display: block;
+  margin-top: 4px;
+}
+
+@media (max-width: 719px) {
+  .ar-options {
+    gap: 8px;
+  }
+  .ar-option {
+    width: 45%;
+  }
+}

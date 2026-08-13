@@ -1,0 +1,90 @@
+---
+# Cartridge manifest — GeneratorShell.spec.md §3b/§8.
+# FolkTale is a present-mode cartridge (DECISIONS.md D-1): Generate pulls a
+# tale from the baked pool, the ENGINE highlights its three narrative beats
+# (setup/twist/result), Copy puts the plain tale text on the clipboard.
+
+cartridge:
+  name: "FolkTale generator"
+  id: "FolkTale"
+  version: "1.0.0"
+  builtFrom: "folk-tales.md (40 public-domain tales)"
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%23854F0B"/><text x="15" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="%23FAEEDA">F</text></svg>'
+
+parser:
+  inputUnit: "one tale"
+  cap: 400
+  levels:
+    - beat
+  tentativeThreshold: 0.7
+
+tierB:
+  enabled: false
+  note: "Tier B (API/agent) slot present but disabled in this build."
+
+lexicon:
+  enabled: false
+
+spelling:
+  enabled: false
+
+colours:
+  # Order is load-bearing: engine.js's BEAT_HUE_INDEX reads
+  # clausePalette[0]=setup, [1]=twist, [2]=result.
+  palette:
+    - name: teal
+      h50: "#E1F5EE"
+      h100: "#9FE1CB"
+      h600: "#0F6E56"
+      h800: "#085041"
+      hf: "rgba(29,158,117,.12)"
+    - name: amber
+      h50: "#FAEEDA"
+      h100: "#FAC775"
+      h600: "#854F0B"
+      h800: "#633806"
+      hf: "rgba(239,159,39,.12)"
+    - name: coral
+      h50: "#FBEAE6"
+      h100: "#F3B8AB"
+      h600: "#B5432B"
+      h800: "#7A2C1C"
+      hf: "rgba(181,67,43,.12)"
+
+miniwiki:
+  enabled: true
+  articlesFile: "folktale.miniwiki.json"
+  cartridgeName: "FolkTale generator"
+
+files:
+  engine: "engine.js"
+  explainer: "explainer.js"
+  content: "pool.json"
+  styles: "styles.css"
+
+generator:
+  mode: present
+  clue: false
+  answer: false
+  explainer: false
+  categories:
+    - id: "ancient-greece"
+      label: "Ancient Greece"
+    - id: "germany"
+      label: "Germany"
+    - id: "india"
+      label: "India"
+    - id: "ireland"
+      label: "Ireland"
+    - id: "japan"
+      label: "Japan"
+    - id: "native-america"
+      label: "Native America"
+    - id: "russia"
+      label: "Russia"
+    - id: "persian"
+      label: "Persia (Pre-Islamic)"
+    - id: "american-gothic"
+      label: "American Gothic"
+    - id: "australian-gothic"
+      label: "Australian Gothic"

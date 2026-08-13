@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example </title>5: Pattern Completion</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; color: #222; padding: 24px; display: flex; justify-content: center; }
+  .container { max-width: 700px; width: 100%; }
+  .card { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  h1 { font-size: 1.3rem; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.85rem; margin-bottom: 16px; }
+  .question-svg { text-align: center; margin: 8px 0; }
+  .question-svg svg { max-width: 100%; height: auto; }
+  h2 { font-size: 1rem; margin-bottom: 12px; color: #333; }
+  .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 480px) { .options { grid-template-columns: repeat(2, 1fr); } }
+  .option { border: 2px solid #ddd; border-radius: 10px; padding: 16px 8px 8px; text-align: center; cursor: pointer; transition: all 0.15s; background: #fafafa; position: relative; }
+  .option:hover { border-color: #888; background: #f5f5f5; }
+  .option.selected-correct { border-color: #27ae60; background: #eafaf1; }
+  .option.selected-wrong { border-color: #e74c3c; background: #fdedec; }
+  .option.reveal-correct { border-color: #27ae60; background: #eafaf1; }
+  .option .label { font-weight: 700; font-size: 0.8rem; color: #888; margin-bottom: 6px; }
+  .option svg { display: block; margin: 0 auto; }
+  .badge { position: absolute; top: 6px; right: 8px; font-size: 1.1rem; font-weight: 700; }
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; display: none; }
+  .feedback.correct { background: #eafaf1; color: #1e7e34; display: block; border: 1px solid #a3d9b1; }
+  .feedback.wrong { background: #fdedec; color: #b03a2e; display: block; border: 1px solid #f5b7b1; }
+  .explanation { margin-top: 10px; font-size: 0.85rem; color: #555; display: none; }
+  .explanation.visible { display: block; }
+  .btn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-size: 0.8rem; border: 1px solid #bbb; border-radius: 6px; background: #fff; cursor: pointer; color: #555; }
+  .btn:hover { background: #f0f0f0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card">
+    <h1></h1>Example 5: Pattern Completion</h1>
+    <p class="subtitle">Jigsaw-style — "Complete the larger design"</p>
+
+    <div class="question-svg">
+      <svg viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+        <rect width="380" height="380" fill="#ffffff"/>
+        <defs>
+          <g id="tile5">
+            <rect x="0" y="0" width="80" height="80" fill="#fff" stroke="#ddd" stroke-width="1"/>
+            <line x1="12" y1="12" x2="68" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="68" y1="12" x2="12" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="40" cy="40" r="22" fill="none" stroke="#333" stroke-width="2.5"/>
+            <circle cx="40" cy="40" r="4" fill="#333"/>
+          </g>
+        </defs>
+        <!-- Row 1 -->
+        <g transform="translate(10, 10)"><use href="#tile5"/></g>
+        <g transform="translate(100, 10)"><use href="#tile5"/></g>
+        <g transform="translate(190, 10)"><use href="#tile5"/></g>
+        <g transform="translate(280, 10)"><use href="#tile5"/></g>
+        <!-- Row 2 with missing -->
+        <g transform="translate(10, 100)"><use href="#tile5"/></g>
+        <g transform="translate(100, 100)"><use href="#tile5"/></g>
+        <g transform="translate(190, 100)">
+          <rect x="0" y="0" width="80" height="80" fill="#f7f7f7" stroke="#aaa" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="40" y="43" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="bold" fill="#999">?</text>
+        </g>
+        <g transform="translate(280, 100)"><use href="#tile5"/></g>
+        <!-- Row 3 -->
+        <g transform="translate(10, 190)"><use href="#tile5"/></g>
+        <g transform="translate(100, 190)"><use href="#tile5"/></g>
+        <g transform="translate(190, 190)"><use href="#tile5"/></g>
+        <g transform="translate(280, 190)"><use href="#tile5"/></g>
+        <!-- Row 4 -->
+        <g transform="translate(10, 280)"><use href="#tile5"/></g>
+        <g transform="translate(100, 280)"><use href="#tile5"/></g>
+        <g transform="translate(190, 280)"><use href="#tile5"/></g>
+        <g transform="translate(280, 280)"><use href="#tile5"/></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Select the missing tile</h2></h2>
+    <div class="options" id="options">
+      <!-- A: matching tile (CORRECT) -->
+      <div class="option" data-answer="correct">
+        <div class="label">A</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <line x1="12" y1="12" x2="68" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="12" x2="12" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#333" stroke-width="2.5"/>
+          <circle cx="40" cy="40" r="4" fill="#333"/>
+        </svg>
+      </div>
+      <!-- B: circle only (no X, no dot) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">B</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- C: circle + X only (no dot) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">C</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <line x1="12" y1="12" x2="68" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="12" x2="12" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- D: circle + dot only (no X) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">D</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#333" stroke-width="2.5"/>
+          <circle cx="40" cy="40" r="4" fill="#333"/>
+        </svg>
+      </div>
+      <!-- E: triangle instead of circle -->
+      <div class="option" data-answer="wrong">
+        <div class="label">E</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <line x1="12" y1="12" x2="68" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="12" x2="12" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="40,12 68,68 12,68" fill="none" stroke="#333" stroke-width="2.5"/>
+          <circle cx="40" cy="45" r="4" fill="#333"/>
+        </svg>
+      </div>
+      <!-- F: X + dot only (no circle) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">F</div>
+        <svg viewBox="0 0 80 80" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+          <line x1="12" y1="12" x2="68" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="12" x2="12" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="40" cy="40" r="4" fill="#333"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="explanation" id="explanation">
+      <strong></strong>Rule:</strong> Every tile in the 4×4 grid is <strong>identical</strong></strong> — a circle with an X-shaped diagonal cross and a central dot. The missing tile must match exactly. All other options are missing at least one element or have a wrong shape.
+    </div>
+    <button class="btn" id="showExplain" style="display:none;">Show explanation</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var answered = false;
+  var options = document.querySelectorAll('.option');
+  var feedback = document.getElementById('feedback');
+  var explanation = document.getElementById('explanation');
+  var showBtn = document.getElementById('showExplain');
+
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.getAttribute('data-answer') === 'correct';
+
+      if (isCorrect) {
+        opt.classList.add('selected-correct');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10003;</span>');
+        feedback.textContent = 'Correct! The missing tile is identical to every other tile in the grid — a circle enclosing a diagonal cross with a dot at the centre.';
+        feedback.className = 'feedback correct';
+      } else {
+        opt.classList.add('selected-wrong');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10007;</span>');
+        feedback.textContent = 'Not quite. Compare this tile carefully with the surrounding tiles — every element must match.';
+        feedback.className = 'feedback wrong';
+        options.forEach(function(o) {
+          if (o.getAttribute('data-answer') === 'correct') o.classList.add('reveal-correct');
+        });
+      }
+
+      explanation.classList.add('visible');
+      showBtn.style.display = 'none';
+    });
+  });
+
+  showBtn.addEventListener('click', function() {
+    explanation.classList.add('visible');
+    showBtn.style.display = 'none';
+  });
+
+  setTimeout(function() {
+    if (!answered) showBtn.style.display = 'inline-block';
+  }, 3000);
+})();
+</script>
+</body>
+</html>

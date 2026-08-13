@@ -1,0 +1,150 @@
+{
+  "caveat-honesty": {
+    "id": "caveat-honesty",
+    "title": "Read this first — what \"AI characteristics\" means here",
+    "level": 1,
+    "role": "article",
+    "lead": "AI-text detection is unreliable.",
+    "body_html": "<p>AI-text detection is unreliable. This glossary, and the widget it belongs to, report AI-associated stylistic and content characteristics that can be measured in a piece of text — never a verdict on who or what wrote it, and never a percentage framed as &quot;probability a human wrote this.&quot; Human writing, especially academic and formal prose, regularly shows these same patterns, and newer language models are trained, deliberately or incidentally, to defeat most of these surface markers. Treat every entry below as a weak, contestable signal, not a finding of fact.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "source": "Counter Turing Test Collaboration. \"Counter Turing Test CT²: AI-Generated Text Detection Is Not as Easy as You May Think.\" *arXiv preprint*, 2310.05030, 2023, arxiv.org/pdf/2310.05030."
+  },
+  "1.1": {
+    "id": "1.1",
+    "title": "Focal word excess",
+    "level": 1,
+    "role": "article",
+    "lead": "Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar.",
+    "body_html": "<p>Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar. LLM training weights academic and encyclopedic corpora heavily, and those corpora themselves favour polished, formal vocabulary; the model learns to reproduce that distribution, so the same fifteen to twenty focal words recur across unrelated topics.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Lexical Markers",
+      "Detection Type: LOCAL + STATISTICAL",
+      "Confidence: HIGH (in academic contexts)"
+    ],
+    "source": "Zhang, Yonghao, et al. \"Delving into ChatGPT Usage in Academic Writing Through Excess Vocabulary.\" *arXiv preprint*, 2406.07016, 2024, arxiv.org/html/2406.07016v1."
+  },
+  "2.1": {
+    "id": "2.1",
+    "title": "Low burstiness (uniform sentence length)",
+    "level": 1,
+    "role": "article",
+    "lead": "Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones.",
+    "body_html": "<p>Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones. A language model decodes one token at a time from a locally stable probability distribution, so once a sentence has run long its continuation distribution stays similar, and sentences settle into a narrow length band; human writers deliberately vary rhythm for emphasis and pacing.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Syntactic Rhythm & Structure",
+      "Detection Type: STATISTICAL",
+      "Confidence: HIGH (statistical)"
+    ],
+    "source": "GPTZero. \"Perplexity and Burstiness: What Is It?\" *GPTZero Help Center*, 2026, gptzero.me/news/perplexity-and-burstiness-what-is-it/."
+  },
+  "3.2": {
+    "id": "3.2",
+    "title": "High token-level repetition",
+    "level": 1,
+    "role": "article",
+    "lead": "A small number of content words carry an unusually large share of a document's running words, or the same words recur mechanically rather than through varied phrasing.",
+    "body_html": "<p>A small number of content words carry an unusually large share of a document&#39;s running words, or the same words recur mechanically rather than through varied phrasing. LLMs are penalised in training for exact local repetition, producing a distinctive counter-pattern: instead of reusing a word, they cycle through a narrow band of synonyms for the same referent, but under low-temperature decoding — or when a topic word has no easy synonym — that same word can still recur at a noticeably higher rate than typical human prose.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Statistical Distributions",
+      "Detection Type: STATISTICAL",
+      "Confidence: MEDIUM"
+    ],
+    "source": "Wangni, Jian, et al. \"The Rise of Verbal Tics in Large Language Models: A Systematic Analysis Across Frontier Models.\" *arXiv preprint*, 2604.19139, 2025, arxiv.org/pdf/2604.19139."
+  },
+  "4.2": {
+    "id": "4.2",
+    "title": "Discourse marker clustering",
+    "level": 1,
+    "role": "article",
+    "lead": "Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do.",
+    "body_html": "<p>Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do. Curated training text marks transitions explicitly far more often than casual speech, and those phrases are themselves high-probability continuations after a topic shift; experienced human writers more often lean on semantic continuity and pronoun reference instead of naming every transition.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Discourse Scaffolding",
+      "Detection Type: LOCAL",
+      "Confidence: HIGH"
+    ],
+    "source": "Kumarage, Chaya, et al. \"Detecting the Use of ChatGPT in University Newspapers by Analyzing Stylistic Differences with Machine Learning.\" *Information*, vol. 15, no. 6, 2024, doi.org/10.3390/info15060307."
+  },
+  "5.3": {
+    "id": "5.3",
+    "title": "False balance / artificial neutrality",
+    "level": 1,
+    "role": "article",
+    "lead": "Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position.",
+    "body_html": "<p>Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position. RLHF safety tuning steers models away from taking contested positions, and pretraining text itself represents many sides of most debates; absent an explicit instruction to argue a thesis, the model defaults to laying out &quot;both sides&quot; evenly, where a human writer with genuine expertise or a stake in the topic usually weighs evidence and advances a position.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Content-Level Signals",
+      "Detection Type: LOCAL",
+      "Confidence: MEDIUM"
+    ],
+    "source": "Thamm, Isabell, et al. \"Key Features to Distinguish Between Human- and AI-Generated Texts: Perspectives from University Professors.\" *Digital Scholarship*, vol. 2, no. 1, 2024, mdpi.com/3042-8130/2/1/2."
+  },
+  "6.1": {
+    "id": "6.1",
+    "title": "Absence of varied punctuation",
+    "level": 1,
+    "role": "article",
+    "lead": "Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma.",
+    "body_html": "<p>Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma. Training data skews toward formal, curated prose where &quot;exotic&quot; punctuation is comparatively rare, and low-temperature decoding keeps reaching for the safe, high-probability period or comma; human writers reach for a dash or an exclamation point for voice and emphasis far more readily.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Punctuation & Formatting",
+      "Detection Type: STATISTICAL",
+      "Confidence: MEDIUM"
+    ],
+    "source": "Vegavid. \"How to Detect AI-Generated Text: 2026 Guide to Tools & Techniques.\" *Vegavid Blog*, 2026, vegavid.com/blog/how-to-detect-ai-generated-text."
+  },
+  "7.1": {
+    "id": "7.1",
+    "title": "Excessive entity-name repetition",
+    "level": 1,
+    "role": "article",
+    "lead": "A named person, place, or thing is referred to again by its full name, repeatedly, where a pronoun would read naturally, rather than being replaced by \"he,\" \"she,\" \"it,\" or \"they.\" Re-using the already-in-context entity name is a safe, high",
+    "body_html": "<p>A named person, place, or thing is referred to again by its full name, repeatedly, where a pronoun would read naturally, rather than being replaced by &quot;he,&quot; &quot;she,&quot; &quot;it,&quot; or &quot;they.&quot; Re-using the already-in-context entity name is a safe, high-probability next-token choice, whereas a pronoun requires the kind of implicit coreference tracking that is automatic for a human reader but not explicit in next-token decoding. The widget approximates this without true named-entity recognition, so treat a flag here as a weak signal.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Coherence & Reference",
+      "Detection Type: LOCAL",
+      "Confidence: HIGH (per source); MEDIUM as approximated here"
+    ],
+    "source": "Gehrmann, Sebastian, et al. \"Detecting Generated Fiction.\" *arXiv preprint*, 2604.03136, 2025, arxiv.org/pdf/2604.03136."
+  },
+  "8.1": {
+    "id": "8.1",
+    "title": "Specific numeric precision with unverifiable source",
+    "level": 1,
+    "role": "article",
+    "lead": "Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source.",
+    "body_html": "<p>Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source. The model has learned the surface form of precise statistics from academic and reporting sources without any live link to a facts database, so it can generate a plausible, correctly formatted number that is simply invented; humans who cite a number usually either look it up or explicitly flag it as approximate. This marker needs an external fact-check to confirm falsity — a flag here only means the number&#39;s precision and phrasing looks like this pattern.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Category: Numerical & Naming Patterns",
+      "Detection Type: LOCAL",
+      "Confidence: LOW (requires external verification)"
+    ],
+    "source": "Weidinger, Laura, et al. \"Ethical and social risks of harm from language models.\" *arXiv preprint*, 2112.04359, 2021, arxiv.org/pdf/2112.04359."
+  }
+}

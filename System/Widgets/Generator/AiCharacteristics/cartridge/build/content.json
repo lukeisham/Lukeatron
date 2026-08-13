@@ -1,0 +1,88 @@
+{
+  "0.1": {
+    "n": "Read this first",
+    "l": "caveat",
+    "d": "AI-text detection is unreliable. This tool reports AI-associated stylistic and content characteristics it can measure in the pasted text — it never renders a verdict on who or what wrote it, and it never shows a percentage framed as \"probability a human wrote this.\" Human writing, especially academic and formal prose, regularly shows these same patterns; and newer language models are trained (deliberately or incidentally) to defeat most of these surface markers. Treat every flag below as a weak, contestable signal, not a finding of fact.",
+    "e": ""
+  },
+  "1.1": {
+    "n": "Focal word excess",
+    "l": "lexical",
+    "category": "Lexical Markers",
+    "detectionType": "LOCAL + STATISTICAL",
+    "confidenceTier": "HIGH",
+    "d": "Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar.",
+    "e": "\"The findings underscore a pivotal, intricate tapestry of factors.\"",
+    "why": "LLM training weights academic and encyclopedic corpora heavily. Those corpora themselves favour polished, formal vocabulary, and the model learns to reproduce that distribution. Because decoding keeps returning to a small set of high-probability \"formal\" words, the same 15-20 focal words recur across unrelated topics — ChatGPT-class models showed a documented 30-50x spike in words like \"delve\" in published abstracts after their release, making focal words a strong (if domain-dependent) temporal marker."
+  },
+  "2.1": {
+    "n": "Low burstiness (uniform sentence length)",
+    "l": "syntactic",
+    "category": "Syntactic Rhythm & Structure",
+    "detectionType": "STATISTICAL",
+    "confidenceTier": "HIGH",
+    "d": "Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones.",
+    "e": "Burstiness index B = (sd - mean) / (sd + mean) of sentence length in words, range -1..1; B below about -0.2 reads as unusually uniform.",
+    "why": "A language model decodes one token at a time from a locally stable probability distribution: once a sentence has run long, the distribution over \"continue vs. stop\" stays roughly the same, so sentences settle into a narrow length band. Human writers deliberately vary sentence rhythm for emphasis and pacing — a one-word sentence next to a long one is a stylistic choice a next-token predictor has little incentive to make."
+  },
+  "3.2": {
+    "n": "High token-level repetition",
+    "l": "statistical",
+    "category": "Statistical Distributions",
+    "detectionType": "STATISTICAL",
+    "confidenceTier": "MEDIUM",
+    "d": "A small number of content words carry an unusually large share of the document's running words, or the same words recur mechanically rather than through varied phrasing.",
+    "e": "One content word supplying more than roughly 15% of all word occurrences in the text.",
+    "why": "LLMs are penalised during training for exact local repetition, which produces a distinctive counter-pattern: instead of reusing a word, they cycle through a narrow band of synonyms (\"crucial\" / \"vital\" / \"important\") for the same referent. Under low-temperature decoding, or when a topic word has no easy synonym, the model can fall back to reusing that same word at a noticeably higher rate than typical human prose."
+  },
+  "4.2": {
+    "n": "Discourse marker clustering",
+    "l": "discourse",
+    "category": "Discourse Scaffolding",
+    "detectionType": "LOCAL",
+    "confidenceTier": "HIGH",
+    "d": "Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do.",
+    "e": "\"Furthermore, it is important to note that... Additionally, this suggests...\"",
+    "why": "Curated training text (textbooks, essays, structured articles) marks transitions explicitly far more often than casual speech does, and those transition phrases are themselves high-probability continuations after a topic shift. The model reproduces that density; experienced human writers more often lean on semantic continuity and pronoun reference instead of naming every transition."
+  },
+  "5.3": {
+    "n": "False balance / artificial neutrality",
+    "l": "content",
+    "category": "Content-Level Signals",
+    "detectionType": "LOCAL",
+    "confidenceTier": "MEDIUM",
+    "d": "Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position.",
+    "e": "\"Some argue X, while others argue Y\" with no author judgement of which has stronger support.",
+    "why": "RLHF safety tuning steers models away from taking contested positions, and pretraining text itself represents many sides of most debates. Absent an explicit instruction to argue a thesis, the model defaults to laying out \"both sides\" evenly. Human writers with genuine expertise or a stake in the topic usually weigh evidence and advance a position instead."
+  },
+  "6.1": {
+    "n": "Absence of varied punctuation",
+    "l": "punctuation",
+    "category": "Punctuation & Formatting",
+    "detectionType": "STATISTICAL",
+    "confidenceTier": "MEDIUM",
+    "d": "Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma.",
+    "e": "Expressive/contrastive punctuation appearing in well under 5% of sentences.",
+    "why": "Training data skews toward formal, curated prose where \"exotic\" punctuation is comparatively rare, and some training pipelines normalise it away entirely. Because the model optimises for the expected style of that text, low-temperature decoding keeps reaching for the safe, high-probability period or comma. Human writers reach for a dash or an exclamation point for voice and emphasis far more readily."
+  },
+  "7.1": {
+    "n": "Excessive entity-name repetition",
+    "l": "coherence",
+    "category": "Coherence & Reference",
+    "detectionType": "LOCAL",
+    "confidenceTier": "MEDIUM",
+    "d": "A named person, place, or thing is referred to again by its full name where a pronoun would read naturally, repeatedly, rather than being replaced by \"he,\" \"she,\" \"it,\" or \"they.\"",
+    "e": "\"John went to the store. John bought milk. John returned home.\" instead of \"John went to the store. He bought milk and returned home.\"",
+    "why": "Re-using the already-in-context entity name is a \"safe,\" high-probability next-token choice, whereas a pronoun requires the kind of implicit coreference tracking that is automatic for a human reader but not explicit in next-token decoding. This is an approximate heuristic here (capitalised-word repetition, not true named-entity recognition), so treat it as a weak signal, not a confirmed detection."
+  },
+  "8.1": {
+    "n": "Specific numeric precision with unverifiable source",
+    "l": "numerical",
+    "category": "Numerical & Naming Patterns",
+    "detectionType": "LOCAL",
+    "confidenceTier": "LOW",
+    "d": "Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source.",
+    "e": "\"73.2% of respondents\" or \"87.5 million users\" with no citation nearby.",
+    "why": "The model has learned the surface FORM of precise statistics from academic and reporting sources without any live link to a facts database, so it can generate a plausible, correctly formatted number that is simply invented. Humans who cite a number usually either look it up or explicitly flag it as approximate (\"roughly 70%\"). This marker needs an external fact-check to confirm falsity — flagging it here only means the number's precision and phrasing looks like this pattern, not that it is wrong."
+  }
+}

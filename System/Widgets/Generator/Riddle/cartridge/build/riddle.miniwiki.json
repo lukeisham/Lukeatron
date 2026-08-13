@@ -1,0 +1,1222 @@
+{
+  "EX-001": {
+    "id": "EX-001",
+    "title": "EX-001 — Bookworm",
+    "level": 1,
+    "role": "article",
+    "lead": "A moth ate words.",
+    "body_html": "<p>A moth ate words. When I heard of that wonder, it seemed to me a strange thing—that the worm should swallow the riddle of certain men, a thief in the darkness, and their glorious pronouncements.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Bookworm (or book-eating moth)",
+      "Accepted Variants: [bookworm, book worm, moth, book-moth, worm, insect]",
+      "Clue: This creature loves knowledge more than you do—it consumes words.",
+      "Difficulty: medium",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 47"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book/Annotated/42 - Wikisource; The riddles of the Exeter book - Internet Archive",
+    "licence": "Public domain; translation by Paull Franklin Baum (1963)"
+  },
+  "EX-002": {
+    "id": "EX-002",
+    "title": "EX-002 — Key",
+    "level": 1,
+    "role": "article",
+    "lead": "I am a most strange creature, for I satisfy women, a single thing by nature.",
+    "body_html": "<p>I am a most strange creature, for I satisfy women, a single thing by nature. No harm do I inflict on the creatures of this estate if the man who inhabits the stronghold wishes to use me rightly.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Key",
+      "Accepted Variants: [key, lock-opener, door-opener]",
+      "Clue: You use me to grant access to what is kept hidden.",
+      "Difficulty: easy",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 33"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book - Wikisource",
+    "licence": "Public domain; Exeter Book (original manuscript c. 10th century)"
+  },
+  "EX-003": {
+    "id": "EX-003",
+    "title": "EX-003 — Plow",
+    "level": 1,
+    "role": "article",
+    "lead": "I stand with my feet in the earth, a warrior with twisted limbs.",
+    "body_html": "<p>I stand with my feet in the earth, a warrior with twisted limbs. I am strong, I wage fierce war.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Plow (or plough)",
+      "Accepted Variants: [plow, plough, farming tool]",
+      "Clue: I break ground to feed the people.",
+      "Difficulty: easy",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 32"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book - Wikisource",
+    "licence": "Public domain; Exeter Book manuscript"
+  },
+  "EX-004": {
+    "id": "EX-004",
+    "title": "EX-004 — Dog",
+    "level": 1,
+    "role": "article",
+    "lead": "I am silent when I walk, when I eat, when I drink; but when I sleep I roar fearfully.",
+    "body_html": "<p>I am silent when I walk, when I eat, when I drink; but when I sleep I roar fearfully.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Dog",
+      "Accepted Variants: [dog, hound, canine]",
+      "Clue: A loyal companion that barks in dreams.",
+      "Difficulty: easy",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 73"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book/Index of Solutions - Wikisource",
+    "licence": "Public domain"
+  },
+  "EX-005": {
+    "id": "EX-005",
+    "title": "EX-005 — Fire",
+    "level": 1,
+    "role": "article",
+    "lead": "Boneless it dwells in bosom, boneless flows out; hard in head, soft in breast, it gives glory to noble kinsmen and comfort to the common folk.",
+    "body_html": "<p>Boneless it dwells in bosom, boneless flows out; hard in head, soft in breast, it gives glory to noble kinsmen and comfort to the common folk.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Fire (or flame)",
+      "Accepted Variants: [fire, flame, heat, blaze]",
+      "Clue: I consume but leave ash; I warm but can burn.",
+      "Difficulty: medium",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 8"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book - Wikisource",
+    "licence": "Public domain"
+  },
+  "EX-006": {
+    "id": "EX-006",
+    "title": "EX-006 — Sword",
+    "level": 1,
+    "role": "article",
+    "lead": "I am a precious thing, wrapped in skin, adorned with hair.",
+    "body_html": "<p>I am a precious thing, wrapped in skin, adorned with hair. I am the delight of warriors, ornament of nobles.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Sword (or battle-sword)",
+      "Accepted Variants: [sword, blade, weapon, steel]",
+      "Clue: I hang at a warrior's side, both decoration and death-dealer.",
+      "Difficulty: medium",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 20"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book - Wikisource",
+    "licence": "Public domain"
+  },
+  "EX-007": {
+    "id": "EX-007",
+    "title": "EX-007 — Ship",
+    "level": 1,
+    "role": "article",
+    "lead": "I travel over the mountains and through vales, through groves and along glens.",
+    "body_html": "<p>I travel over the mountains and through vales, through groves and along glens. I am carried in hand and brought to hall; I lodge in the breast.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Ship (or boat)",
+      "Accepted Variants: [ship, boat, vessel, sailing vessel]",
+      "Clue: I sail the seas but also dwell in hearts.",
+      "Difficulty: hard",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddle 58"
+    ],
+    "source": "Anglo-Saxon Riddles of the Exeter Book - Wikisource",
+    "licence": "Public domain"
+  },
+  "EX-008": {
+    "id": "EX-008",
+    "title": "EX-008 — Water",
+    "level": 1,
+    "role": "article",
+    "lead": "I am bound yet have no chains.",
+    "body_html": "<p>I am bound yet have no chains. I move the whole year yet never grow weary. Bright is my home, and I am a creature that dreads evil men.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Water (or ice)",
+      "Accepted Variants: [water, ice, river, stream, wave]",
+      "Clue: I can be solid or liquid, and all life depends on me.",
+      "Difficulty: medium",
+      "Tradition/Origin: Anglo-Saxon Exeter Book, Riddles 68–69"
+    ],
+    "source": "Exeter Book Riddles 68-69 - Wikipedia",
+    "licence": "Public domain"
+  },
+  "GR-001": {
+    "id": "GR-001",
+    "title": "GR-001 — Human being",
+    "level": 1,
+    "role": "article",
+    "lead": "What creature goes on four feet in the morning, two feet at noon, and three feet in the evening?",
+    "body_html": "<p>What creature goes on four feet in the morning, two feet at noon, and three feet in the evening?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Human being (or man)",
+      "Accepted Variants: [human, man, person, mankind, human being]",
+      "Clue: This being changes its form throughout a lifetime.",
+      "Difficulty: hard",
+      "Tradition/Origin: The Riddle of the Sphinx (Greek mythology), posed to Oedipus"
+    ],
+    "source": "Riddle of the Sphinx - Quatr.us Study Guides; The Sphinx – Mythology Unbound",
+    "licence": "Public domain (classical Greek mythology)"
+  },
+  "NO-001": {
+    "id": "NO-001",
+    "title": "NO-001 — Skinfaxi",
+    "level": 1,
+    "role": "article",
+    "lead": "What is the name of the horse that draws the chariot of day across the sky?",
+    "body_html": "<p>What is the name of the horse that draws the chariot of day across the sky?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Skinfaxi (or Skin-faxi)",
+      "Accepted Variants: [Skinfaxi, Skinfaxe, day-horse]",
+      "Clue: His mane illuminates the night sky.",
+      "Difficulty: hard",
+      "Tradition/Origin: Norse Mythology, Vafthrudnismal (wisdom contest of Odin and Vafthrudnir)"
+    ],
+    "source": "The Poetic Edda: Vafthruthnismol - Internet Sacred Text Archive",
+    "licence": "Public domain (13th-century manuscript Codex Regius)"
+  },
+  "NO-002": {
+    "id": "NO-002",
+    "title": "NO-002 — Saevingul",
+    "level": 1,
+    "role": "article",
+    "lead": "What is the name of the horse that the giant Hrym rode when the bonds are broken?",
+    "body_html": "<p>What is the name of the horse that the giant Hrym rode when the bonds are broken?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Saevingul (or Saevaningul)",
+      "Accepted Variants: [Saevingul, giant horse]",
+      "Clue: A steed that rides at the end of all things.",
+      "Difficulty: hard",
+      "Tradition/Origin: Norse Mythology, Vafthrudnismal"
+    ],
+    "source": "The Poetic Edda: Vafthruthnismol - Internet Sacred Text Archive",
+    "licence": "Public domain"
+  },
+  "EN-001": {
+    "id": "EN-001",
+    "title": "EN-001 — Candle",
+    "level": 1,
+    "role": "article",
+    "lead": "Little Nancy Etticote, in a white petticoat, with a red nose; the longer she stands, the shorter she grows.",
+    "body_html": "<p>Little Nancy Etticote, in a white petticoat, with a red nose; the longer she stands, the shorter she grows.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Candle",
+      "Accepted Variants: [candle, taper, light, wax candle]",
+      "Clue: I burn away as I illuminate.",
+      "Difficulty: easy",
+      "Tradition/Origin: English nursery rhyme / Mother Goose"
+    ],
+    "source": "Mother Goose's Nursery Rhymes - Project Gutenberg",
+    "licence": "Public domain"
+  },
+  "EN-002": {
+    "id": "EN-002",
+    "title": "EN-002 — Egg",
+    "level": 1,
+    "role": "article",
+    "lead": "In marble halls as white as milk, lined with a skin as soft as silk; within a fountain crystal-clear, a golden apple doth appear.",
+    "body_html": "<p>In marble halls as white as milk, lined with a skin as soft as silk; within a fountain crystal-clear, a golden apple doth appear. No doors there are to this stronghold, yet thieves break in and steal the gold.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Egg",
+      "Accepted Variants: [egg, chicken egg, goose egg]",
+      "Clue: Layers of protection hide the treasure inside.",
+      "Difficulty: hard",
+      "Tradition/Origin: English nursery rhyme, published 1916–1921"
+    ],
+    "source": "In Marble Walls As White As Milk - Mama Lisa's World",
+    "licence": "Public domain (collected in Leslie Brooke's 1916 nursery rhyme collection)"
+  },
+  "EN-003": {
+    "id": "EN-003",
+    "title": "EN-003 — A man sitting on a stool with a leg of mutton; a dog steals it",
+    "level": 1,
+    "role": "article",
+    "lead": "Two legs sat upon three legs, with one leg in his lap; in comes four legs, and runs away with one leg.",
+    "body_html": "<p>Two legs sat upon three legs, with one leg in his lap; in comes four legs, and runs away with one leg. Up jumps two legs, catches up three legs, throws it after four legs, and makes him bring one leg back.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A man sitting on a stool with a leg of mutton; a dog steals it",
+      "Accepted Variants: [man and dog, stool and meat, human and dog]",
+      "Clue: A feast interrupted by a thief with four paws.",
+      "Difficulty: hard",
+      "Tradition/Origin: English nursery rhyme / Mother Goose"
+    ],
+    "source": "Mother Goose's Nursery Rhymes - Project Gutenberg",
+    "licence": "Public domain"
+  },
+  "EN-004": {
+    "id": "EN-004",
+    "title": "EN-004 — A bird's eye",
+    "level": 1,
+    "role": "article",
+    "lead": "I have a little sister; they call her Peep, Peep.",
+    "body_html": "<p>I have a little sister; they call her Peep, Peep. She wades the water, deep, deep, deep; she climbs the mountains, high, high, high. Poor little thing! she has but one eye.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A bird's eye (or potato eye, or spring of water)",
+      "Accepted Variants: [eye, bird eye, potato eye, water spring]",
+      "Clue: It sees the world but cannot look both ways.",
+      "Difficulty: hard",
+      "Tradition/Origin: English nursery rhyme / Mother Goose"
+    ],
+    "source": "Mother Goose's Nursery Rhymes - Project Gutenberg",
+    "licence": "Public domain"
+  },
+  "EN-005": {
+    "id": "EN-005",
+    "title": "EN-005 — Needle and thread",
+    "level": 1,
+    "role": "article",
+    "lead": "Old Mother Twitchett had one eye, and a long tail which she let fly, and every time she went over a gap, she left a bit of her tail in a trap.",
+    "body_html": "<p>Old Mother Twitchett had one eye, and a long tail which she let fly, and every time she went over a gap, she left a bit of her tail in a trap.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Needle and thread",
+      "Accepted Variants: [needle, needle and thread, sewing needle]",
+      "Clue: I pierce cloth and leave my trace behind.",
+      "Difficulty: medium",
+      "Tradition/Origin: English nursery rhyme / Mother Goose"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain"
+  },
+  "EN-006": {
+    "id": "EN-006",
+    "title": "EN-006 — Candle snuffer",
+    "level": 1,
+    "role": "article",
+    "lead": "Peter White will ne'er go right; would you know the reason why?",
+    "body_html": "<p>Peter White will ne&#39;er go right; would you know the reason why? He follows his nose wherever he goes, and that stands all awry.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Candle snuffer (or similar crooked tool)",
+      "Accepted Variants: [candle snuffer, snuffer]",
+      "Clue: A crooked helper that serves by following its bent nature.",
+      "Difficulty: hard",
+      "Tradition/Origin: English nursery rhyme / Mother Goose"
+    ],
+    "source": "Mother Goose's Nursery Rhymes - Project Gutenberg",
+    "licence": "Public domain"
+  },
+  "EN-007": {
+    "id": "EN-007",
+    "title": "EN-007 — Egg",
+    "level": 1,
+    "role": "article",
+    "lead": "As white as milk, as black as coal, as soft as silk, with a heart of gold.",
+    "body_html": "<p>As white as milk, as black as coal, as soft as silk, with a heart of gold.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Egg (or chestnut)",
+      "Accepted Variants: [egg, chestnut, walnut]",
+      "Clue: A simple treasure found in nature, white and dark together.",
+      "Difficulty: medium",
+      "Tradition/Origin: English nursery rhyme / folk riddle"
+    ],
+    "source": "Mother Goose nursery rhymes - Internet Archive",
+    "licence": "Public domain"
+  },
+  "JW-001": {
+    "id": "JW-001",
+    "title": "JW-001 — Honey",
+    "level": 1,
+    "role": "article",
+    "lead": "Out of the eater came something to eat, and out of the strong came something sweet.",
+    "body_html": "<p>Out of the eater came something to eat, and out of the strong came something sweet.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Honey (from a lion's carcass)",
+      "Accepted Variants: [honey, bee, sweetness]",
+      "Clue: A bee's home grew inside a predator.",
+      "Difficulty: hard",
+      "Tradition/Origin: Samson's Riddle, Bible (Judges 14:14), public domain"
+    ],
+    "source": "Samson's riddle - Wikipedia",
+    "licence": "Public domain (biblical text)"
+  },
+  "JW-002": {
+    "id": "JW-002",
+    "title": "JW-002 — Seven days of menstruation; nine months of pregnancy; two breasts; one child",
+    "level": 1,
+    "role": "article",
+    "lead": "Seven issue and nine enter; two yield draught, one drinks.",
+    "body_html": "<p>Seven issue and nine enter; two yield draught, one drinks.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Seven days of menstruation; nine months of pregnancy; two breasts; one child",
+      "Accepted Variants: [childbirth, woman, pregnancy, nursing]",
+      "Clue: A woman's passage through motherhood.",
+      "Difficulty: hard",
+      "Tradition/Origin: Solomon's Riddle from Rabbinic Literature"
+    ],
+    "source": "The Riddles of Solomon in Rabbinic Literature - Wikisource",
+    "licence": "Public domain (Solomon Schechter translation)"
+  },
+  "JW-003": {
+    "id": "JW-003",
+    "title": "JW-003 — The womb",
+    "level": 1,
+    "role": "article",
+    "lead": "Enclosure with ten doors.",
+    "body_html": "<p>Enclosure with ten doors.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: The womb",
+      "Accepted Variants: [womb, uterus, body]",
+      "Clue: A fortress of flesh that contains new life.",
+      "Difficulty: hard",
+      "Tradition/Origin: Solomon's Riddle from Rabbinic Literature"
+    ],
+    "source": "The Riddles of Solomon in Rabbinic Literature - Wikisource",
+    "licence": "Public domain"
+  },
+  "JW-004": {
+    "id": "JW-004",
+    "title": "JW-004 — A ship",
+    "level": 1,
+    "role": "article",
+    "lead": "Living moves not; head cut off, moves.",
+    "body_html": "<p>Living moves not; head cut off, moves.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A ship",
+      "Accepted Variants: [ship, vessel, boat, sailship]",
+      "Clue: Once alive as a tree, now silent wood that travels.",
+      "Difficulty: hard",
+      "Tradition/Origin: Solomon's Riddle from Rabbinic Literature"
+    ],
+    "source": "The Riddles of Solomon in Rabbinic Literature - Wikisource",
+    "licence": "Public domain"
+  },
+  "JW-005": {
+    "id": "JW-005",
+    "title": "JW-005 — Jonah",
+    "level": 1,
+    "role": "article",
+    "lead": "Dead lived, grave moves, dead prays.",
+    "body_html": "<p>Dead lived, grave moves, dead prays.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Jonah",
+      "Accepted Variants: [Jonah, prophet, whale, fish]",
+      "Clue: A man swallowed by the sea yet called upon his God.",
+      "Difficulty: hard",
+      "Tradition/Origin: Solomon's Riddle from Rabbinic Literature (biblical allusion)"
+    ],
+    "source": "The Riddles of Solomon in Rabbinic Literature - Wikisource",
+    "licence": "Public domain"
+  },
+  "CH-001": {
+    "id": "CH-001",
+    "title": "CH-001 — Silkworm",
+    "level": 1,
+    "role": "article",
+    "lead": "This lovely maiden eats no meat but eats leaves.",
+    "body_html": "<p>This lovely maiden eats no meat but eats leaves. She labours each day spinning and weaving for the benefit of others.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Silkworm",
+      "Accepted Variants: [silkworm, silk worm, worm, insect]",
+      "Clue: A humble spinner that works itself to death for silk.",
+      "Difficulty: medium",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-002": {
+    "id": "CH-002",
+    "title": "CH-002 — A lock",
+    "level": 1,
+    "role": "article",
+    "lead": "He devotes his life to looking after the house.",
+    "body_html": "<p>He devotes his life to looking after the house. His mate always follows when the master goes out.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A lock",
+      "Accepted Variants: [lock, padlock, key lock, security lock]",
+      "Clue: Metal teeth hold secrets shut.",
+      "Difficulty: easy",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-003": {
+    "id": "CH-003",
+    "title": "CH-003 — The moon",
+    "level": 1,
+    "role": "article",
+    "lead": "It's been around for millions of years, but it's no more than a month old.",
+    "body_html": "<p>It&#39;s been around for millions of years, but it&#39;s no more than a month old.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: The moon",
+      "Accepted Variants: [moon, lunar, celestial body]",
+      "Clue: Ancient in the sky, forever renewing itself.",
+      "Difficulty: medium",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-004": {
+    "id": "CH-004",
+    "title": "CH-004 — Your name",
+    "level": 1,
+    "role": "article",
+    "lead": "What belongs to you but others use it more than you do?",
+    "body_html": "<p>What belongs to you but others use it more than you do?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Your name",
+      "Accepted Variants: [name, identity]",
+      "Clue: Others speak it more often than you hear it.",
+      "Difficulty: medium",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-005": {
+    "id": "CH-005",
+    "title": "CH-005 — A clock",
+    "level": 1,
+    "role": "article",
+    "lead": "It works hard all its life, counting numbers day and night, but never gets past 12.",
+    "body_html": "<p>It works hard all its life, counting numbers day and night, but never gets past 12.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A clock",
+      "Accepted Variants: [clock, watch, timekeeper, time]",
+      "Clue: It measures time by numbers that repeat.",
+      "Difficulty: easy",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-006": {
+    "id": "CH-006",
+    "title": "CH-006 — Chopsticks",
+    "level": 1,
+    "role": "article",
+    "lead": "They look like twin brothers, both sturdy and tall.",
+    "body_html": "<p>They look like twin brothers, both sturdy and tall. They work together and go everywhere together.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Chopsticks",
+      "Accepted Variants: [chopsticks, sticks, utensils]",
+      "Clue: A pair of helpers that deliver food to your mouth.",
+      "Difficulty: easy",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "CH-007": {
+    "id": "CH-007",
+    "title": "CH-007 — Your shadow",
+    "level": 1,
+    "role": "article",
+    "lead": "I can follow you for thousands of miles and not miss home.",
+    "body_html": "<p>I can follow you for thousands of miles and not miss home. I do not fear cold or fire.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Your shadow",
+      "Accepted Variants: [shadow, shade, silhouette]",
+      "Clue: It leaves when the light does, but never truly leaves you.",
+      "Difficulty: medium",
+      "Tradition/Origin: Chinese Lantern Festival riddle (traditional)"
+    ],
+    "source": "8 Lantern Riddles to Celebrate the Chinese Lantern Festival - The Epoch Times",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "AF-001": {
+    "id": "AF-001",
+    "title": "AF-001 — Egg",
+    "level": 1,
+    "role": "article",
+    "lead": "My house has no doors or windows; yet there are living things within.",
+    "body_html": "<p>My house has no doors or windows; yet there are living things within.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Egg (or coconut)",
+      "Accepted Variants: [egg, coconut, nut, seed, enclosed space]",
+      "Clue: Break me open and find life waiting.",
+      "Difficulty: easy",
+      "Tradition/Origin: African Zulu riddle (traditional)"
+    ],
+    "source": "African Proverbs and Riddles - Internet Archive",
+    "licence": "Public domain (1868 Callaway Zulu collection)"
+  },
+  "AF-002": {
+    "id": "AF-002",
+    "title": "AF-002 — A coin",
+    "level": 1,
+    "role": "article",
+    "lead": "I have a head and a tail but no body.",
+    "body_html": "<p>I have a head and a tail but no body.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A coin",
+      "Accepted Variants: [coin, money, currency]",
+      "Clue: Two sides, no life, yet humans treasure me.",
+      "Difficulty: easy",
+      "Tradition/Origin: African riddle (traditional)"
+    ],
+    "source": "African Proverbs and Riddles - Internet Archive",
+    "licence": "Public domain (traditional folklore, compiled by Laura Gibbs)"
+  },
+  "AF-003": {
+    "id": "AF-003",
+    "title": "AF-003 — A fish trap",
+    "level": 1,
+    "role": "article",
+    "lead": "What looks like a house but has many windows?",
+    "body_html": "<p>What looks like a house but has many windows?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A fish trap (or honeycomb, or sieve)",
+      "Accepted Variants: [fish trap, honeycomb, sieve, trap, net]",
+      "Clue: It catches what swims or flows through it.",
+      "Difficulty: medium",
+      "Tradition/Origin: African riddle (Zulu tradition)"
+    ],
+    "source": "African Proverbs and Riddles - Internet Archive",
+    "licence": "Public domain"
+  },
+  "AF-004": {
+    "id": "AF-004",
+    "title": "AF-004 — A postage stamp",
+    "level": 1,
+    "role": "article",
+    "lead": "I travel all around the world but never leave my corner.",
+    "body_html": "<p>I travel all around the world but never leave my corner.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A postage stamp",
+      "Accepted Variants: [stamp, postage stamp, mail]",
+      "Clue: I stick to messages and journey across continents.",
+      "Difficulty: medium",
+      "Tradition/Origin: African riddle (modern folk tradition)"
+    ],
+    "source": "African Proverbs and Riddles - Internet Archive",
+    "licence": "Public domain (collected in modern African riddle traditions)"
+  },
+  "FO-001": {
+    "id": "FO-001",
+    "title": "FO-001 — Footsteps",
+    "level": 1,
+    "role": "article",
+    "lead": "The more you take, the more you leave behind.",
+    "body_html": "<p>The more you take, the more you leave behind. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Footsteps",
+      "Accepted Variants: [footsteps, steps, tracks, footprints, trails]",
+      "Clue: I mark where you have been.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread in many traditions)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-002": {
+    "id": "FO-002",
+    "title": "FO-002 — A cow",
+    "level": 1,
+    "role": "article",
+    "lead": "Four hang, two point the way, two are useful, one sits in judgment, and the rest do the work.",
+    "body_html": "<p>Four hang, two point the way, two are useful, one sits in judgment, and the rest do the work.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A cow",
+      "Accepted Variants: [cow, cattle, bovine]",
+      "Clue: A common farm animal whose parts serve many purposes.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (widespread across Indo-European traditions)"
+    ],
+    "source": "Four Hang; Two Point the Way - Wikipedia",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-003": {
+    "id": "FO-003",
+    "title": "FO-003 — A clock",
+    "level": 1,
+    "role": "article",
+    "lead": "I have a face and two hands, but no arms and no legs.",
+    "body_html": "<p>I have a face and two hands, but no arms and no legs.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A clock",
+      "Accepted Variants: [clock, watch, face, dial, timepiece]",
+      "Clue: I measure the passing of each day.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-004": {
+    "id": "FO-004",
+    "title": "FO-004 — An echo",
+    "level": 1,
+    "role": "article",
+    "lead": "I speak without a mouth and hear without ears.",
+    "body_html": "<p>I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: An echo",
+      "Accepted Variants: [echo, sound, voice]",
+      "Clue: I repeat your words but live in emptiness.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-005": {
+    "id": "FO-005",
+    "title": "FO-005 — A postage stamp",
+    "level": 1,
+    "role": "article",
+    "lead": "I can travel around the world while staying in a corner.",
+    "body_html": "<p>I can travel around the world while staying in a corner.</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A postage stamp",
+      "Accepted Variants: [stamp, postage stamp]",
+      "Clue: Glued to paper, I go everywhere letters go.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (modern)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-006": {
+    "id": "FO-006",
+    "title": "FO-006 — Nothing",
+    "level": 1,
+    "role": "article",
+    "lead": "The rich need me.",
+    "body_html": "<p>The rich need me. The poor have me. If you eat me, you will die. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Nothing (or air)",
+      "Accepted Variants: [nothing, air, void, emptiness]",
+      "Clue: The wealthy cannot afford to lack it; the poor have only this.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-007": {
+    "id": "FO-007",
+    "title": "FO-007 — The letter \"R",
+    "level": 1,
+    "role": "article",
+    "lead": "What is seen in the middle of March and April that cannot be seen at any other time of year?",
+    "body_html": "<p>What is seen in the middle of March and April that cannot be seen at any other time of year?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: The letter \"R",
+      "Accepted Variants: [letter R, R, alphabet]",
+      "Clue: Look at the spelling of the months.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (wordplay)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-008": {
+    "id": "FO-008",
+    "title": "FO-008 — A river",
+    "level": 1,
+    "role": "article",
+    "lead": "What has a bed but never sleeps, has a bank but no money, and has a mouth but never speaks?",
+    "body_html": "<p>What has a bed but never sleeps, has a bank but no money, and has a mouth but never speaks?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A river",
+      "Accepted Variants: [river, stream, waterway, water]",
+      "Clue: Nature's highway for water.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-009": {
+    "id": "FO-009",
+    "title": "FO-009 — Your breath",
+    "level": 1,
+    "role": "article",
+    "lead": "What is harder to catch the faster you run?",
+    "body_html": "<p>What is harder to catch the faster you run?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Your breath",
+      "Accepted Variants: [breath, breathing, air]",
+      "Clue: The more you exert yourself, the more elusive it becomes.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-010": {
+    "id": "FO-010",
+    "title": "FO-010 — A joke",
+    "level": 1,
+    "role": "article",
+    "lead": "What can be cracked, made, told, and played?",
+    "body_html": "<p>What can be cracked, made, told, and played?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A joke",
+      "Accepted Variants: [joke, humor, gag]",
+      "Clue: It brings laughter when delivered well.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (modern)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-011": {
+    "id": "FO-011",
+    "title": "FO-011 — An artichoke",
+    "level": 1,
+    "role": "article",
+    "lead": "What has a heart that does not beat?",
+    "body_html": "<p>What has a heart that does not beat?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: An artichoke",
+      "Accepted Variants: [artichoke, vegetable]",
+      "Clue: A thorny plant with a tender center.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-012": {
+    "id": "FO-012",
+    "title": "FO-012 — A human being",
+    "level": 1,
+    "role": "article",
+    "lead": "What walks on four legs in the morning, two legs at noon, and three legs in the evening?",
+    "body_html": "<p>What walks on four legs in the morning, two legs at noon, and three legs in the evening?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A human being (at different life stages; variant of Sphinx riddle)",
+      "Accepted Variants: [human, man, person, mankind]",
+      "Clue: This is life's journey measured in feet.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (variant of Sphinx riddle)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-013": {
+    "id": "FO-013",
+    "title": "FO-013 — Pencil lead",
+    "level": 1,
+    "role": "article",
+    "lead": "I am taken from a mine and shut up in a wooden case, from which I am never released.",
+    "body_html": "<p>I am taken from a mine and shut up in a wooden case, from which I am never released. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Pencil lead (or graphite)",
+      "Accepted Variants: [pencil lead, graphite, lead, writing material]",
+      "Clue: I write the world but am imprisoned in wood.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (modern)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-014": {
+    "id": "FO-014",
+    "title": "FO-014 — The letter \"M",
+    "level": 1,
+    "role": "article",
+    "lead": "What comes once in a minute, twice in a moment, and never in one thousand years?",
+    "body_html": "<p>What comes once in a minute, twice in a moment, and never in one thousand years?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: The letter \"M",
+      "Accepted Variants: [letter M, M, alphabet]",
+      "Clue: Count the letters.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (wordplay)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-015": {
+    "id": "FO-015",
+    "title": "FO-015 — A mountain",
+    "level": 1,
+    "role": "article",
+    "lead": "What has roots that nobody sees, is taller than trees, up, up it goes, and yet it never grows?",
+    "body_html": "<p>What has roots that nobody sees, is taller than trees, up, up it goes, and yet it never grows?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A mountain",
+      "Accepted Variants: [mountain, peak, range]",
+      "Clue: Ancient stone that reaches the sky.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-016": {
+    "id": "FO-016",
+    "title": "FO-016 — Charcoal",
+    "level": 1,
+    "role": "article",
+    "lead": "What is black when you buy it, red when you use it, and gray when you throw it away?",
+    "body_html": "<p>What is black when you buy it, red when you use it, and gray when you throw it away?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Charcoal (or coal)",
+      "Accepted Variants: [charcoal, coal, carbon]",
+      "Clue: I fuel fires but am destroyed by them.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-017": {
+    "id": "FO-017",
+    "title": "FO-017 — Are you asleep?",
+    "level": 1,
+    "role": "article",
+    "lead": "What question can you never answer \"yes\" to?",
+    "body_html": "<p>What question can you never answer &quot;yes&quot; to?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Are you asleep?",
+      "Accepted Variants: [are you asleep, sleeping question]",
+      "Clue: Answer it and you contradict yourself.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (logic puzzle)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-018": {
+    "id": "FO-018",
+    "title": "FO-018 — Light",
+    "level": 1,
+    "role": "article",
+    "lead": "What can fill a room but takes up no space?",
+    "body_html": "<p>What can fill a room but takes up no space?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Light",
+      "Accepted Variants: [light, brightness, illumination]",
+      "Clue: It comes from sun, lamp, or fire.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-019": {
+    "id": "FO-019",
+    "title": "FO-019 — Fire",
+    "level": 1,
+    "role": "article",
+    "lead": "I am not alive, but I grow.",
+    "body_html": "<p>I am not alive, but I grow. I don&#39;t have lungs, but I need air. I don&#39;t have a mouth, but water kills me. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Fire",
+      "Accepted Variants: [fire, flame, blaze]",
+      "Clue: I am born of heat and feed on fuel.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-020": {
+    "id": "FO-020",
+    "title": "FO-020 — An echo",
+    "level": 1,
+    "role": "article",
+    "lead": "I speak all languages and have visited every country in the world.",
+    "body_html": "<p>I speak all languages and have visited every country in the world. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: An echo",
+      "Accepted Variants: [echo, sound, voice, word]",
+      "Clue: I repeat what you say in any tongue.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-021": {
+    "id": "FO-021",
+    "title": "FO-021 — A cloud",
+    "level": 1,
+    "role": "article",
+    "lead": "What is white and fluffy, and when you touch it, it rains?",
+    "body_html": "<p>What is white and fluffy, and when you touch it, it rains?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A cloud",
+      "Accepted Variants: [cloud, cumulus, weather]",
+      "Clue: I float in the sky and bring water to earth.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (nature)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-022": {
+    "id": "FO-022",
+    "title": "FO-022 — Tomorrow",
+    "level": 1,
+    "role": "article",
+    "lead": "I am always coming but never arrive.",
+    "body_html": "<p>I am always coming but never arrive. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Tomorrow",
+      "Accepted Variants: [tomorrow, future, next day]",
+      "Clue: It is always promised but never truly comes.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (philosophical)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-023": {
+    "id": "FO-023",
+    "title": "FO-023 — (This is a trick question; the answer is \"I don't know\" or depends on context)",
+    "level": 1,
+    "role": "article",
+    "lead": "What is the difference between a apple and an orange?",
+    "body_html": "<p>What is the difference between a apple and an orange?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: (This is a trick question; the answer is \"I don't know\" or depends on context)",
+      "Accepted Variants: [color, skin, taste, texture, fruit]",
+      "Clue: This may not have a single answer.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (logic/trick question)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-024": {
+    "id": "FO-024",
+    "title": "FO-024 — A bottle",
+    "level": 1,
+    "role": "article",
+    "lead": "I have a neck but no head.",
+    "body_html": "<p>I have a neck but no head. What am I?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: A bottle",
+      "Accepted Variants: [bottle, jar, vessel, container]",
+      "Clue: I hold liquids but cannot drink them.",
+      "Difficulty: easy",
+      "Tradition/Origin: Universal folk riddle (widespread)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-025": {
+    "id": "FO-025",
+    "title": "FO-025 — Short",
+    "level": 1,
+    "role": "article",
+    "lead": "What word becomes shorter when you add two letters to it?",
+    "body_html": "<p>What word becomes shorter when you add two letters to it?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Short",
+      "Accepted Variants: [short, word puzzle]",
+      "Clue: Add \"er\" to make it short-er.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (wordplay)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-026": {
+    "id": "FO-026",
+    "title": "FO-026 — The horizon",
+    "level": 1,
+    "role": "article",
+    "lead": "What is the one thing that all wise men, regardless of their politics or religion, agree is between heaven and earth?",
+    "body_html": "<p>What is the one thing that all wise men, regardless of their politics or religion, agree is between heaven and earth?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: The horizon (or sky)",
+      "Accepted Variants: [horizon, sky, space]",
+      "Clue: It divides what we see above from what we see below.",
+      "Difficulty: hard",
+      "Tradition/Origin: Universal folk riddle (philosophical)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  },
+  "FO-027": {
+    "id": "FO-027",
+    "title": "FO-027 — Silence",
+    "level": 1,
+    "role": "article",
+    "lead": "What is so fragile that saying its name breaks it?",
+    "body_html": "<p>What is so fragile that saying its name breaks it?</p>",
+    "parent": null,
+    "children": [],
+    "siblings": [],
+    "characteristics": [
+      "Answer: Silence",
+      "Accepted Variants: [silence, quiet, stillness]",
+      "Clue: It ends the moment you speak.",
+      "Difficulty: medium",
+      "Tradition/Origin: Universal folk riddle (poetic)"
+    ],
+    "source": "Wikibooks: Puzzles/Riddles",
+    "licence": "Public domain (traditional folklore)"
+  }
+}

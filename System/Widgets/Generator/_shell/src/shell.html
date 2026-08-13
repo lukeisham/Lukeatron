@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__ASSET_NAME__</title>
+<link rel="icon" href='__ICON_HREF__'>
+<style>
+__SHELL_CSS__
+__FOCUS_CSS__
+__CARTRIDGE_CSS__
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<header>
+<div class="brand">
+<span class="badge" aria-hidden="true">__BADGE_GLYPH__</span>
+<span id="hdrname">__ASSET_NAME__</span>
+</div>
+<div class="meta" id="hdrmeta">Tier A · offline</div>
+</header>
+
+<div class="no-print">
+<div class="bar analyse-only" id="sweepbar" style="display:none;"></div>
+<div class="analyse-only" id="input" contenteditable="true" spellcheck="false" data-placeholder="Paste or type __INPUT_UNIT__…"></div>
+<div class="warn analyse-only" id="capwarn"></div>
+<div class="bar analyse-only">
+<button class="primary" id="btnParse">Parse</button>
+<button id="btnAll">Display all</button>
+<button id="btnExplain">Explain</button>
+<button id="btnTierB" disabled title="Tier B (API/agent judgment) is not wired in this build — the offline Tier-A engine is fully functional.">Tier B check — off</button>
+<label class="muted" id="spellLabel" style="display:none;align-items:center;gap:6px;margin-left:auto;cursor:pointer;"><input type="checkbox" id="spellTog" checked> Spell check</label>
+<span class="muted" id="wcount">0 / __CAP__ words</span>
+</div>
+<!-- The Mini-Wiki button is mode-agnostic: BOTH analyse and present cartridges
+     may ship a catalogue, so it must not live inside a .analyse-only bar (a
+     present-mode build would embed the articles and then hide the only way to
+     open them). Its own bar keeps it visible under body.mode-analyse and
+     body.mode-present alike; the seam still hides it when no bundle/articles
+     were embedded. -->
+<div class="bar" id="wikibar">
+<button id="btnMiniWiki" class="no-print" style="display:none;" title="Open the Mini-Wiki in a new tab">Mini-Wiki</button>
+</div>
+<div class="warn no-print" id="miniwikiwarn" style="display:none;">Your browser blocked the Mini-Wiki pop-up tab — allow pop-ups for this page and click Mini-Wiki again.</div>
+<div class="bar analyse-only" id="focusbar" style="display:none;"></div>
+<div class="analyse-only" id="key" style="display:none;"></div>
+<div class="analyse-only" id="iconbar"></div>
+<div class="analyse-only" id="sline"></div>
+<div class="analyse-only" id="stage"></div>
+<div class="muted analyse-only" id="hoverhint" style="display:none;">Hover a word for its description at the selected focus level · right-click for word-class detail</div>
+
+<!-- Present mode (GeneratorShell.spec.md §3b, task D) — hidden entirely
+     in analyse-mode builds via the .present-only / body.mode-present CSS
+     rule below; present-mode.js decides which of these appear within a
+     present-mode build based on CONFIG.generator's feature flags. -->
+<div class="bar present-only" id="categoryBar" style="display:none;"></div>
+<div class="present-only" id="pstage" style="display:none;"></div>
+<div class="present-only" id="clueBox" style="display:none;"></div>
+<div class="bar present-only" id="answerBar" style="display:none;">
+<input type="text" id="answerInput" placeholder="Your answer…">
+<button id="btnCheck">Check</button>
+</div>
+<div class="present-only" id="answerFeedback" style="display:none;"></div>
+<div class="bar present-only" id="presentToolbar" style="display:none;">
+<button class="primary" id="btnGenerate">Generate</button>
+<button id="btnClue" style="display:none;">Clue</button>
+<button id="btnCopy">Copy</button>
+<button id="btnExplainPresent" style="display:none;">Explain</button>
+</div>
+<div class="bar present-only" id="tierBBar" style="display:none;">
+<label class="muted" for="apiKeyInput">Claude API key</label>
+<input type="password" id="apiKeyInput" placeholder="sk-ant-…" autocomplete="off">
+<button id="btnSaveKey">Save key</button>
+<button id="btnRefreshPool" disabled>Refresh pool</button>
+<span class="muted" id="tierBStatus"></span>
+</div>
+</div>
+
+<div id="explainer">
+<h3 class="analyse-only">Explainer — the tabled sentence</h3>
+<div id="xtables"></div>
+<h3 class="analyse-only" style="margin-top:16px;">Explainer — relevant rules</h3>
+<h3 class="present-only">Explainer</h3>
+<div id="rules"></div>
+</div>
+
+<footer>
+<span class="no-print">Export explainer:</span>
+<button class="no-print" id="btnPdf">PDF</button>
+<button class="no-print" id="btnPdfBare" title="Prints the explainer without the app header/footer">PDF (bare)</button>
+<button class="no-print" id="btnMd">Copy Markdown</button>
+<button class="no-print" id="btnTxt">Copy plain text</button>
+<span style="margin-left:auto;">__ASSET_NAME__ v__ASSET_VERSION__ · built __BUILD_DATE__ from __BUILT_FROM__<span id="lexinfo"></span><span id="spellinfo"></span></span>
+</footer>
+</div></div>
+
+<div id="tip"></div>
+<div id="ctx"></div>
+<!-- Spelling module's suggestion popover mount (SpellingModule.spec.md FR-10
+     POPOVER_ID) — the module finds this by id and reuses it (styled by
+     shell.css) instead of creating its own unstyled body-appended div. -->
+<div id="spelling-suggestions"></div>
+
+<script>
+/* ============================================================
+   CARTRIDGE · CONFIG — per-asset settings (GeneratorShell.spec.md FR-2)
+   ============================================================ */
+var CONFIG = __CONFIG__;
+
+/* ============================================================
+   CARTRIDGE · CONTENT — compiled outline taxonomy (FR-3)
+   ============================================================ */
+var CONTENT = __CONTENT__;
+
+/* Mode-level visibility gate (task B/D) — set before any harness script
+   runs, so the very first paint already hides the other mode's markup
+   (no flash of the wrong UI). shell.css's .analyse-only/.present-only
+   rules key off this class. */
+document.body.classList.add(CONFIG.generator && CONFIG.generator.mode === "present" ? "mode-present" : "mode-analyse");
+</script>
+<script>
+var SQLJS_WASM_B64 = "__WASM_B64__";
+var LEXDB_B64 = "__DB_B64__";
+var SPELLDB_B64 = "__SPELLDB_B64__";
+var MINIWIKI_ARTICLES = __MINIWIKI_ARTICLES__;
+var MINIWIKI_CARTRIDGE_NAME = __MINIWIKI_CARTRIDGE_NAME__;
+</script>
+<script>
+__SQLJS__
+</script>
+<script>
+__LEXICON_JS__
+</script>
+<script>
+__ENGINE_JS__
+</script>
+<script>
+__EXPLAINER_JS__
+</script>
+<script>
+__SPELLING_SEAM_JS__
+</script>
+<script>
+__MINIWIKI_JS__
+</script>
+<script>
+__UI_JS__
+</script>
+<script>
+__PRESENT_MODE_JS__
+</script>
+<script>
+__API_JS__
+</script>
+<script>
+if (CONFIG.generator && CONFIG.generator.mode === "present") {
+  PresentMode.init();
+} else {
+  LEX.init(UI.init);
+}
+if (typeof MiniWikiSeam !== "undefined" && MiniWikiSeam.isAvailable()) {
+  var btnMW = document.getElementById("btnMiniWiki");
+  btnMW.style.display = "";
+  btnMW.addEventListener("click", function () {
+    var opened = MiniWikiSeam.open();
+    document.getElementById("miniwikiwarn").style.display = opened ? "none" : "";
+  });
+} else {
+  // No bundle/articles embedded — collapse the whole bar, not just the button,
+  // so a cartridge without a catalogue shows no stray empty row.
+  document.getElementById("wikibar").style.display = "none";
+}
+
+// The export bar exports the EXPLAINER. A present-mode cartridge that declares
+// generator.explainer:false (Riddle, FolkTale) has no explainer to export, so
+// offering "Export explainer: PDF / Copy Markdown…" there is a dead control
+// that misrepresents what the widget does.
+if (CONFIG.generator && CONFIG.generator.mode === "present" && !CONFIG.generator.explainer) {
+  document.querySelectorAll("footer .no-print").forEach(function (el) {
+    el.style.display = "none";
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+cartridge:
+  name: "Riddle Generator"
+  id: "Riddle"
+  version: "1.0.0"
+  builtFrom: "riddle_content.md"
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%23633806"/><text x="15" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="bold" fill="%23FAEEDA">?</text></svg>'
+
+parser:
+  inputUnit: "one riddle"
+  cap: 1
+  levels:
+    - riddle
+  tentativeThreshold: 0.5
+
+colours:
+  palette:
+    - name: amber
+      h50: "#FAEEDA"
+      h100: "#FAC775"
+      h600: "#854F0B"
+      h800: "#633806"
+      hf: "rgba(239,159,39,.12)"
+
+lexicon:
+  enabled: false
+
+spelling:
+  enabled: false
+
+# Categories: tradition IS the natural grouping the seed content already
+# carries per-riddle (Tradition/Origin field, and the id prefix that
+# encodes it — EX-/GR-/NO-/EN-/JW-/CH-/AF-/FO-). A category picker lets a
+# user practise one cultural tradition at a time (e.g. only Exeter Book
+# riddles) rather than always drawing from the full mixed pool, and the
+# eight groups are stable, roughly balanced, and already how the seed
+# document itself is organised (its own section headings) — so this is a
+# free win rather than an invented taxonomy. ids match
+# compile_riddle_pool.py's CATEGORY_BY_PREFIX table verbatim (single
+# source of truth; a mismatch there would surface as an unmatched
+# category at build time, not silently).
+generator:
+  mode: present
+  clue: true
+  answer: true
+  explainer: false
+  categories:
+    - id: anglo-saxon
+      label: "Anglo-Saxon (Exeter Book)"
+    - id: greek
+      label: "Greek & Classical"
+    - id: norse
+      label: "Norse / Viking"
+    - id: english
+      label: "English Nursery Rhymes"
+    - id: biblical
+      label: "Biblical & Jewish"
+    - id: chinese
+      label: "Chinese (Lantern Festival)"
+    - id: african
+      label: "African (Zulu & Swahili)"
+    - id: folk
+      label: "Universal Folk"
+
+miniwiki:
+  enabled: true
+  articlesFile: "riddle.miniwiki.json"
+  cartridgeName: "Riddle catalogue"
+
+files:
+  engine: "engine.js"
+  explainer: "explainer.js"
+  content: "pool.json"

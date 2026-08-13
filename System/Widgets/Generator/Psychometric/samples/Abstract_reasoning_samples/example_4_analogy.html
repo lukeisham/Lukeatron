@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example 4:</title> Figural Analogy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; color: #222; padding: 24px; display: flex; justify-content: center; }
+  .container { max-width: 700px; width: 100%; }
+  .card { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  h1 { font-size: 1.3rem; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.85rem; margin-bottom: 16px; }
+  .question-svg { text-align: center; margin: 8px 0; }
+  .question-svg svg { max-width: 100%; height: auto; }
+  h2 { font-size: 1rem; margin-bottom: 12px; color: #333; }
+  .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 480px) { .options { grid-template-columns: repeat(2, 1fr); } }
+  .option { border: 2px solid #ddd; border-radius: 10px; padding: 16px 8px 8px; text-align: center; cursor: pointer; transition: all 0.15s; background: #fafafa; position: relative; }
+  .option:hover { border-color: #888; background: #f5f5f5; }
+  .option.selected-correct { border-color: #27ae60; background: #eafaf1; }
+  .option.selected-wrong { border-color: #e74c3c; background: #fdedec; }
+  .option.reveal-correct { border-color: #27ae60; background: #eafaf1; }
+  .option .label { font-weight: 700; font-size: 0.8rem; color: #888; margin-bottom: 6px; }
+  .option svg { display: block; margin: 0 auto; }
+  .badge { position: absolute; top: 6px; right: 8px; font-size: 1.1rem; font-weight: 700; }
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; display: none; }
+  .feedback.correct { background: #eafaf1; color: #1e7e34; display: block; border: 1px solid #a3d9b1; }
+  .feedback.wrong { background: #fdedec; color: #b03a2e; display: block; border: 1px solid #f5b7b1; }
+  .explanation { margin-top: 10px; font-size: 0.85rem; color: #555; display: none; }
+  .explanation.visible { display: block; }
+  .btn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-size: 0.8rem; border: 1px solid #bbb; border-radius: 6px; background: #fff; cursor: pointer; color: #555; }
+  .btn:hover { background: #f0f0f0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card">
+    <h1>Example 4: Figural Anal</h1>ogy</h1>
+    <p class="subtitle">"A is to B as C is to ?"</p>
+
+    <div class="question-svg">
+      <svg viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="420" fill="#ffffff"/>
+        <text x="130" y="25" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" font-weight="bold" fill="#555">A</text>
+        <text x="350" y="25" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" font-weight="bold" fill="#555">B</text>
+        <text x="130" y="240" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" font-weight="bold" fill="#555">C</text>
+        <text x="350" y="240" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" font-weight="bold" fill="#555">?</text>
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#999"/>
+          </marker>
+          <pattern id="hatchV" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#333" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <line x1="170" y1="95" x2="300" y2="95" stroke="#999" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="170" y1="310" x2="300" y2="310" stroke="#999" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="130" y1="135" x2="130" y2="265" stroke="#999" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="350" y1="135" x2="350" y2="265" stroke="#999" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <!-- A -->
+        <g transform="translate(85, 40)">
+          <rect x="0" y="0" width="90" height="90" fill="none" stroke="#ddd" stroke-width="1.5" rx="4"/>
+          <circle cx="45" cy="45" r="30" fill="#fff" stroke="#333" stroke-width="2.5"/>
+        </g>
+        <!-- B -->
+        <g transform="translate(305, 40)">
+          <rect x="0" y="0" width="90" height="90" fill="none" stroke="#ddd" stroke-width="1.5" rx="4"/>
+          <circle cx="45" cy="45" r="30" fill="url(#hatchV)" stroke="#333" stroke-width="2.5"/>
+        </g>
+        <!-- C -->
+        <g transform="translate(85, 255)">
+          <rect x="0" y="0" width="90" height="90" fill="none" stroke="#ddd" stroke-width="1.5" rx="4"/>
+          <rect x="16" y="16" width="58" height="58" fill="#fff" stroke="#333" stroke-width="2.5"/>
+        </g>
+        <!-- ? -->
+        <g transform="translate(305, 255)">
+          <rect x="0" y="0" width="90" height="90" fill="#f7f7f7" stroke="#aaa" stroke-width="1.5" stroke-dasharray="5,3" rx="4"/>
+          <text x="45" y="48" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" font-weight="bold" fill="#999">?</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Select the</h2> missing figure</h2>
+    <div class="options" id="options">
+      <!-- A: hatched square (CORRECT) -->
+      <div class="option" data-answer="correct">
+        <div class="label">A</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="hA4" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="6" stroke="#333" stroke-width="1"/></pattern></defs>
+          <rect x="16" y="16" width="58" height="58" fill="url(#hA4)" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- B: empty square -->
+      <div class="option" data-answer="wrong">
+        <div class="label">B</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="16" width="58" height="58" fill="#fff" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- C: solid square -->
+      <div class="option" data-answer="wrong">
+        <div class="label">C</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="16" width="58" height="58" fill="#333" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- D: hatched circle (wrong shape) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">D</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="hD4" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="6" stroke="#333" stroke-width="1"/></pattern></defs>
+          <circle cx="45" cy="45" r="30" fill="url(#hD4)" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- E: empty circle (wrong shape) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">E</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="45" cy="45" r="30" fill="#fff" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <!-- F: triangle (wrong shape) -->
+      <div class="option" data-answer="wrong">
+        <div class="label">F</div>
+        <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="45,15 73,73 17,73" fill="#fff" stroke="#333" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="explanation" id="explanation">
+      <strong>Rule:</strong> The first pair</strong> (A → B) transforms an <strong>empty</strong> shape</strong> into a <strong>hatched/st</strong>riped</strong> version of the <em>same</em></em> shape. Applying this rule: an empty square (C) becomes a <strong>hatched square</strong></strong>.
+    </div>
+    <button class="btn" id="showExplain" style="display:none;">Show explanation</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var answered = false;
+  var options = document.querySelectorAll('.option');
+  var feedback = document.getElementById('feedback');
+  var explanation = document.getElementById('explanation');
+  var showBtn = document.getElementById('showExplain');
+
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.getAttribute('data-answer') === 'correct';
+
+      if (isCorrect) {
+        opt.classList.add('selected-correct');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10003;</span>');
+        feedback.textContent = 'Correct! The transformation "add hatching" is applied to the square, producing a hatched square.';
+        feedback.className = 'feedback correct';
+      } else {
+        opt.classList.add('selected-wrong');
+        opt.querySelector('.label').insertAdjacentHTML('beforeend', ' <span class="badge">&#10007;</span>');
+        feedback.textContent = 'Not quite. Study how A changed to B, then apply the same change to C.';
+        feedback.className = 'feedback wrong';
+        options.forEach(function(o) {
+          if (o.getAttribute('data-answer') === 'correct') o.classList.add('reveal-correct');
+        });
+      }
+
+      explanation.classList.add('visible');
+      showBtn.style.display = 'none';
+    });
+  });
+
+  showBtn.addEventListener('click', function() {
+    explanation.classList.add('visible');
+    showBtn.style.display = 'none';
+  });
+
+  setTimeout(function() {
+    if (!answered) showBtn.style.display = 'inline-block';
+  }, 3000);
+})();
+</script>
+</body>
+</html>

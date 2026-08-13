@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Characteristics</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%231a1a17"/><text x="15" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="%23faf9f5">A</text></svg>'>
+<style>
+/* ============================================================
+   Generator Shell — generic chassis CSS
+   Never edited per-cartridge (GeneratorShell.spec.md §3-FR-9, D-3).
+   Focus-level CSS (.v-<level> rules) is NOT here — it is generated
+   at build time from CONFIG.levels by _shell/build/assemble.py
+   (AD-2) and appended after this file. A cartridge's own
+   files.styles CSS (optional) loads after the generated block and
+   may override any selector here.
+
+   .analyse-only / .present-only (task B/D): mode-level visibility. An
+   inline script sets body.mode-analyse or body.mode-present from
+   CONFIG.generator.mode before either ui.js or present-mode.js runs; the
+   two rules below hide whichever mode's markup doesn't apply. Within
+   present mode, individual controls (category picker, clue, answer bar,
+   Tier B) are further shown/hidden by present-mode.js/api.js based on
+   CONFIG.generator's feature flags — that's element-level, JS-driven, and
+   layered on top of this mode-level CSS gate, not a replacement for it.
+   ============================================================ */
+body:not(.mode-present) .present-only{display:none;}
+body.mode-present .analyse-only{display:none;}
+:root{--bg:#faf9f5;--card:#fff;--ink:#1a1a17;--ink2:#5f5e5a;--ink3:#9a9891;--line:#e3e1d9;--line2:#c9c7bd;--acc:#185FA5;--accbg:#E6F1FB;--red:#E24B4A;--tl-red:#C0392B;--tl-red-bg:#FBE3E1;--tl-amber:#8A5A0B;--tl-amber-bg:#FBEFD9;--tl-grey:#8A887F;--tl-grey-bg:#F0EFEA;--radius:8px;font-size:16px;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;}
+.wrap{max-width:880px;margin:0 auto;padding:24px 20px 40px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+header .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;}
+header .brand .badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:bold;font-size:15px;}
+header .meta{font-size:12px;color:var(--ink3);}
+button{font:inherit;font-size:14px;padding:6px 14px;border:1px solid var(--line2);border-radius:var(--radius);background:#fff;color:var(--ink);cursor:pointer;}
+button:hover{background:#f4f3ee;}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+button.primary:hover{background:#3a3a35;}
+button:disabled{opacity:.45;cursor:not-allowed;}
+button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
+#input{border:1px solid var(--line2);border-radius:var(--radius);padding:12px 14px;min-height:64px;font-size:15px;background:#fff;outline:none;}
+#input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg);}
+/* Spelling module (SpellingModule.spec.md FR-9): CSS Custom Highlight API
+   is the primary rendering path (::highlight(spelling-misspelled), set via
+   CSS.highlights in _modules/Spelling/src/ui.js — no DOM mutation, so no
+   selector inside #input targets it); .spelling-mark styles the
+   non-mutating absolute-position overlay fallback for browsers without the
+   Highlight API. Neither existed in the pre-shell monolith's innerHTML+
+   TreeWalker approach (excluded outright, not offered as a fallback tier —
+   AD-2), so this is new chassis CSS, not a port of the old .miss rule. */
+::highlight(spelling-misspelled){text-decoration:underline wavy var(--red) 2px;text-underline-offset:3px;}
+.spelling-mark{border-bottom:2px wavy var(--red);}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;}
+.muted{font-size:12px;color:var(--ink3);}
+.warn{background:#FCEBEB;color:#791F1F;border:1px solid #F7C1C1;border-radius:var(--radius);padding:8px 12px;font-size:13px;display:none;margin:8px 0;}
+#key{font-size:12px;color:var(--ink2);background:#f4f3ee;border-radius:var(--radius);padding:6px 10px;margin:10px 0;min-height:20px;}
+.chip{border-radius:4px;padding:1px 7px;white-space:nowrap;display:inline-block;margin:1px 2px;}
+#iconbar{font-size:12.5px;color:var(--ink2);margin:8px 0;display:flex;gap:14px;flex-wrap:wrap;}
+#iconbar .ic{cursor:help;border-bottom:1px dotted var(--line2);position:relative;}
+#sline{font-size:13px;color:var(--ink3);margin:6px 0;}
+#stage{font-size:17.5px;line-height:2.4;margin:8px 0 4px;}
+#stage .cl{border-radius:4px;padding:2px 3px;transition:background .25s,color .25s;}
+#stage .ph{border-radius:4px;padding:1px 2px;transition:background .25s,color .25s;}
+#stage .w{transition:all .2s;}
+#stage .pos{display:none;}
+#stage .lbl{display:none;font-size:11px;font-weight:600;border-radius:4px;padding:0 5px;margin-right:4px;vertical-align:2px;}
+#stage .noclause{color:var(--ink2);}
+#tip{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:8px 11px;font-size:12.5px;line-height:1.5;max-width:300px;box-shadow:0 4px 14px rgba(0,0,0,.09);z-index:50;pointer-events:none;}
+#tip b{display:block;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+#ctx{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px 0;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;min-width:200px;}
+#ctx div{padding:5px 14px;}
+#ctx div.h{font-weight:600;border-bottom:1px solid var(--line);margin-bottom:4px;}
+/* Spelling module suggestion popover (SpellingModule.spec.md FR-10). The
+   module looks up this exact id (POPOVER_ID = "spelling-suggestions" in
+   _modules/Spelling/src/ui.js) and reuses it if found instead of creating
+   its own body-appended, unstyled div — so this id is load-bearing, not a
+   free choice. Children are plain `[role="option"]` spans (module's own
+   makeOption()); there is no .rep/.ign class in the shipped module, so
+   those old selectors (a design that was never actually produced by this
+   code) are gone, not renamed. */
+#spelling-suggestions{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;max-width:260px;}
+#spelling-suggestions [role="option"]{border-radius:4px;padding:2px 9px;cursor:pointer;display:inline-block;margin:2px;background:#f4f3ee;color:var(--ink2);}
+#spelling-suggestions [role="option"]:first-child{background:var(--accbg);color:var(--acc);font-weight:600;}
+#spelling-suggestions [role="option"][aria-selected="true"]{outline:2px solid var(--acc);outline-offset:-2px;}
+#spelling-suggestions [role="option"][data-action]{border:1px solid var(--line);background:#fff;}
+#explainer{display:none;border-top:1px solid var(--line);margin-top:18px;padding-top:16px;}
+#explainer h3{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:7px;}
+.xt{width:100%;border-collapse:collapse;margin-bottom:10px;}
+.xt th,.xt td{border:1px solid var(--line);padding:4px 7px;font-size:12.5px;text-align:center;}
+.xt th{background:#f4f3ee;color:var(--ink2);font-weight:600;text-align:left;white-space:nowrap;}
+#rules .cat{font-size:12px;font-weight:600;color:var(--ink2);margin:10px 0 2px;text-transform:uppercase;letter-spacing:.4px;}
+#rules ul{margin:0;padding-left:20px;font-size:13.5px;}
+#rules li{margin:3px 0;}
+#rules .ex{color:var(--ink2);font-style:italic;}
+footer{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);margin-top:18px;padding-top:12px;font-size:12px;color:var(--ink3);flex-wrap:wrap;}
+footer a{color:inherit;text-decoration:underline dotted;text-underline-offset:2px;}
+footer a:hover,footer a:focus-visible{color:var(--acc);text-decoration-style:solid;}
+footer a:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:2px;}
+.tt{visibility:hidden;position:absolute;bottom:135%;left:0;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:8px 11px;font-size:12px;line-height:1.5;width:280px;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.1);z-index:55;}
+.ic:hover .tt{visibility:visible;}
+/* ---- Present mode (task D) — component styling ---- */
+body.mode-present #categoryBar.present-only,body.mode-present #presentToolbar.present-only,body.mode-present #answerBar.present-only,body.mode-present #tierBBar.present-only{display:flex;}
+#pstage{font-size:17.5px;line-height:1.8;margin:10px 0;padding:14px 16px;background:#f4f3ee;border-radius:var(--radius);}
+#clueBox{font-size:14px;color:var(--ink2);margin:6px 0;padding:8px 12px;background:var(--accbg);border-radius:var(--radius);}
+#answerBar input{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line2);border-radius:var(--radius);flex:1;min-width:140px;}
+#answerFeedback{font-size:13.5px;padding:6px 12px;border-radius:var(--radius);margin:6px 0;}
+#answerFeedback.answer-correct{background:#EAF4E3;color:#3B6D11;}
+#answerFeedback.answer-incorrect{background:#FCEBEB;color:#791F1F;}
+#tierBBar input[type="password"]{font:inherit;font-size:13px;padding:5px 9px;border:1px solid var(--line2);border-radius:var(--radius);width:180px;}
+@media print{
+ body{background:#fff;}
+ body.print-bare .no-print,body.print-bare header,body.print-bare footer{display:none!important;}
+ body.print-chrome .no-print{display:none!important;}
+ #explainer{display:block!important;border:none;}
+ .card{border:none;padding:0;}
+}
+
+#stage.v-overview .cl{background:var(--hf);border-left:3px solid var(--h600);border-radius:0 4px 4px 0;padding-left:7px;margin-right:3px;}
+#stage.v-detail .cl{background:var(--h50);color:var(--h800);}
+#stage.v-detail .lbl{display:inline-block;background:var(--h100);color:var(--h800);}
+#stage.v-detail .cl.tentC{border-bottom:2px dashed var(--h600);}
+#stage.v-detail .w{display:inline-block;background:var(--h100);color:var(--h800);border-radius:4px;padding:1px 6px;margin:2px 1px;text-align:center;}
+#stage.v-detail .pos{display:block;font-size:11px;color:var(--h600);font-weight:600;line-height:1.2;padding-bottom:2px;}
+#stage.v-detail .w.tentW{border-bottom:2px dashed var(--h600);}
+
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<header>
+<div class="brand">
+<span class="badge" aria-hidden="true">A</span>
+<span id="hdrname">AI Characteristics</span>
+</div>
+<div class="meta" id="hdrmeta">Tier A · offline</div>
+</header>
+
+<div class="no-print">
+<div class="bar analyse-only" id="sweepbar" style="display:none;"></div>
+<div class="analyse-only" id="input" contenteditable="true" spellcheck="false" data-placeholder="Paste or type up to one page of text…"></div>
+<div class="warn analyse-only" id="capwarn"></div>
+<div class="bar analyse-only">
+<button class="primary" id="btnParse">Parse</button>
+<button id="btnAll">Display all</button>
+<button id="btnExplain">Explain</button>
+<button id="btnTierB" disabled title="Tier B (API/agent judgment) is not wired in this build — the offline Tier-A engine is fully functional.">Tier B check — off</button>
+<label class="muted" id="spellLabel" style="display:none;align-items:center;gap:6px;margin-left:auto;cursor:pointer;"><input type="checkbox" id="spellTog" checked> Spell check</label>
+<span class="muted" id="wcount">0 / 700 words</span>
+</div>
+<!-- The Mini-Wiki button is mode-agnostic: BOTH analyse and present cartridges
+     may ship a catalogue, so it must not live inside a .analyse-only bar (a
+     present-mode build would embed the articles and then hide the only way to
+     open them). Its own bar keeps it visible under body.mode-analyse and
+     body.mode-present alike; the seam still hides it when no bundle/articles
+     were embedded. -->
+<div class="bar" id="wikibar">
+<button id="btnMiniWiki" class="no-print" style="display:none;" title="Open the Mini-Wiki in a new tab">Mini-Wiki</button>
+</div>
+<div class="warn no-print" id="miniwikiwarn" style="display:none;">Your browser blocked the Mini-Wiki pop-up tab — allow pop-ups for this page and click Mini-Wiki again.</div>
+<div class="bar analyse-only" id="focusbar" style="display:none;"></div>
+<div class="analyse-only" id="key" style="display:none;"></div>
+<div class="analyse-only" id="iconbar"></div>
+<div class="analyse-only" id="sline"></div>
+<div class="analyse-only" id="stage"></div>
+<div class="muted analyse-only" id="hoverhint" style="display:none;">Hover a word for its description at the selected focus level · right-click for word-class detail</div>
+
+<!-- Present mode (GeneratorShell.spec.md §3b, task D) — hidden entirely
+     in analyse-mode builds via the .present-only / body.mode-present CSS
+     rule below; present-mode.js decides which of these appear within a
+     present-mode build based on CONFIG.generator's feature flags. -->
+<div class="bar present-only" id="categoryBar" style="display:none;"></div>
+<div class="present-only" id="pstage" style="display:none;"></div>
+<div class="present-only" id="clueBox" style="display:none;"></div>
+<div class="bar present-only" id="answerBar" style="display:none;">
+<input type="text" id="answerInput" placeholder="Your answer…">
+<button id="btnCheck">Check</button>
+</div>
+<div class="present-only" id="answerFeedback" style="display:none;"></div>
+<div class="bar present-only" id="presentToolbar" style="display:none;">
+<button class="primary" id="btnGenerate">Generate</button>
+<button id="btnClue" style="display:none;">Clue</button>
+<button id="btnCopy">Copy</button>
+<button id="btnExplainPresent" style="display:none;">Explain</button>
+</div>
+<div class="bar present-only" id="tierBBar" style="display:none;">
+<label class="muted" for="apiKeyInput">Claude API key</label>
+<input type="password" id="apiKeyInput" placeholder="sk-ant-…" autocomplete="off">
+<button id="btnSaveKey">Save key</button>
+<button id="btnRefreshPool" disabled>Refresh pool</button>
+<span class="muted" id="tierBStatus"></span>
+</div>
+</div>
+
+<div id="explainer">
+<h3 class="analyse-only">Explainer — the tabled sentence</h3>
+<div id="xtables"></div>
+<h3 class="analyse-only" style="margin-top:16px;">Explainer — relevant rules</h3>
+<h3 class="present-only">Explainer</h3>
+<div id="rules"></div>
+</div>
+
+<footer>
+<span class="no-print">Export explainer:</span>
+<button class="no-print" id="btnPdf">PDF</button>
+<button class="no-print" id="btnPdfBare" title="Prints the explainer without the app header/footer">PDF (bare)</button>
+<button class="no-print" id="btnMd">Copy Markdown</button>
+<button class="no-print" id="btnTxt">Copy plain text</button>
+<span style="margin-left:auto;">AI Characteristics v1.0.0 · built 2026-08-12 from ai-characteristics.md (_research/seed) + content.json<span id="lexinfo"></span><span id="spellinfo"></span></span>
+</footer>
+</div></div>
+
+<div id="tip"></div>
+<div id="ctx"></div>
+<!-- Spelling module's suggestion popover mount (SpellingModule.spec.md FR-10
+     POPOVER_ID) — the module finds this by id and reuses it (styled by
+     shell.css) instead of creating its own unstyled body-appended div. -->
+<div id="spelling-suggestions"></div>
+
+<script>
+/* ============================================================
+   CARTRIDGE · CONFIG — per-asset settings (GeneratorShell.spec.md FR-2)
+   ============================================================ */
+var CONFIG = {"name": "AI Characteristics", "version": "1.0.0", "builtFrom": "ai-characteristics.md (_research/seed) + content.json", "inputUnit": "up to one page of text", "cap": 700, "levels": ["overview", "detail"], "clausePalette": [{"h50": "#E1F5EE", "h100": "#9FE1CB", "h600": "#0F6E56", "h800": "#085041", "hf": "rgba(15,110,86,.12)", "name": "teal"}, {"h50": "#FAEEDA", "h100": "#FAC775", "h600": "#854F0B", "h800": "#633806", "hf": "rgba(133,79,11,.12)", "name": "amber"}, {"h50": "#EEEDFE", "h100": "#CECBF6", "h600": "#534AB7", "h800": "#3C3489", "hf": "rgba(83,74,183,.12)", "name": "purple"}, {"h50": "#FDECEE", "h100": "#F5B8C4", "h600": "#A32447", "h800": "#7A1935", "hf": "rgba(163,36,71,.12)", "name": "rose"}, {"h50": "#FEEEE7", "h100": "#F8C0A8", "h600": "#B5501F", "h800": "#8A3B15", "hf": "rgba(181,80,31,.12)", "name": "coral"}, {"h50": "#E6F1FB", "h100": "#A9CBEA", "h600": "#185FA5", "h800": "#10456F", "hf": "rgba(24,95,165,.12)", "name": "blue"}, {"h50": "#EEF3E2", "h100": "#C4D79B", "h600": "#52691E", "h800": "#3B4B15", "hf": "rgba(82,105,30,.12)", "name": "moss"}, {"h50": "#EAEDF1", "h100": "#B7C1CE", "h600": "#3D4E63", "h800": "#2A3646", "hf": "rgba(61,78,99,.12)", "name": "slate"}], "tentativeThreshold": 0.55, "tierB": {"enabled": false, "note": "Tier B (API/agent) slot present but disabled in this build."}, "lexicon": {"enabled": false, "attribution": ""}, "spelling": {"enabled": false, "attribution": ""}, "miniwiki": {"enabled": true}, "generator": {"mode": "analyse"}, "focusLabels": {"overview": "Overview", "detail": "Characteristic detail"}};
+
+/* ============================================================
+   CARTRIDGE · CONTENT — compiled outline taxonomy (FR-3)
+   ============================================================ */
+var CONTENT = {"0.1": {"n": "Read this first", "l": "caveat", "d": "AI-text detection is unreliable. This tool reports AI-associated stylistic and content characteristics it can measure in the pasted text — it never renders a verdict on who or what wrote it, and it never shows a percentage framed as \"probability a human wrote this.\" Human writing, especially academic and formal prose, regularly shows these same patterns; and newer language models are trained (deliberately or incidentally) to defeat most of these surface markers. Treat every flag below as a weak, contestable signal, not a finding of fact.", "e": ""}, "1.1": {"n": "Focal word excess", "l": "lexical", "category": "Lexical Markers", "detectionType": "LOCAL + STATISTICAL", "confidenceTier": "HIGH", "d": "Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar.", "e": "\"The findings underscore a pivotal, intricate tapestry of factors.\"", "why": "LLM training weights academic and encyclopedic corpora heavily. Those corpora themselves favour polished, formal vocabulary, and the model learns to reproduce that distribution. Because decoding keeps returning to a small set of high-probability \"formal\" words, the same 15-20 focal words recur across unrelated topics — ChatGPT-class models showed a documented 30-50x spike in words like \"delve\" in published abstracts after their release, making focal words a strong (if domain-dependent) temporal marker."}, "2.1": {"n": "Low burstiness (uniform sentence length)", "l": "syntactic", "category": "Syntactic Rhythm & Structure", "detectionType": "STATISTICAL", "confidenceTier": "HIGH", "d": "Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones.", "e": "Burstiness index B = (sd - mean) / (sd + mean) of sentence length in words, range -1..1; B below about -0.2 reads as unusually uniform.", "why": "A language model decodes one token at a time from a locally stable probability distribution: once a sentence has run long, the distribution over \"continue vs. stop\" stays roughly the same, so sentences settle into a narrow length band. Human writers deliberately vary sentence rhythm for emphasis and pacing — a one-word sentence next to a long one is a stylistic choice a next-token predictor has little incentive to make."}, "3.2": {"n": "High token-level repetition", "l": "statistical", "category": "Statistical Distributions", "detectionType": "STATISTICAL", "confidenceTier": "MEDIUM", "d": "A small number of content words carry an unusually large share of the document's running words, or the same words recur mechanically rather than through varied phrasing.", "e": "One content word supplying more than roughly 15% of all word occurrences in the text.", "why": "LLMs are penalised during training for exact local repetition, which produces a distinctive counter-pattern: instead of reusing a word, they cycle through a narrow band of synonyms (\"crucial\" / \"vital\" / \"important\") for the same referent. Under low-temperature decoding, or when a topic word has no easy synonym, the model can fall back to reusing that same word at a noticeably higher rate than typical human prose."}, "4.2": {"n": "Discourse marker clustering", "l": "discourse", "category": "Discourse Scaffolding", "detectionType": "LOCAL", "confidenceTier": "HIGH", "d": "Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do.", "e": "\"Furthermore, it is important to note that... Additionally, this suggests...\"", "why": "Curated training text (textbooks, essays, structured articles) marks transitions explicitly far more often than casual speech does, and those transition phrases are themselves high-probability continuations after a topic shift. The model reproduces that density; experienced human writers more often lean on semantic continuity and pronoun reference instead of naming every transition."}, "5.3": {"n": "False balance / artificial neutrality", "l": "content", "category": "Content-Level Signals", "detectionType": "LOCAL", "confidenceTier": "MEDIUM", "d": "Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position.", "e": "\"Some argue X, while others argue Y\" with no author judgement of which has stronger support.", "why": "RLHF safety tuning steers models away from taking contested positions, and pretraining text itself represents many sides of most debates. Absent an explicit instruction to argue a thesis, the model defaults to laying out \"both sides\" evenly. Human writers with genuine expertise or a stake in the topic usually weigh evidence and advance a position instead."}, "6.1": {"n": "Absence of varied punctuation", "l": "punctuation", "category": "Punctuation & Formatting", "detectionType": "STATISTICAL", "confidenceTier": "MEDIUM", "d": "Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma.", "e": "Expressive/contrastive punctuation appearing in well under 5% of sentences.", "why": "Training data skews toward formal, curated prose where \"exotic\" punctuation is comparatively rare, and some training pipelines normalise it away entirely. Because the model optimises for the expected style of that text, low-temperature decoding keeps reaching for the safe, high-probability period or comma. Human writers reach for a dash or an exclamation point for voice and emphasis far more readily."}, "7.1": {"n": "Excessive entity-name repetition", "l": "coherence", "category": "Coherence & Reference", "detectionType": "LOCAL", "confidenceTier": "MEDIUM", "d": "A named person, place, or thing is referred to again by its full name where a pronoun would read naturally, repeatedly, rather than being replaced by \"he,\" \"she,\" \"it,\" or \"they.\"", "e": "\"John went to the store. John bought milk. John returned home.\" instead of \"John went to the store. He bought milk and returned home.\"", "why": "Re-using the already-in-context entity name is a \"safe,\" high-probability next-token choice, whereas a pronoun requires the kind of implicit coreference tracking that is automatic for a human reader but not explicit in next-token decoding. This is an approximate heuristic here (capitalised-word repetition, not true named-entity recognition), so treat it as a weak signal, not a confirmed detection."}, "8.1": {"n": "Specific numeric precision with unverifiable source", "l": "numerical", "category": "Numerical & Naming Patterns", "detectionType": "LOCAL", "confidenceTier": "LOW", "d": "Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source.", "e": "\"73.2% of respondents\" or \"87.5 million users\" with no citation nearby.", "why": "The model has learned the surface FORM of precise statistics from academic and reporting sources without any live link to a facts database, so it can generate a plausible, correctly formatted number that is simply invented. Humans who cite a number usually either look it up or explicitly flag it as approximate (\"roughly 70%\"). This marker needs an external fact-check to confirm falsity — flagging it here only means the number's precision and phrasing looks like this pattern, not that it is wrong."}};
+
+/* Mode-level visibility gate (task B/D) — set before any harness script
+   runs, so the very first paint already hides the other mode's markup
+   (no flash of the wrong UI). shell.css's .analyse-only/.present-only
+   rules key off this class. */
+document.body.classList.add(CONFIG.generator && CONFIG.generator.mode === "present" ? "mode-present" : "mode-analyse");
+</script>
+<script>
+var SQLJS_WASM_B64 = "";
+var LEXDB_B64 = "";
+var SPELLDB_B64 = "";
+var MINIWIKI_ARTICLES = [{"id": "caveat-honesty", "title": "Read this first — what \"AI characteristics\" means here", "level": 1, "role": "article", "lead": "AI-text detection is unreliable.", "body_html": "<p>AI-text detection is unreliable. This glossary, and the widget it belongs to, report AI-associated stylistic and content characteristics that can be measured in a piece of text — never a verdict on who or what wrote it, and never a percentage framed as &quot;probability a human wrote this.&quot; Human writing, especially academic and formal prose, regularly shows these same patterns, and newer language models are trained, deliberately or incidentally, to defeat most of these surface markers. Treat every entry below as a weak, contestable signal, not a finding of fact.</p>", "parent": null, "children": [], "siblings": [], "source": "Counter Turing Test Collaboration. \"Counter Turing Test CT²: AI-Generated Text Detection Is Not as Easy as You May Think.\" *arXiv preprint*, 2310.05030, 2023, arxiv.org/pdf/2310.05030."}, {"id": "1.1", "title": "Focal word excess", "level": 1, "role": "article", "lead": "Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar.", "body_html": "<p>Overuse of a small set of stylistically marked words associated with academic corpora and AI output — delve, tapestry, intricate, pivotal, meticulous, leverage, resonate, testament, and similar. LLM training weights academic and encyclopedic corpora heavily, and those corpora themselves favour polished, formal vocabulary; the model learns to reproduce that distribution, so the same fifteen to twenty focal words recur across unrelated topics.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Lexical Markers", "Detection Type: LOCAL + STATISTICAL", "Confidence: HIGH (in academic contexts)"], "source": "Zhang, Yonghao, et al. \"Delving into ChatGPT Usage in Academic Writing Through Excess Vocabulary.\" *arXiv preprint*, 2406.07016, 2024, arxiv.org/html/2406.07016v1."}, {"id": "2.1", "title": "Low burstiness (uniform sentence length)", "level": 1, "role": "article", "lead": "Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones.", "body_html": "<p>Sentence lengths cluster tightly around the mean instead of alternating between short, punchy sentences and long, complex ones. A language model decodes one token at a time from a locally stable probability distribution, so once a sentence has run long its continuation distribution stays similar, and sentences settle into a narrow length band; human writers deliberately vary rhythm for emphasis and pacing.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Syntactic Rhythm & Structure", "Detection Type: STATISTICAL", "Confidence: HIGH (statistical)"], "source": "GPTZero. \"Perplexity and Burstiness: What Is It?\" *GPTZero Help Center*, 2026, gptzero.me/news/perplexity-and-burstiness-what-is-it/."}, {"id": "3.2", "title": "High token-level repetition", "level": 1, "role": "article", "lead": "A small number of content words carry an unusually large share of a document's running words, or the same words recur mechanically rather than through varied phrasing.", "body_html": "<p>A small number of content words carry an unusually large share of a document&#39;s running words, or the same words recur mechanically rather than through varied phrasing. LLMs are penalised in training for exact local repetition, producing a distinctive counter-pattern: instead of reusing a word, they cycle through a narrow band of synonyms for the same referent, but under low-temperature decoding — or when a topic word has no easy synonym — that same word can still recur at a noticeably higher rate than typical human prose.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Statistical Distributions", "Detection Type: STATISTICAL", "Confidence: MEDIUM"], "source": "Wangni, Jian, et al. \"The Rise of Verbal Tics in Large Language Models: A Systematic Analysis Across Frontier Models.\" *arXiv preprint*, 2604.19139, 2025, arxiv.org/pdf/2604.19139."}, {"id": "4.2", "title": "Discourse marker clustering", "level": 1, "role": "article", "lead": "Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do.", "body_html": "<p>Heavy reliance on explicit transition phrases — Furthermore, Moreover, In conclusion, As a result, It is important to note — where implicit continuity would do. Curated training text marks transitions explicitly far more often than casual speech, and those phrases are themselves high-probability continuations after a topic shift; experienced human writers more often lean on semantic continuity and pronoun reference instead of naming every transition.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Discourse Scaffolding", "Detection Type: LOCAL", "Confidence: HIGH"], "source": "Kumarage, Chaya, et al. \"Detecting the Use of ChatGPT in University Newspapers by Analyzing Stylistic Differences with Machine Learning.\" *Information*, vol. 15, no. 6, 2024, doi.org/10.3390/info15060307."}, {"id": "5.3", "title": "False balance / artificial neutrality", "level": 1, "role": "article", "lead": "Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position.", "body_html": "<p>Both sides of a debate are presented as equally weighted without the writer actually evaluating the evidence or taking a position. RLHF safety tuning steers models away from taking contested positions, and pretraining text itself represents many sides of most debates; absent an explicit instruction to argue a thesis, the model defaults to laying out &quot;both sides&quot; evenly, where a human writer with genuine expertise or a stake in the topic usually weighs evidence and advances a position.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Content-Level Signals", "Detection Type: LOCAL", "Confidence: MEDIUM"], "source": "Thamm, Isabell, et al. \"Key Features to Distinguish Between Human- and AI-Generated Texts: Perspectives from University Professors.\" *Digital Scholarship*, vol. 2, no. 1, 2024, mdpi.com/3042-8130/2/1/2."}, {"id": "6.1", "title": "Absence of varied punctuation", "level": 1, "role": "article", "lead": "Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma.", "body_html": "<p>Very low use of exclamation points, question marks, semicolons, em dashes, or parentheses relative to the number of sentences — almost everything ends in a period or comma. Training data skews toward formal, curated prose where &quot;exotic&quot; punctuation is comparatively rare, and low-temperature decoding keeps reaching for the safe, high-probability period or comma; human writers reach for a dash or an exclamation point for voice and emphasis far more readily.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Punctuation & Formatting", "Detection Type: STATISTICAL", "Confidence: MEDIUM"], "source": "Vegavid. \"How to Detect AI-Generated Text: 2026 Guide to Tools & Techniques.\" *Vegavid Blog*, 2026, vegavid.com/blog/how-to-detect-ai-generated-text."}, {"id": "7.1", "title": "Excessive entity-name repetition", "level": 1, "role": "article", "lead": "A named person, place, or thing is referred to again by its full name, repeatedly, where a pronoun would read naturally, rather than being replaced by \"he,\" \"she,\" \"it,\" or \"they.\" Re-using the already-in-context entity name is a safe, high", "body_html": "<p>A named person, place, or thing is referred to again by its full name, repeatedly, where a pronoun would read naturally, rather than being replaced by &quot;he,&quot; &quot;she,&quot; &quot;it,&quot; or &quot;they.&quot; Re-using the already-in-context entity name is a safe, high-probability next-token choice, whereas a pronoun requires the kind of implicit coreference tracking that is automatic for a human reader but not explicit in next-token decoding. The widget approximates this without true named-entity recognition, so treat a flag here as a weak signal.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Coherence & Reference", "Detection Type: LOCAL", "Confidence: HIGH (per source); MEDIUM as approximated here"], "source": "Gehrmann, Sebastian, et al. \"Detecting Generated Fiction.\" *arXiv preprint*, 2604.03136, 2025, arxiv.org/pdf/2604.03136."}, {"id": "8.1", "title": "Specific numeric precision with unverifiable source", "level": 1, "role": "article", "lead": "Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source.", "body_html": "<p>Statistics reported to one or two decimal places, stated with confidence, and attached to no traceable source. The model has learned the surface form of precise statistics from academic and reporting sources without any live link to a facts database, so it can generate a plausible, correctly formatted number that is simply invented; humans who cite a number usually either look it up or explicitly flag it as approximate. This marker needs an external fact-check to confirm falsity — a flag here only means the number&#39;s precision and phrasing looks like this pattern.</p>", "parent": null, "children": [], "siblings": [], "characteristics": ["Category: Numerical & Naming Patterns", "Detection Type: LOCAL", "Confidence: LOW (requires external verification)"], "source": "Weidinger, Laura, et al. \"Ethical and social risks of harm from language models.\" *arXiv preprint*, 2112.04359, 2021, arxiv.org/pdf/2112.04359."}];
+var MINIWIKI_CARTRIDGE_NAME = "AI Characteristics \u2014 glossary";
+</script>
+<script>
+
+</script>
+<script>
+/* ============================================================
+   SHELL · LEXICON PORTAL (GeneratorShell.spec.md FR-7)
+   sql.js-backed embedded SQLite lexicon. A cartridge with
+   lexicon.enabled:false in its manifest never calls this; LEX.ready
+   stays false and every query returns null. Never edited per
+   cartridge — the query shape (word, pos, alt, feat, rank) is the
+   one contract every cartridge lexicon.db must satisfy.
+   ============================================================ */
+var LEX = { db: null, ready: false, morphOnly: false, count: "?", cache: {} };
+
+function b64bytes(b64) {
+  var bin = atob(b64), u = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+
+LEX.query = function (word) {
+  if (word in LEX.cache) return LEX.cache[word];
+  var out = null;
+  if (LEX.db) {
+    try {
+      var st = LEX.db.prepare("SELECT pos,alt,feat,rank FROM lexicon WHERE word=?");
+      st.bind([word]);
+      if (st.step()) {
+        var r = st.getAsObject();
+        out = { pos: r.pos, alt: r.alt ? r.alt.split(",") : [], feat: r.feat ? r.feat.split(",") : [], rank: r.rank };
+      }
+      st.free();
+    } catch (e) {
+      console.warn("LEX.query failed for word:", word, e);
+    }
+  }
+  LEX.cache[word] = out;
+  return out;
+};
+
+LEX.has = function (word) { return !!LEX.query(word); };
+
+LEX.init = function (cb) {
+  if (typeof LEXDB_B64 === "undefined" || !LEXDB_B64 || LEXDB_B64.indexOf("__") === 0) {
+    LEX.morphOnly = true; cb(); return;
+  }
+  try {
+    initSqlJs({ wasmBinary: b64bytes(SQLJS_WASM_B64).buffer }).then(function (SQL) {
+      LEX.db = new SQL.Database(b64bytes(LEXDB_B64));
+      var st = LEX.db.prepare("SELECT value FROM meta WHERE key='entries'");
+      if (st.step()) LEX.count = st.getAsObject().value;
+      st.free();
+      LEX.ready = true;
+      cb();
+    }).catch(function (e) {
+      console.warn("LEX.init: sql.js load failed, falling back to morphology-only mode", e);
+      LEX.morphOnly = true; cb();
+    });
+  } catch (e) {
+    console.warn("LEX.init: sql.js unavailable, falling back to morphology-only mode", e);
+    LEX.morphOnly = true; cb();
+  }
+};
+
+</script>
+<script>
+/* AiCharacteristics ENGINE — GeneratorShell.spec.md §3/§6 (analyse mode).
+   Flags AI-associated STYLISTIC and content characteristics in pasted
+   text. This is NOT an authorship detector: see CONTENT["0.1"] and every
+   finding's `explain` text for the honesty framing this cartridge is
+   required to carry (Generator DECISIONS.md, task honesty requirement).
+
+   Two detector kinds, both required to appear in ParseResult:
+   - LOCAL: a regex/pattern match at a specific span of text -> a
+     highlighted `_clauses` entry + one `findings[]` entry per match.
+   - STATISTICAL: a whole-document measure (no single span "causes" it)
+     -> one `findings[]` entry covering the whole input, no highlight. */
+var ENGINE = (function () {
+  var CLOSED = {};
+
+  /* ---------------------------------------------------------- tokenize */
+  var TOKEN_RE = /[A-Za-zÀ-ɏ]+(?:['’][A-Za-z]+)*(?:-[A-Za-zÀ-ɏ]+(?:['’][A-Za-z]+)*)*|\d+(?:[.,]\d+)*%?|[.,;:!?…—–\-()"'“”‘’]/g;
+
+  function tokenize(text) {
+    var toks = [];
+    TOKEN_RE.lastIndex = 0;
+    var m;
+    while ((m = TOKEN_RE.exec(text))) {
+      var raw = m[0];
+      toks.push({
+        i: toks.length,
+        text: raw,
+        start: m.index,
+        end: m.index + raw.length,
+        isWord: /[A-Za-zÀ-ɏ0-9]/.test(raw),
+      });
+    }
+    return toks;
+  }
+
+  /* ------------------------------------------------------------ helpers */
+  // Maps a raw-text char range (from a regex match against the whole
+  // input) onto the inclusive token-index range it overlaps. Multi-word
+  // matches ("in conclusion") span more than one token; this is why
+  // detectors work over `text` + this mapping rather than re-deriving
+  // their own tokenizer (SR-4 — one tokenizer, shared).
+  function charRangeToTokenRange(toks, cStart, cEnd) {
+    var s = null, e = null;
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i];
+      if (t.end > cStart && t.start < cEnd) {
+        if (s === null) s = i;
+        e = i;
+      }
+    }
+    return s === null ? null : { start: s, end: e };
+  }
+
+  function splitSentences(text) {
+    return text
+      .split(/(?<=[.!?])\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0; });
+  }
+
+  function wordsIn(s) {
+    var m = s.match(/[A-Za-zÀ-ɏ]+(?:['’][A-Za-z]+)*/g);
+    return m || [];
+  }
+
+  var STOPWORDS = {
+    the: 1, a: 1, an: 1, and: 1, or: 1, but: 1, of: 1, to: 1, in: 1, on: 1, for: 1,
+    is: 1, are: 1, was: 1, were: 1, be: 1, been: 1, being: 1, it: 1, its: 1, this: 1,
+    that: 1, these: 1, those: 1, as: 1, at: 1, by: 1, with: 1, from: 1, into: 1,
+    which: 1, who: 1, what: 1, not: 1, no: 1, so: 1, than: 1, then: 1, there: 1,
+    their: 1, they: 1, he: 1, she: 1, we: 1, you: 1, i: 1, has: 1, have: 1, had: 1,
+    will: 1, would: 1, can: 1, could: 1, should: 1, may: 1, might: 1, do: 1, does: 1,
+    did: 1, if: 1, when: 1, while: 1, also: 1, more: 1, most: 1, some: 1, such: 1,
+  };
+
+  var PRONOUN_RE = /\b(he|she|they|him|her|them|his|hers|their|theirs|it|its)\b/gi;
+
+  /* ------------------------------------------------------- LOCAL rules */
+  // 1.1 Focal word excess — regex list from _research/seed/ai-characteristics.md §1.1.
+  var FOCAL_WORDS_RE = /\b(delve|delves|delved|delving|tapestry|intricate|meticulous|meticulously|pivotal|resonate|resonates|testament|compelling|paramount|unwavering|realm|navigate|navigating|landscape|foster|fosters|elevate|elevates|underscore|underscores|commendable|surpass|surpasses)\b/gi;
+
+  // 4.2 Discourse marker clustering — §4.2.
+  var DISCOURSE_MARKER_RE = /\b(In conclusion|In summary|Overall|Additionally|Furthermore|Moreover|However|On the other hand|As a result|Consequently|Therefore|Thus|It is important to note|It should be noted|To summarize|In the context of|With respect to|Regarding)\b/gi;
+
+  // 5.3 False balance / artificial neutrality — §5.3.
+  var FALSE_BALANCE_RE = /\b(some (people )?argue[^.]{0,80}while others argue|on (the )?one hand[^.]{0,120}on the other hand|has (its )?merits, but[^.]{0,80}also has merit)\b/gi;
+
+  // 8.1 Specific numeric precision with unverifiable source — §8.1.
+  var NUMERIC_PRECISION_RE = /\b\d{1,3}(?:,\d{3})*\.\d{1,2}\s?(?:%|percent|million|billion)\b/gi;
+
+  function findAllMatches(re, text) {
+    var out = [];
+    var r = new RegExp(re.source, re.flags.indexOf("g") >= 0 ? re.flags : re.flags + "g");
+    r.lastIndex = 0;
+    var m;
+    while ((m = r.exec(text))) {
+      out.push({ start: m.index, end: m.index + m[0].length, text: m[0] });
+      if (m[0].length === 0) r.lastIndex++; // guard against zero-width infinite loop (JS-2)
+    }
+    return out;
+  }
+
+  function localDetector(id, label, category, confidence, re, text) {
+    return findAllMatches(re, text).map(function (m) {
+      return { id: id, label: label, category: category, confidence: confidence, start: m.start, end: m.end, matchText: m.text };
+    });
+  }
+
+  // 7.1 Excessive entity-name repetition — approximated without true NER
+  // (CONTENT["7.1"].why states this limitation explicitly): a capitalised
+  // word that is not sentence-initial, repeated 3+ times, with few
+  // pronouns nearby, reads as a name being re-stated instead of pronominalised.
+  function detectEntityRepetition(text, toks) {
+    var counts = {};
+    var occurrences = {};
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i];
+      if (!t.isWord || !/^[A-Z][a-z]+$/.test(t.text)) continue;
+      var prev = toks[i - 1];
+      var sentenceInitial = !prev || (!prev.isWord && /[.!?]/.test(prev.text));
+      if (sentenceInitial) continue;
+      var key = t.text;
+      counts[key] = (counts[key] || 0) + 1;
+      (occurrences[key] = occurrences[key] || []).push(t);
+    }
+    var pronounCount = (text.match(PRONOUN_RE) || []).length;
+    var out = [];
+    Object.keys(counts).forEach(function (name) {
+      if (counts[name] < 3) return;
+      if (pronounCount >= counts[name]) return; // enough pronoun variety alongside the name — not flagged
+      occurrences[name].slice(1).forEach(function (t) {
+        out.push({ id: "7.1", label: "Excessive entity-name repetition", category: "coherence", confidence: 0.6, start: t.start, end: t.end, matchText: t.text });
+      });
+    });
+    return out;
+  }
+
+  /* --------------------------------------------------- STATISTICAL rules */
+  // 2.1 Low burstiness — §2.1's own formula, applied literally.
+  function detectBurstiness(text) {
+    var sentences = splitSentences(text);
+    if (sentences.length < 3) return null;
+    var lens = sentences.map(function (s) { return wordsIn(s).length; }).filter(function (n) { return n > 0; });
+    if (lens.length < 3) return null;
+    var mean = lens.reduce(function (a, b) { return a + b; }, 0) / lens.length;
+    var variance = lens.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / lens.length;
+    var sd = Math.sqrt(variance);
+    if (mean === 0 && sd === 0) return null;
+    // Standard corpus-linguistics burstiness index (Goh & Barabási),
+    // B=(sd-mean)/(sd+mean), range [-1,1]: -1 = perfectly uniform sentence
+    // length, +1 = extremely bursty. Chosen over the seed research's own
+    // (variance-mean^2)/mean^2 formula (_research/seed/ai-characteristics.md
+    // §2.1) because that formula gave a false "uniform" reading on a
+    // deliberately bursty human-prose fixture (one very long semicolon-joined
+    // sentence next to a three-word one) — this index reads that same input
+    // correctly as bursty. The characteristic being measured (2.1) is
+    // unchanged; only the statistic computing it differs from the seed text.
+    var burstiness = (sd - mean) / (sd + mean);
+    if (burstiness >= -0.2) return null;
+    return {
+      id: "2.1", label: "Low burstiness (uniform sentence length)", category: "syntactic", confidence: 0.75,
+      explain: "Sentence lengths (words): " + lens.join(", ") + ". Mean " + mean.toFixed(1) + ", burstiness index=" + burstiness.toFixed(2) + " (below the -0.2 threshold used here for AI-typical uniformity; -1 is perfectly uniform, +1 is highly bursty).",
+    };
+  }
+
+  // 3.2 High token-level repetition — top content word's share of all words.
+  function detectHighRepetition(toks) {
+    var words = toks.filter(function (t) { return t.isWord; }).map(function (t) { return t.text.toLowerCase(); });
+    if (words.length < 20) return null;
+    var freq = {};
+    words.forEach(function (w) { if (!STOPWORDS[w]) freq[w] = (freq[w] || 0) + 1; });
+    var top = null, topCount = 0;
+    Object.keys(freq).forEach(function (w) { if (freq[w] > topCount) { top = w; topCount = freq[w]; } });
+    if (!top) return null;
+    var ratio = topCount / words.length;
+    if (ratio <= 0.15) return null;
+    return {
+      id: "3.2", label: "High token-level repetition", category: "statistical", confidence: 0.6,
+      explain: "\"" + top + "\" accounts for " + Math.round(ratio * 100) + "% of all word tokens (" + topCount + " of " + words.length + "), above the 15% threshold used here.",
+    };
+  }
+
+  // 6.1 Absence of varied punctuation — expressive/contrastive marks per sentence.
+  function detectPunctuationAbsence(text) {
+    var sentences = splitSentences(text);
+    if (sentences.length < 3) return null;
+    var special = (text.match(/[!?;()—–]/g) || []).length;
+    var ratio = special / sentences.length;
+    if (ratio >= 0.15) return null;
+    return {
+      id: "6.1", label: "Absence of varied punctuation", category: "punctuation", confidence: 0.55,
+      explain: "Only " + special + " expressive/contrastive marks (!?;()—–) across " + sentences.length + " sentences (" + ratio.toFixed(2) + " per sentence), well below typical human variety.",
+    };
+  }
+
+  /* --------------------------------------------------------- assembly */
+  function resolveNonOverlapping(matches) {
+    var sorted = matches.slice().sort(function (a, b) { return a.start - b.start || a.end - b.end; });
+    var kept = [], lastEnd = -1;
+    sorted.forEach(function (m) {
+      if (m.start > lastEnd) { kept.push(m); lastEnd = m.end; }
+    });
+    return kept;
+  }
+
+  var CATEGORY_ABBR = {
+    lexical: "LEX", syntactic: "SYN", statistical: "STAT", discourse: "DISC",
+    content: "CONT", punctuation: "PUNC", coherence: "COH", numerical: "NUM",
+  };
+
+  function parse(text, selection) {
+    var toks = tokenize(text);
+    var wordCount = toks.filter(function (t) { return t.isWord; }).length;
+    var cap = CONFIG.cap;
+    if (wordCount > cap) {
+      return { meta: { asset: CONFIG.name, version: CONFIG.version, cap: cap, wordCount: wordCount, overCap: true } };
+    }
+
+    var localMatches = [].concat(
+      localDetector("1.1", "Focal word excess", "lexical", 0.75, FOCAL_WORDS_RE, text),
+      localDetector("4.2", "Discourse marker clustering", "discourse", 0.75, DISCOURSE_MARKER_RE, text),
+      localDetector("5.3", "False balance / artificial neutrality", "content", 0.55, FALSE_BALANCE_RE, text),
+      localDetector("8.1", "Specific numeric precision, unverifiable", "numerical", 0.35, NUMERIC_PRECISION_RE, text),
+      detectEntityRepetition(text, toks)
+    );
+
+    // findings[]: one entry per occurrence (icon bar's own grouping counts
+    // repeats, JS-2 — nothing here silently drops an instance).
+    var findings = [{
+      id: "0.1", label: "Read before interpreting", severity: "info", start: 0, end: Math.max(0, toks.length - 1),
+      explain: CONTENT["0.1"] ? CONTENT["0.1"].d : "AI-detection is unreliable; this tool observes surface characteristics, not authorship.",
+      confidence: 1,
+    }];
+
+    localMatches.forEach(function (m) {
+      var range = charRangeToTokenRange(toks, m.start, m.end);
+      if (!range) {
+        console.warn("ENGINE.parse: LOCAL match had no overlapping token", m);
+        return;
+      }
+      findings.push({
+        id: m.id, label: m.label, severity: "check", start: range.start, end: range.end,
+        explain: "Matched: “" + m.matchText + "”. " + ((CONTENT[m.id] && CONTENT[m.id].why) || ""),
+        confidence: m.confidence,
+      });
+    });
+
+    [detectBurstiness(text), detectHighRepetition(toks), detectPunctuationAbsence(text)].forEach(function (f) {
+      if (!f) return;
+      findings.push({
+        id: f.id, label: f.label, severity: "check", start: 0, end: Math.max(0, toks.length - 1),
+        explain: f.explain + " " + ((CONTENT[f.id] && CONTENT[f.id].why) || ""),
+        confidence: f.confidence,
+      });
+    });
+
+    // _clauses: the visually highlighted regions. Built only from LOCAL
+    // matches (statistical findings describe the whole document and are
+    // not rendered as a highlight — see honesty note in engine header).
+    var candidateSpans = localMatches.map(function (m) {
+      var range = charRangeToTokenRange(toks, m.start, m.end);
+      if (!range) return null; // already warned above when building findings[]
+      return {
+        start: range.start, end: range.end, id: m.id, label: m.label, kind: "clause",
+        confidence: m.confidence, tent: m.confidence < CONFIG.tentativeThreshold,
+        abbr: CATEGORY_ABBR[m.category] || m.category.slice(0, 4).toUpperCase(),
+        role: m.category,
+      };
+    }).filter(function (s) { return s !== null; });
+    var clauses = resolveNonOverlapping(candidateSpans);
+
+    var categoriesFlagged = {};
+    findings.forEach(function (f) {
+      if (f.id === "0.1" || !CONTENT[f.id]) return;
+      categoriesFlagged[CONTENT[f.id].category || CONTENT[f.id].l] = true;
+    });
+    var classifications = [{ id: "0.1", label: "AI characteristics observed — not an authorship verdict" }];
+    Object.keys(categoriesFlagged).forEach(function (cat) {
+      classifications.push({ id: cat, label: cat });
+    });
+
+    return {
+      meta: { asset: CONFIG.name, version: CONFIG.version, cap: cap, wordCount: wordCount, overCap: false, lexiconMode: "none" },
+      tokens: toks.map(function (t) {
+        return { i: t.i, text: t.text, start: t.start, end: t.end, isWord: t.isWord, tags: [{ id: "0.1", label: "token", confidence: 1 }] };
+      }),
+      spans: clauses,
+      findings: findings,
+      summary: {
+        classifications: classifications,
+        counts: { words: wordCount, findings: findings.length - 1, categoriesFlagged: Object.keys(categoriesFlagged).length },
+      },
+      _toks: toks,
+      _clauses: clauses,
+    };
+  }
+
+  return { parse: parse, tokenize: tokenize, CLOSED: CLOSED };
+})();
+
+</script>
+<script>
+/* AiCharacteristics EXPLAINER — GeneratorShell.spec.md FR-5/AD-1 (nine
+   required exports). Every characteristic ENGINE can flag has a matching
+   CONTENT entry here it can render the "why an LLM favours this" account
+   from — the honesty caveat (CONTENT["0.1"]) is rendered first, every
+   time, in both tables() and rules(). */
+var EXPLAINER = (function () {
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  function caveatHtml() {
+    var c = CONTENT["0.1"];
+    return '<p class="ai-caveat"><strong>' + esc(c ? c.n : "Read this first") + ":</strong> " + esc(c ? c.d : "") + "</p>";
+  }
+
+  function detectionTypeOf(id) {
+    return (CONTENT[id] && CONTENT[id].detectionType) || "LOCAL";
+  }
+
+  function tables(R) {
+    var rows = R.findings.filter(function (f) { return f.id !== "0.1"; });
+    if (!rows.length) {
+      return caveatHtml() + "<p>No seeded characteristic matched this text.</p>";
+    }
+    var byId = {};
+    rows.forEach(function (f) { (byId[f.id] = byId[f.id] || []).push(f); });
+    var html = caveatHtml() + '<table class="xt"><tr><th>Characteristic</th><th>Category</th><th>Detection</th><th>Confidence</th><th>Occurrences</th></tr>';
+    Object.keys(byId).forEach(function (id) {
+      var group = byId[id], c = CONTENT[id];
+      var confPct = Math.round((group[0].confidence || 0) * 100);
+      html += "<tr><td>" + esc((c && c.n) || group[0].label) + "</td><td>" + esc((c && c.category) || "") +
+        "</td><td>" + esc(detectionTypeOf(id)) + "</td><td>" + confPct + "%</td><td>" + group.length + "</td></tr>";
+    });
+    html += "</table>";
+    return html;
+  }
+
+  function rules(R) {
+    var ids = [];
+    var seen = {};
+    R.findings.forEach(function (f) {
+      if (f.id === "0.1" || seen[f.id]) return;
+      seen[f.id] = true;
+      ids.push(f.id);
+    });
+    var html = caveatHtml();
+    if (!ids.length) return html + "<p>No seeded characteristic matched this text — that is itself weak evidence either way (see caveat above).</p>";
+    var byCategory = {};
+    ids.forEach(function (id) {
+      var c = CONTENT[id];
+      var cat = (c && c.category) || "Other";
+      (byCategory[cat] = byCategory[cat] || []).push(id);
+    });
+    Object.keys(byCategory).forEach(function (cat) {
+      html += '<div class="cat">' + esc(cat) + "</div><ul>";
+      byCategory[cat].forEach(function (id) {
+        var c = CONTENT[id];
+        if (!c) return;
+        html += "<li><strong>" + esc(c.n) + "</strong> (" + esc(c.confidenceTier || "?") + " confidence) — " + esc(c.d) +
+          (c.e ? ' <span class="ex">e.g. ' + esc(c.e) + "</span>" : "") +
+          (c.why ? "<br><em>Why a model does this:</em> " + esc(c.why) : "") + "</li>";
+      });
+      html += "</ul>";
+    });
+    return html;
+  }
+
+  function toMarkdown(R) {
+    var c0 = CONTENT["0.1"];
+    var lines = ["# " + R.meta.asset + " — explainer", "", "**" + (c0 ? c0.n : "Read this first") + ":** " + (c0 ? c0.d : ""), ""];
+    var seen = {};
+    R.findings.forEach(function (f) {
+      if (f.id === "0.1" || seen[f.id]) return;
+      seen[f.id] = true;
+      var c = CONTENT[f.id];
+      lines.push("## " + (c ? c.n : f.label) + (c && c.confidenceTier ? " (" + c.confidenceTier + " confidence)" : ""));
+      if (c) lines.push(c.d);
+      if (c && c.why) lines.push("Why a model does this: " + c.why);
+      lines.push("");
+    });
+    if (Object.keys(seen).length === 0) lines.push("No seeded characteristic matched this text.");
+    return lines.join("\n");
+  }
+
+  function toText(R) {
+    return toMarkdown(R).replace(/^#+\s*/gm, "").replace(/\*\*/g, "");
+  }
+
+  function funcOf(R, tokenIdx) {
+    var cl = clauseOf(R, tokenIdx);
+    return cl ? cl.label : "unflagged text";
+  }
+
+  function phraseOf(R, tokenIdx) { return null; }
+
+  function clauseOf(R, tokenIdx) {
+    var clauses = R._clauses || [];
+    for (var i = 0; i < clauses.length; i++) {
+      var c = clauses[i];
+      if (tokenIdx >= c.start && tokenIdx <= c.end) return c;
+    }
+    return null;
+  }
+
+  function posShort(token) { return token.isWord ? "word" : "punct"; }
+
+  function needSpace(a, b) {
+    if (!b) return false;
+    if (!b.isWord && ".,;:!?…".indexOf(b.text) >= 0) return false;
+    if (!a.isWord && "([\"'“‘".indexOf(a.text) >= 0) return false;
+    return true;
+  }
+
+  return {
+    tables: tables, rules: rules, toMarkdown: toMarkdown, toText: toText,
+    funcOf: funcOf, phraseOf: phraseOf, clauseOf: clauseOf,
+    posShort: posShort, needSpace: needSpace,
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   SHELL · SPELLING MODULE INJECTION SEAM
+   ============================================================
+   GeneratorShell.spec.md FR-11 / plan D-1: the spelling module
+   (System/Widgets/Generator/_modules/Spelling/, forked from the Parser
+   project's module of the same name — not yet copied in as of this
+   shell rework, since no Generator cartridge currently opts in) is a
+   PEER module, not shell code. The shell supplies DOM mount points and calls the
+   module's own public API (SpellingModule.spec.md §3) — it never
+   reaches into a cartridge's ENGINE.tokenize() for spell-checking
+   (that coupling, present in the pre-shell monolith, is the exact
+   defect D-5 cuts).
+
+   THIS FILE IS THE INJECTION POINT. Two ways it resolves at build
+   time (_shell/build/assemble.py, step "wire in spelling module"):
+
+     1. If the cartridge's manifest sets spelling.enabled: true AND
+        the assembler finds a built spelling-module bundle at
+        _modules/Spelling/dist/spelling.bundle.js, that bundle's
+        source is prepended above this file, verbatim, and it
+        defines window.createSpellingModule per FR-1 of
+        SpellingModule.spec.md.
+     2. Otherwise (no bundle built yet, or spelling.enabled: false),
+        this stub ships as-is: window.createSpellingModule stays
+        undefined, and the block below degrades the UI accordingly
+        — no crash, no silent partial feature, just an absent
+        checkbox.
+
+   The shell harness (ui.js) never assumes createSpellingModule
+   exists; it feature-detects it once, here, and stores the result
+   on SpellingSeam so ui.js has one boolean to check.
+   ============================================================ */
+var SpellingSeam = (function () {
+  var available = typeof window !== "undefined" && typeof window.createSpellingModule === "function";
+  var module = null;
+  var backendPromise = null;
+
+  /* The central dictionary (SPELLDB_B64, from _shell/build/assemble.py's
+     embed_spelling_db()) ships gzip-compressed (~2.06 MB base64 vs ~4.55 MB
+     raw — SpellingModule.spec.md's "Compression" measurement) and is
+     decompressed + opened as a sql.js Database here, once, lazily. This is
+     the shell's OWN sql.js wiring (b64bytes()/initSqlJs() from lexicon.js,
+     already loaded for LEX) — NOT the shell's LEX portal itself (D-5: the
+     spelling module never shares LEX's cartridge lexicon connection). */
+  function loadBackend() {
+    if (backendPromise) return backendPromise;
+    if (typeof SPELLDB_B64 === "undefined" || !SPELLDB_B64 || SPELLDB_B64.indexOf("__") === 0) {
+      backendPromise = Promise.resolve(null);
+      return backendPromise;
+    }
+    backendPromise = window.SpellingBackend.decompressGzipBase64(SPELLDB_B64)
+      .then(function (bytes) {
+        return initSqlJs({ wasmBinary: b64bytes(SQLJS_WASM_B64).buffer }).then(function (SQL) {
+          return window.SpellingBackend.createSqlJsBackend(new SQL.Database(bytes));
+        });
+      })
+      .catch(function (e) {
+        console.warn("SpellingSeam: dictionary load failed, spell check will treat every word as unknown", e);
+        return null;
+      });
+    return backendPromise;
+  }
+
+  /* init(inputEl, options, onReady) — DB load + sql.js WASM init are both
+     async, so this returns null immediately and calls onReady(module) once
+     the module is actually constructed (D-1: the shell only supplies mount
+     points; it never blocks on the module's own load path). */
+  function init(inputEl, options, onReady) {
+    if (!available) return null;
+    if (module) { if (onReady) onReady(module); return module; }
+    loadBackend().then(function (backend) {
+      try {
+        module = window.createSpellingModule(Object.assign({ document: document, backend: backend }, options || {}));
+      } catch (e) {
+        console.warn("SpellingSeam.init: createSpellingModule threw, disabling spell check", e);
+        available = false;
+        module = null;
+      }
+      if (onReady) onReady(module);
+    });
+    return null;
+  }
+
+  return { isAvailable: function () { return available; }, init: init };
+})();
+
+</script>
+<script>
+var MINIWIKI_BUNDLE_SRC = "/* AUTO-GENERATED by build/bundle_miniwiki.py \u2014 do not edit by hand.\n   Source of truth is _modules/MiniWiki/src/*.js; rerun the bundler\n   after any source edit. Concatenated in dependency order, module\n   syntax stripped, wrapped in one IIFE exposing window.createMiniWikiModule. */\n(function (global) {\n\"use strict\";\n\n/* ---- src/tree.js ---- */\n\n/**\n * tree.js \u2014 tree helpers over the ARTICLES-by-id map: ancestors, top-level\n * categories, a flat sorted index, and a lazy-expansion window for\n * virtualised rendering (model decision #3 \u2014 must stay usable at 155\n * articles and on mobile). No DOM here (SR-1); ui.js owns rendering.\n */\n\nfunction byIdNumeric(a, b) {\n  const pa = a.id.split(\".\").map(Number);\n  const pb = b.id.split(\".\").map(Number);\n  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {\n    const d = (pa[i] || 0) - (pb[i] || 0);\n    if (d !== 0) return d;\n  }\n  return 0;\n}\n\n/** getAncestors(articlesById, id) -> Article[] root-first, excluding id itself. */\nfunction getAncestors(articlesById, id) {\n  const chain = [];\n  let current = articlesById[id];\n  while (current && current.parent && articlesById[current.parent]) {\n    current = articlesById[current.parent];\n    chain.unshift(current);\n  }\n  return chain;\n}\n\n/** getTopLevel(articlesById) -> Article[] with no parent, id-sorted. */\nfunction getTopLevel(articlesById) {\n  return Object.values(articlesById)\n    .filter((a) => !a.parent)\n    .sort(byIdNumeric);\n}\n\n/** flatIndex(articlesById) -> every Article, id-sorted (backs the \"All\" page). */\nfunction flatIndex(articlesById) {\n  return Object.values(articlesById).sort(byIdNumeric);\n}\n\nfunction getChildren(articlesById, id) {\n  const article = articlesById[id];\n  if (!article || !article.children) return [];\n  return article.children.map((cid) => articlesById[cid]).filter(Boolean).sort(byIdNumeric);\n}\n\n/**\n * isFlatCatalogue(articlesById) -> boolean\n * Flatness is a property of the DATA, not a mode a caller declares: true\n * when no article has a parent and no article has children \u2014 i.e. every\n * entry is its own top-level, childless item (a riddle/folk-tale/\n * psychometric-item catalogue, per `_research/miniwiki-module.md` \u00a76).\n * False (the default) keeps every hierarchical cartridge \u2014 Grammar,\n * Logic, Rhetoric, \u2026 \u2014 rendering the tree exactly as before. An empty\n * articlesById is treated as hierarchical (nothing to prove otherwise),\n * so callers don't need a separate \"no articles\" branch.\n */\nfunction isFlatCatalogue(articlesById) {\n  const all = Object.values(articlesById);\n  if (!all.length) return false;\n  return all.every((a) => !a.parent && (!a.children || a.children.length === 0));\n}\n\n\n\n/* ---- src/autolink.js ---- */\n\n/**\n * autolink.js \u2014 prose cross-linking with a generic-title exclusion list\n * and a title-collision rule (model decision #4, CONTENT-FIT-REPORT.md\n * \u00a74). buildLinkCatalogue() is scoped to whatever ARTICLES map it is\n * given \u2014 normally one cartridge's worth, since the shell mounts one\n * MiniWiki instance per cartridge build (model decision #5's per-\n * cartridge extractor output). The collision rule below covers the case\n * where a host ever merges more than one cartridge's articles into a\n * single lookup.\n */\n\n// Verbatim from CONTENT-FIT-REPORT.md \u00a74's exclusion list, lower-cased for\n// case-insensitive matching.\nconst EXCLUDED_TITLES = new Set(\n  [\n    \"style\",\n    \"example\",\n    \"examples\",\n    \"one\",\n    \"two\",\n    \"three\",\n    \"four\",\n    \"five\",\n    \"six\",\n    \"seven\",\n    \"eight\",\n    \"nine\",\n    \"ten\",\n    \"eleven\",\n    \"twelve\",\n    \"forty\",\n    \"one thousand\",\n  ].map((t) => t.toLowerCase())\n);\n\n/** isExcludedTitle(title) -> true if this title must never be auto-linked. */\nfunction isExcludedTitle(title) {\n  if (typeof title !== \"string\") return true;\n  const lower = title.trim().toLowerCase();\n  if (EXCLUDED_TITLES.has(lower)) return true;\n  // Generic heuristic (report \u00a74/\u00a78-#7's \"Tropes & symbols: all single-word\n  // titles in sections 5\u20137\"): a bare single word of 4 characters or fewer\n  // is too likely to appear in ordinary prose to link safely.\n  if (!/\\s/.test(lower) && lower.length <= 4) return true;\n  return false;\n}\n\n/**\n * buildLinkCatalogue(articlesById) -> [{id, title}], longest title first.\n *\n * COLLISION RULE: if two different ids share the same (case-insensitive)\n * title, the FIRST one encountered (object key iteration order) wins and\n * every later duplicate is excluded from the catalogue entirely \u2014 a\n * mention of that title is never auto-linked to either article, rather\n * than risk silently sending the reader to the wrong one.\n */\nfunction buildLinkCatalogue(articlesById) {\n  const firstSeenId = new Map(); // lowercase title -> id\n  const collided = new Set();\n  for (const [id, article] of Object.entries(articlesById)) {\n    if (!article || typeof article.title !== \"string\") continue;\n    const key = article.title.trim().toLowerCase();\n    if (!key) continue;\n    if (firstSeenId.has(key)) {\n      collided.add(key);\n      continue;\n    }\n    firstSeenId.set(key, id);\n  }\n  const entries = [];\n  for (const [title, id] of firstSeenId) {\n    if (collided.has(title)) continue;\n    if (isExcludedTitle(articlesById[id].title)) continue;\n    entries.push({ id, title: articlesById[id].title });\n  }\n  entries.sort((a, b) => b.title.length - a.title.length);\n  return entries;\n}\n\nfunction escapeRegExp(text) {\n  return text.replace(/[.*+?^${}()|[\\]\\\\]/g, \"\\\\$&\");\n}\n\n/**\n * autolinkHtml(html, catalogue, selfId) -> html with the first\n * whole-word, case-insensitive occurrence of each OTHER article's title\n * wrapped in a `.wikilink` anchor. Operates on already-escaped HTML by\n * only rewriting the text runs between tags, so it never mangles markup.\n */\nfunction autolinkHtml(html, catalogue, selfId) {\n  if (typeof html !== \"string\" || html.length === 0) return html;\n  const linked = new Set();\n  const tagRe = /<[^>]*>/g;\n  let lastIndex = 0;\n  let match;\n  const segments = [];\n  while ((match = tagRe.exec(html)) !== null) {\n    segments.push({ text: html.slice(lastIndex, match.index), tag: match[0] });\n    lastIndex = tagRe.lastIndex;\n  }\n  segments.push({ text: html.slice(lastIndex), tag: \"\" });\n\n  let result = \"\";\n  for (const seg of segments) {\n    let text = seg.text;\n    for (const { id, title } of catalogue) {\n      if (id === selfId) continue;\n      const key = title.toLowerCase();\n      if (linked.has(key)) continue;\n      const re = new RegExp(`\\\\b${escapeRegExp(title)}\\\\b`, \"i\");\n      const m = text.match(re);\n      if (m) {\n        text = text.replace(re, `<a class=\"wikilink\" href=\"#/${id}\" data-article-id=\"${id}\">${m[0]}</a>`);\n        linked.add(key);\n      }\n    }\n    result += text + seg.tag;\n  }\n  return result;\n}\n\n\n\n/* ---- src/search-terms.js ---- */\n\n/**\n * search-terms.js \u2014 deterministic \"key search terms\" generation\n * (requirement 9). NOT an LLM at runtime: a fixed, reproducible scoring\n * pass over the article's own title, ancestor titles, and distinctive\n * body words, minus STOPWORDS. Same input -> same output, every time\n * (asserted by tests/test-search-terms.mjs).\n */\n\nconst STOPWORDS = new Set(\n  (\n    \"a an the of and or but if then else for to in on at by with from as is \" +\n    \"are was were be been being this that these those it its into onto over \" +\n    \"under not no nor so than too very can will would should could may might \" +\n    \"must shall do does did have has had which who whom whose what when \" +\n    \"where why how also such each other some any all both more most own \" +\n    \"same per via\"\n  ).split(/\\s+/)\n);\n\nfunction tokenizeWords(text) {\n  if (!text) return [];\n  return text.match(/[A-Za-z][A-Za-z'-]*/g) || [];\n}\n\n/** A capitalised token is a candidate proper noun / technical term. */\nfunction isCapitalisedTechnical(word) {\n  return /^[A-Z]/.test(word) && word.length > 1;\n}\n\n/**\n * midSentenceCapitals(text) -> Set<string> (lowercased keys)\n * Every sentence's FIRST word is capitalised by orthography, not because it\n * is a term (\"Contains exactly one independent clause\" would otherwise yield\n * \"Contains\"). We therefore only trust a capital that appears somewhere other\n * than a sentence opening. A word capitalised in both positions still counts,\n * because its mid-sentence occurrence vouches for it.\n */\nfunction midSentenceCapitals(text) {\n  const keys = new Set();\n  if (!text) return keys;\n  text.split(/(?<=[.!?:;])\\s+|\\n+/).forEach((sentence) => {\n    tokenizeWords(sentence)\n      .slice(1)\n      .forEach((word) => {\n        if (isCapitalisedTechnical(word)) keys.add(word.toLowerCase());\n      });\n  });\n  return keys;\n}\n\n/**\n * generateSearchTerms(article, ancestors, limit = 10) -> string[]\n * Weighted term set: title words (weight 3) > ancestor-title words\n * (weight 2) > capitalised/technical words from the article's own explanatory\n * prose, excluding examples and sentence-initial capitals (weight 1). Deduplicated,\n * stopworded, sorted by weight desc then alphabetically for a stable\n * order across runs.\n */\nfunction generateSearchTerms(article, ancestors = [], limit = 10) {\n  const scores = new Map();\n  const display = new Map();\n\n  function add(word, weight) {\n    const key = word.toLowerCase();\n    if (key.length < 3 || STOPWORDS.has(key)) return;\n    const prior = scores.get(key) || 0;\n    scores.set(key, Math.max(prior, weight));\n    if (!display.has(key)) display.set(key, word);\n  }\n\n  tokenizeWords(article.title).forEach((w) => add(w, 3));\n  ancestors.forEach((a) => tokenizeWords(a.title).forEach((w) => add(w, 2)));\n\n  // Examples are deliberately EXCLUDED. They are illustrative quotations, so\n  // their proper nouns describe the quotation's source, not the topic \u2014 \"Simple\n  // Sentence\" was yielding Ishmael/Melville/Moby-Dick off \"Call me Ishmael.\"\n  // These terms exist to search the web about the TOPIC, so only the article's\n  // own explanatory prose may contribute them.\n  const bodySource = [\n    article.lead || \"\",\n    (article.characteristics || []).join(\" \"),\n  ].join(\" \");\n  const trusted = midSentenceCapitals(bodySource);\n  tokenizeWords(bodySource).forEach((w) => {\n    if (isCapitalisedTechnical(w) && trusted.has(w.toLowerCase())) add(w, 1);\n  });\n\n  return [...scores.keys()]\n    .sort((a, b) => {\n      const diff = scores.get(b) - scores.get(a);\n      return diff !== 0 ? diff : a < b ? -1 : a > b ? 1 : 0;\n    })\n    .slice(0, limit)\n    .map((key) => display.get(key) || key);\n}\n\n\n\n/* ---- src/references.js ---- */\n\n/**\n * references.js \u2014 MLA-style reference formatting (requirement 8), per\n * System/Templates/Template_MLA_Reference.md. Source data is ONLY the\n * extractor's `article.references` (build/extract_articles.py's\n * build_reference(), sourced from the content file's YAML frontmatter\n * `title:` / `description:` / `provenance:` fields) \u2014 this module never\n * invents a citation. An article with no `references` yields an empty\n * list; ui.js omits the section entirely rather than render an empty\n * heading.\n */\n\n/**\n * formatMlaReference(ref) -> string\n * ref: {title, container, note} \u2014 the shape build_reference() emits.\n * Rendered as an MLA-style entry: the content file's own declared title,\n * its container/description, then any further provenance note \u2014 never a\n * fabricated author, date, or publisher beyond what frontmatter states.\n */\nfunction formatMlaReference(ref) {\n  if (!ref || !ref.title) return \"\";\n  const sentence = (text) => text.trim().replace(/\\.?$/, \".\");\n  const parts = [sentence(ref.title)];\n  if (ref.container) parts.push(sentence(ref.container));\n  if (ref.note && ref.note !== ref.container) parts.push(sentence(ref.note));\n  return parts.join(\" \");\n}\n\n/** formatReferences(article) -> string[] (never throws on a missing field). */\nfunction formatReferences(article) {\n  const refs = article && article.references;\n  if (!Array.isArray(refs) || refs.length === 0) return [];\n  return refs.map(formatMlaReference).filter(Boolean);\n}\n\n\n\n/* ---- src/clipboard.js ---- */\n\n/**\n * clipboard.js \u2014 copy-to-clipboard for the \"key search terms\" box\n * (requirement 9), offline-first: navigator.clipboard.writeText when\n * available, falling back to a hidden textarea + document.execCommand\n * (\"copy\") when it is not (older Safari, or a clipboard-permission-\n * denied file:// context). Never throws (JS-2): callers get a resolved\n * boolean, not a rejected promise, even when the fallback also fails.\n */\n\nfunction legacyCopy(text, doc) {\n  if (!doc || !doc.createElement) {\n    console.warn(\"clipboard.legacyCopy: no document available for the execCommand fallback\");\n    return false;\n  }\n  const textarea = doc.createElement(\"textarea\");\n  textarea.value = text;\n  textarea.setAttribute(\"readonly\", \"\");\n  textarea.style.position = \"fixed\";\n  textarea.style.opacity = \"0\";\n  doc.body.appendChild(textarea);\n  textarea.select();\n  let ok = false;\n  try {\n    ok = doc.execCommand ? doc.execCommand(\"copy\") : false;\n  } catch (e) {\n    console.warn(\"clipboard.legacyCopy: execCommand fallback threw\", e);\n    ok = false;\n  }\n  doc.body.removeChild(textarea);\n  return ok;\n}\n\n/** copyToClipboard(text, doc?) -> Promise<boolean> */\nfunction copyToClipboard(text, doc) {\n  const d = doc || (typeof document !== \"undefined\" ? document : undefined);\n  if (typeof navigator !== \"undefined\" && navigator.clipboard && navigator.clipboard.writeText) {\n    return navigator.clipboard.writeText(text).then(\n      () => true,\n      () => legacyCopy(text, d)\n    );\n  }\n  return Promise.resolve(legacyCopy(text, d));\n}\n\n\n\n/* ---- src/markdown.js ---- */\n\n/**\n * markdown.js \u2014 the tiny amount of markdown rendering MiniWiki needs at\n * RUNTIME (the build-time extractor does its own paragraph-only render\n * into body_html already; this file exists for the module's public\n * renderBody() escape hatch when a host passes raw markdown directly,\n * e.g. from a future non-extractor content source). One job (SR-1):\n * escape untrusted text, then apply a handful of inline markers.\n */\n\nfunction escapeHtml(text) {\n  return String(text)\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\")\n    .replace(/\"/g, \"&quot;\")\n    .replace(/'/g, \"&#39;\");\n}\n\n/** renderInline(text) -> escaped HTML with bold/italic markers applied. */\nfunction renderInline(text) {\n  const escaped = escapeHtml(text);\n  return escaped\n    .replace(/\\*\\*(.+?)\\*\\*/g, \"<strong>$1</strong>\")\n    .replace(/\\*(.+?)\\*/g, \"<em>$1</em>\");\n}\n\n/** renderParagraphs(text) -> one <p> per blank-line-separated block. */\nfunction renderParagraphs(text) {\n  if (typeof text !== \"string\" || text.trim().length === 0) return \"\";\n  return text\n    .split(/\\n\\s*\\n/)\n    .map((block) => block.trim())\n    .filter(Boolean)\n    .map((block) => `<p>${renderInline(block)}</p>`)\n    .join(\"\");\n}\n\n\n\n/* ---- src/styles.js ---- */\n\n/**\n * styles.js \u2014 MiniWiki's own CSS, exported as a string (JS-7: no build\n * step / bundler beyond this repo's own concatenating bundler). The shell\n * never ships a stylesheet for a peer module (spelling-seam.js doesn't\n * either); miniwiki-seam.js injects this text into a <style> element once,\n * on mount. Every colour is one of the shell's own custom properties\n * (--bg/--card/--ink/--ink2/--ink3/--line/--line2/--acc/--accbg/--radius)\n * per the mockup's own \"no new colours invented\" rule (NOTES.md\n * \"Design system adherence\") \u2014 CSS-2.\n */\n\nconst MINIWIKI_CSS = `\n.mw-root { display: flex; gap: 20px; }\n.mw-side-menu { flex: 0 0 260px; max-height: 70vh; overflow-y: auto; font-size: 13px; }\n.mw-menu-top { list-style: none; margin: 0 0 12px; padding: 0; }\n.mw-menu-top li { margin: 2px 0; }\n.mw-menu-link, .mw-tree-link, .mw-all-link, .mw-breadcrumb-link, .mw-home-card-title {\n  color: var(--ink); text-decoration: none; display: inline-block; padding: 3px 6px;\n  border-radius: 4px; word-break: break-word;\n}\n.mw-menu-link:hover, .mw-tree-link:hover, .mw-all-link:hover, .mw-home-card-title:hover {\n  background: var(--accbg); color: var(--acc);\n}\n.mw-menu-link.mw-active, .mw-tree-link.mw-active { background: var(--accbg); color: var(--acc); font-weight: 600; }\n.mw-menu-heading { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--ink3); margin: 12px 0 4px; }\n.mw-menu-categories, .mw-tree, .mw-tree-children, .mw-all-list { list-style: none; margin: 0; padding: 0; }\n.mw-tree-children { padding-left: 14px; }\n.mw-tree-item { margin: 2px 0; }\n.mw-tree-toggle { background: none; border: none; color: var(--ink3); cursor: pointer; width: 16px; font-size: 11px; }\n.mw-tree-toggle:hover { color: var(--ink); }\n.mw-tree-leaf { display: inline-block; width: 16px; text-align: center; color: var(--ink3); }\n.mw-article-pane { flex: 1; min-width: 0; }\n.mw-page { font-size: 14px; }\n.mw-title { font-size: 22px; font-weight: 600; margin: 0 0 8px; color: var(--ink); }\n.mw-lead { font-size: 15px; font-weight: 500; margin: 0 0 14px; }\n.mw-breadcrumb { font-size: 12px; color: var(--ink2); margin-bottom: 10px; }\n.mw-attribution { font-size: 12px; color: var(--ink2); margin: -6px 0 14px; }\n.mw-breadcrumb .mw-breadcrumb-link { padding: 0 2px; }\n.mw-body p { font-size: 13.5px; line-height: 1.6; margin: 0 0 10px; }\n.mw-section-block { margin: 16px 0; }\n.mw-section-heading, .mw-reference-list + .mw-section-heading {\n  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--ink2); margin: 0 0 6px;\n}\n.mw-characteristics, .mw-examples { font-size: 13.5px; margin: 0; padding-left: 20px; max-height: 320px; overflow-y: auto; }\n.mw-characteristics li, .mw-examples li { margin: 4px 0; line-height: 1.5; }\n.mw-worked-example { font-size: 13.5px; line-height: 1.6; background: var(--accbg); border-radius: var(--radius); padding: 10px 12px; }\n.wikilink { color: var(--acc); text-decoration: none; cursor: help; }\n.wikilink:hover { text-decoration: underline; }\n.mw-home-categories { display: grid; gap: 10px; }\n.mw-home-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }\n.mw-home-card-lead { margin: 4px 0 0; font-size: 13px; color: var(--ink2); }\n.mw-reference-list { font-size: 12.5px; padding-left: 18px; color: var(--ink2); }\n.mw-reference-list li { margin: 4px 0; }\n\n/* Requirement 9: key search-terms box, visually distinct from ordinary\n   sections \u2014 a bordered, tinted \"special box\" at the very foot of the page. */\n.mw-search-terms-box {\n  margin-top: 22px; padding: 14px; border: 1px solid var(--line2); border-radius: var(--radius);\n  background: var(--accbg);\n}\n.mw-search-terms-box .mw-section-heading { color: var(--acc); }\n.mw-term-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }\n.mw-term-chip {\n  border: 1px solid var(--line2); background: var(--card); color: var(--ink);\n  border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer;\n}\n.mw-term-chip:hover { background: var(--acc); color: #fff; border-color: var(--acc); }\n.mw-copy-all {\n  border: 1px solid var(--acc); background: var(--acc); color: #fff; border-radius: 4px;\n  padding: 5px 12px; font-size: 12px; cursor: pointer;\n}\n.mw-copy-all:hover { opacity: .9; }\n\n/* Model decision (fit report \u00a77): explicit non-Latin fallback stack for\n   the Greek and Hebrew cartridge. */\n[data-mw-cartridge=\"Greek and Hebrew\"] .mw-title,\n[data-mw-cartridge=\"Greek and Hebrew\"] .mw-lead,\n[data-mw-cartridge=\"Greek and Hebrew\"] .mw-body,\n[data-mw-cartridge=\"Greek and Hebrew\"] .mw-characteristics,\n[data-mw-cartridge=\"Greek and Hebrew\"] .mw-examples {\n  font-family: \"Noto Serif Greek\", \"SBL BibLit\", \"Noto Sans Hebrew\", \"Times New Roman\", serif;\n}\n\n@media (max-width: 719px) {\n  .mw-root { flex-direction: column; }\n  .mw-side-menu { flex: none; max-height: none; }\n}\n`;\n\n\n\n/* ---- src/styles-interactive.js ---- */\n\n/**\n * styles-interactive.js \u2014 CSS for the five audit-gap features (search box,\n * hover popover, see-also, prev/next, mobile drawer). Split out of\n * styles.js per CSS-1 (\"one file, one job... split when it grows\") now\n * that the base article/menu stylesheet plus this file's rules would push\n * a single string past a legible size \u2014 this file owns exactly the\n * interactive-feature rules, styles.js keeps the base page/menu rules.\n * Same tokens-only rule as styles.js (CSS-2): only the shell's own\n * --bg/--card/--ink/--ink2/--ink3/--line/--line2/--acc/--accbg/--radius.\n */\n\nconst MINIWIKI_INTERACTIVE_CSS = `\n/* Live search box (audit gap #1) */\n.mw-search-wrap { position: relative; margin-bottom: 12px; }\n.mw-search-box {\n  border: 1px solid var(--line2); border-radius: var(--radius); padding: 8px 10px;\n  font-size: 13px; width: 100%; color: var(--ink); background: var(--card);\n}\n.mw-search-box:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 3px var(--accbg); }\n.mw-search-results {\n  display: none; border: 1px solid var(--line); border-radius: var(--radius);\n  background: var(--card); max-height: 300px; overflow-y: auto; margin-top: 4px;\n}\n.mw-search-results.mw-search-results-visible { display: block; }\n.mw-search-result-item { padding: 7px 10px; cursor: pointer; border-bottom: 1px solid var(--line); font-size: 12px; }\n.mw-search-result-item:last-child { border-bottom: none; }\n.mw-search-result-item:hover { background: var(--accbg); }\n.mw-search-result-title { font-weight: 600; color: var(--ink); margin-bottom: 2px; }\n.mw-search-result-snippet { color: var(--ink3); font-size: 11px; }\n.mw-search-empty { padding: 8px 10px; color: var(--ink3); font-size: 12px; }\n\n/* Hover/focus preview popover (audit gap #2) */\n.mw-preview-popover {\n  position: absolute; background: var(--card); border: 1px solid var(--line2);\n  border-radius: var(--radius); padding: 8px 11px; font-size: 12px; line-height: 1.5;\n  max-width: 280px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); z-index: 100; pointer-events: none;\n}\n.mw-preview-lead { color: var(--ink3); font-size: 12px; }\n\n/* See also (audit gap #3) \u2014 distinct from .mw-search-terms-box */\n.mw-see-also { margin-top: 16px; padding: 12px; background: var(--accbg); border-radius: var(--radius); font-size: 12px; }\n.mw-see-also-title { font-weight: 600; color: var(--ink2); margin-bottom: 6px; }\n.mw-see-also-links { display: flex; gap: 8px; flex-wrap: wrap; }\n.mw-see-also-link {\n  color: var(--acc); text-decoration: none; padding: 2px 6px; border-radius: 3px;\n  background: var(--card); border: 1px solid var(--line); font-size: 11px;\n}\n.mw-see-also-link:hover { background: var(--accbg); }\n\n/* Prev/next sibling navigation (audit gap #4) */\n.mw-article-nav {\n  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;\n  padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px;\n}\n.mw-nav-button { color: var(--acc); text-decoration: none; }\n.mw-nav-button:hover { text-decoration: underline; }\n.mw-nav-next { margin-left: auto; }\n\n/* Mobile off-canvas drawer (audit gap #5) */\n.mw-nav-toggle {\n  display: none; align-items: center; justify-content: center; background: var(--card);\n  border: 1px solid var(--line2); border-radius: var(--radius); padding: 6px 12px;\n  cursor: pointer; font-size: 18px; color: var(--ink); width: 36px; height: 36px;\n}\n.mw-nav-scrim {\n  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;\n  background: rgba(0, 0, 0, 0.3); z-index: 40;\n}\n.mw-nav-scrim.mw-scrim-active { display: block; }\n\n@media (max-width: 719px) {\n  /* position:fixed rather than relying on DOM order: mount() appends the\n     toggle wherever it finds a common ancestor for navContainer (index.js),\n     which can land after the article pane in source order. Fixing its\n     position keeps it visible top-left regardless. */\n  .mw-nav-toggle { display: inline-flex; position: fixed; top: 12px; left: 12px; z-index: 46; margin-bottom: 10px; }\n  .mw-side-menu {\n    position: fixed; left: 0; top: 0; bottom: 0; width: 280px; max-height: none;\n    background: var(--bg); z-index: 45; transform: translateX(-100%);\n    transition: transform 0.25s ease; overflow-y: auto; padding: 16px;\n  }\n  .mw-side-menu.mw-drawer-open { transform: translateX(0); }\n}\n\n@media (min-width: 720px) {\n  .mw-nav-toggle { display: none; }\n  .mw-nav-scrim { display: none !important; }\n}\n`;\n\n\n\n/* ---- src/article-nav.js ---- */\n\n/**\n * article-nav.js \u2014 \"See also\" and prev/next SIBLING navigation for the foot\n * of an article page (audit gap #3 and #4). Pure data helpers over\n * tree.js's getChildren (no new tree traversal invented), plus the two DOM\n * renderers ui.js composes in. Kept out of ui.js per SR-1/CSS-1's \"one file,\n * one job\" instinct \u2014 ui.js already renders everything else on the page.\n *\n * \"Related\" here means siblings (same parent) \u2014 the only relationship the\n * build-time article model actually carries (Specs/MiniWikiModule.spec.md\n * \u00a74 has no curated \"related articles\" field, and the extractor is out of\n * scope to change). This is a deliberate scope decision, not an oversight.\n */\n\n\n/** getSiblings(articlesById, article) -> Article[] including `article`\n * itself, id-sorted (getChildren's own order). A top-level article\n * (no parent) has no siblings. */\nfunction getSiblings(articlesById, article) {\n  if (!article || !article.parent) return [];\n  return getChildren(articlesById, article.parent);\n}\n\n/**\n * getPrevNextSibling(articlesById, article) -> { prev, next }\n * Wraps at the ends of the sibling list. Both are `null` when `article`\n * has no siblings (only child, or top-level) \u2014 the foot section is then\n * omitted entirely by the renderer rather than showing a dead-end link.\n */\nfunction getPrevNextSibling(articlesById, article) {\n  const siblings = getSiblings(articlesById, article);\n  if (siblings.length <= 1) return { prev: null, next: null };\n  const idx = siblings.findIndex((s) => s.id === article.id);\n  if (idx === -1) return { prev: null, next: null };\n  const prev = siblings[(idx - 1 + siblings.length) % siblings.length];\n  const next = siblings[(idx + 1) % siblings.length];\n  return { prev, next };\n}\n\n/** getSeeAlso(articlesById, article, limit) -> Article[] \u2014 this article's\n * siblings, excluding itself, capped at `limit`. Empty when there are none. */\nfunction getSeeAlso(articlesById, article, limit = 8) {\n  return getSiblings(articlesById, article)\n    .filter((s) => s.id !== article.id)\n    .slice(0, limit);\n}\n\nfunction navLink(doc, className, label, articleId, onNavigate) {\n  const a = el(doc, \"a\", className, label);\n  a.href = \"#/\" + articleId;\n  a.setAttribute(\"data-article-id\", articleId);\n  a.addEventListener(\"click\", (e) => {\n    // Guarded rather than an unconditional call: fake-dom.mjs's click()\n    // helper (used by this module's own tests, TEST-8) dispatches a plain\n    // {type, currentTarget, target} object with no preventDefault \u2014 a real\n    // browser's click event always has one.\n    if (e && typeof e.preventDefault === \"function\") e.preventDefault();\n    onNavigate(articleId);\n  });\n  return a;\n}\n\n/** renderSeeAlso(...) -> Element|null. Null (never an empty section) when\n * the article has no siblings \u2014 distinct from the key-search-terms box,\n * which is unrelated content. */\nfunction renderSeeAlso(doc, articlesById, article, onNavigate) {\n  const items = getSeeAlso(articlesById, article);\n  if (!items.length) return null;\n  const section = el(doc, \"section\", \"mw-see-also\");\n  section.appendChild(el(doc, \"div\", \"mw-see-also-title\", \"See also\"));\n  const links = el(doc, \"div\", \"mw-see-also-links\");\n  for (const item of items) {\n    links.appendChild(navLink(doc, \"mw-see-also-link\", item.title, item.id, onNavigate));\n  }\n  section.appendChild(links);\n  return section;\n}\n\n/** renderPrevNextNav(...) -> Element|null. Null when the node has no\n * siblings at all (both prev and next are null). */\nfunction renderPrevNextNav(doc, articlesById, article, onNavigate) {\n  const { prev, next } = getPrevNextSibling(articlesById, article);\n  if (!prev && !next) return null;\n  const nav = el(doc, \"div\", \"mw-article-nav\");\n  if (prev) nav.appendChild(navLink(doc, \"mw-nav-button mw-nav-prev\", \"\u2190 \" + prev.title, prev.id, onNavigate));\n  if (next) nav.appendChild(navLink(doc, \"mw-nav-button mw-nav-next\", next.title + \" \u2192\", next.id, onNavigate));\n  return nav;\n}\n\n\n\n/* ---- src/search-ui.js ---- */\n\n/**\n * search-ui.js \u2014 the live search box UI (audit gap #1). index.js's\n * search(query) has worked since the module shipped; nothing in src/\n * rendered an input for it. Kept out of ui.js per SR-1 \u2014 this owns exactly\n * one concern: the search box, its live-filtered result list, and toggling\n * the normal menu content out of the way while a query is active.\n */\n\n/** snippet(text, len) -> a plain-text lead excerpt, ellipsised if cut. */\nfunction snippet(text, len = 80) {\n  const t = (text || \"\").trim();\n  if (t.length <= len) return t;\n  return t.slice(0, len).trimEnd() + \"\u2026\";\n}\n\nfunction renderResultItem(doc, article, onSelect) {\n  const item = el(doc, \"div\", \"mw-search-result-item\");\n  item.setAttribute(\"role\", \"button\");\n  item.tabIndex = 0;\n  item.appendChild(el(doc, \"div\", \"mw-search-result-title\", article.title));\n  const snippetText = snippet(article.lead);\n  if (snippetText) item.appendChild(el(doc, \"div\", \"mw-search-result-snippet\", snippetText));\n  item.addEventListener(\"click\", () => onSelect(article.id));\n  item.addEventListener(\"keydown\", (e) => {\n    if (e.key === \"Enter\" || e.key === \" \") onSelect(article.id);\n  });\n  return item;\n}\n\nfunction setMenuVisible(menuBody, visible) {\n  if (menuBody) menuBody.style.display = visible ? \"\" : \"none\";\n}\n\n/**\n * applySearchQuery(doc, query, resultsEl, menuBody, search, onNavigate) \u2014\n * the live-filter step itself, factored out of the input-event wiring so\n * it can be called directly (fake-dom.mjs has no generic event dispatch,\n * TEST-8 \u2014 this mirrors popover.js's directly-callable-handler pattern\n * rather than requiring one). Empty/whitespace query restores the normal\n * menu; a non-empty query hides it and renders the result list (or a\n * \"No matches.\" row).\n */\nfunction applySearchQuery(doc, query, resultsEl, menuBody, search, onNavigate) {\n  resultsEl.textContent = \"\";\n  const trimmed = (query || \"\").trim();\n  if (!trimmed) {\n    resultsEl.className = \"mw-search-results\";\n    setMenuVisible(menuBody, true);\n    return;\n  }\n  setMenuVisible(menuBody, false);\n  const matches = search(query);\n  if (!matches.length) {\n    resultsEl.appendChild(el(doc, \"div\", \"mw-search-empty\", \"No matches.\"));\n  } else {\n    for (const article of matches) {\n      resultsEl.appendChild(renderResultItem(doc, article, onNavigate));\n    }\n  }\n  resultsEl.className = \"mw-search-results mw-search-results-visible\";\n}\n\n/**\n * renderSearchBox(doc, opts) -> Element\n * opts: { search(query) -> Article[], onNavigate(id), menuBody: Element }\n * `menuBody` is the rest of the side menu (Home/All/Surprise, categories,\n * tree) \u2014 hidden while a non-empty query has results shown, and restored\n * the moment the box is cleared, per the requirement that clearing the box\n * \"restores the normal menu/tree\".\n */\nfunction renderSearchBox(doc, opts) {\n  const wrap = el(doc, \"div\", \"mw-search-wrap\");\n  const input = doc.createElement(\"input\");\n  input.type = \"text\";\n  input.className = \"mw-search-box\";\n  input.placeholder = \"Search topics\u2026\";\n  input.setAttribute(\"aria-label\", \"Search articles\");\n  wrap.appendChild(input);\n\n  const results = el(doc, \"div\", \"mw-search-results\");\n  wrap.appendChild(results);\n\n  input.addEventListener(\"input\", () => {\n    applySearchQuery(doc, input.value, results, opts.menuBody, opts.search, opts.onNavigate);\n  });\n  return wrap;\n}\n\n\n\n/* ---- src/popover.js ---- */\n\n/**\n * popover.js \u2014 hover/focus preview popover for wikilinks (audit gap #2).\n * `.wikilink` has only ever had `cursor:help` + a click handler; this adds\n * the actual preview. Kept out of ui.js (SR-1) \u2014 this owns exactly the\n * popover element, its positioning, and the delegated show/hide handlers.\n *\n * No `.closest()` is used (the fake DOM in _shell/tests/js/fake-dom.mjs\n * does not implement it, TEST-8, and this file avoids depending on a DOM\n * feature the test harness doesn't provide) \u2014 findLinkAncestor() below\n * walks `parentNode` by hand instead, which real DOM elements support too.\n */\n\nconst PREVIEW_LEAD_LEN = 100;\nconst SHOW_DELAY_MS = 150;\n\nfunction hasClass(node, className) {\n  return (node.className || \"\").split(/\\s+/).includes(className);\n}\n\n/** findLinkAncestor(node) -> the nearest `.wikilink`/`.mw-see-also-link`\n * element at or above `node`, or null. */\nfunction findLinkAncestor(node) {\n  let current = node;\n  while (current) {\n    if (current.className !== undefined && (hasClass(current, \"wikilink\") || hasClass(current, \"mw-see-also-link\"))) {\n      return current;\n    }\n    current = current.parentNode;\n  }\n  return null;\n}\n\n/** formatPreviewHtml(article) -> the popover's inner markup: bold title +\n * a truncated lead sentence. Text-only inputs (title/lead are already\n * plain strings on the article record, never raw content HTML), so a\n * template literal here does not reopen the JS-6/HTML-6 escaping concern\n * that gates `.mw-body`'s innerHTML assignment. */\nfunction formatPreviewHtml(article) {\n  const lead = (article.lead || \"\").slice(0, PREVIEW_LEAD_LEN);\n  const ellipsis = (article.lead || \"\").length > PREVIEW_LEAD_LEN ? \"\u2026\" : \"\";\n  return `<strong>${escapeHtml(article.title)}</strong>` + (lead ? `<br><span class=\"mw-preview-lead\">${escapeHtml(lead)}${ellipsis}</span>` : \"\");\n}\n\nfunction escapeHtml(text) {\n  return String(text)\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\");\n}\n\n/** computePosition(rect, popoverHeight, viewportHeight) -> {top, left}.\n * Prefers sitting above the link; flips below when that would overflow the\n * top of the viewport (mirrors the mockup's own flip rule). */\nfunction computePosition(rect, popoverHeight, viewportHeight) {\n  let top = rect.top - popoverHeight - 8;\n  if (top < 0) top = rect.bottom + 8;\n  void viewportHeight; // reserved: bottom-overflow flip is symmetrical and not needed at the sizes this popover renders\n  return { top, left: rect.left };\n}\n\n/** createPreviewPopover(doc) -> a detached, hidden popover Element ready\n * to append to the document (mount() owns where \u2014 see index.js). */\nfunction createPreviewPopover(doc) {\n  const popover = el(doc, \"div\", \"mw-preview-popover\");\n  popover.style.display = \"none\";\n  return popover;\n}\n\nfunction showPopover(doc, popover, article, anchorEl) {\n  popover.innerHTML = formatPreviewHtml(article);\n  popover.style.display = \"block\";\n  const rect = anchorEl.getBoundingClientRect();\n  const { top, left } = computePosition(rect, popover.offsetHeight || 60);\n  popover.style.top = top + \"px\";\n  popover.style.left = left + \"px\";\n}\n\nfunction hidePopover(popover) {\n  popover.style.display = \"none\";\n}\n\n/**\n * createHoverHandlers(popover, getArticle) -> { onMouseOver, onMouseOut,\n * onFocusIn, onFocusOut } \u2014 plain functions taking a synthetic\n * `{ target }` event, so tests can call them directly without a real DOM\n * dispatch mechanism (fake-dom.mjs has no generic dispatchEvent, TEST-8).\n * Wire them with `container.addEventListener(\"mouseover\", handlers.onMouseOver)`\n * etc. in a real (or the fake) DOM.\n */\nfunction createHoverHandlers(popover, getArticle) {\n  let showTimer = null;\n\n  function cancelShow() {\n    if (showTimer) {\n      clearTimeout(showTimer);\n      showTimer = null;\n    }\n  }\n\n  function reveal(doc, link) {\n    const articleId = link.getAttribute(\"data-article-id\");\n    const article = articleId && getArticle(articleId);\n    if (!article) return;\n    showPopover(doc, popover, article, link);\n  }\n\n  return {\n    onMouseOver(e) {\n      const link = findLinkAncestor(e.target);\n      if (!link) return;\n      cancelShow();\n      const doc = link.ownerDocument;\n      showTimer = setTimeout(() => reveal(doc, link), SHOW_DELAY_MS);\n    },\n    onMouseOut(e) {\n      const link = findLinkAncestor(e.target);\n      if (!link) return;\n      cancelShow();\n      hidePopover(popover);\n    },\n    onFocusIn(e) {\n      const link = findLinkAncestor(e.target);\n      if (!link) return;\n      cancelShow();\n      reveal(link.ownerDocument, link);\n    },\n    onFocusOut(e) {\n      const link = findLinkAncestor(e.target);\n      if (!link) return;\n      cancelShow();\n      hidePopover(popover);\n    },\n  };\n}\n\n\n\n/* ---- src/nav-active.js ---- */\n\n/**\n * nav-active.js \u2014 wires `.mw-active` onto the current article's side-menu\n * and tree entry (audit bug: styles.js has always styled `.mw-active`, but\n * nothing in ui.js/index.js ever applied it \u2014 StyleGuide's 03/04 docs\n * called this out as a known gap; this closes it). One job (SR-1): given a\n * nav container and the current key, clear the old highlight and set the\n * new one. No re-render \u2014 the lazy tree keeps whatever nodes are already\n * expanded, so this only ever toggles a class on existing anchors.\n */\n\nfunction clearActive(navContainer, className) {\n  for (const link of navContainer.querySelectorAll(\".\" + className)) {\n    link.className = link.className\n      .split(/\\s+/)\n      .filter((c) => c !== \"mw-active\")\n      .join(\" \");\n  }\n}\n\nfunction applyActive(navContainer, className, key) {\n  for (const link of navContainer.querySelectorAll(\".\" + className)) {\n    if (link.getAttribute(\"data-nav-id\") === key) {\n      link.className = (link.className + \" mw-active\").trim();\n    }\n  }\n}\n\n/**\n * setActiveNavLink(navContainer, key) \u2014 key is \"home\", \"all\", or an\n * article id. Matches on the `data-nav-id` attribute every relevant link\n * carries (menu top links + tree/category links, wired in ui.js). Silently\n * no-ops when nothing matches (e.g. the current article sits inside a\n * still-collapsed branch of the lazy tree) rather than forcing an expand \u2014\n * this mirrors the tree's own lazy-expansion contract.\n */\nfunction setActiveNavLink(navContainer, key) {\n  if (!navContainer || !navContainer.querySelectorAll) return;\n  for (const className of [\"mw-menu-link\", \"mw-tree-link\"]) {\n    clearActive(navContainer, className);\n    applyActive(navContainer, className, key);\n  }\n}\n\n\n\n/* ---- src/drawer.js ---- */\n\n/**\n * drawer.js \u2014 the mobile off-canvas nav drawer (audit gap #5). The\n * `@media (max-width:719px)` rule in styles.js has only ever stacked the\n * two columns; the approved mockup's drawer (toggle button, slide-in,\n * scrim, Escape/scrim/selection close) never shipped. This owns exactly\n * that behaviour \u2014 open/close state plus the three ways to close it \u2014 over\n * whatever toggle/nav/scrim elements index.js's mount() hands it.\n */\n\n/**\n * createDrawerController(doc, toggle, navPane, scrim) -> controller\n * `navPane` gets `.mw-drawer-open` toggled; `scrim` gets `.mw-scrim-active`.\n * The controller also exposes `closeOnNavigate()` for mount() to call from\n * inside its own navigate() so selecting an article closes the drawer.\n */\nfunction createDrawerController(doc, toggle, navPane, scrim) {\n  function isOpen() {\n    return (navPane.className || \"\").split(/\\s+/).includes(\"mw-drawer-open\");\n  }\n\n  function setClass(el, className, on) {\n    const classes = (el.className || \"\").split(/\\s+/).filter(Boolean).filter((c) => c !== className);\n    if (on) classes.push(className);\n    el.className = classes.join(\" \");\n  }\n\n  function open() {\n    setClass(navPane, \"mw-drawer-open\", true);\n    setClass(scrim, \"mw-scrim-active\", true);\n  }\n\n  function close() {\n    setClass(navPane, \"mw-drawer-open\", false);\n    setClass(scrim, \"mw-scrim-active\", false);\n  }\n\n  function toggleDrawer() {\n    if (isOpen()) close();\n    else open();\n  }\n\n  // Exposed as a standalone function (not only wired via doc.addEventListener)\n  // so tests can call it directly with a synthetic `{ key }` event \u2014 the\n  // fake DOM's doc.addEventListener is a no-op stub (it has no document-wide\n  // dispatch mechanism, TEST-8), so real Escape-key delivery is only\n  // exercisable this way outside a real browser.\n  function onKeydown(e) {\n    if (e.key === \"Escape\" && isOpen()) close();\n  }\n\n  if (toggle) toggle.addEventListener(\"click\", toggleDrawer);\n  if (scrim) scrim.addEventListener(\"click\", close);\n  if (doc) doc.addEventListener(\"keydown\", onKeydown);\n\n  return { open, close, toggle: toggleDrawer, isOpen, closeOnNavigate: close, onKeydown };\n}\n\n\n\n/* ---- src/ui.js ---- */\n\n/**\n * ui.js \u2014 DOM rendering for MiniWiki: side menu (requirement 7), home page\n * (requirement 6), section landing pages (decision 2), article pages with\n * references (requirement 8) and the key-search-terms box (requirement 9),\n * and the lazy-expansion tree (decision 3, via tree.js's getChildren/\n * getTopLevel). No `innerHTML` with unescaped source text (JS-6) \u2014 the\n * only `innerHTML` assignment in this file is `article.body_html`, which\n * is pre-escaped at build time by build/extract_articles.py's\n * escape_html(), then re-linked by autolink.js's autolinkHtml(), which\n * only rewrites text runs between existing tags and never introduces raw\n * user/content text outside a tag.\n */\n\n\n\n\n\n\n\nfunction el(doc, tag, className, text) {\n  const e = doc.createElement(tag);\n  if (className) e.className = className;\n  if (text !== undefined) e.textContent = text;\n  return e;\n}\n\n/**\n * itemLabel(article) -> display title, with the article's source attributed\n * in brackets when present (\"Riddle EX-001 [Anglo-Saxon Exeter Book]\") \u2014 the\n * flat-catalogue requirement that every entry visibly names where it came\n * from, wherever its title appears (side menu, home grid, article page).\n * Hierarchical articles rarely carry `source` (extract_articles.py's dialect\n * has no such field), so this is a no-op there.\n */\nfunction itemLabel(article) {\n  return article.source ? `${article.title} [${article.source}]` : article.title;\n}\n\nfunction linkItem(doc, label, onClick, className = \"mw-menu-link\", navId) {\n  const li = doc.createElement(\"li\");\n  const a = el(doc, \"a\", className, label);\n  a.href = \"#\";\n  if (navId !== undefined) a.setAttribute(\"data-nav-id\", navId);\n  a.addEventListener(\"click\", (e) => {\n    e.preventDefault();\n    onClick();\n  });\n  li.appendChild(a);\n  return li;\n}\n\n/** Side menu (requirement 7): search box, Home, All, Surprise me, then\n * either a flat list of every item (flat catalogue \u2014 riddles/folk-tales/\n * psychometric items, no nesting) or Categories + the lazy tree\n * (hierarchical cartridges). `opts.search` (index.js's search(query))\n * backs the live search box (audit gap #1) \u2014 `menuBody` (everything below\n * the box) is hidden while a query has the result list open, restored\n * when cleared. */\nfunction renderSideMenu(doc, articlesById, opts) {\n  const nav = el(doc, \"nav\", \"mw-side-menu\");\n\n  const menuBody = el(doc, \"div\", \"mw-menu-body\");\n  const top = el(doc, \"ul\", \"mw-menu-top\");\n  top.appendChild(linkItem(doc, \"Home\", opts.onHome, \"mw-menu-link\", \"home\"));\n  top.appendChild(linkItem(doc, \"All\", opts.onAll, \"mw-menu-link\", \"all\"));\n  top.appendChild(linkItem(doc, \"Surprise me\", opts.onSurprise));\n  menuBody.appendChild(top);\n\n  if (isFlatCatalogue(articlesById)) {\n    menuBody.appendChild(el(doc, \"div\", \"mw-menu-heading\", \"All items\"));\n    const itemList = el(doc, \"ul\", \"mw-menu-categories\");\n    for (const item of flatIndex(articlesById)) {\n      itemList.appendChild(linkItem(doc, itemLabel(item), () => opts.onNavigate(item.id), \"mw-menu-link\", item.id));\n    }\n    menuBody.appendChild(itemList);\n  } else {\n    menuBody.appendChild(el(doc, \"div\", \"mw-menu-heading\", \"Categories\"));\n    const categoryList = el(doc, \"ul\", \"mw-menu-categories\");\n    for (const cat of getTopLevel(articlesById)) {\n      categoryList.appendChild(linkItem(doc, cat.title, () => opts.onNavigate(cat.id), \"mw-menu-link\", cat.id));\n    }\n    menuBody.appendChild(categoryList);\n\n    menuBody.appendChild(el(doc, \"div\", \"mw-menu-heading\", \"Browse\"));\n    menuBody.appendChild(renderTree(doc, articlesById, opts.expandedIds, opts.onNavigate));\n  }\n\n  if (opts.search) {\n    nav.appendChild(renderSearchBox(doc, { search: opts.search, onNavigate: opts.onNavigate, menuBody }));\n  }\n  nav.appendChild(menuBody);\n  return nav;\n}\n\n/** Lazy-expansion tree (decision 3): expandedIds starts empty; expanding a\n * node reveals only its direct children, keeping the DOM bounded regardless\n * of the cartridge's total article count (verified at 155 articles). */\nfunction renderTree(doc, articlesById, expandedIds, onNavigate) {\n  const container = el(doc, \"ul\", \"mw-tree\");\n  renderTreeLevel(doc, articlesById, getTopLevel(articlesById), container, expandedIds, onNavigate);\n  return container;\n}\n\nfunction renderTreeLevel(doc, articlesById, nodes, ul, expandedIds, onNavigate) {\n  for (const a of nodes) {\n    const li = el(doc, \"li\", \"mw-tree-item\");\n    const hasChildren = (a.children || []).length > 0;\n    if (hasChildren) {\n      const toggle = el(doc, \"button\", \"mw-tree-toggle\", expandedIds.has(a.id) ? \"\u25bc\" : \"\u25b6\");\n      toggle.type = \"button\";\n      toggle.setAttribute(\"aria-label\", (expandedIds.has(a.id) ? \"Collapse \" : \"Expand \") + a.title);\n      toggle.addEventListener(\"click\", () => {\n        if (expandedIds.has(a.id)) expandedIds.delete(a.id);\n        else expandedIds.add(a.id);\n        const parentUl = li.parentElement;\n        const fresh = el(doc, \"ul\", parentUl.className);\n        renderTreeLevel(doc, articlesById, nodes, fresh, expandedIds, onNavigate);\n        parentUl.replaceWith(fresh);\n      });\n      li.appendChild(toggle);\n    } else {\n      li.appendChild(el(doc, \"span\", \"mw-tree-leaf\", \"\u00b7\"));\n    }\n    const link = el(doc, \"a\", \"mw-tree-link\", a.title);\n    link.href = \"#/\" + a.id;\n    link.setAttribute(\"data-nav-id\", a.id);\n    link.addEventListener(\"click\", (e) => {\n      e.preventDefault();\n      onNavigate(a.id);\n    });\n    li.appendChild(link);\n    ul.appendChild(li);\n    if (hasChildren && expandedIds.has(a.id)) {\n      const childUl = el(doc, \"ul\", \"mw-tree-children\");\n      renderTreeLevel(doc, articlesById, getChildren(articlesById, a.id), childUl, expandedIds, onNavigate);\n      li.appendChild(childUl);\n    }\n  }\n}\n\nfunction categoryCard(doc, article, onNavigate) {\n  const card = el(doc, \"div\", \"mw-home-card\");\n  const link = el(doc, \"a\", \"mw-home-card-title\", itemLabel(article));\n  link.href = \"#/\" + article.id;\n  link.addEventListener(\"click\", (e) => {\n    e.preventDefault();\n    onNavigate(article.id);\n  });\n  card.appendChild(link);\n  if (article.lead) card.appendChild(el(doc, \"p\", \"mw-home-card-lead\", article.lead));\n  return card;\n}\n\n/** Home page (requirement 6): generated overview \u2014 a flat catalogue lists\n * EVERY item (there are no categories to summarise); a hierarchical\n * cartridge lists its top-level categories and their lead sentences.\n * Either way, never hand-written. */\nfunction renderHome(doc, articlesById, cartridgeName, onNavigate) {\n  const flat = isFlatCatalogue(articlesById);\n  const main = el(doc, \"div\", \"mw-page mw-home\");\n  main.appendChild(el(doc, \"h1\", \"mw-title\", cartridgeName || \"Mini-Wiki\"));\n  main.appendChild(\n    el(\n      doc,\n      \"p\",\n      \"mw-lead\",\n      flat\n        ? `A complete catalogue of ${cartridgeName || \"this topic\"}'s items.`\n        : `An overview of ${cartridgeName || \"this topic\"}'s top-level categories.`\n    )\n  );\n  const list = el(doc, \"div\", \"mw-home-categories\");\n  const items = flat ? flatIndex(articlesById) : getTopLevel(articlesById);\n  for (const item of items) {\n    list.appendChild(categoryCard(doc, item, onNavigate));\n  }\n  main.appendChild(list);\n  return main;\n}\n\n/** \"All\" page: full flat browsable index (requirement 7). */\nfunction renderAllIndex(doc, articlesById, onNavigate) {\n  const main = el(doc, \"div\", \"mw-page mw-all\");\n  main.appendChild(el(doc, \"h1\", \"mw-title\", \"All articles\"));\n  const list = el(doc, \"ul\", \"mw-all-list\");\n  for (const a of flatIndex(articlesById)) {\n    const li = doc.createElement(\"li\");\n    const link = el(doc, \"a\", \"mw-all-link\", `${a.id} \u2014 ${itemLabel(a)}`);\n    link.href = \"#/\" + a.id;\n    link.addEventListener(\"click\", (e) => {\n      e.preventDefault();\n      onNavigate(a.id);\n    });\n    li.appendChild(link);\n    list.appendChild(li);\n  }\n  main.appendChild(list);\n  return main;\n}\n\n/** Section landing page (decision 2): a role:\"section\" node (empty body,\n * has children) renders as a page listing its children \u2014 never a stub\n * article with empty sections. */\nfunction renderSectionPage(doc, articlesById, article, onNavigate) {\n  const main = el(doc, \"div\", \"mw-page mw-section\");\n  main.appendChild(breadcrumb(doc, articlesById, article, onNavigate));\n  main.appendChild(el(doc, \"h1\", \"mw-title\", article.title));\n  if (article.lead) main.appendChild(el(doc, \"p\", \"mw-lead\", article.lead));\n  const list = el(doc, \"div\", \"mw-home-categories\");\n  for (const child of getChildren(articlesById, article.id)) {\n    list.appendChild(categoryCard(doc, child, onNavigate));\n  }\n  main.appendChild(list);\n  return main;\n}\n\nfunction breadcrumb(doc, articlesById, article, onNavigate) {\n  const ancestors = getAncestors(articlesById, article.id);\n  const crumb = el(doc, \"div\", \"mw-breadcrumb\");\n  if (ancestors.length === 0) return crumb;\n  for (const a of ancestors) {\n    const link = el(doc, \"a\", \"mw-breadcrumb-link\", a.title);\n    link.href = \"#/\" + a.id;\n    link.addEventListener(\"click\", (e) => {\n      e.preventDefault();\n      onNavigate(a.id);\n    });\n    crumb.appendChild(link);\n    crumb.appendChild(doc.createTextNode(\" \u203a \"));\n  }\n  crumb.appendChild(doc.createTextNode(article.title));\n  return crumb;\n}\n\nfunction wireWikilinks(container, onNavigate) {\n  const links = container.querySelectorAll ? container.querySelectorAll(\"a.wikilink\") : [];\n  links.forEach((link) => {\n    link.addEventListener(\"click\", (e) => {\n      e.preventDefault();\n      onNavigate(link.getAttribute(\"data-article-id\"));\n    });\n  });\n}\n\n/** Full article page: lead, auto-linked body, characteristics, examples,\n * worked example, MLA references (requirement 8), search-terms box\n * (requirement 9). */\nfunction renderArticlePage(doc, articlesById, article, linkCatalogue, onNavigate) {\n  const main = el(doc, \"div\", \"mw-page mw-article\");\n  main.appendChild(breadcrumb(doc, articlesById, article, onNavigate));\n  main.appendChild(el(doc, \"h1\", \"mw-title\", itemLabel(article)));\n  if (article.lead) main.appendChild(el(doc, \"p\", \"mw-lead\", article.lead));\n  // Task A: every catalogue entry carries a visible source (shown in the\n  // title above via itemLabel) and licence note. The licence gets its own\n  // small attribution line \u2014 never fabricated, omitted entirely when the\n  // extractor found none (HTML-6/JS-2's \"never invent content\" spirit,\n  // matching how the MLA references section below is already omitted).\n  if (article.licence) {\n    main.appendChild(el(doc, \"p\", \"mw-attribution\", `Licence: ${article.licence}`));\n  }\n\n  if (article.body_html) {\n    const body = el(doc, \"div\", \"mw-body\");\n    body.innerHTML = autolinkHtml(article.body_html, linkCatalogue, article.id);\n    wireWikilinks(body, onNavigate);\n    main.appendChild(body);\n  }\n\n  if (article.characteristics && article.characteristics.length) {\n    const section = el(doc, \"section\", \"mw-section-block\");\n    section.appendChild(el(doc, \"h2\", \"mw-section-heading\", \"Key characteristics\"));\n    const ul = el(doc, \"ul\", \"mw-characteristics\");\n    for (const c of article.characteristics) ul.appendChild(el(doc, \"li\", null, c));\n    section.appendChild(ul);\n    main.appendChild(section);\n  }\n\n  if (article.worked_example) {\n    const section = el(doc, \"section\", \"mw-section-block\");\n    section.appendChild(el(doc, \"h2\", \"mw-section-heading\", \"Worked example\"));\n    section.appendChild(el(doc, \"p\", \"mw-worked-example\", article.worked_example));\n    main.appendChild(section);\n  }\n\n  if (article.examples && article.examples.length) {\n    const section = el(doc, \"section\", \"mw-section-block\");\n    section.appendChild(el(doc, \"h2\", \"mw-section-heading\", \"Examples\"));\n    const ul = el(doc, \"ul\", \"mw-examples\");\n    for (const ex of article.examples) ul.appendChild(el(doc, \"li\", null, ex));\n    section.appendChild(ul);\n    main.appendChild(section);\n  }\n\n  // Requirement 8: omit the section entirely when nothing is sourceable \u2014\n  // never fabricate a citation.\n  const refs = formatReferences(article);\n  if (refs.length) {\n    const section = el(doc, \"section\", \"mw-references\");\n    section.appendChild(el(doc, \"h2\", \"mw-section-heading\", \"References\"));\n    const ol = el(doc, \"ol\", \"mw-reference-list\");\n    for (const r of refs) ol.appendChild(el(doc, \"li\", null, r));\n    section.appendChild(ol);\n    main.appendChild(section);\n  }\n\n  // Audit gaps #3/#4: \"See also\" (sibling chips, distinct from the\n  // key-search-terms box below) and prev/next sibling navigation, both\n  // omitted entirely rather than rendered empty when there are no siblings.\n  const seeAlso = renderSeeAlso(doc, articlesById, article, onNavigate);\n  if (seeAlso) main.appendChild(seeAlso);\n  const prevNext = renderPrevNextNav(doc, articlesById, article, onNavigate);\n  if (prevNext) main.appendChild(prevNext);\n\n  main.appendChild(renderSearchTermsBox(doc, article, getAncestors(articlesById, article.id)));\n  return main;\n}\n\n/** Requirement 9: key search terms box, visually distinct, at the base of\n * the page. Each term is one-click copy; a \"copy all\" affordance sits\n * alongside. Works offline from file:// via clipboard.js's fallback. */\nfunction renderSearchTermsBox(doc, article, ancestors, termLimit = 10) {\n  const box = el(doc, \"div\", \"mw-search-terms-box\");\n  box.appendChild(el(doc, \"h2\", \"mw-section-heading\", \"Key search terms\"));\n  const terms = generateSearchTerms(article, ancestors, termLimit);\n  const list = el(doc, \"div\", \"mw-term-list\");\n  for (const term of terms) {\n    const chip = el(doc, \"button\", \"mw-term-chip\", term);\n    chip.type = \"button\";\n    chip.title = `Copy \"${term}\"`;\n    chip.addEventListener(\"click\", () => {\n      copyToClipboard(term, doc).then((ok) => flashCopied(chip, ok));\n    });\n    list.appendChild(chip);\n  }\n  box.appendChild(list);\n\n  const copyAll = el(doc, \"button\", \"mw-copy-all\", \"Copy all\");\n  copyAll.type = \"button\";\n  copyAll.addEventListener(\"click\", () => {\n    copyToClipboard(terms.join(\", \"), doc).then((ok) => flashCopied(copyAll, ok));\n  });\n  box.appendChild(copyAll);\n  return box;\n}\n\nfunction flashCopied(element, ok) {\n  const original = element.textContent;\n  element.textContent = ok ? \"Copied!\" : \"Copy failed\";\n  setTimeout(() => {\n    element.textContent = original;\n  }, 1200);\n}\n\n\n\n/* ---- src/index.js ---- */\n\n/**\n * index.js \u2014 createMiniWikiModule(options) factory (spec FR-1), mirroring\n * SpellingModule's createSpellingModule(options) shape (Spelling/src/index.js):\n * one public factory, no globals leaked beyond what a host explicitly binds\n * at build time, everything else injected for testability (TEST-4/TEST-8).\n *\n * MiniWiki is a SHARED module: any cartridge's build can embed its own\n * ARTICLES JSON (build/extract_articles.py's output) and mount an instance\n * without touching this file \u2014 the module owns no per-cartridge content.\n */\n\n\n\n\n\n\n\n\n\n\n\nfunction createMiniWikiModule(options = {}) {\n  const articlesList = Array.isArray(options.articles) ? options.articles : [];\n  const cartridgeId = options.cartridgeId || \"default\";\n  const cartridgeName = options.cartridgeName || \"Mini-Wiki\";\n  const doc = options.document; // may be undefined; resolved per call, matching Spelling's pattern\n\n  const articlesById = {};\n  for (const article of articlesList) {\n    articlesById[article.id] = article;\n  }\n  const linkCatalogue = buildLinkCatalogue(articlesById);\n  const expandedIds = new Set();\n\n  function getArticle(id) {\n    return articlesById[id] || null;\n  }\n\n  function randomArticleId() {\n    const articleIds = Object.keys(articlesById).filter((id) => articlesById[id].role === \"article\");\n    const pool = articleIds.length ? articleIds : Object.keys(articlesById);\n    if (!pool.length) return null;\n    return pool[Math.floor(Math.random() * pool.length)];\n  }\n\n  /** Task C: flat-catalogue entries (riddles, folk tales, psychometric\n   * items) are short \u2014 a lead sentence alone can be too thin to search\n   * usefully, and the flat catalogue's own defining attribution (`source`)\n   * is worth matching on too. So search() checks title, lead, source, and\n   * a plain-text strip of body_html (covers any prose that never made it\n   * into `lead`, e.g. a body longer than first_sentence()'s 240-char cap).\n   * Hierarchical articles keep working exactly as before \u2014 they just also\n   * gain body/source matching, which never hurts. */\n  function plainText(html) {\n    return typeof html === \"string\" ? html.replace(/<[^>]*>/g, \" \") : \"\";\n  }\n\n  function search(query) {\n    const q = (query || \"\").trim().toLowerCase();\n    if (!q) return [];\n    return flatIndex(articlesById).filter((a) => {\n      if (a.title && a.title.toLowerCase().includes(q)) return true;\n      if (a.lead && a.lead.toLowerCase().includes(q)) return true;\n      if (a.source && a.source.toLowerCase().includes(q)) return true;\n      if (plainText(a.body_html).toLowerCase().includes(q)) return true;\n      return false;\n    });\n  }\n\n  function resolveDocument() {\n    return doc || (typeof document !== \"undefined\" ? document : null);\n  }\n\n  /** renderView(view, id, container, onNavigate) -> Element | null */\n  function renderView(view, id, container, onNavigate) {\n    const d = resolveDocument();\n    if (!d) {\n      console.warn(\"MiniWikiModule.renderView: no document available\");\n      return null;\n    }\n    // textContent = \"\" (not innerHTML) so a fake DOM without an HTML\n    // parser still actually empties `container.children` \u2014 real browsers\n    // clear children either way, so this is behaviourally identical there.\n    container.textContent = \"\";\n    let page;\n    if (view === \"home\") {\n      page = renderHome(d, articlesById, cartridgeName, onNavigate);\n    } else if (view === \"all\") {\n      page = renderAllIndex(d, articlesById, onNavigate);\n    } else {\n      const article = getArticle(id);\n      if (!article) {\n        page = d.createElement(\"div\");\n        page.className = \"mw-page mw-not-found\";\n        page.textContent = `Article not found: ${id}`;\n        console.warn(`MiniWikiModule.renderView: unknown article id \"${id}\"`);\n      } else if (article.role === \"section\") {\n        page = renderSectionPage(d, articlesById, article, onNavigate);\n      } else {\n        page = renderArticlePage(d, articlesById, article, linkCatalogue, onNavigate);\n      }\n    }\n    container.appendChild(page);\n    if (cartridgeId) container.setAttribute(\"data-mw-cartridge\", cartridgeName);\n    return page;\n  }\n\n  /**\n   * mount(navContainer, articleContainer, opts) \u2014 wires the side menu and\n   * hash-based routing (requirement 7's Home/All/Surprise me/category\n   * links, plus every article). Injects styles.js's CSS once via a\n   * <style data-miniwiki> element so the host page needs no separate\n   * stylesheet reference (mirrors how the shell's own CSS is inlined).\n   */\n  function mount(navContainer, articleContainer, opts = {}) {\n    const d = resolveDocument();\n    if (!d) {\n      console.warn(\"MiniWikiModule.mount: no document available\");\n      return null;\n    }\n    injectStylesOnce(d);\n\n    // Audit gap #2 (hover-preview popover): one popover element per mount,\n    // appended alongside the article pane so it shares that pane's\n    // positioning context; delegated show/hide handlers on articleContainer\n    // cover every wikilink and \"see also\" chip regardless of how often the\n    // article body is re-rendered underneath them.\n    const popover = createPreviewPopover(d);\n    const hoverHandlers = createHoverHandlers(popover, getArticle);\n    articleContainer.addEventListener(\"mouseover\", hoverHandlers.onMouseOver);\n    articleContainer.addEventListener(\"mouseout\", hoverHandlers.onMouseOut);\n    articleContainer.addEventListener(\"focusin\", hoverHandlers.onFocusIn);\n    articleContainer.addEventListener(\"focusout\", hoverHandlers.onFocusOut);\n    if (articleContainer.parentNode) {\n      articleContainer.parentNode.appendChild(popover);\n    } else {\n      articleContainer.appendChild(popover);\n    }\n\n    // Audit gap #5 (mobile drawer): the toggle button and scrim are created\n    // here at mount time rather than baked into miniwiki-seam.js's static\n    // document template, so the seam's launch logic stays untouched. Both\n    // need a shared ancestor with navContainer to sit alongside it; when\n    // the host hasn't given navContainer a parent (e.g. a bare test\n    // fixture), the drawer simply isn't wired \u2014 there is nothing to toggle.\n    let drawer = null;\n    const navRoot = navContainer.parentNode;\n    if (navRoot) {\n      const toggle = el(d, \"button\", \"mw-nav-toggle\", \"\u2630\");\n      toggle.type = \"button\";\n      toggle.setAttribute(\"aria-label\", \"Toggle navigation\");\n      const scrim = el(d, \"div\", \"mw-nav-scrim\");\n      // appendChild only (not insertBefore) \u2014 the fake DOM used by this\n      // module's own tests (_shell/tests/js/fake-dom.mjs, TEST-8) implements\n      // no insertBefore, and CSS (position:fixed for the drawer/scrim, and\n      // the toggle only ever showing on the narrow breakpoint) makes DOM\n      // order harmless here regardless.\n      navRoot.appendChild(toggle);\n      navRoot.appendChild(scrim);\n      drawer = createDrawerController(d, toggle, navContainer, scrim);\n    }\n\n    function hashFor(id) {\n      return \"#/\" + id;\n    }\n\n    function updateActive(key) {\n      setActiveNavLink(navContainer, key);\n    }\n\n    function renderNav() {\n      navContainer.textContent = \"\";\n      navContainer.appendChild(\n        renderSideMenu(d, articlesById, {\n          onHome: () => showHome(),\n          onAll: () => showAll(),\n          onSurprise: showSurprise,\n          onNavigate: navigate,\n          expandedIds,\n          search,\n        })\n      );\n    }\n\n    /**\n     * Concern #4 fix (deep-link tree auto-expand, previously disclosed as\n     * a known gap): before rendering an article, expand every ancestor's\n     * id in `expandedIds` and rebuild the side menu if that changed\n     * anything. getAncestors() on an unknown id returns [] (no crash), so\n     * this is safe to call unconditionally, including from the not-found\n     * path. A no-op (already-expanded ancestors, or a flat catalogue with\n     * no ancestors at all) skips the rebuild \u2014 no wasted re-render.\n     */\n    function expandAncestors(id) {\n      let changed = false;\n      for (const ancestor of getAncestors(articlesById, id)) {\n        if (!expandedIds.has(ancestor.id)) {\n          expandedIds.add(ancestor.id);\n          changed = true;\n        }\n      }\n      return changed;\n    }\n\n    function navigate(id, opts2 = {}) {\n      if (expandAncestors(id)) renderNav();\n      renderView(\"article\", id, articleContainer, navigate);\n      updateActive(id);\n      if (drawer) drawer.closeOnNavigate();\n      if (!opts2.skipHash && typeof window !== \"undefined\") {\n        window.location.hash = hashFor(id);\n      }\n      if (opts.onNavigate) opts.onNavigate(id);\n    }\n\n    function showHome(opts2 = {}) {\n      renderView(\"home\", null, articleContainer, navigate);\n      updateActive(\"home\");\n      if (drawer) drawer.closeOnNavigate();\n      if (!opts2.skipHash && typeof window !== \"undefined\") window.location.hash = \"#/\";\n    }\n\n    function showAll(opts2 = {}) {\n      renderView(\"all\", null, articleContainer, navigate);\n      updateActive(\"all\");\n      if (drawer) drawer.closeOnNavigate();\n      if (!opts2.skipHash && typeof window !== \"undefined\") window.location.hash = \"#/all\";\n    }\n\n    function showSurprise() {\n      const id = randomArticleId();\n      if (id) navigate(id);\n    }\n\n    renderNav();\n\n    /**\n     * Concern #5 fix (unreachable not-found page): route every non-empty,\n     * non-\"all\" hash through navigate() \u2014 including one that doesn't match\n     * any article id. navigate() -> renderView(\"article\", id, ...), and\n     * renderView() already builds a `.mw-not-found` page + console.warn for\n     * an unknown id (index.js's own test has always asserted this path\n     * exists); the only bug was that nothing called it with a bad id. This\n     * also removes routeFromHash's own duplicate of navigate()'s render\n     * call (SR-4) \u2014 one render path, not two.\n     */\n    function routeFromHash() {\n      if (typeof window === \"undefined\") return;\n      const hash = window.location.hash.replace(/^#\\/?/, \"\");\n      if (!hash) {\n        showHome({ skipHash: true });\n      } else if (hash === \"all\") {\n        showAll({ skipHash: true });\n      } else {\n        navigate(hash, { skipHash: true });\n      }\n    }\n\n    if (typeof window !== \"undefined\") {\n      window.addEventListener(\"hashchange\", routeFromHash);\n      routeFromHash();\n    } else {\n      renderView(\"home\", null, articleContainer, navigate);\n      updateActive(\"home\");\n    }\n\n    return { navigate, showHome, showAll, showSurprise };\n  }\n\n  return {\n    getArticle,\n    getTopLevel: () => getTopLevel(articlesById),\n    getAncestors: (id) => getAncestors(articlesById, id),\n    getChildren: (id) => getChildren(articlesById, id),\n    flatIndex: () => flatIndex(articlesById),\n    search,\n    randomArticleId,\n    renderView,\n    mount,\n    searchTerms: (id) => {\n      const a = getArticle(id);\n      return a ? generateSearchTerms(a, getAncestors(articlesById, id)) : [];\n    },\n    references: (id) => {\n      const a = getArticle(id);\n      return a ? formatReferences(a) : [];\n    },\n    copyToClipboard: (text) => copyToClipboard(text, resolveDocument()),\n    cartridgeId,\n    cartridgeName,\n  };\n}\n\nlet stylesInjected = false;\nfunction injectStylesOnce(doc) {\n  if (stylesInjected || doc.querySelector(\"style[data-miniwiki]\")) return;\n  const style = doc.createElement(\"style\");\n  style.setAttribute(\"data-miniwiki\", \"\");\n  style.textContent = MINIWIKI_CSS + \"\\n\" + MINIWIKI_INTERACTIVE_CSS;\n  doc.head.appendChild(style);\n  stylesInjected = true;\n}\n\n\n\nglobal.createMiniWikiModule = createMiniWikiModule;\n})(typeof window !== 'undefined' ? window : globalThis);\n";
+/* ============================================================
+   SHELL · MINIWIKI MODULE INJECTION SEAM
+   ============================================================
+   MiniWikiModule.spec.md FR-1 / this module is a PEER module, not
+   shell code (SR-4, mirrors spelling-seam.js). Per Luke's correction,
+   the Mini-Wiki is NOT an in-page panel — it opens as its own
+   complete, self-contained HTML document in a NEW BROWSER TAB, with
+   its own hash routing (#/1.1.1), independent of the parser tab. The
+   parser page carries exactly one launch button; this seam builds the
+   wiki document as a string at click time and opens it.
+
+   A cartridge stays ONE file on disk: nothing here writes a second
+   file or makes a network request. The wiki document is assembled at
+   RUNTIME (in the browser) from three build-time-embedded pieces —
+   MINIWIKI_BUNDLE_SRC (the module's bundled JS, as a string),
+   MINIWIKI_ARTICLES, and MINIWIKI_CARTRIDGE_NAME — all set by
+   _shell/build/assemble.py from the cartridge's manifest
+   (miniwiki.enabled + miniwiki.articlesFile). When miniwiki.enabled is
+   false/absent, MINIWIKI_BUNDLE_SRC stays empty and isAvailable()
+   is false: no button, no crash, no silent partial feature.
+
+   Opening strategy (open()): Blob + URL.createObjectURL(...) is tried
+   first — it works from file:// in every Chromium/Firefox/Safari
+   version this shell targets and keeps the new tab's `document.write`
+   surface out of the picture entirely. If that throws (a locked-down
+   embedder without Blob URL support), it falls back to
+   window.open("") + document.write(). If window.open ever returns
+   null/undefined (pop-up blocked either way), open() returns false so
+   the caller can show an inline "allow pop-ups" message instead of
+   failing silently (JS-2).
+   ============================================================ */
+var MiniWikiSeam = (function () {
+  var available =
+    typeof MINIWIKI_BUNDLE_SRC !== "undefined" &&
+    !!MINIWIKI_BUNDLE_SRC &&
+    typeof MINIWIKI_ARTICLES !== "undefined" &&
+    Array.isArray(MINIWIKI_ARTICLES) &&
+    MINIWIKI_ARTICLES.length > 0;
+
+  // The same design tokens the shell's own :root carries (shell.css) —
+  // duplicated here because the wiki opens as a SEPARATE document that
+  // cannot inherit the parser tab's stylesheet. MINIWIKI_CSS (injected
+  // into the new document by the module's own mount(), via
+  // styles.js's injectStylesOnce) references these var(--...) names, so
+  // they must be declared before mount() runs.
+  var ROOT_TOKENS_CSS =
+    ":root{--bg:#faf9f5;--card:#fff;--ink:#1a1a17;--ink2:#5f5e5a;--ink3:#9a9891;" +
+    "--line:#e3e1d9;--line2:#c9c7bd;--acc:#185FA5;--accbg:#E6F1FB;--radius:8px;font-size:16px;}" +
+    "*{box-sizing:border-box;}" +
+    "body{margin:0;background:var(--bg);color:var(--ink);" +
+    'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;' +
+    "line-height:1.55;}" +
+    ".mw-page-wrap{max-width:1100px;margin:0 auto;padding:20px;}" +
+    ".mw-page-header{display:flex;align-items:center;justify-content:space-between;" +
+    "margin-bottom:16px;font-weight:600;font-size:16px;}";
+
+  function buildDocument() {
+    var title = (MINIWIKI_CARTRIDGE_NAME || "Mini-Wiki") + " — Mini-Wiki";
+    return (
+      "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\">" +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      "<title>" + escapeHtml(title) + "</title>" +
+      "<style>" + ROOT_TOKENS_CSS + "</style></head><body>" +
+      '<div class="mw-page-wrap">' +
+      '<div class="mw-page-header"><span>' + escapeHtml(MINIWIKI_CARTRIDGE_NAME || "Mini-Wiki") + "</span>" +
+      '<span style="font-size:12px;color:var(--ink3);">Offline · no network requests</span></div>' +
+      '<div class="mw-root"><div id="miniwiki-nav"></div><div id="miniwiki-article" class="mw-article-pane"></div></div>' +
+      "</div>" +
+      "<script>\n" + safeScriptBody(MINIWIKI_BUNDLE_SRC) + "\n<\/script>" +
+      "<script>\n" +
+      "var MINIWIKI_ARTICLES = " + safeScriptBody(JSON.stringify(MINIWIKI_ARTICLES)) + ";\n" +
+      "var MINIWIKI_CARTRIDGE_NAME = " + JSON.stringify(MINIWIKI_CARTRIDGE_NAME || "Mini-Wiki") + ";\n" +
+      "var wiki = window.createMiniWikiModule({ document: document, articles: MINIWIKI_ARTICLES, " +
+      "cartridgeName: MINIWIKI_CARTRIDGE_NAME });\n" +
+      'wiki.mount(document.getElementById("miniwiki-nav"), document.getElementById("miniwiki-article"));\n' +
+      "<\/script></body></html>"
+    );
+  }
+
+  // A literal script-close sequence anywhere inside dynamic content — OR, as here,
+  // anywhere in THIS FILE'S OWN source text — closes the surrounding
+  // <script> tag early the moment this seam is embedded verbatim into
+  // shell.html: the HTML parser has no notion of JS string literals, so
+  // it does not matter that the text is "inside a string" from JS's point
+  // of view. Every closing-tag literal above is written as "<\/script>"
+  // (the backslash is a no-op to the JS engine, \/  ===  /) for exactly
+  // this reason. safeScriptBody() applies the same escape to DYNAMIC
+  // content at the point this seam assembles the new tab's document —
+  // assemble.py already guards the embedded bundle text at build time,
+  // and MINIWIKI_ARTICLES' body_html is build-time-escaped per HTML-6,
+  // but neither of those is assumed safe against this specific
+  // HTML-parser quirk without an explicit runtime check here too.
+  function safeScriptBody(text) {
+    return String(text).replace(/<\/script/gi, "<\\/script");
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  /** open() -> boolean. Opens the wiki as a new, independent tab; returns
+   * false (never throws) when the browser blocked the pop-up, so the
+   * caller can show its own "allow pop-ups" message (JS-2). */
+  function open_() {
+    if (!available) return false;
+    var html = buildDocument();
+    try {
+      var blob = new Blob([html], { type: "text/html" });
+      var url = URL.createObjectURL(blob);
+      var win = window.open(url, "_blank");
+      if (!win) return false;
+      // Revoke once the new tab has actually loaded the blob, not
+      // immediately — an early revoke can race the load on some
+      // embedders and blank the tab.
+      win.addEventListener("load", function () {
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      });
+      return true;
+    } catch (e) {
+      console.warn("MiniWikiSeam.open: Blob URL path failed, falling back to document.write", e);
+    }
+    try {
+      var win2 = window.open("", "_blank");
+      if (!win2) return false;
+      win2.document.open();
+      win2.document.write(html);
+      win2.document.close();
+      return true;
+    } catch (e2) {
+      console.warn("MiniWikiSeam.open: document.write fallback also failed", e2);
+      return false;
+    }
+  }
+
+  return { isAvailable: function () { return available; }, open: open_ };
+})();
+
+</script>
+<script>
+/* ============================================================
+   SHELL · UI + HARNESS (GeneratorShell.spec.md FR-9/FR-10/FR-12)
+   Never edited per cartridge. Reads ONLY CONFIG, CONTENT, ENGINE,
+   EXPLAINER and the ParseResult schema (§4/§6 of the spec) — never
+   the DOM, never re-derives Explainer content itself.
+
+   AD-1: needSpace()/posShort() are NOT re-implemented here. They
+   are required EXPLAINER exports (FR-5); this file calls
+   EXPLAINER.needSpace(a,b) / EXPLAINER.posShort(t) exclusively.
+   ============================================================ */
+var UI = (function () {
+  var R = null;
+  var levels = CONFIG.levels && CONFIG.levels.length ? CONFIG.levels : ["default"];
+  var CL_HOME = 1 < levels.length ? 1 : 0;
+  var PH_HOME = 2 < levels.length ? 2 : -1;
+  var W_HOME = levels.length - 1;
+  var view = levels[Math.min(1, levels.length - 1)];
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  // Renders footer attribution text into safe HTML, turning any
+  // [label](url) markdown-style link into a real target=_blank anchor
+  // (e.g. "CC-BY-SA" -> a link to the licence's own description page).
+  // http(s)-only by construction: a non-http(s) "url" is left as literal
+  // escaped text rather than becoming a clickable href.
+  var LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+  function renderAttribution(text) {
+    var out = "", last = 0, m;
+    LINK_RE.lastIndex = 0;
+    while ((m = LINK_RE.exec(text))) {
+      out += esc(text.slice(last, m.index));
+      out += '<a href="' + esc(m[2]).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + "</a>";
+      last = m.index + m[0].length;
+    }
+    return out + esc(text.slice(last));
+  }
+  function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function levelIndex(v) { return levels.indexOf(v); }
+  function focusLabel(v) {
+    return (CONFIG.focusLabels && CONFIG.focusLabels[v]) || (titleCase(v) + " focus");
+  }
+
+  function getInputText() { return $("input").innerText.replace(/\s+/g, " ").trim(); }
+  function wordCount(text) { return ENGINE.tokenize(text).filter(function (t) { return t.isWord; }).length; }
+  function updateCount() {
+    var wc = wordCount(getInputText());
+    $("wcount").textContent = wc + " / " + CONFIG.cap + " words";
+    $("wcount").style.color = wc > CONFIG.cap ? "var(--red)" : "";
+  }
+
+  /* ---- Focus-level bar (FR-12: built from CONFIG.levels, never hardcoded) ---- */
+  function buildFocusBar() {
+    var bar = $("focusbar");
+    var html = '<span class="muted">Focus</span>';
+    levels.forEach(function (lv) {
+      html += '<button class="fv' + (lv === view ? " on" : "") + '" data-v="' + esc(lv) + '">' + esc(titleCase(lv)) + "</button>";
+    });
+    bar.innerHTML = html;
+    bar.querySelectorAll(".fv").forEach(function (b) {
+      b.addEventListener("click", function () { setView(b.dataset.v); });
+    });
+  }
+
+  /* ---- Sweep selector (FR-19/FR-20: built from CONFIG.sweeps.items, opt-in,
+     default off — a cartridge that omits CONFIG.sweeps never sees this bar) ---- */
+  function sweepsEnabled() { return !!(CONFIG.sweeps && CONFIG.sweeps.enabled && CONFIG.sweeps.items && CONFIG.sweeps.items.length); }
+  function buildSweepBar() {
+    if (!sweepsEnabled()) return;
+    var bar = $("sweepbar");
+    var html = '<span class="muted">Sweeps</span>';
+    CONFIG.sweeps.items.forEach(function (s) {
+      html += '<label class="muted" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;">' +
+        '<input type="checkbox" class="sweep-on" data-id="' + esc(s.id) + '"> ' + esc(s.label) + '</label>';
+      if (s.category === "genre" && s.oppositeLabel) {
+        html += '<label class="muted sweep-opp-label" data-for="' + esc(s.id) + '" style="display:none;align-items:center;gap:4px;cursor:pointer;font-size:12px;">' +
+          '<input type="checkbox" class="sweep-opp" data-id="' + esc(s.id) + '" disabled> Opposite (' + esc(s.oppositeLabel) + ')</label>';
+      }
+    });
+    bar.innerHTML = html;
+    bar.style.display = "flex";
+    // getAttribute("data-id"), not .dataset.id — .dataset is a live reflection
+    // of data-* attributes in a real DOM; reading through getAttribute avoids
+    // depending on that reflection existing at all (same information, one
+    // fewer browser-API assumption).
+    bar.querySelectorAll(".sweep-on").forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var id = cb.getAttribute("data-id");
+        var oppLabel = bar.querySelector('.sweep-opp-label[data-for="' + id + '"]');
+        if (oppLabel) {
+          oppLabel.style.display = cb.checked ? "inline-flex" : "none";
+          var oppCb = oppLabel.querySelector(".sweep-opp");
+          oppCb.disabled = !cb.checked;
+          if (!cb.checked) oppCb.checked = false;
+        }
+      });
+    });
+  }
+  // Builds the `selection` object ENGINE.parse's additive second argument
+  // reads (FR-20). Returns undefined (not {}) when sweeps aren't in play, so
+  // ENGINE.parse(text, undefined) behaves exactly like ENGINE.parse(text)
+  // for every cartridge that doesn't declare CONFIG.sweeps.
+  function readSweepSelection() {
+    if (!sweepsEnabled()) return undefined;
+    var sel = { sweeps: {} };
+    $("sweepbar").querySelectorAll(".sweep-on").forEach(function (cb) {
+      var id = cb.getAttribute("data-id");
+      var oppCb = $("sweepbar").querySelector('.sweep-opp[data-id="' + id + '"]');
+      sel.sweeps[id] = { on: cb.checked, opposite: !!(oppCb && oppCb.checked) };
+    });
+    return sel;
+  }
+
+  /* ---- Spell check (delegates to the injected SpellingSeam — FR-11, D-5) ---- */
+  var spelling = null;
+  var spellTimer = null;
+  var spellTokens = [];
+  function spellCheckAvailable() { return SpellingSeam.isAvailable(); }
+  function initSpelling() {
+    if (!spellCheckAvailable()) { $("spellLabel").style.display = "none"; return; }
+    $("spellLabel").style.display = "flex";
+    // FR-11: the shell supplies DOM mount points only (input + suggestion
+    // popover) — it never passes ENGINE.tokenize or any cartridge data in.
+    // SpellingSeam.init is async (dictionary decompress + sql.js load), so
+    // `spelling` is only set once onReady fires; runSpellCheck() already
+    // no-ops while it's null.
+    SpellingSeam.init($("input"), { mounts: { input: $("input"), popover: $("spelling-suggestions") } }, function (m) {
+      spelling = m;
+      if (spelling) { runSpellCheck(); initSpellClickHandler(); }
+    });
+  }
+  function runSpellCheck() {
+    if (!spelling) { spellTokens = []; return; }
+    var el = $("input");
+    // Unchecked clears any highlights left over from before the toggle (and
+    // skips the check) rather than leaving stale, now-misaligned marks on
+    // screen — see spellTog's change listener below.
+    spellTokens = $("spellTog").checked ? spelling.check(el.innerText) : [];
+    if (typeof spelling.renderHighlights === "function") spelling.renderHighlights(el, spellTokens);
+  }
+  /* Locate the flagged token under a click point. The Highlight API never
+     mutates the DOM (AD-2), so there is no per-word element to listen on —
+     the shell maps the click's caret offset back onto the character-offset
+     spans SpellingModule.check() already returned (FR-4). */
+  function tokenRangeAt(start, end) {
+    var textNode = $("input").firstChild || $("input");
+    var r = document.createRange();
+    r.setStart(textNode, start);
+    r.setEnd(textNode, end);
+    return r;
+  }
+  function tokenAtClientPoint(x, y) {
+    var caretOffset = null;
+    if (document.caretRangeFromPoint) {
+      var cr = document.caretRangeFromPoint(x, y);
+      if (cr) caretOffset = cr.startOffset;
+    } else if (document.caretPositionFromPoint) {
+      var pos = document.caretPositionFromPoint(x, y);
+      if (pos) caretOffset = pos.offset;
+    }
+    if (caretOffset === null) return null;
+    for (var i = 0; i < spellTokens.length; i++) {
+      if (caretOffset >= spellTokens[i].start && caretOffset <= spellTokens[i].end) return spellTokens[i];
+    }
+    return null;
+  }
+  var spellClickWired = false;
+  function initSpellClickHandler() {
+    if (spellClickWired) return;
+    spellClickWired = true;
+    $("input").addEventListener("click", function (ev) {
+      if (!spelling || !$("spellTog").checked) return;
+      var tok = tokenAtClientPoint(ev.clientX, ev.clientY);
+      if (!tok) { $("spelling-suggestions").style.display = "none"; return; }
+      var anchorRange = tokenRangeAt(tok.start, tok.end);
+      spelling.showSuggestions(tok.word, anchorRange, {
+        onReplace: function (replacement) {
+          spelling.replaceWord(tokenRangeAt(tok.start, tok.end), replacement);
+          $("spelling-suggestions").style.display = "none";
+          updateCount();
+          runSpellCheck();
+        },
+        onIgnore: function (w) { spelling.ignore(w); $("spelling-suggestions").style.display = "none"; runSpellCheck(); },
+        onLearn: function (w) { spelling.learn(w); $("spelling-suggestions").style.display = "none"; runSpellCheck(); }
+      });
+    });
+  }
+
+  /* ---- Parse-result rendering ---- */
+  function clauseAt(clauses, i) {
+    var f = null;
+    clauses.forEach(function (c, cx) { if (i >= c.start && i <= c.end) f = cx; });
+    return f;
+  }
+
+  function render() {
+    if (!R) return;
+    if (R.meta.overCap) {
+      $("capwarn").textContent = "Over the " + CONFIG.cap + "-word cap (" + R.meta.wordCount + " words). This tool parses " + CONFIG.inputUnit + " at a time — nothing was truncated; shorten the input and parse again.";
+      $("capwarn").style.display = "block";
+      ["focusbar", "key", "hoverhint"].forEach(function (id) { $(id).style.display = "none"; });
+      $("stage").innerHTML = ""; $("sline").textContent = ""; $("iconbar").innerHTML = ""; $("explainer").style.display = "none";
+      return;
+    }
+    $("capwarn").style.display = "none";
+    $("focusbar").style.display = "flex"; $("key").style.display = "block"; $("hoverhint").style.display = "block";
+    var pal = CONFIG.clausePalette;
+    $("sline").innerHTML = R.summary.classifications.map(function (c) { return esc(c.label) + " (" + c.id.replace(/[a-z]$/, "") + ")"; }).join(" · ");
+    var toks = R._toks, clauses = R._clauses;
+    var html = "", ci = -1, openCl = false, openPh = null;
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i], cx = clauseAt(clauses, i);
+      if (cx !== ci) {
+        if (openPh) { html += "</span>"; openPh = null; }
+        if (openCl) html += "</span>";
+        ci = cx;
+        if (cx !== null) {
+          var cl = clauses[cx], hue = pal[cx % pal.length];
+          var lbl = cl.abbr || (cl.role === "dependent" ? "DEP" : "IND " + (clauses.filter(function (c, k) { return !c.dep && k <= cx; }).length));
+          html += '<span class="cl" data-ci="' + cx + '" style="--h50:' + hue.h50 + ';--h100:' + hue.h100 + ';--h600:' + hue.h600 + ';--h800:' + hue.h800 + ';--hf:' + hue.hf + ';"><span class="lbl">' + esc(lbl) + "</span>";
+          openCl = true;
+        } else openCl = false;
+      }
+      var ph = EXPLAINER.phraseOf(R, i);
+      if (ph !== openPh) {
+        if (openPh) html += "</span>";
+        openPh = ph;
+        if (ph) html += '<span class="ph' + (ph.tent ? " tentP" : "") + '" data-ps="' + ph.start + '" data-pe="' + ph.end + '">';
+      }
+      if (t.isWord) {
+        var tag = R.tokens[i].tags[0];
+        var tent = tag.confidence < CONFIG.tentativeThreshold;
+        html += '<span class="w' + (tent ? " tentW" : "") + '" data-i="' + i + '">' + esc(t.text) + '<span class="pos">' + esc(EXPLAINER.posShort(t)) + "</span></span>";
+      } else {
+        html += '<span class="' + (cx === null ? "noclause" : "") + '">' + esc(t.text) + "</span>";
+      }
+      if (i < toks.length - 1 && EXPLAINER.needSpace(toks[i], toks[i + 1])) html += " ";
+    }
+    if (openPh) html += "</span>";
+    if (openCl) html += "</span>";
+    $("stage").innerHTML = html;
+    renderKey(); renderIcons();
+    $("hdrmeta").textContent = "Tier A · offline" + (CONFIG.lexicon && CONFIG.lexicon.enabled ? " · lexicon: " + (LEX.morphOnly ? "unavailable (morphology fallback)" : Number(LEX.count).toLocaleString() + " words") : "");
+    $("explainer").style.display = "none";
+    runSpellCheck();
+  }
+
+  function buildClauseChips() {
+    var pal = CONFIG.clausePalette;
+    return (R._clauses || []).map(function (cl, cx) {
+      var hue = pal[cx % pal.length];
+      var label = cl.abbr ? cl.abbr : (cl.typeName || cl.type || "clause");
+      return '<span class="chip" style="background:' + hue.h50 + ';color:' + hue.h800 + ';">' + esc(hue.name) + " — " + esc(String(label).toLowerCase()) + (cl.modifies ? " (modifies “" + esc(cl.modifies) + "”)" : "") + "</span>";
+    }).join(" ");
+  }
+
+  function renderKey() {
+    var k = $("key");
+    var p = levelIndex(view);
+    var label = focusLabel(view);
+    var chips = (p === 0 || p === CL_HOME) ? buildClauseChips() : "";
+    var showHeading = !(p === CL_HOME && p !== 0);
+    var desc;
+    if (p === 0) desc = "structural boundaries shown, colour faded behind";
+    else if (p === PH_HOME) desc = "sub-units shown in shades of their parent hue";
+    else if (p === W_HOME) desc = "word-level tints inherit the parent hue · tag = word class · dashed underline = tentative";
+    else desc = "colour intensity increases at finer focus levels · dashed underline = tentative";
+    k.innerHTML = (showHeading ? "<strong>" + esc(label) + "</strong> — " + desc + (chips ? " · " : "") : "") + chips;
+  }
+
+  function renderIcons() {
+    var groups = {};
+    R.findings.forEach(function (f) {
+      var key = f.id + "|" + f.severity;
+      if (!groups[key]) groups[key] = { f: f, n: 0 };
+      groups[key].n++;
+    });
+    var icons = { check: "✓", info: "◦", flag: "⚠" };
+    $("iconbar").innerHTML = Object.keys(groups).map(function (k) {
+      var g = groups[k], f = g.f;
+      var mark = icons[f.severity] || "◦";
+      var col = f.severity === "flag" ? "#A32D2D" : (f.severity === "check" ? "#3B6D11" : "var(--ink2)");
+      return '<span class="ic"><span style="color:' + col + ';">' + mark + "</span> " + esc(f.label.toLowerCase()) + " " + f.id.replace(/[a-z]$/, "") + (g.n > 1 ? " ×" + g.n : "") + '<span class="tt"><strong>How this was calculated</strong><br>' + esc(f.explain) + "</span></span>";
+    }).join("");
+  }
+
+  function setView(v) {
+    view = v;
+    $("stage").className = "v-" + v;
+    document.querySelectorAll(".fv").forEach(function (b) { b.classList.toggle("on", b.dataset.v === v); });
+    renderKey();
+  }
+
+  /* ---- Hover pop-up + right-click context menu ---- */
+  function hoverText(i) {
+    var p = levelIndex(view);
+    var cl = EXPLAINER.clauseOf(R, i), ph = EXPLAINER.phraseOf(R, i), t = R._toks[i];
+    if (p === 0) {
+      var c0 = R.summary.classifications[0], c1 = R.summary.classifications[1];
+      return { head: "Overview", txt: "In " + (cl ? String(cl.label).toLowerCase() : "the input") + (c0 ? " of a " + c0.label.toLowerCase() : "") + (c1 ? ", " + c1.label.toLowerCase() + "." : ".") };
+    }
+    if (p === CL_HOME) {
+      var cc = cl ? CONTENT[cl.id] : null;
+      return { head: "Structural unit", txt: (cl ? cl.label : "—") + (cc ? " — " + cc.d : "") };
+    }
+    if (p === PH_HOME) {
+      var pc = ph ? CONTENT[ph.id] : null;
+      return { head: "Sub-unit", txt: (ph ? ph.label : "not inside a sub-unit") + (pc ? " — " + pc.d : "") };
+    }
+    var txt = t.text + " — " + EXPLAINER.posShort(t) + " · " + EXPLAINER.funcOf(R, i) + (R.tokens[i].tags[0].confidence < CONFIG.tentativeThreshold ? " (tentative)" : "");
+    var cid = R.tokens[i].tags[0].id;
+    if (CONTENT[cid]) txt += ". " + CONTENT[cid].d;
+    return { head: "Word class", txt: txt };
+  }
+
+  var tip;
+  function initHoverAndContext() {
+    tip = $("tip");
+    $("stage").addEventListener("mousemove", function (ev) {
+      if (!R) return;
+      var w = ev.target.closest ? ev.target.closest(".w") : null;
+      if (!w) { tip.style.display = "none"; return; }
+      var i = +w.dataset.i;
+      var h = hoverText(i);
+      tip.innerHTML = "<b>" + esc(h.head) + "</b>" + esc(h.txt);
+      tip.style.display = "block";
+      var x = ev.pageX + 14, y = ev.pageY + 16;
+      if (x + 310 > document.body.clientWidth) x = ev.pageX - 310;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    });
+    $("stage").addEventListener("mouseleave", function () { tip.style.display = "none"; });
+    $("stage").addEventListener("contextmenu", function (ev) {
+      if (!R) return;
+      var w = ev.target.closest ? ev.target.closest(".w") : null;
+      if (!w) return;
+      ev.preventDefault();
+      var i = +w.dataset.i, t = R._toks[i], cid = R.tokens[i].tags[0].id, c = CONTENT[cid];
+      var ctx = $("ctx");
+      ctx.innerHTML = '<div class="h">“' + esc(t.text) + '” — ' + esc(EXPLAINER.posShort(t)) + '</div><div>' + (c ? esc(c.d) : "") + '</div><div class="muted" style="padding-top:0;">Role here: ' + esc(EXPLAINER.funcOf(R, i)) + " · confidence " + Math.round(R.tokens[i].tags[0].confidence * 100) + "%</div>";
+      ctx.style.left = (ev.pageX + 4) + "px"; ctx.style.top = (ev.pageY + 4) + "px"; ctx.style.display = "block";
+    });
+    document.addEventListener("click", function (ev) {
+      if (ev.target.closest && (ev.target.closest("#ctx") || ev.target.closest("#sugg"))) return;
+      $("ctx").style.display = "none";
+      if (!(ev.target.closest && ev.target.closest("#input"))) $("spelling-suggestions").style.display = "none";
+    });
+  }
+
+  /* ---- Actions ---- */
+  function parseNow() {
+    var text = getInputText();
+    if (!text) return;
+    R = ENGINE.parse(text, readSweepSelection());
+    window.GeneratorParseResult = { result: R, parse: ENGINE.parse };
+    render();
+  }
+  function explain() {
+    if (!R || R.meta.overCap) return;
+    $("xtables").innerHTML = EXPLAINER.tables(R);
+    $("rules").innerHTML = EXPLAINER.rules(R);
+    $("explainer").style.display = "block";
+  }
+  function copyText(s, btn) {
+    function ok() { var old = btn.textContent; btn.textContent = "Copied ✓"; setTimeout(function () { btn.textContent = old; }, 1400); }
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(s).then(ok, fallback); }
+    else fallback();
+    function fallback() {
+      var ta = document.createElement("textarea"); ta.value = s; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); ok(); } catch (e) { console.warn("copyText fallback failed", e); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  function init() {
+    $("hdrname").textContent = CONFIG.name;
+    var lexinfo = $("lexinfo");
+    if (CONFIG.lexicon && CONFIG.lexicon.enabled) {
+      lexinfo.innerHTML = renderAttribution(" · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : ""));
+    }
+    // AC-8: attribution is sourced from CONFIG.spelling.attribution, which
+    // the assembler set from its own SPELLING_ATTRIBUTION constant — never
+    // hardcoded per cartridge here.
+    if (CONFIG.spelling && CONFIG.spelling.enabled && CONFIG.spelling.attribution) {
+      $("spellinfo").innerHTML = renderAttribution(" · " + CONFIG.spelling.attribution);
+    }
+    buildFocusBar();
+    buildSweepBar();
+    $("stage").className = "v-" + view;
+    initHoverAndContext();
+    initSpelling();
+
+    $("btnParse").addEventListener("click", parseNow);
+    $("btnAll").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) { setView(levels[Math.min(1, levels.length - 1)]); explain(); window.scrollTo({ top: 0 }); } });
+    $("btnExplain").addEventListener("click", function () { if (!R) parseNow(); explain(); });
+    $("input").addEventListener("input", function () { updateCount(); clearTimeout(spellTimer); spellTimer = setTimeout(runSpellCheck, 600); });
+    $("spellTog").addEventListener("change", runSpellCheck);
+    $("btnPdf").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-chrome"; window.print(); });
+    $("btnPdfBare").addEventListener("click", function () { if (!R) parseNow(); explain(); document.body.className = "print-bare"; window.print(); });
+    $("btnMd").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) copyText(EXPLAINER.toMarkdown(R), $("btnMd")); });
+    $("btnTxt").addEventListener("click", function () { if (!R) parseNow(); if (R && !R.meta.overCap) copyText(EXPLAINER.toText(R), $("btnTxt")); });
+    window.addEventListener("afterprint", function () { document.body.className = ""; });
+    $("input").addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); parseNow(); } });
+    updateCount();
+  }
+
+  return { init: init, parseNow: parseNow, setView: setView };
+})();
+
+</script>
+<script>
+/* ============================================================
+   SHELL · PRESENT MODE (GeneratorShell.spec.md §3b, DECISIONS.md D-1)
+   Never edited per cartridge. Reads ONLY CONFIG.generator and the ENGINE
+   present-mode exports (getPool, render, checkAnswer, explainItem) — never
+   the DOM beyond its own mount points, never a cartridge's name (D-3).
+
+   Present-mode ENGINE contract (the cartridge side of this seam):
+
+     var ENGINE = {
+       getPool()                    -> PoolItem[]   REQUIRED
+         Returns the full baked-in item pool. A cartridge typically builds
+         this from the shell-injected CONTENT global (Object.values(CONTENT),
+         itself compiled at build time from files.content — a JSON object
+         keyed by item id) but MAY return a hardcoded array instead; the
+         shell only requires a non-empty array back.
+
+       render(item)                 -> { html, clueHtml?, canonicalText }  REQUIRED
+         item: one PoolItem from getPool(). Returns the markup shown when
+         the item displays (html — the cartridge is responsible for
+         escaping any interpolated item text itself, HTML-6 applies to
+         this string same as anywhere else), an optional clueHtml (present
+         only when CONFIG.generator.clue is true), and canonicalText — the
+         plain string the Copy button puts on the clipboard.
+
+       checkAnswer(item, userAnswer) -> { correct, message }   REQUIRED iff
+                                                                 CONFIG.generator.answer
+         userAnswer: the raw, unnormalised string from #answerInput. The
+         cartridge owns normalisation (case folding, punctuation, etc).
+
+       explainItem(item)            -> html string             REQUIRED iff
+                                                                 CONFIG.generator.explainer
+         Shown in the #explainer panel on request.
+     }
+
+   PoolItem shape (cartridge-defined beyond these two shell-read fields):
+     { id: string,                       // required, unique within the pool
+       category: string,                 // required IFF CONFIG.generator.categories
+                                          // is set; must match one categories[].id
+       ...cartridge-defined fields ENGINE.render/checkAnswer/explainItem read }
+   ============================================================ */
+var PresentMode = (function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  var pool = [];
+  var queue = [];
+  var currentItem = null;
+  var lastItemId = null;
+  var activeCategory = null; // null = all categories
+
+  function poolForCategory() {
+    if (!activeCategory) return pool;
+    return pool.filter(function (item) { return item.category === activeCategory; });
+  }
+
+  // Fisher-Yates — never repeat an item until the filtered pool is
+  // exhausted, then reshuffle (task D: "a naive random pick that repeats
+  // immediately feels broken").
+  function shuffle(items) {
+    var arr = items.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function refillQueue() {
+    var source = poolForCategory();
+    queue = shuffle(source);
+    // Avoid an immediate repeat across a reshuffle boundary when there is
+    // more than one item to choose from.
+    if (queue.length > 1 && queue[0].id === lastItemId) {
+      var tmp = queue[0]; queue[0] = queue[1]; queue[1] = tmp;
+    }
+  }
+
+  function nextItem() {
+    if (!queue.length) refillQueue();
+    return queue.shift();
+  }
+
+  function clearFeedback() {
+    var fb = $("answerFeedback");
+    fb.style.display = "none";
+    fb.textContent = "";
+    fb.className = "present-only";
+    var input = $("answerInput");
+    if (input) input.value = "";
+  }
+
+  function generate() {
+    if (!pool.length) return;
+    var item = nextItem();
+    if (!item) return;
+    currentItem = item;
+    lastItemId = item.id;
+
+    var result = ENGINE.render(item);
+    $("pstage").innerHTML = result.html;
+    $("pstage").style.display = "block";
+
+    var clueBox = $("clueBox");
+    clueBox.style.display = "none";
+    clueBox.innerHTML = "";
+    currentItem._clueHtml = result.clueHtml || "";
+
+    $("explainer").style.display = "none";
+    clearFeedback();
+  }
+
+  function revealClue() {
+    if (!currentItem) return;
+    var clueBox = $("clueBox");
+    clueBox.innerHTML = currentItem._clueHtml || "";
+    clueBox.style.display = "block";
+  }
+
+  function checkAnswer() {
+    if (!currentItem) return;
+    var input = $("answerInput");
+    var result = ENGINE.checkAnswer(currentItem, input.value);
+    var fb = $("answerFeedback");
+    fb.textContent = result.message || (result.correct ? "Correct" : "Not quite");
+    fb.className = "present-only " + (result.correct ? "answer-correct" : "answer-incorrect");
+    fb.style.display = "block";
+  }
+
+  function explainCurrent() {
+    if (!currentItem) return;
+    $("xtables").innerHTML = "";
+    $("rules").innerHTML = ENGINE.explainItem(currentItem);
+    $("explainer").style.display = "block";
+  }
+
+  /* ---- Copy (JS-5: async clipboard API, execCommand fallback for file://) ---- */
+  function copyCurrent() {
+    if (!currentItem) return;
+    var result = ENGINE.render(currentItem);
+    var text = result.canonicalText || "";
+    var btn = $("btnCopy");
+    function ok() {
+      var old = btn.textContent;
+      btn.textContent = "Copied ✓";
+      setTimeout(function () { btn.textContent = old; }, 1400);
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); ok(); }
+      catch (e) { console.warn("PresentMode.copyCurrent: execCommand fallback failed", e); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  /* ---- Category picker (only rendered when CONFIG.generator.categories is set) ---- */
+  function buildCategoryBar() {
+    if (!CONFIG.generator.categories) return;
+    var bar = $("categoryBar");
+    var html = '<span class="muted">Category</span>' +
+      '<button class="fv on" data-cat="">All</button>';
+    CONFIG.generator.categories.forEach(function (cat) {
+      html += '<button class="fv" data-cat="' + esc(cat.id) + '">' + esc(cat.label) + "</button>";
+    });
+    bar.innerHTML = html;
+    bar.style.display = "flex";
+    bar.querySelectorAll(".fv").forEach(function (b) {
+      b.addEventListener("click", function () {
+        activeCategory = b.dataset.cat || null;
+        bar.querySelectorAll(".fv").forEach(function (o) { o.classList.toggle("on", o === b); });
+        queue = []; // force a re-shuffle scoped to the new category
+      });
+    });
+  }
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  /** Called by ApiSeam after a successful Tier B refresh (task E) — merges
+   * newly-fetched items into the live pool, skipping any id already
+   * present so a re-run of the same prompt can't duplicate entries. Does
+   * not disturb the in-flight queue beyond making the new items eligible
+   * on the next reshuffle. */
+  function addToPool(items) {
+    var existingIds = {};
+    pool.forEach(function (item) { existingIds[item.id] = true; });
+    items.forEach(function (item) {
+      if (item && item.id && !existingIds[item.id]) {
+        pool.push(item);
+        existingIds[item.id] = true;
+      }
+    });
+  }
+
+  function init() {
+    $("hdrname").textContent = CONFIG.name;
+    $("hdrmeta").textContent = "Tier A · offline";
+
+    pool = ENGINE.getPool();
+    if (!pool || !pool.length) {
+      console.warn("PresentMode.init: ENGINE.getPool() returned an empty pool");
+    }
+
+    buildCategoryBar();
+
+    $("presentToolbar").style.display = "flex";
+    $("btnGenerate").addEventListener("click", generate);
+    $("btnCopy").addEventListener("click", copyCurrent);
+
+    if (CONFIG.generator.clue) {
+      $("btnClue").style.display = "";
+      $("btnClue").addEventListener("click", revealClue);
+    }
+
+    if (CONFIG.generator.answer) {
+      $("answerBar").style.display = "flex";
+      $("btnCheck").addEventListener("click", checkAnswer);
+      $("answerInput").addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") { ev.preventDefault(); checkAnswer(); }
+      });
+    }
+
+    if (CONFIG.generator.explainer) {
+      $("btnExplainPresent").style.display = "";
+      $("btnExplainPresent").addEventListener("click", explainCurrent);
+    }
+
+    ApiSeam.initSettingsUI();
+
+    generate();
+  }
+
+  return { init: init, generate: generate, addToPool: addToPool };
+})();
+
+</script>
+<script>
+/* ============================================================
+   SHELL · TIER B — Claude API pool refresh (DECISIONS.md D-2, task E)
+   Never edited per cartridge. THE ONE PLACE ANY fetch() LIVES (JS-5) —
+   nothing else in the shell or a cartridge should call fetch directly.
+
+   Contract:
+   - The API key lives in localStorage ONLY (key: "generatorApiKey"),
+     entered by the user via the settings field this module mounts. It is
+     NEVER hardcoded, never written to any file in this repo, and never
+     leaves the browser except as the Authorization header of the one
+     direct-from-the-page request below (SR-5).
+   - Model id: claude-sonnet-5 (the current Sonnet).
+   - Degrades closed (task E): no key, offline, or a failed/malformed
+     response -> the Refresh-pool control disables itself with a visible
+     note and every Tier-A function keeps working. A Tier-B failure must
+     never throw past this module or break the rest of the widget (JS-2).
+
+   Optional present-mode ENGINE hooks this module calls IF a cartridge
+   provides them (present-mode.js requires neither — a cartridge that
+   omits both simply never sees a working Refresh-pool button, same
+   degrade-closed default as no API key):
+     ENGINE.buildRefreshRequest()        -> { prompt: string }
+     ENGINE.parseRefreshResponse(text)   -> PoolItem[]
+   ============================================================ */
+var ApiSeam = (function () {
+  var STORAGE_KEY = "generatorApiKey";
+  var API_URL = "https://api.anthropic.com/v1/messages";
+  var MODEL = "claude-sonnet-5";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function getKey() {
+    try { return window.localStorage.getItem(STORAGE_KEY) || ""; }
+    catch (e) { return ""; }
+  }
+  function setKey(key) {
+    try { window.localStorage.setItem(STORAGE_KEY, key); }
+    catch (e) { console.warn("ApiSeam.setKey: localStorage unavailable", e); }
+  }
+
+  function refreshCapable() {
+    return typeof ENGINE !== "undefined" &&
+      typeof ENGINE.buildRefreshRequest === "function" &&
+      typeof ENGINE.parseRefreshResponse === "function";
+  }
+
+  /** The one fetch() call site (JS-5). Direct from the page — the key
+   * never passes through any Lukeatron server. */
+  async function callClaude(prompt) {
+    const key = getKey();
+    if (!key) throw new Error("no API key set");
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 2048,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Claude API returned " + response.status);
+    }
+    const data = await response.json();
+    const text = data && data.content && data.content[0] && data.content[0].text;
+    if (typeof text !== "string") throw new Error("malformed Claude API response");
+    return text;
+  }
+
+  /** Runs the full refresh cycle: build request -> fetch -> parse ->
+   * onSuccess(items). Any failure at any step calls onError(message) and
+   * never throws past this function (JS-2/JS-5: loading + error states,
+   * degrade closed). */
+  async function refreshPool(onSuccess, onError) {
+    if (!refreshCapable()) {
+      onError("this cartridge has no Tier B refresh support");
+      return;
+    }
+    if (!getKey()) {
+      onError("no API key set");
+      return;
+    }
+    try {
+      const req = ENGINE.buildRefreshRequest();
+      const text = await callClaude(req.prompt);
+      const items = ENGINE.parseRefreshResponse(text);
+      if (!Array.isArray(items) || !items.length) {
+        onError("Claude API response did not parse into any pool items");
+        return;
+      }
+      onSuccess(items);
+    } catch (e) {
+      onError(e && e.message ? e.message : "refresh failed");
+    }
+  }
+
+  /** Mounts the settings UI (key field + Refresh-pool button) into the
+   * shell's #tierBBar. Present-mode-only (present-mode.js calls this from
+   * its init()); analyse mode never mounts this bar. Degrades closed at
+   * every branch: no #tierBBar in this build -> no-op; not refreshCapable
+   * -> button stays disabled with an explanatory title. */
+  function initSettingsUI() {
+    var bar = $("tierBBar");
+    if (!bar) return;
+    bar.style.display = "flex";
+
+    var keyInput = $("apiKeyInput");
+    var saveBtn = $("btnSaveKey");
+    var refreshBtn = $("btnRefreshPool");
+    var status = $("tierBStatus");
+
+    keyInput.value = getKey();
+
+    if (!refreshCapable()) {
+      refreshBtn.disabled = true;
+      refreshBtn.title = "This cartridge does not support a Tier B pool refresh.";
+      status.textContent = "Tier B refresh not available for this widget.";
+      // The key field still works (it's just inert without refresh
+      // support) — no reason to disable it too.
+    }
+
+    saveBtn.addEventListener("click", function () {
+      setKey(keyInput.value.trim());
+      status.textContent = getKey() ? "Key saved (this browser only)." : "Key cleared.";
+    });
+
+    refreshBtn.addEventListener("click", function () {
+      if (!refreshCapable()) return;
+      if (!getKey()) {
+        status.textContent = "Enter and save an API key first.";
+        return;
+      }
+      refreshBtn.disabled = true;
+      var old = refreshBtn.textContent;
+      refreshBtn.textContent = "Refreshing…";
+      status.textContent = "";
+      refreshPool(
+        function onSuccess(items) {
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = old;
+          status.textContent = "Added " + items.length + " item(s) to the pool.";
+          if (typeof PresentMode !== "undefined" && typeof PresentMode.addToPool === "function") {
+            PresentMode.addToPool(items);
+          }
+        },
+        function onError(message) {
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = old;
+          status.textContent = "Refresh failed: " + message + " — Tier A is unaffected.";
+        }
+      );
+    });
+  }
+
+  return {
+    getKey: getKey,
+    setKey: setKey,
+    refreshCapable: refreshCapable,
+    refreshPool: refreshPool,
+    initSettingsUI: initSettingsUI,
+  };
+})();
+
+</script>
+<script>
+if (CONFIG.generator && CONFIG.generator.mode === "present") {
+  PresentMode.init();
+} else {
+  LEX.init(UI.init);
+}
+if (typeof MiniWikiSeam !== "undefined" && MiniWikiSeam.isAvailable()) {
+  var btnMW = document.getElementById("btnMiniWiki");
+  btnMW.style.display = "";
+  btnMW.addEventListener("click", function () {
+    var opened = MiniWikiSeam.open();
+    document.getElementById("miniwikiwarn").style.display = opened ? "none" : "";
+  });
+} else {
+  // No bundle/articles embedded — collapse the whole bar, not just the button,
+  // so a cartridge without a catalogue shows no stray empty row.
+  document.getElementById("wikibar").style.display = "none";
+}
+
+// The export bar exports the EXPLAINER. A present-mode cartridge that declares
+// generator.explainer:false (Riddle, FolkTale) has no explainer to export, so
+// offering "Export explainer: PDF / Copy Markdown…" there is a dead control
+// that misrepresents what the widget does.
+if (CONFIG.generator && CONFIG.generator.mode === "present" && !CONFIG.generator.explainer) {
+  document.querySelectorAll("footer .no-print").forEach(function (el) {
+    el.style.display = "none";
+  });
+}
+</script>
+</body>
+</html>

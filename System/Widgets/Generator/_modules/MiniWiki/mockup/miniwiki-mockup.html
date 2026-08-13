@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini-Wiki — Parser Shell</title>
+<style>
+:root {
+  --bg:     #faf9f5;
+  --card:   #fff;
+  --ink:    #1a1a17;
+  --ink2:   #5f5e5a;
+  --ink3:   #9a9891;
+  --line:   #e3e1d9;
+  --line2:  #c9c7bd;
+  --acc:    #185FA5;
+  --accbg:  #E6F1FB;
+  --radius: 8px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+header .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--ink);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+header .meta {
+  font-size: 12px;
+  color: var(--ink3);
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.nav-pane {
+  flex: 0 0 280px;
+  border-right: 1px solid var(--line);
+  padding-right: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.article-pane {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-box {
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.search-box:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--accbg);
+}
+
+.outline-tree {
+  font-size: 13px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-item {
+  margin: 4px 0;
+}
+
+.tree-toggle {
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 4px;
+  width: 18px;
+  text-align: center;
+}
+
+.tree-toggle:hover {
+  color: var(--ink);
+}
+
+.tree-link {
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  width: calc(100% - 18px);
+  word-break: break-word;
+}
+
+.tree-link:hover {
+  background: var(--accbg);
+  color: var(--acc);
+}
+
+.tree-link.active {
+  background: var(--accbg);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+.tree-children {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: none;
+}
+
+.tree-children.expanded {
+  display: block;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: var(--ink2);
+  margin-bottom: 12px;
+}
+
+.breadcrumb a {
+  color: var(--acc);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.article-header {
+  margin-bottom: 20px;
+}
+
+.article-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.chip {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  background: var(--accbg);
+  color: var(--acc);
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.article-lead {
+  font-size: 15px;
+  margin: 0 0 16px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.article-section {
+  margin-bottom: 20px;
+}
+
+.article-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink2);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin: 12px 0 6px;
+}
+
+.article-section ul, .article-section ol {
+  font-size: 13.5px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.article-section li {
+  margin: 3px 0;
+  line-height: 1.5;
+}
+
+.article-section p {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.wikilink {
+  color: var(--acc);
+  text-decoration: none;
+  cursor: help;
+  position: relative;
+}
+
+.wikilink:hover {
+  text-decoration: underline;
+}
+
+.article-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.nav-button {
+  color: var(--acc);
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  text-decoration: underline;
+}
+
+.see-also {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f4f3ee;
+  border-radius: var(--radius);
+  font-size: 12px;
+}
+
+.see-also-title {
+  font-weight: 600;
+  color: var(--ink2);
+  margin-bottom: 6px;
+}
+
+.see-also-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.see-also-link {
+  color: var(--acc);
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 11px;
+}
+
+.see-also-link:hover {
+  background: var(--accbg);
+}
+
+#preview-popover {
+  position: absolute;
+  display: none;
+  background: #fff;
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  padding: 8px 11px;
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 280px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.09);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.search-results {
+  display: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: -4px;
+  position: absolute;
+  width: 100%;
+  z-index: 50;
+}
+
+.search-results.visible {
+  display: block;
+}
+
+.search-result-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.search-result-item:hover {
+  background: var(--accbg);
+}
+
+.search-result-title {
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.search-result-snippet {
+  color: var(--ink3);
+  font-size: 11px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink3);
+}
+
+footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 12px;
+  font-size: 12px;
+  color: var(--ink3);
+  flex-wrap: wrap;
+}
+
+footer a {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
+footer a:hover {
+  color: var(--acc);
+  text-decoration-style: solid;
+}
+
+.nav-scrim {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
+}
+
+.nav-scrim.active {
+  display: block;
+}
+
+@media (max-width: 719px) {
+  .container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .nav-pane {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    max-height: none;
+    border-right: 1px solid var(--line);
+    padding-right: 20px;
+    background: var(--bg);
+    z-index: 45;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+    flex: none;
+  }
+
+  .nav-pane.drawer-open {
+    transform: translateX(0);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid var(--line2);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--ink);
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav-toggle:hover {
+    background: #f4f3ee;
+  }
+}
+
+@media (min-width: 720px) {
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-scrim {
+    display: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+  <header>
+    <div class="brand">
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation" title="Toggle navigation">☰</button>
+      <span class="badge" aria-hidden="true">W</span>
+      <span>Mini-Wiki</span>
+    </div>
+    <div class="meta">Rhetoric & Logic · Concept Map</div>
+  </header>
+
+  <div class="nav-scrim" id="navScrim"></div>
+
+  <div class="container">
+    <div class="nav-pane" id="navPane">
+      <input type="text" id="searchBox" class="search-box" placeholder="Search topics…">
+      <div id="searchResults" class="search-results"></div>
+      <ul id="outlineTree" class="outline-tree"></ul>
+    </div>
+
+    <div class="article-pane">
+      <div id="articleContainer"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Mini-Wiki Mockup · Rhetoric & Logic concept map</span>
+    <span style="margin-left: auto;">No external requests · hash-based routing</span>
+  </footer>
+</div></div>
+
+<div id="previewPopover"></div>
+
+<script>
+// ============================================================================
+// DATA MODEL — Outline tree with real content from Rhetoric & Logic
+// ============================================================================
+
+const ARTICLES = {
+  "1": {
+    title: "The Five Canons of Rhetoric",
+    definition: "The classical five-stage workflow for transforming an initial concept into a fully realised and delivered piece of communication.",
+    level: 1,
+    breadcrumb: [],
+    siblings: [],
+    children: ["1.1", "1.2", "1.3"],
+    characteristics: "research and exploration; brainstorming; argument identification; evidence gathering; discovery of supporting materials",
+    examples: []
+  },
+  "1.1": {
+    title: "Inventio (Invention / Discovery)",
+    definition: "The discovery and brainstorming phase: identifying the strongest arguments and evidence available for the subject.",
+    level: 2,
+    breadcrumb: ["1"],
+    siblings: ["1.2", "1.3"],
+    children: ["1.1.1", "1.1.2"],
+    characteristics: "research and exploration of topics; identification of main arguments; discovery of supporting evidence; analysis of available data and sources; topic development and refinement",
+    examples: []
+  },
+  "1.1.1": {
+    title: "Textual Invention",
+    definition: "Researching multiple sources and evidence gathering for textual creation.",
+    level: 3,
+    breadcrumb: ["1", "1.1"],
+    siblings: ["1.1.2"],
+    children: [],
+    characteristics: "source triangulation; precedent analysis; literature review; archival research; testimonial collection; exegetical research",
+    examples: [
+      "A journalist investigating water quality gathers EPA reports, interviews residents, and samples data from three testing sites.",
+      "A legal researcher examines case law and precedents before crafting an argument.",
+      "A theologian studies Scripture and commentaries before preparing a sermon."
+    ],
+    relatedLinks: ["1.2.1", "2.3"]
+  },
+  "1.1.2": {
+    title: "Visual Invention",
+    definition: "Researching reference materials and visual sources before visual production.",
+    level: 3,
+    breadcrumb: ["1", "1.1"],
+    siblings: ["1.1.1"],
+    children: [],
+    characteristics: "mood boards; visual research; competitive analysis; location scouting; reference collection",
+    examples: [
+      "A filmmaker preparing a period drama collects reference images of 1920s fashion and scouts locations.",
+      "A graphic designer researches competitor designs and visual trends before starting a project."
+    ],
+    relatedLinks: ["1.3.6"]
+  },
+  "1.2": {
+    title: "Dispositio (Arrangement)",
+    definition: "The strategic arrangement of arguments or visual elements into a coherent structure to maximise impact.",
+    level: 2,
+    breadcrumb: ["1"],
+    siblings: ["1.1", "1.3", "1.4", "1.5"],
+    children: ["1.2.1", "1.2.2"],
+    characteristics: "logical organisation of ideas; strategic sequencing of arguments; structural frameworks; transition management; emphasis through placement",
+    examples: []
+  },
+  "1.2.1": {
+    title: "Textual Arrangement",
+    definition: "Strategic ordering of arguments and ideas in written or spoken form.",
+    level: 3,
+    breadcrumb: ["1", "1.2"],
+    siblings: ["1.2.2"],
+    children: [],
+    characteristics: "chronological order; climactic ordering; problem-solution framework; three-act structure; IRAC structure; inverted pyramid",
+    examples: [
+      "A lawyer's closing argument opens with weak circumstantial evidence and closes with DNA evidence—climactic dispositio.",
+      "A sermon follows exposition, doctrinal points, then practical application.",
+      "A news article places the most important information first (inverted pyramid)."
+    ],
+    relatedLinks: ["1.1.1", "1.3.1"]
+  },
+  "1.2.2": {
+    title: "Visual Arrangement",
+    definition: "Spatial and sequential organisation of visual elements.",
+    level: 3,
+    breadcrumb: ["1", "1.2"],
+    siblings: ["1.2.1"],
+    children: [],
+    characteristics: "visual hierarchy; compositional balance; shot sequencing; editing rhythm; spatial choreography; grid systems",
+    examples: [
+      "A movie poster places the hero's face in the upper third, the title across the middle, and the antagonist in the lower-left shadow.",
+      "Film editing uses escalating rhythm and decreasing shot duration to build tension.",
+      "A website uses grid systems to guide eye flow and establish hierarchy."
+    ],
+    relatedLinks: ["1.3.6"]
+  },
+  "1.3": {
+    title: "Elocutio (Style)",
+    definition: "The stylistic 'texture' of the text or visual—precise word choice or aesthetic choices suited to the audience.",
+    level: 2,
+    breadcrumb: ["1"],
+    siblings: ["1.1", "1.2", "1.4", "1.5"],
+    children: ["1.3.1", "1.3.2", "1.3.3"],
+    characteristics: "diction and word choice; sentence variety; tone and voice; rhetorical figures; register and formality; colour palette; typography; lighting style",
+    examples: []
+  },
+  "1.3.1": {
+    title: "Textual Style Registers",
+    definition: "Levels of formality and vocabulary suited to audience and context.",
+    level: 3,
+    breadcrumb: ["1", "1.3"],
+    siblings: ["1.3.2", "1.3.3"],
+    children: [],
+    characteristics: "academic register; marketing register; technical register; poetic register; legal register",
+    examples: [
+      "Plain: 'The meeting ended.' Formal: 'The deliberations drew to a close.' Same event, different elocutio.",
+      "Academic writing uses precise, technical language; marketing copy uses vivid, emotive language.",
+      "Legal writing requires exact, carefully defined diction."
+    ],
+    relatedLinks: ["1.3.2"]
+  },
+  "1.3.2": {
+    title: "Figures of Speech — Comparison",
+    definition: "Rhetorical devices that compare or identify unlike things.",
+    level: 3,
+    breadcrumb: ["1", "1.3"],
+    siblings: ["1.3.1", "1.3.3"],
+    children: [],
+    characteristics: "simile; metaphor; analogy; personification; apostrophe; image-based comparison",
+    examples: [
+      "Simile: 'Her smile was as bright as the sun.'",
+      "Metaphor: 'Time is money.'",
+      "Personification: 'The wind whispered through the trees.'",
+      "Apostrophe: 'O Death, where is thy sting?'"
+    ],
+    relatedLinks: ["1.3.3"]
+  },
+  "1.3.3": {
+    title: "Figures of Speech — Emphasis",
+    definition: "Rhetorical devices that amplify or understate for effect.",
+    level: 3,
+    breadcrumb: ["1", "1.3"],
+    siblings: ["1.3.1", "1.3.2"],
+    children: [],
+    characteristics: "hyperbole; litotes; anaphora; climax; antithesis; repetition",
+    examples: [
+      "Hyperbole: 'I've told you a million times.'",
+      "Litotes: 'She's not unkind' (meaning she is kind).",
+      "Anaphora: 'We shall fight on the beaches, we shall fight on the landing grounds…'",
+      "Antithesis: 'It was the best of times, it was the worst of times.'"
+    ],
+    relatedLinks: ["1.3.2"]
+  },
+  "2": {
+    title: "The Three Rhetorical Appeals (Proofs)",
+    definition: "The primary modes of persuasion: establishing authority (ethos), evoking emotion (pathos), and demonstrating reason (logos).",
+    level: 1,
+    breadcrumb: [],
+    siblings: [],
+    children: ["2.1", "2.2", "2.3"],
+    characteristics: "persuasion through credibility; persuasion through emotion; persuasion through logic",
+    examples: []
+  },
+  "2.1": {
+    title: "Ethos (Credibility / Character)",
+    definition: "Establishing credibility and trust by demonstrating the speaker's reliable character, expertise, and moral standing.",
+    level: 2,
+    breadcrumb: ["2"],
+    siblings: ["2.2", "2.3"],
+    children: [],
+    characteristics: "expertise demonstration; source citation; credentials display; character establishment; trust building",
+    examples: [
+      "A financial advisor's newsletter opens: 'CFA charterholder, 15 years managing institutional portfolios.'",
+      "A doctor cites medical research and professional experience.",
+      "An author establishes credentials in a biography or preface."
+    ],
+    relatedLinks: ["2.2", "2.3"]
+  },
+  "2.2": {
+    title: "Pathos (Emotion)",
+    definition: "Generating engagement by appealing to the audience's emotions, creating a visceral or empathetic connection.",
+    level: 2,
+    breadcrumb: ["2"],
+    siblings: ["2.1", "2.3"],
+    children: [],
+    characteristics: "emotional response evocation; empathy creation; vivid sensory language; storytelling; value appeals",
+    examples: [
+      "Charity fundraising: 'Mariam is seven. Last night she went to bed hungry for the 412th consecutive day.'",
+      "A memorial speech evoking grief and remembrance.",
+      "Sunset imagery in romantic films creating warmth and nostalgia."
+    ],
+    relatedLinks: ["2.1", "2.3"]
+  },
+  "2.3": {
+    title: "Logos (Logic / Reason)",
+    definition: "Building credibility through logical reasoning, presentation of data, and structured evidence to support a rational conclusion.",
+    level: 2,
+    breadcrumb: ["2"],
+    siblings: ["2.1", "2.2"],
+    children: [],
+    characteristics: "logical reasoning; data presentation; evidence structure; statistical support; causal argument",
+    examples: [
+      "A medical argument backed by peer-reviewed research and clinical trials.",
+      "An economic policy justified by GDP data and employment statistics.",
+      "A scientific hypothesis supported by experimental data and reproducible results."
+    ],
+    relatedLinks: ["2.1", "2.2"]
+  },
+  "3": {
+    title: "Formal Fallacies (Deductive)",
+    definition: "Errors in the logical structure of a deductive argument that render it invalid regardless of the truth of its premises.",
+    level: 1,
+    breadcrumb: [],
+    siblings: [],
+    children: ["3.1", "3.2", "3.3"],
+    characteristics: "form-based errors; deductive logic errors; invalid argument structures",
+    examples: []
+  },
+  "3.1": {
+    title: "Affirming the Consequent",
+    definition: "A formal fallacy in which the conditional premise 'If P then Q' is followed by the assertion of Q, and from this the invalid conclusion that P must be true is drawn.",
+    level: 2,
+    breadcrumb: ["3"],
+    siblings: ["3.2", "3.3"],
+    children: [],
+    characteristics: "conditional reasoning error; truth of consequent assumption; antecedent wrongly inferred",
+    examples: [
+      "If it rained, the pavement is wet. The pavement is wet. Therefore, it rained. (The pavement could be wet because a sprinkler ran.)"
+    ],
+    relatedLinks: ["3.2", "3.3"]
+  },
+  "3.2": {
+    title: "Denying the Antecedent",
+    definition: "A formal fallacy in which the conditional premise 'If P then Q' is followed by the denial of P, and from this the invalid conclusion that Q must be false is drawn.",
+    level: 2,
+    breadcrumb: ["3"],
+    siblings: ["3.1", "3.3"],
+    children: [],
+    characteristics: "conditional reasoning error; falsity of antecedent assumption; consequent wrongly negated",
+    examples: [
+      "If she is the CEO, she has a corner office. She is not the CEO. Therefore, she does not have a corner office. (She could have a corner office for another reason.)"
+    ],
+    relatedLinks: ["3.1", "3.3"]
+  },
+  "3.3": {
+    title: "Existential Fallacy",
+    definition: "A formal fallacy in categorical logic where a universal proposition is used to infer a particular proposition without establishing that the subject class has any members.",
+    level: 2,
+    breadcrumb: ["3"],
+    siblings: ["3.1", "3.2"],
+    children: [],
+    characteristics: "categorical logic error; universal to particular inference error; empty class assumption",
+    examples: [
+      "All unicorns have a single horn. Therefore, some unicorns have a single horn. (If the class of unicorns is empty, the conclusion does not follow.)"
+    ],
+    relatedLinks: ["3.1", "3.2"]
+  }
+};
+
+// Build hierarchy structure (only include articles that are defined in ARTICLES above)
+const OUTLINE = {
+  "1": { children: ["1.1", "1.2", "1.3"], expanded: false },
+  "1.1": { children: ["1.1.1", "1.1.2"], expanded: false },
+  "1.1.1": { children: [], expanded: false },
+  "1.1.2": { children: [], expanded: false },
+  "1.2": { children: ["1.2.1", "1.2.2"], expanded: false },
+  "1.2.1": { children: [], expanded: false },
+  "1.2.2": { children: [], expanded: false },
+  "1.3": { children: ["1.3.1", "1.3.2", "1.3.3"], expanded: false },
+  "1.3.1": { children: [], expanded: false },
+  "1.3.2": { children: [], expanded: false },
+  "1.3.3": { children: [], expanded: false },
+  "2": { children: ["2.1", "2.2", "2.3"], expanded: false },
+  "2.1": { children: [], expanded: false },
+  "2.2": { children: [], expanded: false },
+  "2.3": { children: [], expanded: false },
+  "3": { children: ["3.1", "3.2", "3.3"], expanded: false },
+  "3.1": { children: [], expanded: false },
+  "3.2": { children: [], expanded: false },
+  "3.3": { children: [], expanded: false }
+};
+
+// Flat ordered list for navigation (only defined articles)
+const ARTICLE_ORDER = [
+  "1", "1.1", "1.1.1", "1.1.2", "1.2", "1.2.1", "1.2.2", "1.3", "1.3.1", "1.3.2", "1.3.3",
+  "2", "2.1", "2.2", "2.3",
+  "3", "3.1", "3.2", "3.3"
+];
+
+// ============================================================================
+// RENDERING
+// ============================================================================
+
+function renderOutlineTree(parentId = null, depth = 0) {
+  const topLevelIds = parentId === null ? ["1", "2", "3"] : OUTLINE[parentId]?.children || [];
+  const ul = document.createElement("ul");
+  ul.className = "outline-tree" + (depth > 0 ? " tree-children" : "");
+
+  for (const id of topLevelIds) {
+    const article = ARTICLES[id];
+    const hasChildren = OUTLINE[id] && OUTLINE[id].children.length > 0;
+
+    const li = document.createElement("li");
+    li.className = "tree-item";
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "tree-toggle";
+    toggleBtn.textContent = hasChildren ? "▶" : "·";
+    toggleBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleExpand(id, toggleBtn);
+    };
+
+    const link = document.createElement("a");
+    link.className = "tree-link";
+    link.href = "#/" + id;
+    link.textContent = article.title;
+    link.onclick = (e) => {
+      e.preventDefault();
+      navigateToArticle(id);
+    };
+
+    li.appendChild(toggleBtn);
+    li.appendChild(link);
+
+    if (hasChildren) {
+      const childTree = renderOutlineTree(id, depth + 1);
+      li.appendChild(childTree);
+    }
+
+    ul.appendChild(li);
+  }
+
+  return ul;
+}
+
+function toggleExpand(id, btn) {
+  const expanded = OUTLINE[id].expanded;
+  OUTLINE[id].expanded = !expanded;
+
+  const li = btn.closest(".tree-item");
+  const childList = li.querySelector(".tree-children");
+  if (childList) {
+    childList.classList.toggle("expanded", !expanded);
+    btn.textContent = !expanded ? "▼" : "▶";
+  }
+}
+
+function renderArticle(id) {
+  const article = ARTICLES[id];
+  if (!article) return;
+
+  const container = document.getElementById("articleContainer");
+
+  // Breadcrumb
+  const breadcrumb = document.createElement("div");
+  breadcrumb.className = "breadcrumb";
+  const crumbs = [];
+  for (const crumbId of article.breadcrumb) {
+    const crumb = document.createElement("a");
+    crumb.href = "#/" + crumbId;
+    crumb.textContent = crumbId;
+    crumb.onclick = (e) => {
+      e.preventDefault();
+      navigateToArticle(crumbId);
+    };
+    crumbs.push(crumb);
+  }
+  if (crumbs.length > 0) {
+    crumbs.forEach((c, i) => {
+      breadcrumb.appendChild(c);
+      if (i < crumbs.length - 1) {
+        breadcrumb.appendChild(document.createTextNode(" › "));
+      }
+    });
+  }
+  container.innerHTML = "";
+  container.appendChild(breadcrumb);
+
+  // Title
+  const titleDiv = document.createElement("div");
+  titleDiv.className = "article-header";
+  const title = document.createElement("h1");
+  title.className = "article-title";
+  title.textContent = article.title;
+  titleDiv.appendChild(title);
+
+  // Meta chips
+  const meta = document.createElement("div");
+  meta.className = "article-meta";
+  const idChip = document.createElement("span");
+  idChip.className = "chip";
+  idChip.textContent = id + " · Level " + article.level;
+  meta.appendChild(idChip);
+  titleDiv.appendChild(meta);
+
+  container.appendChild(titleDiv);
+
+  // Lead (definition)
+  if (article.definition) {
+    const lead = document.createElement("p");
+    lead.className = "article-lead";
+    lead.textContent = article.definition;
+    container.appendChild(lead);
+    processInlineLinksInElement(lead, id);
+  }
+
+  // Characteristics
+  if (article.characteristics) {
+    const section = document.createElement("div");
+    section.className = "article-section";
+    const h3 = document.createElement("h3");
+    h3.textContent = "Key Characteristics";
+    section.appendChild(h3);
+    const p = document.createElement("p");
+    p.textContent = article.characteristics;
+    section.appendChild(p);
+    processInlineLinksInElement(p, id);
+    container.appendChild(section);
+  }
+
+  // Examples
+  if (article.examples && article.examples.length > 0) {
+    const section = document.createElement("div");
+    section.className = "article-section";
+    const h3 = document.createElement("h3");
+    h3.textContent = "Examples";
+    section.appendChild(h3);
+    const ul = document.createElement("ul");
+    for (const ex of article.examples) {
+      const li = document.createElement("li");
+      li.textContent = ex;
+      ul.appendChild(li);
+    }
+    section.appendChild(ul);
+    container.appendChild(section);
+  }
+
+  // See Also
+  if (article.relatedLinks && article.relatedLinks.length > 0) {
+    const seeAlso = document.createElement("div");
+    seeAlso.className = "see-also";
+    const title = document.createElement("div");
+    title.className = "see-also-title";
+    title.textContent = "See Also";
+    seeAlso.appendChild(title);
+    const links = document.createElement("div");
+    links.className = "see-also-links";
+    for (const linkId of article.relatedLinks) {
+      if (ARTICLES[linkId]) {
+        const a = document.createElement("a");
+        a.className = "see-also-link";
+        a.href = "#/" + linkId;
+        a.textContent = ARTICLES[linkId].title;
+        a.setAttribute("data-article-id", linkId);
+        a.onclick = (e) => {
+          e.preventDefault();
+          navigateToArticle(linkId);
+        };
+        links.appendChild(a);
+      }
+    }
+    seeAlso.appendChild(links);
+    container.appendChild(seeAlso);
+  }
+
+  // Prev/Next navigation
+  const currentIdx = ARTICLE_ORDER.indexOf(id);
+  const prevId = currentIdx > 0 ? ARTICLE_ORDER[currentIdx - 1] : null;
+  const nextId = currentIdx < ARTICLE_ORDER.length - 1 ? ARTICLE_ORDER[currentIdx + 1] : null;
+
+  if (prevId || nextId) {
+    const nav = document.createElement("div");
+    nav.className = "article-nav";
+    if (prevId) {
+      const prevLink = document.createElement("a");
+      prevLink.className = "nav-button";
+      prevLink.href = "#/" + prevId;
+      prevLink.textContent = "← " + ARTICLES[prevId].title;
+      prevLink.onclick = (e) => {
+        e.preventDefault();
+        navigateToArticle(prevId);
+      };
+      nav.appendChild(prevLink);
+    }
+    if (nextId) {
+      const nextLink = document.createElement("a");
+      nextLink.className = "nav-button";
+      nextLink.href = "#/" + nextId;
+      nextLink.textContent = ARTICLES[nextId].title + " →";
+      nextLink.onclick = (e) => {
+        e.preventDefault();
+        navigateToArticle(nextId);
+      };
+      nav.appendChild(nextLink);
+    }
+    container.appendChild(nav);
+  }
+
+  // Update active tree link
+  document.querySelectorAll(".tree-link").forEach(link => {
+    link.classList.remove("active");
+  });
+  const activeLink = document.querySelector(`.tree-link[href="#/${id}"]`);
+  if (activeLink) {
+    activeLink.classList.add("active");
+    activeLink.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
+function navigateToArticle(id) {
+  window.location.hash = "/" + id;
+  renderArticle(id);
+  closeSearchResults();
+}
+
+// ============================================================================
+// SEARCH
+// ============================================================================
+
+function performSearch(query) {
+  const results = document.getElementById("searchResults");
+  if (!query.trim()) {
+    results.classList.remove("visible");
+    results.innerHTML = "";
+    return;
+  }
+
+  const q = query.toLowerCase();
+  const matches = [];
+
+  for (const [id, article] of Object.entries(ARTICLES)) {
+    const titleMatch = article.title.toLowerCase().includes(q);
+    const defMatch = article.definition && article.definition.toLowerCase().includes(q);
+    if (titleMatch || defMatch) {
+      matches.push({ id, article, titleMatch });
+    }
+  }
+
+  results.innerHTML = "";
+  if (matches.length > 0) {
+    for (const { id, article } of matches.sort((a, b) => b.titleMatch - a.titleMatch)) {
+      const item = document.createElement("div");
+      item.className = "search-result-item";
+      const titleEl = document.createElement("div");
+      titleEl.className = "search-result-title";
+      titleEl.textContent = article.title;
+      item.appendChild(titleEl);
+      const snippetEl = document.createElement("div");
+      snippetEl.className = "search-result-snippet";
+      snippetEl.textContent = article.definition.substring(0, 80) + "…";
+      item.appendChild(snippetEl);
+      item.onclick = () => navigateToArticle(id);
+      results.appendChild(item);
+    }
+    results.classList.add("visible");
+  } else {
+    results.classList.remove("visible");
+  }
+}
+
+function closeSearchResults() {
+  document.getElementById("searchResults").classList.remove("visible");
+}
+
+// ============================================================================
+// INLINE CROSS-LINKS & POPOVER
+// ============================================================================
+
+function wrapInlineLinks(textNode, articleId) {
+  if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+
+  const text = textNode.textContent;
+  const titlesByLength = Object.entries(ARTICLES)
+    .filter(([id, article]) => id !== articleId)
+    .map(([id, article]) => ({ id, title: article.title, length: article.title.length }))
+    .sort((a, b) => b.length - a.length);
+
+  let html = text;
+  const linked = new Set();
+
+  for (const { id, title } of titlesByLength) {
+    if (linked.has(title.toLowerCase())) continue;
+
+    // Case-insensitive, whole-word match, first occurrence only
+    const regex = new RegExp(`\\b${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    const match = html.match(regex);
+
+    if (match) {
+      html = html.replace(regex, `<a class="wikilink" href="#/${id}" data-article-id="${id}">${match[0]}</a>`, 'i');
+      linked.add(title.toLowerCase());
+    }
+  }
+
+  if (html !== text) {
+    const span = document.createElement("span");
+    span.innerHTML = html;
+    textNode.parentNode.replaceChild(span, textNode);
+    return span;
+  }
+}
+
+function processInlineLinksInElement(el, articleId) {
+  const walker = document.createTreeWalker(
+    el,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  const nodesToProcess = [];
+  let node;
+  while (node = walker.nextNode()) {
+    nodesToProcess.push(node);
+  }
+
+  for (const textNode of nodesToProcess) {
+    wrapInlineLinks(textNode, articleId);
+  }
+}
+
+function setupPopover() {
+  const popover = document.getElementById("previewPopover");
+  let popoverTimeout;
+
+  document.addEventListener("mouseover", (e) => {
+    const link = e.target.closest(".wikilink, .see-also-link");
+    if (!link) {
+      clearTimeout(popoverTimeout);
+      popover.style.display = "none";
+      return;
+    }
+
+    const articleId = link.getAttribute("data-article-id") || link.href.split("/").pop();
+    const article = ARTICLES[articleId];
+    if (!article) return;
+
+    popoverTimeout = setTimeout(() => {
+      popover.innerHTML = `<strong>${article.title}</strong><br><span style="font-size: 12px; color: var(--ink3);">${article.definition.substring(0, 100)}…</span>`;
+
+      const rect = link.getBoundingClientRect();
+      let top = rect.top - popover.offsetHeight - 8;
+      let left = rect.left;
+
+      // Flip above if needed
+      if (top < 0) {
+        top = rect.bottom + 8;
+      }
+
+      popover.style.left = left + "px";
+      popover.style.top = top + "px";
+      popover.style.display = "block";
+    }, 150);
+  });
+
+  document.addEventListener("mouseleave", (e) => {
+    if (e.target.closest(".wikilink, .see-also-link")) {
+      clearTimeout(popoverTimeout);
+      setTimeout(() => { popover.style.display = "none"; }, 50);
+    }
+  });
+
+  // Keyboard support
+  document.addEventListener("focus", (e) => {
+    const link = e.target.closest(".wikilink, .see-also-link");
+    if (!link) return;
+
+    const articleId = link.getAttribute("data-article-id") || link.href.split("/").pop();
+    const article = ARTICLES[articleId];
+    if (!article) return;
+
+    popover.innerHTML = `<strong>${article.title}</strong><br><span style="font-size: 12px; color: var(--ink3);">${article.definition.substring(0, 100)}…</span>`;
+
+    const rect = link.getBoundingClientRect();
+    let top = rect.top - popover.offsetHeight - 8;
+    let left = rect.left;
+
+    if (top < 0) {
+      top = rect.bottom + 8;
+    }
+
+    popover.style.left = left + "px";
+    popover.style.top = top + "px";
+    popover.style.display = "block";
+  }, true);
+
+  document.addEventListener("blur", () => {
+    popover.style.display = "none";
+  }, true);
+}
+
+// ============================================================================
+// MOBILE NAV DRAWER
+// ============================================================================
+
+function setupMobileNav() {
+  const navToggle = document.getElementById("navToggle");
+  const navPane = document.getElementById("navPane");
+  const navScrim = document.getElementById("navScrim");
+
+  if (!navToggle) return; // Not needed on large screens
+
+  navToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    navPane.classList.toggle("drawer-open");
+    navScrim.classList.toggle("active");
+  });
+
+  navScrim.addEventListener("click", () => {
+    navPane.classList.remove("drawer-open");
+    navScrim.classList.remove("active");
+  });
+
+  // Close on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navPane.classList.contains("drawer-open")) {
+      navPane.classList.remove("drawer-open");
+      navScrim.classList.remove("active");
+    }
+  });
+
+  // Close on article selection
+  const originalNavigate = window.navigateToArticle;
+  window.navigateToArticle = function(id) {
+    navPane.classList.remove("drawer-open");
+    navScrim.classList.remove("active");
+    originalNavigate(id);
+  };
+}
+
+// ============================================================================
+// INIT
+// ============================================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Render outline tree
+  const treeContainer = document.getElementById("outlineTree");
+  treeContainer.replaceWith(renderOutlineTree());
+
+  // Search
+  const searchBox = document.getElementById("searchBox");
+  searchBox.addEventListener("input", (e) => performSearch(e.target.value));
+  document.addEventListener("click", (e) => {
+    if (e.target !== searchBox && !e.target.closest("#searchResults")) {
+      closeSearchResults();
+    }
+  });
+
+  // Route based on hash
+  const handleRoute = () => {
+    const hash = window.location.hash.slice(2);
+    const id = hash || "1";
+    if (ARTICLES[id]) {
+      renderArticle(id);
+    }
+  };
+
+  window.addEventListener("hashchange", handleRoute);
+  handleRoute();
+
+  // Setup popover and mobile nav
+  setupPopover();
+  setupMobileNav();
+});
+</script>
+</body>
+</html>

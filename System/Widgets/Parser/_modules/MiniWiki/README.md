@@ -1,22 +1,24 @@
 # MiniWiki module
 
-A self-contained, offline concept-map/knowledge-browser peer module for the Parser widget
-family, mirroring `_modules/Spelling/`'s pattern: `createMiniWikiModule(options)` factory,
-ES-module source bundled by a stdlib-only Python script, DEFAULT-OFF shell opt-in. Built
-against `Specs/MiniWikiModule.spec.md`, from the approved mockup (`mockup/miniwiki-mockup.html`,
-`mockup/NOTES.md`) and its stress test (`mockup/CONTENT-FIT-REPORT.md`).
+A shared, offline concept-map / reference-wiki module for the Parser
+widget family. Any cartridge can opt in via `miniwiki.enabled: true` in
+its `config.yaml`; Grammar and every cartridge that omits the block is
+byte-for-byte unaffected. Built against `Specs/MiniWikiModule.spec.md`
+and the approved mockup at `mockup/miniwiki-mockup.html` /
+`mockup/NOTES.md`; the field-shape decisions it required are recorded in
+`mockup/CONTENT-FIT-REPORT.md`.
 
 ## What it is
 
-- A build-time extractor (`build/extract_articles.py`, stdlib only) that turns a cartridge's
-  `*_content.md` outline-numbered source into a JSON array of article records — never
-  hardcoded in JS.
-- A runtime module (`src/*.js`) that renders: a Home page (generated category overview), a
-  side menu (Home / All / Surprise me / categories / lazy-expansion tree), article pages with
-  auto-linked prose, MLA references, and a "key search terms" copy-to-clipboard box.
-- Role-aware rendering: `role:"section"` nodes (category headers, Logic's `2.1.0`
-  category-description pattern) render as landing pages listing their children, never as
-  stub articles.
+- A build-time extractor (`build/extract_articles.py`, stdlib-only) that
+  turns a cartridge's outline-numbered `*_content.md` source into an
+  ARTICLES JSON — never hardcoded article data in JS.
+- A runtime module (`src/index.js`'s `createMiniWikiModule(options)`)
+  that renders a home page, a lazily-expanding tree + flat index + random
+  article, article pages with auto-linked prose, MLA-style references,
+  and a deterministic "key search terms" copy box.
+- **Opens as a separate browser tab, not an in-page panel** (see
+  *Open mode*, below) — the parser page carries one launch button.
 
 ## Public API
 
@@ -24,144 +26,201 @@ against `Specs/MiniWikiModule.spec.md`, from the approved mockup (`mockup/miniwi
 import { createMiniWikiModule } from "./src/index.js";
 
 const wiki = createMiniWikiModule({
-  articles,        // Article[] — from a build/*.miniwiki.json, default []
-  cartridgeId,     // default "default"
-  cartridgeName,   // default "Mini-Wiki"
-  document,        // for rendering; default globalThis.document
+  articles,        // Article[] — build/extract_articles.py's output, as an array
+  cartridgeId,      // string, default "default"
+  cartridgeName,    // string, default "Mini-Wiki"
+  document,         // for DOM functions only; default globalThis.document
 });
 
 wiki.getArticle(id)          // -> Article | null
-wiki.getTopLevel()           // -> Article[]
+wiki.getTopLevel()           // -> Article[] (top-level nodes)
 wiki.getAncestors(id)        // -> Article[] root-first
 wiki.getChildren(id)         // -> Article[]
-wiki.flatIndex()             // -> Article[] id-sorted (backs the "All" page)
+wiki.flatIndex()             // -> Article[] id-sorted (the "All" page)
 wiki.search(query)           // -> Article[] title/lead substring match
-wiki.randomArticleId()       // -> string | null
-wiki.searchTerms(id)         // -> string[] deterministic key terms
-wiki.references(id)          // -> string[] MLA-formatted, [] if nothing sourceable
+wiki.randomArticleId()       // -> string | null ("Surprise me")
+wiki.searchTerms(id)         // -> string[] (requirement 9)
+wiki.references(id)          // -> string[] MLA-formatted (requirement 8)
 wiki.copyToClipboard(text)   // -> Promise<boolean>
+
 wiki.renderView(view, id, container, onNavigate)  // view: "home"|"all"|"article"
-wiki.mount(navContainer, articleContainer, {onNavigate})  // wires the side menu + hash routing
+wiki.mount(navContainer, articleContainer, opts)  // wires side menu + hash routing
 ```
 
-## Rebuilding a cartridge's articles JSON
-
+`Article` shape (per the fit report, model decisions 1/2/5):
 ```
-python3 build/extract_articles.py <Cartridge>/<Cartridge>_content.md --out <Cartridge>.miniwiki.json
-```
-
-Handles both real content dialects (Markdown-heading and bare flush-left outline lines,
-sometimes mixed in one file — Logic does both). Folds Logic's `2.1.0`-style category
-descriptions into their parent section. Stdlib only (PY-1/SR-2).
-
-## Rebuilding the bundle (for shell integration)
-
-```
-python3 build/bundle_miniwiki.py    # writes dist/miniwiki.bundle.js
+{ id, title, level, role: "section"|"article", lead, body_html,
+  characteristics?, examples?, worked_example?, parent, children,
+  siblings, references? }
 ```
 
-Mirrors `_modules/Spelling/build/bundle_spelling.py` exactly: concatenates `src/*.js` in
-dependency order, strips `import`/`export`, wraps in an IIFE exposing
-`window.createMiniWikiModule`. Run after any `src/*.js` edit and before
-`_shell/build/assemble.py` on a cartridge with `miniwiki.enabled: true`.
+## Open mode: a new browser tab, not a panel
 
-## Wired into the shell (opt-in, DEFAULT OFF)
+Luke's explicit correction during build: the wiki is **not** an in-page
+panel. The parser page shows one toolbar button ("Mini-Wiki"); clicking
+it builds the wiki as a complete, self-contained HTML document at
+runtime and opens it in a new tab via `Blob` + `URL.createObjectURL` +
+`window.open`, falling back to `window.open("") + document.write()` if
+the Blob path throws. If the browser blocks the pop-up (`window.open`
+returns `null` either way), the parser page shows an inline "allow
+pop-ups" message rather than failing silently — it never assumes the
+tab opened. The new tab keeps its own hash routing (`#/1.1.1`) and
+history, independent of the parser tab.
 
-A cartridge's `config.yaml`:
-```yaml
-miniwiki:
-  enabled: true
-  articlesFile: "MyCartridge.miniwiki.json"   # relative to build/
-  cartridgeName: "My Cartridge"                # optional; defaults to cartridge.name
+This is why the module's compiled JS is embedded into a cartridge build
+**twice over**, conceptually: once as the bundle that would define
+`window.createMiniWikiModule` if executed directly, and — because
+`window.open()` creates a separate JS realm that cannot share a closure
+with the opener — as a **string constant** (`MINIWIKI_BUNDLE_SRC`, set by
+`_shell/build/assemble.py`) that `_shell/src/miniwiki-seam.js` re-injects,
+verbatim, into the new tab's own `<script>` tag when it builds that tab's
+document. Everything still lives in the one on-disk cartridge HTML file
+— nothing is written to a second file, and the whole flow works from
+`file://` (Blob URLs are a pure Streams/File-API construct, not gated by
+origin).
+
+## Build-time extractor
+
+```bash
+python3 build/extract_articles.py <Cartridge>_content.md --out <cartridge>.miniwiki.json --cartridge-id <id>
 ```
-`_shell/build/assemble.py` then embeds the bundle + the articles JSON (re-serialised as a
-JSON array) and shows the `#miniwiki` panel. Absent or `false`: the panel stays
-`display:none`, `MINIWIKI_ARTICLES` is `[]`, and the build is otherwise untouched — **verified
-byte-identical** against Grammar's existing build with this change present in the shell but
-`miniwiki` absent from Grammar's own `config.yaml` (md5 match, two consecutive `assemble.py`
-runs).
 
-## Decisions carried over from CONTENT-FIT-REPORT.md
+Reads either content-source dialect the eleven Parser cartridges actually
+use (see `mockup/CONTENT-FIT-REPORT.md` §1/§6): a flat outline line
+(`1.1 Title` flush-left + indented body + optional `Example:` line — Logic,
+Grammar, Interpretation, …) or a real Markdown heading dialect
+(`### 1.1 Title` + `**Key characteristics:**` / `**Worked example:**`
+marker paragraphs + `- ` bullet examples — Rhetoric, …); both can occur in
+one file. YAML frontmatter's `title`/`description`/`provenance` fields
+become the article's MLA reference (requirement 8) — omitted, never
+fabricated, when a file has none. Logic's `2.1.0`-style category
+description entries (fit report CRITICAL fix #1) are folded into their
+parent section's own body rather than kept as a sibling node.
 
-1. **Free-form `body_html`, `characteristics`/`worked_example` optional** — ~60% of real
-   articles have no discrete characteristics field; the extractor never assumes one.
-2. **`role: "section" | "article"`** — category nodes with empty bodies render as landing
-   pages; Logic's `2.1.0` category-description entries are folded into their parent, not kept
-   as siblings.
-3. **Tree virtualisation** — only top-level nodes render at rest; expanding reveals direct
-   children only. Verified against the 155-article Biblical symbols and cross-references
-   cartridge.
-4. **Auto-link exclusion blocklist + collision rule** — the verbatim CONTENT-FIT-REPORT.md §4
-   list (Style, Example(s), One–Twelve, Forty, One Thousand) plus a ≤4-char bare-word
-   heuristic; a title colliding across two ids is dropped from the link catalogue entirely
-   (documented in `src/autolink.js`'s header and `Specs/MiniWikiModule.spec.md` FR-4) —
-   neither collided article gets auto-linked, rather than risk a wrong link.
-5. **Build-time JSON only** — `MINIWIKI_ARTICLES` is always populated from a pre-built
-   `*.miniwiki.json`; nothing is hardcoded in `src/*.js`.
-
-## Luke's new requirements (6–9)
-
-6. **Generated Home page** — `renderHome()` lists every top-level category with its own
-   extracted `lead` sentence.
-7. **Side menu order** — Home, All, Surprise me, then category links, then the tree.
-8. **MLA references** — sourced only from the content file's YAML frontmatter
-   (`title:`/`description:`/`provenance:`); omitted entirely when nothing is sourceable.
-9. **Key search terms box** — deterministic (not an LLM at runtime), one-click
-   copy-to-clipboard per term plus "Copy all", `navigator.clipboard` with an
-   `execCommand("copy")` fallback for offline `file://` use.
-
-## Extractor article counts (real content, this build)
+Verified against the real content — article counts:
 
 | Cartridge | Articles |
 |---|---:|
-| Grammar | 78 |
 | Logic | 91 |
 | Rhetoric | 57 |
+| Interpretation | 54 |
 | Greek and Hebrew | 73 |
 | Style | 24 |
-| Tropes & symbols | 139 |
+| Story-tension | 23 |
 | Biblical Commentary | 24 |
 | Biblical Theology | 29 |
 | Systematic Theology | 36 |
-| Interpretation | 54 |
-| Story-tension | 23 |
+| Tropes & symbols | 139 |
 | Biblical symbols and cross-references | 155 |
-| Fact-checking | 0 (draft stub, no outline-numbered content — correctly produces zero, not an error) |
+| Grammar (`Grammar_contents.md`) | 78 |
+
+## The five model decisions (all implemented)
+
+1. **Free-form body, optional characteristics/worked-example.** `body_html`
+   is always present (possibly empty for a pure category node);
+   `characteristics`/`worked_example`/`examples` are only set when the
+   source actually has them — absent in roughly 60% of real articles, per
+   the fit report.
+2. **`role: "section"|"article"`.** A node with children and an empty
+   body renders as a landing page listing its children
+   (`ui.js`'s `renderSectionPage`), never a stub with empty sections.
+   Logic's `2.1.0` pattern is handled at extraction time (folded into its
+   parent), so the UI never has to special-case it.
+3. **Lazy-expansion tree, no eager full render.** `tree.js`'s
+   `visibleNodes`/`getChildren` + `ui.js`'s `renderTree` render only
+   top-level nodes at rest; expanding one reveals just its direct
+   children. Verified: at 155 articles (Biblical symbols and
+   cross-references), the tree renders **7 DOM nodes at rest**.
+4. **Auto-link exclusion list + collision rule.** `autolink.js`'s
+   `EXCLUDED_TITLES` is the fit report §4 list verbatim (Style, Example(s),
+   One–Twelve, Forty, One Thousand) plus a generic "single word, ≤4 chars"
+   heuristic; `buildLinkCatalogue` drops BOTH sides of any title collision
+   entirely rather than risk linking to the wrong article.
+5. **Articles come from the build-time JSON only.** Nothing in `src/`
+   hardcodes an article; `_shell/build/assemble.py`'s
+   `embed_miniwiki_articles()` reads a cartridge's pre-built
+   `*.miniwiki.json` and serialises it as the `MINIWIKI_ARTICLES` array
+   the module is constructed with.
+
+## Luke's additional requirements (all implemented)
+
+6. **Generated home/landing page** (`ui.js`'s `renderHome`) — top-level
+   categories + their lead sentences, computed from `tree.js`'s
+   `getTopLevel`, never hand-written.
+7. **Side menu**: Home, All, Surprise me, then top-level category links,
+   with the lazy tree beneath (`ui.js`'s `renderSideMenu`).
+8. **MLA-style references**, sourced only from the content file's
+   frontmatter (`references.js`'s `formatReferences`/`formatMlaReference`),
+   omitted entirely — never fabricated — when nothing is sourceable.
+9. **Key search terms box**, visually distinct, at the foot of every
+   article page (`search-terms.js`'s `generateSearchTerms` — a
+   deterministic weighted-term scorer, title > ancestor titles >
+   capitalised/technical body words, minus a stopword list; NO LLM at
+   runtime, same output for the same input every time). Each term is
+   one-click copy (`clipboard.js`, `navigator.clipboard` with a
+   `document.execCommand` fallback, offline from `file://`), plus a
+   "copy all" affordance.
+
+## Non-Latin script
+
+The Greek and Hebrew cartridge's font fallback lives in `src/styles.js`'s
+`MINIWIKI_CSS`, scoped to `[data-mw-cartridge="Greek and Hebrew"]`:
+`"Noto Serif Greek", "SBL BibLit", "Noto Sans Hebrew", "Times New Roman", serif`.
+
+## Rebuilding the bundle
+
+```bash
+python3 build/bundle_miniwiki.py     # writes dist/miniwiki.bundle.js
+```
+
+Mirrors `_modules/Spelling/build/bundle_spelling.py` exactly (SR-4/SR-6):
+concatenates `src/*.js` in dependency order, strips `import`/`export`,
+wraps in an IIFE assigning `window.createMiniWikiModule`. Run after any
+`src/*.js` edit, before `_shell/build/assemble.py` on a cartridge with
+`miniwiki.enabled: true`.
+
+## Cartridge manifest fields
+
+```yaml
+miniwiki:
+  enabled: true                          # default OFF
+  articlesFile: "logic.miniwiki.json"    # path relative to build/, extract_articles.py's output
+  cartridgeName: "Logic Mini-Wiki"       # optional, default cartridge.name
+```
 
 ## Tests
 
-```
-node --test                                   # from _modules/MiniWiki/ — 22/22
-python3 -m unittest test_extract_articles     # from _modules/MiniWiki/build/ — 9/9
-```
+`node --test tests/*.mjs` — 23/23 passing (Node v26.0.0, `node:test` +
+`node:assert/strict` only, TEST-1). No jsdom: `tests/test-ui.mjs` and
+`tests/test-index.mjs` reuse the shared hand-built fake DOM at
+`_shell/tests/js/fake-dom.mjs` (TEST-8, SR-4 — extended, not forked, to
+add class-selector support and a `doc.head`, for this module's genuine
+new need over Spelling's original consumer). `tests/test_extract_articles.py`
+(stdlib `unittest`, TEST-1) covers the Python extractor: article shape,
+the `2.1.0`-folding rule, section-vs-article role classification, both
+content dialects, and reference sourcing/omission.
 
 ```
 tests/
-  test-tree.mjs          — src/tree.js (ancestors, top-level, flat index, virtualisation)
-  test-autolink.mjs       — src/autolink.js (exclusion list, collision rule)
-  test-search-terms.mjs   — src/search-terms.js (determinism, stopwords)
-  test-references.mjs     — src/references.js (MLA formatting, omission on empty)
-  test-clipboard.mjs      — src/clipboard.js (navigator.clipboard + execCommand fallback)
-  test-ui.mjs             — src/ui.js (home/article/section rendering, fake DOM)
-  test-index.mjs          — src/index.js (mount/routing/navigation, fake DOM)
-build/
-  test_extract_articles.py — build/extract_articles.py (Python unittest: shape, role
-                              classification, category-description folding, zero-entries guard)
+  test-tree.mjs             — src/tree.js
+  test-autolink.mjs         — src/autolink.js (exclusion list + collision rule)
+  test-search-terms.mjs     — src/search-terms.js (determinism)
+  test-references.mjs       — src/references.js (MLA formatting, never fabricates)
+  test-clipboard.mjs        — src/clipboard.js (clipboard API + execCommand fallback)
+  test-ui.mjs               — src/ui.js (fake DOM)
+  test-index.mjs            — src/index.js (mount/routing)
+  test_extract_articles.py  — build/extract_articles.py
 ```
 
-The shared fake DOM (`_shell/tests/js/fake-dom.mjs`, SR-4 — not forked) gained three additive
-fixes needed by this module's tests (class-selector matching, text-node-safe tree walking,
-`innerHTML=` clearing children like a real DOM does) — verified not to regress Spelling's own
-42/42 or the shell's own 5/5 suites.
+## Known limitations
 
-## What was NOT verified
-
-No live browser was available in this build environment (no browser tool access in this
-subagent context). Verification instead relied on: the module's and extractor's own automated
-tests (31/31 total), a Node-based functional smoke test running the actual bundled
-`createMiniWikiModule` against real extracted Logic content through the shared fake DOM
-(menu render, navigate, search terms, references, "All" index — all confirmed working), and
-structural checks on the assembled demo cartridge HTML (well-formed doctype, all `__X__`
-placeholders replaced, all `<script>` blocks parse via Node's `Function` constructor, expected
-DOM id/class markers present, embedded article count and shape correct). Interactive
-CSS layout (tree collapse animation, mobile drawer, hover states) was not visually confirmed.
+- The extractor treats Rhetoric's inline Markdown tables (fit report §10,
+  MEDIUM severity) as plain body prose rather than parsing them into
+  `<table>` markup — noted, not fixed, in the interest of the CRITICAL/HIGH
+  fixes the fit report actually gated integration on.
+- `copyToClipboard`'s `navigator.clipboard` and `document.execCommand`
+  fallback can both be denied by a sandboxed/headless browser's permission
+  policy (observed during verification); the UI reports "Copy failed"
+  rather than throwing in that case — this is the intended graceful
+  degradation, not a bug, and it succeeds under normal user-permission
+  browsing.

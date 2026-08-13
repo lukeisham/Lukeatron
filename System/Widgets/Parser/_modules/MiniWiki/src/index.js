@@ -14,13 +14,18 @@ import { generateSearchTerms } from "./search-terms.js";
 import { formatReferences } from "./references.js";
 import { copyToClipboard } from "./clipboard.js";
 import { MINIWIKI_CSS } from "./styles.js";
+import { MINIWIKI_INTERACTIVE_CSS } from "./styles-interactive.js";
 import {
+  el,
   renderSideMenu,
   renderHome,
   renderAllIndex,
   renderSectionPage,
   renderArticlePage,
 } from "./ui.js";
+import { createPreviewPopover, createHoverHandlers } from "./popover.js";
+import { createDrawerController } from "./drawer.js";
+import { setActiveNavLink } from "./nav-active.js";
 
 function createMiniWikiModule(options = {}) {
   const articlesList = Array.isArray(options.articles) ? options.articles : [];
@@ -107,12 +112,58 @@ function createMiniWikiModule(options = {}) {
     }
     injectStylesOnce(d);
 
+    // Audit gap #2 (hover-preview popover): one popover element per mount,
+    // appended alongside the article pane so it shares that pane's
+    // positioning context; delegated show/hide handlers on articleContainer
+    // cover every wikilink and "see also" chip regardless of how often the
+    // article body is re-rendered underneath them.
+    const popover = createPreviewPopover(d);
+    const hoverHandlers = createHoverHandlers(popover, getArticle);
+    articleContainer.addEventListener("mouseover", hoverHandlers.onMouseOver);
+    articleContainer.addEventListener("mouseout", hoverHandlers.onMouseOut);
+    articleContainer.addEventListener("focusin", hoverHandlers.onFocusIn);
+    articleContainer.addEventListener("focusout", hoverHandlers.onFocusOut);
+    if (articleContainer.parentNode) {
+      articleContainer.parentNode.appendChild(popover);
+    } else {
+      articleContainer.appendChild(popover);
+    }
+
+    // Audit gap #5 (mobile drawer): the toggle button and scrim are created
+    // here at mount time rather than baked into miniwiki-seam.js's static
+    // document template, so the seam's launch logic stays untouched. Both
+    // need a shared ancestor with navContainer to sit alongside it; when
+    // the host hasn't given navContainer a parent (e.g. a bare test
+    // fixture), the drawer simply isn't wired — there is nothing to toggle.
+    let drawer = null;
+    const navRoot = navContainer.parentNode;
+    if (navRoot) {
+      const toggle = el(d, "button", "mw-nav-toggle", "☰");
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Toggle navigation");
+      const scrim = el(d, "div", "mw-nav-scrim");
+      // appendChild only (not insertBefore) — the fake DOM used by this
+      // module's own tests (_shell/tests/js/fake-dom.mjs, TEST-8) implements
+      // no insertBefore, and CSS (position:fixed for the drawer/scrim, and
+      // the toggle only ever showing on the narrow breakpoint) makes DOM
+      // order harmless here regardless.
+      navRoot.appendChild(toggle);
+      navRoot.appendChild(scrim);
+      drawer = createDrawerController(d, toggle, navContainer, scrim);
+    }
+
     function hashFor(id) {
       return "#/" + id;
     }
 
+    function updateActive(key) {
+      setActiveNavLink(navContainer, key);
+    }
+
     function navigate(id, opts2 = {}) {
       renderView("article", id, articleContainer, navigate);
+      updateActive(id);
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") {
         window.location.hash = hashFor(id);
       }
@@ -121,11 +172,15 @@ function createMiniWikiModule(options = {}) {
 
     function showHome(opts2 = {}) {
       renderView("home", null, articleContainer, navigate);
+      updateActive("home");
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") window.location.hash = "#/";
     }
 
     function showAll(opts2 = {}) {
       renderView("all", null, articleContainer, navigate);
+      updateActive("all");
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") window.location.hash = "#/all";
     }
 
@@ -142,6 +197,7 @@ function createMiniWikiModule(options = {}) {
         onSurprise: showSurprise,
         onNavigate: navigate,
         expandedIds,
+        search,
       })
     );
 
@@ -150,12 +206,16 @@ function createMiniWikiModule(options = {}) {
       const hash = window.location.hash.replace(/^#\/?/, "");
       if (!hash) {
         renderView("home", null, articleContainer, navigate);
+        updateActive("home");
       } else if (hash === "all") {
         renderView("all", null, articleContainer, navigate);
+        updateActive("all");
       } else if (articlesById[hash]) {
         renderView("article", hash, articleContainer, navigate);
+        updateActive(hash);
       } else {
         renderView("home", null, articleContainer, navigate);
+        updateActive("home");
       }
     }
 
@@ -164,6 +224,7 @@ function createMiniWikiModule(options = {}) {
       routeFromHash();
     } else {
       renderView("home", null, articleContainer, navigate);
+      updateActive("home");
     }
 
     return { navigate, showHome, showAll, showSurprise };
@@ -198,7 +259,7 @@ function injectStylesOnce(doc) {
   if (stylesInjected || doc.querySelector("style[data-miniwiki]")) return;
   const style = doc.createElement("style");
   style.setAttribute("data-miniwiki", "");
-  style.textContent = MINIWIKI_CSS;
+  style.textContent = MINIWIKI_CSS + "\n" + MINIWIKI_INTERACTIVE_CSS;
   doc.head.appendChild(style);
   stylesInjected = true;
 }

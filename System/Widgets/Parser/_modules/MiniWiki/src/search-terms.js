@@ -28,9 +28,31 @@ function isCapitalisedTechnical(word) {
 }
 
 /**
+ * midSentenceCapitals(text) -> Set<string> (lowercased keys)
+ * Every sentence's FIRST word is capitalised by orthography, not because it
+ * is a term ("Contains exactly one independent clause" would otherwise yield
+ * "Contains"). We therefore only trust a capital that appears somewhere other
+ * than a sentence opening. A word capitalised in both positions still counts,
+ * because its mid-sentence occurrence vouches for it.
+ */
+function midSentenceCapitals(text) {
+  const keys = new Set();
+  if (!text) return keys;
+  text.split(/(?<=[.!?:;])\s+|\n+/).forEach((sentence) => {
+    tokenizeWords(sentence)
+      .slice(1)
+      .forEach((word) => {
+        if (isCapitalisedTechnical(word)) keys.add(word.toLowerCase());
+      });
+  });
+  return keys;
+}
+
+/**
  * generateSearchTerms(article, ancestors, limit = 10) -> string[]
  * Weighted term set: title words (weight 3) > ancestor-title words
- * (weight 2) > capitalised/technical body words (weight 1). Deduplicated,
+ * (weight 2) > capitalised/technical words from the article's own explanatory
+ * prose, excluding examples and sentence-initial capitals (weight 1). Deduplicated,
  * stopworded, sorted by weight desc then alphabetically for a stable
  * order across runs.
  */
@@ -49,13 +71,18 @@ function generateSearchTerms(article, ancestors = [], limit = 10) {
   tokenizeWords(article.title).forEach((w) => add(w, 3));
   ancestors.forEach((a) => tokenizeWords(a.title).forEach((w) => add(w, 2)));
 
+  // Examples are deliberately EXCLUDED. They are illustrative quotations, so
+  // their proper nouns describe the quotation's source, not the topic — "Simple
+  // Sentence" was yielding Ishmael/Melville/Moby-Dick off "Call me Ishmael."
+  // These terms exist to search the web about the TOPIC, so only the article's
+  // own explanatory prose may contribute them.
   const bodySource = [
     article.lead || "",
     (article.characteristics || []).join(" "),
-    (article.examples || []).join(" "),
   ].join(" ");
+  const trusted = midSentenceCapitals(bodySource);
   tokenizeWords(bodySource).forEach((w) => {
-    if (isCapitalisedTechnical(w)) add(w, 1);
+    if (isCapitalisedTechnical(w) && trusted.has(w.toLowerCase())) add(w, 1);
   });
 
   return [...scores.keys()]

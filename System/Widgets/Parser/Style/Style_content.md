@@ -1,376 +1,190 @@
 ---
 type: content-source
 title: "Style — Content Source"
-description: "Greatest-hits prose-style schema synthesised from Strunk & White, Williams, and Orwell. Draft content source for the Style parser aide; pending Luke review."
+description: "Greatest-hits prose-style schema synthesised from Strunk & White, Williams, and Orwell, plus two independent register sweeps (Academic English, Simple/Descriptive English). Index to the per-genre rule files (Genres/), their antithesis sweeps, the register sweeps (Registers/), the sweep model for the future engine build, and the provenance and licence statement. Draft content source for the Style parser aide; pending Luke review."
 status: draft
 ---
 
-> **STATUS: DRAFT — pending Luke review**
+> **STATUS: DRAFT — pending Luke review.** The mechanism this content feeds is no longer
+> hypothetical: the full 7-sweep cartridge (all five genres + antitheses, both registers) is built and
+> browser-verified against exactly this content — `Style/Specs/Done/StyleParser.spec.md`,
+> `Style/cartridge/Style_parser.html` (reference slice 2026-08-12; remaining sweeps 2026-08-13). That
+> proves the pipeline works end-to-end for every sweep; it is not the same thing as Luke having reviewed
+> the rules' actual wording, which is still open.
 
 # Style — Content Source
 
 Per `System/Suggestions/Parser_guide.md` §5a — schemas, rules, and explanation text for the Style parser
 (input unit: one paragraph; cap 1000 words; Tier A pattern matching to a style schema).
 
-This file collates a "greatest hits" prose-style schema drawn from three canonical sources. Each rule is
-outline-numbered, placed in a logical category, and accompanied by a before/after example. Provenance marks
-distinguish direct quotation (Strunk, public domain) from paraphrase (Williams, Orwell). A full provenance
-and licence statement appears at the end of the file (§6).
+This index collates a "greatest hits" prose-style schema drawn from three canonical sources, plus two
+independent register sweeps. Every rule family lives in its own file, one file per sweep, following the
+project's outline-numbered content-source dialect (`System/Widgets/Parser/_modules/MiniWiki/build/extract_articles.py`)
+so each rule compiles cleanly into `CONTENT` and browses cleanly in MiniWiki. Provenance marks distinguish
+direct quotation (Strunk, public domain) from paraphrase (Williams, Orwell, ASD); a full provenance and
+licence statement appears at the end of this file (§8).
+
+## Sweep model (for the future engine build)
+
+Seven sweeps exist across this content set, in two categories, declared per-file in frontmatter:
+
+| Field | Values | Meaning |
+|---|---|---|
+| `sweep_category` | `genre` \| `register` | `genre` = one of the five toggleable rule-families (Clarity, Brevity, Coherence, Voice, Diction); `register` = an independent search sweep (Academic English, Simple/Descriptive English) |
+| `sweep_id` | kebab-case slug | the detector's own identifier |
+| `opposite_sweep_id` | kebab-case slug, genre files only | the antithesis detector's identifier (e.g. `clarity` → `obscurity`) |
+| `opposite_section` | outline number, genre files only | the antithesis section's top-level id, in the same physical file as its genre |
+
+**Selection.** All seven sweeps are independently selectable, in any combination — none is bundled with
+another by default. A run can be "Clarity only," "Academic English only," "Clarity + Brevity + Simple/
+Descriptive English," and so on.
+
+**The opposite toggle.** Only the five genre sweeps carry it. Switching it swaps which outline section
+the engine reads for that genre — its own top-level section for the affirmative rules, or its paired
+antithesis section for the antithesis rules — same file, same `CONTENT` compilation unit, different id
+range. The two register sweeps have no opposite mode: each always checks for its one named register.
+
+**What "opposite" means here** (Luke's decision, 2026-08-10): an antithesis section is *not* a
+violation-detector mirroring its genre's corrective Before/After pattern. It recognises the antithetical
+technique as a legitimate register in its own right — e.g. Diction's antithesis, Ornament, still requires
+fresh figuration; it is not "clichés are fine now." Each antithesis rule therefore carries a single
+demonstrative `Example:` rather than a Before/After pair.
+
+## Genre files (§1–§5, each paired with its antithesis)
+
+| File | Rule sweep | Antithesis sweep | Sources |
+|---|---|---|---|
+| [Genres/Clarity.md](Genres/Clarity.md) | §1.1–1.5 Clarity — active voice, positive form, concrete language, characters as subjects, actions as verbs | §8 Obscurity | Strunk & White (quoted); Williams (paraphrased); Orwell (paraphrased, §8) |
+| [Genres/Brevity.md](Genres/Brevity.md) | §2.1–2.3 Brevity — omit needless words, cut where possible, prefer short words | §9 Verbosity | Strunk & White (quoted); Orwell (paraphrased) |
+| [Genres/Coherence.md](Genres/Coherence.md) | §3.1–3.4 Coherence — old-to-new flow, cohesive paragraphs, related words together, parallelism | §10 Incoherence | Williams (paraphrased); Strunk & White (quoted) |
+| [Genres/Voice.md](Genres/Voice.md) | §4.1–4.3 Voice — active over passive, write naturally, do not overwrite | §11 Affectation | Orwell (paraphrased); Strunk & White (quoted) |
+| [Genres/Diction.md](Genres/Diction.md) | §5.1–5.3 Diction — no dead metaphors, standard over offbeat, sparing figures of speech | §12 Ornament | Orwell (paraphrased); Strunk & White (quoted) |
+
+## Register files (§6–§7, independent sweeps, no opposite toggle)
+
+| File | Rules | Source |
+|---|---|---|
+| [Registers/Academic_english.md](Registers/Academic_english.md) | §6.1–6.10 Academic English — tense precision, quantification over qualification, non-evaluative data reporting, epistemic hedging for interpretation | Editorial synthesis (no single named source) |
+| [Registers/Simple-descriptive_english.md](Registers/Simple-descriptive_english.md) | §7.1–7.20 Simple, Descriptive English — controlled vocabulary, restricted verb forms, one instruction per sentence, 20-word sentence cap | ASD-STE100, Simplified Technical English (paraphrased) |
+
+## Explainer format (Luke's direction, 2026-08-10)
+
+Two distinct Explainer designs, one per sweep category — genre sweeps behave like Grammar's cartridge
+Explainer (`Grammar/Specs/Done/GrammarParser.spec.md` AD-6/FR-18); register sweeps introduce a new
+pattern this shell hasn't shipped yet. Both stay within the shared `ParseResult` contract
+(`_shell/Specs/ParserShell.spec.md` §6) except where noted.
+
+### Genre sweeps — coloured, drill-down (Clarity/Brevity/Coherence/Voice/Diction, incl. antitheses)
+
+**Colour model — categorical, not structural-kinship.** Each active genre gets its own hue from the
+cartridge's `colours.palette` (see `_shell/StyleGuide/02-colour-model.md`), meaning "this span is a
+Clarity hit" — not Grammar's AD-7 model, where hue means "same clause" and shade/tint carry nested
+phrase/word membership. Style's findings are flat spans over one paragraph with no clause-phrase-word
+containment to inherit down, so there is nothing for a shade/tint pair to carry — one hue, one
+intensity, per genre is enough. Toggling a genre to its antithesis (§8–§12) keeps the *same* hue: a
+genre and its antithesis are one detector in two mutually exclusive modes, never rendered at once, so
+there's no colour collision to resolve.
+
+**No focus-level zoom.** Grammar's FR-5a focus-level selector (Sentential → Clausal → Phrasal →
+Lexical) has no Style equivalent — a paragraph has no comparable nested structural granularity to zoom
+through. **OQ-S1 (open, carried to the eventual cartridge spec):** propose `CONFIG.levels: ["paragraph"]`
+— a single trivial level, so the shell's generic focus-level CSS template (`ParserShell.spec.md` AD-2)
+still satisfies the required-field contract at `n=1` without ever functioning as a real zoom control.
+Revisit only if a future build finds real value in a coarser/finer split (e.g. sentence-pass vs.
+paragraph-pass).
+
+**"Deeper layers on click" — Style's version of it.** Where Grammar zooms structurally, Style drills
+into explanation depth, reusing the same Layer 1→2→3 vocabulary (`Parser_guide.md` §3):
+- **Layer 1** (always shown after Parse) — the flagged span tinted/underlined in its genre's hue.
+- **Layer 2** (click) — an in-text expander unfolds, in place: which rule fired (id + short label) and
+  its confidence.
+- **Explainer** (on request), two parts, mirroring Grammar's AD-6:
+  1. **Findings table** — one row per flagged span, not per word (Style has no per-word density to
+     tabulate the way Grammar's four-row table does): *Excerpt · Genre (colour chip) · Rule id/name ·
+     Confidence · Suggested revision.* The suggestion is the content file's Before/After pair adapted to
+     the actual excerpt where the engine can manage it, falling back to the rule's own worked example
+     otherwise — an engine-tier decision, not an Explainer-format one, deferred to that spec.
+  2. **Rules extracted** — below the table, every distinct rule id actually hit, deduplicated, grouped
+     under genre sub-headings (colour-tagged, mirroring Grammar's category sub-headings), each a dot
+     point with the rule's definition and example pulled verbatim from `CONTENT` — identical mechanics
+     to Grammar's AD-6 part 2.
+
+### Register sweeps — traffic light (Academic English, Simple/Descriptive English)
+
+A pattern Grammar doesn't have — a register checks conformity across a whole rule-set, not structural
+findings, so its Explainer is a scorecard, not a parse tree.
+
+**The scorecard.** One row per rule in the sweep (§6.1–6.10 or §7.1–7.20), each carrying a light:
+
+| Light | Meaning |
+|---|---|
+| 🟢 Conforms | the rule's target pattern is present / no violation found |
+| 🟡 Partial | a borderline or partially-met case (engine confidence in the amber band, or a soft violation) |
+| 🔴 Violates | a clear violation |
+| ⚪ N/A | the rule doesn't apply to this input (e.g. §7.9 "vertical lists" has nothing to evaluate in a paragraph with no complex instruction) |
+
+This reuses the existing Layer-2 "icon bar" pattern from `Parser_guide.md` §3 (in-text icons + an icon
+key bar above the text) rather than inventing a new chassis primitive — the scorecard *is* an icon bar,
+indexed by rule id instead of by token.
+
+**Inline highlighting stays for 🔴/🟡.** Those rows also get a Layer-1 span highlight in the paragraph
+itself, so "which sentence broke §6.1 Tense precision" is visible at a glance, not just listed in the
+scorecard. 🟢/⚪ rows have nothing in the text to highlight.
+
+**Suggestions.** Clicking a 🔴/🟡 row (Layer 2, the same click-to-expand mechanic as the genre sweeps)
+reveals the specific excerpt plus a suggested rewrite toward conformity. Where the fix is a fixed,
+mechanical transformation (e.g. §7.4 "use the active voice," §6.6 "agentless framing" — both word-order
+rewrites), that's Tier A, in keeping with Style's overall Tier-A declaration (`Parser_guide.md` §4).
+**OQ-S2 (open):** a few Academic English rules (§6.7 epistemic hedging, §6.9 boundary/scope framing) ask
+for genuine paraphrase, not a mechanical swap — whether those specific sub-rules stay Tier A with a
+fixed hedge-phrase template, or get promoted to Tier B per `Parser_guide.md` §4's own rule of thumb
+("promote to Tier B only when the function genuinely needs knowledge or judgment that can't be
+enumerated as rules"), is deferred to the engine spec — flagged here so it isn't silently decided either
+way.
+
+**Schema note — affects the shared shell, not just Style.** The traffic light reuses
+`ParseResult.findings[].severity` (`ParserShell.spec.md` §6) rather than inventing a new top-level
+field: `flag` = 🔴, `info` = 🟡, `check` = 🟢. There is no existing value for ⚪ N/A. **Proposed addition:**
+extend the enum to `'check' | 'info' | 'flag' | 'na'` — a one-line change to the shared schema, not a
+Style-only hack; needs sign-off before `_shell/Specs/ParserShell.spec.md` is amended. Unlike Grammar's
+own convention (FR-17: "no '0 errors' placeholder... shown"), a register sweep deliberately renders
+*every* rule's light, including green — the whole feature is the full scorecard, not a decluttered flag
+list. This is a genre-vs-register Explainer difference worth stating plainly, not an accidental
+inconsistency with Grammar's house style.
+
+**On completion of a real build:** these two designs, plus the Sweep model above, consolidate into a
+proper `Style/Specs/Done/StyleParser.spec.md` per `Parser_guide.md` §5b (citing the Grammar spec as
+prerequisite) once content mapping and engine passes are also decided — this section is the reviewable
+draft that spec will absorb, not a substitute for it.
 
 ---
 
-## 1. Clarity
-
-### 1.1 Use the active voice
-
-> "The active voice is usually more direct and vigorous than the passive."
-> — Strunk & White, *The Elements of Style* (source)
-
-The passive voice is not grammatically wrong, but it often buries the agent,
-lengthens the sentence, and drains its energy. Prefer the active construction
-unless the agent is genuinely unknown, irrelevant, or best concealed.
-
-**Before** (passive):
-> The report was reviewed by the committee, and a decision was reached by them to approve the project.
-
-**After** (active):
-> The committee reviewed the report and approved the project.
-
----
-
-### 1.2 Put statements in positive form
-
-> "Make definite assertions. Avoid tame, colorless, hesitating, non-committal language."
-> — Strunk & White, *The Elements of Style* (source)
-
-Use the word *not* as a means of denial or antithesis, never as a means of evasion.
-Readers grasp affirmative statements faster than negative ones.
-
-**Before** (negative evasion):
-> He was not very often on time.
-
-**After** (positive assertion):
-> He usually came late.
-
-**Before** (negative tangle):
-> The data do not show that the treatment had no effect.
-
-**After** (positive):
-> The data show that the treatment had an effect.
-
----
-
-### 1.3 Use definite, specific, concrete language
-
-> "Prefer the specific to the general, the definite to the vague, the concrete to the abstract."
-> — Strunk & White, *The Elements of Style* (source)
-
-Abstract language forces the reader to supply the missing picture. Concrete detail
-grounds the argument and holds attention.
-
-**Before** (vague):
-> A period of unfavourable weather set in.
-
-**After** (concrete):
-> It rained every day for a week.
-
-**Before** (abstract):
-> He showed satisfaction as he took possession of his well-earned reward.
-
-**After** (concrete):
-> He grinned as he pocketed the coin.
-
----
-
-### 1.4 Make characters the subjects of your sentences (paraphrase)
-
-*Paraphrased from Joseph Williams, **Style: Lessons in Clarity and Grace**.*
-
-Readers follow prose more easily when the grammatical subject names the
-character performing the action. Avoid abstract nouns in the subject slot when
-a flesh-and-blood agent is doing the work. In Williams's terms: "Express
-characters as subjects and their actions as verbs." (paraphrase)
-
-**Before** (abstract subject, nominalised action):
-> Our lack of data prevented evaluation of the programme's effectiveness.
-
-**After** (character as subject, action as verb):
-> Because we lacked data, we could not evaluate how effective the programme was.
-
----
-
-### 1.5 Express actions as verbs (paraphrase)
-
-*Paraphrased from Joseph Williams, **Style: Lessons in Clarity and Grace**.*
-
-Avoid nominalisations — verbs disguised as nouns (*evaluation*, *implementation*,
-*development*) — which drain movement from a sentence. Williams: "Turn nominalizations
-back into verbs wherever possible. Readers understand actions more quickly when
-they are expressed as verbs, not as abstract nouns." (paraphrase)
-
-**Before** (nominalised):
-> The committee will conduct an investigation into the matter and make a recommendation.
-
-**After** (verbs restored):
-> The committee will investigate the matter and recommend a course of action.
-
----
-
-## 2. Brevity
-
-### 2.1 Omit needless words
-
-> "Vigorous writing is concise. A sentence should contain no unnecessary words, a paragraph no unnecessary sentences, for the same reason that a drawing should have no unnecessary lines and a machine no unnecessary parts."
-> — Strunk & White, *The Elements of Style* (source)
-
-Every word should pull its weight. Common offenders: *the fact that*, *in the
-event that*, *due to the fact that*, *there is/are*, and all manner of throat-clearing.
-
-**Before** (bloated):
-> In light of the fact that the meeting has been postponed, it is necessary for us to reschedule our travel arrangements at this point in time.
-
-**After** (tight):
-> Because the meeting has been postponed, we must reschedule our travel.
-
----
-
-### 2.2 If it is possible to cut a word out, always cut it out (paraphrase)
-
-*Paraphrased from George Orwell, **"Politics and the English Language"** (1946).*
-
-Orwell's fourth rule is an uncompromising version of the brevity principle.
-If a word does no demonstrable work — qualifying, hedging, or merely inflating —
-it should go. Orwell: "If it is possible to cut a word out, always cut it out."
-(paraphrase, source named)
-
-**Before** (hedged):
-> It is generally felt by many people that a fairly significant number of the proposed changes are, on the whole, perhaps somewhat unnecessary.
-
-**After** (cut):
-> Many people feel that most of the proposed changes are unnecessary.
-
----
-
-### 2.3 Never use a long word where a short one will do (paraphrase)
-
-*Paraphrased from George Orwell, **"Politics and the English Language"** (1946).*
-
-Orwell's second rule favours the short, common word over the long, rare one —
-not to dumb down the prose, but to speed understanding. Orwell: "Never use a
-long word where a short one will do." (paraphrase, source named)
-
-**Before** (inflated):
-> The meteorological conditions precipitated the cancellation of the outdoor festivities.
-
-**After** (plain):
-> The weather forced us to cancel the outdoor party.
-
----
-
-## 3. Coherence
-
-### 3.1 Old information before new information (paraphrase)
-
-*Paraphrased from Joseph Williams, **Style: Lessons in Clarity and Grace**.*
-
-Williams's most powerful single principle: begin each sentence with information
-the reader already knows (or can easily infer), then introduce new material at
-the end. This "old-to-new" flow reduces the cognitive load of reading and creates
-natural bridges between sentences. Williams: "Put at the beginning of a sentence
-those ideas that you have already mentioned, referred to, or implied, or that you
-can reasonably assume your reader already knows." (paraphrase)
-
-**Before** (new-before-old — jarring jump):
-> A radical shift in monetary policy was announced by the central bank yesterday.
-> Rising inflation had prompted the decision.
-
-**After** (old-before-new — smooth flow):
-> The central bank announced a radical shift in monetary policy yesterday.
-> The decision was prompted by rising inflation.
-
----
-
-### 3.2 Build cohesive paragraphs (paraphrase)
-
-*Paraphrased from Joseph Williams, **Style: Lessons in Clarity and Grace**.*
-
-Cohesion is the felt connection between sentences; coherence is the sense that
-all parts belong to a single whole. Williams: "A paragraph coheres when the
-reader can see that every sentence serves a single, identifiable purpose."
-(paraphrase) Use topic strings — repeating or varying the key subject across
-sentences — and logical connectors (*therefore*, *however*, *in addition*) to
-make the thread visible.
-
-**Before** (disjointed):
-> The experiment lasted six months. Researchers collected data at three sites.
-> Funding came from the National Science Foundation. Previous studies had used
-> different protocols.
-
-**After** (cohesive topic string):
-> The experiment lasted six months and gathered data from three sites.
-> This design was funded by the National Science Foundation. It improved on
-> earlier protocols in several respects.
-
----
-
-### 3.3 Keep related words together
-
-> "The position of the words in a sentence is the principal means of showing their relationship."
-> — Strunk & White, *The Elements of Style* (source)
-
-Modifiers should sit next to the words they modify. Separating a subject from
-its verb, or a modifier from its target, forces the reader to hold a grammatical
-gap open — and risks ambiguity.
-
-**Before** (separated):
-> He noticed a large stain in the rug that was right in the centre.
-
-**After** (together):
-> He noticed a large stain right in the centre of the rug.
-
-**Before** (subject–verb gap):
-> The committee, after reviewing all the evidence and consulting with outside experts over the course of three meetings, decided.
-
-**After** (gap closed):
-> The committee decided after reviewing all the evidence and consulting with outside experts over three meetings.
-
----
-
-### 3.4 Express coordinate ideas in similar form (parallelism)
-
-> "Express parallel ideas in parallel form. This principle, that of parallel construction, requires that expressions similar in content and function be outwardly similar."
-> — Strunk & White, *The Elements of Style* (source)
-
-Parallel structure helps the reader see the symmetry of related ideas at a
-glance. Break it and you create a small but real stumble.
-
-**Before** (broken parallel):
-> The role involves writing reports, managing a team, and you must attend weekly meetings.
-
-**After** (parallel):
-> The role involves writing reports, managing a team, and attending weekly meetings.
-
----
-
-## 4. Voice
-
-### 4.1 Never use the passive where you can use the active (paraphrase)
-
-*Paraphrased from George Orwell, **"Politics and the English Language"** (1946).*
-
-Orwell's third rule is a harder version of the active-voice principle (§1.1).
-Where Strunk frames the active voice as a preference, Orwell frames the passive
-as a moral hazard — a device that can obscure responsibility. Orwell: "Never
-use the passive where you can use the active." (paraphrase, source named)
-
-**Before** (passive evasion):
-> Mistakes were made during the audit process.
-
-**After** (active responsibility):
-> The audit team made mistakes.
-
----
-
-### 4.2 Write in a way that comes naturally
-
-> "Write in a way that comes naturally... Do not attempt to be folksy or assume a breezy manner that does not befit who you are."
-> — Strunk & White, *The Elements of Style* (source)
-
-Affectation — whether pretentious or faux-humble — breaks the reader's trust.
-The goal is not to sound "writerly" but to sound like a clear-minded person
-who has something worth saying.
-
-**Before** (affected):
-> One cannot but be struck by the manifold splendours of the aforementioned vista.
-
-**After** (natural):
-> The view was beautiful.
-
----
-
-### 4.3 Do not overwrite
-
-> "Do not overwrite. Rich, ornate prose is hard to digest, generally unwholesome, and sometimes nauseating."
-> — Strunk & White, *The Elements of Style* (source)
-
-Overwriting calls attention to the writer at the expense of the subject.
-Prefer the plain style; ornament should be earned, not default.
-
-**Before** (overwritten):
-> The resplendent, golden orb of day sank slowly and majestically beneath the cerulean horizon, painting the heavens with hues of crimson and amber.
-
-**After** (restrained):
-> The sun set.
-
----
-
-## 5. Diction
-
-### 5.1 Avoid dead metaphors and clichéd similes (paraphrase)
-
-*Paraphrased from George Orwell, **"Politics and the English Language"** (1946).*
-
-Orwell's first rule — his most famous — targets the prefabricated phrase.
-A metaphor or simile that you are used to seeing in print has lost its power
-to evoke; the reader glances past it without forming a mental image. Orwell:
-"Never use a metaphor, simile, or other figure of speech which you are used to
-seeing in print." (paraphrase, source named)
-
-**Before** (dead metaphor):
-> The project was a baptism of fire, but we kept our nose to the grindstone and left no stone unturned.
-
-**After** (fresh language):
-> The project was punishing, but we worked relentlessly and checked every detail.
-
----
-
-### 5.2 Prefer the standard to the offbeat
-
-> "Prefer the standard to the offbeat."
-> — Strunk & White, *The Elements of Style* (source)
-
-Novelty for its own sake distracts. Standard English, deployed with precision,
-outperforms a thesaurus-driven search for the unusual. Let the idea be fresh;
-the language need not draw attention to itself.
-
-**Before** (offbeat):
-> The professor's allocution anent the examination's modalities eventuated in considerable discombobulation among the matriculants.
-
-**After** (standard):
-> The professor's remarks about the exam format confused the students.
-
----
-
-### 5.3 Use figures of speech sparingly
-
-> "Use figures of speech sparingly. The simile is a common device and a useful one, but similes coming in rapid fire, one right on top of another, are more distracting than illuminating."
-> — Strunk & White, *The Elements of Style* (source)
-
-One well-chosen comparison can illuminate. A cascade of them buries meaning.
-When you do reach for a figure of speech, make it one you have thought up
-yourself — vivid, apt, and singular.
-
-**Before** (overloaded with figures):
-> The meeting was a perfect storm: a minefield of competing agendas, a pressure cooker of tension, and a tightrope walk over a sea of discontent.
-
-**After** (one apt comparison):
-> The meeting was a tug of war between two competing visions.
-
----
-
-## 6. Provenance
+## 8. Provenance
 
 ### Sources, editions, and licence status
 
-| Source | Edition / Date | Author | Licence / Status | Usage in this file |
+| Source | Edition / Date | Author | Licence / Status | Usage |
 |---|---|---|---|---|
-| *The Elements of Style* | Original 1918 edition (Strunk) and later Strunk & White editions | William Strunk Jr. and E.B. White | **Public domain** (1918 original); later editions may carry renewed copyrights on White's contributions only — all quoted matter herein is drawn from material that is in the public domain | Direct quotation throughout (§§1.1–1.3, 2.1, 3.3–3.4, 4.2–4.3, 5.2–5.3) |
-| *Style: Lessons in Clarity and Grace* | Multiple editions (first published 1981) | Joseph M. Williams | **Copyright** — Pearson Education. Used here in **paraphrase only**; no direct quotation | Paraphrased principles (§§1.4–1.5, 3.1–3.2) |
-| "Politics and the English Language" | 1946 (essay, originally published in *Horizon*) | George Orwell | **Copyright** — the Orwell estate. Used here in **paraphrase only**; no direct quotation | Paraphrased rules (§§2.2–2.3, 4.1, 5.1) |
+| *The Elements of Style* | Original 1918 edition (Strunk) and later Strunk & White editions | William Strunk Jr. and E.B. White | **Public domain** (1918 original); later editions may carry renewed copyrights on White's contributions only — all quoted matter herein is drawn from material that is in the public domain | Direct quotation throughout — Genres/Clarity.md (§1.1–1.3, §8.2), Genres/Brevity.md (§2.1), Genres/Coherence.md (§3.3–3.4), Genres/Voice.md (§4.2–4.3, §11.2), Genres/Diction.md (§5.2–5.3) |
+| *Style: Lessons in Clarity and Grace* | Multiple editions (first published 1981) | Joseph M. Williams | **Copyright** — Pearson Education. Used here in **paraphrase only**; no direct quotation | Paraphrased principles — Genres/Clarity.md (§1.4–1.5), Genres/Coherence.md (§3.1–3.2, §10.1–10.2) |
+| "Politics and the English Language" | 1946 (essay, originally published in *Horizon*) | George Orwell | **Copyright** — the Orwell estate. Used here in **paraphrase only**; no direct quotation | Paraphrased rules — Genres/Brevity.md (§2.2–2.3, §9.1–9.2), Genres/Voice.md (§4.1), Genres/Diction.md (§5.1, §12.1), Genres/Clarity.md (§8.1) |
+| ASD-STE100 (Simplified Technical English) | Current issue | ASD (AeroSpace and Defence Industries Association of Europe) | **Copyright ASD.** Used here as a **paraphrased summary of the rule categories only**; no verbatim text from the standard's dictionary or writing rules is reproduced | Paraphrased rule categories — Registers/Simple-descriptive_english.md (§7.1–7.20) |
+| — | — | — | No single source; editorial synthesis of standard academic-writing convention | Registers/Academic_english.md (§6.1–6.10) |
 
 ### Additional notes
 
-- All "Before/After" example pairs are **original compositions written for this file**. They are not drawn from any source.
-- The categorisation into five groups (Clarity, Brevity, Coherence, Voice, Diction) is this file's own editorial structuring and does not appear in any source.
-- Where a principle appears in more than one source (e.g., active voice in both Strunk & White and Orwell), both sources are acknowledged; the principal citation is attached to the section where the canonically "strongest" articulation appears.
-- The paraphrase rules for Williams and Orwell material follow the project's provenance policy: the source is named at each occurrence, the paraphrase marker is explicit, and no words, phrases, or sentence structures are reproduced from the original texts.
+- All "Before/After" example pairs in the genre files (§1–§5) are **original compositions written for this
+  content source**. They are not drawn from any source. The antithesis sections' (§8–§12) single
+  demonstrative examples are likewise original compositions.
+- The categorisation into five genres (Clarity, Brevity, Coherence, Voice, Diction), their five paired
+  antitheses (Obscurity, Verbosity, Incoherence, Affectation, Ornament), and the two register sweeps
+  (Academic English, Simple/Descriptive English) is this content source's own editorial structuring and
+  does not appear in any source.
+- Where a principle appears in more than one source (e.g., active voice in both Strunk & White and
+  Orwell), both sources are acknowledged; the principal citation is attached to the section where the
+  canonically "strongest" articulation appears. Antithesis sections that mirror an affirmative rule cite
+  the same source, explicitly marked "read here as the register it warns against" rather than presented
+  as new source material.
+- The paraphrase rules for Williams, Orwell, and ASD material follow the project's provenance policy: the
+  source is named at each occurrence, the paraphrase marker is explicit, and no words, phrases, or
+  sentence structures are reproduced from the original texts.

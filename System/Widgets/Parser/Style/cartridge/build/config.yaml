@@ -1,0 +1,134 @@
+---
+# Style cartridge manifest — ParserShell.spec.md §8.
+# All 7 sweeps (5 genres + antitheses, 2 registers) — StyleParser.spec.md's
+# reference slice (Clarity+Obscurity, Academic English) extended to the
+# remaining 5 sweeps per the follow-up plan (style-parser-remaining-sweeps).
+cartridge:
+  name: "Style parser"
+  id: "Style"
+  version: "1.0.0"
+  builtFrom: "Genres/*.md + Registers/*.md (all 7 sweeps)"
+  # "S" monogram, mirroring Grammar's own "G" badge (Grammar/cartridge/build/config.yaml)
+  # — background/text colours reuse this file's own teal palette (h800/h50)
+  # verbatim rather than inventing separate icon-only colours.
+  icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><rect width="30" height="30" rx="7" fill="%23085041"/><text x="15" y="20.5" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="bold" fill="%23E1F5EE">S</text></svg>'
+
+parser:
+  inputUnit: "one paragraph"
+  cap: 1000
+  levels:
+    - paragraph
+  tentativeThreshold: 0.7
+
+tierB:
+  enabled: false
+  note: "Tier B (API/agent) slot present but disabled in this build — every reference-slice rule is Tier A (StyleParser.spec.md §4/§5 AD-S2)."
+
+spelling:
+  enabled: true
+
+# One hue, one intensity, per genre — StyleParser.spec.md's colour-model
+# note: "categorical, not structural-kinship." Five genre hues, one per
+# entry below, each shared by its antithesis (toggling to the antithesis
+# keeps the same hue — genre and antithesis are one detector in two
+# mutually exclusive modes, never rendered at once). AD-S4 (resolved,
+# style-parser-remaining-sweeps plan): the shared shell's render() now
+# looks up a clause's hue via `cl.hueIndex` (set by style_engine.js from
+# this palette, matched to the clause's sweep) rather than always by
+# array position, so 2+ simultaneously active genres each keep their own
+# stable hue regardless of clause order. Reuses Grammar's own house
+# palette values (Grammar/cartridge/build/config.yaml) for consistency.
+colours:
+  palette:
+    - name: teal
+      h50: "#E1F5EE"
+      h100: "#9FE1CB"
+      h600: "#0F6E56"
+      h800: "#085041"
+      hf: "rgba(29,158,117,.12)"
+    - name: amber
+      h50: "#FAEEDA"
+      h100: "#FAC775"
+      h600: "#854F0B"
+      h800: "#633806"
+      hf: "rgba(239,159,39,.12)"
+    - name: purple
+      h50: "#EEEDFE"
+      h100: "#CECBF6"
+      h600: "#534AB7"
+      h800: "#3C3489"
+      hf: "rgba(127,119,221,.12)"
+    - name: pink
+      h50: "#FBEAF0"
+      h100: "#F4C0D1"
+      h600: "#993556"
+      h800: "#72243E"
+      hf: "rgba(212,83,126,.12)"
+    - name: coral
+      h50: "#FAECE7"
+      h100: "#F5C4B3"
+      h600: "#993C1D"
+      h800: "#4A1B0C"
+      hf: "rgba(216,90,48,.12)"
+
+# FR-19/FR-20 (ParserShell.spec.md) — opt-in sweep selector. `hue` is
+# metadata for category:genre items only (registers render via the
+# --tl-* semantic tokens, not the clause-hue palette — StyleParser.spec.md
+# §6 "Colour model note").
+sweeps:
+  enabled: true
+  items:
+    - id: clarity
+      label: "Clarity"
+      category: genre
+      hue: teal
+      section: "1"
+      oppositeId: obscurity
+      oppositeLabel: "Obscurity"
+      oppositeSection: "8"
+    - id: brevity
+      label: "Brevity"
+      category: genre
+      hue: amber
+      section: "2"
+      oppositeId: verbosity
+      oppositeLabel: "Verbosity"
+      oppositeSection: "9"
+    - id: coherence
+      label: "Coherence"
+      category: genre
+      hue: purple
+      section: "3"
+      oppositeId: incoherence
+      oppositeLabel: "Incoherence"
+      oppositeSection: "10"
+    - id: voice
+      label: "Voice"
+      category: genre
+      hue: pink
+      section: "4"
+      oppositeId: affectation
+      oppositeLabel: "Affectation"
+      oppositeSection: "11"
+    - id: diction
+      label: "Diction"
+      category: genre
+      hue: coral
+      section: "5"
+      oppositeId: ornament
+      oppositeLabel: "Ornament"
+      oppositeSection: "12"
+    - id: academic-english
+      label: "Academic English"
+      category: register
+      section: "6"
+    - id: simple-descriptive-english
+      label: "Simple/Descriptive English"
+      category: register
+      section: "7"
+
+files:
+  engine: "style_engine.js"
+  explainer: "style_explainer.js"
+  content: "Style_content.json"
+  styles: "style.css"

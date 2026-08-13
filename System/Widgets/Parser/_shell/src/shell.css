@@ -7,7 +7,7 @@
    files.styles CSS (optional) loads after the generated block and
    may override any selector here.
    ============================================================ */
-:root{--bg:#faf9f5;--card:#fff;--ink:#1a1a17;--ink2:#5f5e5a;--ink3:#9a9891;--line:#e3e1d9;--line2:#c9c7bd;--acc:#185FA5;--accbg:#E6F1FB;--red:#E24B4A;--radius:8px;font-size:16px;}
+:root{--bg:#faf9f5;--card:#fff;--ink:#1a1a17;--ink2:#5f5e5a;--ink3:#9a9891;--line:#e3e1d9;--line2:#c9c7bd;--acc:#185FA5;--accbg:#E6F1FB;--red:#E24B4A;--tl-red:#C0392B;--tl-red-bg:#FBE3E1;--tl-amber:#8A5A0B;--tl-amber-bg:#FBEFD9;--tl-grey:#8A887F;--tl-grey-bg:#F0EFEA;--radius:8px;font-size:16px;}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;}
 .wrap{max-width:880px;margin:0 auto;padding:24px 20px 40px;}

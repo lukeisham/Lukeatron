@@ -1,0 +1,11 @@
+/* Style cartridge override — StyleParser.spec.md AD-S1.
+   With parser.levels: ["paragraph"] (a single level), the shell's generated
+   focus CSS collapses the clause-home and word-home indices onto that same
+   level (ParserShell.spec.md AD-2's fixed-home model: cl_home=0, w_home=0
+   when n=1), so .w would otherwise render every word as a full-intensity
+   coloured chip with a visible (empty) .pos label. Style wants only .cl
+   (one hue per genre finding, StyleParser.spec.md's "Colour model —
+   categorical, not structural-kinship") — this override neutralises the
+   unwanted per-word chip styling without touching the shared shell. */
+#stage.v-paragraph .w { background: none; color: inherit; padding: 0; margin: 0; border-radius: 0; }
+#stage.v-paragraph .pos { display: none; }

@@ -27,6 +27,12 @@ SRC_DIR = MODULE_DIR / "src"
 DEFAULT_OUT = MODULE_DIR / "dist" / "miniwiki.bundle.js"
 
 # Dependency order (leaves first) — matches each file's own `import` graph.
+# Every entry becomes plain top-level `function` declarations inside one
+# IIFE (strip_module_syntax()), so hoisting makes textual order harmless
+# even across the ui.js <-> article-nav.js/search-ui.js/popover.js cycle
+# below (each only calls the other's functions from inside its own
+# function bodies, never at module-evaluation time) — this list is ordered
+# leaves-first purely for readability, not because the bundler requires it.
 ORDER = [
     "tree.js",
     "autolink.js",
@@ -35,6 +41,12 @@ ORDER = [
     "clipboard.js",
     "markdown.js",
     "styles.js",
+    "styles-interactive.js",
+    "article-nav.js",
+    "search-ui.js",
+    "popover.js",
+    "nav-active.js",
+    "drawer.js",
     "ui.js",
     "index.js",
 ]

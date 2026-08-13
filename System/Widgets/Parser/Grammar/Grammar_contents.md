@@ -1,3 +1,10 @@
+---
+type: content-source
+title: "Grammar — Content Source"
+status: draft
+description: "Outline-numbered catalog of English grammatical structures across the sentential, clausal, phrasal and lexical/morphological levels, plus governing conventions, for the Grammar parser aide."
+---
+
 # Grammar Content 
 
 1. *Sentential Level*
@@ -109,7 +116,7 @@ Example: "Call me Ishmael" (subject: implied "you"; predicate: "Call me Ishmael"
 
 4. *Lexical / Morphological Level*
 
-  4.1 Word Classes (Parts of Speech)
+4.1 Word Classes (Parts of Speech)
     **Nouns** (common, proper, countable, uncountable, collective, abstract)  
       Words that name people, places, things, or ideas.
     **Verbs** (main, auxiliary, modal; transitive, intransitive; finite, non-finite)  
@@ -129,7 +136,7 @@ Example: "Call me Ishmael" (subject: implied "you"; predicate: "Call me Ishmael"
     **Interjections**  
       Words expressing sudden emotion or exclamation.
 
-  4.2 Morphological Features
+4.2 Morphological Features
     **Inflection** (plurals, tenses, degrees of comparison)  
       Changes in word form to express grammatical features such as number, tense, or degree.
     **Derivation** (prefixes, suffixes, compounding)  
@@ -253,7 +260,7 @@ Example: "Call me Ishmael" (subject: implied "you"; predicate: "Call me Ishmael"
    Example: "Never gonna give you up, never gonna let you down." (Rick Astley, *Never Gonna Give You Up* — two separable phrasal verbs with the pronoun object between verb and particle)
    Primarily affects: Lexical & Phrasal Levels
 
-5. GoverningConventions
+5. Governing Conventions
 
 5.1 Agreement Rules
 These ensure consistency between related elements.

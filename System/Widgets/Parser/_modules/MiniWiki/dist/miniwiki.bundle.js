@@ -235,9 +235,31 @@ function isCapitalisedTechnical(word) {
 }
 
 /**
+ * midSentenceCapitals(text) -> Set<string> (lowercased keys)
+ * Every sentence's FIRST word is capitalised by orthography, not because it
+ * is a term ("Contains exactly one independent clause" would otherwise yield
+ * "Contains"). We therefore only trust a capital that appears somewhere other
+ * than a sentence opening. A word capitalised in both positions still counts,
+ * because its mid-sentence occurrence vouches for it.
+ */
+function midSentenceCapitals(text) {
+  const keys = new Set();
+  if (!text) return keys;
+  text.split(/(?<=[.!?:;])\s+|\n+/).forEach((sentence) => {
+    tokenizeWords(sentence)
+      .slice(1)
+      .forEach((word) => {
+        if (isCapitalisedTechnical(word)) keys.add(word.toLowerCase());
+      });
+  });
+  return keys;
+}
+
+/**
  * generateSearchTerms(article, ancestors, limit = 10) -> string[]
  * Weighted term set: title words (weight 3) > ancestor-title words
- * (weight 2) > capitalised/technical body words (weight 1). Deduplicated,
+ * (weight 2) > capitalised/technical words from the article's own explanatory
+ * prose, excluding examples and sentence-initial capitals (weight 1). Deduplicated,
  * stopworded, sorted by weight desc then alphabetically for a stable
  * order across runs.
  */
@@ -256,13 +278,18 @@ function generateSearchTerms(article, ancestors = [], limit = 10) {
   tokenizeWords(article.title).forEach((w) => add(w, 3));
   ancestors.forEach((a) => tokenizeWords(a.title).forEach((w) => add(w, 2)));
 
+  // Examples are deliberately EXCLUDED. They are illustrative quotations, so
+  // their proper nouns describe the quotation's source, not the topic — "Simple
+  // Sentence" was yielding Ishmael/Melville/Moby-Dick off "Call me Ishmael."
+  // These terms exist to search the web about the TOPIC, so only the article's
+  // own explanatory prose may contribute them.
   const bodySource = [
     article.lead || "",
     (article.characteristics || []).join(" "),
-    (article.examples || []).join(" "),
   ].join(" ");
+  const trusted = midSentenceCapitals(bodySource);
   tokenizeWords(bodySource).forEach((w) => {
-    if (isCapitalisedTechnical(w)) add(w, 1);
+    if (isCapitalisedTechnical(w) && trusted.has(w.toLowerCase())) add(w, 1);
   });
 
   return [...scores.keys()]
@@ -495,6 +522,531 @@ const MINIWIKI_CSS = `
 
 
 
+/* ---- src/styles-interactive.js ---- */
+
+/**
+ * styles-interactive.js — CSS for the five audit-gap features (search box,
+ * hover popover, see-also, prev/next, mobile drawer). Split out of
+ * styles.js per CSS-1 ("one file, one job... split when it grows") now
+ * that the base article/menu stylesheet plus this file's rules would push
+ * a single string past a legible size — this file owns exactly the
+ * interactive-feature rules, styles.js keeps the base page/menu rules.
+ * Same tokens-only rule as styles.js (CSS-2): only the shell's own
+ * --bg/--card/--ink/--ink2/--ink3/--line/--line2/--acc/--accbg/--radius.
+ */
+
+const MINIWIKI_INTERACTIVE_CSS = `
+/* Live search box (audit gap #1) */
+.mw-search-wrap { position: relative; margin-bottom: 12px; }
+.mw-search-box {
+  border: 1px solid var(--line2); border-radius: var(--radius); padding: 8px 10px;
+  font-size: 13px; width: 100%; color: var(--ink); background: var(--card);
+}
+.mw-search-box:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 3px var(--accbg); }
+.mw-search-results {
+  display: none; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card); max-height: 300px; overflow-y: auto; margin-top: 4px;
+}
+.mw-search-results.mw-search-results-visible { display: block; }
+.mw-search-result-item { padding: 7px 10px; cursor: pointer; border-bottom: 1px solid var(--line); font-size: 12px; }
+.mw-search-result-item:last-child { border-bottom: none; }
+.mw-search-result-item:hover { background: var(--accbg); }
+.mw-search-result-title { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.mw-search-result-snippet { color: var(--ink3); font-size: 11px; }
+.mw-search-empty { padding: 8px 10px; color: var(--ink3); font-size: 12px; }
+
+/* Hover/focus preview popover (audit gap #2) */
+.mw-preview-popover {
+  position: absolute; background: var(--card); border: 1px solid var(--line2);
+  border-radius: var(--radius); padding: 8px 11px; font-size: 12px; line-height: 1.5;
+  max-width: 280px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); z-index: 100; pointer-events: none;
+}
+.mw-preview-lead { color: var(--ink3); font-size: 12px; }
+
+/* See also (audit gap #3) — distinct from .mw-search-terms-box */
+.mw-see-also { margin-top: 16px; padding: 12px; background: var(--accbg); border-radius: var(--radius); font-size: 12px; }
+.mw-see-also-title { font-weight: 600; color: var(--ink2); margin-bottom: 6px; }
+.mw-see-also-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.mw-see-also-link {
+  color: var(--acc); text-decoration: none; padding: 2px 6px; border-radius: 3px;
+  background: var(--card); border: 1px solid var(--line); font-size: 11px;
+}
+.mw-see-also-link:hover { background: var(--accbg); }
+
+/* Prev/next sibling navigation (audit gap #4) */
+.mw-article-nav {
+  display: flex; justify-content: space-between; gap: 12px; margin-top: 24px;
+  padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px;
+}
+.mw-nav-button { color: var(--acc); text-decoration: none; }
+.mw-nav-button:hover { text-decoration: underline; }
+.mw-nav-next { margin-left: auto; }
+
+/* Mobile off-canvas drawer (audit gap #5) */
+.mw-nav-toggle {
+  display: none; align-items: center; justify-content: center; background: var(--card);
+  border: 1px solid var(--line2); border-radius: var(--radius); padding: 6px 12px;
+  cursor: pointer; font-size: 18px; color: var(--ink); width: 36px; height: 36px;
+}
+.mw-nav-scrim {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.3); z-index: 40;
+}
+.mw-nav-scrim.mw-scrim-active { display: block; }
+
+@media (max-width: 719px) {
+  /* position:fixed rather than relying on DOM order: mount() appends the
+     toggle wherever it finds a common ancestor for navContainer (index.js),
+     which can land after the article pane in source order. Fixing its
+     position keeps it visible top-left regardless. */
+  .mw-nav-toggle { display: inline-flex; position: fixed; top: 12px; left: 12px; z-index: 46; margin-bottom: 10px; }
+  .mw-side-menu {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 280px; max-height: none;
+    background: var(--bg); z-index: 45; transform: translateX(-100%);
+    transition: transform 0.25s ease; overflow-y: auto; padding: 16px;
+  }
+  .mw-side-menu.mw-drawer-open { transform: translateX(0); }
+}
+
+@media (min-width: 720px) {
+  .mw-nav-toggle { display: none; }
+  .mw-nav-scrim { display: none !important; }
+}
+`;
+
+
+
+/* ---- src/article-nav.js ---- */
+
+/**
+ * article-nav.js — "See also" and prev/next SIBLING navigation for the foot
+ * of an article page (audit gap #3 and #4). Pure data helpers over
+ * tree.js's getChildren (no new tree traversal invented), plus the two DOM
+ * renderers ui.js composes in. Kept out of ui.js per SR-1/CSS-1's "one file,
+ * one job" instinct — ui.js already renders everything else on the page.
+ *
+ * "Related" here means siblings (same parent) — the only relationship the
+ * build-time article model actually carries (Specs/MiniWikiModule.spec.md
+ * §4 has no curated "related articles" field, and the extractor is out of
+ * scope to change). This is a deliberate scope decision, not an oversight.
+ */
+
+
+/** getSiblings(articlesById, article) -> Article[] including `article`
+ * itself, id-sorted (getChildren's own order). A top-level article
+ * (no parent) has no siblings. */
+function getSiblings(articlesById, article) {
+  if (!article || !article.parent) return [];
+  return getChildren(articlesById, article.parent);
+}
+
+/**
+ * getPrevNextSibling(articlesById, article) -> { prev, next }
+ * Wraps at the ends of the sibling list. Both are `null` when `article`
+ * has no siblings (only child, or top-level) — the foot section is then
+ * omitted entirely by the renderer rather than showing a dead-end link.
+ */
+function getPrevNextSibling(articlesById, article) {
+  const siblings = getSiblings(articlesById, article);
+  if (siblings.length <= 1) return { prev: null, next: null };
+  const idx = siblings.findIndex((s) => s.id === article.id);
+  if (idx === -1) return { prev: null, next: null };
+  const prev = siblings[(idx - 1 + siblings.length) % siblings.length];
+  const next = siblings[(idx + 1) % siblings.length];
+  return { prev, next };
+}
+
+/** getSeeAlso(articlesById, article, limit) -> Article[] — this article's
+ * siblings, excluding itself, capped at `limit`. Empty when there are none. */
+function getSeeAlso(articlesById, article, limit = 8) {
+  return getSiblings(articlesById, article)
+    .filter((s) => s.id !== article.id)
+    .slice(0, limit);
+}
+
+function navLink(doc, className, label, articleId, onNavigate) {
+  const a = el(doc, "a", className, label);
+  a.href = "#/" + articleId;
+  a.setAttribute("data-article-id", articleId);
+  a.addEventListener("click", (e) => {
+    // Guarded rather than an unconditional call: fake-dom.mjs's click()
+    // helper (used by this module's own tests, TEST-8) dispatches a plain
+    // {type, currentTarget, target} object with no preventDefault — a real
+    // browser's click event always has one.
+    if (e && typeof e.preventDefault === "function") e.preventDefault();
+    onNavigate(articleId);
+  });
+  return a;
+}
+
+/** renderSeeAlso(...) -> Element|null. Null (never an empty section) when
+ * the article has no siblings — distinct from the key-search-terms box,
+ * which is unrelated content. */
+function renderSeeAlso(doc, articlesById, article, onNavigate) {
+  const items = getSeeAlso(articlesById, article);
+  if (!items.length) return null;
+  const section = el(doc, "section", "mw-see-also");
+  section.appendChild(el(doc, "div", "mw-see-also-title", "See also"));
+  const links = el(doc, "div", "mw-see-also-links");
+  for (const item of items) {
+    links.appendChild(navLink(doc, "mw-see-also-link", item.title, item.id, onNavigate));
+  }
+  section.appendChild(links);
+  return section;
+}
+
+/** renderPrevNextNav(...) -> Element|null. Null when the node has no
+ * siblings at all (both prev and next are null). */
+function renderPrevNextNav(doc, articlesById, article, onNavigate) {
+  const { prev, next } = getPrevNextSibling(articlesById, article);
+  if (!prev && !next) return null;
+  const nav = el(doc, "div", "mw-article-nav");
+  if (prev) nav.appendChild(navLink(doc, "mw-nav-button mw-nav-prev", "← " + prev.title, prev.id, onNavigate));
+  if (next) nav.appendChild(navLink(doc, "mw-nav-button mw-nav-next", next.title + " →", next.id, onNavigate));
+  return nav;
+}
+
+
+
+/* ---- src/search-ui.js ---- */
+
+/**
+ * search-ui.js — the live search box UI (audit gap #1). index.js's
+ * search(query) has worked since the module shipped; nothing in src/
+ * rendered an input for it. Kept out of ui.js per SR-1 — this owns exactly
+ * one concern: the search box, its live-filtered result list, and toggling
+ * the normal menu content out of the way while a query is active.
+ */
+
+/** snippet(text, len) -> a plain-text lead excerpt, ellipsised if cut. */
+function snippet(text, len = 80) {
+  const t = (text || "").trim();
+  if (t.length <= len) return t;
+  return t.slice(0, len).trimEnd() + "…";
+}
+
+function renderResultItem(doc, article, onSelect) {
+  const item = el(doc, "div", "mw-search-result-item");
+  item.setAttribute("role", "button");
+  item.tabIndex = 0;
+  item.appendChild(el(doc, "div", "mw-search-result-title", article.title));
+  const snippetText = snippet(article.lead);
+  if (snippetText) item.appendChild(el(doc, "div", "mw-search-result-snippet", snippetText));
+  item.addEventListener("click", () => onSelect(article.id));
+  item.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") onSelect(article.id);
+  });
+  return item;
+}
+
+function setMenuVisible(menuBody, visible) {
+  if (menuBody) menuBody.style.display = visible ? "" : "none";
+}
+
+/**
+ * applySearchQuery(doc, query, resultsEl, menuBody, search, onNavigate) —
+ * the live-filter step itself, factored out of the input-event wiring so
+ * it can be called directly (fake-dom.mjs has no generic event dispatch,
+ * TEST-8 — this mirrors popover.js's directly-callable-handler pattern
+ * rather than requiring one). Empty/whitespace query restores the normal
+ * menu; a non-empty query hides it and renders the result list (or a
+ * "No matches." row).
+ */
+function applySearchQuery(doc, query, resultsEl, menuBody, search, onNavigate) {
+  resultsEl.textContent = "";
+  const trimmed = (query || "").trim();
+  if (!trimmed) {
+    resultsEl.className = "mw-search-results";
+    setMenuVisible(menuBody, true);
+    return;
+  }
+  setMenuVisible(menuBody, false);
+  const matches = search(query);
+  if (!matches.length) {
+    resultsEl.appendChild(el(doc, "div", "mw-search-empty", "No matches."));
+  } else {
+    for (const article of matches) {
+      resultsEl.appendChild(renderResultItem(doc, article, onNavigate));
+    }
+  }
+  resultsEl.className = "mw-search-results mw-search-results-visible";
+}
+
+/**
+ * renderSearchBox(doc, opts) -> Element
+ * opts: { search(query) -> Article[], onNavigate(id), menuBody: Element }
+ * `menuBody` is the rest of the side menu (Home/All/Surprise, categories,
+ * tree) — hidden while a non-empty query has results shown, and restored
+ * the moment the box is cleared, per the requirement that clearing the box
+ * "restores the normal menu/tree".
+ */
+function renderSearchBox(doc, opts) {
+  const wrap = el(doc, "div", "mw-search-wrap");
+  const input = doc.createElement("input");
+  input.type = "text";
+  input.className = "mw-search-box";
+  input.placeholder = "Search topics…";
+  input.setAttribute("aria-label", "Search articles");
+  wrap.appendChild(input);
+
+  const results = el(doc, "div", "mw-search-results");
+  wrap.appendChild(results);
+
+  input.addEventListener("input", () => {
+    applySearchQuery(doc, input.value, results, opts.menuBody, opts.search, opts.onNavigate);
+  });
+  return wrap;
+}
+
+
+
+/* ---- src/popover.js ---- */
+
+/**
+ * popover.js — hover/focus preview popover for wikilinks (audit gap #2).
+ * `.wikilink` has only ever had `cursor:help` + a click handler; this adds
+ * the actual preview. Kept out of ui.js (SR-1) — this owns exactly the
+ * popover element, its positioning, and the delegated show/hide handlers.
+ *
+ * No `.closest()` is used (the fake DOM in _shell/tests/js/fake-dom.mjs
+ * does not implement it, TEST-8, and this file avoids depending on a DOM
+ * feature the test harness doesn't provide) — findLinkAncestor() below
+ * walks `parentNode` by hand instead, which real DOM elements support too.
+ */
+
+const PREVIEW_LEAD_LEN = 100;
+const SHOW_DELAY_MS = 150;
+
+function hasClass(node, className) {
+  return (node.className || "").split(/\s+/).includes(className);
+}
+
+/** findLinkAncestor(node) -> the nearest `.wikilink`/`.mw-see-also-link`
+ * element at or above `node`, or null. */
+function findLinkAncestor(node) {
+  let current = node;
+  while (current) {
+    if (current.className !== undefined && (hasClass(current, "wikilink") || hasClass(current, "mw-see-also-link"))) {
+      return current;
+    }
+    current = current.parentNode;
+  }
+  return null;
+}
+
+/** formatPreviewHtml(article) -> the popover's inner markup: bold title +
+ * a truncated lead sentence. Text-only inputs (title/lead are already
+ * plain strings on the article record, never raw content HTML), so a
+ * template literal here does not reopen the JS-6/HTML-6 escaping concern
+ * that gates `.mw-body`'s innerHTML assignment. */
+function formatPreviewHtml(article) {
+  const lead = (article.lead || "").slice(0, PREVIEW_LEAD_LEN);
+  const ellipsis = (article.lead || "").length > PREVIEW_LEAD_LEN ? "…" : "";
+  return `<strong>${escapeHtml(article.title)}</strong>` + (lead ? `<br><span class="mw-preview-lead">${escapeHtml(lead)}${ellipsis}</span>` : "");
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** computePosition(rect, popoverHeight, viewportHeight) -> {top, left}.
+ * Prefers sitting above the link; flips below when that would overflow the
+ * top of the viewport (mirrors the mockup's own flip rule). */
+function computePosition(rect, popoverHeight, viewportHeight) {
+  let top = rect.top - popoverHeight - 8;
+  if (top < 0) top = rect.bottom + 8;
+  void viewportHeight; // reserved: bottom-overflow flip is symmetrical and not needed at the sizes this popover renders
+  return { top, left: rect.left };
+}
+
+/** createPreviewPopover(doc) -> a detached, hidden popover Element ready
+ * to append to the document (mount() owns where — see index.js). */
+function createPreviewPopover(doc) {
+  const popover = el(doc, "div", "mw-preview-popover");
+  popover.style.display = "none";
+  return popover;
+}
+
+function showPopover(doc, popover, article, anchorEl) {
+  popover.innerHTML = formatPreviewHtml(article);
+  popover.style.display = "block";
+  const rect = anchorEl.getBoundingClientRect();
+  const { top, left } = computePosition(rect, popover.offsetHeight || 60);
+  popover.style.top = top + "px";
+  popover.style.left = left + "px";
+}
+
+function hidePopover(popover) {
+  popover.style.display = "none";
+}
+
+/**
+ * createHoverHandlers(popover, getArticle) -> { onMouseOver, onMouseOut,
+ * onFocusIn, onFocusOut } — plain functions taking a synthetic
+ * `{ target }` event, so tests can call them directly without a real DOM
+ * dispatch mechanism (fake-dom.mjs has no generic dispatchEvent, TEST-8).
+ * Wire them with `container.addEventListener("mouseover", handlers.onMouseOver)`
+ * etc. in a real (or the fake) DOM.
+ */
+function createHoverHandlers(popover, getArticle) {
+  let showTimer = null;
+
+  function cancelShow() {
+    if (showTimer) {
+      clearTimeout(showTimer);
+      showTimer = null;
+    }
+  }
+
+  function reveal(doc, link) {
+    const articleId = link.getAttribute("data-article-id");
+    const article = articleId && getArticle(articleId);
+    if (!article) return;
+    showPopover(doc, popover, article, link);
+  }
+
+  return {
+    onMouseOver(e) {
+      const link = findLinkAncestor(e.target);
+      if (!link) return;
+      cancelShow();
+      const doc = link.ownerDocument;
+      showTimer = setTimeout(() => reveal(doc, link), SHOW_DELAY_MS);
+    },
+    onMouseOut(e) {
+      const link = findLinkAncestor(e.target);
+      if (!link) return;
+      cancelShow();
+      hidePopover(popover);
+    },
+    onFocusIn(e) {
+      const link = findLinkAncestor(e.target);
+      if (!link) return;
+      cancelShow();
+      reveal(link.ownerDocument, link);
+    },
+    onFocusOut(e) {
+      const link = findLinkAncestor(e.target);
+      if (!link) return;
+      cancelShow();
+      hidePopover(popover);
+    },
+  };
+}
+
+
+
+/* ---- src/nav-active.js ---- */
+
+/**
+ * nav-active.js — wires `.mw-active` onto the current article's side-menu
+ * and tree entry (audit bug: styles.js has always styled `.mw-active`, but
+ * nothing in ui.js/index.js ever applied it — StyleGuide's 03/04 docs
+ * called this out as a known gap; this closes it). One job (SR-1): given a
+ * nav container and the current key, clear the old highlight and set the
+ * new one. No re-render — the lazy tree keeps whatever nodes are already
+ * expanded, so this only ever toggles a class on existing anchors.
+ */
+
+function clearActive(navContainer, className) {
+  for (const link of navContainer.querySelectorAll("." + className)) {
+    link.className = link.className
+      .split(/\s+/)
+      .filter((c) => c !== "mw-active")
+      .join(" ");
+  }
+}
+
+function applyActive(navContainer, className, key) {
+  for (const link of navContainer.querySelectorAll("." + className)) {
+    if (link.getAttribute("data-nav-id") === key) {
+      link.className = (link.className + " mw-active").trim();
+    }
+  }
+}
+
+/**
+ * setActiveNavLink(navContainer, key) — key is "home", "all", or an
+ * article id. Matches on the `data-nav-id` attribute every relevant link
+ * carries (menu top links + tree/category links, wired in ui.js). Silently
+ * no-ops when nothing matches (e.g. the current article sits inside a
+ * still-collapsed branch of the lazy tree) rather than forcing an expand —
+ * this mirrors the tree's own lazy-expansion contract.
+ */
+function setActiveNavLink(navContainer, key) {
+  if (!navContainer || !navContainer.querySelectorAll) return;
+  for (const className of ["mw-menu-link", "mw-tree-link"]) {
+    clearActive(navContainer, className);
+    applyActive(navContainer, className, key);
+  }
+}
+
+
+
+/* ---- src/drawer.js ---- */
+
+/**
+ * drawer.js — the mobile off-canvas nav drawer (audit gap #5). The
+ * `@media (max-width:719px)` rule in styles.js has only ever stacked the
+ * two columns; the approved mockup's drawer (toggle button, slide-in,
+ * scrim, Escape/scrim/selection close) never shipped. This owns exactly
+ * that behaviour — open/close state plus the three ways to close it — over
+ * whatever toggle/nav/scrim elements index.js's mount() hands it.
+ */
+
+/**
+ * createDrawerController(doc, toggle, navPane, scrim) -> controller
+ * `navPane` gets `.mw-drawer-open` toggled; `scrim` gets `.mw-scrim-active`.
+ * The controller also exposes `closeOnNavigate()` for mount() to call from
+ * inside its own navigate() so selecting an article closes the drawer.
+ */
+function createDrawerController(doc, toggle, navPane, scrim) {
+  function isOpen() {
+    return (navPane.className || "").split(/\s+/).includes("mw-drawer-open");
+  }
+
+  function setClass(el, className, on) {
+    const classes = (el.className || "").split(/\s+/).filter(Boolean).filter((c) => c !== className);
+    if (on) classes.push(className);
+    el.className = classes.join(" ");
+  }
+
+  function open() {
+    setClass(navPane, "mw-drawer-open", true);
+    setClass(scrim, "mw-scrim-active", true);
+  }
+
+  function close() {
+    setClass(navPane, "mw-drawer-open", false);
+    setClass(scrim, "mw-scrim-active", false);
+  }
+
+  function toggleDrawer() {
+    if (isOpen()) close();
+    else open();
+  }
+
+  // Exposed as a standalone function (not only wired via doc.addEventListener)
+  // so tests can call it directly with a synthetic `{ key }` event — the
+  // fake DOM's doc.addEventListener is a no-op stub (it has no document-wide
+  // dispatch mechanism, TEST-8), so real Escape-key delivery is only
+  // exercisable this way outside a real browser.
+  function onKeydown(e) {
+    if (e.key === "Escape" && isOpen()) close();
+  }
+
+  if (toggle) toggle.addEventListener("click", toggleDrawer);
+  if (scrim) scrim.addEventListener("click", close);
+  if (doc) doc.addEventListener("keydown", onKeydown);
+
+  return { open, close, toggle: toggleDrawer, isOpen, closeOnNavigate: close, onKeydown };
+}
+
+
+
 /* ---- src/ui.js ---- */
 
 /**
@@ -514,6 +1066,8 @@ const MINIWIKI_CSS = `
 
 
 
+
+
 function el(doc, tag, className, text) {
   const e = doc.createElement(tag);
   if (className) e.className = className;
@@ -521,10 +1075,11 @@ function el(doc, tag, className, text) {
   return e;
 }
 
-function linkItem(doc, label, onClick, className = "mw-menu-link") {
+function linkItem(doc, label, onClick, className = "mw-menu-link", navId) {
   const li = doc.createElement("li");
   const a = el(doc, "a", className, label);
   a.href = "#";
+  if (navId !== undefined) a.setAttribute("data-nav-id", navId);
   a.addEventListener("click", (e) => {
     e.preventDefault();
     onClick();
@@ -533,24 +1088,34 @@ function linkItem(doc, label, onClick, className = "mw-menu-link") {
   return li;
 }
 
-/** Side menu (requirement 7): Home, All, Surprise me, category links, tree. */
+/** Side menu (requirement 7): search box, Home, All, Surprise me, category
+ * links, tree. `opts.search` (index.js's search(query)) backs the live
+ * search box (audit gap #1) — `menuBody` (everything below the box) is
+ * hidden while a query has the result list open, restored when cleared. */
 function renderSideMenu(doc, articlesById, opts) {
   const nav = el(doc, "nav", "mw-side-menu");
-  const top = el(doc, "ul", "mw-menu-top");
-  top.appendChild(linkItem(doc, "Home", opts.onHome));
-  top.appendChild(linkItem(doc, "All", opts.onAll));
-  top.appendChild(linkItem(doc, "Surprise me", opts.onSurprise));
-  nav.appendChild(top);
 
-  nav.appendChild(el(doc, "div", "mw-menu-heading", "Categories"));
+  const menuBody = el(doc, "div", "mw-menu-body");
+  const top = el(doc, "ul", "mw-menu-top");
+  top.appendChild(linkItem(doc, "Home", opts.onHome, "mw-menu-link", "home"));
+  top.appendChild(linkItem(doc, "All", opts.onAll, "mw-menu-link", "all"));
+  top.appendChild(linkItem(doc, "Surprise me", opts.onSurprise));
+  menuBody.appendChild(top);
+
+  menuBody.appendChild(el(doc, "div", "mw-menu-heading", "Categories"));
   const categoryList = el(doc, "ul", "mw-menu-categories");
   for (const cat of getTopLevel(articlesById)) {
-    categoryList.appendChild(linkItem(doc, cat.title, () => opts.onNavigate(cat.id)));
+    categoryList.appendChild(linkItem(doc, cat.title, () => opts.onNavigate(cat.id), "mw-menu-link", cat.id));
   }
-  nav.appendChild(categoryList);
+  menuBody.appendChild(categoryList);
 
-  nav.appendChild(el(doc, "div", "mw-menu-heading", "Browse"));
-  nav.appendChild(renderTree(doc, articlesById, opts.expandedIds, opts.onNavigate));
+  menuBody.appendChild(el(doc, "div", "mw-menu-heading", "Browse"));
+  menuBody.appendChild(renderTree(doc, articlesById, opts.expandedIds, opts.onNavigate));
+
+  if (opts.search) {
+    nav.appendChild(renderSearchBox(doc, { search: opts.search, onNavigate: opts.onNavigate, menuBody }));
+  }
+  nav.appendChild(menuBody);
   return nav;
 }
 
@@ -585,6 +1150,7 @@ function renderTreeLevel(doc, articlesById, nodes, ul, expandedIds, onNavigate) 
     }
     const link = el(doc, "a", "mw-tree-link", a.title);
     link.href = "#/" + a.id;
+    link.setAttribute("data-nav-id", a.id);
     link.addEventListener("click", (e) => {
       e.preventDefault();
       onNavigate(a.id);
@@ -745,6 +1311,14 @@ function renderArticlePage(doc, articlesById, article, linkCatalogue, onNavigate
     main.appendChild(section);
   }
 
+  // Audit gaps #3/#4: "See also" (sibling chips, distinct from the
+  // key-search-terms box below) and prev/next sibling navigation, both
+  // omitted entirely rather than rendered empty when there are no siblings.
+  const seeAlso = renderSeeAlso(doc, articlesById, article, onNavigate);
+  if (seeAlso) main.appendChild(seeAlso);
+  const prevNext = renderPrevNextNav(doc, articlesById, article, onNavigate);
+  if (prevNext) main.appendChild(prevNext);
+
   main.appendChild(renderSearchTermsBox(doc, article, getAncestors(articlesById, article.id)));
   return main;
 }
@@ -799,6 +1373,10 @@ function flashCopied(element, ok) {
  * ARTICLES JSON (build/extract_articles.py's output) and mount an instance
  * without touching this file — the module owns no per-cartridge content.
  */
+
+
+
+
 
 
 
@@ -891,12 +1469,58 @@ function createMiniWikiModule(options = {}) {
     }
     injectStylesOnce(d);
 
+    // Audit gap #2 (hover-preview popover): one popover element per mount,
+    // appended alongside the article pane so it shares that pane's
+    // positioning context; delegated show/hide handlers on articleContainer
+    // cover every wikilink and "see also" chip regardless of how often the
+    // article body is re-rendered underneath them.
+    const popover = createPreviewPopover(d);
+    const hoverHandlers = createHoverHandlers(popover, getArticle);
+    articleContainer.addEventListener("mouseover", hoverHandlers.onMouseOver);
+    articleContainer.addEventListener("mouseout", hoverHandlers.onMouseOut);
+    articleContainer.addEventListener("focusin", hoverHandlers.onFocusIn);
+    articleContainer.addEventListener("focusout", hoverHandlers.onFocusOut);
+    if (articleContainer.parentNode) {
+      articleContainer.parentNode.appendChild(popover);
+    } else {
+      articleContainer.appendChild(popover);
+    }
+
+    // Audit gap #5 (mobile drawer): the toggle button and scrim are created
+    // here at mount time rather than baked into miniwiki-seam.js's static
+    // document template, so the seam's launch logic stays untouched. Both
+    // need a shared ancestor with navContainer to sit alongside it; when
+    // the host hasn't given navContainer a parent (e.g. a bare test
+    // fixture), the drawer simply isn't wired — there is nothing to toggle.
+    let drawer = null;
+    const navRoot = navContainer.parentNode;
+    if (navRoot) {
+      const toggle = el(d, "button", "mw-nav-toggle", "☰");
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Toggle navigation");
+      const scrim = el(d, "div", "mw-nav-scrim");
+      // appendChild only (not insertBefore) — the fake DOM used by this
+      // module's own tests (_shell/tests/js/fake-dom.mjs, TEST-8) implements
+      // no insertBefore, and CSS (position:fixed for the drawer/scrim, and
+      // the toggle only ever showing on the narrow breakpoint) makes DOM
+      // order harmless here regardless.
+      navRoot.appendChild(toggle);
+      navRoot.appendChild(scrim);
+      drawer = createDrawerController(d, toggle, navContainer, scrim);
+    }
+
     function hashFor(id) {
       return "#/" + id;
     }
 
+    function updateActive(key) {
+      setActiveNavLink(navContainer, key);
+    }
+
     function navigate(id, opts2 = {}) {
       renderView("article", id, articleContainer, navigate);
+      updateActive(id);
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") {
         window.location.hash = hashFor(id);
       }
@@ -905,11 +1529,15 @@ function createMiniWikiModule(options = {}) {
 
     function showHome(opts2 = {}) {
       renderView("home", null, articleContainer, navigate);
+      updateActive("home");
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") window.location.hash = "#/";
     }
 
     function showAll(opts2 = {}) {
       renderView("all", null, articleContainer, navigate);
+      updateActive("all");
+      if (drawer) drawer.closeOnNavigate();
       if (!opts2.skipHash && typeof window !== "undefined") window.location.hash = "#/all";
     }
 
@@ -926,6 +1554,7 @@ function createMiniWikiModule(options = {}) {
         onSurprise: showSurprise,
         onNavigate: navigate,
         expandedIds,
+        search,
       })
     );
 
@@ -934,12 +1563,16 @@ function createMiniWikiModule(options = {}) {
       const hash = window.location.hash.replace(/^#\/?/, "");
       if (!hash) {
         renderView("home", null, articleContainer, navigate);
+        updateActive("home");
       } else if (hash === "all") {
         renderView("all", null, articleContainer, navigate);
+        updateActive("all");
       } else if (articlesById[hash]) {
         renderView("article", hash, articleContainer, navigate);
+        updateActive(hash);
       } else {
         renderView("home", null, articleContainer, navigate);
+        updateActive("home");
       }
     }
 
@@ -948,6 +1581,7 @@ function createMiniWikiModule(options = {}) {
       routeFromHash();
     } else {
       renderView("home", null, articleContainer, navigate);
+      updateActive("home");
     }
 
     return { navigate, showHome, showAll, showSurprise };
@@ -982,7 +1616,7 @@ function injectStylesOnce(doc) {
   if (stylesInjected || doc.querySelector("style[data-miniwiki]")) return;
   const style = doc.createElement("style");
   style.setAttribute("data-miniwiki", "");
-  style.textContent = MINIWIKI_CSS;
+  style.textContent = MINIWIKI_CSS + "\n" + MINIWIKI_INTERACTIVE_CSS;
   doc.head.appendChild(style);
   stylesInjected = true;
 }

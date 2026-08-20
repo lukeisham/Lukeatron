@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+    a { color:#185FA5; } a:hover { color:#0C447C; }
+    .num { font-variant-numeric: tabular-nums; }
+  </style>
+</helmet>
+
+<!-- A4 portrait at 96dpi = 794 x 1123 -->
+<div style="width:794px; height:1123px; background:#fff; color:#1a1a17; padding:40px 44px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:8px;">
+    <div style="font-size:17px; font-weight:600;">Marking matrix</div>
+    <div style="font-size:10.5px; color:#5f5e5a;">Year 10 History · [STUDENT NAME] · Full unit</div>
+  </div>
+
+  <!-- student band -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:15px 0 4px;">
+    <div>
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891;">Student</div>
+      <div style="font-size:21px; font-weight:600; letter-spacing:-.01em;">[STUDENT NAME]</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891;">Total</div>
+      <div style="font-size:21px; font-weight:600; letter-spacing:-.01em;">65 / 100 <span style="font-size:14px; font-weight:400; color:#5f5e5a;">· 65%</span></div>
+    </div>
+  </div>
+  <div style="font-size:11px; color:#5f5e5a; border-bottom:1px solid #e3e1d9; padding-bottom:11px;">
+    Scored against the unit assessment and its three mini assessments. Half marks allowed. Unmarked criteria count as zero.
+  </div>
+
+  <!-- the sheet — same instrument as the class grid, one column instead of eight -->
+  <div style="margin-top:16px; background:#fff; border:1px solid #c9c7bd; border-radius:8px; overflow:hidden;">
+
+    <!-- header row -->
+    <div style="display:grid; grid-template-columns:1fr 40px 64px 200px; background:#f4f3ee; border-bottom:1px solid #c9c7bd;">
+      <div style="padding:8px 12px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a;">Criterion</div>
+      <div style="padding:8px 4px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a; text-align:center; border-left:1px solid #e3e1d9;">Max</div>
+      <div style="padding:8px 4px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a; text-align:center; border-left:1px solid #e3e1d9;">Score</div>
+      <div style="padding:8px 12px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a; border-left:1px solid #c9c7bd;">Comment</div>
+    </div>
+
+    <sc-for list="{{tiers}}" as="t" hint-placeholder-count="3">
+      <div>
+        <!-- tier band -->
+        <div style="display:flex; align-items:center; gap:10px; padding:6px 12px; background:{{t.tint}}; border-bottom:1px solid {{t.line}}; border-top:1px solid {{t.line}};">
+          <span style="width:9px; height:9px; border-radius:2px; background:{{t.line}}; display:inline-block;"></span>
+          <span style="font-size:11.5px; font-weight:600; color:{{t.ink}};">{{t.name}}</span>
+          <span style="font-size:10.5px; color:{{t.ink}};">{{t.meta}}</span>
+        </div>
+
+        <sc-for list="{{t.rows}}" as="r" hint-placeholder-count="3">
+          <div style="display:grid; grid-template-columns:1fr 40px 64px 200px; border-bottom:1px solid #f0efea; align-items:stretch;">
+            <div style="padding:5px 12px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:12px; text-wrap:pretty;">{{r.criterion}}</div>
+              <div style="font-size:9.5px; color:#9a9891; margin-top:1px;">{{r.source}}</div>
+            </div>
+            <div class="num" style="padding:5px 4px; font-size:11.5px; color:#5f5e5a; text-align:center; border-left:1px solid #f0efea; display:flex; align-items:center; justify-content:center;">{{r.max}}</div>
+            <div style="padding:5px 4px; border-left:1px solid #f0efea; display:flex; align-items:center; justify-content:center;">
+              <span class="num" style="{{r.scoreStyle}}">{{r.score}}</span>
+            </div>
+            <div style="padding:5px 12px; border-left:1px solid #f0efea; font-size:10.5px; color:#5f5e5a; display:flex; align-items:center; text-wrap:pretty;">{{r.comment}}</div>
+          </div>
+        </sc-for>
+
+        <!-- tier subtotal — same row shape as the class grid's -->
+        <div style="display:grid; grid-template-columns:1fr 40px 64px 200px; border-bottom:1px solid #c9c7bd; background:#faf9f5;">
+          <div style="padding:5px 12px; font-size:11px; font-weight:600; color:{{t.ink}}; text-align:right;">{{t.name}} subtotal</div>
+          <div class="num" style="padding:5px 4px; font-size:11px; font-weight:600; color:#5f5e5a; text-align:center; border-left:1px solid #e3e1d9;">{{t.max}}</div>
+          <div class="num" style="padding:5px 4px; font-size:11.5px; font-weight:600; text-align:center; border-left:1px solid #e3e1d9;">{{t.sub}}</div>
+          <div style="border-left:1px solid #f0efea;"></div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- unit progress: per-assessment subtotals (independent scales) beside the separately-computed unit position -->
+  <div style="margin-top:12px; display:flex; gap:12px; align-items:stretch;">
+
+    <div style="flex:1; padding:10px 12px; background:#faf9f5; border:1px solid #e3e1d9; border-radius:8px;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:7px;">Across the unit</div>
+      <div style="display:grid; grid-template-columns:1fr auto; gap:5px 10px; align-items:baseline;">
+        <div style="font-size:12px; color:#1a1a17;">Final assessment</div>
+        <div class="num" style="font-size:12px; color:#1a1a17; text-align:right;"><strong>47</strong> <span style="color:#9a9891;">/ 62</span></div>
+
+        <div style="font-size:12px; color:#1a1a17;">Mini &middot; Timeline check</div>
+        <div class="num" style="font-size:12px; color:#1a1a17; text-align:right;"><strong>18</strong> <span style="color:#9a9891;">/ 22</span></div>
+
+        <div style="font-size:12px; color:#1a1a17;">Mini &middot; Source reliability drill</div>
+        <div class="num" style="font-size:12px; color:#1a1a17; text-align:right;"><strong>22</strong> <span style="color:#9a9891;">/ 30</span></div>
+
+        <div style="font-size:12px; color:#1a1a17;">Mini &middot; Paragraph structure</div>
+        <div style="text-align:right;"><span style="font-size:12px; color:#9a9891; border:1px dashed #c9c7bd; border-radius:4px; padding:0 7px;">&mdash;</span> <span class="num" style="font-size:12px; color:#9a9891;">/ 18</span></div>
+      </div>
+    </div>
+
+    <div style="width:186px; flex:0 0 auto; padding:10px 13px; background:#E6F1FB; border:1.5px solid #185FA5; border-radius:8px; display:flex; flex-direction:column; justify-content:center;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#0C447C;">Unit position</div>
+      <div class="num" style="font-size:23px; font-weight:600; letter-spacing:-.01em; color:#0C447C; margin-top:3px;">65 <span style="font-size:14px; font-weight:400;">/ 100</span></div>
+      <div style="font-size:12px; color:#0C447C; margin-top:1px;">65%</div>
+    </div>
+
+  </div>
+
+  <div style="flex-grow:1;"></div>
+
+  <div style="border-top:1px solid #e3e1d9; padding-top:10px; display:flex; align-items:center; justify-content:space-between; gap:16px; font-size:11.5px; color:#5f5e5a;">
+    <span style="display:flex; align-items:center; gap:7px;"><span class="num" style="font-size:12px; font-weight:600; color:#1a1a17;">4</span> marked</span>
+    <span style="display:flex; align-items:center; gap:7px;"><span style="font-size:12px; color:#9a9891; border:1px dashed #c9c7bd; border-radius:4px; padding:0 7px;">—</span> not yet marked, counts as zero</span>
+    <span style="display:flex; align-items:center; gap:7px;"><span class="num" style="font-size:12px; color:#1a1a17;">0</span> marked zero</span>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  // FR-MMB-10a: unmarked must LOOK different from a deliberate 0,
+  // even though AD-MMB-5 scores them the same.
+  row(criterion, source, score, max, comment) {
+    const unmarked = score === null;
+    return {
+      criterion, source, max,
+      score: unmarked ? '—' : String(score),
+      comment: unmarked ? '' : comment,
+      scoreStyle: unmarked
+        ? 'font-size:13px; color:#9a9891; border:1px dashed #c9c7bd; border-radius:4px; padding:0 7px;'
+        : 'font-size:15px; font-weight:600; color:#1a1a17;'
+    };
+  }
+  renderVals() {
+    const R = (...a) => this.row(...a);
+    const tiers = [
+      { name: 'Pass', meta: '3 criteria · 50 marks', max: 50, line: '#1F6B41', tint: '#E4F4E9', ink: '#14502F', rows: [
+        R('Describes two forms of commemoration', 'Final assessment', 16, 17, 'Both clear, well chosen.'),
+        R('Uses one source per claim', 'Final assessment', 15, 16.5, 'Second source paraphrased, not cited.'),
+        R('Sequences events correctly', 'Mini · Timeline check', 10, 16.5, 'Two events transposed.'),
+      ]},
+      { name: 'Intermediate', meta: '2 criteria · 25 marks', max: 25, line: '#185FA5', tint: '#E6F1FB', ink: '#0C447C', rows: [
+        R('Explains change over time', 'Final assessment', 10, 12.5, 'Good on 1920s; thin after 1970.'),
+        R('Weighs source reliability', 'Mini · Source reliability drill', 8, 12.5, 'Identifies bias, stops short of judging usefulness.'),
+      ]},
+      { name: 'Advanced', meta: '4 criteria · 25 marks', max: 25, line: '#9A4E12', tint: '#FCEEE2', ink: '#703508', rows: [
+        R('Sustains an argument across the essay', 'Final assessment', 6, 6.5, 'Holds the line to the conclusion.'),
+        R('Engages a counter-interpretation', 'Final assessment', null, 6.5, ''),
+        R('Referencing is accurate and consistent', 'Mini · Paragraph structure', null, 6.0, ''),
+        R('Synthesizes multiple perspectives', 'Final assessment', null, 6.0, ''),
+      ]},
+    ];
+    tiers.forEach((t) => {
+      const marked = t.rows.filter((r) => r.score !== '—').reduce((a, r) => a + parseFloat(r.score), 0);
+      t.sub = marked.toFixed(1);
+    });
+    return { tiers };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+    a { color:#185FA5; } a:hover { color:#0C447C; }
+  </style>
+</helmet>
+
+<!-- A4 portrait at 96dpi = 794 x 1123 -->
+<div style="width:794px; height:1123px; background:#fff; color:#1a1a17; padding:44px 48px; box-sizing:border-box; display:flex; flex-direction:column; gap:0;">
+
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:9px;">
+    <div style="font-size:18px; font-weight:600;">Unit Assessment</div>
+    <div style="font-size:10.5px; color:#5f5e5a;">Year 10 History · page 1 of 4</div>
+  </div>
+
+  <div style="font-size:24px; font-weight:600; letter-spacing:-.01em; margin:18px 0 4px; text-wrap:pretty;">
+    Was the Anzac legend made in 1915, or made since?
+  </div>
+  <div style="font-size:12.5px; color:#5f5e5a; margin-bottom:20px;">Final assessment · research essay, 1200 words · submitted week 8</div>
+
+  <!-- binding block -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid #c9c7bd; border-radius:8px; overflow:hidden; margin-bottom:18px;">
+    <div style="padding:12px 14px; border-right:1px solid #e3e1d9;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:5px;">Big idea</div>
+      <div style="font-size:13.5px; font-weight:600;">Contested memory</div>
+      <div style="font-size:11.5px; color:#5f5e5a; margin-top:2px;">How a nation chooses what to remember</div>
+    </div>
+    <div style="padding:12px 14px;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:5px;">Marked on</div>
+      <div style="font-size:13.5px; font-weight:600;">Year 10 History — marking matrix</div>
+      <div style="font-size:11.5px; color:#5f5e5a; margin-top:2px;">one page per student · 9 criteria</div>
+    </div>
+  </div>
+
+  <!-- curriculum coverage -->
+  <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:8px;">Curriculum coverage</div>
+  <div style="display:flex; flex-direction:column; gap:7px; margin-bottom:20px;">
+    <sc-for list="{{links}}" as="l" hint-placeholder-count="3">
+      <div style="display:flex; gap:11px; align-items:flex-start; font-size:12px; border-bottom:1px dotted #e3e1d9; padding-bottom:7px;">
+        <span style="{{l.badge}}">{{l.kind}}</span>
+        <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px; color:#9a9891; padding-top:1px; white-space:nowrap;">{{l.code}}</span>
+        <span style="flex-grow:1; text-wrap:pretty;">{{l.text}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- referencing lessons: derived -->
+  <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:8px;">Lessons leading here</div>
+  <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px;">
+    <span style="font-size:11.5px; border:1px solid #c9c7bd; border-radius:5px; padding:3px 9px; background:#f4f3ee;">Lesson 4</span>
+    <span style="font-size:11.5px; border:1px solid #c9c7bd; border-radius:5px; padding:3px 9px; background:#f4f3ee;">Lesson 7</span>
+    <span style="font-size:11.5px; border:1px solid #c9c7bd; border-radius:5px; padding:3px 9px; background:#f4f3ee;">Lesson 8</span>
+  </div>
+
+  <!-- tier index -->
+  <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:9px;">The three tiers <span style="font-weight:400; text-transform:none; letter-spacing:0;">— pages 2, 3 and 4</span></div>
+  <div style="display:flex; flex-direction:column; gap:9px;">
+    <sc-for list="{{tiers}}" as="t" hint-placeholder-count="3">
+      <div style="border:1px solid {{t.line}}; border-left:5px solid {{t.line}}; border-radius:8px; padding:11px 14px; background:{{t.tint}};">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px;">
+          <span style="font-size:13px; font-weight:600; color:{{t.ink}};">{{t.name}}</span>
+          <span style="font-size:10.5px; color:{{t.ink}};">page {{t.page}}</span>
+        </div>
+        <div style="font-size:12px; color:#1a1a17; margin-top:4px; text-wrap:pretty;">{{t.task}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex-grow:1;"></div>
+
+  <!-- mini assessments -->
+  <div style="border-top:1px solid #e3e1d9; padding-top:11px; display:flex; align-items:baseline; justify-content:space-between; gap:14px;">
+    <div style="font-size:11px; color:#5f5e5a;">
+      <span style="font-weight:600; color:#1a1a17;">3 mini assessments</span> in this unit — each three-tiered, each its own four pages:
+      Source reliability drill · Timeline check · Paragraph structure
+    </div>
+    <div style="font-size:10.5px; color:#9a9891; white-space:nowrap;">A4 portrait</div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const full = 'font-size:9.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#0C447C; background:#E6F1FB; border:1px solid #185FA5; border-radius:4px; padding:1px 6px; white-space:nowrap;';
+    const part = 'font-size:9.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#0C447C; background:#fff; border:1px dashed #185FA5; border-radius:4px; padding:1px 6px; white-space:nowrap;';
+    return {
+      links: [
+        { kind: 'full',    badge: full, code: '[CODE]', text: 'Evaluate the historical significance of events, individuals and developments' },
+        { kind: 'full',    badge: full, code: '[CODE]', text: 'The commemoration of World War I and contested debates about the Anzac legend' },
+        { kind: 'partial', badge: part, code: '[CODE]', text: 'Analyse and corroborate sources, evaluating accuracy, usefulness and reliability' },
+      ],
+      tiers: [
+        { name: 'Pass', page: 2, line: '#1F6B41', tint: '#E4F4E9', ink: '#14502F',
+          task: 'Describe two ways Anzac Day has been commemorated, using one source for each.' },
+        { name: 'Intermediate', page: 3, line: '#185FA5', tint: '#E6F1FB', ink: '#0C447C',
+          task: 'Explain how commemoration changed between 1920 and 2000, supported by three sources.' },
+        { name: 'Advanced', page: 4, line: '#9A4E12', tint: '#FCEEE2', ink: '#703508',
+          task: 'Argue whether the Anzac legend tells us more about 1915 or about the decades that followed.' },
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

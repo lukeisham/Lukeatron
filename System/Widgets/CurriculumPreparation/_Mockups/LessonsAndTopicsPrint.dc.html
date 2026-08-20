@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+  </style>
+</helmet>
+
+<!-- A4 portrait at 96dpi = 794 x 1123. Print artboard: no tabs/buttons/hover, content only. -->
+<div style="width:794px; height:1123px; background:#fff; color:#1a1a17; padding:40px 44px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+  <div style="font-size:12.5px; font-weight:600; color:#5f5e5a; letter-spacing:.02em;">Year 10 History</div>
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:8px; margin:2px 0 0;">
+    <div style="font-size:18px; font-weight:600;">Lessons &amp; Topics</div>
+    <div style="font-size:10.5px; color:#5f5e5a;">Page 1 of 1</div>
+  </div>
+
+  <!-- summary + legend: legend marks are shape-coded (filled vs outline) so they survive greyscale printing -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin:10px 0 16px;">
+    <div style="font-size:11px; color:#5f5e5a;"><strong style="color:#1a1a17;">{{topicCount}} topics</strong> · {{lessonCount}} lessons · {{assessCount}} assessments — the whole unit</div>
+    <div style="display:flex; align-items:center; gap:14px; font-size:10px; color:#5f5e5a; flex-shrink:0;">
+      <span style="display:flex; align-items:center; gap:5px;"><span style="width:9px; height:9px; border-radius:50%; background:#1F6B41; display:inline-block;"></span>Complete</span>
+      <span style="display:flex; align-items:center; gap:5px;"><span style="width:9px; height:9px; border-radius:50%; background:#fff; border:1.5px solid #c9c7bd; display:inline-block;"></span>Not yet</span>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:12px;">
+    <sc-for list="{{topics}}" as="top" hint-placeholder-count="3">
+      <div style="border:1px solid #c9c7bd; border-radius:8px; overflow:hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:{{top.headerBg}}; border-bottom:1px solid #e3e1d9;">
+          <div style="font-size:15px; font-weight:600;">{{top.title}}</div>
+          <div style="font-size:11px; font-weight:600; color:{{top.statusColor}};">{{top.statusLabel}}</div>
+        </div>
+        <div>
+          <sc-for list="{{top.items}}" as="it" hint-placeholder-count="4">
+            <div style="display:flex; align-items:center; gap:11px; padding:9px 16px 9px 24px; border-bottom:1px dotted #e3e1d9; background:{{it.rowBg}};">
+              <span style="{{it.dotStyle}}"></span>
+              <span style="{{it.tagStyle}}">{{it.tag}}</span>
+              <span style="flex-grow:1; font-size:13.5px; text-wrap:pretty;">{{it.label}}</span>
+              <span style="font-size:10px; color:#9a9891; flex-shrink:0;">{{it.meta}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex-grow:1;"></div>
+
+  <div style="border-top:1px solid #e3e1d9; padding-top:8px; margin-top:12px; font-size:10px; color:#9a9891;">
+    <span>Year 10 History</span>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dot = (done) => 'width:9px; height:9px; border-radius:50%; flex-shrink:0; '
+      + (done ? 'background:#1F6B41;' : 'background:#fff; border:1.5px solid #c9c7bd;');
+    const rowBg = (done) => done ? '#F4FAF6' : '#fff';
+    const lessonTag = 'font-size:10px; font-weight:700; color:#5f5e5a; background:#f4f3ee; border-radius:4px; padding:2px 6px; flex-shrink:0;';
+    const assessTag = 'font-size:9.5px; font-weight:700; letter-spacing:.04em; color:#0C447C; background:#E6F1FB; border-radius:4px; padding:2px 6px; flex-shrink:0;';
+    const lesson = (n, idea, done) => ({
+      tag: 'L' + n, tagStyle: lessonTag, label: 'Big idea: ' + idea, meta: '',
+      dotStyle: dot(done), rowBg: rowBg(done), done, isLesson: true
+    });
+    const assessment = (kind, name, done) => ({
+      tag: kind.toUpperCase(), tagStyle: assessTag, label: name, meta: 'assessment',
+      dotStyle: dot(done), rowBg: rowBg(done), done, isLesson: false
+    });
+    // Topic status is derived from its items, never stored: all done -> Complete, none done -> Not started, else In progress.
+    const topic = (title, items) => {
+      const allDone = items.every(i => i.done);
+      const noneDone = items.every(i => !i.done);
+      const statusLabel = allDone ? 'Complete' : (noneDone ? 'Not started' : 'In progress');
+      const statusColor = allDone ? '#1F6B41' : (noneDone ? '#9a9891' : '#185FA5');
+      const headerBg = allDone ? '#E4F4E9' : (noneDone ? '#f4f3ee' : '#E6F1FB');
+      return { title, statusLabel, statusColor, headerBg, items };
+    };
+    const topics = [
+      topic('Causes & experience of war', [
+        lesson(1, 'Cause & consequence', true),
+        lesson(2, 'Cause & consequence', true),
+        lesson(3, 'Experience of war', true),
+        lesson(5, 'Experience of war', true),
+        lesson(6, 'Cause & consequence', true),
+        assessment('mini', 'Timeline check', true),
+      ]),
+      topic('Evidence & rights', [
+        lesson(4, 'Evidence & reliability', true),
+        assessment('mini', 'Source reliability drill', false),
+      ]),
+      topic('Memory & meaning', [
+        lesson(7, 'Contested memory', false),
+        lesson(8, 'Contested memory', false),
+        assessment('final', 'Was the Anzac legend made in 1915?', false),
+      ]),
+    ];
+    const lessonCount = topics.reduce((sum, t) => sum + t.items.filter(i => i.isLesson).length, 0);
+    const assessCount = topics.reduce((sum, t) => sum + t.items.filter(i => !i.isLesson).length, 0);
+    return {
+      topicCount: topics.length,
+      lessonCount,
+      assessCount,
+      topics,
+    };
+  }
+}
+</script>
+</body>
+</html>

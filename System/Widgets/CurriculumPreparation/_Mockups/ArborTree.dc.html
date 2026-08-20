@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+    a { color:#185FA5; } a:hover { color:#0C447C; }
+  </style>
+</helmet>
+
+<!-- A4 landscape at 96dpi = 1123 x 794 -->
+<div style="width:1123px; height:794px; background:#fff; color:#1a1a17; padding:38px 42px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:9px; margin-bottom:6px;">
+    <div style="font-size:19px; font-weight:600;">Year 10 History <span style="font-weight:400; color:#5f5e5a;">— curriculum map</span></div>
+    <div style="font-size:11.5px; color:#5f5e5a;">Victorian Curriculum F–10 v2.0 · Levels 9–10</div>
+  </div>
+
+  <!-- curriculum description: orientation prose, map only -->
+  <div style="font-size:11.5px; line-height:1.5; color:#5f5e5a; border-left:2.5px solid #c9c7bd; padding:2px 0 2px 11px; margin:9px 0 14px; max-width:900px; text-wrap:pretty;">
+    <span style="font-weight:600; color:#1a1a17;">Description ·</span> [CURRICULUM DESCRIPTION — the orientation prose from the VCAA page, pasted at ingest. Appears here at the head of the map only, and never on a lesson plan, the assessment, the matrix or the crib sheet.]
+  </div>
+
+  <div style="flex-grow:1; display:flex; gap:0; position:relative;">
+    <svg viewBox="0 0 1039 470" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg">
+      <!-- connectors -->
+      <g stroke="#c9c7bd" stroke-width="1.2" fill="none">
+        <path d="M150 235 H196 V96 H236"/>
+        <path d="M150 235 H196 V374 H236"/>
+        <path d="M470 96 H506 V40 H546"/>  <path d="M470 96 H506 V96 H546"/>  <path d="M470 96 H506 V152 H546"/>  <path d="M470 96 H506 V208 H546"/>
+        <path d="M470 374 H506 V318 H546"/><path d="M470 374 H506 V374 H546"/><path d="M470 374 H506 V430 H546"/>
+      </g>
+
+      <!-- root -->
+      <g>
+        <rect x="12" y="212" width="138" height="46" rx="7" fill="#1a1a17"/>
+        <text x="81" y="232" text-anchor="middle" font-size="12.5" font-weight="600" fill="#fff" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Year 10 History</text>
+        <text x="81" y="248" text-anchor="middle" font-size="10" fill="#c9c7bd" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Levels 9–10 band</text>
+      </g>
+
+      <!-- strands -->
+      <g>
+        <rect x="236" y="72" width="234" height="48" rx="7" fill="#f4f3ee" stroke="#c9c7bd"/>
+        <text x="250" y="94" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Concepts and Skills</text>
+        <text x="250" y="110" font-size="10" fill="#5f5e5a" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">6 content descriptions</text>
+
+        <rect x="236" y="350" width="234" height="48" rx="7" fill="#f4f3ee" stroke="#c9c7bd"/>
+        <text x="250" y="372" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Knowledge</text>
+        <text x="250" y="388" font-size="10" fill="#5f5e5a" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">9 content descriptions</text>
+      </g>
+
+      <!-- leaves with big-idea, assessment, and topic chips -->
+      <sc-for list="{{leaves}}" as="n" hint-placeholder-count="6">
+        <g>
+          <rect x="546" y="{{n.y}}" width="482" height="{{n.nodeHeight}}" rx="7" fill="#fff" stroke="{{n.stroke}}" stroke-width="{{n.sw}}" stroke-dasharray="{{n.dash}}"/>
+          <text x="560" y="{{n.t1}}" font-size="9.5" fill="#9a9891" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">{{n.code}}</text>
+          <text x="612" y="{{n.t1}}" font-size="11" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">{{n.text}}</text>
+          <!-- chips (big-idea, assessment, topic) -->
+          <sc-for list="{{n.chips}}" as="c" hint-placeholder-count="3">
+            <rect x="{{c.cx}}" y="{{c.cy}}" width="{{c.cw}}" height="16" rx="4" fill="{{c.cfill}}" stroke="{{c.cstroke}}" stroke-dasharray="{{c.dash}}"/>
+            <text x="{{c.ctx}}" y="{{c.cty}}" font-size="9.5" font-weight="600" fill="{{c.ctext}}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">{{c.label}}</text>
+          </sc-for>
+        </g>
+      </sc-for>
+    </svg>
+  </div>
+
+  <!-- footer legend -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; border-top:1px solid #e3e1d9; padding-top:9px; margin-top:4px; font-size:10.5px; color:#5f5e5a;">
+    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+      <span style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:26px; height:12px; border-radius:3px; background:#E6F1FB; border:1px solid #185FA5;"></span> fully covers</span>
+      <span style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:26px; height:12px; border-radius:3px; background:#fff; border:1px dashed #185FA5;"></span> partly covers</span>
+      <span style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:26px; height:12px; border-radius:3px; background:#FBEFD9; border:1.5px solid #8A5A0B;"></span> not yet covered</span>
+      <span style="margin-left:8px; color:#9a9891;">·</span>
+      <span style="color:#1a1a17;">Chip types: big idea, assessment, topic</span>
+    </div>
+    <div>Printed <span style="color:#9a9891;">[DATE]</span></div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rows = [
+      { y: 18,  code: '[CODE]', text: 'Sequence significant events chronologically', chips: [
+        { label: 'Cause & consequence', kind: 'full', type: 'bigidea' },
+      ]},
+      { y: 74,  code: '[CODE]', text: 'Analyse and corroborate sources for reliability', chips: [
+        { label: 'Evidence & reliability', kind: 'full', type: 'bigidea' },
+        { label: 'Assessment 1', kind: 'full', type: 'assessment' },
+        { label: 'Understanding history', kind: 'partial', type: 'topic' },
+      ]},
+      { y: 130, code: '[CODE]', text: 'Construct evidence-based historical arguments', chips: [
+        { label: 'Topic: Arguments & claims', kind: 'partial', type: 'topic' },
+      ]},
+      { y: 186, code: '[CODE]', text: 'Interpret maps and other historical sources', chips: [] },
+      { y: 296, code: '[CODE]', text: 'Causes of World War I and reasons for enlistment', chips: [
+        { label: 'Experience of war', kind: 'full', type: 'bigidea' },
+      ]},
+      { y: 352, code: '[CODE]', text: 'Commemoration and the contested Anzac legend', chips: [
+        { label: 'Contested memory', kind: 'partial', type: 'bigidea' },
+        { label: 'Mini Assessment 2', kind: 'full', type: 'assessment' },
+      ]},
+      { y: 408, code: '[CODE]', text: 'Struggle for rights and freedoms', chips: [
+        { label: 'Rights & freedoms', kind: 'partial', type: 'bigidea' },
+      ]},
+    ];
+
+    const leaves = rows.map((r) => {
+      // Check if any chip is a gap (no coverage for this node)
+      const hasNoChips = r.chips.length === 0;
+      const gap = hasNoChips;
+
+      // Calculate node height: base 44px + extra for multiple chips
+      // Base: code (9px) + text (14px) + padding (12px) + chip row (16px) = ~44px
+      // Each additional chip row: 16px + 2px gap
+      const extraChipRows = Math.max(0, r.chips.length - 1);
+      const nodeHeight = 44 + (extraChipRows * 18);
+
+      // Position chips vertically, starting below the text
+      const chipsWithPos = r.chips.map((chip, idx) => {
+        const chipY = r.y + 24 + (idx * 18);
+        const chipLabel = chip.label;
+        const chipWidth = Math.max(74, chipLabel.length * 5.6 + 16);
+
+        // Styling based on coverage kind
+        const isPartial = chip.kind === 'partial';
+        const isFull = chip.kind === 'full';
+        const isGap = chip.kind === 'gap';
+
+        return {
+          label: chipLabel,
+          kind: chip.kind,
+          type: chip.type,
+          cx: 560,
+          cy: chipY,
+          cw: chipWidth,
+          ctx: 568,
+          cty: chipY + 11.5,
+          cfill: isGap ? '#FBEFD9' : (isPartial ? '#fff' : '#E6F1FB'),
+          cstroke: isGap ? '#E8CF9C' : '#185FA5',
+          ctext: isGap ? '#8A5A0B' : '#0C447C',
+          dash: isPartial ? '4 3' : '0',
+        };
+      });
+
+      return {
+        ...r,
+        chips: chipsWithPos,
+        nodeHeight: nodeHeight,
+        t1: r.y + 18,
+        stroke: gap ? '#8A5A0B' : '#e3e1d9',
+        sw: gap ? 1.5 : 1,
+        dash: gap ? '4 3' : '0',
+      };
+    });
+    return { leaves };
+  }
+}
+</script>
+</body>
+</html>

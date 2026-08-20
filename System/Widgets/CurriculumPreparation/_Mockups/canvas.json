@@ -1,0 +1,199 @@
+{
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Edit view"
+    },
+    {
+      "id": "page-2",
+      "name": "Print view"
+    }
+  ],
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Coverage grid \u2014 taught vs assessed",
+      "page": "page-1",
+      "x": 0,
+      "y": 0,
+      "w": 1400,
+      "h": 1000
+    },
+    {
+      "file": "LessonsAndTopics.dc.html",
+      "title": "Lessons & Topics \u2014 combined view (rev 10)",
+      "page": "page-1",
+      "x": 1560,
+      "y": 0,
+      "w": 1180,
+      "h": 860
+    },
+    {
+      "file": "LessonPlan.dc.html",
+      "title": "Lesson plan",
+      "page": "page-1",
+      "x": 1560,
+      "y": 960,
+      "w": 1180,
+      "h": 1300
+    },
+    {
+      "file": "MatrixGrid.dc.html",
+      "title": "Marking matrix \u2014 class grid",
+      "page": "page-1",
+      "x": 0,
+      "y": 1200,
+      "w": 1320,
+      "h": 950
+    },
+    {
+      "file": "Resources.dc.html",
+      "title": "Resources",
+      "page": "page-1",
+      "x": 0,
+      "y": 2300,
+      "w": 1180,
+      "h": 780
+    },
+    {
+      "file": "CribSheetScreens.dc.html",
+      "title": "Crib sheet \u2014 skills / knowledge",
+      "page": "page-1",
+      "x": 2840,
+      "y": 0,
+      "w": 794,
+      "h": 1123
+    },
+    {
+      "file": "ArborTree.dc.html",
+      "title": "Curriculum map \u2014 A4 landscape",
+      "page": "page-2",
+      "x": 0,
+      "y": 0,
+      "w": 1123,
+      "h": 794,
+      "print": "fixed"
+    },
+    {
+      "file": "UnitAssessment.dc.html",
+      "title": "Unit assessment \u2014 A4 portrait",
+      "page": "page-2",
+      "x": 1240,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "print": "fixed"
+    },
+    {
+      "file": "MarkingMatrix.dc.html",
+      "title": "Marking matrix \u2014 student page",
+      "page": "page-2",
+      "x": 2160,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "print": "fixed"
+    },
+    {
+      "file": "MatrixSetupPrint.dc.html",
+      "title": "Marking matrix \u2014 blank setup sheet",
+      "page": "page-2",
+      "x": 3080,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "print": "fixed"
+    },
+    {
+      "file": "CribSheet.dc.html",
+      "title": "Crib sheet \u2014 skills / knowledge",
+      "page": "page-2",
+      "x": 4000,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "print": "fixed"
+    },
+    {
+      "file": "LessonsAndTopicsPrint.dc.html",
+      "title": "Lessons & Topics \u2014 A4 portrait",
+      "page": "page-2",
+      "x": 4920,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "print": "fixed"
+    },
+    {
+      "file": "LessonPlanPrint.dc.html",
+      "x": 5840,
+      "y": 0,
+      "w": 794,
+      "h": 4495,
+      "page": "page-2",
+      "print": "fixed"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-coverage",
+      "page": "page-1",
+      "x": -580,
+      "y": 0,
+      "w": 500,
+      "text": "Two column groups, one instrument.\n\nLeft: is this description TAUGHT by a big idea. Right: is it ASSESSED. That splits one gap flag into three \u2014 not assessed (amber), not taught (blue), neither (red).\n\nAssessment cells write forward onto the assessment's own record. No reverse link is stored.\n\nAssessment cells edit the assessment's own record \u2014 the grid stores no reverse link."
+    },
+    {
+      "id": "note-lessonstopics",
+      "page": "page-1",
+      "x": 1560,
+      "y": -260,
+      "w": 500,
+      "text": "Rev 10: the Topics view and Lessons tab merged into one page. Every topic heads its own lessons and assessments, sequentially down the page \u2014 the whole unit at a glance.\n\nA lesson's row and each assessment's row carry a plain manual \"completed\" flag \u2014 set by a person, never derived \u2014 which colours the row. A topic's own status (not started / in progress / complete) is derived from whether everything under it is complete.\n\nEach mini assessment now carries its own big-idea binding (rev 10) \u2014 that's what lets assessments place under their own topic instead of every assessment in a unit collapsing onto one."
+    },
+    {
+      "id": "note-grid",
+      "page": "page-1",
+      "x": -580,
+      "y": 1200,
+      "w": 500,
+      "text": "Spreadsheet, not document. Students across, criteria down, half marks throughout, subtotals per tier and a running unit total.\n\nThe four-mode toggle splits in two: Default Empty and Default Full are setup, template-level. Data entry and Part of carry per-student data.\n\nPrinting is unchanged \u2014 one page per student.\n\nCriteria are shared across every student and edited once on the template."
+    },
+    {
+      "id": "note-lessonplan-topic",
+      "page": "page-1",
+      "x": 2760,
+      "y": 960,
+      "w": 440,
+      "text": "Two rev-8 additions here. Topic prints above the big idea \u2014 resolved through it, never stored on the lesson itself.\n\nThe sidebar is plain text only: no images, no curriculum/big-idea/topic binding. Front page only \u2014 it never adds a page."
+    },
+    {
+      "id": "note-res",
+      "page": "page-1",
+      "x": -580,
+      "y": 2300,
+      "w": 500,
+      "text": "Deliberately the loosest part in the widget: no tiering, no curriculum binding, no coverage. Somewhere to put a link without filling in a form.\n\nLinks are recorded, never fetched \u2014 the bundle stays offline.\n\nLinks are recorded, never fetched: the bundle makes no outbound request, so it still opens in three years on a copied USB stick."
+    },
+    {
+      "id": "note-crib",
+      "page": "page-2",
+      "x": 4000,
+      "y": -180,
+      "w": 500,
+      "text": "Split in half: skills above the fold, knowledge below.\n\nThe halves are generic in the schema \u2014 the curriculum profile supplies the labels \u2014 so this does not hardcode Victorian strand names.\n\nGenerated from the big-idea list, then edited by hand. Content over the one-page cap is flagged, never silently cut."
+    },
+    {
+      "id": "note-uatr",
+      "page": "page-2",
+      "x": 1240,
+      "y": -180,
+      "w": 500,
+      "text": "The lessons list is derived on load and never stored \u2014 INV-DM-12 forbids a stored reverse edge.\n\nThat rule belongs in a code comment, not on the page, which is what AD-34 now says."
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "page-2"
+  }
+}

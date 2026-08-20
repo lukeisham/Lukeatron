@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+    a { color:#185FA5; } a:hover { color:#0C447C; }
+    .cg-row:hover { background:#f4f3ee; }
+  </style>
+</helmet>
+
+<div style="width:1400px; background:#faf9f5; color:#1a1a17; padding:0 0 26px;">
+
+  <!-- tab bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 24px; border-bottom:1px solid #e3e1d9; background:#fff;">
+    <div style="display:flex; align-items:center; gap:10px; font-weight:600; font-size:17px;">
+      <span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:7px; background:#1a1a17; color:#fff; font-family:Georgia,serif; font-weight:bold; font-size:15px;">C</span>
+      <span>Year 10 History</span>
+      <span style="font-weight:400; color:#9a9891; font-size:13px;">— coverage</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="6">
+        <button style="{{t.style}}">{{t.name}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- view toggle + gap counts -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:12px 24px 10px;">
+    <div style="display:flex; align-items:center; gap:7px;">
+      <button style="font:inherit; font-size:13px; padding:5px 13px; border:1px solid #1a1a17; border-radius:8px; background:#1a1a17; color:#fff;">Both</button>
+      <button style="font:inherit; font-size:13px; padding:5px 13px; border:1px solid #c9c7bd; border-radius:8px; background:#fff; color:#1a1a17;">Taught only</button>
+      <button style="font:inherit; font-size:13px; padding:5px 13px; border:1px solid #c9c7bd; border-radius:8px; background:#fff; color:#1a1a17;">Assessed only</button>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:11.5px;">
+      <span style="color:#5f5e5a;">15 descriptions ·</span>
+      <span style="color:#703508; background:#FCEEE2; border:1px solid #9A4E12; border-radius:5px; padding:3px 9px; font-weight:600;">3 taught, not assessed</span>
+      <span style="color:#0C447C; background:#E6F1FB; border:1px solid #185FA5; border-radius:5px; padding:3px 9px; font-weight:600;">1 assessed, not taught</span>
+      <span style="color:#791F1F; background:#FCEBEB; border:1px solid #E24B4A; border-radius:5px; padding:3px 9px; font-weight:600;">2 neither</span>
+    </div>
+  </div>
+
+  <div style="margin:0 24px; background:#fff; border:1px solid #c9c7bd; border-radius:8px; overflow:hidden;">
+
+    <!-- group header -->
+    <div style="display:grid; grid-template-columns:392px repeat(5, 1fr) 14px repeat(4, 1fr) 14px repeat(3, 1fr) 132px; background:#f0efea; border-bottom:1px solid #c9c7bd;">
+      <div></div>
+      <div style="grid-column:span 5; padding:6px 8px; text-align:center; font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:#5f5e5a; border-left:1px solid #c9c7bd;">Taught — big ideas</div>
+      <div style="background:#e3e1d9;"></div>
+      <div style="grid-column:span 4; padding:6px 8px; text-align:center; font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:#5f5e5a;">Assessed — assessments</div>
+      <div style="background:#e3e1d9;"></div>
+      <div style="grid-column:span 3; padding:6px 8px; text-align:center; font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:#5f5e5a;">Topics</div>
+      <div style="border-left:1px solid #c9c7bd;"></div>
+    </div>
+
+    <!-- column headers -->
+    <div style="display:grid; grid-template-columns:392px repeat(5, 1fr) 14px repeat(4, 1fr) 14px repeat(3, 1fr) 132px; border-bottom:1px solid #c9c7bd; background:#f4f3ee;">
+      <div style="padding:9px 14px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a;">Content description</div>
+      <sc-for list="{{ideaCols}}" as="c" hint-placeholder-count="5">
+        <div style="padding:9px 6px; font-size:11px; font-weight:600; text-align:center; border-left:1px solid #e3e1d9; line-height:1.25;">{{c}}</div>
+      </sc-for>
+      <div style="background:#e3e1d9;"></div>
+      <sc-for list="{{assessCols}}" as="c" hint-placeholder-count="4">
+        <div style="padding:9px 6px; font-size:11px; font-weight:600; text-align:center; border-left:1px solid #e3e1d9; line-height:1.25;">{{c}}</div>
+      </sc-for>
+      <div style="background:#e3e1d9;"></div>
+      <sc-for list="{{topicCols}}" as="c" hint-placeholder-count="3">
+        <div style="padding:9px 6px; font-size:11px; font-weight:600; text-align:center; border-left:1px solid #e3e1d9; line-height:1.25;">{{c}}</div>
+      </sc-for>
+      <div style="padding:9px 8px; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#5f5e5a; text-align:center; border-left:1px solid #c9c7bd;">Gap</div>
+    </div>
+
+    <sc-for list="{{bands}}" as="b" hint-placeholder-count="2">
+      <div>
+        <div style="padding:8px 14px; background:#f0efea; border-bottom:1px solid #e3e1d9; border-top:1px solid #c9c7bd; font-size:12px; font-weight:600;">
+          {{b.strand}} <span style="font-weight:400; color:#9a9891;">{{b.meta}}</span>
+        </div>
+        <sc-for list="{{b.rows}}" as="r" hint-placeholder-count="6">
+          <div class="cg-row" style="display:grid; grid-template-columns:392px repeat(5, 1fr) 14px repeat(4, 1fr) 14px repeat(3, 1fr) 132px; border-bottom:1px solid #e3e1d9; align-items:stretch;">
+            <div style="padding:10px 14px; display:flex; gap:9px; align-items:flex-start;">
+              <span style="font-size:10.5px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#9a9891; padding-top:2px; white-space:nowrap;">{{r.code}}</span>
+              <span style="font-size:12.5px; text-wrap:pretty;">{{r.text}}</span>
+            </div>
+            <sc-for list="{{r.taught}}" as="c" hint-placeholder-count="5">
+              <div style="border-left:1px solid #e3e1d9; display:flex; align-items:center; justify-content:center; padding:5px;">
+                <span style="width:21px; height:21px; border-radius:5px; display:inline-block; {{c.style}}"></span>
+              </div>
+            </sc-for>
+            <div style="background:#e3e1d9;"></div>
+            <sc-for list="{{r.assessed}}" as="c" hint-placeholder-count="4">
+              <div style="border-left:1px solid #e3e1d9; display:flex; align-items:center; justify-content:center; padding:5px;">
+                <span style="width:21px; height:21px; border-radius:5px; display:inline-block; {{c.style}}"></span>
+              </div>
+            </sc-for>
+            <div style="background:#e3e1d9;"></div>
+            <sc-for list="{{r.topics}}" as="c" hint-placeholder-count="3">
+              <div style="border-left:1px solid #e3e1d9; display:flex; align-items:center; justify-content:center; padding:5px;">
+                <span style="width:21px; height:21px; border-radius:5px; display:inline-block; {{c.style}}"></span>
+              </div>
+            </sc-for>
+            <div style="border-left:1px solid #c9c7bd; display:flex; align-items:center; justify-content:center; padding:4px;">
+              <span style="{{r.gapStyle}}">{{r.gapLabel}}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- legend -->
+  <div style="margin:12px 24px 0; display:flex; align-items:center; gap:18px; font-size:11.5px; color:#5f5e5a; flex-wrap:wrap;">
+    <span style="display:flex; align-items:center; gap:7px;"><span style="width:15px; height:15px; border-radius:4px; background:#185FA5; border:1px solid #0C447C; display:inline-block;"></span> full</span>
+    <span style="display:flex; align-items:center; gap:7px;"><span style="width:15px; height:15px; border-radius:4px; border:1px solid #185FA5; background:linear-gradient(135deg,#B5D4F4 0 50%,#fff 50% 100%); display:inline-block;"></span> partial</span>
+    <span style="display:flex; align-items:center; gap:7px;"><span style="width:15px; height:15px; border-radius:4px; border:1px dashed #c9c7bd; background:#fff; display:inline-block;"></span> none</span>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  cell(kind) {
+    if (kind === 'full')    return 'background:#185FA5; border:1px solid #0C447C;';
+    if (kind === 'partial') return 'border:1px solid #185FA5; background:linear-gradient(135deg,#B5D4F4 0 50%,#fff 50% 100%);';
+    return 'border:1px dashed #c9c7bd; background:#fff;';
+  }
+  gap(taught, assessed) {
+    const t = taught.some((k) => k !== 'none');
+    const a = assessed.some((k) => k !== 'none');
+    if (t && a) return { gapLabel: '', gapStyle: 'display:none;' };
+    const chip = (txt, ink, bg, line) => ({
+      gapLabel: txt,
+      gapStyle: `font-size:9.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:${ink}; background:${bg}; border:1px solid ${line}; border-radius:5px; padding:2px 7px; text-align:center; line-height:1.3;`
+    });
+    if (t && !a) return chip('not assessed', '#703508', '#FCEEE2', '#9A4E12');
+    if (!t && a) return chip('not taught',   '#0C447C', '#E6F1FB', '#185FA5');
+    return chip('neither', '#791F1F', '#FCEBEB', '#E24B4A');
+  }
+  row(code, text, taught, assessed, topics) {
+    return {
+      code, text,
+      taught: taught.map((k) => ({ style: this.cell(k) })),
+      assessed: assessed.map((k) => ({ style: this.cell(k) })),
+      topics: topics.map((k) => ({ style: this.cell(k) })),
+      ...this.gap(taught, assessed)
+    };
+  }
+  renderVals() {
+    const tab = (name, on) => ({
+      name,
+      style: 'font:inherit; font-size:13.5px; padding:6px 12px; border-radius:8px; cursor:pointer; '
+        + (on ? 'border:1px solid #1a1a17; background:#1a1a17; color:#fff;'
+              : 'border:1px solid #c9c7bd; background:#fff; color:#1a1a17;')
+    });
+    const R = (...a) => this.row(...a);
+    return {
+      tabs: [tab('Curriculum'), tab('Lessons & Topics'), tab('Coverage', true), tab('Assessment'), tab('Matrix'), tab('Resources')],
+      ideaCols: ['Cause & consequence','Evidence & reliability','Experience of war','Rights & freedoms','Contested memory'],
+      assessCols: ['FINAL essay','Source drill','Timeline check','Paragraph structure'],
+      topicCols: ['World War I','Society & Rights','Modern Legacy'],
+      bands: [
+        { strand:'Historical Concepts and Skills', meta:'· 6 descriptions', rows: [
+          R('[CODE]','Sequence significant events chronologically to analyse causes, effects and change',
+            ['full','none','none','none','partial'], ['none','none','full','none'], ['full','partial','none']),
+          R('[CODE]','Analyse and corroborate sources, evaluating accuracy, usefulness and reliability',
+            ['none','full','partial','none','partial'], ['partial','full','none','none'], ['full','full','partial']),
+          R('[CODE]','Identify and analyse points of view and perspectives in historical sources',
+            ['none','partial','none','full','full'], ['full','partial','none','none'], ['partial','full','none']),
+          R('[CODE]','Evaluate the historical significance of events, individuals and developments',
+            ['partial','none','none','none','full'], ['full','none','none','none'], ['full','none','partial']),
+          R('[CODE]','Explain continuity and change over the period studied',
+            ['full','none','partial','partial','none'], ['none','none','none','none'], ['full','partial','full']),
+          R('[CODE]','Construct evidence-based historical arguments using appropriate referencing',
+            ['none','none','none','none','none'], ['none','none','none','partial'], ['partial','none','none']),
+        ]},
+        { strand:'Historical Knowledge and Understanding', meta:'· 9 descriptions', rows: [
+          R('[CODE]','Causes of World War I, reasons men enlisted, and how women contributed',
+            ['full','none','full','none','none'], ['none','none','partial','none'], ['full','none','none']),
+          R('[CODE]','The nature of warfare and Australian experience on the Western Front',
+            ['none','partial','full','none','partial'], ['none','none','none','none'], ['full','partial','none']),
+          R('[CODE]','Commemoration of World War I and contested debates about the Anzac legend',
+            ['none','none','partial','none','full'], ['full','none','none','full'], ['full','none','partial']),
+          R('[CODE]','The struggle of Aboriginal and Torres Strait Islander peoples for rights',
+            ['partial','none','none','full','none'], ['none','none','none','none'], ['none','full','full']),
+          R('[CODE]','Methods used by civil rights movements and the responses of governments',
+            ['none','none','none','none','none'], ['none','none','none','none'], ['none','full','full']),
+        ]},
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

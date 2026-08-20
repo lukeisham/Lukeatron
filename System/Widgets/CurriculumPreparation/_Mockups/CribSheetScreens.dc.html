@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+    a { color:#185FA5; } a:hover { color:#0C447C; }
+  </style>
+</helmet>
+
+<!-- A4 portrait at 96dpi = 794 x 1123 -->
+<div style="width:794px; height:1123px; background:#fff; color:#1a1a17; padding:36px 40px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+  <div style="font-size:12.5px; font-weight:600; color:#5f5e5a; letter-spacing:.02em;">Year 10 History</div>
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:8px; margin:2px 0 0;">
+    <div style="font-size:17px; font-weight:600;">Unit crib sheet</div>
+    <div style="font-size:10.5px; color:#5f5e5a;">Page 1 of 1</div>
+  </div>
+
+  <!-- ===== TOP HALF — SKILLS ===== -->
+  <div style="flex:1 1 0; display:flex; flex-direction:column; min-height:0; padding-top:14px;">
+    <div style="display:flex; align-items:center; gap:9px; margin-bottom:10px;">
+      <span style="width:11px; height:11px; border-radius:3px; background:#1F6B41; display:inline-block;"></span>
+      <span style="font-size:13px; font-weight:600; letter-spacing:.02em;">Skills</span>
+      <span style="font-size:10.5px; color:#9a9891;">Historical Concepts and Skills</span>
+      <span style="flex-grow:1; border-bottom:1px solid #e3e1d9;"></span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:11px; flex-grow:1; align-content:start;">
+      <sc-for list="{{skills}}" as="s" hint-placeholder-count="4">
+        <div style="border:1px solid #e3e1d9; border-top:3px solid #1F6B41; border-radius:7px; padding:10px 12px; display:flex; flex-direction:column; min-height:0; position:relative;" data-size="{{s.size}}">
+          <!-- Overflow indicator badge (shown only when section is at large size and exceeds cap) -->
+          <sc-if condition="{{s.overflowFlag}}">
+            <div style="position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:9px; background:#E63946; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff; font-weight:700; title='Content does not fit on the page'">!</div>
+          </sc-if>
+          <div style="font-size:12.5px; font-weight:600; margin-bottom:4px; text-wrap:pretty;">{{s.idea}}</div>
+          <!-- Formatted text with Markdown support (bold, italic, bullets) -->
+          <div class="formatted-content" style="font-size:12px; line-height:1.5; color:#1a1a17; text-wrap:pretty; flex-grow:1;">{{s.renderedMarkdown}}</div>
+          <!-- Image (when present) -->
+          <sc-if condition="{{s.imageUrl}}">
+            <div style="margin:8px 0; max-width:100%; max-height:80px; overflow:hidden; border-radius:4px;">
+              <img src="{{s.imageUrl}}" style="width:100%; height:auto; display:block;" alt="">
+            </div>
+          </sc-if>
+          <div style="font-size:9.5px; color:#9a9891; margin-top:7px; border-top:1px dotted #e3e1d9; padding-top:5px;">{{s.cite}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM HALF — KNOWLEDGE ===== -->
+  <div style="flex:1 1 0; display:flex; flex-direction:column; min-height:0; padding-top:10px;">
+    <div style="display:flex; align-items:center; gap:9px; margin-bottom:10px;">
+      <span style="width:11px; height:11px; border-radius:3px; background:#9A4E12; display:inline-block;"></span>
+      <span style="font-size:13px; font-weight:600; letter-spacing:.02em;">Knowledge</span>
+      <span style="font-size:10.5px; color:#9a9891;">Historical Knowledge and Understanding</span>
+      <span style="flex-grow:1; border-bottom:1px solid #e3e1d9;"></span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:11px; flex-grow:1; align-content:start;">
+      <sc-for list="{{knowledge}}" as="k" hint-placeholder-count="4">
+        <div style="border:1px solid #e3e1d9; border-top:3px solid #9A4E12; border-radius:7px; padding:10px 12px; display:flex; flex-direction:column; min-height:0; position:relative;" data-size="{{k.size}}">
+          <!-- Overflow indicator badge (shown only when section is at large size and exceeds cap) -->
+          <sc-if condition="{{k.overflowFlag}}">
+            <div style="position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:9px; background:#E63946; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff; font-weight:700; title='Content does not fit on the page'">!</div>
+          </sc-if>
+          <div style="font-size:12.5px; font-weight:600; margin-bottom:4px; text-wrap:pretty;">{{k.idea}}</div>
+          <!-- Formatted text with Markdown support (bold, italic, bullets) -->
+          <div class="formatted-content" style="font-size:11px; line-height:1.5; color:#1a1a17; text-wrap:pretty; flex-grow:1;">{{k.renderedMarkdown}}</div>
+          <!-- Image (when present) -->
+          <sc-if condition="{{k.imageUrl}}">
+            <div style="margin:8px 0; max-width:100%; max-height:80px; overflow:hidden; border-radius:4px;">
+              <img src="{{k.imageUrl}}" style="width:100%; height:auto; display:block;" alt="">
+            </div>
+          </sc-if>
+          <div style="font-size:9.5px; color:#9a9891; margin-top:7px; border-top:1px dotted #e3e1d9; padding-top:5px;">{{k.cite}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid #e3e1d9; padding-top:8px; margin-top:12px; display:flex; align-items:center; justify-content:space-between; font-size:10px; color:#9a9891;">
+    <span>Year 10 History</span>
+  </div>
+
+</div>
+</x-dc>
+
+<style data-dc-style>
+  /* Size variation support (FR-CS-11, AC-CS-7) */
+  [data-size="small"] { height: auto; min-height: 60px; max-height: calc(75% * 120px); }
+  [data-size="medium"] { height: auto; min-height: 80px; max-height: calc(100% * 120px); }
+  [data-size="large"] { height: auto; min-height: 140px; max-height: calc(150% * 120px); }
+
+  /* Markdown formatting (FR-CS-6a, AC-CS-8) */
+  .formatted-content { white-space: normal; }
+  .formatted-content strong { font-weight: 700; }
+  .formatted-content em { font-style: italic; }
+  .formatted-content ul { margin: 6px 0; padding-left: 16px; }
+  .formatted-content li { margin: 2px 0; }
+</style>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  // Parse Markdown syntax: **bold**, *italic*, - bullet lists
+  parseMarkdown(text) {
+    if (!text) return '';
+
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .split('\n');
+
+    let result = [];
+    let inList = false;
+
+    for (let line of html) {
+      if (line.trim().startsWith('- ')) {
+        if (!inList) {
+          inList = true;
+          result.push('<ul>');
+        }
+        let item = line.replace(/^(\s*)- /, '').trim();
+        item = this.applyInlineFormatting(item);
+        result.push(`<li>${item}</li>`);
+      } else {
+        if (inList) {
+          inList = false;
+          result.push('</ul>');
+        }
+        if (line.trim()) {
+          let formatted = this.applyInlineFormatting(line);
+          result.push(`<div>${formatted}</div>`);
+        } else {
+          result.push('<div style="height:0.5em;"></div>');
+        }
+      }
+    }
+
+    if (inList) result.push('</ul>');
+    return result.join('');
+  }
+
+  applyInlineFormatting(text) {
+    text = text.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+    return text;
+  }
+
+  // Estimate if content overflows one-page cap based on size and content length
+  checkOverflow(size, text, hasImage) {
+    const contentLength = text ? text.length : 0;
+    const pageCapHeight = 1123; // One A4 portrait page in pixels
+    if (size === 'large' && (contentLength > 180 || hasImage)) {
+      return true;
+    }
+    return false;
+  }
+
+  renderVals() {
+    const skills = [
+        { idea: 'Evidence & reliability',
+          size: 'small',
+          formattedText: '**Who made this**, when, and for whom?\n- A source can be useful even when unreliable\n- *Corroborate* before you conclude\n- Check author bias and purpose',
+          imageUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IGZpbGw9IiNFNkYxRkIiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMwQzQ0N0MiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5FdmlkZW5jZSBQbGFjZWhvbGRlcjwvdGV4dD48L3N2Zz4=',
+          cite: 'Lessons 4 · Source drill · [CODE]' },
+        { idea: 'Cause & consequence',
+          size: 'medium',
+          formattedText: 'Distinguish the **long-run condition** from the trigger.\n- Ask what would have been different\n- Connect causes to outcomes\n- *Avoid* oversimplification',
+          cite: 'Lessons 1, 2, 6 · [CODE]' },
+        { idea: 'Contested memory',
+          size: 'large',
+          formattedText: '**Significance is argued, not found.**\n- Reflects choices, not discovery\n- *Multiple* viewpoints matter\n- Meaning shifts over time',
+          cite: 'Lessons 7, 8 · Final essay · [CODE]' },
+        { idea: 'Perspective',
+          size: 'medium',
+          formattedText: 'A point of view is **not** a bias to be *subtracted* — it is **evidence about the person** holding it.',
+          imageUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IGZpbGw9IiNFNEY0RTkiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjZCNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5WaWV3cG9pbnQgUGxhY2Vob2xkZXI8L3RleHQ+PC9zdmc+',
+          cite: 'Lessons 4, 7 · [CODE]' },
+      ];
+
+    const knowledge = [
+        { idea: 'Experience of war',
+          size: 'medium',
+          formattedText: 'Enlistment motives were **mixed**:\n- Work, adventure, pressure, belief\n- *Gallipoli* and Western Front differed\n- Different scales, different reports',
+          cite: 'Lessons 3, 5 · [CODE]' },
+        { idea: 'The road to 1914',
+          size: 'small',
+          formattedText: '**Alliances**, empire, naval rivalry made war possible.\n*Assassination* made it immediate.',
+          cite: 'Lessons 1, 2 · [CODE]' },
+        { idea: 'Commemoration',
+          size: 'large',
+          formattedText: '**Anzac Day** transformed:\n- Declined 1960s–70s, rose post-1990\n- Significance shifts with time, not events',
+          imageUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IGZpbGw9IiNGQ0VFRTIiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM3MDM1MDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5IaXN0b3J5IFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==',
+          cite: 'Lesson 7 · Final essay · [CODE]' },
+        { idea: 'Rights & freedoms',
+          size: 'medium',
+          formattedText: 'The **1967 referendum** and **Freedom Ride** sit inside a *longer struggle*.\n- Neither began the fight\n- Neither ended it\n- Part of continuous movement',
+          cite: 'Lesson 8 · [CODE]' },
+      ];
+
+    // Add markdown rendering to each section
+    const processedSkills = skills.map(s => ({
+      ...s,
+      renderedMarkdown: this.parseMarkdown(s.formattedText),
+      overflowFlag: this.checkOverflow(s.size, s.formattedText, !!s.imageUrl)
+    }));
+
+    const processedKnowledge = knowledge.map(k => ({
+      ...k,
+      renderedMarkdown: this.parseMarkdown(k.formattedText),
+      overflowFlag: this.checkOverflow(k.size, k.formattedText, !!k.imageUrl)
+    }));
+
+    return {
+      skills: processedSkills,
+      knowledge: processedKnowledge
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+# Tufte style location cutaway designs
+**Tags:** data-viz | technical
+**Anti-patterns / Avoid:** no hue-coded strata, undisclosed vertical exaggeration, crossing leaders, missing scale/orientation reference, ornamental poché, or decorative borders/shadows/pseudo-3D.
+**Visual DNA:** Tufte's minimal-ink ethos applied to a single 2D orthogonal slice through a place (terrain, geological section, building) — stacked strata distinguished by value and pattern, each labelled with a hairline leader, scale disclosed in the margin.
+**Typical subject / composition:** a cross-section/cutaway of a location — geological strata, a building's interior storeys, a terrain profile — cut along one plane and viewed orthogonally with no foreshortening. This differs from the object-designs sibling as follows: a cross-section is a 2D slice revealing what sits AT one cut line (stratigraphic/spatial continuity, uniform scale, exaggeration disclosed if used), while an exploded object is a 3D pseudo-view showing how volumetric parts ASSEMBLE (parts pulled apart along assembly axes, tilted/axonometric viewing angle, scale may vary by part). Cross-section reads map-like; exploded view reads engineering-schematic-like.
+**Standard layers (z-order, bottom → top):**
+- `<g id="cutaway-outline">` — overall silhouette of the cut structure
+- `<g id="strata-layers">` — one sub-group per distinct layer/storey/stratum, ordered bottom-to-top (geological/architectural) or front-to-back as the cut requires; the same feature type carries the same fill pattern across every section in a document
+- `<g id="cross-section-fill">` — the `<pattern>` fill distinguishing each stratum's material
+- `<g id="leader-lines">` — angled hairline connectors, never purely horizontal or vertical, in 15° increments; arrowheads point at edges/surfaces, dots indicate areas/volumes (strata normally take a dot or no terminator)
+- `<g id="annotation-labels">` — strata names horizontal in the right-hand margin even when the layer tilts; age/epoch labels smaller, left or above; depth/elevation numerals aligned to scale ticks
+- `<g id="scale-bar">` — vertical rule with tick marks and elevation/depth labels in the margin; add a north/azimuth indicator when the section plane's orientation matters
+- `<g id="ve-disclosure">` — vertical-exaggeration statement (e.g. "VE = 5×"), present whenever exaggeration is used
+**Distinctive SVG techniques:**
+- Material differentiation by texture/value, never saturated hue-coding. Worked example — sandstone fine-hatch pattern on a 1080-wide canvas:
+  ```xml
+  <pattern id="sandstone-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <rect width="8" height="8" fill="#D4BF8E"/>
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#BFA674" stroke-width="1"/>
+  </pattern>
+  ```
+  Vary spacing (6–12 units) and angle (0°/45°/90°) per material family; keep `stroke-width` 0.75–1.5 for all hatch/stipple/cross-hatch patterns so texture reads at a 10-inch look without vibrating (moiré) at a 10-foot look.
+- Consistency rule: reuse the FGDC-style convention that one rock/material type = one pattern everywhere it appears in a document (surficial, sedimentary, igneous, metamorphic, glacial series kept distinct).
+- Three-weight line hierarchy (ISO 128), converted to a 1080-wide canvas at roughly a 4:2:1 ratio:
+  | element | weight (1080-canvas px) | role |
+  | --- | --- | --- |
+  | cut plane / poché edge | 3.5–4.5 | heaviest; reads as material mass |
+  | foreground / interior edges | 1.75–2.5 | medium; interior spatial definition |
+  | background / beyond-cut | 0.9–1.3 | lightest; recessive context |
+- Boundary strokes between strata: `stroke-width` 0.5–1 (thinnest tier above), colour `#666666`, solid (no dasharray) for a confirmed contact; dasharray `4 3` (on a 1080-wide canvas) for an inferred/approximate contact.
+- Poché: solid fill of cut material in mid-grey `#999999` (never pure black), with the material's own interior hatch pattern layered on top to indicate composition.
+- Scale bar: vertical rule with perpendicular tick marks every 40–60px (1080-wide canvas), tick length 10–14px, elevation/depth numerals set at alternating ticks; no enclosing bar "frame." Include the scale bar whenever the diagram makes any claim about depth, height, or distance; omit only for a purely schematic (non-metric) illustration.
+- Vertical exaggeration: when used, disclose it directly on the diagram in `<g id="ve-disclosure">` — typical 3–5× for terrain, 10–50× for geological sections. Leaving exaggeration undisclosed is a headline anti-pattern.
+**Palette:** ground `#fffff8`; ink `#1a1a1a`; boundary grey `#666666`; poché mid-grey `#999999`; one accent from `#8B0000`–`#C00000` reserved for a single called-out feature (not a stratum family). Strata tints (value/texture differentiators that happen to carry a faint tint — not a hue code, so the object-design sibling's single-accent-per-diagram scoping does not apply to this list): unconsolidated sediment `#E8D9B0` / `#D4C5A0`; sandstone `#BFA674` / `#D4BF8E`; mudstone & shale `#999999` / `#B0B0B0`; limestone & carbonate `#C8D4E8` / `#A8C8E1`; granitic `#E8C8D4` / `#D4B8C8`; ultramafic `#9B7B9B`.
+**Typography:** small sans-serif — `Helvetica, Arial, sans-serif` — 14–16px equivalent (on a 1080-wide canvas) for strata/feature labels, minimum plotted text height equivalent to 2.5mm print scale; title case for formation names, all-caps for broad lithology categories; depth/elevation numerals same family, slightly smaller (12–14px equivalent); no label competes visually with the section itself.

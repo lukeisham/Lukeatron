@@ -68,6 +68,11 @@ lives here**, and the browser never touches a file directly.
   response. No file logic in the routing layer. *(API-1)*
 - **FR-BS-11** — Works from a path containing **spaces**, and after the bundle
   has been moved or copied. *(FR-BND-5)*
+- **FR-BS-12** — Selects its free port from the range **8800–8899**, above the
+  existing viewers' 8787/8788, so a bundle never steals a viewer's port.
+  *(OQ-BS-1, FR-BS-2)*
+- **FR-BS-13** — Logs to **both** stdout and a `serve.log` file in the bundle
+  root, matching the existing viewers' logging convention (SR-6). *(OQ-BS-3)*
 
 **Acceptance criteria**
 
@@ -125,13 +130,15 @@ lives here**, and the browser never touches a file directly.
 
 **Open questions**
 
-- **OQ-BS-1** — Port range? *Default:* 8800–8899, above the existing viewers'
-  8787/8788 so a bundle never steals a viewer's port.
-- **OQ-BS-2** — Should the server exit when the last browser tab closes?
-  *Default:* **no** — Ctrl-C, matching the existing viewers (SR-6). Auto-exit
-  needs heartbeat tracking, which is more machinery than a personal tool earns.
-- **OQ-BS-3** — Log to stdout or a `serve.log`? *Default:* **both**, as the
-  existing viewers do.
+- **OQ-BS-1** — Port range? ✅ **RESOLVED (2026-08-29).** 8800–8899, above the
+  existing viewers' 8787/8788 so a bundle never steals a viewer's port — see
+  `FR-BS-12`.
+- **OQ-BS-2** — Should the server exit when the last browser tab closes? ✅
+  **RESOLVED (2026-08-29).** No — Ctrl-C only, matching the existing viewers
+  (SR-6). Auto-exit needs heartbeat tracking, which is more machinery than a
+  personal tool earns.
+- **OQ-BS-3** — Log to stdout or a `serve.log`? ✅ **RESOLVED (2026-08-29).**
+  Both, matching the existing viewers — see `FR-BS-13`.
 
 ## 6. Risks
 

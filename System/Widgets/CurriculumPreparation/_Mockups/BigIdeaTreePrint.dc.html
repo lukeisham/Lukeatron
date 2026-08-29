@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+  </style>
+</helmet>
+
+<!-- A4 portrait at 96dpi = 794 x 1123. The Copy button is screen chrome only — excluded from the
+     physical print/PDF output via @media print (FR-BI-20), the same way no other on-screen control
+     in this widget appears on a printed page. -->
+<div style="width:794px; height:1123px; background:#fff; color:#1a1a17; padding:40px 44px; box-sizing:border-box; display:flex; flex-direction:column;">
+
+  <div style="font-size:12.5px; font-weight:600; color:#5f5e5a; letter-spacing:.02em;">Year 10 History</div>
+  <div style="display:flex; align-items:baseline; justify-content:space-between; border-bottom:1.5px solid #1a1a17; padding-bottom:8px; margin:2px 0 0;">
+    <div style="font-size:18px; font-weight:600;">Big Idea Tree</div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button style="{{copyBtnStyle}}">{{copyIcon}} Copy tree</button>
+      <span style="font-size:10.5px; color:#5f5e5a;">Page 1 of 1</span>
+    </div>
+  </div>
+
+  <div style="font-size:11px; color:#9a9891; margin:10px 0 18px;">{{ideaCount}} big ideas · {{subCount}} sub-big ideas — a bare line has no sub-big ideas yet</div>
+
+  <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13.5px; display:flex; flex-direction:column; gap:14px;">
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="5">
+      <div>
+        <div style="display:flex; align-items:center; gap:7px; font-weight:600;">
+          <span style="width:14px; display:inline-flex; justify-content:center; flex-shrink:0;">{{g.glyph}}</span>
+          <span>{{g.title}}</span>
+        </div>
+        <sc-for list="{{g.children}}" as="c" hint-placeholder-count="2">
+          <div style="display:flex; align-items:center; gap:6px; padding-left:19px; color:#3a3935;">
+            <span style="color:#9a9891; white-space:pre;">{{c.branch}}</span>
+            <span>{{c.title}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex-grow:1;"></div>
+
+  <div style="display:flex; align-items:center; gap:16px; border-top:1px solid #e3e1d9; padding-top:9px; margin-top:12px; font-size:10.5px; color:#5f5e5a;">
+    <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg> skill</span>
+    <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg> knowledge</span>
+    <span style="margin-left:auto;">Year 10 History</span>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const skillGlyph = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg>';
+    const knowledgeGlyph = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg>';
+    // Big idea's glyph set is the union of its covered nodes' domains — derived, never stored (FR-BI-15).
+    const glyph = (domain) => (domain === 'skill' ? skillGlyph : domain === 'knowledge' ? knowledgeGlyph : domain === 'both' ? skillGlyph + knowledgeGlyph : '');
+    // A big idea with no children renders as a bare line — no connector — until it is actually
+    // nested under (FR-BI-17). Only a populated `children` array draws ├── / └── branches.
+    const group = (title, domain, children) => ({
+      title, glyph: glyph(domain),
+      children: children.map((c, i) => ({ title: c, branch: i === children.length - 1 ? '└── ' : '├── ' }))
+    });
+    const groups = [
+      group('Cause & consequence', 'skill', []),
+      group('Evidence & reliability', 'skill', ['Primary vs secondary sources', 'Corroboration techniques']),
+      group('Experience of war', 'knowledge', []),
+      group('Rights & freedoms', 'knowledge', ['Civil rights movements & responses']),
+      group('Contested memory', 'both', ['Commemoration', 'The Anzac legend debate']),
+    ];
+    return {
+      copyBtnStyle: 'font:inherit; font-size:11px; font-weight:600; padding:5px 11px; border-radius:6px; cursor:pointer; border:1px solid #1a1a17; background:#fff; color:#1a1a17; display:flex; align-items:center; gap:5px;',
+      copyIcon: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>',
+      ideaCount: groups.length,
+      subCount: groups.reduce((sum, g) => sum + g.children.length, 0),
+      groups,
+    };
+  }
+}
+</script>
+</body>
+</html>

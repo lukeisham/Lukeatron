@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Type** | Supporting spec (PRD) |
-| **Date** | 2026-08-20 (rev 15 — Changes AA/AB) |
+| **Date** | 2026-08-22 (rev 17 — Change AJ) |
 | **Status** | Draft — awaiting Luke's review |
 | **Parent** | [CurriculumPreparation.project.spec.md](CurriculumPreparation.project.spec.md) |
 
@@ -40,6 +40,7 @@ does not belong in this project.
   | Crib sheet | **either — user's choice, remembered** |
   | Resources page | **A4 portrait — fixed, not user-selectable** (FR-RES-7, AD-25) |
   | Lessons & Topics view *(New — Change V)* | **A4 portrait — fixed, not user-selectable**, same rule as the lesson plan (FR-TOP-8a, AD-42) — **not counted among the six parts** below |
+  | Big Idea Tree *(New — Change AJ)* | **A4 portrait — fixed, not user-selectable**, same rule as the lesson plan (FR-BI-19, AD-51) — **not counted among the six parts** below |
 
   Six parts, **three distinct orientation values** (landscape, portrait,
   either) — the arithmetic is unchanged from the four-part model because the
@@ -53,7 +54,10 @@ does not belong in this project.
   `bigIdeas[]` and `unitAssessment`, the same class of thing as the big-idea
   list overlay on the curriculum map (FR-CUR-8) — so there is nothing for an
   `AC-SYS-6`-style "two of them is invalid" test to check. See AD-42 for the
-  full reasoning, including the rejected seventh-part alternative.)*
+  full reasoning, including the rejected seventh-part alternative. *(Change AJ
+  footnote: the Big Idea Tree joins the same excluded category on the same
+  grounds — a rendering plus editing surface over the existing `bigIdeas[]`
+  list, with no new schema object of its own. See AD-51.)*
 
 - **FR-SYS-5** — All state for a unit lives in its **bundle folder** — which the
   user can save, move, copy, back up and re-open (FR-BND).
@@ -218,6 +222,16 @@ plus a **generator skill** that stamps out complete, independent bundles.
   into the taught/assessed gap comparison (FR-BI-12) — a topic's claimed
   coverage is a separate, independently viewable statement, not a third term
   in that comparison (AD-35).
+- **FR-CUR-13** — *(New — Change AH)* Every node carries a derived **domain**
+  — `skill` \| `knowledge` \| unset — resolved from its ancestor `strand`
+  node (INV-DM-43). Wherever a node's code and description render — the
+  arbor tree, the coverage grid, a lesson plan's curriculum citations, the
+  Unit Assessment, marking matrix criteria, and crib sheet citations — a
+  small **glyph** precedes it: a pencil for `skill`, a ruled notebook for
+  `knowledge` (AD-49). A node with unset domain (a curriculum that does not
+  split this way) shows no glyph — the feature is additive, never a forced
+  binary. The classification is curriculum-agnostic (INV-DM-10): the field
+  is `skill`/`knowledge`, never a Victorian-specific strand name.
 
 **Acceptance**
 - **AC-CUR-1** — A real plain-text paste ingests and renders as a horizontal
@@ -246,6 +260,11 @@ plus a **generator skill** that stamps out complete, independent bundles.
   no big-idea or assessment coverage of its own, shows **only** the topic
   chip — confirming the three chip types render independently of one
   another.
+- **AC-CUR-13** — *(New — Change AH)* A `skill`-domain node's code shows the
+  pencil glyph and a `knowledge`-domain node's code shows the notebook glyph,
+  on the arbor tree, the coverage grid, a lesson plan, the Unit Assessment,
+  the marking matrix, and the crib sheet; a node with unset domain shows
+  neither, on every one of those surfaces.
 
 ---
 
@@ -320,6 +339,56 @@ curriculum tree is the authority's structure; the big-idea list is Luke's.
   group does not participate in FR-BI-12's gap-state comparison** — topic
   coverage renders alongside taught and assessed coverage for reference, not
   as a third input into the taught/assessed gap logic (AD-35).
+- **FR-BI-15** — *(New — Change AH)* A big idea's **glyph set** is the
+  **union** of the `domain` values (FR-CUR-13) among every node in its own
+  `coverage[]` — none, one, or **both** (a big idea spanning a skill node and
+  a knowledge node shows both glyphs). **Derived, never stored** — walked
+  fresh from `coverage[]` on every render, the same discipline FR-BI-13
+  already applies to the gap states (INV-DM-12 stays intact: no new reverse
+  edge). The glyph set precedes **every mention of the big idea's title** —
+  the big-idea list, the coverage grid's row label, the arbor tree's big-idea
+  chip, a lesson plan's big-idea box, the crib sheet, and the Lessons &amp;
+  Topics view — not only the curriculum map (AD-49).
+- **FR-BI-16** — *(New — Change AJ)* The unit's big-idea list has its own
+  screen, the **Big Idea Tree**, cross-cutting like the combined Lessons &
+  Topics view (AD-42) — not counted among the widget's six parts (FR-SYS-2,
+  FR-SYS-11), since it carries no schema-backed singular object of its own
+  beyond the existing `bigIdeas[]` list (INV-DM-18, unchanged). **Setup mode**
+  edits the list as a **plain markdown-style outline**: one line per big idea
+  or sub-big idea, a leading `- `, and one level of indentation nesting a
+  sub-big idea under the nearest preceding unindented line. Line order sets
+  `BigIdea.order`; indentation sets `BigIdea.parentId`. Luke: an "ASCII tree
+  style family tree ... with simple markdown assistance to allow me to
+  arrange them."
+- **FR-BI-17** — *(New — Change AJ)* A big idea with **no sub-big ideas**
+  renders as a single bare line, no tree connector — Luke: "the default is a
+  list until I put them in sequence." Only once a big idea has one or more
+  sub-big ideas nested under it do tree connectors appear for that big idea.
+  A unit where no big idea has been nested at all therefore renders, and
+  prints, as a plain list — not a degenerate one-branch-per-line tree.
+- **FR-BI-18** — *(New — Change AJ)* A **third level of indentation** in the
+  outline — a line indented under an already-indented line — is **refused,
+  flagged inline at the offending line**, never silently flattened to two
+  levels and never silently dropped. This is the outline editor's own
+  enforcement of the two-level cap INV-DM-14 already states for the
+  underlying data; Change AJ adds no new invariant, only an editing-time
+  check for one already in force.
+- **FR-BI-19** — *(New — Change AJ)* The Big Idea Tree **prints**, in
+  addition to rendering in setup view: **A4 portrait**, fixed like the lesson
+  plan and the combined Lessons & Topics view (FR-SYS-4a, AD-11, AD-42) — not
+  user-selectable. Print renders every big idea and sub-big idea as an
+  **ASCII/monospace connector tree** (`├──`, `└──`, `│`) reflecting the exact
+  order and nesting the setup outline last saved — the same "print is a
+  rendering of the same data" discipline AC-TOP-11 already establishes for
+  the Lessons & Topics view.
+- **FR-BI-20** — *(New — Change AJ)* Both setup view (the raw markdown
+  outline) and print view (the rendered ASCII tree) carry a **one-click
+  copy-to-clipboard** control that copies exactly the text on screen — the
+  editable outline in setup, the connector tree in print. Luke: "it needs to
+  be one-click copyable." The control is **screen chrome only** — excluded
+  from the physical print/PDF output the same way any other on-screen button
+  in this widget never appears on a printed page (FR-SYS-3's screen/PDF
+  split).
 
 **Acceptance**
 - **AC-BI-1** — A big idea with three sub-big ideas renders on the curriculum
@@ -344,6 +413,24 @@ curriculum tree is the authority's structure; the big-idea list is Luke's.
   a content description that carries no big-idea or assessment coverage
   shows the topic column filled and the taught/assessed gap state for that
   node **unchanged** — confirming topic coverage does not feed FR-BI-12.
+- **AC-BI-10** — *(New — Change AH)* A big idea whose `coverage[]` touches
+  only a `skill`-domain node shows the pencil glyph; one touching only a
+  `knowledge`-domain node shows the notebook glyph; one touching both shows
+  both glyphs, wherever its title is rendered. Editing the big idea's
+  `coverage[]` to drop its only knowledge-domain node removes the notebook
+  glyph on next render, with nothing written to the big idea itself —
+  confirming the glyph set is derived, not stored.
+- **AC-BI-11** — *(New — Change AJ)* A fixture outline with two big ideas
+  carrying sub-big ideas and three carrying none renders exactly two branched
+  trees and three bare lines, matching FR-BI-17; the same fixture prints
+  identically as ASCII connectors, matching FR-BI-19.
+- **AC-BI-12** — *(New — Change AJ)* Typing a doubly-indented line into the
+  outline is refused with an inline flag at that line — the outline is not
+  silently re-indented and the invalid line is not silently dropped.
+- **AC-BI-13** — *(New — Change AJ)* Clicking Copy in setup view places the
+  exact outline text on the clipboard; clicking Copy in print view places the
+  exact rendered ASCII tree text on the clipboard — verified by pasting each
+  into a plain-text field.
 
 > **Ordering consequence:** because FR-BI-4 makes the binding mandatory, the
 > big-idea list must exist before any lesson can. `bigidea-list` therefore
@@ -440,6 +527,50 @@ gain a manual completion flag. See AD-37, AD-38.)*
   **not started** when none are; **in progress** otherwise. The three states
   render distinctly, the same three-state discipline FR-BI-12 already uses
   for coverage gaps.
+- **FR-TOP-12** — *(New — Change AI)* A lesson, a mini assessment, and the
+  final assessment each carry an **optional calendar date**
+  (`Lesson.date`, `MiniAssessment.date`,
+  `UnitAssessment.finalAssessmentDate`), entered on the combined Lessons &
+  Topics view's edit mode. Luke: an optional way to "insert dates (e.g. Mon 3
+  Aug)". Unset by default; entering one never affects tiers, scores,
+  citations, or the completion flag (FR-TOP-10) — a scheduled item and a
+  completed item are different facts.
+- **FR-TOP-13** — *(New — Change AI)* A lesson, a mini assessment, and the
+  final assessment each also carry an **optional freeform lesson-period**
+  (`Lesson.lessonPeriod`, `MiniAssessment.lessonPeriod`,
+  `UnitAssessment.finalAssessmentPeriod`), e.g. `"Mon 3rd-4th P"`, entered on
+  the same view. **Independent of FR-TOP-12's date** — Luke: date "and/or"
+  lesson-period; an item may carry either, both, or neither. Plain text, no
+  parsing, no validation beyond INV-DM-44's date-vs-freeform split.
+- **FR-TOP-13a** — *(New — Change AI)* Both fields print, when set, beside
+  the item they belong to on the combined Lessons & Topics view's print
+  output (FR-TOP-8a) exactly as they render in edit view — the same
+  "print is a rendering of the same data" discipline AC-TOP-11 already
+  establishes for completion colouring. An unset date or period renders
+  nothing — no empty field, no placeholder — the same convention FR-LP-19
+  already gives the lesson-plan sidebar.
+- **FR-TOP-14** — *(New — Change AI)* The combined Lessons & Topics view
+  gains a **grouping toggle**, available in both edit view and print view:
+  **by Topic** (the existing FR-TOP-8 layout, and the default) or **by
+  Date**. Grouping mode is **not stored** — a view-time choice, the same
+  "view, not a second store" treatment FR-MM-9's scope axis and the marking
+  matrix's display-mode toggle already get (INV-DM-44).
+- **FR-TOP-14a** — *(New — Change AI)* Grouped **by Date**, every lesson and
+  assessment is sorted into date order under a heading for its `date`
+  (rendered as, e.g., "Mon 3 Aug"); items sharing no date are collected
+  under one trailing **"Unscheduled"** heading, in unit order. Luke: "topics
+  [and] lessons could be grouped inside the date/lesson-period format." A
+  topic no longer heads its own section in this mode — each item instead
+  carries its own topic as a small in-row label, so which topic an item
+  belongs to is never lost, only demoted from heading to context. An item
+  with a `lessonPeriod` but no `date` sorts into the Unscheduled heading and
+  still shows its period text in-row.
+- **FR-TOP-14b** — *(New — Change AI)* Switching grouping mode changes only
+  **layout** — which heading an item sits under, and in what order. It
+  changes nothing else: completion colouring (FR-TOP-10), the derived topic
+  status (FR-TOP-11, shown only in Topic mode, since Date mode has no topic
+  headings to carry it), tiers, scores, and citations are identical in both
+  modes.
 
 **Acceptance**
 - **AC-TOP-1** — A topic with three big ideas bound to it shows all three,
@@ -476,6 +607,23 @@ gain a manual completion flag. See AD-37, AD-38.)*
   completion colouring and the same derived topic status (not started / in
   progress / complete) that edit view shows — confirming print is a rendering
   of the same data, not a second, divergent surface.
+- **AC-TOP-12** — *(New — Change AI)* A lesson with a date set, one with a
+  period set, one with both, and one with neither all save and reopen with
+  those exact fields intact; the two fields never overwrite or derive one
+  another.
+- **AC-TOP-13** — *(New — Change AI)* Grouped by Topic, a lesson's date and
+  period (when set) print beside it; a lesson with neither shows no date/
+  period text at all — no empty field.
+- **AC-TOP-14** — *(New — Change AI)* Grouped by Date, a fixture with lessons
+  from two different topics sharing no date-order relationship interleaves
+  correctly — a topic-2 lesson dated between two topic-1 lessons' dates
+  appears between them, each still labelled with its own topic in-row; every
+  undated item (regardless of topic) appears once, together, under a single
+  trailing "Unscheduled" heading.
+- **AC-TOP-15** — *(New — Change AI)* Toggling between Topic and Date
+  grouping, in both edit view and print view, changes only heading/ordering —
+  every item's completion colour, tier content, scores and citations are
+  identical in both modes for the same fixture unit.
 
 > **Ordering consequence:** because FR-TOP-3 makes the binding mandatory,
 > the topics list must exist before any top-level big idea can. `topics-list`
@@ -956,21 +1104,25 @@ itself is left intact in `marking-matrix.build.spec.md` and marked
 
 ## FR-CS — Part 5 · Unit crib sheet
 
-- **FR-CS-1** — Each unit has **exactly one crib sheet**: a **1 page A4**
+- **FR-CS-1** — Each unit has **exactly one crib sheet**: a **1 or 2 page A4**
   distillation of the unit. *(AD-19 — singular by schema, not by convention.
   Rev 6: Change K makes the sheet's internal layout a **required two-half
-  structure** — see FR-CS-8…10, AD-29, AD-30. Change AC tightens the cap from
-  1-or-2 pages to exactly 1 page — see FR-CS-12, AD-46.)*
+  structure** — see FR-CS-8…10, AD-29, AD-30. Change AC tightened the cap from
+  1-or-2 pages to exactly 1 page — see FR-CS-12, AD-46 — and Change AF (AD-48)
+  reversed that tightening: the cap is **1 or 2 pages again**. Change AC's
+  other decision — removing the drawn fold line between the two halves —
+  stands, unchanged by Change AF.)*
 - **FR-CS-2** — It **integrates the unit's big ideas and sub-big ideas**
   (FR-BI) into a single readable reference.
 - **FR-CS-3** — It is generated as a **template** from the big-idea list, then
   freely edited — same generate-then-modify pattern as the lesson plan.
 - **FR-CS-4** — It renders as SVG, views as HTML, and prints to A4 PDF in
   **either orientation**.
-- **FR-CS-5** — Page count is **exactly 1** *(REVISED — Change AC, was "1 or
-  2")* — a crib sheet that would run to a second page is not a crib sheet,
-  and the tool says so rather than silently overflowing. See FR-CS-12 for the
-  reversal and its rationale.
+- **FR-CS-5** — Page count is **1 or 2** *(REVERTED — Change AF/AD-48,
+  restoring the original wording; Change AC had briefly tightened this to
+  "exactly 1" — see FR-CS-12's superseded-note and AD-48)* — a crib sheet
+  that runs to three pages is not a crib sheet, and the tool says so rather
+  than silently overflowing.
 - **FR-CS-6** — It may carry **pasted images** (FR-IMG).
 - **FR-CS-6a** — *(New — Change Z)* Section text supports **Markdown-style
   formatting**: `**bold**`, `*italic*`, and `- bullet` items. Unsupported
@@ -991,23 +1143,27 @@ itself is left intact in `marking-matrix.build.spec.md` and marked
   section cannot be unassigned and cannot straddle both. Luke assigns the half
   by hand when authoring or editing the section; it is never inferred from the
   big idea's own curriculum coverage. *(AD-29, INV-DM-31)*
-- **FR-CS-10** — *(New — Change K; REVISED — Change AC)* FR-CS-5's **1-page
-  cap applies to the whole sheet**, not per half. There is **no drawn fold**
+- **FR-CS-10** — *(New — Change K; REVISED — Change AC; cap wording REVERTED
+  — Change AF/AD-48)* FR-CS-5's **1-or-2-page cap applies to the whole
+  sheet**, not per half *(cap wording reverted — Change AF, was "1-page cap
+  applies to the whole sheet" under Change AC)*. There is **no drawn fold**
   between the two halves *(REVISED — Change AC, was "the fold between the two
   halves is nominal, not fixed")* — the halves are ordered regions on one page
-  flow, with no visual divider and no page break between them (a drawn fold
-  that could force a page break made no sense once the sheet is capped at one
-  page). If the sections assigned to one half would push the sheet past the
-  cap, that is flagged exactly as any other overflow is (FR-CS-5, FR-CS-12,
-  AD-17) — never silently cut. *(AD-30, amended by AD-46)*
+  flow, with no visual divider and no page break between them. This removal
+  of the drawn fold is **unaffected by Change AF** and remains in effect. If
+  the sections assigned to one half would push the sheet past the cap, that
+  is flagged exactly as any other overflow is (FR-CS-5, FR-CS-12, AD-17) —
+  never silently cut. *(AD-30, amended by AD-46, cap wording reverted by
+  AD-48)*
 - **FR-CS-11** — *(New — Change Z)* Each crib-sheet section is **individually
   resizable** within the sheet via a `size` field: `"small"` (compact form,
   ~75% height), `"medium"` (default, no size field needed), `"large"`
   (expanded form, ~150% height) — exactly three values, no scale or pixels
   (INV-DM-41, AD-43). Resizing does not auto-shrink or cut content to fit the
-  page cap — a resized section that would push the sheet past the 1-page cap
-  is **flagged**, matching FR-CS-5's philosophy (AD-43). *(Threshold revised
-  — Change AC: was "past 2 pages"; see FR-CS-12.)*
+  page cap — a resized section that would push the sheet past the **1-or-2-
+  page cap** is **flagged**, matching FR-CS-5's philosophy (AD-43).
+  *(Threshold briefly halved to "past 1 page" — Change AC; reverted to "past
+  2 pages" — Change AF/AD-48; see FR-CS-12's superseded-note.)*
 - **FR-CS-12** — *(New — Change AC)* **The crib sheet is capped at exactly 1
   page — never 2.** This **reverses** FR-CS-1's and FR-CS-5's prior "1 or 2
   page" cap. Content that would spill onto a second page is **flagged**, in
@@ -1018,12 +1174,25 @@ itself is left intact in `marking-matrix.build.spec.md` and marked
   between them is removed (FR-CS-10) and the overflow threshold halves.
   Orientation (portrait/landscape, FR-SYS-4a) is unaffected. *(AD-46)*
 
+  > **Superseded — 2026-08-20 (Change AF).** This requirement's cap — "capped
+  > at exactly 1 page — never 2" — is **reversed**. The crib sheet's page cap
+  > returns to **1 or 2, enforced** (AD-17's original rule; see the revised
+  > FR-CS-1, FR-CS-5, FR-CS-10, FR-CS-11 and AC-CS-1/2/6/7/10 above). This
+  > FR-CS-12's **other** effect — removing the drawn fold between the two
+  > halves (FR-CS-10) — is **unaffected** and remains in force. The text
+  > above is left untouched as the historical record of what Change AC
+  > decided; see **AD-48** for the full reversal, rationale, and every
+  > touched ID.
+
 **Acceptance**
 - **AC-CS-1** — A crib sheet generates from a unit's big-idea list and prints
-  to **exactly 1 A4 page**. *(REVISED — Change AC, was "to 1 or 2 A4 pages".)*
-- **AC-CS-2** — Content exceeding **1 page** is flagged, not silently
-  truncated or spilled onto page 2. *(REVISED — Change AC, was "exceeding 2
-  pages … spilled onto page 3".)*
+  to **1 or 2 A4 pages**. *(REVERTED — Change AF/AD-48, restoring the
+  original wording; Change AC had briefly revised this to "exactly 1 A4
+  page" — see FR-CS-12's superseded-note.)*
+- **AC-CS-2** — Content exceeding **2 pages** is flagged, not silently
+  truncated or spilled onto page 3. *(REVERTED — Change AF/AD-48, restoring
+  the original wording; Change AC had briefly revised this to "exceeding 1
+  page … spilled onto page 2" — see FR-CS-12's superseded-note.)*
 - **AC-CS-3** — Edits after generation survive a re-generate.
 - **AC-CS-4** — Both orientations print correctly.
 - **AC-CS-5** — *(New — Change K)* A crib sheet with sections assigned to
@@ -1032,28 +1201,38 @@ itself is left intact in `marking-matrix.build.spec.md` and marked
   (or the generic fallback label when the profile supplies none), **with no
   drawn divider between them** *(REVISED — Change AC: the prior fold line is
   removed; see FR-CS-10, FR-CS-12)*.
-- **AC-CS-6** — *(New — Change K; REVISED — Change AC)* A crib sheet whose
-  sections would push the combined sheet past **1 page** is flagged —
-  regardless of which half the overflowing sections belong to — and neither
-  half silently spills onto a second page to hide it. *(Was "past 2 pages …
-  neither half silently borrows page space from the other".)*
-- **AC-CS-7** — *(New — Change Z; REVISED — Change AC)* A section is resizable
-  through three explicit size options (small, medium, large); resizing a
-  section to large that causes the sheet to exceed **1 page** surfaces a clear
-  overflow flag, not an auto-shrink or silent truncation. *(Was "exceed 2
-  pages".)*
+- **AC-CS-6** — *(New — Change K; REVISED — Change AC; REVERTED — Change
+  AF/AD-48)* A crib sheet whose sections would push the combined sheet past
+  **2 pages** is flagged — regardless of which half the overflowing sections
+  belong to — and neither half silently borrows page space from the other.
+  *(Change AC briefly revised this to "past 1 page … neither half silently
+  spills onto a second page to hide it"; Change AF restores the original
+  "past 2 pages" wording — see FR-CS-12's superseded-note.)*
+- **AC-CS-7** — *(New — Change Z; REVISED — Change AC; REVERTED — Change
+  AF/AD-48)* A section is resizable through three explicit size options
+  (small, medium, large); resizing a section to large that causes the sheet
+  to exceed **2 pages** surfaces a clear overflow flag, not an auto-shrink or
+  silent truncation. *(Change AC briefly revised this to "exceed 1 page";
+  Change AF restores the original "exceed 2 pages" wording — see FR-CS-12's
+  superseded-note.)*
 - **AC-CS-8** — *(New — Change Z)* A crib-sheet section with formatted text
   (`**bold**`, `*italic*`, `- bullets`) renders the formatting correctly in
   both edit view and print view, and persists across re-generate.
 - **AC-CS-9** — *(New — Change Z)* Unsupported Markdown syntax (e.g., headers,
   code blocks, links) in a section's text field is treated as literal text,
   not parsed or escaped specially.
-- **AC-CS-10** — *(New — Change AC)* A crib-sheet mockup or rendered preview
-  never shows a page-count string other than **"page 1 of 1"** — a mockup or
-  render reading "page 1 of 2" (or any count other than 1) is a defect, not a
-  valid state. The fold line between halves is never drawn — only an ordered
-  boundary between the upper and lower halves' sections, with no dashed line,
-  no `page-break-after`, and no visual page-break indicator of any kind.
+- **AC-CS-10** — *(New — Change AC; page-count clause REVISED — Change
+  AF/AD-48)* A crib-sheet mockup or rendered preview shows a page-count
+  string that **accurately reflects the sheet's actual page count** — "page 1
+  of 1" when the content fits one page, "page 1 of 2" / "page 2 of 2" when it
+  legitimately runs to two, per FR-CS-5's 1-or-2-page cap. *(Change AC had
+  briefly required "page 1 of 1" always, treating any "page 1 of 2" reading
+  as a defect, on the assumption the cap was exactly 1 page; Change AF
+  restores the 1-or-2 cap, so a truthful "of 2" reading is valid again — see
+  FR-CS-12's superseded-note.)* The fold line between halves is never drawn —
+  only an ordered boundary between the upper and lower halves' sections, with
+  no dashed line, no `page-break-after`, and no visual page-break indicator of
+  any kind. *(This clause is unaffected by Change AF.)*
 
 ---
 
@@ -1090,8 +1269,10 @@ the part itself and AD-26 for the restraint of leaving it unstructured.)*
   is not accountable to either axis. *(AD-26)*
 - **FR-RES-7** — The resources page prints to **A4 portrait** (FR-SYS-4a) and
   **flows to as many pages as its items need** — unlike the crib sheet's hard
-  1-page cap *(REVISED — Change AC, was "1-or-2-page cap")* (FR-CS-5,
-  FR-CS-12), there is no cap and no overflow warning.
+  1-or-2-page cap *(REVERTED — Change AF/AD-48, restoring the original
+  wording; Change AC had briefly tightened the referenced cap to "1-page
+  cap" — see FR-CS-12's superseded-note)* (FR-CS-5, FR-CS-12), there is no
+  cap and no overflow warning.
 - **FR-RES-8** — The resources page renders as **SVG** and views as **HTML**,
   consistent with every other part (FR-SYS-2, FR-SYS-3).
 
@@ -1351,7 +1532,7 @@ several parts are read together.)*
 | Lesson plan | FR-LP-1…20 *(FR-LP-14 retired — Change S, moved to FR-TOP-8; FR-LP-20 — Change Y)* | `lesson-plan-document`, `lesson-plan-generator` |
 | **Unit Assessment** | **FR-UA-1…13** | **`unit-assessment-document`** |
 | Marking matrix | FR-MM-1…15 *(FR-MM-9…12 — scope axis + tiered-ceiling grading — Change T/U; FR-MM-13 — Setup print — Change W; FR-MM-14/15 — print header identity + unit-progress block — Change AD)* | `marking-matrix`, `csv-export` |
-| **Crib sheet** | **FR-CS-1…12** *(FR-CS-6a, FR-CS-11 — resizable/formatted cards — Change Z; FR-CS-12 — 1-page cap reversal — Change AC)* | **`crib-sheet`** |
+| **Crib sheet** | **FR-CS-1…12** *(FR-CS-6a, FR-CS-11 — resizable/formatted cards — Change Z; FR-CS-12 — 1-page cap reversal — Change AC, itself superseded/reversed back to 1-or-2 pages — Change AF/AD-48)* | **`crib-sheet`** |
 | **Resources page** | **FR-RES-1…8** | **`resources-page`** *(new — Change H)* |
 | **Images** | **FR-IMG-1…7** | **`image-paste`** |
 | Traceability | FR-TR-1…12 | `traceability-links` |

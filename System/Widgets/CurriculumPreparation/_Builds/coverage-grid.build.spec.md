@@ -340,32 +340,36 @@ including `coverage[]` — is frozen).
 **Open questions**
 
 - **OQ-CG-1** — Does reordering a top-level big idea carry its sub-ideas
-  with it as a block, or do sibling groups reorder independently? *Default:*
-  a top-level move carries its own sub-ideas; sub-ideas otherwise reorder
-  only within their current parent's group.
-- **OQ-CG-2** — Does a cell's `note` need a length cap? *Default:* no hard
-  cap in v1 — no sibling free-text field in the data model (e.g.
-  `lesson.bigIdeaNote`) carries one either.
+  with it as a block, or do sibling groups reorder independently? ✅
+  **RESOLVED (2026-08-29).** A top-level move carries its own sub-ideas as
+  a block; sub-ideas otherwise reorder only within their current parent's
+  group — see `FR-CG-7`.
+- **OQ-CG-2** — Does a cell's `note` need a length cap? ✅ **RESOLVED
+  (2026-08-29).** No hard cap — no sibling free-text field in the data
+  model (e.g. `lesson.bigIdeaNote`) carries one either — see `FR-CG-6`.
 - **OQ-CG-3** — Should `task`-kind nodes (elaborations under an outcome)
-  also appear as grid rows, or only `outcome`-kind nodes? *Default:*
-  `outcome`-kind only — a task is illustrative detail beneath a content
-  description, not a separately coverable unit, and this keeps the row
-  count at the ~40 Luke described rather than several times that.
+  also appear as grid rows, or only `outcome`-kind nodes? ✅ **RESOLVED
+  (2026-08-29).** `outcome`-kind only — a task is illustrative detail
+  beneath a content description, not a separately coverable unit, and this
+  keeps the row count near the ~40 Luke described rather than several
+  times that — see `FR-CG-1`.
 - **OQ-CG-4** — `bigidea-list` is not yet specced (`_Builds/_PLAN.md` marks
   it "○ Not specced"), so this spec is written ahead of its formal
-  dependency. *Default:* proceed with this spec now against the data
-  model's `BigIdea` shape (as amended by AD-CG-1); implementation still
-  waits on `bigidea-list` actually existing, per the existing wave-2
+  dependency. ✅ **RESOLVED (2026-08-29).** This spec proceeds now against
+  the data model's `BigIdea` shape (as amended by `AD-CG-1`); implementation
+  still waits on `bigidea-list` actually existing, per the existing wave-2
   dependency graph — this build adds no new gate of its own.
 - **OQ-CG-5** — `unit-assessment-document` (wave 3) is where
   `MiniAssessment`'s coverage links are defined; as of this writing that
   build's own OQ-UAB-1 records them settling on the qualified shape
   `{nodeId, coverage: "full" | "partial", note}` (matching `BigIdea.coverage[]`
-  per AD-CG-1), superseding an earlier bare `nodeIds[]` sketch. *Default:*
-  this spec is written against the **qualified shape** for both
+  per AD-CG-1), superseding an earlier bare `nodeIds[]` sketch. ✅
+  **RESOLVED (2026-08-29).** Assessment coverage links use the qualified
+  shape `{nodeId, coverage, note}`, as settled by `unit-assessment-document`
+  — this spec is written against that shape for both
   `finalAssessment.coverage[]` and every `miniAssessments[]` entry's
-  `coverage[]` — FR-CG-16/17 assume it exists. If `unit-assessment-document`
-  lands with a different shape before this build starts, reconcile before
+  `coverage[]` (`FR-CG-16`/`FR-CG-17`). If `unit-assessment-document` lands
+  with a different shape before this build starts, reconcile before
   implementation; this build adds no new gate of its own beyond that
   existing wave-3 dependency.
 

@@ -133,6 +133,16 @@ mark is eventually recorded against, and points at the matrix by reference.
 - **FR-UAB-13** — Persists every assessment record through the `local-store`
   client only. No direct filesystem access from the browser; all reads and
   writes go through the bundle's Python server. *(AD-13)*
+- **FR-UAB-14** — No cap on the number of mini assessments a unit may hold
+  (resolves `OQ-UAB-3`).
+- **FR-UAB-15** — An assessment's curriculum links (FR-UAB-7) are
+  **optional** — zero or more; coverage may legitimately be empty on a
+  brand-new mini assessment, unlike FR-UAB-5's mandatory `bigIdeaId`
+  (resolves `OQ-UAB-4`).
+- **FR-UAB-16** — Deleting a mini assessment still referenced by any
+  lesson's `assessmentLink.assessmentIds[]` is **refused, naming the
+  blocking lessons** — never a silent cascade (mirrors INV-DM-4; resolves
+  `OQ-UAB-6`).
 
 **Acceptance criteria**
 
@@ -247,27 +257,36 @@ the data-model spec's owner.
   `miniAssessments[]` (many `MiniAssessment`). `lesson.assessmentLink` is
   `{ miniAssessmentIds[], finalAssessment, note }`. No reconciliation
   outstanding; build to those field names.
-- **OQ-UAB-2** — Must all three tier pages exist on every assessment, even
-  if a tier is left blank? *Default:* yes — always three, blank content
-  allowed, mirroring INV-DM-5's fixed lesson tier order.
-- **OQ-UAB-3** — Is there a cap on the number of mini assessments per unit?
-  *Default:* no cap — unlike the crib sheet's hard page cap (INV-DM-16),
-  nothing about assessments demands one.
-- **OQ-UAB-4** — Are curriculum links (FR-UAB-7) mandatory on every
-  assessment, or optional? *Default:* optional — zero or more; unlike the
-  big-idea binding, coverage can legitimately be empty on a brand-new
-  mini assessment.
-- **OQ-UAB-5** — How is mini-assessment order stored? *Default:* an explicit
-  `order` number field, curated by the user, mirroring `BigIdea.order` —
-  not implicit array position.
-- **OQ-UAB-6** — What happens when a lesson still references a mini
-  assessment that a user tries to delete? *Default:* refuse, naming the
-  blocking lessons — mirrors OQ-DM-7's default for node deletion, and
-  keeps `lesson.assessmentLink.assessmentIds[]` from dangling (INV-DM-4).
-- **OQ-UAB-7** — Can a curriculum link's `note` or `coverage` be edited in
-  place, or must it be removed and re-added? *Default:* editable in place
-  — mirrors the `BigIdea.coverage[]` rule that changing full↔partial edits
-  the one entry rather than adding a second (INV-DM-23).
+- **OQ-UAB-2** — ✅ **RESOLVED (2026-08-29).** Must all three tier pages
+  exist on every assessment, even if a tier is left blank? *Resolved:*
+  yes — always three, blank content allowed, mirroring INV-DM-5's fixed
+  lesson tier order. Already covered by FR-UAB-1/FR-UAB-2's fixed
+  four-page shape; no new requirement needed.
+- **OQ-UAB-3** — ✅ **RESOLVED (2026-08-29).** Is there a cap on the number
+  of mini assessments per unit? *Resolved:* no cap — unlike the crib
+  sheet's hard page cap (INV-DM-16), nothing about assessments demands
+  one. Spec'd as new **FR-UAB-14**.
+- **OQ-UAB-4** — ✅ **RESOLVED (2026-08-29).** Are curriculum links
+  (FR-UAB-7) mandatory on every assessment, or optional? *Resolved:*
+  optional — zero or more; unlike the big-idea binding, coverage can
+  legitimately be empty on a brand-new mini assessment. Spec'd as new
+  **FR-UAB-15**.
+- **OQ-UAB-5** — ✅ **RESOLVED (2026-08-29).** How is mini-assessment order
+  stored? *Resolved:* an explicit `order` number field, curated by the
+  user, mirroring `BigIdea.order` — not implicit array position. Already
+  covered by FR-UAB-3; no new requirement needed.
+- **OQ-UAB-6** — ✅ **RESOLVED (2026-08-29).** What happens when a lesson
+  still references a mini assessment that a user tries to delete?
+  *Resolved:* refuse, naming the blocking lessons — mirrors OQ-DM-7's
+  default for node deletion, and keeps
+  `lesson.assessmentLink.assessmentIds[]` from dangling (INV-DM-4). Spec'd
+  as new **FR-UAB-16**.
+- **OQ-UAB-7** — ✅ **RESOLVED (2026-08-29).** Can a curriculum link's
+  `note` or `coverage` be edited in place, or must it be removed and
+  re-added? *Resolved:* editable in place — mirrors the
+  `BigIdea.coverage[]` rule that changing full↔partial edits the one entry
+  rather than adding a second (INV-DM-23). Already covered by INV-DM-23;
+  no new requirement needed.
 
 ## 6. Risks
 

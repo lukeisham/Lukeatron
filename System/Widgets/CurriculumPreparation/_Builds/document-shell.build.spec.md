@@ -80,6 +80,11 @@ widget needing a printable multi-page document should be able to sit on it.
   that is `image-paste`'s business. *(FR-IMG-4, FR-IMG-6)*
 - **FR-DS-10** — Uses **vanilla JS only** — no framework, no bundler, no
   package manager, no third-party library of any kind. *(FR-SYS-8, AD-13)*
+- **FR-DS-11** — Forces print colour-adjust (`print-color-adjust: exact` /
+  `-webkit-print-color-adjust: exact`) on every printed page, so the tier
+  colours (`FR-DS-6`) print as authored rather than being lightened or
+  dropped by the browser's default ink-saving behaviour — the colours are
+  semantic (which tier), not decoration. *(OQ-DS-2)*
 
 **Acceptance criteria**
 
@@ -151,9 +156,11 @@ G-2 is closed.
 
 **Open questions**
 
-- **OQ-DS-1** — Does the shell need a page-thumbnail navigator? *Default:* no.
-- **OQ-DS-2** — Should print colour-adjust be forced (`print-color-adjust:
-  exact`)? *Default:* yes — the tier colours are semantic, not decoration.
+- **OQ-DS-1** — ✅ **RESOLVED (2026-08-29).** Does the shell need a
+  page-thumbnail navigator? *Resolved:* no — a minimal print shell.
+- **OQ-DS-2** — ✅ **RESOLVED (2026-08-29).** Should print colour-adjust be
+  forced (`print-color-adjust: exact`)? *Resolved:* yes — the tier colours
+  are semantic, not decoration. See FR-DS-11.
 
 ## 6. Risks
 

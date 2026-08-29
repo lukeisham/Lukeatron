@@ -108,6 +108,12 @@ before (or instead of) being structured elsewhere.
   value is escaped before insertion. *(JS-6, HTML-6)*
 - **FR-RESB-15** — Uses **vanilla JS only** — no framework, no bundler, no
   package manager, no third-party library of any kind. *(FR-SYS-8, AD-13a)*
+- **FR-RESB-16** — A `text` item's body has **no length cap** and carries
+  **no rich formatting** — a single plain-text field, not a mini editor
+  (resolves `OQ-RESB-2`).
+- **FR-RESB-17** — Deleting an item asks a **lightweight one-click
+  confirm**, distinct from the no-confirm add flow, and offers no undo
+  after that confirm (resolves `OQ-RESB-4`).
 
 **Acceptance criteria**
 
@@ -208,21 +214,26 @@ client, `ImageRef` shape) are settled.
 
 **Open questions**
 
-- **OQ-RESB-1** — Should items support a lightweight `tag` or `category`
-  string purely for the author's own scanning, without it becoming a binding?
-  *Default:* no in v1 — even an optional tag field nudges toward structure;
-  revisit only if Luke finds the flat list hard to scan once it's long.
-- **OQ-RESB-2** — Can a text item hold more than a short paragraph (a longer
-  scratch note)? *Default:* yes, unbounded length, but no rich formatting —
-  it is one `<textarea>`-shaped field, not a mini editor.
-- **OQ-RESB-3** — Should a link's label auto-populate from the page title on
-  add? *Default:* no — that would require a fetch, which AD-RESB-2 forbids;
-  the label defaults to the raw URL and Luke edits it by hand if he wants
-  something nicer.
-- **OQ-RESB-4** — Does deleting an item need an undo, given there is no
-  confirmation dialog in the fast-add spirit? *Default:* no dialog on add,
-  but delete asks a lightweight one-click confirm (distinct action from add)
-  since deletion is destructive and add is not.
+- **OQ-RESB-1** — ✅ **RESOLVED (2026-08-29).** Should items support a
+  lightweight `tag` or `category` string purely for the author's own
+  scanning, without it becoming a binding? *Resolved:* no in v1 — even an
+  optional tag field nudges toward structure; revisit only if Luke finds
+  the flat list hard to scan once it's long. Already covered by
+  FR-RESB-2's "nothing else" item shape; no new requirement needed.
+- **OQ-RESB-2** — ✅ **RESOLVED (2026-08-29).** Can a text item hold more
+  than a short paragraph (a longer scratch note)? *Resolved:* yes,
+  unbounded length, but no rich formatting — it is one `<textarea>`-shaped
+  field, not a mini editor. Spec'd as new **FR-RESB-16**.
+- **OQ-RESB-3** — ✅ **RESOLVED (2026-08-29).** Should a link's label
+  auto-populate from the page title on add? *Resolved:* no — that would
+  require a fetch, which AD-RESB-2 forbids; the label defaults to the raw
+  URL and Luke edits it by hand if he wants something nicer. Already
+  covered by AD-RESB-2/FR-RESB-3; no new requirement needed.
+- **OQ-RESB-4** — ✅ **RESOLVED (2026-08-29).** Does deleting an item need
+  an undo, given there is no confirmation dialog in the fast-add spirit?
+  *Resolved:* no dialog on add, but delete asks a lightweight one-click
+  confirm (distinct action from add) since deletion is destructive and add
+  is not — no undo after that confirm. Spec'd as new **FR-RESB-17**.
 
 ## 6. Risks
 

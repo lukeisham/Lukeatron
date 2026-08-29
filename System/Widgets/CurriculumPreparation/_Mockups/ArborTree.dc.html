@@ -46,11 +46,13 @@
       <!-- strands -->
       <g>
         <rect x="236" y="72" width="234" height="48" rx="7" fill="#f4f3ee" stroke="#c9c7bd"/>
-        <text x="250" y="94" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Concepts and Skills</text>
+        <svg x="250" y="80" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg>
+        <text x="267" y="94" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Concepts and Skills</text>
         <text x="250" y="110" font-size="10" fill="#5f5e5a" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">6 content descriptions</text>
 
         <rect x="236" y="350" width="234" height="48" rx="7" fill="#f4f3ee" stroke="#c9c7bd"/>
-        <text x="250" y="372" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Knowledge</text>
+        <svg x="250" y="358" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg>
+        <text x="267" y="372" font-size="12" font-weight="600" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Historical Knowledge</text>
         <text x="250" y="388" font-size="10" fill="#5f5e5a" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">9 content descriptions</text>
       </g>
 
@@ -58,8 +60,9 @@
       <sc-for list="{{leaves}}" as="n" hint-placeholder-count="6">
         <g>
           <rect x="546" y="{{n.y}}" width="482" height="{{n.nodeHeight}}" rx="7" fill="#fff" stroke="{{n.stroke}}" stroke-width="{{n.sw}}" stroke-dasharray="{{n.dash}}"/>
-          <text x="560" y="{{n.t1}}" font-size="9.5" fill="#9a9891" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">{{n.code}}</text>
-          <text x="612" y="{{n.t1}}" font-size="11" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">{{n.text}}</text>
+          {{n.domainGlyphSvg}}
+          <text x="576" y="{{n.t1}}" font-size="9.5" fill="#9a9891" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">{{n.code}}</text>
+          <text x="628" y="{{n.t1}}" font-size="11" fill="#1a1a17" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">{{n.text}}</text>
           <!-- chips (big-idea, assessment, topic) -->
           <sc-for list="{{n.chips}}" as="c" hint-placeholder-count="3">
             <rect x="{{c.cx}}" y="{{c.cy}}" width="{{c.cw}}" height="16" rx="4" fill="{{c.cfill}}" stroke="{{c.cstroke}}" stroke-dasharray="{{c.dash}}"/>
@@ -77,6 +80,9 @@
       <span style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:26px; height:12px; border-radius:3px; background:#fff; border:1px dashed #185FA5;"></span> partly covers</span>
       <span style="display:flex; align-items:center; gap:6px;"><span style="display:inline-block; width:26px; height:12px; border-radius:3px; background:#FBEFD9; border:1.5px solid #8A5A0B;"></span> not yet covered</span>
       <span style="margin-left:8px; color:#9a9891;">·</span>
+      <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg> skill</span>
+      <span style="display:flex; align-items:center; gap:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg> knowledge</span>
+      <span style="margin-left:8px; color:#9a9891;">·</span>
       <span style="color:#1a1a17;">Chip types: big idea, assessment, topic</span>
     </div>
     <div>Printed <span style="color:#9a9891;">[DATE]</span></div>
@@ -87,28 +93,34 @@
 
 <script data-dc-script data-props='{}'>
 class Component extends DCLogic {
+  // Node.domain (skill/knowledge) is set on the ancestor strand and inherited by its outcomes (INV-DM-43, FR-CUR-13).
+  glyph(domain, x, y) {
+    if (domain === 'skill') return `<svg x="${x}" y="${y}" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg>`;
+    if (domain === 'knowledge') return `<svg x="${x}" y="${y}" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg>`;
+    return '';
+  }
   renderVals() {
     const rows = [
-      { y: 18,  code: '[CODE]', text: 'Sequence significant events chronologically', chips: [
+      { y: 18,  code: '[CODE]', text: 'Sequence significant events chronologically', domain: 'skill', chips: [
         { label: 'Cause & consequence', kind: 'full', type: 'bigidea' },
       ]},
-      { y: 74,  code: '[CODE]', text: 'Analyse and corroborate sources for reliability', chips: [
+      { y: 74,  code: '[CODE]', text: 'Analyse and corroborate sources for reliability', domain: 'skill', chips: [
         { label: 'Evidence & reliability', kind: 'full', type: 'bigidea' },
         { label: 'Assessment 1', kind: 'full', type: 'assessment' },
         { label: 'Understanding history', kind: 'partial', type: 'topic' },
       ]},
-      { y: 130, code: '[CODE]', text: 'Construct evidence-based historical arguments', chips: [
+      { y: 130, code: '[CODE]', text: 'Construct evidence-based historical arguments', domain: 'skill', chips: [
         { label: 'Topic: Arguments & claims', kind: 'partial', type: 'topic' },
       ]},
-      { y: 186, code: '[CODE]', text: 'Interpret maps and other historical sources', chips: [] },
-      { y: 296, code: '[CODE]', text: 'Causes of World War I and reasons for enlistment', chips: [
+      { y: 186, code: '[CODE]', text: 'Interpret maps and other historical sources', domain: 'skill', chips: [] },
+      { y: 296, code: '[CODE]', text: 'Causes of World War I and reasons for enlistment', domain: 'knowledge', chips: [
         { label: 'Experience of war', kind: 'full', type: 'bigidea' },
       ]},
-      { y: 352, code: '[CODE]', text: 'Commemoration and the contested Anzac legend', chips: [
+      { y: 352, code: '[CODE]', text: 'Commemoration and the contested Anzac legend', domain: 'knowledge', chips: [
         { label: 'Contested memory', kind: 'partial', type: 'bigidea' },
         { label: 'Mini Assessment 2', kind: 'full', type: 'assessment' },
       ]},
-      { y: 408, code: '[CODE]', text: 'Struggle for rights and freedoms', chips: [
+      { y: 408, code: '[CODE]', text: 'Struggle for rights and freedoms', domain: 'knowledge', chips: [
         { label: 'Rights & freedoms', kind: 'partial', type: 'bigidea' },
       ]},
     ];
@@ -151,11 +163,13 @@ class Component extends DCLogic {
         };
       });
 
+      const t1 = r.y + 18;
       return {
         ...r,
         chips: chipsWithPos,
         nodeHeight: nodeHeight,
-        t1: r.y + 18,
+        t1,
+        domainGlyphSvg: this.glyph(r.domain, 560, t1 - 9),
         stroke: gap ? '#8A5A0B' : '#e3e1d9',
         sw: gap ? 1.5 : 1,
         dash: gap ? '4 3' : '0',

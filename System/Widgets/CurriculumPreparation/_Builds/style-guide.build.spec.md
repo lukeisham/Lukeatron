@@ -91,6 +91,12 @@ does not make new ones about colour, spacing, or type.
   the one place a token's **definition** goes stale; every other stylesheet
   only references it by name via `var(--x)`, so it inherits whatever
   `variables.css` currently says.
+- **FR-SG-7** — `styleguide.html` is **screen-only** — it carries no print
+  stylesheet; the six real parts already carry the project's print
+  discipline (resolves `OQ-SG-1`).
+- **FR-SG-8** — `styleguide.html` is a **build-time reference**, opened
+  directly from the bundle folder — no link to it exists anywhere in a
+  running bundle's app shell (resolves `OQ-SG-2`).
 
 **Acceptance criteria**
 
@@ -160,17 +166,18 @@ does not make new ones about colour, spacing, or type.
 
 **Open questions**
 
-- **OQ-SG-1** — Does `styleguide.html` need a print stylesheet, or is it
-  screen-only (a devtools-adjacent reference, never handed to anyone)?
-  *Default:* **screen-only** — nothing in FR-BND-9 or AD-13c asks for a
-  printed style guide, and the six real parts already carry the project's
-  print discipline; adding a print path here would be scope this build
-  doesn't need.
-- **OQ-SG-2** — Should `styleguide.html` be reachable from inside a running
-  bundle (a link from the app shell), or only opened directly from the
-  bundle folder? *Default:* **directly from the folder** — it's a build-time
-  reference, not a feature a teacher using the tool needs to find;
-  revisit only if that assumption turns out wrong once units are in daily use.
+- **OQ-SG-1** — ✅ **RESOLVED (2026-08-29).** Does `styleguide.html` need a
+  print stylesheet, or is it screen-only (a devtools-adjacent reference,
+  never handed to anyone)? *Resolved:* **screen-only** — nothing in
+  FR-BND-9 or AD-13c asks for a printed style guide, and the six real
+  parts already carry the project's print discipline; adding a print path
+  here would be scope this build doesn't need. Spec'd as new **FR-SG-7**.
+- **OQ-SG-2** — ✅ **RESOLVED (2026-08-29).** Should `styleguide.html` be
+  reachable from inside a running bundle (a link from the app shell), or
+  only opened directly from the bundle folder? *Resolved:* **directly from
+  the folder** — it's a build-time reference, not a feature a teacher
+  using the tool needs to find; revisit only if that assumption turns out
+  wrong once units are in daily use. Spec'd as new **FR-SG-8**.
 
 ## 6. Risks
 

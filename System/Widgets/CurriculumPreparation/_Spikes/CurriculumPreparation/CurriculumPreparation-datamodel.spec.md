@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Type** | Supporting spec (data model) |
-| **Date** | 2026-08-20 (rev 14 — Change Z) |
+| **Date** | 2026-08-22 (rev 16 — Change AJ) |
 | **Status** | Draft — to be validated against real curriculum data in spike session 1 |
 | **Parent** | [CurriculumPreparation.project.spec.md](CurriculumPreparation.project.spec.md) |
 
@@ -108,6 +108,7 @@ display names vary.
 | `confidence` | `high` \| `low` | set by the ingest parser (FR-CUR-1b) |
 | `edited` | bool | true once the user changes `title`/`text` |
 | `original` | object \| null | snapshot of the ingested values, kept when `edited` |
+| `domain` | `skill` \| `knowledge` \| null | *(New — Change AH)* **set only on `kind: strand` nodes** — `outcome`/`task` nodes leave this unset and inherit it by walking `parentId` to their ancestor strand (INV-DM-43). Ingest guesses it from the strand's own title/text against a small keyword heuristic (e.g. "skills" → `skill`, "knowledge"/"understanding" → `knowledge`), flagged `confidence: low` the same way any other guess is (FR-CUR-1b) — Luke corrects it like any other ingested field. A strand with neither keyword, or a curriculum with no strand split at all, leaves it unset — the field is additive, never a forced binary |
 
 `confidence` is the ingest being honest about its own guesswork. It is
 **cleared on first edit** — once Luke has looked at a node, the parser's
@@ -135,6 +136,16 @@ band, not a single level).
 
 Deliberately **not** a general tree. Two levels is the whole design: a big
 idea, optionally broken down once. Depth is a constraint, not an oversight.
+
+**The Big Idea Tree** *(New — Change AJ)* is the editing and print surface
+for this list — a markdown-style outline in setup view (one line per big
+idea/sub-big idea; indentation sets `parentId`, line order sets `order`) and
+an ASCII-connector tree in print view (FR-BI-16…20). It adds **no new field**
+to this entity: `title`, `order` and `parentId` already carry everything the
+outline needs, and INV-DM-14's two-level cap is the same rule that already
+limits how deep the outline's indentation may go — the view enforces nothing
+the schema didn't already require. See AD-51 for the full design and the
+markdown-as-structural-editing decision.
 
 `coverage[]` replaces rev 4's flat `nodeIds[]`. A bare id array could not say
 whether a big idea *finishes* a node or merely *touches* it — which is
@@ -184,6 +195,8 @@ forward chain instead. See AD-35 for the full rationale, including why a
 | `coverage[]` | `{ nodeId, coverage, note }[]` | *optional* — curriculum links, the **same shape** as `BigIdea.coverage[]` (FR-UA-6; reuses AD-21's enum, not a second format) |
 | `finalAssessment` | `AssessmentTiers` | **exactly one**, three-tiered (FR-UA-2, INV-DM-24) |
 | `finalAssessmentCompleted` | boolean | *(New — Change S)* manual "administered" flag for the final assessment — never derived, never affects scoring or tiers (FR-TOP-10) |
+| `finalAssessmentDate` | string \| null | *(New — Change AI)* optional calendar date for the final assessment, ISO `YYYY-MM-DD` — same field and derivation rule as `Lesson.date`, named per-assessment the same way `finalAssessmentCompleted` is (FR-TOP-12) |
+| `finalAssessmentPeriod` | string \| null | *(New — Change AI)* optional freeform timetable slot for the final assessment — same field and rules as `Lesson.lessonPeriod` (FR-TOP-13) |
 | `miniAssessments[]` | `MiniAssessment[]` | **many**, each three-tiered (FR-UA-3) |
 
 A first-class document, not a variant of `Lesson` — see AD-23 for why (different
@@ -202,6 +215,8 @@ lesson's simple `nodeIds[]`/`bigIdeaId`).
 | `coverage[]` | `{ nodeId, coverage, note }[]` | *(REWRITTEN — Change I)* outcomes this mini assessment covers, **upgraded from the former bare `nodeIds[]`** to the same qualified shape `BigIdea.coverage[]` and `unitAssessment.coverage[]` already use (AD-21, AD-27); `nodeId` resolves to a `Node` (INV-DM-26), `coverage` is `"full"` \| `"partial"` (INV-DM-22) |
 | `tiers` | `AssessmentTiers` | three-tiered, same shape as the final assessment (FR-UA-3) |
 | `completed` | boolean | *(New — Change S)* manual "administered" flag — never derived, never affects scoring or tiers (FR-TOP-10) |
+| `date` | string \| null | *(New — Change AI)* optional calendar date, ISO `YYYY-MM-DD` — same field, same derivation-at-render rule as `Lesson.date` (FR-TOP-12) |
+| `lessonPeriod` | string \| null | *(New — Change AI)* optional freeform timetable slot — same field, same rules as `Lesson.lessonPeriod` (FR-TOP-13) |
 
 There is **no separate top-level `assessments[]` array any more** — the former
 thin `Assessment` entity (`id`, `name`, `weighting`, `nodeIds[]`) *is* this
@@ -235,6 +250,8 @@ records this as a default, open to revision.)*
 | `imageRefs[]` | ImageRef[] | FR-LP-13 |
 | `sidebar` | string \| null | *(New — Change Q)* optional freeform text — miscellaneous notes, catch-up work, tangents, or leftover work carried over from another lesson (FR-LP-18). Plain text only: no images, no curriculum/big-idea/topic binding, no row in the link graph (§1b) — the same deliberate absence of structure AD-26 gives the Resources page, applied here at field scale (AD-36). Prints on the front page when non-empty; renders nothing at all when blank |
 | `completed` | boolean | *(New — Change S)* manual "taught" flag, default `false` — never derived from `number` or a date, never auto-set. Colours the lesson's row on the combined Lessons & Topics view (FR-TOP-10); touches nothing else — no tier, score or citation reads it |
+| `date` | string \| null | *(New — Change AI)* optional calendar date the lesson is scheduled for, ISO `YYYY-MM-DD` (FR-TOP-12). Display strings (e.g. "Mon 3 Aug") are **derived** from this at render time, never stored — same "derive, don't duplicate" discipline INV-DM-12 applies everywhere else, here applied to a formatting derivation rather than a reverse edge |
+| `lessonPeriod` | string \| null | *(New — Change AI)* optional freeform timetable slot, e.g. `"Mon 3rd P"` or `"Wed 1st–2nd P"` (FR-TOP-13). Plain text, curriculum-agnostic and school-timetable-agnostic — no day/period sub-structure is parsed or validated, the same freeform treatment `Lesson.sidebar` already gets (AD-36). Independent of `date`: a lesson may carry either, both, or neither |
 | `provenance` | `generated` \| `edited` \| `manual` | drives FR-LP-9's no-clobber rule |
 
 Note there is **no free-text `bigIdea` field**. Rev 2 had one; rev 3 replaced
@@ -269,20 +286,28 @@ of the three fixed keys.
 | `title` | string | |
 | `orientation` | `portrait` \| `landscape` | user's choice, remembered |
 | `sections[]` | { `bigIdeaId`, `half`, `text`, `imageRefs[]`, `size` } | ordered; each keyed to a big idea or sub-big idea. `half` is `"upper"` \| `"lower"` — **required, exactly one per section** (FR-CS-9, INV-DM-31). `size` is `"small"` \| `"medium"` \| `"large"` — optional, defaults to `"medium"` when unset (FR-CS-11, INV-DM-41). `text` supports **Markdown-style formatting**: `**bold**`, `*italic*`, and `- bullet items`; unsupported Markdown syntax is treated as literal text (FR-CS-11) |
+| `pageCount` | `1` \| `2` | reinstated — see note below (FR-CS-5, INV-DM-16) |
 | `provenance` | `generated` \| `edited` \| `manual` | same no-clobber rule as lessons |
 
-**`pageCount` is REMOVED — Change AC (INV-DM-42, AD-46).** The field
-previously held `1` \| `2` (FR-CS-5, INV-DM-16). Change AC tightens the crib
-sheet's cap to **exactly 1 page, always** (FR-CS-12) — a field with exactly
-one legal value carries no information, so it is dropped rather than retained
-pinned to `1`. **Migration consequence:** any existing unit bundle whose
-`unit.json` carries a `cribSheet.pageCount` of `1` is read as before, ignoring
-the now-unknown field (harmless — extra keys are already tolerated); a bundle
-carrying `pageCount: 2` denotes a sheet that, under this revision, is by
-definition in an overflow state and must be re-flagged and re-edited down to
-one page on next open — it is not silently accepted as a legitimate two-page
-document. No schema migration script is required beyond dropping the field on
-next save.
+**`pageCount` was REMOVED — Change AC (INV-DM-42, AD-46) — then REINSTATED —
+Change AF (INV-DM-16, AD-48).** The field holds `1` \| `2` (FR-CS-5,
+INV-DM-16). Change AC had briefly tightened the crib sheet's cap to **exactly
+1 page, always** (FR-CS-12, itself now superseded), dropping the field as
+carrying no information at a single legal value; Change AF reverses that
+tightening — the cap is **1 or 2, enforced** again (AD-17's original rule) —
+so the field is **restored to the schema** to record which of the two legal
+page counts a given sheet actually renders to.
+
+**Migration consequence, corrected.** Under Change AC's brief window, a
+bundle carrying `pageCount: 2` was, by definition, in an overflow state.
+**That is no longer true.** Under Change AF's restored 1-or-2-page cap, a
+`unit.json` carrying `cribSheet.pageCount: 2` denotes a **perfectly legitimate
+two-page crib sheet** — not an overflow signal, and not something to
+re-flag or re-edit down. A bundle written during the brief Change-AC-only
+window with no `pageCount` field at all (because the field was absent for
+that period) is read as before: the field is optional to have gone missing
+and is simply computed/re-populated at next save. Overflow is still, exactly
+as before, whatever pushes the sheet past **2** pages — never past 1.
 
 **`half` is generic, not curriculum-specific** (Change K). It is a plain
 two-value layout discriminator — which region of the page a section prints
@@ -550,10 +575,16 @@ invite a document to contradict its own part.
   invalid. *(FR-BI-2)*
 - **INV-DM-15** — **Every lesson has a resolvable `bigIdeaId`.** A lesson
   without one is invalid — not a warning, not a default, invalid. *(FR-BI-4)*
-- **INV-DM-16** — *(RETIRED — Change AC)* Formerly: "A crib sheet's
-  `pageCount` is 1 or 2 (FR-CS-5)." The `pageCount` field is **removed**
-  (Change AC data model §1) — a crib sheet is now capped at exactly 1 page,
-  always, with no variable field to constrain. Superseded by **INV-DM-42**.
+- **INV-DM-16** — *(RETIRED — Change AC; REINSTATED — Change AF/AD-48)* A
+  crib sheet's `pageCount` is 1 or 2 (FR-CS-5). *(Retirement note, preserved:
+  Change AC removed the `pageCount` field — data model §1 — on the grounds
+  that a crib sheet was then capped at exactly 1 page, always, with no
+  variable field to constrain, and superseded this invariant with
+  **INV-DM-42**. Reinstatement note — 2026-08-20, Change AF: Change AC's
+  page-cap tightening is reversed; the cap is 1-or-2 again, the `pageCount`
+  field is restored to the schema, and this invariant is back in force.
+  **INV-DM-42** is now the superseded one — see its own note below. See
+  **AD-48** for the full decision.)*
 - **INV-DM-17** — Every `images[]` manifest entry has a real file in `images/`,
   and every `ImageRef` resolves to a manifest entry. A missing **file** renders
   a visible placeholder (FR-IMG-6); a missing **manifest entry** is invalid.
@@ -625,8 +656,9 @@ invite a document to contradict its own part.
   in the unit. Extends INV-DM-18's singular-parts clause with its own number,
   the same way INV-DM-24 gives the Unit Assessment its own cardinality
   invariant beyond the general clause (the crib sheet's own page-count
-  invariant now lives at INV-DM-42, formerly INV-DM-16, retired under Change
-  AC). *(FR-RES-1)*
+  invariant briefly lived at INV-DM-42 while INV-DM-16 was retired under
+  Change AC; Change AF/AD-48 reversed that — the invariant is back at
+  **INV-DM-16**, and INV-DM-42 is now the superseded one). *(FR-RES-1)*
 - **INV-DM-31** — *(New — Change K)* Every `cribSheet.sections[].half` is
   **one of exactly two values**, `"upper"` or `"lower"` — no third value, and
   no section may be missing one. A section belongs to **exactly one** half;
@@ -703,15 +735,49 @@ invite a document to contradict its own part.
   there is no fourth value. The same three-value discipline INV-DM-22 already
   enforces for `coverage[].coverage`, applied to a visual sizing property
   instead of a coverage strength. *(FR-CS-11)*
-- **INV-DM-42** — *(New — Change AC; supersedes retired INV-DM-16)* A crib
-  sheet renders to **exactly 1 page — never 2, never more.** There is no
-  `pageCount` field (it is removed, §1 above): the constraint is enforced,
-  not stored. Content that would spill onto a second page is flagged at
-  generation and edit time, never silently truncated and never silently
-  allowed to spill. This tightens the former "1 or 2" cap (INV-DM-16) to a
-  fixed single value — the two-half structure (INV-DM-31) and its ordering
-  are unaffected; only the page-count ceiling and the drawn fold between
-  halves (FR-CS-10) change. *(FR-CS-12, AD-46)*
+- **INV-DM-42** — *(New — Change AC; supersedes retired INV-DM-16; ITSELF
+  SUPERSEDED — Change AF/AD-48)* A crib sheet renders to **exactly 1 page —
+  never 2, never more.** There is no `pageCount` field (it is removed, §1
+  above): the constraint is enforced, not stored. Content that would spill
+  onto a second page is flagged at generation and edit time, never silently
+  truncated and never silently allowed to spill. This tightens the former "1
+  or 2" cap (INV-DM-16) to a fixed single value — the two-half structure
+  (INV-DM-31) and its ordering are unaffected; only the page-count ceiling
+  and the drawn fold between halves (FR-CS-10) change. *(FR-CS-12, AD-46)*
+
+  > **Superseded — 2026-08-20 (Change AF).** This invariant's "exactly 1
+  > page — never 2" constraint is **reversed**. **INV-DM-16** — "a crib
+  > sheet's `pageCount` is 1 or 2" — is reinstated and is once again the
+  > governing invariant; the `pageCount` field is restored to the schema
+  > (§1 above). This INV-DM-42's note on the drawn fold between halves is
+  > **unaffected** — the fold stays removed. The text above is left
+  > untouched as the historical record of what Change AC decided; see
+  > **AD-48** for the full reversal.
+- **INV-DM-43** — *(New — Change AH)* `Node.domain` is set **only on `kind:
+  strand` nodes** and is **one of exactly two values, or unset** — `"skill"`
+  \| `"knowledge"` \| unset. An `outcome` or `task` node never carries its own
+  `domain`; its effective domain is **derived** by walking `parentId` to the
+  nearest ancestor `strand` node and reading that node's `domain` (unset if
+  no ancestor strand has one set, or none exists). `BigIdea`'s glyph set
+  (FR-BI-15) is the union of covered nodes' effective domains, walked fresh
+  from `coverage[]` — **never stored** on the big idea itself, the same
+  "derive, don't duplicate" discipline INV-DM-12 already applies everywhere
+  else in this document. *(FR-CUR-13, FR-BI-15, AD-49)*
+- **INV-DM-44** — *(New — Change AI)* Every `date` field this change adds
+  (`Lesson.date`, `MiniAssessment.date`, `UnitAssessment.finalAssessmentDate`)
+  is, when set, a **valid ISO calendar date** (`YYYY-MM-DD`) — no fourth
+  format, no free-text date string. Every paired `lessonPeriod` field
+  (`Lesson.lessonPeriod`, `MiniAssessment.lessonPeriod`,
+  `UnitAssessment.finalAssessmentPeriod`) is **plain free text** with no
+  format constraint at all — the same freeform treatment `Lesson.sidebar`
+  already gets (AD-36). Both fields on any one item are **independently
+  optional**: a date with no period, a period with no date, both, or
+  neither are all valid states; **neither is ever derived from the other**.
+  The combined Lessons & Topics view's **grouping mode** (by topic, the
+  existing default, or by date — FR-TOP-14) is **screen/print view state,
+  not stored data** — no `unit.json` field records it, the same "view, not a
+  second store" treatment AD-MMB-11 already gives the marking matrix's
+  display mode and AD-39 gives its scope axis.
 
 ---
 

@@ -62,6 +62,8 @@ widget that needs a save-to-folder project model wants exactly this.
   id, rather than opening a corrupt unit.
 - **FR-LS-4** — Saves through the server **on every change, debounced** — so a
   refresh or crash loses nothing without needing a second copy anywhere.
+  The debounce interval is **~500 ms after the last keystroke/edit**
+  (`OQ-LS-1`).
 - **FR-LS-5** — Warns before navigating away from unsaved changes, and shows a
   visible saved/unsaved state at all times.
 - **FR-LS-6** — Writes a `schemaVersion`; refuses to open a file with a higher
@@ -142,12 +144,13 @@ schema is frozen.
 
 **Open questions**
 
-- **OQ-LS-1** — Debounce interval for autosave? *Default:* ~500 ms after the
-  last keystroke — long enough not to thrash the disk, short enough that a
-  crash costs one sentence.
-- **OQ-LS-2** — Keep N previous versions of `unit.json` as a rollback ring?
-  *Default:* no in v1 — the bundle folder is the backup. Worth revisiting once
-  a real term's work is in one.
+- **OQ-LS-1** — ✅ **RESOLVED (2026-08-29).** Debounce interval for
+  autosave? *Resolved:* ~500 ms after the last keystroke — long enough not
+  to thrash the disk, short enough that a crash costs one sentence. See
+  FR-LS-4.
+- **OQ-LS-2** — ✅ **RESOLVED (2026-08-29).** Keep N previous versions of
+  `unit.json` as a rollback ring? *Resolved:* no in v1 — the bundle folder
+  is the backup. Worth revisiting once a real term's work is in one.
 - ~~**OQ-LS-3** — atomic write?~~ **Closed in rev 4** — it moved to
   `bundle-server` (AD-BS-3), where the write actually happens.
 

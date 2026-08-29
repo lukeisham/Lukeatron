@@ -1158,16 +1158,19 @@ via the completed `unit-assessment-document` spec and the data model's
 
 **Open questions**
 
-- **OQ-MMB-1** — Does removing a template criterion cascade-delete matching
-  scores, or refuse while any student has one? *Default:* **cascade**, with
-  a confirmation naming the affected student count (FR-MMB-8) — matching
-  the roster-removal shape in AD-MMB-6 rather than the curriculum tree's
-  refuse-on-delete shape (OQ-DM-7), because a criterion is this build's own
-  authored content, not a shared cross-referenced node.
-- **OQ-MMB-2** — May a criterion be saved with zero bound assessments?
-  *Default:* **no** — allowed transiently while editing in the browser, but
-  refused at save (FR-MMB-5). An unbound criterion would be an orphaned
-  rubric row nothing certifies against.
+- **OQ-MMB-1** — ✅ **RESOLVED (2026-08-29).** Does removing a template
+  criterion cascade-delete matching scores, or refuse while any student has
+  one? *Resolved:* **cascade**, with a confirmation naming the affected
+  student count (FR-MMB-8) — matching the roster-removal shape in AD-MMB-6
+  rather than the curriculum tree's refuse-on-delete shape (OQ-DM-7),
+  because a criterion is this build's own authored content, not a shared
+  cross-referenced node. Already covered by FR-MMB-8/AD-MMB-6; no new
+  requirement needed.
+- **OQ-MMB-2** — ✅ **RESOLVED (2026-08-29).** May a criterion be saved with
+  zero bound assessments? *Resolved:* **no** — allowed transiently while
+  editing in the browser, but refused at save (FR-MMB-5). An unbound
+  criterion would be an orphaned rubric row nothing certifies against.
+  Already covered by FR-MMB-5; no new requirement needed.
 - **OQ-MMB-3** — ✅ **RESOLVED (2026-08-19).** Fractional (half-mark)
   awarded scores are not just allowed but a **first-class requirement**:
   the primary entry affordance steps by **0.5**, with a typed value also
@@ -1182,11 +1185,13 @@ via the completed `unit-assessment-document` spec and the data model's
   (many). A criterion's `assessmentIds[]` therefore names
   `unitAssessment.miniAssessments[].id` values and/or the unit's one final
   assessment. This build adds no new project-level gate of its own.
-- **OQ-MMB-5** — Does a student's page group criteria by tier or by
-  assessment? *Default:* **by tier** — mirrors the fixed tier spine every
-  other document uses (FR-DS-6) and matches INV-DM-7's "a matrix's rows
-  cover all three tiers" framing; an assessment's own view of "who scored
-  what against me" is a derived read, not a layout requirement here.
+- **OQ-MMB-5** — ✅ **RESOLVED (2026-08-29).** Does a student's page group
+  criteria by tier or by assessment? *Resolved:* **by tier** — mirrors the
+  fixed tier spine every other document uses (FR-DS-6) and matches
+  INV-DM-7's "a matrix's rows cover all three tiers" framing; an
+  assessment's own view of "who scored what against me" is a derived read,
+  not a layout requirement here. Already covered by FR-DS-6/INV-DM-7; no
+  new requirement needed.
 - **OQ-MMB-6** — ✅ **RESOLVED (2026-08-19).** Luke: **"all three tiers"**.
   The whole-class entry grid shows **every criterion across all three tiers on
   one screen**, as a single tall grid with the tier bands in their fixed order
@@ -1240,14 +1245,15 @@ via the completed `unit-assessment-document` spec and the data model's
   answered in the same breath: all three tiers on one screen. Kept as a
   numbered entry rather than deleted, so the earlier cross-references still
   resolve.
-- **OQ-MMB-11** — *(New — Change T)* Does `csv-export` (unspecced, wave 4,
-  downstream of this build) need to export the per-assessment scope as its
-  own file, or does CSV export stay full-unit only? *Default:* **full-unit
-  only for now** — FR-MMB-16 already scopes CSV export entirely out of this
-  build, and nothing here blocks `csv-export` from adding a per-assessment
-  export later once it exists. Duplicate of arch spec OQ-21, kept here too
-  since this build is where `csv-export`'s upstream contract is coordinated
-  (§5).
+- **OQ-MMB-11** — ✅ **RESOLVED (2026-08-29).** *(New — Change T)* Does
+  `csv-export` (unspecced, wave 4, downstream of this build) need to export
+  the per-assessment scope as its own file, or does CSV export stay
+  full-unit only? *Resolved:* **full-unit only for now** — FR-MMB-16
+  already scopes CSV export entirely out of this build, and nothing here
+  blocks `csv-export` from adding a per-assessment export later once it
+  exists. Duplicate of arch spec OQ-21, kept here too since this build is
+  where `csv-export`'s upstream contract is coordinated (§5). Already
+  covered by FR-MMB-16; no new requirement needed.
 
 ## 7. Risks
 

@@ -30,7 +30,7 @@
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid #c9c7bd; border-radius:8px; overflow:hidden; margin-bottom:18px;">
     <div style="padding:12px 14px; border-right:1px solid #e3e1d9;">
       <div style="font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#9a9891; margin-bottom:5px;">Big idea</div>
-      <div style="font-size:13.5px; font-weight:600;">Contested memory</div>
+      <div style="font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:6px;">{{bigIdeaGlyphs}}Contested memory</div>
       <div style="font-size:11.5px; color:#5f5e5a; margin-top:2px;">How a nation chooses what to remember</div>
     </div>
     <div style="padding:12px 14px;">
@@ -46,6 +46,7 @@
     <sc-for list="{{links}}" as="l" hint-placeholder-count="3">
       <div style="display:flex; gap:11px; align-items:flex-start; font-size:12px; border-bottom:1px dotted #e3e1d9; padding-bottom:7px;">
         <span style="{{l.badge}}">{{l.kind}}</span>
+        <span style="display:flex; align-items:center; padding-top:2px;">{{l.domainGlyph}}</span>
         <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px; color:#9a9891; padding-top:1px; white-space:nowrap;">{{l.code}}</span>
         <span style="flex-grow:1; text-wrap:pretty;">{{l.text}}</span>
       </div>
@@ -90,15 +91,26 @@
 
 <script data-dc-script data-props='{}'>
 class Component extends DCLogic {
+  glyph(domain) {
+    if (domain === 'skill') return '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0F7B6C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M4 20l1.5-5.5L16 3.5l4 4L9.5 18z"/><path d="M14 6.5l4 4"/></svg>';
+    if (domain === 'knowledge') return '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#B23A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="3" width="17" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="11.5" y1="8" x2="17.5" y2="8"/><line x1="11.5" y1="13" x2="17.5" y2="13"/></svg>';
+    return '';
+  }
   renderVals() {
     const full = 'font-size:9.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#0C447C; background:#E6F1FB; border:1px solid #185FA5; border-radius:4px; padding:1px 6px; white-space:nowrap;';
     const part = 'font-size:9.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#0C447C; background:#fff; border:1px dashed #185FA5; border-radius:4px; padding:1px 6px; white-space:nowrap;';
+    const rawLinks = [
+      { kind: 'full',    badge: full, code: '[CODE]', text: 'Evaluate the historical significance of events, individuals and developments', domain: 'skill' },
+      { kind: 'full',    badge: full, code: '[CODE]', text: 'The commemoration of World War I and contested debates about the Anzac legend', domain: 'knowledge' },
+      { kind: 'partial', badge: part, code: '[CODE]', text: 'Analyse and corroborate sources, evaluating accuracy, usefulness and reliability', domain: 'skill' },
+    ];
+    const links = rawLinks.map((l) => ({ ...l, domainGlyph: this.glyph(l.domain) }));
+    // Big idea's glyph set is the union of its covered nodes' domains — derived, never stored (FR-BI-15).
+    const domains = [...new Set(links.map((l) => l.domain))];
+    const bigIdeaGlyphs = domains.map((d) => this.glyph(d)).join('');
     return {
-      links: [
-        { kind: 'full',    badge: full, code: '[CODE]', text: 'Evaluate the historical significance of events, individuals and developments' },
-        { kind: 'full',    badge: full, code: '[CODE]', text: 'The commemoration of World War I and contested debates about the Anzac legend' },
-        { kind: 'partial', badge: part, code: '[CODE]', text: 'Analyse and corroborate sources, evaluating accuracy, usefulness and reliability' },
-      ],
+      links,
+      bigIdeaGlyphs,
       tiers: [
         { name: 'Pass', page: 2, line: '#1F6B41', tint: '#E4F4E9', ink: '#14502F',
           task: 'Describe two ways Anzac Day has been commemorated, using one source for each.' },

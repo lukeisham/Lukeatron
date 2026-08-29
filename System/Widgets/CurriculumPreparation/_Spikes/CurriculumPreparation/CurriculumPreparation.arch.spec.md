@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | **Type** | Architecture decisions |
-| **Date** | 2026-08-20 (rev 15 — Changes AA/AB) |
+| **Date** | 2026-08-22 (rev 17 — Change AJ) |
 | **Status** | Draft — every decision here is reversible until code exists |
 | **Parent** | [CurriculumPreparation.project.spec.md](CurriculumPreparation.project.spec.md) |
 
@@ -381,15 +381,18 @@ from the table below, not from a fresh design pass.
 | `--radius` | `8px` | cards, buttons, sheets |
 | Font stack | `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` | every artboard's `body` rule |
 | Border style | flat, `1px solid`, **no shadows** except floating overlays (pickers, menus) | house rule, unbroken across 12 artboards |
-| Tier — Pass | line `#1F6B41` · tint `#E4F4E9` · ink `#14502F` | `MatrixGrid.dc.html`, `LessonPlan.dc.html`, `CribSheet.dc.html` |
+| Tier — Pass | line `#1F6B41` · tint `#E4F4E9` · ink `#14502F` | `MatrixGrid.dc.html`, `LessonPlan.dc.html` |
 | Tier — Intermediate | line `#185FA5` · tint `#E6F1FB` · ink `#0C447C` | same |
 | Tier — Advanced | line `#9A4E12` · tint `#FCEEE2` · ink `#703508` | same |
 | Coverage cell — full | solid `#185FA5`, border `#0C447C` | `Main.dc.html` |
 | Coverage cell — partial | `#185FA5` border, `linear-gradient(135deg,#B5D4F4 0 50%,#fff 50% 100%)` fill | same |
 | Coverage cell — none | `1px dashed #c9c7bd`, `#fff` fill | same |
-| Completion — complete | solid `#1F6B41` | `LessonsAndTopics.dc.html`, `LessonsAndTopicsPrint.dc.html` |
+| Completion — complete | solid `#0F7B6C` *(Change AG — was `#1F6B41`, the Pass tier's own green)* | `LessonsAndTopics.dc.html`, `LessonsAndTopicsPrint.dc.html` |
 | Completion — not yet | white fill, `#c9c7bd` outline | same |
-| Completion — row tint | `#F4FAF6` | same |
+| Completion — row tint | `#E0F3EF` *(Change AG — was `#F4FAF6`)* | same |
+| Category accent — Teal | line `#0F7B6C` · tint `#E0F3EF` · ink `#0B5245` *(New — Change AG)* | `LessonsAndTopics(Print).dc.html` (Complete status), `CribSheet.dc.html`, `CribSheetScreens.dc.html` (upper/Skills half), `Resources.dc.html` (`text` item kind) |
+| Category accent — Violet | line `#6E4FA3` · tint `#EEE8F8` · ink `#4A3172` *(New — Change AG)* | `LessonsAndTopics(Print).dc.html` (In progress status, assessment kind tag), `Resources.dc.html` (`link` item kind) |
+| Category accent — Rose | line `#B23A6B` · tint `#FBE7EF` · ink `#7A2249` *(New — Change AG)* | `CribSheet.dc.html`, `CribSheetScreens.dc.html` (lower/Knowledge half), `Resources.dc.html` (`image` item kind) |
 
 **Open, recorded here rather than silently resolved:** the Big idea box on the lesson
 plan (rev 11 mockup change, Luke's request) was recoloured to the **Pass** tier's exact
@@ -415,6 +418,31 @@ before it becomes canonical is Luke's call, not something to default silently on
 The print set's body type must be brought up to the 12pt (≈16px@96dpi) floor before
 `style-guide` transcribes a `--font-size-print-*` token from it — logged as MinorTasks
 queue row 9, sequenced after the rev-13 matrix mockup work (same files).
+
+**✅ RESOLVED (Change AG, 2026-08-20) — Resources, Lessons & Topics, and the crib
+sheet stop reusing the tier palette.** Luke: "Don't use the Green/Blue/Orange colour
+coding for the Resources, Lessons and Topics or Crib sheet, use a different colour
+scheme for those three." Those three widgets had borrowed the Pass/Intermediate/Advanced
+tier's exact line/tint/ink triples (`#1F6B41`/`#185FA5`/`#9A4E12`) for meanings that carry
+**no tier semantics at all** — a resource's kind (link/image/text), a topic's completion
+state (complete/in progress/not started), and the crib sheet's two content halves
+(skills/knowledge). Unlike the Big-idea-box case above (resolved the opposite way, by
+Luke's own call), reuse here risked the same "is this Pass-tier?" misreading with no
+compensating "they're vaguely related" rationale to justify it. **Decision:** replace
+green/blue/orange **positionally** (green → Teal, blue → Violet, orange → Rose) with
+three new tokens — see the **Category accent** rows added to the table above — applied
+across `Resources.dc.html`, `LessonsAndTopics.dc.html`/`LessonsAndTopicsPrint.dc.html`,
+and `CribSheet.dc.html`/`CribSheetScreens.dc.html`. `MatrixGrid.dc.html` and
+`LessonPlan.dc.html` are unaffected — they use the tier palette for genuine tier meaning,
+which this change does not touch. The universal link-accent rule (`a { color:#185FA5 }`,
+same `--acc` token as `Main.dc.html`'s coverage grid) is also unaffected — it renders
+ordinary hyperlinks, not a category badge, so it carries no tier-confusion risk.
+**Rejected:** a single new "neutral" tag colour for all three widgets' categories (would
+erase the categories' own distinctions — Resources still needs three visually distinct
+kind badges, Lessons & Topics still needs two distinct non-neutral statuses); reusing the
+coverage grid's blue (`--acc`) for one of the three new categories (that value is already
+overloaded — links, the Intermediate tier, and the coverage grid accent — adding a fourth
+meaning defeats the point of this change).
 
 **Rationale:** CSS-2 already requires every value to come from one token file; this
 decision fixes *which* values populate it, so the eventual build transcribes a settled
@@ -535,6 +563,15 @@ an unreadable sheet and hides the real problem, which is too much content).
 > feature" — the same forced-distillation instinct, applied at a tighter
 > threshold. See AD-46 for the full decision, rejected alternatives, and
 > every touched ID.
+
+> **Amendment — 2026-08-20 (Change AF).** Luke reviewed Change AC's
+> tightening and reversed it: *"I was wrong about the 1 page crib sheet. The
+> spec was correct up to 2 pages."* This AD's original rule — **1 or 2,
+> enforced (INV-DM-16)** — is therefore back in force exactly as first
+> written above; the intervening Change AC amendment (immediately above)
+> stands as the historical record of the tightening and its own later
+> reversal, not as the current rule. See **AD-48** for the full reversal,
+> rationale, and every touched ID.
 
 ---
 
@@ -1040,6 +1077,17 @@ here rather than being rewritten.
 > gone. The original text above is left untouched as the historical record;
 > see **AD-46** for the full decision.
 
+> **Amendment — 2026-08-20 (Change AF).** AD-17's page-cap tightening (which
+> the amendment above tied the fold's removal to) is **reversed** — Luke:
+> *"I was wrong about the 1 page crib sheet. The spec was correct up to 2
+> pages."* The cap is **1-or-2 again**. This AD's fold decision is **not**
+> reopened by that reversal: the fold stays **removed entirely**, exactly as
+> the Change AC amendment above states — Change AF only reverses the
+> page-count number, not the drawn-fold question, which this project treats
+> as Luke's separate, standing instruction (see AD-48). Both amendments
+> above are left untouched as the historical record; see **AD-48** for the
+> full reversal.
+
 ---
 
 ### AD-31 — Lesson numbers are contiguous, renumber on reorder, and get their own index view
@@ -1312,6 +1360,19 @@ rules. `topics-list` joins the unspecced wave-2 build list, ordered ahead of
 `bigidea-list` for the same "hard edge" reason AD-14 places `bigidea-list`
 ahead of `lesson-plan-document` — FR-TOP-3 makes the binding mandatory, so a
 top-level big idea cannot exist first.
+
+> **Note — 2026-08-22 (`bigidea-list` build spec).** `topics-list` never
+> became a separate `_Builds/` subtask — `_Builds/_PLAN.md`'s wave table
+> has never carried a row for it. When `bigidea-list.build.spec.md` was
+> written, the basic topics list (`FR-TOP-1…7` — add/rename/reorder/delete,
+> the mandatory `topicId` binding) was folded into that build instead, since
+> nothing else claimed it and INV-DM-34 makes a top-level big idea
+> unsatisfiable without a topic to bind to — the same hard-coupling
+> reasoning this AD gives for topics preceding big ideas, just resolved as
+> "one build, ordered internally" rather than "two builds, ordered against
+> each other." `FR-TOP-8` onward — the combined Lessons & Topics view — is
+> a separate, larger feature and is specced separately, in
+> `lessons-and-topics.build.spec.md`.
 
 ---
 
@@ -1719,6 +1780,15 @@ layout property only, never stored or referenced elsewhere.
 > sizes are unaffected. The original text above is left untouched as the
 > historical record; see **AD-46**.
 
+> **Amendment — 2026-08-20 (Change AF).** Every reference above to "the
+> 1-page cap" (as halved by the Change AC amendment) reverts to **the
+> 1-or-2-page cap** — the threshold at which a resized section is flagged
+> returns to "would push the sheet past 2 pages," undoing the Change AC
+> halving. Nothing else about this AD changes: resizing still never
+> auto-shrinks or truncates, and the three discrete sizes are unaffected.
+> Both amendments above are left untouched as the historical record; see
+> **AD-48**.
+
 ---
 
 ### AD-44 — Every shared entity has exactly one editing surface; every other appearance is a read/navigate reflection (New — Change AA)
@@ -1782,6 +1852,38 @@ FR-TOP-2, FR-TOP-6, FR-LP-2 and FR-LP-20 are unchanged; this decision states
 the exclusivity across them that was previously only true by omission. Any
 future mockup or build for the Lessons & Topics view, the Curriculum
 Coverage grid, or the Lesson Plan is reviewed against this table.
+
+> **Amendment — 2026-08-22 (`bigidea-list` build spec).** This table's
+> **big idea Name/hierarchy** row is **superseded**: the sole-editing-surface
+> rule for that one property is dropped. **AD-51** (Change AJ) gave the Big
+> Idea Tree's markdown outline its own write path onto `title`, `order` and
+> `parentId` without amending this AD, and never flagged the collision —
+> AD-51's own "Assumption flagged plainly" note explicitly asked for this to
+> be corrected before `bigidea-list` was built. Asked directly, Luke chose:
+> **both the Big Idea Tree and the (still-unspecced) Lessons & Topics view
+> may write big idea name/hierarchy**, against the same underlying
+> `BigIdea` records — no exclusivity.
+>
+> This does not reopen the two-independent-validation-paths risk this AD was
+> originally written to prevent: `bigidea-list` (the build owning
+> `BigIdeas[]`) exposes **one shared write API** — add / rename / reorder /
+> reparent / delete, including FR-BI-8's refuse-if-referenced check and
+> INV-DM-14's two-level cap — and **every** editing surface, present or
+> future, calls that API rather than validating independently. The Big Idea
+> Tree's outline editor is `bigidea-list`'s own first caller of it
+> (FR-BI-16…20); the Lessons & Topics view, whenever it is specced and built,
+> is required to call the same functions, not reimplement them (mirroring
+> `AD-LPB-1`'s tier-emission-logic sharing rule for the lesson plan and Unit
+> Assessment). This AD's **other three rows are unaffected** — big idea
+> curriculum-node coverage, topic name/hierarchy, and topic curriculum-node
+> coverage keep their original sole-editing-surface assignments exactly as
+> the table above states; only the one row is reopened, and only to the
+> extent Luke's answer above requires.
+>
+> **Consequence:** the table's first row's "Sole editing surface" column now
+> reads "Big Idea Tree **and** Lessons & Topics (shared write API)" rather
+> than "Lessons & Topics" alone; `bigidea-list.build.spec.md`'s AD-BI-1
+> records the build-level detail of this shared API.
 
 ---
 
@@ -1949,6 +2051,17 @@ distillation argument one page further and removes the escape hatch a
   change, only flagged for the same drift in a separate pass if a build spec
   exists outside the three files in scope here.
 
+> **Amendment — 2026-08-20 (Change AF).** Luke reviewed this decision's
+> page-cap tightening and reversed it: *"I was wrong about the 1 page crib
+> sheet. The spec was correct up to 2 pages."* **The page-cap decision above
+> is reversed** — the cap returns to 1-or-2, enforced (AD-17's original
+> rule), `CribSheet.pageCount` is restored to the schema, and INV-DM-16 is
+> reinstated in place of INV-DM-42. **This AD's other decision — removing the
+> drawn fold line between the two halves — stands, unchanged.** The two-half
+> structure (AD-29, FR-CS-8, FR-CS-9) remains unaffected either way. The text
+> above is left untouched as the historical record of what Change AC decided;
+> see **AD-48** for the full reversal, rationale, and every touched ID.
+
 ---
 
 ### AD-47 — The marking matrix's Student-data print sheet drops its page counter for a sheet identity, and gains a non-summable unit-progress block (New — Change AD)
@@ -2076,6 +2189,391 @@ bigger picture visible on that same narrowed page.
 - FR-MMB-43 (Setup blank sheet) is explicitly **unaffected** by Part B — the
   unit-progress block never appears there; it is a Student-data-only
   addition.
+
+---
+
+### AD-48 — The crib sheet's page cap reverts to 1-or-2, enforced; the drawn fold stays removed (New — Change AF)
+
+**Decision:** the crib sheet's page cap **reverts to "1 or 2, enforced,"
+AD-17's original rule.** AD-46's tightening to exactly 1 page (Change AC) is
+**reversed** in full: content may again legitimately run to 2 pages, and
+overflow is flagged only past a **third** page, exactly as AD-17 originally
+specified. `CribSheet.pageCount` (`1` \| `2`) is **restored** to the data
+model; **INV-DM-16** is reinstated as the governing cardinality invariant;
+**INV-DM-42** (the "always exactly 1 page" invariant Change AC introduced) is
+superseded in turn. **AD-46's other decision is unchanged and stays in
+effect:** the crib sheet's **drawn fold line** between the upper and lower
+halves remains **removed** — no divider, no `page-break-after`, nothing
+between the halves but ordering. The two-half structure itself (AD-29,
+FR-CS-8, FR-CS-9) was never in question and remains exactly as it has stood
+since Change K.
+
+**Rationale:** Luke, directly: *"I was wrong about the 1 page crib sheet.
+The spec was correct up to 2 pages."* This is Luke **correcting his own
+earlier instruction**, not proposing a new design — the project's role here
+is to restore the prior-considered position, not to re-litigate it. AD-17
+already argued at length, and AD-30/AD-43 already extended that argument to
+the two-half structure and to resizable sections: an unbounded crib sheet is
+just the unit notes, and the cap is what forces the distillation that makes
+the artefact useful — but that argument was always made **for a 1-or-2-page
+cap**, not a 1-page cap. AD-46 (Change AC) tightened it on the reasoning that
+"page three is the feature" straightforwardly implies "page two is the
+feature, too" — a reasonable extension in the abstract, but not what Luke
+actually wants in practice, as this correction now makes explicit. Nothing
+about AD-46's **fold-line** reasoning depended on the page-cap number as
+such — the fold was removed because a drawn line implying a possible page
+break makes little sense once folds and page breaks stop needing to line up
+at all under a single-page-only regime; that reasoning weakens with a 2-page
+cap restored, but Luke's original, separate instruction — "remove the fold
+line" — was never itself under review here and stands on its own terms,
+independent of the page-count question. Splitting the two decisions apart
+(as AD-46's consequence section already did, listing them as two distinct
+effects) is what makes this partial reversal possible without disturbing
+settled ground.
+
+**Rejected:**
+- **Reverting AD-46 in full**, including the fold-line removal — rejected:
+  Luke's correction names only the page-cap ("I was wrong about the 1 page
+  crib sheet"); it says nothing about the fold, and the original instruction
+  to remove the fold ("Remove fold line from crib sheet") is untouched by
+  this correction. Reverting it too would silently undo a decision nobody
+  asked to revisit.
+- **Leaving `CribSheet.pageCount` removed** and treating "1 or 2" as an
+  enforced-but-unstored constraint (mirroring INV-DM-42's now-superseded
+  approach at the new cap value) — rejected: AD-46 itself only removed the
+  field because a single-legal-value field carries no information; with two
+  legal values restored, that justification no longer holds, and the field
+  is worth storing again, matching AD-17's original schema.
+- **A fresh AD-17-style full rewrite** of the crib sheet's page-cap rules,
+  discarding AD-46/AD-30/AD-43's amendment trail — rejected: the project's
+  standing rule is that decision history is never rewritten, only amended or
+  superseded in place; a fresh rewrite would erase the legible record of
+  what Change AC did and why Change AF undoes it.
+
+**Consequence:**
+- PRD: **FR-CS-1** (reverted — "1 page" → "1 or 2 page"), **FR-CS-5**
+  (reverted — cap is "1 or 2"), **FR-CS-10** (cap wording reverted; fold
+  removal unaffected), **FR-CS-11** (overflow threshold reverted to "past 2
+  pages"), **FR-CS-12** (marked superseded in place, original text
+  preserved), **AC-CS-1, AC-CS-2, AC-CS-6, AC-CS-7** (all reverted to "1 or 2
+  pages"/"page 3" language), **AC-CS-10** (revised — page-count string must
+  accurately reflect the actual 1-or-2 count; fold-line prohibition
+  unaffected), **FR-RES-7** (its cross-reference to the crib sheet's cap
+  reverted to "1-or-2-page cap"). **FR-CS-8, FR-CS-9** (two-half structure)
+  are explicitly **unaffected**. **FR-SYS-4a** (orientation) is explicitly
+  unaffected.
+- Data model: `CribSheet.pageCount` field **restored** (§1, `1` \| `2`);
+  **INV-DM-16** reinstated (retirement note preserved, reinstatement noted in
+  place); **INV-DM-42** marked superseded in place, original text preserved;
+  the stale-bundle migration prose in data model §1 corrected — a
+  `pageCount: 2` bundle is a legitimate two-page sheet again, not an overflow
+  signal.
+- Arch spec: **AD-17, AD-30, AD-43, AD-46** each gain one further dated
+  amendment block, appended below their existing Change AC amendments —
+  original wording of every prior block preserved, not rewritten.
+- Mockups: `CribSheet.dc.html` and `CribSheetScreens.dc.html` — `pageCapHeight`
+  in `checkOverflow()` restored to `2 * 1123` (2246); overflow tooltip
+  reworded to a 2-page-cap message in plain teacher-facing language (SR-9);
+  the fold line, "fold" label, and any `page-break-after` remain **absent**
+  in both — Change AC's removal of those stands.
+
+---
+
+### AD-49 — Every curriculum node carries a derived Skill/Knowledge glyph; big ideas inherit it from what they cover (New — Change AH)
+
+**Decision:** the Victorian Curriculum (and any curriculum built the same
+way) splits its content descriptions across strands — for History,
+"Historical Concepts and Skills" and "Historical Knowledge and
+Understanding." A new `Node.domain` field (`skill` \| `knowledge` \| unset,
+INV-DM-43), set only on `kind: strand` nodes, records which side of that
+split a strand is on; an `outcome`/`task` node's effective domain is derived
+by walking `parentId` up to its nearest ancestor strand, never stored on the
+node itself. Wherever a node's code and description render — arbor tree,
+coverage grid, lesson plan, Unit Assessment, marking matrix, crib sheet
+(FR-CUR-13) — a small glyph precedes it: a **pencil** for `skill`, a **ruled
+notebook** for `knowledge`, in the same Teal/Rose pair AD-13c's Change AG
+already established for Skills/Knowledge (`#0F7B6C` / `#B23A6B`). A big
+idea's own glyph set (FR-BI-15) is the **union** of the domains among every
+node in its `coverage[]` — none, one, or **both** — derived fresh on every
+render (INV-DM-12, matching FR-BI-13's discipline), never stored, and shown
+before every mention of the big idea's title, not only on the curriculum map.
+Luke, directly: *"wherever a description aka criteria (with a code) appears
+I want a glyph before it that indicates if its a skill or a knowledge. I
+then want big ideas that are associated with that description aka critera to
+take on the relevant glyph in front of every mention of it. Big ideas could
+have both."* Five candidate glyph pairs were sketched (filled shapes, sharp
+geometry, letter badges, dingbat pair, line icons); Luke picked the pencil /
+ruled-notebook pair.
+
+**Rationale:** the classification is a **fact already latent in the ingested
+curriculum's own strand structure** — ArborTree.dc.html's fixture already
+groups its seven leaf nodes under exactly two strand boxes, one per side of
+the split, before this decision existed. `domain` just makes that fact
+addressable and paints it, rather than leaving it implicit in tree position.
+Deriving it (never storing it on outcome/task nodes, and never storing it on
+big ideas) keeps one source of truth: correcting a strand's `domain` once
+fixes every descendant node and every big idea that covers them, with
+nothing else to re-save. Marking it `unset`-able keeps the feature
+curriculum-agnostic (INV-DM-10): a curriculum with no such split, or with a
+split the heuristic can't read, simply shows no glyphs, rather than forcing
+a guess.
+
+**Rejected:**
+- **This is the same decision as AD-29** and should reuse the crib sheet's
+  `half` field — rejected. AD-29 governs a **page-layout choice** Luke makes
+  by hand per crib-sheet section, explicitly *not* derived from coverage data
+  ("which half it prints under is a page-layout choice Luke makes, not a
+  fact the coverage data determines"). This decision is the opposite: a
+  **read-only, always-derived annotation** on a fact the curriculum source
+  already states. A big idea can sit in the crib sheet's upper half by
+  Luke's layout choice while still showing both glyphs, because it also
+  touches a knowledge-domain node elsewhere — the two mechanisms coexist
+  without conflict, exactly because neither one governs the other.
+- **A manually-tagged `domain` on every outcome node**, set by hand at
+  ingest review — rejected as needless repetition: real strand splits are
+  few (typically two) while outcome nodes number in the dozens per unit;
+  tagging the handful of strands and deriving the rest is the same
+  "correct once, fixes everywhere" logic AD-16 already uses for ingest
+  guesses generally.
+- **Colour-only encoding, no shape** — rejected on the same greyscale-print
+  ground `LessonsAndTopicsPrint.dc.html`'s existing legend already states:
+  a colour-only signal disappears on a black-and-white printout or for a
+  colour-blind reader; pencil vs notebook keeps a distinct silhouette
+  independent of colour.
+- **Emoji or a coloured icon-font glyph** — rejected: the crib sheet renders
+  as SVG and prints to PDF (FR-CS-4); emoji glyph coverage and colour
+  rendering are inconsistent across the vanilla, dependency-free stack this
+  project requires (AD-13a, FR-SYS-8). A hand-drawn two-tone line icon in
+  the existing token colours renders identically everywhere.
+
+**Consequence:**
+- PRD: **FR-CUR-13**, **AC-CUR-13** (new — node-level glyph); **FR-BI-15**,
+  **AC-BI-10** (new — big-idea glyph union, derived).
+- Data model: **`Node.domain`** field added (§1, `Node`); **INV-DM-43**
+  (new) states the strand-only-set / derive-by-walking-parentId rule and the
+  big-idea union rule.
+- Arch spec: this entry.
+- Mockups: glyph markup to be added wherever a node code or big-idea title
+  renders — `ArborTree.dc.html`, `Main.dc.html`, `UnitAssessment.dc.html`,
+  `LessonPlan.dc.html`/`LessonPlanPrint.dc.html`,
+  `LessonsAndTopics.dc.html`/`LessonsAndTopicsPrint.dc.html`,
+  `CribSheet.dc.html`/`CribSheetScreens.dc.html`. `MarkingMatrix.dc.html` and
+  `MatrixSetupPrint.dc.html` carry criteria, not curriculum-node codes
+  directly (FR-MM's criteria are matrix-native, not `Node`s) — out of scope
+  for this decision unless a future change binds a criterion to a node.
+
+---
+
+### AD-50 — Lessons and Topics gain optional scheduling; grouping by date is a view, not a second store (New — Change AI)
+
+**Decision:** a lesson, a mini assessment, and the final assessment each gain
+two optional, independent fields — `date` (ISO `YYYY-MM-DD`, INV-DM-44) and
+`lessonPeriod` (freeform text, e.g. `"Mon 3rd-4th P"`) — entered on the
+combined Lessons & Topics view's edit mode and printed beside each item
+(FR-TOP-12/13/13a). The view also gains a **grouping toggle** — by Topic
+(unchanged default) or by Date (FR-TOP-14) — available in both edit and
+print. In Date mode, every lesson and assessment sorts into date order under
+a heading for its date, undated items collect under one trailing
+"Unscheduled" heading, and each row carries its own topic as an in-row label
+rather than a section heading (FR-TOP-14a). Luke: an optional way to "insert
+dates (e.g. Mon 3 Aug) and/or lesson-period (e.g. Mon 3rd-4th P) ... topics
+lessons could be grouped inside the date/lesson-period format."
+
+**Rationale — two fields, not one:** a calendar date and a recurring
+timetable slot answer different questions ("which day did/will this happen"
+versus "which period does this sit in, this week or every week") and a
+teacher may know one before the other, or only ever use one. Forcing them
+into a single field would mean parsing a compound string like "Mon 3rd P, 3
+Aug" back apart every time it needs to sort or group — fragile, and contrary
+to the schema's standing preference for one field per fact (e.g. `date` and
+`lessonPeriod` here mirror the same independence `Lesson.completed` and
+`Lesson.number` already have from each other). **`date` as ISO, not a stored
+display string:** storing `"Mon 3 Aug"` verbatim would make the field
+undiffable against a genuine date and, worse, unsortable without re-parsing
+prose — exactly the trap AD-2's "reproducible from the same input" concern
+and INV-DM-12's "derive, don't duplicate" discipline both warn against.
+Deriving the display string from a stored ISO date at render time is the
+same move already made for every other computed label in this schema (glyph
+sets, gap states, topic status). **`lessonPeriod` as free text, no
+structure:** a "period" is entirely a function of one school's timetable —
+some run numbered periods, some run named blocks, some run a rotating
+letter-day cycle — and inventing a canonical period schema would be
+curriculum-agnostic's opposite: a school-timetable-specific field pretending
+to be general. `Lesson.sidebar` (AD-36) already established that some
+teacher-facing content is legitimately unstructured; a period slot is the
+same kind of fact. **Grouping as a view, not stored data:** the same
+reasoning AD-39 already gives the marking matrix's scope axis and
+AD-MMB-11 gives its display mode — a topic's `coverage[]`, a lesson's
+`bigIdeaId`, and now a `date`/`lessonPeriod` pair are already enough to
+compute either grouping on demand; storing "which grouping was last viewed"
+would be state about the *view*, not the *unit*, and AD-42 already drew that
+line for this same view when it stayed cross-cutting rather than becoming a
+seventh part with its own schema object.
+
+**Rejected:**
+- **A single combined `schedule` string field** — rejected for the
+  parsing-fragility reason above; also would not degrade gracefully to
+  "date only" or "period only" without inventing a delimiter convention no
+  one asked for.
+- **Deriving `lessonPeriod` structure (weekday + period number) as sub-fields**
+  — rejected: buys sortability the freeform field already forgoes by design
+  (a period slot's *day* is frequently redundant with `date`'s own weekday
+  when both are set, and meaningless to structure when `date` is absent and
+  the slot is a recurring weekly one) at the cost of a school-timetable
+  schema this project has no reason to standardise (INV-DM-10's
+  curriculum-agnostic instinct, applied one layer over to timetables).
+- **Storing the grouping mode on the unit** (a persisted "last viewed as
+  Date" preference) — rejected as unnecessary state for a toggle that costs
+  nothing to recompute, and because AD-42 already declined to give this view
+  any schema-backed object to hang such a preference on; adding one now
+  just to remember a toggle would reopen a door that decision deliberately
+  closed.
+- **Requiring a date before a period can be entered, or vice versa** —
+  rejected: Luke's own phrasing ("and/or") states the independence directly,
+  and a teacher who only knows the recurring slot but not yet the calendar
+  date (or has locked in a date but the period is still being negotiated)
+  is a completely ordinary case, not a data-entry error to block.
+- **Merging the topic heading and date heading into one two-level grouping**
+  (topic, then date within it, or date, then topic within it) — rejected as
+  answering a question nobody asked: Luke described two *alternative* whole-
+  unit views ("grouped inside the date/lesson-period format," read as
+  replacing the topic-first layout, not nesting inside it), not a drill-down
+  hierarchy; a two-level grouping would also reintroduce exactly the
+  cross-reference friction AD-38 removed by merging Topics and Lessons into
+  one flat, scannable outline in the first place.
+
+**Consequence:**
+- PRD: **FR-TOP-12/13/13a/14/14a/14b** (new); **AC-TOP-12…15** (new).
+- Data model: **`Lesson.date`, `Lesson.lessonPeriod`,
+  `MiniAssessment.date`, `MiniAssessment.lessonPeriod`,
+  `UnitAssessment.finalAssessmentDate`, `UnitAssessment.finalAssessmentPeriod`**
+  fields added (§1); **INV-DM-44** (new) states the ISO-vs-freeform split, the
+  independence of the two fields, and that grouping mode is unstored.
+- Arch spec: this entry.
+- Mockups: `LessonsAndTopics.dc.html` (setup — per-row date/period entry
+  affordance, grouping toggle) and `LessonsAndTopicsPrint.dc.html` (print —
+  per-row date/period text, Topic-grouped) updated; a new
+  `LessonsAndTopicsPrintByDate.dc.html` added to illustrate the Date-grouped
+  print layout, since it restructures the page (headings become dates, topic
+  drops to an in-row label) rather than merely adding text to the existing
+  layout.
+
+---
+
+### AD-51 — The Big Idea Tree: a markdown outline edits the big-idea list, an ASCII connector tree prints it, both one-click copyable (New — Change AJ)
+
+**Decision:** the big-idea list (FR-BI) gains its own cross-cutting screen,
+the **Big Idea Tree**. **Setup mode** replaces (or at least supplements) any
+form/drag-and-drop editor with a **plain markdown-style outline**: one line
+per big idea or sub-big idea, `- Title`, one level of indentation nesting a
+sub-big idea under the nearest preceding unindented line. Editing the
+outline directly edits `BigIdea.order` (line position) and `BigIdea.parentId`
+(indentation) — no new field. **Print mode** renders the same list as an
+**ASCII/monospace connector tree** (`├──`, `└──`, `│`), A4 portrait, fixed
+like the lesson plan (AD-11). A big idea with no sub-big ideas renders as a
+bare line in both modes — no connector — so an unarranged list reads as a
+plain list, not a tree of stubs. Both modes carry a **one-click
+copy-to-clipboard** button that copies exactly the text on screen. Like the
+combined Lessons & Topics view (AD-42), this stays **cross-cutting, not a
+seventh part** — no new schema-backed singular object, `bigIdeas[]` already
+exists and is already singular (INV-DM-18).
+Luke, directly: *"An ASCII tree style family tree (portrait) of all the big
+ideas of the unit, with simple markdown assistance to allow me to arrange
+them, the default is a list until I put them in sequence. It will need to
+have input/setup version and printable version. It will be called the `Big
+Idea Tree` it needs to be one-click copyable."*
+
+**Rationale — markdown outline as the editing surface, not a display
+format:** every other markdown use in this project so far (crib-sheet
+section text, AD-43) is **inline formatting of prose** — bold, italic,
+bullets rendered within one field. This decision uses markdown-style syntax
+differently: **indentation in the outline directly drives structural data**
+(`order`, `parentId`). That is a deliberate departure worth naming, because
+it is the fastest editing model for exactly the shape this list already has
+— two levels, curated order, frequent re-arranging as a unit takes shape.
+Cutting, pasting and re-indenting lines in one text block is mechanically
+faster than the form-per-item / explicit reorder-button alternative OQ-18
+already accepted as the coverage grid's baseline, for a list this project's
+own fixtures show tends to be short (four or five top-level ideas, a
+handful of sub-ideas each) — exactly the size where a flat outline stays
+legible and a form list does not obviously win. **Rationale — flat list is
+the default, not a stub tree:** rendering every big idea as a one-node
+"tree" before any nesting exists would be visual noise for the common early
+state of a new unit — a handful of working titles, not yet organised.
+Showing a bare list until a big idea actually has children matches how
+Luke described the state transition himself ("the default is a list until I
+put them in sequence") rather than inventing a "still deciding" visual state
+nobody asked for. **Rationale — copy on both, not just one:** the setup
+outline and the print tree serve different destinations — the raw markdown
+pastes cleanly into another markdown document or editor, the connector tree
+pastes cleanly into a monospace context (chat, plain-text notes, a fixed-
+width email) where box-drawing characters need to render aligned. Luke asked
+for "one-click copyable" without naming just one of the two views, and the
+two outputs are different enough that offering only one would silently pick
+a destination for him.
+
+**Rejected:**
+- **A conventional form/drag-and-drop editor**, matching the coverage grid's
+  interaction model (FR-BI-10) — considered as the "consistent with the rest
+  of the app" default, but rejected because Luke asked specifically for
+  markdown-assisted arranging, not for parity with the grid's own editing
+  style; the two screens can reasonably use different interaction models
+  when the underlying data shapes differ this much (a ~40-row grid versus a
+  short two-level outline).
+- **Treating the Big Idea Tree as the widget's seventh part** — rejected for
+  the exact reason AD-42 already rejected it for the Lessons & Topics view:
+  no schema-backed singular object of its own, nothing for `AC-SYS-6`'s
+  cardinality test to check, and a renumbering ripple (FR-SYS-2/FR-SYS-11,
+  every "six parts" reference) this decision has no reason to trigger.
+- **A single combined setup+print screen** (one outline, styled to also look
+  like the printed tree) — rejected: the outline needs to stay plainly
+  editable text (so cut/paste/reindent works cleanly), while the print
+  output needs the polished box-drawing characters and A4 pagination;
+  conflating the two would either make the editor look like a locked
+  read-only tree or make the printed page look like a raw text file.
+- **Copying only the print view's rendered tree** (treating the setup
+  outline as "just the editor," not a copy source) — rejected per the
+  rationale above: Luke asked for copy on the feature generally, and the raw
+  markdown is itself useful to paste elsewhere (e.g. into another outline
+  tool) independent of the pretty-printed version.
+- **Silently re-indenting or dropping a third-level line** rather than
+  refusing it — rejected on the same "flag, don't silently fix" ground
+  AD-17 and AD-41 already establish project-wide; INV-DM-14's two-level cap
+  is a hard data rule, and an editor that quietly "corrected" a typo-level
+  indentation mistake would hide a structural change the person didn't ask
+  for.
+
+**Assumption flagged plainly — open to correction:** the outline is read as
+editing **title, order and parentId only** — a big idea's optional `text`
+elaboration and its `coverage[]`/`topicId` bindings are assumed to stay on
+whatever per-item detail surface the eventual `bigidea-list` build gives
+them (a click-to-expand panel, most likely), not inline in the outline
+itself. Luke's brief said "arrange them," which this reads as structural
+arrangement specifically, not full-content editing; if the intent was a
+richer per-line format (e.g. trailing text after the title), that changes
+the outline's parse rule and should be corrected before `bigidea-list` is
+built.
+
+**Technical note:** `navigator.clipboard.writeText()` is a standard Web API
+with no server round-trip and no added dependency (FR-SYS-8 stays satisfied)
+— it requires a secure context, which `localhost`/`127.0.0.1` (how every
+bundle's `serve.py` is reached, FR-BND-4) already satisfies, so this works
+identically to every other bundle feature that assumes the local server is
+running.
+
+**Consequence:**
+- PRD: **FR-BI-16…20** (new); **AC-BI-11…13** (new); FR-SYS-4a's orientation
+  table gains a Big Idea Tree row, footnoted the same way the Lessons &
+  Topics view's row already is (AD-42).
+- Data model: **no new field** — `BigIdea.title`/`order`/`parentId` already
+  carry the outline; a documentation note added under `BigIdea` (§1) points
+  here rather than duplicating the rule INV-DM-14 already states.
+- Arch spec: this entry.
+- Mockups: new `BigIdeaTree.dc.html` (setup — markdown outline, copy button)
+  and `BigIdeaTreePrint.dc.html` (print — ASCII connector tree, copy button,
+  A4 portrait) added. Other mockups' tab bars are **not** updated to add a
+  "Big Ideas" tab in this pass — a cosmetic navigation sync, not part of
+  this decision's scope, left as a known follow-up.
 
 ---
 

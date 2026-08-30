@@ -1,0 +1,146 @@
+/**
+ * resources-page.css — Item list rendering (links, images, text, notes)
+ *
+ * Styles the flat resources page item list display:
+ * - Link item display with URL wrapping (FR-RESB-10)
+ * - Image and text item rendering
+ * - Note/caption styling
+ * - Print styles for A4 portrait pagination (no page cap)
+ *
+ * Implements CSS-1 (one file, one job), CSS-2 (tokens only),
+ * CSS-4 (semantic names), CSS-5 (low specificity)
+ */
+
+/* ===== Resources List Container ===== */
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  padding: var(--space-12xl);
+}
+
+/* ===== Item Container ===== */
+.resource-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  break-inside: avoid; /* Prevent splitting items across pages (FR-RESB-6) */
+}
+
+/* ===== Link Item Styling ===== */
+.resource-item.link-item {
+  font-size: var(--font-size-base);
+}
+
+.resource-item.link-item a {
+  color: var(--color-intermediate-line); /* Blue tier color for links */
+  text-decoration: underline;
+  word-wrap: break-word; /* Wrap long URLs (FR-RESB-10) */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.resource-item.link-item a:visited {
+  color: var(--color-intermediate-ink);
+}
+
+/* Inert (invalid scheme) link text */
+.resource-item.link-item .link-inert {
+  color: var(--color-text-secondary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Image Item Styling ===== */
+.resource-item.image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.resource-item.image-item img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+}
+
+/* ===== Text Item Styling ===== */
+.resource-item.text-item {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* ===== Note/Caption Styling ===== */
+.resource-item .item-note {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-top: var(--space-md);
+  padding-left: var(--space-lg);
+  border-left: 2px solid var(--color-border-light);
+  line-height: 1.4;
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  /* Page break rules for A4 portrait */
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Ensure items don't break awkwardly */
+  .resource-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Adjust spacing for print */
+  .resources-list {
+    padding: 0;
+    gap: var(--space-5xl);
+  }
+
+  /* Remove borders and backgrounds for print */
+  .resource-item.image-item img {
+    border: none;
+  }
+
+  /* Make sure URLs are still readable in print */
+  .resource-item.link-item a {
+    color: var(--color-text-primary);
+  }
+
+  /* Print color preservation (FR-DS-11) */
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Hide screen-only controls in print */
+  .resource-controls,
+  .item-actions,
+  button,
+  [role="button"],
+  .screen-only {
+    display: none;
+  }
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .resources-list {
+    padding: var(--space-8xl);
+    gap: var(--space-2xl);
+  }
+}

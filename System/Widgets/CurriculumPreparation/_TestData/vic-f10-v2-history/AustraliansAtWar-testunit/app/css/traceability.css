@@ -1,0 +1,94 @@
+/* ========================================
+   traceability.css — Code-link styling and navigation
+   Shared component for all parts rendering curriculum codes (FR-TRB-2, AD-32)
+   ======================================== */
+
+/* ===== CODE LINK STYLING ===== */
+a.code-link {
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: inherit;
+  transition: background-color 200ms ease, border-color 200ms ease;
+  position: relative;
+  padding: 0 2px;
+}
+
+a.code-link:hover {
+  background-color: var(--color-bg-light);
+  text-decoration: underline;
+}
+
+a.code-link:active {
+  background-color: var(--color-bg-very-light);
+}
+
+/* ===== HIGHLIGHT ON NAVIGATION ===== */
+.code-highlighted {
+  background-color: var(--color-bg-very-light);
+  border-left: 3px solid var(--color-text-primary);
+  padding-left: 5px;
+  animation: highlight-fade 200ms ease-out;
+}
+
+@keyframes highlight-fade {
+  0% {
+    background-color: var(--color-intermediate-tint);
+  }
+  100% {
+    background-color: var(--color-bg-very-light);
+  }
+}
+
+/* ===== BACK AFFORDANCE BUTTON ===== */
+.back-affordance {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-base);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-xl);
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-medium);
+  border-radius: 3px;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.back-affordance:hover {
+  background-color: var(--color-bg-very-light);
+}
+
+.back-affordance:active {
+  background-color: var(--color-border-light);
+}
+
+.back-affordance-arrow {
+  font-size: var(--font-size-md);
+}
+
+/* ===== UNREFERENCED ASSESSMENT FLAG ===== */
+.unreferenced-assessment-flag {
+  display: block;
+  margin: var(--space-md) 0;
+  padding: var(--space-md);
+  background-color: var(--color-gap-neither-bg);
+  border-left: 3px solid var(--color-gap-neither-border);
+  color: var(--color-gap-neither-ink);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+.unreferenced-assessment-flag-title {
+  font-weight: bold;
+  margin-bottom: var(--space-sm);
+}
+
+.unreferenced-assessment-flag-list {
+  margin-left: var(--space-lg);
+}
+
+.unreferenced-assessment-flag-list li {
+  margin-bottom: var(--space-xs);
+}

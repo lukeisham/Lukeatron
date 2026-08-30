@@ -1,0 +1,624 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedFrom": "2026-08-29",
+  "meta": {
+    "subject": "History",
+    "level": "Year 10",
+    "unitName": "Australians at War 1914-1945",
+    "teacher": "Luke Isham",
+    "dateCreated": "2026-08-30T03:38:04.478721+00:00",
+    "dateModified": null
+  },
+  "curriculum": {
+    "profileId": "vic-f10-v2",
+    "name": "",
+    "jurisdiction": "",
+    "version": "",
+    "sourceRef": "",
+    "licence": "",
+    "attribution": "",
+    "labels": {
+      "strand": "Strand",
+      "outcome": "Content Description",
+      "task": "Task",
+      "cribSheetHalves": {
+        "upper": "",
+        "lower": ""
+      }
+    },
+    "description": null,
+    "ingestedAt": null
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "code": null,
+      "title": "Unit",
+      "text": null,
+      "kind": "strand",
+      "parentId": null,
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-083b674764d7577c",
+      "code": null,
+      "title": null,
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K01",
+      "code": "VC2HH10K01",
+      "title": "causes and consequences of the Industrial Revolution, the movement of people and European imperialism",
+      "text": "causes and consequences of the Industrial Revolution, the movement of people and European imperialism VC2HH10K01",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K02",
+      "code": "VC2HH10K02",
+      "title": "significant ideas and developments and their impacts on society and politics",
+      "text": "significant ideas and developments and their impacts on society and politics VC2HH10K02",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K03",
+      "code": "VC2HH10K03",
+      "title": "significant developments and events since 1945 that have contributed to global change, such as World War II, the United Nations, the Cold War and technologies",
+      "text": "significant developments and events since 1945 that have contributed to global change, such as World War II, the United Nations, the Cold War and technologies VC2HH10K03",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K04",
+      "code": "VC2HH10K04",
+      "title": "the contribution of significant movements for social and political change since 1945, such as independence, nationalist and conservative political movements, indigenous rights, civil rights, women’s rights, LGBTQI+ rights and environmentalism",
+      "text": "the contribution of significant movements for social and political change since 1945, such as independence, nationalist and conservative political movements, indigenous rights, civil rights, women’s rights, LGBTQI+ rights and environmentalism VC2HH10K04",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K05",
+      "code": "VC2HH10K05",
+      "title": "the significant events, individuals and groups in the women’s movement in Australia, and how they have changed the role and status of women",
+      "text": "the significant events, individuals and groups in the women’s movement in Australia, and how they have changed the role and status of women VC2HH10K05",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K06",
+      "code": "VC2HH10K06",
+      "title": "the continuing efforts to create change in the civil rights and freedoms in Australia, for Aboriginal and Torres Strait Islander Peoples, migrants and women",
+      "text": "the continuing efforts to create change in the civil rights and freedoms in Australia, for Aboriginal and Torres Strait Islander Peoples, migrants and women VC2HH10K06",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-f467a13d6bd18506",
+      "code": null,
+      "title": "Investigations: Australians at War 1914-1945",
+      "text": "Investigations: Australians at War 1914-1945",
+      "kind": "strand",
+      "parentId": "strand-083b674764d7577c",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K13",
+      "code": "VC2HH10K13",
+      "title": "the causes of World War I and World War II",
+      "text": "the causes of World War I and World War II VC2HH10K13",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K14",
+      "code": "VC2HH10K14",
+      "title": "the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, fought in the world wars",
+      "text": "the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, fought in the world wars VC2HH10K14",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K15",
+      "code": "VC2HH10K15",
+      "title": "significant places where Australians fought",
+      "text": "significant places where Australians fought VC2HH10K15",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K16",
+      "code": "VC2HH10K16",
+      "title": "the experiences and perspectives of those who fought or were deployed overseas, including Aboriginal and Torres Strait Islander Peoples and women",
+      "text": "the experiences and perspectives of those who fought or were deployed overseas, including Aboriginal and Torres Strait Islander Peoples and women VC2HH10K16",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K17",
+      "code": "VC2HH10K17",
+      "title": "significant events and turning points of the world wars",
+      "text": "significant events and turning points of the world wars VC2HH10K17",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K18",
+      "code": "VC2HH10K18",
+      "title": "continuities and changes in the nature of warfare",
+      "text": "continuities and changes in the nature of warfare VC2HH10K18",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K20",
+      "code": "VC2HH10K20",
+      "title": "the causes of the Holocaust",
+      "text": "the causes of the Holocaust VC2HH10K20",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K22",
+      "code": "VC2HH10K22",
+      "title": "the diverse experiences and perspectives of Jewish and non-Jewish peoples during the period of the Holocaust",
+      "text": "the diverse experiences and perspectives of Jewish and non-Jewish peoples during the period of the Holocaust VC2HH10K22",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K23",
+      "code": "VC2HH10K23",
+      "title": "different interpretations and debates about the significance and legacies of the world wars",
+      "text": "different interpretations and debates about the significance and legacies of the world wars VC2HH10K23",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-2197be9f7aedcbcf",
+      "code": null,
+      "title": "concepts and skills",
+      "text": "concepts and skills",
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "VC2HH10S01",
+      "code": "VC2HH10S01",
+      "title": "formulate, refine and use historical questions to inform historical investigations",
+      "text": "formulate, refine and use historical questions to inform historical investigations VC2HH10S01",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S02",
+      "code": "VC2HH10S02",
+      "title": "sequence significant events, individuals, ideas, movements and developments chronologically to analyse continuity and change, and causes and consequences",
+      "text": "sequence significant events, individuals, ideas, movements and developments chronologically to analyse continuity and change, and causes and consequences VC2HH10S02",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S03",
+      "code": "VC2HH10S03",
+      "title": "analyse the purpose, features, content and context of historical sources",
+      "text": "analyse the purpose, features, content and context of historical sources VC2HH10S03",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S05",
+      "code": "VC2HH10S05",
+      "title": "analyse the perspectives, beliefs, values and attitudes of people and groups based on evidence from a range of sources",
+      "text": "analyse the perspectives, beliefs, values and attitudes of people and groups based on evidence from a range of sources VC2HH10S05",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S06",
+      "code": "VC2HH10S06",
+      "title": "evaluate historical interpretations and debates",
+      "text": "evaluate historical interpretations and debates VC2HH10S06",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-431f5c6a9dde150f",
+      "code": null,
+      "title": "Contunity and change",
+      "text": "Contunity and change",
+      "kind": "strand",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S07",
+      "code": "VC2HH10S07",
+      "title": "analyse continuity and change",
+      "text": "analyse continuity and change VC2HH10S07",
+      "kind": "outcome",
+      "parentId": "strand-431f5c6a9dde150f",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-b5b749c3094a2ddf",
+      "code": null,
+      "title": "causes and consquences",
+      "text": "causes and consquences",
+      "kind": "strand",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S08",
+      "code": "VC2HH10S08",
+      "title": "analyse short- and long-term causes and the intended and unintended consequences of significant events, individuals, ideas and developments and their contributions to continuity and change",
+      "text": "analyse short- and long-term causes and the intended and unintended consequences of significant events, individuals, ideas and developments and their contributions to continuity and change VC2HH10S08",
+      "kind": "outcome",
+      "parentId": "strand-b5b749c3094a2ddf",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-bd6fe113af802f09",
+      "code": null,
+      "title": "Historical significance",
+      "text": "Historical significance",
+      "kind": "strand",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S09",
+      "code": "VC2HH10S09",
+      "title": "evaluate the significance of individuals, groups, movements, events, developments and ideas",
+      "text": "evaluate the significance of individuals, groups, movements, events, developments and ideas VC2HH10S09",
+      "kind": "outcome",
+      "parentId": "strand-bd6fe113af802f09",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-137b55444a360a1f",
+      "code": null,
+      "title": "community",
+      "text": "community",
+      "kind": "strand",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S10",
+      "code": "VC2HH10S10",
+      "title": "construct sustained historical interpretations and arguments using appropriate historical concepts, terms, knowledge, conventions and evaluated evidence from a range of historical sources",
+      "text": "construct sustained historical interpretations and arguments using appropriate historical concepts, terms, knowledge, conventions and evaluated evidence from a range of historical sources VC2HH10S10",
+      "kind": "outcome",
+      "parentId": "strand-137b55444a360a1f",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    }
+  ],
+  "topics": [
+    {
+      "id": "topic-b39d1544ae23c5fa",
+      "title": "Investigations: Australians at War 1914-1945",
+      "text": null,
+      "order": 0,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10K13",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K14",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K15",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K16",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K17",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K18",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K20",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K22",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K23",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-7f17270932d1c79f",
+      "title": "Concepts, Skills & Historical Method",
+      "text": null,
+      "order": 1,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S01",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S02",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S03",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S05",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S06",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-6962bbff188c6d5d",
+      "title": "Contunity and change",
+      "text": null,
+      "order": 2,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S07",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-8dc874033d457402",
+      "title": "causes and consquences",
+      "text": null,
+      "order": 3,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S08",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-69fef3c4ad066e1b",
+      "title": "Historical significance",
+      "text": null,
+      "order": 4,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S09",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-f354ee99e2bc863c",
+      "title": "community",
+      "text": null,
+      "order": 5,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S10",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    }
+  ],
+  "bigIdeas": [],
+  "lessons": [],
+  "cribSheet": {
+    "id": "",
+    "title": "",
+    "orientation": "portrait",
+    "sections": [],
+    "pageCount": 1,
+    "provenance": "manual",
+    "isOverflow": false
+  },
+  "resourcesPage": {
+    "id": "resources-page",
+    "items": [
+      {
+        "id": "resource-a96c18fcea43ff6e",
+        "kind": "text",
+        "order": 0,
+        "url": null,
+        "label": null,
+        "imageId": null,
+        "text": "By the end of Level 10, students evaluate the significant events, developments and ideas that shaped the modern world, including histories of Australia, the world wars and the Holocaust, and Aboriginal and Torres Strait Islander Peoples’ rights and freedoms over the period between 1750 and the early 21st century. Students formulate and adapt historical questions to support the development of historical investigations and their use of historical sources and concepts to interpret the modern world. They organise historical narratives of events, ideas and developments in chronological order to explain varied patterns and forms of continuity and change and their causes and consequences. Students analyse the key features of primary and secondary sources, their content and context, and apply historical questions when drawing inferences from them. They evaluate historical sources by verifying and corroborating their accuracy and value as historical evidence. Students use historical sources to identify and analyse the perspectives of individuals and groups in the modern world and use these perspectives to understand the beliefs, values and attitudes of the individuals and societies studied. Students recognise the contested nature of history and apply this knowledge to identify and evaluate different historical interpretations and debates. Students analyse varied patterns and forms of continuity and change and analyse the significant events, individuals, ideas and development that contributed to and resulted from them. They analyse short- and long-term causes and intended and unintended consequences of significant events, individuals, ideas and developments and their relationships to continuity and change. They use criteria informed by historical questions to evaluate the historical significance events, ideas, individuals, groups, movements and developments of the modern world. When constructing sustained historical interpretations, students use historical concepts, terms, relevant knowledge, conventions and evaluated evidence from a range of historical sources.",
+        "note": "Achievement standard"
+      }
+    ]
+  },
+  "unitAssessment": {
+    "id": "",
+    "title": "",
+    "bigIdeaId": "",
+    "coverage": [],
+    "finalAssessment": {
+      "pass": {
+        "tier": "pass",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      },
+      "intermediate": {
+        "tier": "intermediate",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      },
+      "advanced": {
+        "tier": "advanced",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      }
+    },
+    "finalAssessmentCompleted": false,
+    "finalAssessmentDate": null,
+    "finalAssessmentPeriod": null,
+    "miniAssessments": []
+  },
+  "matrixTemplate": {
+    "orientation": "portrait",
+    "criteria": []
+  },
+  "matrices": [],
+  "students": [],
+  "images": []
+}

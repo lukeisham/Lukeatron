@@ -1,0 +1,129 @@
+/* ========================================
+   CurriculumPreparation Design Tokens
+   Source: AD-13c (rev 12)
+   Date: 2026-08-29
+   ======================================== */
+
+:root {
+  /* ===== NEUTRAL PALETTE ===== */
+  --color-text-primary: #1a1a17;
+  --color-text-secondary: #9a9891;
+  --color-text-tertiary: #5f5e5a;
+  --color-bg-white: #fff;
+  --color-bg-light: #f4f3ee;
+  --color-bg-very-light: #faf9f5;
+  --color-border-strong: #1a1a17;
+  --color-border-medium: #c9c7bd;
+  --color-border-light: #e3e1d9;
+  --color-border-dashed: #c9c7bd;
+
+  /* ===== TIER COLOURS — PASS (Green) ===== */
+  --color-pass-line: #1F6B41;
+  --color-pass-tint: #E4F4E9;
+  --color-pass-ink: #14502F;
+
+  /* ===== TIER COLOURS — INTERMEDIATE (Blue) ===== */
+  --color-intermediate-line: #185FA5;
+  --color-intermediate-tint: #E6F1FB;
+  --color-intermediate-ink: #0C447C;
+
+  /* ===== TIER COLOURS — ADVANCED (Orange) ===== */
+  --color-advanced-line: #9A4E12;
+  --color-advanced-tint: #FCEEE2;
+  --color-advanced-ink: #703508;
+
+  /* ===== DOMAIN GLYPHS ===== */
+  --color-skill-glyph: #0F7B6C;
+  --color-knowledge-glyph: #B23A6B;
+
+  /* ===== COVERAGE CELL STATES ===== */
+  --color-coverage-full-bg: #185FA5;
+  --color-coverage-full-border: #0C447C;
+  --color-coverage-partial-bg: linear-gradient(135deg, #B5D4F4 0 50%, #fff 50% 100%);
+  --color-coverage-partial-border: #185FA5;
+  --color-coverage-none-border: #c9c7bd;
+  --color-coverage-none-bg: #fff;
+
+  /* ===== COMPLETION ROW TINT ===== */
+  --color-row-tint-completion: #F4FAF6;
+
+  /* ===== COVERAGE GAP CHIPS ===== */
+  --color-gap-taught-ink: #703508;
+  --color-gap-taught-bg: #FCEEE2;
+  --color-gap-taught-border: #9A4E12;
+  --color-gap-assessed-ink: #0C447C;
+  --color-gap-assessed-bg: #E6F1FB;
+  --color-gap-assessed-border: #185FA5;
+  --color-gap-neither-ink: #791F1F;
+  --color-gap-neither-bg: #FCEBEB;
+  --color-gap-neither-border: #E24B4A;
+
+  /* ===== SPACING (px) ===== */
+  --space-xs: 3px;
+  --space-2xs: 4px;
+  --space-sm: 5px;
+  --space-base: 6px;
+  --space-md: 7px;
+  --space-lg: 8px;
+  --space-xl: 9px;
+  --space-2xl: 10px;
+  --space-3xl: 12px;
+  --space-4xl: 14px;
+  --space-5xl: 16px;
+  --space-6xl: 18px;
+  --space-7xl: 20px;
+  --space-8xl: 24px;
+  --space-9xl: 26px;
+  --space-10xl: 28px;
+  --space-11xl: 36px;
+  --space-12xl: 40px;
+  --space-13xl: 44px;
+
+  /* ===== TYPOGRAPHY — FONT STACKS ===== */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-monospace: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: Georgia, serif;
+
+  /* ===== TYPOGRAPHY — FONT SIZES (px) ===== */
+  --font-size-xs: 9.5px;
+  --font-size-sm: 10px;
+  --font-size-sm-alt: 10.5px;
+  --font-size-base: 11px;
+  --font-size-base-alt: 11.5px;
+  --font-size-md: 12px;
+  --font-size-md-alt: 12.5px;
+  --font-size-lg: 13px;
+  --font-size-lg-alt: 13.5px;
+  --font-size-xl: 14px;
+  --font-size-xl-alt: 15px;
+  --font-size-2xl: 17px;
+  --font-size-3xl: 18px;
+  --font-size-4xl: 20px;
+  --font-size-5xl: 21px;
+  --font-size-6xl: 23px;
+
+  /* ===== BORDERS & RADIUS ===== */
+  --radius-sm: 4px;
+  --radius-md: 5px;
+  --radius-lg: 6px;
+  --radius-xl: 7px;
+  --radius-2xl: 8px;
+  --radius-round: 50%;
+
+  /* ===== BORDER STYLES ===== */
+  --border-solid: 1px solid;
+  --border-solid-thick: 1.5px solid;
+  --border-dashed: 1px dashed;
+
+  /* ===== PRINT COLOUR-ADJUST ===== */
+  /* FR-DS-11: Force exact colour printing on tier backgrounds */
+  --print-color-adjust: exact;
+
+  /* ===== A4 PRINT GEOMETRY (px at 96dpi) ===== */
+  --a4-width: 794px;
+  --a4-height: 1123px;
+  --a4-margin-top: 40px;
+  --a4-margin-bottom: 40px;
+  --a4-margin-left: 44px;
+  --a4-margin-right: 44px;
+}

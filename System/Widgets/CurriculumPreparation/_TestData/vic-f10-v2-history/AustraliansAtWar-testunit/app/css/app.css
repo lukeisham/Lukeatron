@@ -1,0 +1,98 @@
+/* app.css — Top-level shell layout for the bootstrap script (app.js).
+   Nav strip + status/error states. Part-owned CSS files style each
+   mounted part's own markup; this file only styles the shell around them. */
+
+body {
+  margin: 0;
+  padding: 0 var(--space-md, 16px) var(--space-lg, 24px);
+  font-family: var(--font-body, system-ui, sans-serif);
+  color: var(--color-ink, #1a1a1a);
+  background: var(--color-bg-white, #ffffff);
+}
+
+body > h1 {
+  font-size: 1.25rem;
+  margin: var(--space-md, 16px) 0 var(--space-sm, 8px);
+}
+
+#app-nav {
+  border-bottom: 1px solid var(--color-border-medium, #ccc);
+  margin-bottom: var(--space-md, 16px);
+}
+
+.app-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 4px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-nav-button {
+  border: 1px solid var(--color-border-medium, #ccc);
+  border-bottom: none;
+  background: var(--color-bg-subtle, #f4f4f4);
+  padding: 6px 12px;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.app-nav-button:hover {
+  background: var(--color-bg-hover, #e9e9e9);
+}
+
+.app-nav-button.is-active {
+  background: var(--color-bg-white, #ffffff);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-bg-white, #ffffff);
+  position: relative;
+  top: 1px;
+}
+
+.app-nav-button:focus-visible {
+  outline: 2px solid var(--color-accent, #185fa5);
+  outline-offset: 1px;
+}
+
+#app-content {
+  min-height: 200px;
+}
+
+.app-status {
+  padding: var(--space-md, 16px);
+  border-radius: 4px;
+  max-width: 60ch;
+}
+
+.app-status-loading {
+  color: var(--color-ink-muted, #555);
+}
+
+.app-status-error {
+  background: var(--color-bg-error, #fdecea);
+  border: 1px solid var(--color-border-error, #d9534f);
+  color: var(--color-ink-error, #7a1f1f);
+}
+
+.app-status-hint {
+  font-size: 0.85rem;
+  color: var(--color-ink-muted, #555);
+}
+
+.lesson-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs, 4px);
+  margin-bottom: var(--space-md, 16px);
+}
+
+.lesson-plan-pages,
+.unit-assessment-pages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 24px);
+  align-items: flex-start;
+}

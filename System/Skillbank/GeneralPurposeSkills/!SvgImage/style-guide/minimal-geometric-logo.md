@@ -2,6 +2,8 @@
 **Tags:** logo | minimal
 **Anti-patterns / Avoid:** No gradients, drop shadows, skeuomorphic detail, decorative flourishes that don't carry meaning, or a wordmark that overwhelms the mark.
 **Visual DNA:** A single reductionist mark — 2 to 5 clean geometric primitives (circle, square, triangle, arc) composed into one memorable symbol, flat colour, no outlines unless structural, generous negative space; reads at tiny sizes and scales losslessly.
+**Signature tells (must be visibly present):** 1) a hard cap of 2–5 total primitives, every one load-bearing — nothing decorative, nothing repeated for texture 2) exactly 2 flat colours total (typically black on white or reversed), no gradient, no third accent hue 3) the mark survives reduction to a solid single-colour silhouette and to a knockout on a dark ground with no loss of recognisability — a mark that only reads correctly in its original colours is under-constructed.
+**Craft-rule carve-outs:** this style's 2–5 primitive hard cap is intentional and overrides skill.md's generic detail-budget floor — reductionism IS the design constraint; a mark that fails the minimum-size legibility test is under-constructed, not sparse, so do not pad it toward the floor. It also legitimately builds from bare circles, squares, and arcs rather than hand-built organic Bézier silhouettes — perfect, repeatable geometric primitives are the point here, overriding the generic "Bézier over primitives" rule. Finally, the mark carries no light source at all: skill.md's one-global-light and contact-shadow rules do not apply — gradients and drop shadows are anti-patterns, and a logo must read as a flat two-colour silhouette.
 **Typical subject / composition:** A standalone identity mark — a brand symbol, app icon, or monogram meant to be recognised at a glance and reproduced at any size. Not for multi-element product screens or icon sets (see `clean-modern-flat-ui.md` for UI/icon-system work).
 **Standard layers (z-order, bottom → top):**
 - `<g id="background-flat">` — flat ground (often a single field, or omitted entirely)
@@ -10,7 +12,7 @@
 - `<g id="wordmark-text">` — optional set type, tightly paired with the mark
 
 **Distinctive SVG techniques:**
-- Primitive cap: build the mark from 2 to 5 geometric primitives total, typically 3 — every primitive must be load-bearing (removing it changes the mark's meaning, not just its density).
+- Primitive cap: build the mark from 2 to 5 geometric primitives total, typically 3 — every primitive must be load-bearing (removing it changes the mark's meaning, not just its density). This hard cap is intentional and overrides the standard detail-budget rule; reductionism IS the constraint.
 - Construction scaffold: lay out primitives on a circle-and-square grid with a stated module — on a 1080-wide canvas, a 12-column module (90px per column) is standard. Derive proportions from the classic ratios: golden ratio (1:1.618) or root-2 (1:1.414) relationships between the mark's major elements; strike circles from the grid's intersection points rather than freehand placement.
 - Optical centre: place the mark's visual weight slightly above true geometric centre — offset the mark's centroid upward by 3-5% of the mark's total height, since true geometric centre reads as sinking within its bounding box.
 - Clear space: reserve empty margin around the mark equal to a proportion of one of the mark's own elements (not a fixed px value), so clear space scales automatically with the mark — the standard is 1x the mark's dominant stroke width, or 0.5x its cap-height, on all sides. State which reference element applies for a given mark.
@@ -23,3 +25,5 @@
 **Palette:** Exactly 2 flat colours — classically `#000000` on `#ffffff` (or reversed). No gradients, no third hue.
 
 **Typography:** A wordmark, when used, set in a clean geometric sans (`Futura, "Century Gothic", Avenir, sans-serif`) or built from the same primitives as the mark; the type sits quietly beside or below the mark and never competes with it for weight.
+
+**Choosing this over its neighbours:** against `isotype-otto-neurath.md` — Isotype exists to compare data by repeating an identical icon across rows; this style is a single standalone identity mark with no repetition and no dataset behind it. Against `nigel-holmes-explanation-graphics.md` — Holmes builds a pseudo-3D metaphor object walked through by numbered arrows to explain a mechanism to a general reader; this style has no narrative sequence, no arrows, and no pseudo-3D — it is a flat, timeless, standalone symbol. Choose this style specifically when the deliverable is a brand mark or app icon meant to be recognised instantly at any size, not a chart, a diagram, or a UI icon set (see `clean-modern-flat-ui.md` for the latter).

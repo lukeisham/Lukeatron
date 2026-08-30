@@ -2,6 +2,8 @@
 **Tags:** UI | icon
 **Anti-patterns / Avoid:** No gradients, drop shadows beyond the two defined elevation tokens, skeuomorphic texture, more than one accent hue, or decorative fonts.
 **Visual DNA:** Contemporary product/UI idiom — crisp geometric shapes on a neutral ground, small consistent corner radii, thin uniform strokes, one accent colour used sparingly, generous whitespace; screens, panels, and icons that read as "designed," not illustrated.
+**Signature tells (must be visibly present):** 1) uniform 1-1.5px strokes and consistent corner radii drawn from the fixed scale, never a varied or hand-drawn line 2) exactly one accent hue covering at most 10% of the visible area, everything else neutral grey/white 3) flat surfaces with at most a two-level soft `feDropShadow` elevation system — never a gradient or texture.
+**Craft-rule carve-outs:** Uniform stroke-width and flat, unshaded surfaces are this style's defining tells and override the generic edge-variation and one-global-light rules — there is no depth-based line weighting, no gradient shading, and no contact shadow beyond the two defined elevation tokens. This is also a deliberately sparse style: an icon or single control may legitimately sit at or below the detail-budget floor (state so in one line) since restraint, not density, is the point.
 **Typical subject / composition:** App screens, dashboards, settings panels, cards, buttons and form controls, and icon sets — any multi-element UI/product surface built on a shared spacing and component system. Not for standalone identity marks (see `minimal-geometric-logo.md` for single-mark logo design).
 **Standard layers (z-order, bottom → top):**
 - `<g id="background-plain">` — flat neutral ground (white / near-white / light grey)
@@ -23,3 +25,5 @@
 **Palette:** Surfaces `#ffffff` / `#f7f7f8`; borders `#e5e7eb`; neutral text ramp `#111827` (primary text), `#4b5563` (secondary text), `#9ca3af` (disabled/placeholder); one accent `#2563eb` with hover `#1d4ed8` and active `#1e40af`. No other hues.
 
 **Typography:** `system-ui, "Segoe UI", Inter, -apple-system, Roboto, Helvetica, Arial, sans-serif` — sentence case, generous letter-spacing on headings, weights and sizes per the type scale above only.
+
+**Choosing this over its neighbours:** against `minimal-geometric-logo.md` — a logo is a single reductionist mark meant to scale losslessly from favicon to billboard, with no UI chrome, spacing scale, or type system at all; this style is a multi-element screen/panel/icon-set built on a shared spacing grid, elevation tokens, and type scale. If the brief is "one mark that represents a brand," use the logo style instead.

@@ -4,6 +4,13 @@
 **Visual DNA:** Crisp retro raster look — the image is a grid of hard-edged square "pixels", each a
 single flat colour from a tiny palette (2–16 colours), with no anti-aliasing, no gradients, and no
 partial transparency.
+**Signature tells (must be visibly present):** 1) every visible edge is a hard-edged step aligned to a single integer cell grid — no diagonal or curved edge is ever smooth 2) the whole image uses 2–16 flat colours from one declared, unextended palette, with no gradient and no partial opacity anywhere 3) shading, where present, is a visible dithered checkerboard/pattern between two palette steps, never a smooth blend.
+**Craft-rule carve-outs:** This style is the library's deliberate exception to several generic craft rules, because grid discipline IS the tell:
+- Bézier-over-primitives does not apply — every shape is a `<rect>` on the integer cell grid, never a `<path>`/Bézier curve or a `<circle>`/`<ellipse>` (a "circle" is drawn as a stepped cluster of square cells). Grid alignment is the signature, not organic silhouette.
+- No gradients and no partial opacity — every fill is 100% opaque flat colour; a two-colour dithered `<pattern>` (see Distinctive SVG techniques) stands in for any blend or partial-opacity effect.
+- No one-global-light comment or contact shadows — tonal value comes from the palette's own hue-shifted ramp steps and dithering, not from a light direction or a drawn contact-shadow shape.
+- No detail-budget floor — this style may sit at or below skill.md's detail-budget minimum by design; state that it is deliberately minimal within the cell grid rather than padding it with extra elements.
+- The 1080-wide reference canvas does not apply either — see the grid-to-canvas mapping note below; pick a power-of-two-friendly size instead.
 **Typical subject / composition:** sprites (characters, items), tilesets, small portraits, small
 scenes/dioramas, and icons. The subject must be *designed* for the cell budget — a 16×16 grid reads
 as an icon, a 32×32 grid as a character sprite, a 64×64+ grid as a small scene — never take a
@@ -49,8 +56,10 @@ solved at native resolution.
 - General-purpose 16-colour ramp: `#1a1c2c`, `#5d275d`, `#b13e53`, `#ef7d57`, `#ffcd75`, `#a7f070`,
   `#38b764`, `#257179`, `#29366f`, `#3b5dc9`, `#41a6f6`, `#73eff7`, `#f4f4f4`, `#94b0c2`, `#566c86`,
   `#333c57` (PICO-8-style)
-**Typography:** draw glyphs as rects on the same cell grid — fully reliable, and the right choice for
-a small fixed character set. Embedding a genuine bitmap-style pixel font at an integer size that is a
-multiple of its design size also works, but depends on the font being available at render time. A
-plain system monospace `<text>` face is the fallback of last resort: SVG renderers will still
-anti-alias its glyphs regardless of `shape-rendering`, so it will not truly read as pixel type.
+**Typography:** draw glyphs as `<rect>`s on the same cell grid — this is the recommended, fully
+portable approach and the right choice for a small fixed character set (see `<g id="pixel-text">`
+above). Embedding a genuine bitmap-style pixel font is possible at an integer size that is a multiple
+of its design size, but external pixel fonts are not portable in a self-contained SVG (font
+availability at render time cannot be guaranteed) and should not be relied on. A plain system
+monospace `<text>` face is the fallback of last resort only: SVG renderers will still anti-alias its
+glyphs regardless of `shape-rendering`, so it will not truly read as pixel type.

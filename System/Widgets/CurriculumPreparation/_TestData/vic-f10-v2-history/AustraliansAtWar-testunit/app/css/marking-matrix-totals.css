@@ -1,0 +1,111 @@
+/**
+ * marking-matrix-totals.css — Subtotals & unit total section
+ *
+ * Implements:
+ * - Per-tier subtotal rows
+ * - Unit total panel (FR-MMB-45)
+ * - Default Full mode warning notice (AC-MMB-30)
+ *
+ * Under 150 lines, one job (CSS-1)
+ * Uses only variables.css tokens (CSS-2)
+ */
+
+/* ===== SUBTOTAL ROWS ===== */
+.subtotal-row {
+  display: grid;
+  grid-template-columns: subgrid;
+  col-span: 5;
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--color-bg-very-light);
+  border-bottom: var(--border-solid-thick) var(--color-border-medium);
+  font-weight: bold;
+  font-size: var(--font-size-base);
+}
+
+.subtotal-label {
+  color: var(--color-text-secondary);
+}
+
+.subtotal-value {
+  text-align: right;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  padding-right: var(--space-xl);
+}
+
+.subtotal-percentage {
+  text-align: right;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  padding-right: var(--space-xl);
+}
+
+/* ===== UNIT TOTAL SECTION ===== */
+.unit-total-section {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-7xl) var(--space-xl) 0 0;
+  border-top: var(--border-solid-thick) var(--color-border-medium);
+}
+
+.unit-total-box {
+  text-align: center;
+  padding: var(--space-5xl) var(--space-7xl);
+  border: var(--border-solid) var(--color-intermediate-line);
+  border-radius: var(--radius-md);
+  background-color: var(--color-intermediate-tint);
+  print-color-adjust: exact;
+}
+
+.unit-total-value {
+  font-size: var(--font-size-6xl);
+  font-weight: bold;
+  color: var(--color-intermediate-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.unit-total-label {
+  font-size: var(--font-size-sm-alt);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2xl);
+}
+
+/* ===== DEFAULT FULL MODE NOTICE ===== */
+.default-full-notice {
+  display: none;
+  align-items: center;
+  gap: var(--space-5xl);
+  padding: var(--space-5xl) var(--space-7xl);
+  margin-bottom: var(--space-7xl);
+  background-color: #FFF3CD;
+  border-left: var(--border-solid-thick) #FFB81C;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base-alt);
+  color: var(--color-text-primary);
+}
+
+.default-full-notice.visible {
+  display: flex;
+}
+
+.default-full-notice-icon {
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+}
+
+/* ===== PRINT RULES ===== */
+@media print {
+  .default-full-notice {
+    display: none;
+  }
+
+  .subtotal-row {
+    background-color: var(--color-bg-very-light);
+    print-color-adjust: exact;
+  }
+
+  .unit-total-box {
+    print-color-adjust: exact;
+  }
+}

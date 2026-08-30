@@ -1,0 +1,90 @@
+/**
+ * mini-assessment-ui.css — Mini assessment manager UI styles
+ *
+ * Styles for creating, editing, reordering, and deleting mini assessments.
+ */
+
+@import './variables.css';
+
+.mini-assessment-manager {
+  display: none;
+  margin-top: var(--space-12xl);
+  padding: var(--space-12xl);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-very-light);
+}
+
+.mini-assessment-list {
+  margin-bottom: var(--space-8xl);
+}
+
+.mini-assessment-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-white);
+}
+
+.mini-name {
+  flex: 1;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  color: var(--color-text-primary);
+  cursor: text;
+}
+
+.mini-name:hover {
+  text-decoration: underline;
+}
+
+.mini-name-input {
+  flex: 1;
+  padding: var(--space-base) var(--space-lg);
+  font-size: var(--font-size-md);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+}
+
+.mini-reorder-controls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.btn-up,
+.btn-down {
+  padding: var(--space-base) var(--space-lg);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-edit-mini,
+.btn-create-mini,
+.btn-delete-mini {
+  padding: var(--space-base) var(--space-xl);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+@media print {
+  .mini-assessment-manager,
+  .mini-assessment-row,
+  .mini-name,
+  .btn-edit-mini,
+  .btn-create-mini,
+  .btn-delete-mini,
+  .btn-up,
+  .btn-down {
+    display: none;
+  }
+}

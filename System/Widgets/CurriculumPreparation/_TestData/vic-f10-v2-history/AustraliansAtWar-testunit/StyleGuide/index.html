@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CurriculumPreparation Style Guide</title>
+  <link rel="stylesheet" href="../app/css/variables.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--color-bg-white);
+      color: var(--color-text-primary);
+      font-family: var(--font-system);
+      font-size: var(--font-size-base);
+      line-height: 1.6;
+      padding: var(--space-11xl);
+    }
+    h1 {
+      font-size: var(--font-size-6xl);
+      margin-bottom: var(--space-8xl);
+      font-weight: bold;
+    }
+    h2 {
+      font-size: var(--font-size-3xl);
+      margin-top: var(--space-11xl);
+      margin-bottom: var(--space-6xl);
+      border-bottom: 1px solid var(--color-border-light);
+      padding-bottom: var(--space-5xl);
+    }
+    h3 {
+      font-size: var(--font-size-lg-alt);
+      margin-top: var(--space-8xl);
+      margin-bottom: var(--space-4xl);
+      color: var(--color-text-secondary);
+    }
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6xl); margin-bottom: var(--space-8xl); }
+    .swatch { border: 1px solid var(--color-border-light); border-radius: var(--radius-md); overflow: hidden; }
+    .swatch-color { height: 80px; width: 100%; }
+    .swatch-label { padding: var(--space-4xl); background: var(--color-bg-light); font-size: var(--font-size-sm); }
+    .swatch-label code { font-family: var(--font-monospace); font-size: var(--font-size-xs); color: var(--color-text-secondary); display: block; margin-top: var(--space-2xl); }
+    .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5xl); margin-bottom: var(--space-8xl); }
+    .tier-value { text-align: center; }
+    .tier-value-color { height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-light); margin-bottom: var(--space-3xl); }
+    .tier-value-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+    .coverage-samples { display: flex; gap: var(--space-6xl); margin-bottom: var(--space-8xl); flex-wrap: wrap; }
+    .coverage-cell { width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-border-light); }
+    .coverage-full { background: var(--color-coverage-full-bg); border-color: var(--color-coverage-full-border); }
+    .coverage-partial { background: var(--color-coverage-partial-bg); border-color: var(--color-coverage-partial-border); }
+    .coverage-none { background: var(--color-coverage-none-bg); border-color: var(--color-coverage-none-border); }
+    .chip-sample { display: inline-block; padding: var(--space-2xl) var(--space-3xl); border-radius: var(--radius-sm); font-size: var(--font-size-xs); font-weight: bold; margin: var(--space-2xl); border: 1px solid; }
+    .space-sample { display: flex; gap: var(--space-lg); align-items: center; margin-bottom: var(--space-3xl); }
+    .space-visual { background: var(--color-border-medium); border-radius: var(--radius-sm); min-width: 80px; height: 4px; }
+    .space-label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-family: var(--font-monospace); min-width: 100px; }
+    .font-sample { padding: var(--space-4xl); border: 1px solid var(--color-border-light); border-radius: var(--radius-md); margin-bottom: var(--space-4xl); }
+    .border-sample { width: 120px; height: 60px; border-radius: var(--radius-md); display: inline-block; margin: var(--space-3xl); background: var(--color-bg-light); }
+    .radius-sample { width: 80px; height: 80px; background: var(--color-border-medium); margin: var(--space-4xl) var(--space-3xl); display: inline-block; }
+  </style>
+</head>
+<body>
+  <h1>CurriculumPreparation Style Guide</h1>
+  <p>Complete reference of design tokens from AD-13c. Rendered tokens are read from <code>variables.css</code> at load time.</p>
+
+  <h2>Neutral Palette</h2>
+  <div class="swatch-grid" id="neutral-swatches"></div>
+
+  <h2>Tier Colours</h2>
+  <h3>Pass (Green)</h3>
+  <div class="tier-grid" id="pass-tier"></div>
+  <h3>Intermediate (Blue)</h3>
+  <div class="tier-grid" id="intermediate-tier"></div>
+  <h3>Advanced (Orange)</h3>
+  <div class="tier-grid" id="advanced-tier"></div>
+
+  <h2>Domain Glyphs</h2>
+  <div class="swatch-grid" id="glyphs"></div>
+
+  <h2>Coverage Cell States</h2>
+  <div class="coverage-samples">
+    <div>
+      <label style="display: block; margin-bottom: var(--space-3xl); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Full</label>
+      <div class="coverage-cell coverage-full"></div>
+    </div>
+    <div>
+      <label style="display: block; margin-bottom: var(--space-3xl); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Partial</label>
+      <div class="coverage-cell coverage-partial"></div>
+    </div>
+    <div>
+      <label style="display: block; margin-bottom: var(--space-3xl); font-size: var(--font-size-sm); color: var(--color-text-secondary);">None</label>
+      <div class="coverage-cell coverage-none"></div>
+    </div>
+  </div>
+
+  <h2>Completion States</h2>
+  <div id="completion-states" style="margin-bottom: var(--space-8xl);"></div>
+
+  <h2>Coverage Gap Chips</h2>
+  <div id="gap-chips" style="margin-bottom: var(--space-8xl);"></div>
+
+  <h2>Spacing Scale</h2>
+  <div id="spacing-samples"></div>
+
+  <h2>Typography</h2>
+  <h3>Font Stacks</h3>
+  <div id="font-stacks"></div>
+  <h3>Font Sizes</h3>
+  <div id="font-sizes"></div>
+
+  <h2>Borders &amp; Radius</h2>
+  <h3>Borders</h3>
+  <div id="borders" style="margin-bottom: var(--space-8xl);"></div>
+  <h3>Radius</h3>
+  <div id="radius" style="display: flex; gap: var(--space-6xl); flex-wrap: wrap; margin-bottom: var(--space-8xl);"></div>
+
+  <script>
+  (() => {
+    const css = getComputedStyle(document.documentElement);
+    const val = (t) => css.getPropertyValue(t).trim();
+    const add = (id, html) => { const w = document.createElement('div'); w.innerHTML = html; document.getElementById(id).appendChild(w.firstElementChild); };
+
+    const swatch = (t, id) => add(id, `<div class="swatch"><div class="swatch-color" style="background:${val(t)}"></div><div class="swatch-label">${t.replace('--', '')}<code>${val(t)}</code></div></div>`);
+    const tierValue = (t, id) => add(id, `<div class="tier-value"><div class="tier-value-color" style="background:${val(t)}"></div><div class="tier-value-label">${t.replace('--color-', '')}</div></div>`);
+    const gapChip = (key, label, id) => add(id, `<div class="chip-sample" style="background:${val(`--color-gap-${key}-bg`)};border-color:${val(`--color-gap-${key}-border`)};color:${val(`--color-gap-${key}-ink`)}">${label}</div>`);
+    const spaceRow = (t, id) => add(id, `<div class="space-sample"><span class="space-label">--space-${t}</span><span style="color:var(--color-text-secondary);font-size:var(--font-size-xs)">${val(`--space-${t}`)}</span><div class="space-visual" style="width:${val(`--space-${t}`)}"></div></div>`);
+    const fontStack = (t, id) => add(id, `<div class="font-sample" style="font-family:${val(t)}"><strong>${t.replace('--', '')}</strong><br><span style="font-size:var(--font-size-sm);color:var(--color-text-secondary)">${val(t)}</span><p style="margin-top:var(--space-3xl)">The quick brown fox jumps over the lazy dog.</p></div>`);
+    const fontSize = (t, id) => add(id, `<div class="font-sample" style="font-size:${val(`--font-size-${t}`)}"><strong>${t}</strong> (${val(`--font-size-${t}`)})<p style="margin-top:var(--space-2xl)">Sample text at this size</p></div>`);
+    const borderSample = (t, label, id) => add(id, `<div><label style="font-size:var(--font-size-sm);color:var(--color-text-secondary);display:block;margin-bottom:var(--space-3xl)">${label}</label><div class="border-sample" style="border:${val(t)} var(--color-border-medium)"></div></div>`);
+    const radiusSample = (t, id) => add(id, `<div style="text-align:center"><label style="font-size:var(--font-size-xs);color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2xl)">${t} (${val(`--radius-${t}`)})</label><div class="radius-sample" style="border-radius:${val(`--radius-${t}`)}"></div></div>`);
+
+    ['--color-text-primary', '--color-text-secondary', '--color-text-tertiary', '--color-bg-white', '--color-bg-light', '--color-bg-very-light', '--color-border-strong', '--color-border-medium', '--color-border-light', '--color-border-dashed'].forEach((t) => swatch(t, 'neutral-swatches'));
+    [['pass', 'pass-tier'], ['intermediate', 'intermediate-tier'], ['advanced', 'advanced-tier']].forEach(([name, id]) => ['line', 'tint', 'ink'].forEach((part) => tierValue(`--color-${name}-${part}`, id)));
+    ['--color-skill-glyph', '--color-knowledge-glyph'].forEach((t) => swatch(t, 'glyphs'));
+    add('completion-states', `<div class="swatch"><div class="swatch-color" style="background:${val('--color-row-tint-completion')}"></div><div class="swatch-label">row-tint-completion<code>${val('--color-row-tint-completion')}</code></div></div>`);
+    [['taught', 'Taught'], ['assessed', 'Assessed'], ['neither', 'Neither']].forEach(([key, label]) => gapChip(key, label, 'gap-chips'));
+    ['xs', '2xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl', '10xl', '11xl', '12xl', '13xl'].forEach((t) => spaceRow(t, 'spacing-samples'));
+    ['--font-system', '--font-monospace', '--font-serif'].forEach((t) => fontStack(t, 'font-stacks'));
+    ['xs', 'sm', 'sm-alt', 'base', 'base-alt', 'md', 'md-alt', 'lg', 'lg-alt', 'xl', 'xl-alt', '2xl', '3xl', '4xl', '5xl', '6xl'].forEach((t) => fontSize(t, 'font-sizes'));
+    [['--border-solid', 'Solid'], ['--border-solid-thick', 'Solid Thick'], ['--border-dashed', 'Dashed']].forEach(([t, l]) => borderSample(t, l, 'borders'));
+    ['sm', 'md', 'lg', 'xl', '2xl', 'round'].forEach((t) => radiusSample(t, 'radius'));
+  })();
+  </script>
+</body>
+</html>

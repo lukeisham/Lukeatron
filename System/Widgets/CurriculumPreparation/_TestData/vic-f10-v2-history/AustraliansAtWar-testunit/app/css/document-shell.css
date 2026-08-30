@@ -1,0 +1,124 @@
+/**
+ * document-shell.css — A4 page geometry and print rules
+ *
+ * Defines @page rules for portrait and landscape A4,
+ * enforces colour-adjust: exact for tier colours (FR-DS-11),
+ * and base SVG/typography styling. All tokens from variables.css.
+ */
+
+/* ===== @page Rules for Both Orientations ===== */
+/* Portrait: 210mm × 297mm (default) */
+@page {
+  size: A4 portrait;
+  margin: 15mm;
+}
+
+@page :first {
+  margin-top: 15mm;
+}
+
+/* Landscape: 297mm × 210mm */
+@page landscape {
+  size: A4 landscape;
+  margin: 15mm;
+}
+
+/* ===== SVG Page Break Rules ===== */
+/* Each <svg> element with class "document-page" is a structural page boundary.
+   Print engine respects this as a hard page break. */
+svg.document-page {
+  page-break-after: always;
+  break-after: page;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Print Styling ===== */
+@media print {
+  /* Force exact colour printing on tier backgrounds and accents.
+     Tier colours are semantic, not decoration (FR-DS-11, OQ-DS-2). */
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  svg.document-page {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  /* Hide screen-only controls during print */
+  button,
+  [role="button"],
+  .screen-only {
+    display: none;
+  }
+
+  /* Avoid breaking content arbitrarily */
+  .card,
+  section {
+    break-inside: avoid;
+  }
+
+  /* Orphan/widow control */
+  body {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+/* ===== Base SVG Styling ===== */
+/* All SVG pages use system font stack and base colour tokens. */
+svg {
+  font-family: var(--font-system);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+svg text {
+  font-family: var(--font-system);
+  fill: var(--color-text-primary);
+}
+
+svg .text-secondary {
+  fill: var(--color-text-secondary);
+}
+
+svg .text-tertiary {
+  fill: var(--color-text-tertiary);
+}
+
+/* ===== Image Placeholder Styling ===== */
+/* Used by renderImage() when blob is null (FR-DS-9, FR-IMG-6). */
+.image-placeholder {
+  fill: var(--color-bg-light);
+  stroke: var(--color-border-dashed);
+  stroke-dasharray: 5, 5;
+  stroke-width: 1;
+}
+
+.image-container text {
+  font-size: 9;
+  font-family: var(--font-system);
+  fill: var(--color-text-secondary);
+}
+
+/* ===== Tier Colour Classes (for SVG elements) ===== */
+/* Allow parts to mark tier-coloured regions; print will honour exact colours. */
+.tier-pass {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.tier-intermediate {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.tier-advanced {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}

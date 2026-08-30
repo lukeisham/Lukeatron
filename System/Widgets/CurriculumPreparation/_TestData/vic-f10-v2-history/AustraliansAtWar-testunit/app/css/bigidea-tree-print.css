@@ -1,0 +1,148 @@
+/* bigidea-tree-print.css — A4 portrait ASCII tree print stylesheet
+ * Print mode only (outline editor in bigidea-list.css)
+ * Under 150 lines (CSS-1), style-guide tokens only (CSS-2)
+ */
+
+.bigidea-tree-print-page {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-11xl);
+  background: var(--color-bg-white);
+  font-family: var(--font-system);
+  page-break-after: always;
+  break-after: page;
+}
+
+.tree-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-5xl);
+  border-bottom: var(--border-solid) var(--color-border-light);
+  padding-bottom: var(--space-3xl);
+}
+
+.tree-title {
+  font-size: var(--font-size-6xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.tree-subject,
+.tree-page-number {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.tree-page-number {
+  align-self: flex-end;
+}
+
+.tree-summary {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3xl);
+  font-style: italic;
+}
+
+.ascii-tree {
+  font-family: var(--font-monospace);
+  font-size: var(--font-size-lg-alt);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  flex-grow: 1;
+}
+
+.tree-level-0 {
+  font-weight: 600;
+  margin-bottom: var(--space-2xl);
+}
+
+.tree-level-1 {
+  font-weight: 400;
+  margin-left: 1em;
+}
+
+.tree-connector {
+  color: var(--color-text-secondary);
+}
+
+.tree-legend {
+  display: flex;
+  gap: var(--space-3xl);
+  margin-top: var(--space-4xl);
+  padding-top: var(--space-3xl);
+  border-top: var(--border-solid) var(--color-border-light);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.legend-glyph {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-sm);
+}
+
+.legend-glyph.skill {
+  background: var(--color-skill-glyph);
+}
+
+.legend-glyph.knowledge {
+  background: var(--color-knowledge-glyph);
+}
+
+.tree-footer {
+  margin-top: auto;
+  padding-top: var(--space-3xl);
+  border-top: var(--border-solid) var(--color-border-light);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.tree-copy-button {
+  display: none;
+}
+
+@media screen {
+  .tree-copy-button {
+    display: inline-block;
+    padding: var(--space-2xl) var(--space-3xl);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    background: var(--color-bg-light);
+    color: var(--color-text-primary);
+    border: var(--border-solid) var(--color-border-medium);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-bottom: var(--space-3xl);
+    transition: background 0.2s;
+  }
+
+  .tree-copy-button:hover {
+    background: var(--color-border-medium);
+  }
+}
+
+@media print {
+  .tree-copy-button {
+    display: none;
+  }
+
+  .tree-header,
+  .tree-legend,
+  .tree-footer {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

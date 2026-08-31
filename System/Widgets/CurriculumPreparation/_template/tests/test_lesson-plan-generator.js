@@ -60,7 +60,7 @@ function createFixtureLesson(id, number = 1) {
     provenance: 'manual',
     tiers: {},
     sidebar: null,
-    assessmentLink: { miniAssessmentIds: [], finalAssessment: false, note: null },
+    assessmentLink: { miniAssessmentIds: [], majorAssessment: false, note: null },
     imageRefs: []
   };
 }
@@ -281,7 +281,7 @@ test('TEST-6a: Regenerate "generated" lesson updates specified fields only', asy
     practiceQuestion: 'Old question?',
     provenance: 'generated',
     sidebar: 'Keep this',
-    assessmentLink: { miniAssessmentIds: ['mini-001'], finalAssessment: true },
+    assessmentLink: { miniAssessmentIds: ['mini-001'], majorAssessment: true },
     imageRefs: ['img-001'],
     tiers: { pass: { material: 'Keep' } }
   };

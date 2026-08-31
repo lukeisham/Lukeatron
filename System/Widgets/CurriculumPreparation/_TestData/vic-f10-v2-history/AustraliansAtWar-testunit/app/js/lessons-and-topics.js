@@ -18,17 +18,17 @@ const PAGE_VIEWBOX = '0 0 210 297'; // A4 portrait, mm
  * Constructor accepts:
  * - allLessons: unit.lessons[]
  * - allMiniAssessments: unit.miniAssessments[]
- * - finalAssessment: unit.unitAssessment
+ * - majorAssessment: unit.unitAssessment
  * - allBigIdeas: unit.bigIdeas[]
  * - allTopics: unit.topics[]
  * - allNodes: unit.nodes[]
  * - initGroupingMode: "topic" (default) or "date"
  */
 export class LessonsAndTopicsView {
-  constructor(allLessons, allMiniAssessments, finalAssessment, allBigIdeas, allTopics, allNodes, initGroupingMode = 'topic', localStore = null) {
+  constructor(allLessons, allMiniAssessments, majorAssessment, allBigIdeas, allTopics, allNodes, initGroupingMode = 'topic', localStore = null) {
     this.lessons = allLessons || [];
     this.miniAssessments = allMiniAssessments || [];
-    this.unitAssessment = finalAssessment || {};
+    this.unitAssessment = majorAssessment || {};
     this.bigIdeas = allBigIdeas || [];
     this.topics = allTopics || [];
     this.nodes = allNodes || [];
@@ -144,7 +144,7 @@ export class LessonsAndTopicsView {
     }
 
     if (!found && this.unitAssessment && this.unitAssessment.id === id) {
-      this.unitAssessment.finalAssessmentCompleted = completed;
+      this.unitAssessment.majorAssessmentCompleted = completed;
       found = true;
     }
 
@@ -186,7 +186,7 @@ export class LessonsAndTopicsView {
     }
 
     if (!found && this.unitAssessment && this.unitAssessment.id === id) {
-      this.unitAssessment.finalAssessmentDate = date;
+      this.unitAssessment.majorAssessmentDate = date;
       found = true;
     }
 
@@ -228,7 +228,7 @@ export class LessonsAndTopicsView {
     }
 
     if (!found && this.unitAssessment && this.unitAssessment.id === id) {
-      this.unitAssessment.finalAssessmentPeriod = period;
+      this.unitAssessment.majorAssessmentPeriod = period;
       found = true;
     }
 
@@ -418,10 +418,10 @@ export class LessonsAndTopicsView {
       const topic = this.topics.find(t => t.id === topicId);
       allItems.push({
         ...this.unitAssessment,
-        type: 'final',
+        type: 'major',
         topicId,
         topicTitle: topic?.title || 'Unassigned',
-        date: this.unitAssessment.finalAssessmentDate || null,
+        date: this.unitAssessment.majorAssessmentDate || null,
       });
     }
 
@@ -436,7 +436,7 @@ export class LessonsAndTopicsView {
    * @returns {number} next y position (mm)
    */
   _renderExportItemRow(svg, y, item, withTopicLabel) {
-    const completed = item.type === 'final' ? !!item.finalAssessmentCompleted : !!item.completed;
+    const completed = item.type === 'major' ? !!item.majorAssessmentCompleted : !!item.completed;
 
     if (completed) {
       const rect = document.createElementNS(SVG_NS, 'rect');
@@ -452,7 +452,7 @@ export class LessonsAndTopicsView {
     let tag;
     if (item.type === 'lesson') tag = `L${item.number || '?'}`;
     else if (item.type === 'mini') tag = 'MINI';
-    else tag = 'FINAL';
+    else tag = 'MAJOR';
     this._svgText(svg, 12, y, tag, 'item-tag');
 
     const bigIdea = item.bigIdeaId ? this.bigIdeas.find(bi => bi.id === item.bigIdeaId) : null;
@@ -465,8 +465,8 @@ export class LessonsAndTopicsView {
       x += 40;
     }
 
-    const period = item.type === 'final' ? item.finalAssessmentPeriod : item.lessonPeriod;
-    const date = item.type === 'final' ? item.finalAssessmentDate : item.date;
+    const period = item.type === 'major' ? item.majorAssessmentPeriod : item.lessonPeriod;
+    const date = item.type === 'major' ? item.majorAssessmentDate : item.date;
     if (!withTopicLabel && date) {
       this._svgText(svg, x, y, date, 'date-pill');
       x += 20;

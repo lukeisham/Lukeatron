@@ -124,8 +124,8 @@ export class LessonPlanDocument {
           }
         }
       }
-      if (this.lesson.assessmentLink.finalAssessment && this.unitAssessment?.title) {
-        this._text(g, 12, y, `• ${this.unitAssessment.title}`, 'final-assessment text-sm');
+      if (this.lesson.assessmentLink.majorAssessment && this.unitAssessment?.title) {
+        this._text(g, 12, y, `• ${this.unitAssessment.title}`, 'major-assessment text-sm');
       }
     }
 

@@ -36,7 +36,7 @@
 }
 
 .front-page .mini-assessment,
-.front-page .final-assessment,
+.front-page .major-assessment,
 .front-page .tier-label {
   font-size: var(--font-size-xs-mm); fill: var(--color-text-secondary);
 }

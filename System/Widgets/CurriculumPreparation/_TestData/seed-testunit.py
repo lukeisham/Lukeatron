@@ -266,7 +266,7 @@ LESSONS = [
         "id": "les--339571e3", "number": 1, "nodeIds": ["VC2HH10K13"], "bigIdeaId": BI_WAR_CAUSES,
         "keyExample": "The alliance system, imperial rivalry and the July Crisis of 1914 (VC2HH10K13)",
         "practiceQuestion": "Which single alliance obligation, if removed, would most likely have prevented a continent-wide war in 1914?",
-        "assessmentLink": {"miniAssessmentIds": [], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": [], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Map of the alliance blocs in 1914; short timeline of the July Crisis.",
                       "studentTask": "Label the alliance blocs and circle the trigger event.", "workspaceLines": 8, "imageRefs": []},
@@ -282,7 +282,7 @@ LESSONS = [
         "id": "les--enlist01", "number": 2, "nodeIds": ["VC2HH10K14"], "bigIdeaId": BI_HOMEFRONT,
         "keyExample": "Why Australians, including Aboriginal and Torres Strait Islander men, volunteered in 1914-15 (VC2HH10K14)",
         "practiceQuestion": "List three different motives that led Australians to enlist, and rank them by how well-evidenced they are.",
-        "assessmentLink": {"miniAssessmentIds": ["mini-70a5c085"], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": ["mini-70a5c085"], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Recruitment poster gallery (three posters).",
                       "studentTask": "Identify the appeal each poster makes (duty, adventure, mateship).", "workspaceLines": 8, "imageRefs": []},
@@ -298,7 +298,7 @@ LESSONS = [
         "id": "les--gallipoli", "number": 3, "nodeIds": ["VC2HH10K15", "VC2HH10K17"], "bigIdeaId": BI_METHOD,
         "keyExample": "Gallipoli: competing accounts of the 25 April 1915 landing (VC2HH10K15, VC2HH10K17)",
         "practiceQuestion": "Two soldiers' letters describe the same landing differently. What in each source explains the difference?",
-        "assessmentLink": {"miniAssessmentIds": ["mini-70a5c085"], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": ["mini-70a5c085"], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Two short soldier letters describing the landing.",
                       "studentTask": "Underline one factual claim and one opinion in each letter.", "workspaceLines": 8, "imageRefs": []},
@@ -314,7 +314,7 @@ LESSONS = [
         "id": "les--westfront", "number": 4, "nodeIds": ["VC2HH10K16", "VC2HH10K18"], "bigIdeaId": BI_WAR_CAUSES,
         "keyExample": "Trench conditions on the Western Front and continuity/change in warfare (VC2HH10K16, VC2HH10K18)",
         "practiceQuestion": "What changed about warfare on the Western Front between 1914 and 1918, and what stayed the same?",
-        "assessmentLink": {"miniAssessmentIds": [], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": [], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Diagram of a WWI trench system.",
                       "studentTask": "Label the trench diagram (fire trench, support, reserve, no man's land).", "workspaceLines": 8, "imageRefs": []},
@@ -330,7 +330,7 @@ LESSONS = [
         "id": "les--conscript", "number": 5, "nodeIds": ["VC2HH10K14", "VC2HH10S08"], "bigIdeaId": BI_HOMEFRONT,
         "keyExample": "The 1916 and 1917 conscription referenda and why they split the nation (VC2HH10K14, VC2HH10S08)",
         "practiceQuestion": "Identify one short-term and one long-term cause of the conscription referenda being called.",
-        "assessmentLink": {"miniAssessmentIds": ["mini-conscript"], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": ["mini-conscript"], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Yes/No campaign postcards from 1916.",
                       "studentTask": "Sort the postcards into Yes and No and note one argument each makes.", "workspaceLines": 8, "imageRefs": []},
@@ -346,7 +346,7 @@ LESSONS = [
         "id": "les--homefront", "number": 6, "nodeIds": ["VC2HH10K16", "VC2HH10S05"], "bigIdeaId": BI_HOMEFRONT,
         "keyExample": "Women, war work and propaganda on the Australian home front (VC2HH10K16, VC2HH10S05)",
         "practiceQuestion": "How did propaganda posters try to shape what women should feel about the war effort?",
-        "assessmentLink": {"miniAssessmentIds": ["mini-propaganda"], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": ["mini-propaganda"], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Three home-front propaganda posters aimed at women.",
                       "studentTask": "Describe what each poster is asking women to do.", "workspaceLines": 8, "imageRefs": []},
@@ -363,7 +363,7 @@ LESSONS = [
         "id": "les--interwar", "number": 7, "nodeIds": ["VC2HH10K13", "VC2HH10S02"], "bigIdeaId": BI_IDENTITY,
         "keyExample": "Interwar Australia and rising international tensions through the 1920s-30s",
         "practiceQuestion": "Sequence three events between 1919 and 1939 that made a second world war more likely.",
-        "assessmentLink": {"miniAssessmentIds": [], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": [], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "Interwar timeline strip (blank).",
                       "studentTask": "Place five given events on the timeline.", "workspaceLines": 8, "imageRefs": []},
@@ -383,7 +383,7 @@ LESSONS = [
         "id": "les--kokoda", "number": 8, "nodeIds": [], "bigIdeaId": BI_WAR_CAUSES,
         "keyExample": "WWII: Kokoda and the fall of Singapore — not yet mapped to a curriculum outcome",
         "practiceQuestion": "",
-        "assessmentLink": {"miniAssessmentIds": [], "finalAssessment": False, "note": None},
+        "assessmentLink": {"miniAssessmentIds": [], "majorAssessment": False, "note": None},
         "tiers": {
             "pass": {"material": "", "studentTask": "", "workspaceLines": 0, "imageRefs": []},
             "intermediate": {"material": "", "studentTask": "", "workspaceLines": 0, "imageRefs": []},
@@ -403,19 +403,19 @@ LESSONS = [
 
 MATRIX_CRITERIA = [
     {"id": "crit-p1", "tier": "pass", "criterion": "Identifies relevant sources", "maxScore": 5,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
     {"id": "crit-p2", "tier": "pass", "criterion": "States the main argument", "maxScore": 5,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
     {"id": "crit-i1", "tier": "intermediate", "criterion": "Explains cause and consequence", "maxScore": 8,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
     {"id": "crit-i2", "tier": "intermediate", "criterion": "Corroborates across two sources", "maxScore": 6,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": True},  # deliberately overridden
+     "assessmentIds": ["major-assessment"], "allocationOverridden": True},  # deliberately overridden
     {"id": "crit-a1", "tier": "advanced", "criterion": "Evaluates competing interpretations", "maxScore": 10,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
     {"id": "crit-a2", "tier": "advanced", "criterion": "Constructs a sustained, evidenced argument", "maxScore": 10,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
     {"id": "crit-a3", "tier": "advanced", "criterion": "Uses historical terminology accurately", "maxScore": 6,
-     "assessmentIds": ["final-assessment"], "allocationOverridden": False},
+     "assessmentIds": ["major-assessment"], "allocationOverridden": False},
 ]
 
 # name kept fictional and deliberately diverse
@@ -491,20 +491,20 @@ def build_resources_page(image_id: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# 7. Unit assessment — final assessment (all three tiers, completed) plus
+# 7. Unit assessment — major assessment (all three tiers, completed) plus
 #    4 mini-assessments tied to different big ideas.
 # ---------------------------------------------------------------------------
 
 def build_unit_assessment() -> dict:
     return {
-        "id": "final-assessment",
+        "id": "major-assessment",
         "title": "Investigation essay — Was the Anzac legend earned?",
         "bigIdeaId": BI_IDENTITY,
         "coverage": [
             {"nodeId": "VC2HH10K23", "coverage": "full", "note": "Direct assessment of the debate over significance."},
             {"nodeId": "VC2HH10S06", "coverage": "full", "note": "Evaluating historical interpretations is the essay's core skill."},
         ],
-        "finalAssessment": {
+        "majorAssessment": {
             "pass": {"tier": "pass",
                      "material": "Three short extracts: a 1915 newspaper report, a 2010 textbook summary, and the Anzac Day dawn service order of service.",
                      "studentTask": "State what the Anzac legend claims about Australian character, using one quote from each extract.",
@@ -518,9 +518,9 @@ def build_unit_assessment() -> dict:
                          "studentTask": "Argue, with evidence from at least four sources, whether the Anzac legend is historically earned or a national myth.",
                          "workspaceLines": 28, "imageRefs": []},
         },
-        "finalAssessmentCompleted": True,
-        "finalAssessmentDate": "2026-08-12",
-        "finalAssessmentPeriod": "P3-P4 (double)",
+        "majorAssessmentCompleted": True,
+        "majorAssessmentDate": "2026-08-12",
+        "majorAssessmentPeriod": "P3-P4 (double)",
         "miniAssessments": [
             {"id": "mini-70a5c085", "name": "Source analysis check-in", "bigIdeaId": BI_METHOD,
              "coverage": [{"nodeId": "VC2HH10S03", "coverage": "full", "note": "Direct check of source-analysis skill."}],

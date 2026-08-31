@@ -53,15 +53,15 @@ test('coverage-derivers: deriveLessonCoverage handles no lessons', (t) => {
   assert.strictEqual(coverage.get('node1'), false);
 });
 
-test('coverage-derivers: deriveAssessmentCoverage includes final + mini assessments', (t) => {
+test('coverage-derivers: deriveAssessmentCoverage includes major + mini assessments', (t) => {
   const nodes = [
     { id: 'node1' },
     { id: 'node2' }
   ];
   const unitAssessment = {
-    finalAssessment: {
-      id: 'final1',
-      title: 'Final Test',
+    majorAssessment: {
+      id: 'major1',
+      title: 'Major Test',
       coverage: [
         { nodeId: 'node1', coverage: 'full' }
       ]
@@ -222,8 +222,8 @@ test('coverage-derivers: three independent chip types on one node', (t) => {
 
   // Node2: assessed but not taught
   const assessCov = deriveAssessmentCoverage(nodes, {
-    finalAssessment: {
-      id: 'final1',
+    majorAssessment: {
+      id: 'major1',
       coverage: [
         { nodeId: 'node2', coverage: 'full' }
       ]
@@ -235,8 +235,8 @@ test('coverage-derivers: three independent chip types on one node', (t) => {
     { id: 'lesson1', nodeIds: ['node3'] }
   ]);
   const node3Assess = deriveAssessmentCoverage(nodes, {
-    finalAssessment: {
-      id: 'final1',
+    majorAssessment: {
+      id: 'major1',
       coverage: [
         { nodeId: 'node3', coverage: 'full' }
       ]

@@ -56,14 +56,14 @@ function createTestFixture() {
     { id: 'mini-003', name: 'Quiz 3', bigIdeaId: 'bi-003', completed: false, date: null, lessonPeriod: null, order: 0 },
   ];
 
-  // 1 final assessment
+  // 1 major assessment
   const unitAssessment = {
     id: 'ua-001',
-    name: 'Final',
+    name: 'Major',
     bigIdeaId: 'bi-001',
-    finalAssessmentCompleted: false,
-    finalAssessmentDate: null,
-    finalAssessmentPeriod: null,
+    majorAssessmentCompleted: false,
+    majorAssessmentDate: null,
+    majorAssessmentPeriod: null,
   };
 
   // Minimal nodes for domain resolution
@@ -151,7 +151,7 @@ test('computes topic status correctly', () => {
     fixture.unitAssessment,
     fixture.bigIdeas
   );
-  // Lesson 2 complete, mini 1 incomplete, final incomplete
+  // Lesson 2 complete, mini 1 incomplete, major incomplete
   // Actually: les-002 complete, les-001 not, les-003 not, mini-001 not, ua-001 not
   // Mixed, so "in progress"
   assert.ok(['in progress', 'not started'].includes(topic1Status), `topic1Status is a valid state: ${topic1Status}`);
@@ -224,7 +224,7 @@ test('groups assessments independently by their bigIdeaId', () => {
     fixture.bigIdeas
   );
 
-  // Topic 1 should have 3 lessons + 1 mini + 1 final
+  // Topic 1 should have 3 lessons + 1 mini + 1 major
   const topic1Items = groups['topic-001'] || [];
   assert.ok(topic1Items.length > 0, 'topic-001 has items');
 

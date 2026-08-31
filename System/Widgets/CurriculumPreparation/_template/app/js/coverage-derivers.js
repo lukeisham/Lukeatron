@@ -42,7 +42,7 @@ export function deriveLessonCoverage(nodes, lessons) {
  *
  * Implements: FR-ATB-8 (assessment coverage chips).
  * @param {Array} nodes - Unit.nodes[] array
- * @param {Object} unitAssessment - unit.unitAssessment { finalAssessment?: { coverage: [] }, miniAssessments: [] }
+ * @param {Object} unitAssessment - unit.unitAssessment { majorAssessment?: { coverage: [] }, miniAssessments: [] }
  * @returns {Map<string, Array>} nodeId → coverage[] (each entry: { full|partial, assessmentId?, name? })
  */
 export function deriveAssessmentCoverage(nodes, unitAssessment = {}) {
@@ -57,15 +57,15 @@ export function deriveAssessmentCoverage(nodes, unitAssessment = {}) {
     return coverage;
   }
 
-  // Process final assessment
-  if (unitAssessment.finalAssessment && Array.isArray(unitAssessment.finalAssessment.coverage)) {
-    for (const entry of unitAssessment.finalAssessment.coverage) {
+  // Process major assessment
+  if (unitAssessment.majorAssessment && Array.isArray(unitAssessment.majorAssessment.coverage)) {
+    for (const entry of unitAssessment.majorAssessment.coverage) {
       if (entry.nodeId && coverage.has(entry.nodeId)) {
         const arr = coverage.get(entry.nodeId);
         arr.push({
           coverage: entry.coverage || 'full',
-          assessmentId: unitAssessment.finalAssessment.id,
-          name: unitAssessment.finalAssessment.title || 'Final Assessment'
+          assessmentId: unitAssessment.majorAssessment.id,
+          name: unitAssessment.majorAssessment.title || 'Major Assessment'
         });
       }
     }

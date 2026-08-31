@@ -21,7 +21,7 @@ function createFixtureLesson(id = 'les-abc123', bigIdeaId = 'bi-xyz789') {
     practiceQuestion: 'Question goes here?',
     assessmentLink: {
       miniAssessmentIds: ['mini-001'],
-      finalAssessment: true
+      majorAssessment: true
     },
     sidebar: 'Optional sidebar notes',
     tiers: {

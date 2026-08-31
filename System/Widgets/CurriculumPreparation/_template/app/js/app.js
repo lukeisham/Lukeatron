@@ -369,7 +369,7 @@ function mountLessonPlans(main, unit) {
 function mountUnitAssessment(main, unit) {
   ensureSingleH1(main, 'Unit Assessment');
 
-  const unitAssessment = unit.unitAssessment || { finalAssessment: null, miniAssessments: [] };
+  const unitAssessment = unit.unitAssessment || { majorAssessment: null, miniAssessments: [] };
   const lessons = unit.lessons || [];
   const bigIdeas = unit.bigIdeas || [];
   const nodes = unit.nodes || [];
@@ -399,13 +399,13 @@ function mountUnitAssessment(main, unit) {
     pagesHost.appendChild(svg);
   }
 
-  if (unitAssessment.finalAssessment) {
-    renderOnePage('final', 0);
+  if (unitAssessment.majorAssessment) {
+    renderOnePage('major', 0);
   }
   const minis = unitAssessment.miniAssessments || [];
   minis.forEach((_, i) => renderOnePage('mini', i));
 
-  if (!unitAssessment.finalAssessment && minis.length === 0) {
+  if (!unitAssessment.majorAssessment && minis.length === 0) {
     const p = document.createElement('p');
     p.className = 'app-status';
     p.textContent = 'No assessments exist in this unit yet.';

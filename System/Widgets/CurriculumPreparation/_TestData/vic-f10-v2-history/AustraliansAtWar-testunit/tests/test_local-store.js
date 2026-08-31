@@ -108,7 +108,7 @@ function createValidUnit() {
         practiceQuestion: 'Question here',
         assessmentLink: {
           miniAssessmentIds: [],
-          finalAssessment: false,
+          majorAssessment: false,
           note: null,
         },
         tiers: {
@@ -160,14 +160,14 @@ function createValidUnit() {
       title: 'Unit Assessment',
       bigIdeaId: 'idea-1',
       coverage: [{ nodeId: 'node-root', coverage: 'full', note: null }],
-      finalAssessment: {
+      majorAssessment: {
         pass: { tier: 'pass', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
         intermediate: { tier: 'intermediate', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
         advanced: { tier: 'advanced', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
       },
-      finalAssessmentCompleted: false,
-      finalAssessmentDate: null,
-      finalAssessmentPeriod: null,
+      majorAssessmentCompleted: false,
+      majorAssessmentDate: null,
+      majorAssessmentPeriod: null,
       miniAssessments: [],
     },
     matrixTemplate: {
@@ -598,14 +598,14 @@ function createEmptySkeletonUnit() {
       title: '',
       bigIdeaId: '',
       coverage: [],
-      finalAssessment: {
+      majorAssessment: {
         pass: { tier: 'pass', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
         intermediate: { tier: 'intermediate', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
         advanced: { tier: 'advanced', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
       },
-      finalAssessmentCompleted: false,
-      finalAssessmentDate: null,
-      finalAssessmentPeriod: null,
+      majorAssessmentCompleted: false,
+      majorAssessmentDate: null,
+      majorAssessmentPeriod: null,
       miniAssessments: [],
     },
     matrixTemplate: {

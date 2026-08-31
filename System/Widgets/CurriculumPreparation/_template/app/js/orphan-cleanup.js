@@ -37,10 +37,10 @@ export function getReferencedImageIds(unit) {
     }
   }
 
-  // Walk unit assessment finalAssessment tiers and miniAssessments tiers
+  // Walk unit assessment majorAssessment tiers and miniAssessments tiers
   if (unit.unitAssessment) {
-    if (unit.unitAssessment.finalAssessment && unit.unitAssessment.finalAssessment.tiers) {
-      for (const tier of Object.values(unit.unitAssessment.finalAssessment.tiers)) {
+    if (unit.unitAssessment.majorAssessment && unit.unitAssessment.majorAssessment.tiers) {
+      for (const tier of Object.values(unit.unitAssessment.majorAssessment.tiers)) {
         if (Array.isArray(tier.imageRefs)) {
           for (const ref of tier.imageRefs) {
             if (ref.imageId) {

@@ -44,9 +44,9 @@ function createFixtureUnit() {
     schemaVersion: '1.0.0',
     meta: { subject: 'Test', unitName: 'Test Unit' },
     unitAssessment: {
-      finalAssessment: {
-        id: 'final-1',
-        name: 'Final Assessment'
+      majorAssessment: {
+        id: 'major-1',
+        name: 'Major Assessment'
       },
       miniAssessments: [
         { id: 'mini-1', name: 'Mini 1' },
@@ -68,15 +68,15 @@ test('Allocation algorithm: deterministic, 0.5-boundary, exact budget (AC-MMB-34
   // Worked example: 3 Pass, 2 Intermediate, 4 Advanced
   // Expected: Pass [17, 16.5, 16.5], Intermediate [12.5, 12.5], Advanced [6.5, 6.5, 6.0, 6.0]
   const criteria = [
-    { id: '1', tier: 'pass', criterion: 'C1', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '2', tier: 'pass', criterion: 'C2', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '3', tier: 'pass', criterion: 'C3', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '4', tier: 'intermediate', criterion: 'C4', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '5', tier: 'intermediate', criterion: 'C5', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '6', tier: 'advanced', criterion: 'C6', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '7', tier: 'advanced', criterion: 'C7', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '8', tier: 'advanced', criterion: 'C8', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false },
-    { id: '9', tier: 'advanced', criterion: 'C9', maxScore: 0, assessmentIds: ['final-1'], allocationOverridden: false }
+    { id: '1', tier: 'pass', criterion: 'C1', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '2', tier: 'pass', criterion: 'C2', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '3', tier: 'pass', criterion: 'C3', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '4', tier: 'intermediate', criterion: 'C4', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '5', tier: 'intermediate', criterion: 'C5', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '6', tier: 'advanced', criterion: 'C6', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '7', tier: 'advanced', criterion: 'C7', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '8', tier: 'advanced', criterion: 'C8', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: '9', tier: 'advanced', criterion: 'C9', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false }
   ];
 
   allocateMaxScores(criteria);
@@ -102,7 +102,7 @@ test('Allocation algorithm: deterministic, 0.5-boundary, exact budget (AC-MMB-34
 
 // ===== TEST 2: Display Modes — Worked Examples (AC-MMB-24, AC-MMB-26, AC-MMB-27) =====
 test('Display mode: Default Empty renders 0 in all cells (AC-MMB-24)', () => {
-  const criterion = { id: '1', maxScore: 5, assessmentIds: ['final-1'] };
+  const criterion = { id: '1', maxScore: 5, assessmentIds: ['major-1'] };
   const scoreMarked = { criterionId: '1', awardedScore: 4 };
   const scoreUnmarked = null;
 
@@ -111,7 +111,7 @@ test('Display mode: Default Empty renders 0 in all cells (AC-MMB-24)', () => {
 });
 
 test('Display mode: Default Full renders maxScore in all cells (AC-MMB-25)', () => {
-  const criterion = { id: '1', maxScore: 5, assessmentIds: ['final-1'] };
+  const criterion = { id: '1', maxScore: 5, assessmentIds: ['major-1'] };
   const scoreMarked = { criterionId: '1', awardedScore: 4 };
   const scoreUnmarked = null;
 
@@ -120,7 +120,7 @@ test('Display mode: Default Full renders maxScore in all cells (AC-MMB-25)', () 
 });
 
 test('Display mode: Data entry renders awarded score or 0 (AC-MMB-26)', () => {
-  const criterion = { id: '1', maxScore: 5, assessmentIds: ['final-1'] };
+  const criterion = { id: '1', maxScore: 5, assessmentIds: ['major-1'] };
   const scoreMarked = { criterionId: '1', awardedScore: 3 };
   const scoreUnmarked = null;
 
@@ -129,7 +129,7 @@ test('Display mode: Data entry renders awarded score or 0 (AC-MMB-26)', () => {
 });
 
 test('Display mode: Part of renders per-cell fraction (AC-MMB-27)', () => {
-  const criterion = { id: '1', maxScore: 5, assessmentIds: ['final-1'] };
+  const criterion = { id: '1', maxScore: 5, assessmentIds: ['major-1'] };
   const scoreMarked = { criterionId: '1', awardedScore: 3 };
   const scoreUnmarked = null;
 
@@ -198,7 +198,7 @@ test('MarkingMatrix: score entry validates range and decimals', () => {
     criterion: 'Test',
     draftScore: 0,
     maxScore: 5,
-    assessmentIds: ['final-1'],
+    assessmentIds: ['major-1'],
     allocationOverridden: false
   };
   matrix.unit.matrixTemplate.criteria.push(crit);
@@ -250,7 +250,7 @@ test('MarkingMatrix: maxScore edit in Data entry is blocked (AC-MMB-29)', () => 
     criterion: 'Test',
     draftScore: 0,
     maxScore: 5,
-    assessmentIds: ['final-1'],
+    assessmentIds: ['major-1'],
     allocationOverridden: false
   });
 
@@ -271,7 +271,7 @@ test('MarkingMatrix: scope filter reduces criteria list (AC-MMB-31)', () => {
 
   // Add criteria to different assessments
   unit.matrixTemplate.criteria = [
-    { id: '1', tier: 'pass', assessmentIds: ['final-1'] },
+    { id: '1', tier: 'pass', assessmentIds: ['major-1'] },
     { id: '2', tier: 'pass', assessmentIds: ['mini-1'] },
     { id: '3', tier: 'pass', assessmentIds: ['mini-1', 'mini-2'] }
   ];
@@ -493,8 +493,8 @@ test('F1: renderClassGrid wires a real keydown handler that moves focus between 
   withFakeMarkingDom(() => {
     const unit = createFixtureUnit();
     unit.matrixTemplate.criteria = [
-      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false },
-      { id: 'c2', tier: 'pass', criterion: 'C2', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false }
+      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false },
+      { id: 'c2', tier: 'pass', criterion: 'C2', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false }
     ];
     const store = new MockLocalStore();
     const matrix = new MarkingMatrix(unit, store);
@@ -531,8 +531,8 @@ test('F1: renderStudentPage wires Enter/Tab navigation across score and comment 
   withFakeMarkingDom(() => {
     const unit = createFixtureUnit();
     unit.matrixTemplate.criteria = [
-      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false },
-      { id: 'c2', tier: 'pass', criterion: 'C2', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false }
+      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false },
+      { id: 'c2', tier: 'pass', criterion: 'C2', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false }
     ];
     const store = new MockLocalStore();
     const matrix = new MarkingMatrix(unit, store);
@@ -576,7 +576,7 @@ test('F2/F3: renderStudentPage renders the unbalanced flag and the not-yet-set-u
     unit.matrixTemplate.criteria = [
       // Pass tier: zero criteria -> "not yet set up"
       // Intermediate tier: overridden criteria alone exceed the 25 budget -> "unbalanced"
-      { id: 'i1', tier: 'intermediate', criterion: 'I1', maxScore: 30, assessmentIds: ['final-1'], allocationOverridden: true }
+      { id: 'i1', tier: 'intermediate', criterion: 'I1', maxScore: 30, assessmentIds: ['major-1'], allocationOverridden: true }
     ];
     const store = new MockLocalStore();
     const matrix = new MarkingMatrix(unit, store);
@@ -599,7 +599,7 @@ test('F4: Default Full notice is visible only while Default Full mode is active 
   withFakeMarkingDom(() => {
     const unit = createFixtureUnit();
     unit.matrixTemplate.criteria = [
-      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false }
+      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false }
     ];
     const store = new MockLocalStore();
     const matrix = new MarkingMatrix(unit, store);
@@ -657,7 +657,7 @@ test('F5: unit-progress block is absent from the Setup blank sheet (FR-MMB-45)',
   withFakeMarkingDom(() => {
     const unit = createFixtureUnit();
     unit.matrixTemplate.criteria = [
-      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 10, assessmentIds: ['final-1'], allocationOverridden: false }
+      { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 10, assessmentIds: ['major-1'], allocationOverridden: false }
     ];
     const store = new MockLocalStore();
     const matrix = new MarkingMatrix(unit, store);
@@ -701,7 +701,7 @@ test('getOutcomeNodes returns only kind:"outcome" nodes', () => {
 test('getLinkedNodeIds reflects criteria already carrying a nodeId', () => {
   const unit = createFixtureUnitWithNodes();
   unit.matrixTemplate.criteria.push({
-    id: 'c1', tier: 'pass', criterion: 'Existing', nodeId: 'n1', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false
+    id: 'c1', tier: 'pass', criterion: 'Existing', nodeId: 'n1', maxScore: 5, assessmentIds: ['major-1'], allocationOverridden: false
   });
   const matrix = new MarkingMatrix(unit, new MockLocalStore());
   assert.deepStrictEqual([...matrix.getLinkedNodeIds()], ['n1']);
@@ -711,7 +711,7 @@ test('getDefaultCurriculumNodeIds defaults to outcomes this unit already assesse
   const unit = createFixtureUnitWithNodes();
   const matrix = new MarkingMatrix(unit, new MockLocalStore());
   const defaults = matrix.getDefaultCurriculumNodeIds().sort();
-  // n1 (final coverage) and n2 (mini-1 coverage) are assessed; n3 is not.
+  // n1 (major coverage) and n2 (mini-1 coverage) are assessed; n3 is not.
   assert.deepStrictEqual(defaults, ['n1', 'n2']);
 });
 
@@ -739,7 +739,7 @@ test('addCriteriaFromNodes: adds rows pre-filled from node title/text, binds to 
   const n1Crit = unit.matrixTemplate.criteria.find((c) => c.nodeId === 'n1');
   assert.strictEqual(n1Crit.criterion, 'VC001 description', 'falls back to node.text when title is unset');
   assert.strictEqual(n1Crit.tier, 'pass');
-  assert.deepStrictEqual(n1Crit.assessmentIds, ['final-1'], 'bound to the assessment that actually covers this node');
+  assert.deepStrictEqual(n1Crit.assessmentIds, ['major-1'], 'bound to the assessment that actually covers this node');
   assert.strictEqual(n1Crit.allocationOverridden, false);
   assert.ok(store.savedUnit, 'auto-saves like addCriterion does');
 });
@@ -747,7 +747,7 @@ test('addCriteriaFromNodes: adds rows pre-filled from node title/text, binds to 
 test('addCriteriaFromNodes: skips a node already linked to a row, reports it back, never duplicates', () => {
   const unit = createFixtureUnitWithNodes();
   unit.matrixTemplate.criteria.push({
-    id: 'existing', tier: 'pass', criterion: 'Hand-authored', nodeId: 'n1', maxScore: 10, assessmentIds: ['final-1'], allocationOverridden: false
+    id: 'existing', tier: 'pass', criterion: 'Hand-authored', nodeId: 'n1', maxScore: 10, assessmentIds: ['major-1'], allocationOverridden: false
   });
   const matrix = new MarkingMatrix(unit, new MockLocalStore());
 
@@ -786,7 +786,7 @@ test('addCriteriaFromNodes: warns when students already have scores, same wordin
 test('addCriteriaFromNodes: re-allocates only the target tier (FR-MMB-38), leaves other tiers alone', () => {
   const unit = createFixtureUnitWithNodes();
   unit.matrixTemplate.criteria.push({
-    id: 'i1', tier: 'intermediate', criterion: 'I1', maxScore: 25, assessmentIds: ['final-1'], allocationOverridden: false
+    id: 'i1', tier: 'intermediate', criterion: 'I1', maxScore: 25, assessmentIds: ['major-1'], allocationOverridden: false
   });
   const matrix = new MarkingMatrix(unit, new MockLocalStore());
 

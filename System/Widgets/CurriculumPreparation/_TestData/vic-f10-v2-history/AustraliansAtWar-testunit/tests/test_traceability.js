@@ -108,7 +108,7 @@ test('traceability: buildReverseIndex maps assessmentIds to lessons', (t) => {
         nodeIds: [],
         bigIdeaId: 'bi-1',
         assessmentLink: {
-          finalAssessment: true,
+          majorAssessment: true,
           miniAssessmentIds: ['mini-1']
         }
       },
@@ -118,7 +118,7 @@ test('traceability: buildReverseIndex maps assessmentIds to lessons', (t) => {
         nodeIds: [],
         bigIdeaId: 'bi-1',
         assessmentLink: {
-          finalAssessment: false,
+          majorAssessment: false,
           miniAssessmentIds: ['mini-1', 'mini-2']
         }
       }
@@ -131,7 +131,7 @@ test('traceability: buildReverseIndex maps assessmentIds to lessons', (t) => {
     ],
     unitAssessment: {
       id: 'ua-1',
-      finalAssessment: {},
+      majorAssessment: {},
       miniAssessments: [
         { id: 'mini-1', name: 'Mini 1', bigIdeaId: 'bi-1' },
         { id: 'mini-2', name: 'Mini 2', bigIdeaId: 'bi-1' }
@@ -141,7 +141,7 @@ test('traceability: buildReverseIndex maps assessmentIds to lessons', (t) => {
 
   const index = buildReverseIndex(unit);
 
-  // ua-1 (final) should map to lesson 1 only
+  // ua-1 (major) should map to lesson 1 only
   assert.deepStrictEqual(index.unitAssessmentToLessons.get('ua-1'), ['les-1']);
   // mini-1 should map to lessons 1 and 2
   assert.deepStrictEqual(index.unitAssessmentToLessons.get('mini-1'), ['les-1', 'les-2']);
@@ -274,7 +274,7 @@ test('traceability: canDeleteAssessment allows delete when unreferenced', (t) =>
     ],
     unitAssessment: {
       id: 'ua-1',
-      finalAssessment: {},
+      majorAssessment: {},
       miniAssessments: [
         { id: 'mini-unreferenced', name: 'Mini', bigIdeaId: 'bi-1' }
       ]
@@ -310,7 +310,7 @@ test('traceability: canDeleteAssessment refuses delete when referenced', (t) => 
     ],
     unitAssessment: {
       id: 'ua-1',
-      finalAssessment: {},
+      majorAssessment: {},
       miniAssessments: [
         { id: 'mini-1', name: 'Mini 1', bigIdeaId: 'bi-1' }
       ]
@@ -335,7 +335,7 @@ test('traceability: findUnreferencedAssessments returns empty array for fully re
         nodeIds: [],
         bigIdeaId: 'bi-1',
         assessmentLink: {
-          finalAssessment: true,
+          majorAssessment: true,
           miniAssessmentIds: ['mini-1']
         }
       }
@@ -348,7 +348,7 @@ test('traceability: findUnreferencedAssessments returns empty array for fully re
     ],
     unitAssessment: {
       id: 'ua-1',
-      finalAssessment: {},
+      majorAssessment: {},
       miniAssessments: [
         { id: 'mini-1', name: 'Mini 1', bigIdeaId: 'bi-1' }
       ]
@@ -380,7 +380,7 @@ test('traceability: findUnreferencedAssessments finds unreferenced assessments',
     ],
     unitAssessment: {
       id: 'ua-1',
-      finalAssessment: {},
+      majorAssessment: {},
       miniAssessments: [
         { id: 'mini-1', name: 'Mini 1', bigIdeaId: 'bi-1' },
         { id: 'mini-2', name: 'Mini 2', bigIdeaId: 'bi-1' }
@@ -389,7 +389,7 @@ test('traceability: findUnreferencedAssessments finds unreferenced assessments',
   };
 
   const unreferenced = findUnreferencedAssessments(unit);
-  // Final and both minis are unreferenced
+  // Major and both minis are unreferenced
   assert.strictEqual(unreferenced.includes('ua-1'), true);
   assert.strictEqual(unreferenced.includes('mini-1'), true);
   assert.strictEqual(unreferenced.includes('mini-2'), true);

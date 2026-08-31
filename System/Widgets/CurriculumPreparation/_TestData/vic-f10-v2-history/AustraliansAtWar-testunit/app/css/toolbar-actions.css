@@ -1,0 +1,38 @@
+/* toolbar-actions.css — Print / Copy / Export CSV toolbar (toolbar-actions.js)
+   Screen-only chrome: hidden on print via the .screen-only rule already
+   defined in document-shell.css's @media print block (button, [role=button],
+   .screen-only { display: none }) — no print rule needed here. */
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+}
+
+.toolbar-actions-button {
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  font-size: var(--btn-font-size);
+  font-family: inherit;
+  min-width: 5.5rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.toolbar-actions-button:hover {
+  background: var(--color-bg-hover);
+}
+
+.toolbar-actions-button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+}
+
+.toolbar-actions-button-error {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}

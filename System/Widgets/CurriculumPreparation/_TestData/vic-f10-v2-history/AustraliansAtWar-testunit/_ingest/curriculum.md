@@ -15,6 +15,20 @@ can remove the very clues it uses.
 
 ---
 
+## Unit name (optional)
+
+State the unit's name outright if you don't want the importer to guess it.
+Leave this empty and the importer will look for a heading shaped like
+"Investigations: <name>" in whatever you paste below and offer that as a
+suggestion — but it never overwrites the name you gave the unit when you
+created it, so this is purely a convenience, not a requirement.
+
+```text
+
+```
+
+---
+
 ## Option A — Plain dump
 
 Everything in one go. Best when you've selected a whole page or PDF section and

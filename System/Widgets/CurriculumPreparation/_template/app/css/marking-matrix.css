@@ -1,0 +1,75 @@
+/**
+ * marking-matrix.css — Per-student page: header & student band
+ *
+ * Implements: container, page header, student name/total band
+ * Under 150 lines, one job (CSS-1)
+ * Uses only variables.css tokens (CSS-2)
+ */
+
+/* ===== CONTAINER ===== */
+.marking-matrix-page {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-11xl);
+  font-family: var(--font-system);
+  color: var(--color-text-primary);
+}
+
+/* ===== HEADER ===== */
+.matrix-header {
+  margin-bottom: var(--space-7xl);
+}
+
+.matrix-header h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: bold;
+  margin: 0 0 var(--space-2xl) 0;
+  color: var(--color-text-primary);
+}
+
+.matrix-header p {
+  font-size: var(--font-size-sm-alt);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ===== STUDENT BAND ===== */
+.student-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-7xl);
+  padding-bottom: var(--space-5xl);
+  border-bottom: var(--border-solid) var(--color-border-light);
+}
+
+.student-name {
+  font-size: var(--font-size-5xl);
+  font-weight: bold;
+  color: var(--color-text-primary);
+}
+
+.student-total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xl);
+}
+
+.student-total-value {
+  font-size: var(--font-size-5xl);
+  font-weight: bold;
+  color: var(--color-text-primary);
+}
+
+.student-total-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== PRINT RULES ===== */
+@media print {
+  .marking-matrix-page {
+    padding: 15mm;
+    page-break-inside: avoid;
+  }
+}

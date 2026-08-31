@@ -139,6 +139,11 @@ skills:
     domain: "GeneralPurpose"
     intent: "Generate an image as hand-written SVG (not a raster model) for icons, diagrams, posters, banners, and illustrations. Asks canvas size (custom, a standard social-media size, print, or an icon size), then style — rendered as a clickable grid of tiny thumbnail previews (show_widget) drawn from style-guide/_index.md's 24-style seeded library, one file per style under style-guide/ (Calvin & Hobbes, Far Side, Tufte object/cutaway, Dorling Kindersley, ligne claire, Ghibli (finished + Miyazaki concept-sketch register), classic mnemonic-aid, Punch, Soviet propaganda, British official-announcement + its WWII Allied/EMB poster extension, Nigel Holmes/Time explanation graphics, Richard Scarry Busytown, Hokusai/ukiyo-e, Isotype/Otto Neurath, National Geographic-style cutaways, Saul Steinberg conceptual line, clean modern flat/UI, isometric technical, blueprint/schematic, pixel-art, minimal geometric/logo) — or researched and written as a new file+index row if Luke types a style not shown in the grid. STEP 2 reads only the lightweight index to build the grid; picking a style then reads only that one style's file. Always wraps content in semantically named <g id> groups (per the resolved style's own layer list where one applies) for future editing, always paints an opaque background, always accessible (title/desc/role=img) and self-contained. Saves to System/Sandbox/; Luke opens it in a Chrome tab and exports to JPEG/PDF himself."
     triggers: ["generate an image", "make me a graphic", "create an svg", "draw this as svg", "make an icon", "design a poster", "make a banner", "vector illustration of", "svg export", "image generation", "in the style of"]
+  - name: "!NewUnit"
+    path: "System/Skillbank/Teaching/!NewUnit/skill.md"
+    domain: "Teaching"
+    intent: "Generate a new, empty curriculum unit bundle at a path you choose. Asks for subject, level, unit name, teacher, and destination folder."
+    triggers: ["new unit", "!NewUnit", "create a unit", "start a new teaching unit", "create a new unit"]
   # - name: "!ExampleSkill"
   #   path: "System/Skillbank/!ExampleSkill/skill.md"
   #   domain: "Church"

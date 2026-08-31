@@ -260,5 +260,126 @@ class BundleHandlerExistsTest(unittest.TestCase):
         self.assertTrue(hasattr(serve.BundleHandler, "do_DELETE"))
 
 
+class ApiUnitContentLengthTests(unittest.TestCase):
+    """Regression: GET /api/unit must send Content-Length in BYTES, not
+    characters (BUG-1). unit.json is read with Path.read_text() (a str) and
+    the fix must measure len() on the UTF-8-encoded body, not the string,
+    before writing it — a curly apostrophe or en-dash is one character but
+    three bytes, so measuring the string undercounts and an HTTP client
+    truncates the response exactly at that undercount, corrupting the JSON
+    on any unit whose curriculum text contains one (curly quotes, dashes,
+    accented characters — all common in pasted curriculum text)."""
+
+    def test_get_api_unit_sends_correct_byte_length_with_unicode_content(self) -> None:
+        """A real subprocess server, hit with a real HTTP request, must
+        return a Content-Length matching the actual UTF-8 byte count and a
+        body that parses as valid JSON — not a length matching the
+        character count, which truncates the response mid-string."""
+        import urllib.request
+        import urllib.error
+        import time
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "app").mkdir()
+            (root / "app" / "index.html").write_text("<html></html>")
+            (root / "images").mkdir()
+
+            # Deliberately include curly apostrophes and an en-dash — the
+            # exact characters that exposed BUG-1 in real curriculum text.
+            unit = {
+                "schemaVersion": "1.0.0", "generatedFrom": "", "meta": {},
+                "curriculum": {}, "nodes": [], "topics": [], "bigIdeas": [],
+                "lessons": [],
+                "cribSheet": {"sections": []},
+                "resourcesPage": {"items": []},
+                "unitAssessment": {},
+                "matrixTemplate": {"criteria": []},
+                "matrices": [], "students": [], "images": [],
+                "_probe": "Peoples’ rights, 1914–45, café",
+            }
+            (root / "unit.json").write_text(
+                json.dumps(unit, ensure_ascii=False), encoding="utf-8"
+            )
+
+            serve_py = BUNDLE_DIR / "serve.py"
+            (root / "serve.py").write_text(
+                serve_py.read_text(encoding="utf-8"), encoding="utf-8"
+            )
+
+            import os
+            env = dict(os.environ, PYTHONUNBUFFERED="1")
+            proc = subprocess.Popen(
+                [sys.executable, "serve.py"],
+                cwd=str(root),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                env=env,
+            )
+            try:
+                import re
+
+                # TEST-5: await the real event (the port line arriving),
+                # never a guessed sleep. Bounded by a wall-clock deadline so
+                # a startup failure fails the test instead of hanging it.
+                deadline = time.monotonic() + 5.0
+                match = None
+                port_line = ""
+                while time.monotonic() < deadline:
+                    port_line = proc.stdout.readline()
+                    if not port_line:
+                        continue
+                    match = re.search(r"127\.0\.0\.1:(\d+)", port_line)
+                    if match:
+                        break
+                self.assertIsNotNone(
+                    match, f"server did not report a port: {port_line!r}"
+                )
+                port = int(match.group(1))
+
+                # TEST-5: the port being announced does not guarantee the
+                # listening socket is accepting connections yet on every
+                # platform — poll the real endpoint until it answers,
+                # rather than sleeping a guessed duration and hoping.
+                declared_length = None
+                body = b""
+                last_error: Exception | None = None
+                while time.monotonic() < deadline:
+                    try:
+                        with urllib.request.urlopen(
+                            f"http://127.0.0.1:{port}/api/unit", timeout=1
+                        ) as resp:
+                            declared_length = int(resp.headers["Content-Length"])
+                            body = resp.read()
+                        break
+                    except (urllib.error.URLError, ConnectionRefusedError) as e:
+                        last_error = e
+                        time.sleep(0.02)
+                self.assertIsNotNone(
+                    declared_length,
+                    f"server never accepted a connection: {last_error!r}"
+                )
+
+                self.assertEqual(
+                    declared_length, len(body),
+                    "Content-Length must equal the actual byte count sent"
+                )
+                parsed = json.loads(body.decode("utf-8"))
+                self.assertEqual(
+                    parsed["_probe"], unit["_probe"],
+                    "unicode content must survive the round trip intact"
+                )
+            finally:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait(timeout=5)
+                if proc.stdout:
+                    proc.stdout.close()
+
+
 if __name__ == "__main__":
     unittest.main()

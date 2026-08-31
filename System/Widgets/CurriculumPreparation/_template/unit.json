@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedFrom": "",
+  "meta": {
+    "subject": "",
+    "level": "",
+    "unitName": "",
+    "teacher": "",
+    "dateCreated": null,
+    "dateModified": null
+  },
+  "curriculum": {
+    "profileId": "",
+    "name": "",
+    "jurisdiction": "",
+    "version": "",
+    "sourceRef": "",
+    "licence": "",
+    "attribution": "",
+    "labels": {
+      "strand": "",
+      "outcome": "",
+      "task": "",
+      "cribSheetHalves": {
+        "upper": "",
+        "lower": ""
+      }
+    },
+    "description": null,
+    "ingestedAt": null
+  },
+  "nodes": [],
+  "topics": [],
+  "bigIdeas": [],
+  "lessons": [],
+  "cribSheet": {
+    "id": "",
+    "title": "",
+    "orientation": "portrait",
+    "sections": [],
+    "pageCount": 1,
+    "provenance": "manual",
+    "isOverflow": false
+  },
+  "resourcesPage": {
+    "id": "",
+    "items": []
+  },
+  "unitAssessment": {
+    "id": "",
+    "title": "",
+    "bigIdeaId": "",
+    "coverage": [],
+    "finalAssessment": {
+      "pass": {
+        "tier": "pass",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      },
+      "intermediate": {
+        "tier": "intermediate",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      },
+      "advanced": {
+        "tier": "advanced",
+        "material": null,
+        "studentTask": null,
+        "workspaceLines": null,
+        "imageRefs": []
+      }
+    },
+    "finalAssessmentCompleted": false,
+    "finalAssessmentDate": null,
+    "finalAssessmentPeriod": null,
+    "miniAssessments": []
+  },
+  "matrixTemplate": {
+    "orientation": "portrait",
+    "criteria": []
+  },
+  "matrices": [],
+  "students": [],
+  "images": []
+}

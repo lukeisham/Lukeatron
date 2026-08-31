@@ -1,0 +1,97 @@
+/**
+ * marking-matrix-grid.css — Class entry grid structure (container, table, headers)
+ * Whole-class grid: students as columns, criteria as rows
+ * Data cells live in marking-matrix-grid-cells.css (CSS-1: one job per file)
+ * Uses only variables.css tokens (CSS-2)
+ */
+
+/* Container */
+.marking-matrix-grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7xl);
+  padding: var(--space-11xl);
+  font-family: var(--font-system);
+  color: var(--color-text-primary);
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.class-grid-header h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: bold;
+  margin: 0 0 var(--space-2xl) 0;
+}
+
+/* Grid Table */
+.class-grid-table {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(120px, auto);
+  gap: 0;
+  border-collapse: collapse;
+  border: var(--border-solid) var(--color-border-medium);
+}
+/* Column Headers */
+.grid-header-cell {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg-light);
+  padding: var(--space-5xl);
+  text-align: center;
+  font-size: var(--font-size-base-alt);
+  font-weight: bold;
+  color: var(--color-text-primary);
+  border-right: var(--border-solid) var(--color-border-light);
+  border-bottom: var(--border-solid-thick) var(--color-border-medium);
+  z-index: 10;
+  min-height: var(--space-12xl);
+}
+
+.grid-header-cell:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  background-color: var(--color-bg-very-light);
+  text-align: left;
+  width: 250px;
+  min-width: 250px;
+}
+/* Row Headers */
+.grid-row-header {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background-color: var(--color-bg-very-light);
+  padding: var(--space-5xl);
+  font-size: var(--font-size-base-alt);
+  color: var(--color-text-primary);
+  border-right: var(--border-solid-thick) var(--color-border-medium);
+  border-bottom: var(--border-solid) var(--color-border-light);
+  width: 250px;
+  min-width: 250px;
+}
+
+.grid-row-header.tier-band {
+  background-color: var(--color-pass-tint);
+  font-weight: bold;
+  font-size: var(--font-size-base);
+  color: var(--color-pass-ink);
+  padding: var(--space-lg) var(--space-5xl);
+  print-color-adjust: exact;
+}
+
+.grid-row-header.tier-band.intermediate {
+  background-color: var(--color-intermediate-tint);
+  color: var(--color-intermediate-ink);
+}
+
+.grid-row-header.tier-band.advanced {
+  background-color: var(--color-advanced-tint);
+  color: var(--color-advanced-ink);
+}
+
+.grid-row-header.tier-band.tier-unbalanced,
+.grid-row-header.tier-band.notYetSetUp {
+  border: var(--border-solid-thick) var(--color-border-medium);
+}

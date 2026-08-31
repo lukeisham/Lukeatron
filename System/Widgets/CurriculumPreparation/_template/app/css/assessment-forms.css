@@ -1,0 +1,80 @@
+/**
+ * assessment-forms.css — Modal form styles
+ *
+ * Styles for mini assessment creation and editing modals.
+ */
+
+@import './variables.css';
+
+.mini-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.mini-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8xl);
+  padding: var(--space-12xl);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  max-width: 400px;
+}
+
+.mini-form-content label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-base);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: var(--color-text-primary);
+}
+
+.mini-form-content input,
+.mini-form-content select {
+  padding: var(--space-base) var(--space-lg);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+}
+
+.mini-form-actions {
+  display: flex;
+  gap: var(--space-8xl);
+  justify-content: flex-end;
+}
+
+.btn-cancel,
+.btn-confirm {
+  padding: var(--space-base) var(--space-2xl);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-medium);
+  color: var(--color-text-primary);
+}
+
+.btn-confirm {
+  background-color: var(--color-intermediate-line);
+  border: none;
+  color: white;
+}
+
+@media print {
+  .mini-form-modal,
+  .mini-form-content {
+    display: none;
+  }
+}

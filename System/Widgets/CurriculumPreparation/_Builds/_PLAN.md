@@ -1,5 +1,17 @@
 # _Builds — Folder Plan
 
+> **STATUS (2026-08-29): 20 of 21 subtasks BUILT, plus a 22nd discovered late — `app-bootstrap`.**
+> The widget runs. Suite: 341 JS tests + 21 Python tests, all passing. Completed specs and plans have
+> moved to [`_Done/`](_Done/). `curriculum-ingest` is the only subtask not built (gate G-9 open).
+>
+> **`app-bootstrap` was NOT in this plan and that was the run's most costly omission.** The 21 subtasks
+> decomposed the widget into parts and never specified the step that assembles them into a running app —
+> so every build honoured its own spec while `index.html` imported nothing and the whole app rendered a
+> blank page behind 330 passing tests. A future decomposition must name the integration step explicitly.
+>
+> Outstanding decisions, known gaps and unverified criteria: [`../_closeout/CLOSEOUT.md`](../_closeout/CLOSEOUT.md).
+> Run history and preparation documents: [`../_Archive/2026-08-29-build-run/`](../_Archive/2026-08-29-build-run/).
+
 Date: 2026-08-29 (rev 14)
 Status: **21 of 21 subtasks specced** (6 in wave 1, 6 in wave 2, 4 in wave 3,
 4 in wave 4, 1 in wave 5). Rev 14 closes the last gap by speccing
@@ -275,26 +287,26 @@ and note anything newly unblocked.
 
 | Subtask | Wave | Status | Commit |
 |---|---|---|---|
-| `bundle-template` | 1 | ☐ Specced, not started — [`bundle-template.build.spec.md`](bundle-template.build.spec.md) | — |
-| `bundle-server` | 1 | ☐ Specced, not started | — |
-| `style-guide` | 1 | ☐ Specced, not started | — |
-| `document-shell` | 1 | ☐ Specced, not started | — |
-| `local-store` | 1 | ☐ Specced, not started | — |
-| `newunit-skill` | 1 | ☐ Specced, not started — [`newunit-skill.build.spec.md`](newunit-skill.build.spec.md) | — |
-| `curriculum-ingest` | 2 | ◐ Specced **provisionally** (rev 14) — **may still be dropped (G-9)** | — |
-| `curriculum-editor` | 2 | ☐ Specced, not started — [`curriculum-editor.build.spec.md`](curriculum-editor.build.spec.md) | — |
-| `arbor-tree` | 2 | ☐ Specced, not started — [`arbor-tree.build.spec.md`](arbor-tree.build.spec.md) | — |
-| `bigidea-list` | 2 | ☐ Specced, not started — [`bigidea-list.build.spec.md`](bigidea-list.build.spec.md) | — |
-| `coverage-grid` | 2 | ☐ Specced, not started | — |
-| `image-paste` | 2 | ☐ Specced, not started — [`image-paste.build.spec.md`](image-paste.build.spec.md) | — |
-| `lesson-plan-document` | 3 | ☐ Specced, not started | — |
-| `lesson-plan-generator` | 3 | ☐ Specced, not started — [`lesson-plan-generator.build.spec.md`](lesson-plan-generator.build.spec.md) | — |
-| `unit-assessment-document` | 3 | ☐ Specced, not started | — |
-| `lessons-and-topics` | 3 | ☐ Specced, not started — [`lessons-and-topics.build.spec.md`](lessons-and-topics.build.spec.md) | — |
-| `marking-matrix` | 4 | ☐ Specced, not started | — |
-| `csv-export` | 4 | ☐ Specced, not started — [`csv-export.build.spec.md`](csv-export.build.spec.md) | — |
-| `crib-sheet` | 4 | ☐ Specced, not started — full pass, [`crib-sheet.build.spec.md`](crib-sheet.build.spec.md) | — |
-| `resources-page` | 4 | ☐ Specced, not started | — |
-| `traceability-links` | 5 | ☐ Specced, not started — [`traceability-links.build.spec.md`](traceability-links.build.spec.md) | — |
+| `bundle-template` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `bundle-server` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `style-guide` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `document-shell` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `local-store` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `newunit-skill` | 1 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `curriculum-ingest` | 2 | ⊘ NOT BUILT — excluded from the 2026-08-29 run; G-9/Q-1 still open, needs real curriculum text from Luke. Spec remains in `_Builds/`. | — |
+| `curriculum-editor` | 2 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `arbor-tree` | 2 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `bigidea-list` | 2 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `coverage-grid` | 2 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `image-paste` | 2 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `lesson-plan-document` | 3 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `lesson-plan-generator` | 3 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `unit-assessment-document` | 3 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `lessons-and-topics` | 3 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `marking-matrix` | 4 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `csv-export` | 4 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `crib-sheet` | 4 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `resources-page` | 4 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
+| `traceability-links` | 5 | ☑ Done (2026-08-29 build run) — spec+plan in [`_Done/`](_Done/) | — |
 
 <!-- ☐ Open · ◐ Doing · ☑ Done · ⊘ Blocked · ○ Undefined -->

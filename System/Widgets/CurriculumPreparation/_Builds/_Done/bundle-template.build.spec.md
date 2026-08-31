@@ -30,8 +30,8 @@ spec's row 4 ("every other wave-1 build fills a slot in it").
   Lukeatron-root folder.
 - Every top-level entry AD-18's tree names: `Start Unit.command`,
   `unit.json`, `images/`, `_ingest/`, `app/` (with `js/` and `css/`
-  subfolders), `StyleGuide/`, `tests/`, `README.md`. No entry outside this
-  list.
+  subfolders), `StyleGuide/`, `tests/`, `README.md`, `VERSION` (nine entries
+  per the 2026-08-29 amendment, AD-BT-4). No entry outside this list.
 - A schema-valid **skeleton** `unit.json` — every field a fresh, un-ingested
   unit must carry, correctly typed and correctly empty.
 - A real, working `Start Unit.command` launcher, matching the existing
@@ -61,8 +61,9 @@ spec's row 4 ("every other wave-1 build fills a slot in it").
 
 - **FR-BT-1** — Creates `_template/` containing exactly the top-level
   structure AD-18 specifies: `Start Unit.command`, `unit.json`, `images/`,
-  `_ingest/`, `app/{js/,css/}`, `StyleGuide/`, `tests/`, `README.md`. No
-  extra top-level folder or file. *(FR-BND-2)*
+  `_ingest/`, `app/{js/,css/}`, `StyleGuide/`, `tests/`, `README.md`,
+  `VERSION`. No extra top-level folder or file. *(FR-BND-2; nine entries per
+  the 2026-08-29 amendment below — see FR-BT-8.)*
 - **FR-BT-2** — `unit.json` ships as a schema-valid skeleton: `schemaVersion`
   set (INV-DM-9); `generatedFrom` present, empty until stamped by
   `newunit-skill` (FR-BND-7); `curriculum` present but unset pending ingest;
@@ -99,7 +100,10 @@ spec's row 4 ("every other wave-1 build fills a slot in it").
 **Acceptance criteria**
 
 - **AC-BT-1** — `_template/` matches AD-18's tree exactly, folder for
-  folder, with no extra or missing top-level entry.
+  folder, with no extra or missing top-level entry — nine entries per the
+  2026-08-29 amendment (`Start Unit.command`, `unit.json`, `images/`,
+  `_ingest/`, `app/{js/,css/}`, `StyleGuide/`, `tests/`, `README.md`,
+  `VERSION`).
 - **AC-BT-2** — `unit.json` in the template validates field-by-field against
   INV-DM-9 and INV-DM-18 — checked by `local-store`'s own validator once it
   exists, or by hand against those invariants before then.
@@ -160,6 +164,24 @@ spec's row 4 ("every other wave-1 build fills a slot in it").
   *Rejected:* a `System/Widgets/_template/` shared across future widget
   projects — no other widget suite shares this bundle-generator pattern yet,
   and inventing a shared location for one consumer is premature.
+
+- **AD-BT-4** — *Amendment (2026-08-29).* `_template/VERSION` is added as a
+  ninth top-level entry to AD-18's tree and to FR-BT-1/AC-BT-1 above. A
+  single-line, date-stamped file (e.g. `2026-08-29`) sourcing the
+  `generatedFrom` stamp `newunit-skill` writes into a bundle's `unit.json` at
+  creation time (`newunit-skill.build.spec.md` FR-NU-7 and its "single-line
+  `_template/VERSION` file" language). *Rationale:* `newunit-skill` needed a
+  single source of truth for "which template version was this bundle stamped
+  from" that lives in the template itself rather than being hand-maintained
+  in two places; a file is simpler and less error-prone than embedding the
+  version as a literal string inside `newunit-skill`'s own logic, and keeps
+  the version bump a one-line edit at the template's root. Luke's decision:
+  keep `VERSION` and amend this spec, rather than remove the file to hold the
+  tree at eight entries — recorded per FR-BT-8's own rule that no later build
+  may add a top-level entry without amending this spec first. *Consumer:*
+  `newunit-skill` reads `_template/VERSION` at bundle-creation time and
+  copies its contents verbatim into the new bundle's `unit.json.generatedFrom`
+  field; the template's own copy is never mutated by that read.
 
 **Open questions**
 

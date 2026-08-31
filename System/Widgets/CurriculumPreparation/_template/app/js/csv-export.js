@@ -95,9 +95,17 @@ export function generateCSV(unit, markingMatrix) {
   const matrices = unit.matrices || [];
   const hasDecimal = hasAnyFractionalScore(matrices);
 
-  // Build header row
+  // Build header row. A criterion linked to a curriculum outcome (nodeId)
+  // gets its code prefixed so the exported sheet keeps the same
+  // traceability the on-screen matrix shows (e.g. "VC2HH10K13 — Identifies
+  // relevant sources").
+  const nodeMap = {};
+  for (const node of unit.nodes || []) nodeMap[node.id] = node;
   const headerRow = ['Student Name'];
-  headerRow.push(...criteria.map(c => c.criterion || ''));
+  headerRow.push(...criteria.map(c => {
+    const node = c.nodeId ? nodeMap[c.nodeId] : null;
+    return node && node.code ? `${node.code} — ${c.criterion || ''}` : (c.criterion || '');
+  }));
   headerRow.push('Pass Total', 'Intermediate Total', 'Advanced Total', 'Unit Total');
 
   const rows = [headerRow.map(escapeCSVField).join(',')];

@@ -255,6 +255,22 @@ test('generateCSV: criterion with comma in text is quoted', () => {
   assert.match(csv, /"Identify, analyze, and compare"/);
 });
 
+test('generateCSV: a criterion linked to a curriculum node gets its code prefixed in the header', () => {
+  const unit = createFixtureUnit();
+  unit.nodes = [
+    { id: 'node-1', code: 'VC2HH10K13', kind: 'outcome', title: null, text: 'Node text' }
+  ];
+  unit.matrixTemplate.criteria[0].nodeId = 'node-1';
+
+  const matrix = new MockMarkingMatrix(unit);
+  const csv = generateCSV(unit, matrix);
+  const header = csv.split('\n')[0];
+
+  assert.match(header, /VC2HH10K13 — Identify main ideas/);
+  // A criterion with no nodeId is unaffected — no stray code prefix.
+  assert.match(header, /(?<!— )Explain, analyze, and compare/);
+});
+
 // ===== TEST 3: BOM and Blob (AC-CSV-1) =====
 test('exportCSVBlob: includes UTF-8 BOM', () => {
   const unit = createFixtureUnit();

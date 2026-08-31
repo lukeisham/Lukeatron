@@ -224,6 +224,36 @@ test('validateUnit: dangling lesson.nodeIds reference is rejected with message n
   assert.ok(result.errors.some((e) => e.includes('node-nonexistent')), 'Error should name the bad nodeId');
 });
 
+test('validateUnit: criterion.nodeId is optional — a criterion without one still validates (INV-DM-35)', () => {
+  const unit = createValidUnit();
+  // Existing fixture criteria carry no nodeId at all.
+  const result = validateUnit(unit);
+  assert.equal(result.valid, true, `Criteria without nodeId should validate; got errors: ${JSON.stringify(result.errors)}`);
+});
+
+test('validateUnit: criterion.nodeId resolving to an outcome node validates (INV-DM-35)', () => {
+  const unit = createValidUnit();
+  unit.matrixTemplate.criteria[0].nodeId = 'node-child'; // kind: 'outcome'
+  const result = validateUnit(unit);
+  assert.equal(result.valid, true, `Criterion linked to an outcome node should validate; got errors: ${JSON.stringify(result.errors)}`);
+});
+
+test('validateUnit: dangling criterion.nodeId is rejected, naming the criterion and nodeId (INV-DM-35)', () => {
+  const unit = createValidUnit();
+  unit.matrixTemplate.criteria[0].nodeId = 'node-nonexistent';
+  const result = validateUnit(unit);
+  assert.equal(result.valid, false, 'Should reject dangling criterion.nodeId');
+  assert.ok(result.errors.some((e) => e.includes('INV-DM-35') && e.includes('crit-pass') && e.includes('node-nonexistent')));
+});
+
+test('validateUnit: criterion.nodeId pointing at a non-outcome node is rejected (INV-DM-35)', () => {
+  const unit = createValidUnit();
+  unit.matrixTemplate.criteria[0].nodeId = 'node-root'; // kind: 'strand'
+  const result = validateUnit(unit);
+  assert.equal(result.valid, false, 'Should reject a criterion.nodeId that resolves to a non-outcome node');
+  assert.ok(result.errors.some((e) => e.includes('INV-DM-35') && e.includes('node-root')));
+});
+
 test('validateUnit: two matrices for one student is rejected', () => {
   const unit = createValidUnit();
   unit.matrices = [

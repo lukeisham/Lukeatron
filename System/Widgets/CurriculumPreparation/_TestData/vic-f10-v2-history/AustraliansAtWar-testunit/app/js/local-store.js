@@ -383,6 +383,22 @@ export function validateUnit(unit) {
     }
   }
 
+  // INV-DM-35: marking criterion nodeId, when present, must reference an
+  // existing curriculum node of kind "outcome" (optional link — a criterion
+  // without nodeId is unaffected)
+  if (unit.matrixTemplate && Array.isArray(unit.matrixTemplate.criteria)) {
+    for (const crit of unit.matrixTemplate.criteria) {
+      if (crit.nodeId) {
+        const node = nodeMap[crit.nodeId];
+        if (!node) {
+          errors.push(`INV-DM-35: criterion ${crit.id} references non-existent nodeId ${crit.nodeId}`);
+        } else if (node.kind !== 'outcome') {
+          errors.push(`INV-DM-35: criterion ${crit.id} nodeId ${crit.nodeId} does not reference an outcome node`);
+        }
+      }
+    }
+  }
+
   // INV-DM-3: Nodes form a tree (exactly one root, no cycles, every non-root has resolvable parentId)
   const nodeParents = {};
   for (const node of unit.nodes || []) {

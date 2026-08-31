@@ -399,6 +399,15 @@ class FakeElement {
     this.id = '';
     this.focused = false;
     this.classList = { add() {}, remove() {}, contains() { return false; } };
+    // Real elements always carry a style object; renderClassGrid() sets the
+    // grid's column count through it (--class-grid-columns). Recording the
+    // values lets tests assert on them rather than just tolerate the call.
+    this._style = {};
+    this.style = {
+      setProperty: (name, value) => { this._style[name] = String(value); },
+      getPropertyValue: (name) => this._style[name] ?? '',
+      removeProperty: (name) => { delete this._style[name]; }
+    };
   }
   appendChild(el) {
     this.children.push(el);
@@ -457,6 +466,28 @@ function findAll(el, predicate, out = []) {
   for (const child of el.children || []) findAll(child, predicate, out);
   return out;
 }
+
+test('renderClassGrid declares one grid column per student, so cells lay out row-major', () => {
+  // Regression: .class-grid-table had `grid-auto-flow: column` and no column
+  // template, so the browser generated one implicit column PER CELL and the
+  // whole grid rendered as a single squashed strip (8 cols x 14 rows became
+  // 113 cols x 1 row). The column count is data-dependent, so it is set here.
+  withFakeMarkingDom(() => {
+    const unit = createFixtureUnit();
+    const matrix = new MarkingMatrix(unit, new MockLocalStore());
+    matrix.addStudent('Alice');
+    matrix.addStudent('Bob');
+    matrix.addStudent('Chidi');
+    const container = matrix.renderClassGrid();
+    const grid = findAll(container, el => el.className === 'class-grid-table')[0];
+    assert.ok(grid, 'class-grid-table should be rendered');
+    assert.strictEqual(
+      grid.style.getPropertyValue('--class-grid-columns'),
+      String(unit.students.length),
+      'column count must follow the student count'
+    );
+  });
+});
 
 test('F1: renderClassGrid wires a real keydown handler that moves focus between cells (AC-MMB-17)', () => {
   withFakeMarkingDom(() => {
@@ -637,6 +668,162 @@ test('F5: unit-progress block is absent from the Setup blank sheet (FR-MMB-45)',
     const texts = findAll(svgRoot, el => el.tagName === 'text').map(el => el.textContent);
     assert.ok(!texts.includes('Unit progress'), 'Setup sheet never renders the unit-progress block');
     assert.ok(!texts.includes('Unit total'), 'Setup sheet has no unit-total panel');
+  });
+});
+
+// ===== TEST 9: Populate from Curriculum (criteria-populate-the-marking-matrix) =====
+
+function fixtureNode(id, code, kind, extra = {}) {
+  return { id, code, kind, title: null, text: `${code} description`, parentId: 'root', ...extra };
+}
+
+function createFixtureUnitWithNodes() {
+  const unit = createFixtureUnit();
+  unit.nodes = [
+    { id: 'root', code: 'ROOT', kind: 'strand', title: 'Root', text: '', parentId: null },
+    fixtureNode('n1', 'VC001', 'outcome'),
+    fixtureNode('n2', 'VC002', 'outcome'),
+    fixtureNode('n3', 'VC003', 'outcome'),
+    { id: 'n4', code: 'VC004', kind: 'task', title: 'A task, not an outcome', text: '', parentId: 'root' }
+  ];
+  unit.unitAssessment.coverage = [{ nodeId: 'n1', coverage: 'full', note: '' }];
+  unit.unitAssessment.miniAssessments[0].coverage = [{ nodeId: 'n2', coverage: 'full', note: '' }];
+  return unit;
+}
+
+test('getOutcomeNodes returns only kind:"outcome" nodes', () => {
+  const unit = createFixtureUnitWithNodes();
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+  const ids = matrix.getOutcomeNodes().map((n) => n.id);
+  assert.deepStrictEqual(ids.sort(), ['n1', 'n2', 'n3']);
+});
+
+test('getLinkedNodeIds reflects criteria already carrying a nodeId', () => {
+  const unit = createFixtureUnitWithNodes();
+  unit.matrixTemplate.criteria.push({
+    id: 'c1', tier: 'pass', criterion: 'Existing', nodeId: 'n1', maxScore: 5, assessmentIds: ['final-1'], allocationOverridden: false
+  });
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+  assert.deepStrictEqual([...matrix.getLinkedNodeIds()], ['n1']);
+});
+
+test('getDefaultCurriculumNodeIds defaults to outcomes this unit already assesses (full-unit view)', () => {
+  const unit = createFixtureUnitWithNodes();
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+  const defaults = matrix.getDefaultCurriculumNodeIds().sort();
+  // n1 (final coverage) and n2 (mini-1 coverage) are assessed; n3 is not.
+  assert.deepStrictEqual(defaults, ['n1', 'n2']);
+});
+
+test('getDefaultCurriculumNodeIds narrows to the assessment in scope when scope is set', () => {
+  const unit = createFixtureUnitWithNodes();
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+  matrix.setScope('mini-1');
+  assert.deepStrictEqual(matrix.getDefaultCurriculumNodeIds(), ['n2']);
+});
+
+test('addCriteriaFromNodes: adds rows pre-filled from node title/text, binds to the covering assessment', () => {
+  const unit = createFixtureUnitWithNodes();
+  const store = new MockLocalStore();
+  const matrix = new MarkingMatrix(unit, store);
+
+  const result = matrix.addCriteriaFromNodes(['n1', 'n2'], 'pass');
+  assert.strictEqual(result.toAdd.length, 2);
+  assert.strictEqual(result.alreadyLinked.length, 0);
+  assert.strictEqual(result.noAssessment.length, 0);
+  assert.strictEqual(result.warning, null, 'no warning when no student has been scored yet');
+
+  result.onConfirm();
+
+  assert.strictEqual(unit.matrixTemplate.criteria.length, 2);
+  const n1Crit = unit.matrixTemplate.criteria.find((c) => c.nodeId === 'n1');
+  assert.strictEqual(n1Crit.criterion, 'VC001 description', 'falls back to node.text when title is unset');
+  assert.strictEqual(n1Crit.tier, 'pass');
+  assert.deepStrictEqual(n1Crit.assessmentIds, ['final-1'], 'bound to the assessment that actually covers this node');
+  assert.strictEqual(n1Crit.allocationOverridden, false);
+  assert.ok(store.savedUnit, 'auto-saves like addCriterion does');
+});
+
+test('addCriteriaFromNodes: skips a node already linked to a row, reports it back, never duplicates', () => {
+  const unit = createFixtureUnitWithNodes();
+  unit.matrixTemplate.criteria.push({
+    id: 'existing', tier: 'pass', criterion: 'Hand-authored', nodeId: 'n1', maxScore: 10, assessmentIds: ['final-1'], allocationOverridden: false
+  });
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+
+  const result = matrix.addCriteriaFromNodes(['n1', 'n2'], 'pass');
+  assert.strictEqual(result.toAdd.length, 1);
+  assert.strictEqual(result.toAdd[0].id, 'n2');
+  assert.strictEqual(result.alreadyLinked.length, 1);
+  assert.strictEqual(result.alreadyLinked[0].id, 'n1');
+
+  result.onConfirm();
+
+  // Only one new row added; the hand-authored row is untouched.
+  assert.strictEqual(unit.matrixTemplate.criteria.length, 2);
+  const handAuthored = unit.matrixTemplate.criteria.find((c) => c.id === 'existing');
+  assert.strictEqual(handAuthored.criterion, 'Hand-authored');
+});
+
+test('addCriteriaFromNodes: never invents rows for a non-outcome id slipped into the selection', () => {
+  const unit = createFixtureUnitWithNodes();
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+  const result = matrix.addCriteriaFromNodes(['n4'], 'pass'); // n4 is kind:'task'
+  assert.strictEqual(result.toAdd.length, 0);
+});
+
+test('addCriteriaFromNodes: warns when students already have scores, same wording pattern as addCriterion', () => {
+  const unit = createFixtureUnitWithNodes();
+  const store = new MockLocalStore();
+  const matrix = new MarkingMatrix(unit, store);
+  matrix.addStudent('Alice');
+  unit.matrices[0].scores.push({ criterionId: 'crit-does-not-matter', awardedScore: 3, comment: '' });
+
+  const result = matrix.addCriteriaFromNodes(['n1', 'n2', 'n3'], 'pass');
+  assert.match(result.warning, /Adding 3 marking criteria adds an unmarked row/);
+});
+
+test('addCriteriaFromNodes: re-allocates only the target tier (FR-MMB-38), leaves other tiers alone', () => {
+  const unit = createFixtureUnitWithNodes();
+  unit.matrixTemplate.criteria.push({
+    id: 'i1', tier: 'intermediate', criterion: 'I1', maxScore: 25, assessmentIds: ['final-1'], allocationOverridden: false
+  });
+  const matrix = new MarkingMatrix(unit, new MockLocalStore());
+
+  const result = matrix.addCriteriaFromNodes(['n1', 'n2'], 'pass');
+  result.onConfirm();
+
+  const passCriteria = unit.matrixTemplate.criteria.filter((c) => c.tier === 'pass');
+  const passTotal = passCriteria.reduce((sum, c) => sum + c.maxScore, 0);
+  assert.strictEqual(passTotal, 50, 'pass tier still sums to its fixed budget');
+
+  const intermediate = unit.matrixTemplate.criteria.find((c) => c.id === 'i1');
+  assert.strictEqual(intermediate.maxScore, 25, 'untouched tier is not re-allocated');
+});
+
+test('a criterion linked via nodeId round-trips its link through save/load unchanged', async () => {
+  const unit = createFixtureUnitWithNodes();
+  const store = new MockLocalStore();
+  const matrix = new MarkingMatrix(unit, store);
+
+  matrix.addCriteriaFromNodes(['n1'], 'pass').onConfirm();
+  const reloaded = await store.loadUnit();
+  const crit = reloaded.matrixTemplate.criteria.find((c) => c.nodeId === 'n1');
+  assert.ok(crit, 'nodeId survives the save/load round-trip');
+  assert.strictEqual(crit.criterion, 'VC001 description');
+});
+
+test('F6: renderClassGrid shows the curriculum code next to a linked criterion (compact, non-clickable)', () => {
+  withFakeMarkingDom(() => {
+    const unit = createFixtureUnitWithNodes();
+    const store = new MockLocalStore();
+    const matrix = new MarkingMatrix(unit, store);
+    matrix.addCriteriaFromNodes(['n1'], 'pass').onConfirm();
+
+    const grid = matrix.renderClassGrid();
+    const codeEls = findAll(grid, (el) => el.className === 'criterion-code');
+    assert.strictEqual(codeEls.length, 1);
+    assert.strictEqual(codeEls[0].textContent, 'VC001');
   });
 });
 

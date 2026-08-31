@@ -12,6 +12,8 @@
 
 import { TIERS, DocumentShell, pxToUserUnits } from './document-shell.js';
 import { newId } from './ids.js';
+import { deriveAssessmentCoverage } from './coverage-derivers.js';
+import { renderCode } from './traceability.js';
 
 // ===== Tier Budget Constants (FR-MMB-37, Change U) =====
 const TIER_BUDGETS = {
@@ -486,6 +488,204 @@ export class MarkingMatrix {
     this.localStore.saveUnit(this.unit);
   }
 
+  // ===== POPULATE FROM CURRICULUM =====
+
+  /**
+   * Curriculum nodes eligible to become rubric rows: coded outcomes only
+   * (never strands or tasks — a marking criterion traces to an assessed
+   * outcome, per FR-CRB conventions elsewhere in the app).
+   * @returns {Array} - unit.nodes[] entries with kind 'outcome'
+   */
+  getOutcomeNodes() {
+    return (this.unit.nodes || []).filter((n) => n.kind === 'outcome');
+  }
+
+  /**
+   * Curriculum nodeIds already linked to a rubric row. Used so
+   * "populate from curriculum" adds rows without ever duplicating a link.
+   * @returns {Set<string>}
+   */
+  getLinkedNodeIds() {
+    return new Set(
+      (this.unit.matrixTemplate.criteria || [])
+        .filter((c) => c.nodeId)
+        .map((c) => c.nodeId)
+    );
+  }
+
+  /**
+   * Assessment coverage, keyed by nodeId, normalized so both the canonical
+   * shape (unitAssessment.finalAssessment.coverage[]) and the shape actually
+   * produced by this app's seed data (coverage[] living directly on
+   * unitAssessment, with finalAssessment only carrying the fixed tier pages)
+   * resolve to the same map. assessmentId on each entry is the id
+   * _getAssessmentsList() itself uses, so it lines up with addCriterion's
+   * validation and with matrixTemplate.criteria[].assessmentIds.
+   * @returns {Map<string, Array>} nodeId -> [{ coverage, assessmentId, name }]
+   */
+  _deriveAssessmentCoverageMap() {
+    const ua = this.unit.unitAssessment;
+    if (!ua) return new Map();
+
+    const assessments = this._getAssessmentsList();
+    const finalEntry = assessments.find((a) => a.name === 'Final Assessment');
+
+    const normalizedUA = {
+      finalAssessment: ua.finalAssessment
+        ? {
+            id: finalEntry ? finalEntry.id : ua.finalAssessment.id,
+            title: ua.title,
+            coverage: Array.isArray(ua.finalAssessment.coverage)
+              ? ua.finalAssessment.coverage
+              : (ua.coverage || [])
+          }
+        : undefined,
+      miniAssessments: ua.miniAssessments
+    };
+
+    return deriveAssessmentCoverage(this.unit.nodes || [], normalizedUA);
+  }
+
+  /**
+   * Assessment id(s) that actually assess a given node, per the coverage
+   * index above. Used to bind an auto-populated criterion to the
+   * assessment(s) it belongs to, rather than guessing.
+   * @param {string} nodeId
+   * @returns {string[]}
+   */
+  _getCoveringAssessmentIds(nodeId) {
+    const entries = this._deriveAssessmentCoverageMap().get(nodeId) || [];
+    return [...new Set(entries.map((e) => e.assessmentId).filter(Boolean))];
+  }
+
+  /**
+   * Default node selection for "populate from curriculum": outcome nodes
+   * this unit already assesses — restricted to the assessment in scope when
+   * one is set, otherwise any assessment (full-unit view). Never invents a
+   * selection when there's no coverage yet; the full outcome list stays
+   * available in the picker either way.
+   * @returns {string[]}
+   */
+  getDefaultCurriculumNodeIds() {
+    const coverageMap = this._deriveAssessmentCoverageMap();
+    const outcomeIds = new Set(this.getOutcomeNodes().map((n) => n.id));
+    const defaults = [];
+
+    for (const [nodeId, entries] of coverageMap.entries()) {
+      if (!outcomeIds.has(nodeId) || !entries || entries.length === 0) continue;
+      if (this.scope) {
+        if (entries.some((e) => e.assessmentId === this.scope)) defaults.push(nodeId);
+      } else {
+        defaults.push(nodeId);
+      }
+    }
+
+    return defaults;
+  }
+
+  /**
+   * Bulk-add rubric rows from selected curriculum outcome nodes
+   * ("populate from curriculum"). ADDS rows; existing hand-authored criteria
+   * are never touched or removed. A node already linked to a row (per
+   * getLinkedNodeIds) is skipped rather than duplicated, and reported back
+   * in `alreadyLinked` so the caller can surface it.
+   *
+   * Each generated row pre-fills `criterion` from the node's title and sets
+   * `nodeId`; `maxScore` is left to the same auto-allocation addCriterion
+   * already uses (never a fabricated number), and `tier` is whatever the
+   * teacher chose for this batch — never invented per-node.
+   *
+   * @param {string[]} nodeIds - outcome node ids chosen in the picker
+   * @param {string} tier - 'pass' | 'intermediate' | 'advanced'
+   * @returns {Object} - { toAdd, alreadyLinked, noAssessment, warning, onConfirm }
+   */
+  addCriteriaFromNodes(nodeIds, tier) {
+    if (!['pass', 'intermediate', 'advanced'].includes(tier)) {
+      throw new Error(`Invalid tier: ${tier}`);
+    }
+
+    const linked = this.getLinkedNodeIds();
+    const nodeMap = {};
+    for (const node of this.unit.nodes || []) nodeMap[node.id] = node;
+
+    const allAssessmentIds = this._getAssessmentsList().map((a) => a.id);
+
+    const toAdd = [];
+    const alreadyLinked = [];
+    const noAssessment = [];
+
+    for (const nodeId of nodeIds || []) {
+      const node = nodeMap[nodeId];
+      if (!node || node.kind !== 'outcome') continue;
+
+      if (linked.has(nodeId)) {
+        alreadyLinked.push(node);
+        continue;
+      }
+
+      const covering = this._getCoveringAssessmentIds(nodeId);
+      const assessmentIds = covering.length > 0 ? covering : allAssessmentIds;
+      if (assessmentIds.length === 0) {
+        // No assessment exists yet to bind this criterion to (FR-MMB-5
+        // requires at least one) — surface rather than silently drop.
+        noAssessment.push(node);
+        continue;
+      }
+
+      toAdd.push({ node, assessmentIds });
+    }
+
+    const hasScored = this.unit.matrices.some((m) => m.scores && m.scores.length > 0);
+    const warning = (toAdd.length > 0 && hasScored)
+      ? `Adding ${toAdd.length} marking ${toAdd.length === 1 ? 'criterion' : 'criteria'} adds an unmarked row to every student, lowering their totals until marked.`
+      : null;
+
+    const onConfirm = () => {
+      for (const { node, assessmentIds } of toAdd) {
+        const criterion = {
+          id: newId('crit-'),
+          tier,
+          // node.title is the intended source, but this app's curriculum
+          // data commonly leaves title unset and carries the description in
+          // node.text instead (coverage-grid.js's row label has the same
+          // `node.title || ''` gap) — fall back rather than create a blank
+          // rubric row.
+          criterion: node.title || node.text || '',
+          nodeId: node.id,
+          draftScore: 0,
+          maxScore: 0,
+          assessmentIds,
+          allocationOverridden: false
+        };
+
+        this.unit.matrixTemplate.criteria.push(criterion);
+
+        for (const matrix of this.unit.matrices) {
+          if (!matrix.scores) matrix.scores = [];
+          matrix.scores.push({
+            criterionId: criterion.id,
+            awardedScore: undefined,
+            comment: ''
+          });
+        }
+      }
+
+      // Re-allocate the target tier once, after every new row is in (FR-MMB-38)
+      const tierCriteria = this.unit.matrixTemplate.criteria.filter((c) => c.tier === tier);
+      allocateTier(tierCriteria, TIER_BUDGETS[tier]);
+
+      this.localStore.saveUnit(this.unit);
+    };
+
+    return {
+      toAdd: toAdd.map((t) => t.node),
+      alreadyLinked,
+      noAssessment,
+      warning,
+      onConfirm
+    };
+  }
+
   // ===== STUDENT MANAGEMENT =====
 
   /**
@@ -900,7 +1100,7 @@ export class MarkingMatrix {
 
         const text = document.createElement('div');
         text.className = 'criterion-text';
-        text.textContent = criterion.criterion;
+        text.appendChild(this._renderCriterionLabel(criterion));
 
         const maxEl = document.createElement('div');
         maxEl.className = 'criterion-max';
@@ -1016,6 +1216,39 @@ export class MarkingMatrix {
   }
 
   /**
+   * Render a criterion's label into `container`: its free-text criterion,
+   * plus — when linked to a curriculum outcome via nodeId — a compact
+   * curriculum code so a teacher can see which criterion a mark relates to
+   * (traceability.js's shared code component, non-clickable: there's no
+   * node-detail view in this app to navigate to).
+   *
+   * Appends directly to `container` rather than returning a
+   * DocumentFragment, since the two render targets (a plain HTML div, a
+   * sticky grid-row-header div) already exist — no wrapper node needed.
+   * @param {Object} criterion - matrixTemplate.criteria[] entry
+   * @returns {DocumentFragment}
+   */
+  _renderCriterionLabel(criterion) {
+    const frag = document.createElement('span');
+
+    if (criterion.nodeId) {
+      const node = (this.unit.nodes || []).find((n) => n.id === criterion.nodeId);
+      if (node && node.code) {
+        const codeEl = document.createElement('span');
+        codeEl.className = 'criterion-code';
+        codeEl.textContent = renderCode(node.code, false);
+        frag.appendChild(codeEl);
+      }
+    }
+
+    const textEl = document.createElement('span');
+    textEl.textContent = criterion.criterion;
+    frag.appendChild(textEl);
+
+    return frag;
+  }
+
+  /**
    * Build the Default Full mode standing notice element (FR-MMB-28,
    * AC-MMB-30). Present and visible only while Default Full is active.
    * @returns {HTMLElement}
@@ -1055,6 +1288,10 @@ export class MarkingMatrix {
     // Build grid
     const grid = document.createElement('div');
     grid.className = 'class-grid-table';
+    // One column per student, after the leading criterion-label column. The
+    // grid is a CSS grid filled row-major, so it needs an explicit column
+    // count or every cell lands in its own column (see marking-matrix-grid.css).
+    grid.style.setProperty('--class-grid-columns', String(this.unit.students.length));
 
     // Flattened row registry for keyboard navigation (AC-MMB-17, AD-MMB-9)
     const navRows = []; // [ [input, input, ...] ] one array of inputs per criterion row
@@ -1094,7 +1331,7 @@ export class MarkingMatrix {
       for (const criterion of criteria) {
         const rowHeader = document.createElement('div');
         rowHeader.className = 'grid-row-header';
-        rowHeader.textContent = criterion.criterion;
+        rowHeader.appendChild(this._renderCriterionLabel(criterion));
         grid.appendChild(rowHeader);
 
         const rowInputs = [];

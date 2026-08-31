@@ -78,6 +78,16 @@
   color: var(--color-text-primary);
 }
 
+/* Curriculum code, shown compactly alongside a criterion linked to a
+   curriculum outcome (matrixTemplate.criteria[].nodeId) */
+.criterion-code {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  margin-right: var(--space-md);
+}
+
 .criterion-max {
   font-size: var(--font-size-base);
   text-align: right;

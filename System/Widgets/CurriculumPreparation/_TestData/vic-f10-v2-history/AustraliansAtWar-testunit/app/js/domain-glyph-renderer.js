@@ -22,17 +22,21 @@ export function renderDomainGlyphs(bigIdeaId, allBigIdeas, allNodes) {
     // Call bigidea-list's shared function to get the glyph set
     const glyphSet = computeGlyphSet(bigIdeaId, allNodes, resolveDomain);
 
-    // glyphSet is expected to be { skill: boolean, knowledge: boolean }
-    if (!glyphSet) {
+    // computeGlyphSet returns a Set<string> of domain values, NOT an object
+    // with boolean flags. This used to read glyphSet.skill / .knowledge, which
+    // are always undefined on a Set — so no glyph ever rendered, and the
+    // catch below meant it failed silently. crib-sheet.js reads the same
+    // value correctly via .has()/.size; match it.
+    if (!glyphSet || typeof glyphSet.has !== 'function') {
       return '';
     }
 
     const glyphs = [];
 
-    if (glyphSet.skill) {
+    if (glyphSet.has('skill')) {
       glyphs.push('<span class="glyph-skill" aria-label="Skill" title="Skill">⬟</span>');
     }
-    if (glyphSet.knowledge) {
+    if (glyphSet.has('knowledge')) {
       glyphs.push('<span class="glyph-knowledge" aria-label="Knowledge" title="Knowledge">●</span>');
     }
 

@@ -75,12 +75,26 @@ def make_png(width: int, height: int, rgb=(58, 74, 51)) -> bytes:
 
 
 # ---------------------------------------------------------------------------
-# 2. Curriculum nodes / topics — reuse the existing ingested node set (real
-#    VC2HH10 codes already present in the fixture), just fix the two typo'd
-#    topic titles flagged in the audit.
+# 2. Curriculum nodes / topics — reshaped to match the FIXED importer
+#    (ingest.py, container-creation branches ~509-566). Verified by running
+#    `ingest.py --source year10-history.source.md --profile vic-f10-v2
+#    --report` against a fresh copy of _template/unit.json (never against
+#    the already-seeded fixture, which merges onto stale nodes and hides
+#    the bug fix). The fixed importer no longer creates a nameless
+#    container strand for the un-headed K01-K06 block, and no longer treats
+#    the "Investigations: Australians at War 1914-1945" heading as a real
+#    branch — _is_unit_name_heading() recognises it as the unit's own name
+#    (via _prescan_unit_name()) and reparents K13-K23 onto the SAME
+#    strand as K01-K06: a single "Knowledge" strand, titled from the
+#    profile's strand_map (parse_source() ~line 528), domain "knowledge".
+#    That single strand also gets its own topic, "Knowledge" (Decision 2:
+#    every real HEADING/strand_map strand seeds a topics[] entry) — so the
+#    topic previously titled after the unit's own name is folded into that
+#    "Knowledge" topic (same id, expanded coverage) rather than deleted,
+#    keeping every existing bigIdeas[].topicId / coverage reference valid.
 # ---------------------------------------------------------------------------
 
-TOPIC_WAR = "topic-b39d1544ae23c5fa"          # Investigations: Australians at War
+TOPIC_WAR = "topic-b39d1544ae23c5fa"          # now titled "Knowledge" — see note above
 TOPIC_METHOD = "topic-7f17270932d1c79f"       # Concepts, Skills & Historical Method
 TOPIC_CONTINUITY = "topic-6962bbff188c6d5d"   # was "Contunity and change"
 TOPIC_CAUSES = "topic-8dc874033d457402"       # was "causes and consquences"
@@ -90,54 +104,51 @@ TOPIC_COMMUNITY = "topic-f354ee99e2bc863c"
 NODES = [
     {"id": "root", "code": None, "title": "Unit", "text": None, "kind": "strand",
      "parentId": None, "confidence": "high", "edited": False, "original": None, "domain": None},
-    {"id": "strand-083b674764d7577c", "code": None, "title": None, "text": None, "kind": "strand",
-     "parentId": "root", "confidence": "low", "edited": False, "original": None, "domain": None},
-    {"id": "VC2HH10K01", "code": "VC2HH10K01", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "strand-fe388f9a6394c622", "code": None, "title": "Knowledge", "text": None, "kind": "strand",
+     "parentId": "root", "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
+    {"id": "VC2HH10K01", "code": "VC2HH10K01", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "causes and consequences of the Industrial Revolution, the movement of people and European imperialism",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K02", "code": "VC2HH10K02", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "VC2HH10K02", "code": "VC2HH10K02", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "significant ideas and developments and their impacts on societies", "confidence": "high",
      "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K03", "code": "VC2HH10K03", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "VC2HH10K03", "code": "VC2HH10K03", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "significant developments and events since 1945 that have contributed to change",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K04", "code": "VC2HH10K04", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "VC2HH10K04", "code": "VC2HH10K04", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the contribution of significant movements for social and political change",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K05", "code": "VC2HH10K05", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "VC2HH10K05", "code": "VC2HH10K05", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the significant events, individuals and groups in the women’s movement",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K06", "code": "VC2HH10K06", "kind": "outcome", "parentId": "strand-083b674764d7577c",
+    {"id": "VC2HH10K06", "code": "VC2HH10K06", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the continuing efforts to create change in the civil rights movement",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "strand-f467a13d6bd18506", "code": None, "title": "Investigations: Australians at War 1914-1945",
-     "text": None, "kind": "strand", "parentId": "root", "confidence": "high", "edited": False,
-     "original": None, "domain": None},
-    {"id": "VC2HH10K13", "code": "VC2HH10K13", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K13", "code": "VC2HH10K13", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the causes of World War I and World War II", "confidence": "high", "edited": False,
      "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K14", "code": "VC2HH10K14", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K14", "code": "VC2HH10K14", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, enlisted to fight",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K15", "code": "VC2HH10K15", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K15", "code": "VC2HH10K15", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "significant places where Australians fought", "confidence": "high", "edited": False,
      "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K16", "code": "VC2HH10K16", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K16", "code": "VC2HH10K16", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the experiences and perspectives of those who fought or were affected by the world wars",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K17", "code": "VC2HH10K17", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K17", "code": "VC2HH10K17", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "significant events and turning points of the world wars", "confidence": "high", "edited": False,
      "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K18", "code": "VC2HH10K18", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K18", "code": "VC2HH10K18", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "continuities and changes in the nature of warfare", "confidence": "high", "edited": False,
      "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K20", "code": "VC2HH10K20", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K20", "code": "VC2HH10K20", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the causes of the Holocaust", "confidence": "high", "edited": False,
      "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K22", "code": "VC2HH10K22", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K22", "code": "VC2HH10K22", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "the diverse experiences and perspectives of Jewish and non-Jewish people", "confidence": "high",
      "edited": False, "original": None, "domain": "knowledge"},
-    {"id": "VC2HH10K23", "code": "VC2HH10K23", "kind": "outcome", "parentId": "strand-f467a13d6bd18506",
+    {"id": "VC2HH10K23", "code": "VC2HH10K23", "kind": "outcome", "parentId": "strand-fe388f9a6394c622",
      "title": None, "text": "different interpretations and debates about the significance of the world wars",
      "confidence": "high", "edited": False, "original": None, "domain": "knowledge"},
     {"id": "strand-2197be9f7aedcbcf", "code": None, "title": "concepts and skills", "text": None,
@@ -180,8 +191,14 @@ NODES = [
 ]
 
 TOPICS = [
-    {"id": TOPIC_WAR, "title": "Investigations: Australians at War 1914-1945", "text": None, "order": 0,
+    {"id": TOPIC_WAR, "title": "Knowledge", "text": None, "order": 0,
      "coverage": [
+         {"nodeId": "VC2HH10K01", "coverage": "full", "note": None},
+         {"nodeId": "VC2HH10K02", "coverage": "full", "note": None},
+         {"nodeId": "VC2HH10K03", "coverage": "full", "note": None},
+         {"nodeId": "VC2HH10K04", "coverage": "full", "note": None},
+         {"nodeId": "VC2HH10K05", "coverage": "full", "note": None},
+         {"nodeId": "VC2HH10K06", "coverage": "full", "note": None},
          {"nodeId": "VC2HH10K13", "coverage": "full", "note": None},
          {"nodeId": "VC2HH10K14", "coverage": "full", "note": None},
          {"nodeId": "VC2HH10K15", "coverage": "full", "note": None},
@@ -657,10 +674,17 @@ def main():
             },
             "description": "Victorian Curriculum F-10 Version 2.0, History, Level 10.",
             "ingestedAt": FIXED_CREATED,
+            # What the fixed importer records via detect_unit_scope() /
+            # _prescan_unit_name() — the teacher-entered meta.unitName is
+            # never clobbered by this; suggestedName is importer-derived,
+            # separate from the teacher's own field.
+            "suggestedName": "Australians at War 1914-1945",
         },
-        # nodes: fixed at 32 — the full ingested outcome set for this unit's
-        # two strands (Australians at War + concepts/skills), unchanged in
-        # count from the original ingest, typo'd strand titles fixed in place.
+        # nodes: 31 — one root + 6 strands + 24 outcomes, matching the FIXED
+        # importer's output (verified via `ingest.py --report`): a single
+        # "Knowledge" strand (domain "knowledge", from the profile's
+        # strand_map) holds all 15 K-codes — no nameless container strand,
+        # no strand carrying the unit's own name.
         "nodes": NODES,
         # topics: 6 — matches the 6 ingested strands; unlocks topic-status
         # and coverage-grid grouping by strand rather than a single bucket.

@@ -27,7 +27,8 @@
       }
     },
     "description": "Victorian Curriculum F-10 Version 2.0, History, Level 10.",
-    "ingestedAt": "2026-07-14T00:00:00.000Z"
+    "ingestedAt": "2026-07-14T00:00:00.000Z",
+    "suggestedName": "Australians at War 1914-1945"
   },
   "nodes": [
     {
@@ -43,22 +44,22 @@
       "domain": null
     },
     {
-      "id": "strand-083b674764d7577c",
+      "id": "strand-fe388f9a6394c622",
       "code": null,
-      "title": null,
+      "title": "Knowledge",
       "text": null,
       "kind": "strand",
       "parentId": "root",
-      "confidence": "low",
+      "confidence": "high",
       "edited": false,
       "original": null,
-      "domain": null
+      "domain": "knowledge"
     },
     {
       "id": "VC2HH10K01",
       "code": "VC2HH10K01",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "causes and consequences of the Industrial Revolution, the movement of people and European imperialism",
       "confidence": "high",
@@ -70,7 +71,7 @@
       "id": "VC2HH10K02",
       "code": "VC2HH10K02",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "significant ideas and developments and their impacts on societies",
       "confidence": "high",
@@ -82,7 +83,7 @@
       "id": "VC2HH10K03",
       "code": "VC2HH10K03",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "significant developments and events since 1945 that have contributed to change",
       "confidence": "high",
@@ -94,7 +95,7 @@
       "id": "VC2HH10K04",
       "code": "VC2HH10K04",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the contribution of significant movements for social and political change",
       "confidence": "high",
@@ -106,7 +107,7 @@
       "id": "VC2HH10K05",
       "code": "VC2HH10K05",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the significant events, individuals and groups in the women’s movement",
       "confidence": "high",
@@ -118,7 +119,7 @@
       "id": "VC2HH10K06",
       "code": "VC2HH10K06",
       "kind": "outcome",
-      "parentId": "strand-083b674764d7577c",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the continuing efforts to create change in the civil rights movement",
       "confidence": "high",
@@ -127,22 +128,10 @@
       "domain": "knowledge"
     },
     {
-      "id": "strand-f467a13d6bd18506",
-      "code": null,
-      "title": "Investigations: Australians at War 1914-1945",
-      "text": null,
-      "kind": "strand",
-      "parentId": "root",
-      "confidence": "high",
-      "edited": false,
-      "original": null,
-      "domain": null
-    },
-    {
       "id": "VC2HH10K13",
       "code": "VC2HH10K13",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the causes of World War I and World War II",
       "confidence": "high",
@@ -154,7 +143,7 @@
       "id": "VC2HH10K14",
       "code": "VC2HH10K14",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, enlisted to fight",
       "confidence": "high",
@@ -166,7 +155,7 @@
       "id": "VC2HH10K15",
       "code": "VC2HH10K15",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "significant places where Australians fought",
       "confidence": "high",
@@ -178,7 +167,7 @@
       "id": "VC2HH10K16",
       "code": "VC2HH10K16",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the experiences and perspectives of those who fought or were affected by the world wars",
       "confidence": "high",
@@ -190,7 +179,7 @@
       "id": "VC2HH10K17",
       "code": "VC2HH10K17",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "significant events and turning points of the world wars",
       "confidence": "high",
@@ -202,7 +191,7 @@
       "id": "VC2HH10K18",
       "code": "VC2HH10K18",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "continuities and changes in the nature of warfare",
       "confidence": "high",
@@ -214,7 +203,7 @@
       "id": "VC2HH10K20",
       "code": "VC2HH10K20",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the causes of the Holocaust",
       "confidence": "high",
@@ -226,7 +215,7 @@
       "id": "VC2HH10K22",
       "code": "VC2HH10K22",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "the diverse experiences and perspectives of Jewish and non-Jewish people",
       "confidence": "high",
@@ -238,7 +227,7 @@
       "id": "VC2HH10K23",
       "code": "VC2HH10K23",
       "kind": "outcome",
-      "parentId": "strand-f467a13d6bd18506",
+      "parentId": "strand-fe388f9a6394c622",
       "title": null,
       "text": "different interpretations and debates about the significance of the world wars",
       "confidence": "high",
@@ -418,10 +407,40 @@
   "topics": [
     {
       "id": "topic-b39d1544ae23c5fa",
-      "title": "Investigations: Australians at War 1914-1945",
+      "title": "Knowledge",
       "text": null,
       "order": 0,
       "coverage": [
+        {
+          "nodeId": "VC2HH10K01",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K02",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K03",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K04",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K05",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K06",
+          "coverage": "full",
+          "note": null
+        },
         {
           "nodeId": "VC2HH10K13",
           "coverage": "full",

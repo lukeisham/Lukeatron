@@ -35,12 +35,12 @@ import { newId } from './ids.js';
  * Called by every build that renders a big idea (coverage-grid, arbor-tree,
  * lesson-plan-document, crib-sheet, etc.). Single source of truth.
  *
- * Calls curriculum-editor's resolveDomain(nodeId) to walk to strand ancestor
+ * Calls curriculum-editor's resolveDomain(nodeId, nodes) to walk to strand ancestor
  * if needed (FR-CEB-5).
  *
  * @param {string} bigIdeaId - ID of the big idea to derive glyphs for
  * @param {Node[]} nodes - Full curriculum nodes array
- * @param {Function} resolveDomain - curriculum-editor's resolveDomain(nodeId) function
+ * @param {Function} resolveDomain - curriculum-editor's resolveDomain(nodeId, nodes) function
  * @returns {Set<string>} Union of domain values (may be empty, size 1, or size 2)
  *                        Possible values: "skill", "knowledge"
  */
@@ -60,7 +60,7 @@ export function computeGlyphSet(bigIdeaId, nodes, resolveDomain) {
     if (!entry.nodeId) continue;
 
     // Resolve domain via curriculum-editor (FR-CEB-5)
-    const domain = resolveDomain(entry.nodeId);
+    const domain = resolveDomain(entry.nodeId, nodes);
     if (domain) {
       domains.add(domain);
     }

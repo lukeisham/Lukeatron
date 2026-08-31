@@ -14,6 +14,7 @@ import { LessonsAndTopicsView } from './lessons-and-topics.js';
 import { renderLessonPlan } from './lesson-plan-document.js';
 import { UnitAssessmentDocument } from './unit-assessment-document.js';
 import MarkingMatrix from './marking-matrix.js';
+import { openPopulateFromCurriculumModal } from './marking-matrix-populate.js';
 import { CribSheet } from './crib-sheet.js';
 import { ResourcesPage } from './resources-page.js';
 import { getBigIdeas, initBigIdeasModule, addBigIdea } from './bigidea-list.js';
@@ -425,7 +426,35 @@ function mountMarkingMatrix(main, unit) {
       getCSVSource: () => ({ unit, markingMatrix: matrix })
     })
   );
+  main.appendChild(buildPopulateFromCurriculumButton(matrix));
   main.appendChild(grid);
+}
+
+/**
+ * "+ Populate from Curriculum" control (criteria-populate-the-marking-matrix
+ * feature): lets a teacher choose curriculum outcomes and add them as rubric
+ * rows, instead of retyping curriculum criteria into the matrix by hand.
+ * Same "re-mount after mutation" pattern as buildBigIdeaAndLessonToolbar.
+ * @param {MarkingMatrix} matrix
+ * @returns {HTMLElement}
+ */
+function buildPopulateFromCurriculumButton(matrix) {
+  const wrap = document.createElement('div');
+  wrap.className = 'app-bigidea-toolbar';
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'app-toolbar-button';
+  btn.textContent = '+ Populate from Curriculum';
+  btn.addEventListener('click', async () => {
+    const result = await openPopulateFromCurriculumModal(matrix);
+    if (result) {
+      mountPart(currentPartId);
+    }
+  });
+  wrap.appendChild(btn);
+
+  return wrap;
 }
 
 function mountCribSheet(main, unit) {

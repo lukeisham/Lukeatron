@@ -16,13 +16,17 @@
  *
  * @param {Object[]} allNodes - Full curriculum nodes array
  * @param {string[]} currentNodeIds - Currently selected node IDs (pre-fill)
+ * @param {string[]} [allowedKinds=['outcome','task']] - node kinds selectable;
+ *   defaults to the FR-LPG-1 outcome/task set. Callers that only want, e.g.,
+ *   coded outcome criteria (never strands or tasks) pass ['outcome'].
  * @returns {Promise<string[]>} Selected node IDs on confirm, [] on cancel
  */
-export async function openNodePicker(allNodes, currentNodeIds = []) {
+export async function openNodePicker(allNodes, currentNodeIds = [], allowedKinds = ['outcome', 'task']) {
   return new Promise((resolve) => {
-    // Filter to selectable nodes (outcome/task only, per FR-LPG-1)
+    // Filter to selectable nodes (outcome/task only, per FR-LPG-1 — narrower
+    // when the caller passes a more specific allowedKinds)
     const selectableNodes = (allNodes || []).filter(
-      (n) => n.kind === 'outcome' || n.kind === 'task'
+      (n) => allowedKinds.includes(n.kind)
     );
 
     // Create a set for quick lookup

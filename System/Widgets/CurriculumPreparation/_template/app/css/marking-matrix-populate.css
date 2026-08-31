@@ -1,0 +1,37 @@
+/**
+ * marking-matrix-populate.css — "Populate from curriculum" modal
+ *
+ * Reuses the shared modal shell (.lesson-generator-modal/-content,
+ * .generator-section/-label/-help-text, .btn-primary/-secondary,
+ * .validation-message) from lesson-plan-generator.css; this file only adds
+ * the handful of classes specific to this modal.
+ *
+ * Under 150 lines, one job (CSS-1). Uses only variables.css tokens (CSS-2).
+ */
+
+.populate-tier-select {
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-solid) var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-system);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-white);
+}
+
+.populate-summary {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-md);
+  line-height: 1.4;
+}
+
+/* Amber "attention, not error" tone — reuses the coverage-grid gap-taught
+   palette rather than the red validation-error tone (AC: adding rows to an
+   already-scored matrix is expected, teacher-confirmable behaviour, not a
+   mistake). */
+.validation-warning {
+  background: var(--color-gap-taught-bg);
+  color: var(--color-gap-taught-ink);
+  border: var(--border-solid) var(--color-gap-taught-border);
+}

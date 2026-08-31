@@ -18,6 +18,15 @@
 
 import { DocumentShell, pxToUserUnits } from './document-shell.js';
 import { newId } from './ids.js';
+import { decodeImageDimensions } from './image-loader.js';
+
+// bundle-server's GET /api/images/<id> never 404s on a missing file — it
+// silently falls back to a 1x1 transparent PNG placeholder (serve.py
+// _send_placeholder_image) so a broken image path fails silently rather
+// than erroring. Detect that exact fallback by its decoded pixel size so a
+// genuinely-missing file still renders the visible "Image not loaded" box
+// instead of a blank 1x1 image stretched across the item's frame.
+const SERVER_PLACEHOLDER_DIMENSIONS = { width: 1, height: 1 };
 
 /**
  * Escape HTML special characters to prevent XSS.
@@ -286,14 +295,17 @@ export class ResourcesPage {
   }
 
   /**
-   * Get the images map for rendering (used by render functions).
-   * @returns {Object} Map of imageId -> blob
+   * Get the images manifest map for rendering (used by render functions).
+   * unit.images[] holds manifest rows only ({id, filename, mimeType, ...}) —
+   * the actual bytes live on disk and are served at GET /api/images/<id>
+   * (fetched lazily per item via localStore.fetchImage(), not read here).
+   * @returns {Object} Map of imageId -> manifest row (or undefined if absent)
    */
   getImagesMap() {
     const imagesMap = {};
     if (this.unit.images && Array.isArray(this.unit.images)) {
       this.unit.images.forEach(img => {
-        imagesMap[img.id] = img.blob || null;
+        imagesMap[img.id] = img;
       });
     }
     return imagesMap;
@@ -440,21 +452,67 @@ export class ResourcesPage {
   /**
    * Render an image item.
    * Uses DocumentShell.renderImage() primitive for consistency.
+   *
+   * unit.images[] is a manifest only — no blob field, never has been. The
+   * real bytes are fetched lazily from GET /api/images/<id> via
+   * localStore.fetchImage(), which already returns null on a missing file
+   * (404) so the placeholder path below covers both "no manifest row" and
+   * "manifest row but file absent" the same way. A placeholder renders
+   * immediately (covers the async in-flight case); if the fetch resolves
+   * with real bytes, the placeholder is swapped for the real image.
    * @private
    * @returns {number} Height used
    */
   _renderImageItem(item, svgElement, x, y, maxWidth, imagesMap) {
-    const imageBlob = imagesMap[item.imageId] || null;
     const width = item.width || 50;
     const height = item.height || 50;
 
-    // Call DocumentShell's renderImage method
+    // Dummy DocumentShell instance — only used for its renderImage() primitive
     const shell = new DocumentShell(
       { pages: [{ items: [] }] },
       () => {}, // Dummy render function
       'portrait'
     );
-    shell.renderImage(imageBlob, x, y, width, height, svgElement);
+
+    // Render the placeholder synchronously so the page always has something
+    // in place immediately, then swap it for the real image once fetched.
+    shell.renderImage(null, x, y, width, height, svgElement);
+    const placeholderGroup = svgElement.lastElementChild;
+
+    // LocalStore delegates image I/O to its ServerClient (this.localStore.serverClient);
+    // LocalStore itself has no fetchImage wrapper, so call through to serverClient.
+    const imageFetcher = this.localStore && this.localStore.serverClient;
+    const manifestRow = imagesMap[item.imageId];
+    if (manifestRow && imageFetcher && typeof imageFetcher.fetchImage === 'function') {
+      imageFetcher.fetchImage(item.imageId)
+        .then(async blob => {
+          if (!blob) {
+            return; // File genuinely missing on disk — keep the placeholder
+          }
+
+          // Guard against the server's silent 1x1 fallback (see comment above).
+          try {
+            const dims = await decodeImageDimensions(blob);
+            if (
+              dims.width === SERVER_PLACEHOLDER_DIMENSIONS.width &&
+              dims.height === SERVER_PLACEHOLDER_DIMENSIONS.height
+            ) {
+              return; // Server-side placeholder, not a real image — keep ours
+            }
+          } catch {
+            return; // Undecodable — keep the placeholder rather than guess
+          }
+
+          if (placeholderGroup && placeholderGroup.parentNode === svgElement) {
+            svgElement.removeChild(placeholderGroup);
+          }
+          shell.renderImage(blob, x, y, width, height, svgElement);
+        })
+        .catch(err => {
+          // Never stall silently (JS-2); placeholder already covers the UI.
+          console.error(`Failed to load image ${item.imageId}:`, err);
+        });
+    }
 
     return height + 2;
   }

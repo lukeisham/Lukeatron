@@ -36,6 +36,76 @@ class MockLocalStore {
   }
 }
 
+// ===== Minimal mock DOM for render() tests (hand-built, no jsdom) =====
+// Mirrors the mock used by tests/test_document-shell.js, extended with
+// removeChild/lastElementChild/parentNode so the placeholder-swap logic in
+// resources-page.js's _renderImageItem can be exercised.
+class MockSVGElement {
+  constructor(tag) {
+    this.tag = tag;
+    this.attributes = {};
+    this.attributesNS = {};
+    this.children = [];
+    this.classList = { add: () => {} };
+    this.textContent = '';
+    this.parentNode = null;
+  }
+
+  setAttribute(name, value) {
+    this.attributes[name] = value;
+  }
+
+  getAttribute(name) {
+    return this.attributes[name];
+  }
+
+  setAttributeNS(ns, name, value) {
+    this.attributesNS[`${ns}:${name}`] = value;
+  }
+
+  getAttributeNS(ns, name) {
+    return this.attributesNS[`${ns}:${name}`];
+  }
+
+  appendChild(child) {
+    if (child) {
+      child.parentNode = this;
+      this.children.push(child);
+    }
+  }
+
+  removeChild(child) {
+    const idx = this.children.indexOf(child);
+    if (idx !== -1) {
+      this.children.splice(idx, 1);
+      child.parentNode = null;
+    }
+  }
+
+  get lastElementChild() {
+    return this.children[this.children.length - 1] || null;
+  }
+
+  remove() {
+    // no-op for mock
+  }
+}
+
+function installMockDom() {
+  global.document = {
+    head: { appendChild: () => {} },
+    body: { appendChild: () => {} },
+    createElementNS: (ns, tag) => new MockSVGElement(tag),
+    createElement: (tag) => new MockSVGElement(tag),
+    createTextNode: (text) => ({ textContent: text }),
+    getElementById: () => null
+  };
+  global.URL = {
+    createObjectURL: () => 'blob:mock-url',
+    revokeObjectURL: () => {}
+  };
+}
+
 describe('resources-page', () => {
   // ===== Import Test =====
   test('module imports cleanly', () => {
@@ -323,6 +393,151 @@ describe('resources-page', () => {
       } finally {
         global.fetch = originalFetch;
       }
+    });
+  });
+
+  // ===== Image Rendering Regression (bundle-server storage model) =====
+  // unit.images[] is a manifest only ({id, filename, mimeType, width, height,
+  // byteSize, addedAt}) — it never carries the bytes. Bytes are fetched from
+  // GET /api/images/<id> via localStore.serverClient.fetchImage(). Guards
+  // against regressing to the old (always-undefined) img.blob lookup.
+  describe('image rendering (manifest + lazy fetch, not img.blob)', () => {
+    let savedDocument;
+    let savedURL;
+    let savedImage;
+
+    before(() => {
+      savedDocument = global.document;
+      savedURL = global.URL;
+      savedImage = global.Image;
+      installMockDom();
+    });
+
+    after(() => {
+      global.document = savedDocument;
+      global.URL = savedURL;
+      global.Image = savedImage;
+    });
+
+    test('getImagesMap returns manifest rows, not a blob field', () => {
+      const store = new MockLocalStore();
+      const unit = {
+        id: 'unit-img-map',
+        resourcesPage: null,
+        images: [{ id: 'aif-poster', filename: 'aif-poster.png', mimeType: 'image/png', width: 40, height: 30 }]
+      };
+      const page = new ResourcesPage(store, unit);
+      const map = page.getImagesMap();
+
+      assert.ok(map['aif-poster'], 'manifest row should be present under its id');
+      assert.strictEqual(map['aif-poster'].filename, 'aif-poster.png');
+      assert.strictEqual(map['aif-poster'].blob, undefined, 'manifest rows never carry a blob field');
+    });
+
+    test('renders a placeholder immediately and never fetches for an item with no manifest row', async () => {
+      const store = new MockLocalStore();
+      const unit = {
+        id: 'unit-img-noentry',
+        images: [],
+        resourcesPage: {
+          id: 'rp-1',
+          items: [{ id: 'ri-1', kind: 'image', order: 1, imageId: 'ghost', x: 10, y: 10, width: 50, height: 50, note: '' }]
+        }
+      };
+      let fetchCalled = false;
+      store.serverClient = { fetchImage: async () => { fetchCalled = true; return null; } };
+      const page = new ResourcesPage(store, unit);
+
+      const shell = page.render();
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      assert.strictEqual(fetchCalled, false, 'should never fetch bytes for an id absent from the manifest');
+      const svg = shell.svgPages[0];
+      const group = svg.children.find(c => c.tag === 'g');
+      assert.ok(group, 'an image group should be rendered');
+      const placeholderRect = group.children.find(c => c.classList && c.attributes.stroke === 'var(--color-border-dashed)');
+      assert.ok(placeholderRect, 'placeholder box should render for a missing manifest row');
+    });
+
+    test('fetches bytes via localStore.serverClient.fetchImage and swaps the placeholder for the real image', async () => {
+      const store = new MockLocalStore();
+      const unit = {
+        id: 'unit-img-real',
+        images: [{ id: 'aif-poster', filename: 'aif-poster.png', mimeType: 'image/png', width: 40, height: 30 }],
+        resourcesPage: {
+          id: 'rp-2',
+          items: [{ id: 'ri-2', kind: 'image', order: 1, imageId: 'aif-poster', x: 10, y: 10, width: 50, height: 50, note: '' }]
+        }
+      };
+
+      const fakeBlob = new Blob(['real-bytes']);
+      let fetchedId = null;
+      store.serverClient = {
+        fetchImage: async (id) => {
+          fetchedId = id;
+          return fakeBlob;
+        }
+      };
+
+      // Real (non-1x1) decoded dimensions for the fetched blob.
+      global.Image = class {
+        set src(_v) {
+          queueMicrotask(() => this.onload && this.onload());
+        }
+        get naturalWidth() { return 40; }
+        get naturalHeight() { return 30; }
+      };
+
+      const page = new ResourcesPage(store, unit);
+      const shell = page.render();
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      assert.strictEqual(fetchedId, 'aif-poster', 'should fetch the item\'s own imageId');
+      const svg = shell.svgPages[0];
+      const group = svg.children.find(c => c.tag === 'g');
+      const imageEl = group.children.find(c => c.tag === 'image');
+      assert.ok(imageEl, 'real <image> element should replace the placeholder once bytes arrive');
+      const placeholderRect = group.children.find(c => c.attributes && c.attributes.stroke === 'var(--color-border-dashed)');
+      assert.strictEqual(placeholderRect, undefined, 'placeholder should be removed once the real image renders');
+    });
+
+    test('treats the server\'s silent 1x1 fallback as missing and keeps the placeholder', async () => {
+      // bundle-server's GET /api/images/<id> never 404s on a missing file — it
+      // returns a 1x1 transparent PNG instead (serve.py _send_placeholder_image).
+      // A manifest row whose file is absent from disk must still show the
+      // visible "Image not loaded" box, not a blank stretched 1x1 image.
+      const store = new MockLocalStore();
+      const unit = {
+        id: 'unit-img-serverfallback',
+        images: [{ id: 'missing-file', filename: 'missing-file.png', mimeType: 'image/png', width: 40, height: 30 }],
+        resourcesPage: {
+          id: 'rp-3',
+          items: [{ id: 'ri-3', kind: 'image', order: 1, imageId: 'missing-file', x: 10, y: 10, width: 50, height: 50, note: '' }]
+        }
+      };
+
+      const serverPlaceholderBlob = new Blob(['1x1-png-bytes']);
+      store.serverClient = { fetchImage: async () => serverPlaceholderBlob };
+
+      // Server's 1x1 transparent-PNG fallback decodes to exactly 1x1.
+      global.Image = class {
+        set src(_v) {
+          queueMicrotask(() => this.onload && this.onload());
+        }
+        get naturalWidth() { return 1; }
+        get naturalHeight() { return 1; }
+      };
+
+      const page = new ResourcesPage(store, unit);
+      const shell = page.render();
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      const svg = shell.svgPages[0];
+      const group = svg.children.find(c => c.tag === 'g');
+      const imageEl = group.children.find(c => c.tag === 'image');
+      assert.strictEqual(imageEl, undefined, 'the 1x1 server fallback must not render as a real image');
+      const placeholderRect = group.children.find(c => c.attributes && c.attributes.stroke === 'var(--color-border-dashed)');
+      assert.ok(placeholderRect, 'the visible placeholder should remain for a genuinely missing file');
     });
   });
 });

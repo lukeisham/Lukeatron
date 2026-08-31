@@ -103,7 +103,7 @@ export class CoverageGrid {
    */
   getAssessmentsCoveringNode(nodeId) {
     if (this.unit.unitAssessment) {
-      // Check finalAssessment
+      // Check majorAssessment
       if (this.unit.unitAssessment.coverage &&
           this.unit.unitAssessment.coverage.some(cov => cov.nodeId === nodeId)) {
         return true;
@@ -174,21 +174,21 @@ export class CoverageGrid {
   }
 
   /**
-   * Get assessments (finalAssessment first, then miniAssessments[])
+   * Get assessments (majorAssessment first, then miniAssessments[])
    * Wraps assessment objects with consistent interface
    */
   getAssessments() {
     const assessments = [];
 
-    // Final assessment: the unitAssessment itself has a coverage[] array (FR-CG-15/16)
+    // Major assessment: the unitAssessment itself has a coverage[] array (FR-CG-15/16)
     if (this.unit.unitAssessment) {
-      const finalAssessment = this.unit.unitAssessment;
+      const majorAssessment = this.unit.unitAssessment;
       assessments.push({
-        id: finalAssessment.id || 'final-assessment',
-        name: finalAssessment.title || 'Final Assessment',
-        coverage: finalAssessment.coverage || [],
-        isFinal: true,
-        __ref: finalAssessment  // Back-reference to mutate in place
+        id: majorAssessment.id || 'major-assessment',
+        name: majorAssessment.title || 'Major Assessment',
+        coverage: majorAssessment.coverage || [],
+        isMajor: true,
+        __ref: majorAssessment  // Back-reference to mutate in place
       });
     }
 
@@ -199,7 +199,7 @@ export class CoverageGrid {
           id: mini.id,
           name: mini.name || mini.title || 'Mini Assessment',
           coverage: mini.coverage || [],
-          isFinal: false,
+          isMajor: false,
           __ref: mini  // Back-reference to mutate in place
         });
       }
@@ -302,7 +302,7 @@ export class CoverageGrid {
 
   /**
    * Internal method to write to assessment's coverage[] via local-store (INV-DM-12, FR-CG-17)
-   * Handles both finalAssessment and miniAssessments
+   * Handles both majorAssessment and miniAssessments
    * Never writes to node or big idea (forward-only pattern)
    */
   setAssessmentCoverageEntry(assessmentId, nodeId, coverage, note = null) {

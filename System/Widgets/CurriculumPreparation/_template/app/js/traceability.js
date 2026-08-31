@@ -67,8 +67,8 @@ export function buildReverseIndex(unit) {
 
   // Map assessments for quick lookup
   if (unit.unitAssessment) {
-    if (unit.unitAssessment.finalAssessment) {
-      assessmentMap[unit.unitAssessment.id] = unit.unitAssessment.finalAssessment;
+    if (unit.unitAssessment.majorAssessment) {
+      assessmentMap[unit.unitAssessment.id] = unit.unitAssessment.majorAssessment;
     }
     if (unit.unitAssessment.miniAssessments && Array.isArray(unit.unitAssessment.miniAssessments)) {
       for (const mini of unit.unitAssessment.miniAssessments) {
@@ -123,10 +123,10 @@ export function buildReverseIndex(unit) {
 
       // lesson.assessmentLink → unitAssessmentToLessons
       if (lesson.assessmentLink) {
-        // Final assessment link
-        if (lesson.assessmentLink.finalAssessment === true) {
+        // Major assessment link
+        if (lesson.assessmentLink.majorAssessment === true) {
           if (!unit.unitAssessment || !unit.unitAssessment.id) {
-            throw new Error(`Dangling reference: lesson ${lesson.id} links to final assessment but no finalAssessment exists (INV-DM-4 violated)`);
+            throw new Error(`Dangling reference: lesson ${lesson.id} links to major assessment but no majorAssessment exists (INV-DM-4 violated)`);
           }
           const assessmentId = unit.unitAssessment.id;
           if (!unitAssessmentToLessons.has(assessmentId)) {
@@ -270,7 +270,7 @@ export function renderCode(code, isClickable = true, options = {}) {
 }
 
 /**
- * Find all assessments (final and mini) not referenced by any lesson.
+ * Find all assessments (major and mini) not referenced by any lesson.
  * Implements FR-TRB-7 (unreferenced assessment detection).
  *
  * @param {Object} unit - The loaded unit.json
@@ -284,11 +284,11 @@ export function findUnreferencedAssessments(unit) {
   const unreferenced = [];
   const reverseIndex = buildReverseIndex(unit);
 
-  // Check final assessment
+  // Check major assessment
   if (unit.unitAssessment && unit.unitAssessment.id) {
-    const finalId = unit.unitAssessment.id;
-    if (!reverseIndex.unitAssessmentToLessons.has(finalId)) {
-      unreferenced.push(finalId);
+    const majorId = unit.unitAssessment.id;
+    if (!reverseIndex.unitAssessmentToLessons.has(majorId)) {
+      unreferenced.push(majorId);
     }
   }
 

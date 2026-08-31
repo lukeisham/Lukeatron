@@ -83,7 +83,7 @@ export function generateLesson(
     practiceQuestion: practiceQuestion,
     assessmentLink: {
       miniAssessmentIds: [],
-      finalAssessment: false,
+      majorAssessment: false,
       note: null
     },
     tiers: {

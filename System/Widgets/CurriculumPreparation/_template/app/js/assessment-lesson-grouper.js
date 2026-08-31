@@ -10,12 +10,12 @@ import { resolveTopic } from './bigidea-list.js';
  *
  * @param {Array} allLessons - unit.lessons[]
  * @param {Array} allMiniAssessments - unit.miniAssessments[] (may be undefined/empty)
- * @param {Object|undefined} finalAssessment - unit.unitAssessment (may be undefined)
+ * @param {Object|undefined} majorAssessment - unit.unitAssessment (may be undefined)
  * @param {Array} allBigIdeas - unit.bigIdeas[]
  * @returns {Object} { topicId: [item, item, ...], ... }
- *   Each item has { id, type: "lesson"|"mini"|"final", completed, ... }
+ *   Each item has { id, type: "lesson"|"mini"|"major", completed, ... }
  */
-export function groupItemsByTopic(allLessons, allMiniAssessments, finalAssessment, allBigIdeas) {
+export function groupItemsByTopic(allLessons, allMiniAssessments, majorAssessment, allBigIdeas) {
   const topicMap = {};
 
   // Add all lessons
@@ -61,21 +61,21 @@ export function groupItemsByTopic(allLessons, allMiniAssessments, finalAssessmen
     }
   }
 
-  // Add final assessment
-  if (finalAssessment && finalAssessment.id) {
-    const topicId = resolveTopic(finalAssessment.id, [finalAssessment], allBigIdeas);
+  // Add major assessment
+  if (majorAssessment && majorAssessment.id) {
+    const topicId = resolveTopic(majorAssessment.id, [majorAssessment], allBigIdeas);
     if (topicId) {
       if (!topicMap[topicId]) {
         topicMap[topicId] = [];
       }
       topicMap[topicId].push({
-        id: finalAssessment.id,
-        type: 'final',
-        name: finalAssessment.name || 'Final Assessment',
-        completed: finalAssessment.finalAssessmentCompleted || false,
-        date: finalAssessment.finalAssessmentDate || null,
-        lessonPeriod: finalAssessment.finalAssessmentPeriod || null,
-        bigIdeaId: finalAssessment.bigIdeaId,
+        id: majorAssessment.id,
+        type: 'major',
+        name: majorAssessment.name || 'Major Assessment',
+        completed: majorAssessment.majorAssessmentCompleted || false,
+        date: majorAssessment.majorAssessmentDate || null,
+        lessonPeriod: majorAssessment.majorAssessmentPeriod || null,
+        bigIdeaId: majorAssessment.bigIdeaId,
       });
     }
   }

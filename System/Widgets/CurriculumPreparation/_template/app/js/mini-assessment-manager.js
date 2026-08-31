@@ -10,18 +10,18 @@ import { findReferencingLessons } from './assessment-lesson-links.js';
 import { openBigIdeaPicker } from './big-idea-picker.js';
 
 /**
- * Data-layer delete guard (FR-UAB-16). The final assessment can never be
+ * Data-layer delete guard (FR-UAB-16). The major assessment can never be
  * deleted or duplicated — this holds regardless of whether the call comes
  * from a UI control or a programmatic caller.
  *
- * @param {Object} unitAssessment - { finalAssessment, miniAssessments[] }
- * @param {string} kind - "final" | "mini"
- * @param {string} [id] - mini assessment id (ignored for kind="final")
+ * @param {Object} unitAssessment - { majorAssessment, miniAssessments[] }
+ * @param {string} kind - "major" | "mini"
+ * @param {string} [id] - mini assessment id (ignored for kind="major")
  * @returns {{ ok: boolean, reason?: string }}
  */
 export function deleteAssessment(unitAssessment, kind, id) {
-  if (kind === 'final') {
-    return { ok: false, reason: 'The final assessment cannot be deleted.' };
+  if (kind === 'major') {
+    return { ok: false, reason: 'The major assessment cannot be deleted.' };
   }
   const idx = (unitAssessment.miniAssessments || []).findIndex(m => m.id === id);
   if (idx < 0) {
@@ -34,7 +34,7 @@ export function deleteAssessment(unitAssessment, kind, id) {
 /**
  * Render a mini-assessment manager UI.
  *
- * @param {Object} unitAssessment - { finalAssessment, miniAssessments[] }
+ * @param {Object} unitAssessment - { majorAssessment, miniAssessments[] }
  * @param {Array} allLessons - All lessons (for refcount checks)
  * @param {Array} allBigIdeas - All big ideas (for picker)
  * @param {Function} onUpdate - Callback(updatedUnitAssessment) after any change

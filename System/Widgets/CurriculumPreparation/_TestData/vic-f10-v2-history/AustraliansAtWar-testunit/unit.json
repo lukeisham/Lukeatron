@@ -1,1 +1,1623 @@
-{"schemaVersion":"1.0.0","generatedFrom":"seed-testunit.py","meta":{"subject":"History","level":"Year 10","unitName":"Australians at War 1914-1945","teacher":"Luke Isham","dateCreated":"2026-07-14T00:00:00.000Z","dateModified":"2026-08-30T14:30:16.131Z"},"curriculum":{"profileId":"vic-f10-v2","name":"Victorian Curriculum F-10 Version 2.0","jurisdiction":"VIC","version":"2.0","sourceRef":"https://victoriancurriculum.vcaa.vic.edu.au/","licence":"CC BY 4.0","attribution":"© VCAA","labels":{"strand":"Strand","outcome":"Criterion","task":"Task","cribSheetHalves":{"upper":"Know","lower":"Do"}},"description":"Victorian Curriculum F-10 Version 2.0, History, Level 10.","ingestedAt":"2026-07-14T00:00:00.000Z"},"nodes":[{"id":"root","code":null,"title":"Unit","text":null,"kind":"strand","parentId":null,"confidence":"high","edited":false,"original":null,"domain":null},{"id":"strand-083b674764d7577c","code":null,"title":null,"text":null,"kind":"strand","parentId":"root","confidence":"low","edited":false,"original":null,"domain":null},{"id":"VC2HH10K01","code":"VC2HH10K01","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"causes and consequences of the Industrial Revolution, the movement of people and European imperialism","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K02","code":"VC2HH10K02","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"significant ideas and developments and their impacts on societies","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K03","code":"VC2HH10K03","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"significant developments and events since 1945 that have contributed to change","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K04","code":"VC2HH10K04","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"the contribution of significant movements for social and political change","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K05","code":"VC2HH10K05","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"the significant events, individuals and groups in the women’s movement","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K06","code":"VC2HH10K06","kind":"outcome","parentId":"strand-083b674764d7577c","title":null,"text":"the continuing efforts to create change in the civil rights movement","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"strand-f467a13d6bd18506","code":null,"title":"Investigations: Australians at War 1914-1945","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10K13","code":"VC2HH10K13","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"the causes of World War I and World War II","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K14","code":"VC2HH10K14","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, enlisted to fight","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K15","code":"VC2HH10K15","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"significant places where Australians fought","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K16","code":"VC2HH10K16","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"the experiences and perspectives of those who fought or were affected by the world wars","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K17","code":"VC2HH10K17","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"significant events and turning points of the world wars","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K18","code":"VC2HH10K18","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"continuities and changes in the nature of warfare","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K20","code":"VC2HH10K20","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"the causes of the Holocaust","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K22","code":"VC2HH10K22","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"the diverse experiences and perspectives of Jewish and non-Jewish people","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"VC2HH10K23","code":"VC2HH10K23","kind":"outcome","parentId":"strand-f467a13d6bd18506","title":null,"text":"different interpretations and debates about the significance of the world wars","confidence":"high","edited":false,"original":null,"domain":"knowledge"},{"id":"strand-2197be9f7aedcbcf","code":null,"title":"concepts and skills","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10S01","code":"VC2HH10S01","kind":"outcome","parentId":"strand-2197be9f7aedcbcf","title":null,"text":"formulate, refine and use historical questions to inform historical inquiry","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"VC2HH10S02","code":"VC2HH10S02","kind":"outcome","parentId":"strand-2197be9f7aedcbcf","title":null,"text":"sequence significant events, individuals, ideas, movements and developments","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"VC2HH10S03","code":"VC2HH10S03","kind":"outcome","parentId":"strand-2197be9f7aedcbcf","title":null,"text":"analyse the purpose, features, content and context of historical sources","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"VC2HH10S05","code":"VC2HH10S05","kind":"outcome","parentId":"strand-2197be9f7aedcbcf","title":null,"text":"analyse the perspectives, beliefs, values and attitudes of people in the past","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"VC2HH10S06","code":"VC2HH10S06","kind":"outcome","parentId":"strand-2197be9f7aedcbcf","title":null,"text":"evaluate historical interpretations and debates","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"strand-431f5c6a9dde150f","code":null,"title":"Continuity and change","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10S07","code":"VC2HH10S07","kind":"outcome","parentId":"strand-431f5c6a9dde150f","title":null,"text":"analyse continuity and change","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"strand-b5b749c3094a2ddf","code":null,"title":"causes and consequences","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10S08","code":"VC2HH10S08","kind":"outcome","parentId":"strand-b5b749c3094a2ddf","title":null,"text":"analyse short- and long-term causes and the intended and unintended consequences of events","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"strand-bd6fe113af802f09","code":null,"title":"Historical significance","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10S09","code":"VC2HH10S09","kind":"outcome","parentId":"strand-bd6fe113af802f09","title":null,"text":"evaluate the significance of individuals, groups, movements, ideas or events","confidence":"high","edited":false,"original":null,"domain":"skill"},{"id":"strand-137b55444a360a1f","code":null,"title":"community","text":null,"kind":"strand","parentId":"root","confidence":"high","edited":false,"original":null,"domain":null},{"id":"VC2HH10S10","code":"VC2HH10S10","kind":"outcome","parentId":"strand-137b55444a360a1f","title":null,"text":"construct sustained historical interpretations and arguments","confidence":"high","edited":false,"original":null,"domain":"skill"}],"topics":[{"id":"topic-b39d1544ae23c5fa","title":"Investigations: Australians at War 1914-1945","text":null,"order":0,"coverage":[{"nodeId":"VC2HH10K13","coverage":"full","note":null},{"nodeId":"VC2HH10K14","coverage":"full","note":null},{"nodeId":"VC2HH10K15","coverage":"full","note":null},{"nodeId":"VC2HH10K16","coverage":"full","note":null},{"nodeId":"VC2HH10K17","coverage":"full","note":null},{"nodeId":"VC2HH10K18","coverage":"full","note":null},{"nodeId":"VC2HH10K20","coverage":"full","note":null},{"nodeId":"VC2HH10K22","coverage":"full","note":null},{"nodeId":"VC2HH10K23","coverage":"full","note":null}]},{"id":"topic-7f17270932d1c79f","title":"Concepts, Skills & Historical Method","text":null,"order":1,"coverage":[{"nodeId":"VC2HH10S01","coverage":"full","note":null},{"nodeId":"VC2HH10S02","coverage":"full","note":null},{"nodeId":"VC2HH10S03","coverage":"full","note":null},{"nodeId":"VC2HH10S05","coverage":"full","note":null},{"nodeId":"VC2HH10S06","coverage":"full","note":null}]},{"id":"topic-6962bbff188c6d5d","title":"Continuity and change","text":null,"order":2,"coverage":[{"nodeId":"VC2HH10S07","coverage":"full","note":null}]},{"id":"topic-8dc874033d457402","title":"Causes and consequences","text":null,"order":3,"coverage":[{"nodeId":"VC2HH10S08","coverage":"full","note":null}]},{"id":"topic-69fef3c4ad066e1b","title":"Historical significance","text":null,"order":4,"coverage":[{"nodeId":"VC2HH10S09","coverage":"full","note":null}]},{"id":"topic-f354ee99e2bc863c","title":"Community","text":null,"order":5,"coverage":[{"nodeId":"VC2HH10S10","coverage":"full","note":null}]}],"bigIdeas":[{"id":"bi--31e71080","title":"Why nations go to war, and what it costs","text":null,"parentId":null,"order":0,"topicId":"topic-b39d1544ae23c5fa","coverage":[{"nodeId":"VC2HH10K13","coverage":"full","note":"Alliances, empire, arms race — direct causal chain to 1914."},{"nodeId":"VC2HH10K17","coverage":"full","note":"Gallipoli and the Western Front as the human cost of the causes studied."},{"nodeId":"VC2HH10K18","coverage":"partial","note":"Trench warfare covered; naval/air change-in-warfare left for extension."}]},{"id":"bi--6da9b6d1","title":"How historians know what they know","text":null,"parentId":null,"order":1,"topicId":"topic-7f17270932d1c79f","coverage":[{"nodeId":"VC2HH10S03","coverage":"full","note":"Source analysis skill drilled across every mini-assessment."},{"nodeId":"VC2HH10S06","coverage":"full","note":"Anzac legend debate is the vehicle for evaluating interpretations."}]},{"id":"bi--home-dissent","title":"Loyalty and dissent on the home front","text":null,"parentId":null,"order":2,"topicId":"topic-b39d1544ae23c5fa","coverage":[{"nodeId":"VC2HH10K14","coverage":"full","note":"Why people enlisted vs why they resisted conscription."},{"nodeId":"VC2HH10K16","coverage":"partial","note":"Women's and workers' experiences covered; internment left uncovered — deliberate gap for Coverage Grid."}]},{"id":"bi--identity","title":"How war reshaped Australian identity","text":null,"parentId":null,"order":3,"topicId":"topic-b39d1544ae23c5fa","coverage":[{"nodeId":"VC2HH10K23","coverage":"full","note":"The Anzac legend as contested national myth."}]}],"lessons":[{"id":"les--339571e3","number":1,"nodeIds":["VC2HH10K13"],"bigIdeaId":"bi--31e71080","keyExample":"The alliance system, imperial rivalry and the July Crisis of 1914 (VC2HH10K13)","practiceQuestion":"Which single alliance obligation, if removed, would most likely have prevented a continent-wide war in 1914?","assessmentLink":{"miniAssessmentIds":[],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Map of the alliance blocs in 1914; short timeline of the July Crisis.","studentTask":"Label the alliance blocs and circle the trigger event.","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Same map plus excerpts from the Triple Entente and Triple Alliance treaties.","studentTask":"Explain in two paragraphs how the alliance system turned a regional crisis into a European war.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Treaty excerpts plus a historian's extract on 'sleepwalking to war'.","studentTask":"Evaluate whether the alliance system caused the war or merely widened it.","workspaceLines":20,"imageRefs":[]}},"sidebar":"Key term: casus belli","completed":true,"date":"2026-07-20","lessonPeriod":"P3","provenance":"manual","bigIdeaNote":null,"imageRefs":[]},{"id":"les--enlist01","number":2,"nodeIds":["VC2HH10K14"],"bigIdeaId":"bi--home-dissent","keyExample":"Why Australians, including Aboriginal and Torres Strait Islander men, volunteered in 1914-15 (VC2HH10K14)","practiceQuestion":"List three different motives that led Australians to enlist, and rank them by how well-evidenced they are.","assessmentLink":{"miniAssessmentIds":["mini-70a5c085"],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Recruitment poster gallery (three posters).","studentTask":"Identify the appeal each poster makes (duty, adventure, mateship).","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Posters plus a recruitment sergeant's diary extract.","studentTask":"Compare the poster message with the lived recruiting-office experience.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Posters, diary extract, and Defence Act 1909 exclusion clauses.","studentTask":"Explain why Aboriginal men who wanted to enlist were formally barred, then often accepted anyway.","workspaceLines":20,"imageRefs":[]}},"sidebar":null,"completed":true,"date":"2026-07-21","lessonPeriod":"P3","provenance":"generated","bigIdeaNote":null,"imageRefs":[]},{"id":"les--gallipoli","number":3,"nodeIds":["VC2HH10K15","VC2HH10K17"],"bigIdeaId":"bi--6da9b6d1","keyExample":"Gallipoli: competing accounts of the 25 April 1915 landing (VC2HH10K15, VC2HH10K17)","practiceQuestion":"Two soldiers' letters describe the same landing differently. What in each source explains the difference?","assessmentLink":{"miniAssessmentIds":["mini-70a5c085"],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Two short soldier letters describing the landing.","studentTask":"Underline one factual claim and one opinion in each letter.","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Letters plus Bean's official history extract.","studentTask":"Explain why the official history and the letters differ in tone and detail.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Letters, Bean extract, and a 2015 historian's revisionist critique.","studentTask":"Argue which account is most reliable for reconstructing the landing, with reasons.","workspaceLines":20,"imageRefs":[]}},"sidebar":"Key term: provenance","completed":true,"date":"2026-07-22","lessonPeriod":"P4","provenance":"manual","bigIdeaNote":"Central case study for source reliability.","imageRefs":[]},{"id":"les--westfront","number":4,"nodeIds":["VC2HH10K16","VC2HH10K18"],"bigIdeaId":"bi--31e71080","keyExample":"Trench conditions on the Western Front and continuity/change in warfare (VC2HH10K16, VC2HH10K18)","practiceQuestion":"What changed about warfare on the Western Front between 1914 and 1918, and what stayed the same?","assessmentLink":{"miniAssessmentIds":[],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Diagram of a WWI trench system.","studentTask":"Label the trench diagram (fire trench, support, reserve, no man's land).","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Trench diagram plus a soldier's field diary on daily routine.","studentTask":"Describe a typical 24 hours in the trenches using the diary.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Diagram, diary, and casualty statistics 1914 vs 1918.","studentTask":"Analyse how tactics changed in response to trench stalemate, citing the statistics.","workspaceLines":20,"imageRefs":[]}},"sidebar":null,"completed":true,"date":"2026-07-27","lessonPeriod":"P3","provenance":"generated","bigIdeaNote":null,"imageRefs":[]},{"id":"les--conscript","number":5,"nodeIds":["VC2HH10K14","VC2HH10S08"],"bigIdeaId":"bi--home-dissent","keyExample":"The 1916 and 1917 conscription referenda and why they split the nation (VC2HH10K14, VC2HH10S08)","practiceQuestion":"Identify one short-term and one long-term cause of the conscription referenda being called.","assessmentLink":{"miniAssessmentIds":["mini-conscript"],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Yes/No campaign postcards from 1916.","studentTask":"Sort the postcards into Yes and No and note one argument each makes.","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Postcards plus Hughes's campaign speech extract.","studentTask":"Explain why the Labor Party split over conscription.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Postcards, speech extract, and referendum result tables for both votes.","studentTask":"Analyse why the No vote won twice despite government campaigning.","workspaceLines":20,"imageRefs":[]}},"sidebar":"Key term: plebiscite","completed":false,"date":"2026-07-28","lessonPeriod":"P4","provenance":"manual","bigIdeaNote":null,"imageRefs":[]},{"id":"les--homefront","number":6,"nodeIds":["VC2HH10K16","VC2HH10S05"],"bigIdeaId":"bi--home-dissent","keyExample":"Women, war work and propaganda on the Australian home front (VC2HH10K16, VC2HH10S05)","practiceQuestion":"How did propaganda posters try to shape what women should feel about the war effort?","assessmentLink":{"miniAssessmentIds":["mini-propaganda"],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Three home-front propaganda posters aimed at women.","studentTask":"Describe what each poster is asking women to do.","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Posters plus a Red Cross volunteer's letter home.","studentTask":"Compare the poster ideal with the volunteer's own account of her work.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Posters, letter, and post-war female workforce statistics.","studentTask":"Evaluate how far the war permanently changed women's roles, using the statistics.","workspaceLines":20,"imageRefs":[]}},"sidebar":null,"completed":false,"date":"2026-08-05","lessonPeriod":"P2","provenance":"generated","bigIdeaNote":null,"imageRefs":[]},{"id":"les--interwar","number":7,"nodeIds":["VC2HH10K13","VC2HH10S02"],"bigIdeaId":"bi--identity","keyExample":"Interwar Australia and rising international tensions through the 1920s-30s","practiceQuestion":"Sequence three events between 1919 and 1939 that made a second world war more likely.","assessmentLink":{"miniAssessmentIds":[],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"Interwar timeline strip (blank).","studentTask":"Place five given events on the timeline.","workspaceLines":8,"imageRefs":[]},"intermediate":{"material":"Timeline strip plus a Treaty of Versailles summary.","studentTask":"Explain how the Treaty's terms fed resentment in Germany.","workspaceLines":14,"imageRefs":[]},"advanced":{"material":"Timeline, Treaty summary, and Depression-era unemployment data.","studentTask":"Assess how far economic collapse, not just the Treaty, drove the path to a second war.","workspaceLines":20,"imageRefs":[]}},"sidebar":null,"completed":false,"date":null,"lessonPeriod":null,"provenance":"manual","bigIdeaNote":null,"imageRefs":[]},{"id":"les--kokoda","number":8,"nodeIds":[],"bigIdeaId":"bi--31e71080","keyExample":"WWII: Kokoda and the fall of Singapore — not yet mapped to a curriculum outcome","practiceQuestion":"","assessmentLink":{"miniAssessmentIds":[],"finalAssessment":false,"note":null},"tiers":{"pass":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]},"intermediate":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]},"advanced":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]}},"sidebar":null,"completed":false,"date":null,"lessonPeriod":null,"provenance":"manual","bigIdeaNote":"Placeholder — not linked to a big idea's curriculum coverage yet; deliberate orphan for orphan-cleanup testing.","imageRefs":[]}],"cribSheet":{"id":"crib-sheet-1","title":"Australians at War — Crib Sheet","orientation":"portrait","sections":[{"bigIdeaId":"bi--31e71080","half":"upper","text":"Trace the chain from alliance system to July Crisis to general war. Students should be able to name at least three alliance blocs, one flashpoint (Sarajevo), and explain why a regional dispute escalated. Link forward to the human cost studied at Gallipoli and the Western Front, and back to the Industrial Revolution's role in enabling total war (mass production of munitions, rail mobilisation, mechanised killing). Common misconception to correct: the war was not caused by any single assassination alone — the alliance obligations made a wider war structurally likely once mobilisation began.","imageRefs":[],"size":"large","provenance":"edited"},{"bigIdeaId":"bi--6da9b6d1","half":"lower","text":"Every source has a purpose, an audience and a context. Model the routine: who made this, when, why, for whom, and what does that mean for how much we trust it. The Gallipoli letters-vs-official-history contrast is the reusable worked example.","imageRefs":[],"size":"medium","provenance":"edited"},{"bigIdeaId":"bi--home-dissent","half":"upper","text":"Two referenda, both lost by the government, both deeply divisive. Enlistment was voluntary throughout the war in Australia — uniquely among the major combatants. Connect the propaganda posters aimed at women to the conscription campaign posters: same techniques, different targets.","imageRefs":[],"size":"medium","provenance":"edited"},{"bigIdeaId":"bi--identity","half":"lower","text":"The Anzac legend formed almost immediately after the Gallipoli landing (Bean's despatches) and has been contested ever since. Keep the essay question front of mind: earned tradition, or convenient myth? Both readings need evidence, not assertion.","imageRefs":[],"size":"medium","provenance":"edited"}],"pageCount":2,"provenance":"manual","isOverflow":false},"resourcesPage":{"id":"resources-page","items":[{"id":"ri-awm","kind":"link","order":0,"url":"https://www.awm.gov.au/","label":"Australian War Memorial","note":"Primary source collections, unit histories and the Roll of Honour."},{"id":"ri-naa","kind":"link","order":1,"url":"https://www.naa.gov.au/","label":"National Archives of Australia — conscription records","note":"Digitised WWI attestation papers and referendum campaign material."},{"id":"ri-glossary","kind":"text","order":2,"text":"Glossary — AIF (Australian Imperial Force, the volunteer expeditionary force raised for overseas service); Anzac (Australian and New Zealand Army Corps, later a term for the shared military tradition); conscription (compulsory military service, twice rejected by referendum in 1916 and 1917); propaganda (information, often one-sided, designed to shape public opinion); home front (the civilian side of a country during wartime, encompassing work, rationing and morale).","note":"Key terms for the unit — hand out before Lesson 1."},{"id":"ri-excursion","kind":"text","order":3,"text":"Excursion note: Shrine of Remembrance, Melbourne. Half-day visit recommended after the Gallipoli lesson — Sanctuary, Galleries of Remembrance and the WWI display connect directly to the source-reliability case study.","note":"Book via the Shrine's Learning Programs team at least 6 weeks ahead."},{"id":"ri-image-poster","kind":"image","order":4,"imageId":"aif-poster","x":20,"y":20,"width":160,"height":120,"note":"AIF slouch-hat colour swatch, standing in for a recruitment-poster scan."},{"id":"ri-image-poster2","kind":"image","order":5,"imageId":"aif-poster","x":220,"y":20,"width":100,"height":75,"note":"Same source image, resources-page thumbnail placement."}]},"unitAssessment":{"id":"final-assessment","title":"Investigation essay — Was the Anzac legend earned?","bigIdeaId":"bi--identity","coverage":[{"nodeId":"VC2HH10K23","coverage":"full","note":"Direct assessment of the debate over significance."},{"nodeId":"VC2HH10S06","coverage":"full","note":"Evaluating historical interpretations is the essay's core skill."}],"finalAssessment":{"pass":{"tier":"pass","material":"Three short extracts: a 1915 newspaper report, a 2010 textbook summary, and the Anzac Day dawn service order of service.","studentTask":"State what the Anzac legend claims about Australian character, using one quote from each extract.","workspaceLines":20,"imageRefs":[]},"intermediate":{"tier":"intermediate","material":"The pass extracts plus a 1980s revisionist historian's critique of the legend.","studentTask":"Explain two ways the revisionist critique challenges the popular legend.","workspaceLines":24,"imageRefs":[]},"advanced":{"tier":"advanced","material":"All prior sources plus a comparative extract on the Kiwi 'Anzac' tradition.","studentTask":"Argue, with evidence from at least four sources, whether the Anzac legend is historically earned or a national myth.","workspaceLines":28,"imageRefs":[]}},"finalAssessmentCompleted":true,"finalAssessmentDate":"2026-08-12","finalAssessmentPeriod":"P3-P4 (double)","miniAssessments":[{"id":"mini-70a5c085","name":"Source analysis check-in","bigIdeaId":"bi--6da9b6d1","coverage":[{"nodeId":"VC2HH10S03","coverage":"full","note":"Direct check of source-analysis skill."}],"order":0,"tiers":{"pass":{"material":"One Gallipoli-landing letter.","studentTask":"Identify fact vs opinion.","workspaceLines":6,"imageRefs":[]},"intermediate":{"material":"Letter plus official history extract.","studentTask":"Explain one difference in tone.","workspaceLines":10,"imageRefs":[]},"advanced":{"material":"Letter, official history, revisionist critique.","studentTask":"Rank the three sources by reliability with reasons.","workspaceLines":14,"imageRefs":[]}}},{"id":"mini-propaganda","name":"Propaganda poster analysis","bigIdeaId":"bi--home-dissent","coverage":[{"nodeId":"VC2HH10S05","coverage":"full","note":"Perspectives/values analysis via posters."}],"order":1,"tiers":{"pass":{"material":"One home-front propaganda poster.","studentTask":"Describe the poster's message.","workspaceLines":6,"imageRefs":[]},"intermediate":{"material":"Poster plus a Red Cross volunteer letter.","studentTask":"Compare the poster's ideal with the letter's reality.","workspaceLines":10,"imageRefs":[]},"advanced":{"material":"Poster, letter, and workforce statistics.","studentTask":"Evaluate how effectively propaganda shaped behaviour, citing the statistics.","workspaceLines":14,"imageRefs":[]}}},{"id":"mini-conscript","name":"Conscription debate source pack","bigIdeaId":"bi--home-dissent","coverage":[{"nodeId":"VC2HH10K14","coverage":"partial","note":"Enlistment motive covered; referendum campaign mechanics left for the final essay."}],"order":2,"tiers":{"pass":{"material":"Yes/No campaign postcards.","studentTask":"Sort postcards Yes/No and give one reason each.","workspaceLines":6,"imageRefs":[]},"intermediate":{"material":"Postcards plus a Hughes speech extract.","studentTask":"Explain the Labor Party split over conscription.","workspaceLines":10,"imageRefs":[]},"advanced":{"material":"Postcards, speech extract, referendum result tables.","studentTask":"Analyse why the No vote won twice.","workspaceLines":14,"imageRefs":[]}}},{"id":"mini-identity","name":"Home front source study","bigIdeaId":"bi--identity","coverage":[],"order":3,"tiers":{"pass":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]},"intermediate":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]},"advanced":{"material":"","studentTask":"","workspaceLines":0,"imageRefs":[]}}}]},"matrixTemplate":{"orientation":"portrait","criteria":[{"id":"crit-p1","tier":"pass","criterion":"Identifies relevant sources","maxScore":5,"assessmentIds":["final-assessment"],"allocationOverridden":false},{"id":"crit-p2","tier":"pass","criterion":"States the main argument","maxScore":5,"assessmentIds":["final-assessment"],"allocationOverridden":false},{"id":"crit-i1","tier":"intermediate","criterion":"Explains cause and consequence","maxScore":8,"assessmentIds":["final-assessment"],"allocationOverridden":false},{"id":"crit-i2","tier":"intermediate","criterion":"Corroborates across two sources","maxScore":6,"assessmentIds":["final-assessment"],"allocationOverridden":true},{"id":"crit-a1","tier":"advanced","criterion":"Evaluates competing interpretations","maxScore":10,"assessmentIds":["final-assessment"],"allocationOverridden":false},{"id":"crit-a2","tier":"advanced","criterion":"Constructs a sustained, evidenced argument","maxScore":10,"assessmentIds":["final-assessment"],"allocationOverridden":false},{"id":"crit-a3","tier":"advanced","criterion":"Uses historical terminology accurately","maxScore":6,"assessmentIds":["final-assessment"],"allocationOverridden":false}]},"matrices":[{"id":"mtx-priya","studentId":"stu-priya","scores":[{"criterionId":"crit-p1","awardedScore":5,"comment":""},{"criterionId":"crit-p2","awardedScore":4.5,"comment":""},{"criterionId":"crit-i1","awardedScore":8,"comment":""},{"criterionId":"crit-i2","awardedScore":6,"comment":""},{"criterionId":"crit-a1","awardedScore":9,"comment":""},{"criterionId":"crit-a2","awardedScore":9.5,"comment":""},{"criterionId":"crit-a3","awardedScore":5,"comment":""}]},{"id":"mtx-kai","studentId":"stu-kai","scores":[{"criterionId":"crit-p1","awardedScore":4,"comment":""},{"criterionId":"crit-p2","awardedScore":4,"comment":""},{"criterionId":"crit-i1","awardedScore":7,"comment":""},{"criterionId":"crit-i2","awardedScore":5,"comment":""},{"criterionId":"crit-a1","awardedScore":8,"comment":""},{"criterionId":"crit-a2","awardedScore":8,"comment":""},{"criterionId":"crit-a3","awardedScore":5,"comment":""}]},{"id":"mtx-zainab","studentId":"stu-zainab","scores":[{"criterionId":"crit-p1","awardedScore":5,"comment":""},{"criterionId":"crit-p2","awardedScore":5,"comment":""},{"criterionId":"crit-i1","awardedScore":8,"comment":""},{"criterionId":"crit-i2","awardedScore":6,"comment":""},{"criterionId":"crit-a1","awardedScore":10,"comment":""},{"criterionId":"crit-a2","awardedScore":9,"comment":""},{"criterionId":"crit-a3","awardedScore":6,"comment":""}]},{"id":"mtx-lachlan","studentId":"stu-lachlan","scores":[{"criterionId":"crit-p1","awardedScore":3,"comment":""},{"criterionId":"crit-p2","awardedScore":3.5,"comment":""},{"criterionId":"crit-i1","awardedScore":6,"comment":""},{"criterionId":"crit-i2","awardedScore":4,"comment":""},{"criterionId":"crit-a1","awardedScore":6,"comment":""},{"criterionId":"crit-a2","awardedScore":6.5,"comment":""},{"criterionId":"crit-a3","awardedScore":3,"comment":""}]},{"id":"mtx-amara","studentId":"stu-amara","scores":[{"criterionId":"crit-p1","awardedScore":4.5,"comment":""},{"criterionId":"crit-p2","awardedScore":4,"comment":""},{"criterionId":"crit-i1","awardedScore":7.5,"comment":""},{"criterionId":"crit-i2","awardedScore":5,"comment":""},{"criterionId":"crit-a1","awardedScore":8.5,"comment":""},{"criterionId":"crit-a2","awardedScore":9,"comment":""},{"criterionId":"crit-a3","awardedScore":5.5,"comment":""}]},{"id":"mtx-ren","studentId":"stu-ren","scores":[{"criterionId":"crit-p1","awardedScore":5,"comment":""},{"criterionId":"crit-p2","awardedScore":5,"comment":""},{"criterionId":"crit-i1","awardedScore":8,"comment":""},{"criterionId":"crit-i2","awardedScore":6,"comment":""},{"criterionId":"crit-a1","awardedScore":9,"comment":""},{"criterionId":"crit-a2","awardedScore":10,"comment":""},{"criterionId":"crit-a3","awardedScore":6,"comment":""}]}],"students":[{"id":"stu-priya","name":"Priya Nandakumar"},{"id":"stu-kai","name":"Kai Whetu-Robinson"},{"id":"stu-zainab","name":"Zainab Osei"},{"id":"stu-lachlan","name":"Lachlan Petrov"},{"id":"stu-amara","name":"Amara Diallo-Smith"},{"id":"stu-ren","name":"Ren Nakamura-Jones"},{"id":"stu-theo","name":"Théo Marchetti"}],"images":[{"id":"aif-poster","filename":"aif-poster.png","mimeType":"image/png","width":40,"height":30,"byteSize":101,"addedAt":"2026-07-14T00:00:00.000Z"}]}
+{
+  "schemaVersion": "1.0.0",
+  "generatedFrom": "seed-testunit.py",
+  "meta": {
+    "subject": "History",
+    "level": "Year 10",
+    "unitName": "Australians at War 1914-1945",
+    "teacher": "Luke Isham",
+    "dateCreated": "2026-07-14T00:00:00.000Z",
+    "dateModified": "2026-08-01T00:00:00.000Z"
+  },
+  "curriculum": {
+    "profileId": "vic-f10-v2",
+    "name": "Victorian Curriculum F-10 Version 2.0",
+    "jurisdiction": "VIC",
+    "version": "2.0",
+    "sourceRef": "https://victoriancurriculum.vcaa.vic.edu.au/",
+    "licence": "CC BY 4.0",
+    "attribution": "© VCAA",
+    "labels": {
+      "strand": "Strand",
+      "outcome": "Criterion",
+      "task": "Task",
+      "cribSheetHalves": {
+        "upper": "Know",
+        "lower": "Do"
+      }
+    },
+    "description": "Victorian Curriculum F-10 Version 2.0, History, Level 10.",
+    "ingestedAt": "2026-07-14T00:00:00.000Z"
+  },
+  "nodes": [
+    {
+      "id": "root",
+      "code": null,
+      "title": "Unit",
+      "text": null,
+      "kind": "strand",
+      "parentId": null,
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "strand-083b674764d7577c",
+      "code": null,
+      "title": null,
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "low",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K01",
+      "code": "VC2HH10K01",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "causes and consequences of the Industrial Revolution, the movement of people and European imperialism",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K02",
+      "code": "VC2HH10K02",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "significant ideas and developments and their impacts on societies",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K03",
+      "code": "VC2HH10K03",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "significant developments and events since 1945 that have contributed to change",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K04",
+      "code": "VC2HH10K04",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "the contribution of significant movements for social and political change",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K05",
+      "code": "VC2HH10K05",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "the significant events, individuals and groups in the women’s movement",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K06",
+      "code": "VC2HH10K06",
+      "kind": "outcome",
+      "parentId": "strand-083b674764d7577c",
+      "title": null,
+      "text": "the continuing efforts to create change in the civil rights movement",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "strand-f467a13d6bd18506",
+      "code": null,
+      "title": "Investigations: Australians at War 1914-1945",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10K13",
+      "code": "VC2HH10K13",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "the causes of World War I and World War II",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K14",
+      "code": "VC2HH10K14",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "the reasons that Australians, including Aboriginal and Torres Strait Islander Peoples, enlisted to fight",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K15",
+      "code": "VC2HH10K15",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "significant places where Australians fought",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K16",
+      "code": "VC2HH10K16",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "the experiences and perspectives of those who fought or were affected by the world wars",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K17",
+      "code": "VC2HH10K17",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "significant events and turning points of the world wars",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K18",
+      "code": "VC2HH10K18",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "continuities and changes in the nature of warfare",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K20",
+      "code": "VC2HH10K20",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "the causes of the Holocaust",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K22",
+      "code": "VC2HH10K22",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "the diverse experiences and perspectives of Jewish and non-Jewish people",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "VC2HH10K23",
+      "code": "VC2HH10K23",
+      "kind": "outcome",
+      "parentId": "strand-f467a13d6bd18506",
+      "title": null,
+      "text": "different interpretations and debates about the significance of the world wars",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "knowledge"
+    },
+    {
+      "id": "strand-2197be9f7aedcbcf",
+      "code": null,
+      "title": "concepts and skills",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S01",
+      "code": "VC2HH10S01",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "title": null,
+      "text": "formulate, refine and use historical questions to inform historical inquiry",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "VC2HH10S02",
+      "code": "VC2HH10S02",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "title": null,
+      "text": "sequence significant events, individuals, ideas, movements and developments",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "VC2HH10S03",
+      "code": "VC2HH10S03",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "title": null,
+      "text": "analyse the purpose, features, content and context of historical sources",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "VC2HH10S05",
+      "code": "VC2HH10S05",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "title": null,
+      "text": "analyse the perspectives, beliefs, values and attitudes of people in the past",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "VC2HH10S06",
+      "code": "VC2HH10S06",
+      "kind": "outcome",
+      "parentId": "strand-2197be9f7aedcbcf",
+      "title": null,
+      "text": "evaluate historical interpretations and debates",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "strand-431f5c6a9dde150f",
+      "code": null,
+      "title": "Continuity and change",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S07",
+      "code": "VC2HH10S07",
+      "kind": "outcome",
+      "parentId": "strand-431f5c6a9dde150f",
+      "title": null,
+      "text": "analyse continuity and change",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "strand-b5b749c3094a2ddf",
+      "code": null,
+      "title": "causes and consequences",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S08",
+      "code": "VC2HH10S08",
+      "kind": "outcome",
+      "parentId": "strand-b5b749c3094a2ddf",
+      "title": null,
+      "text": "analyse short- and long-term causes and the intended and unintended consequences of events",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "strand-bd6fe113af802f09",
+      "code": null,
+      "title": "Historical significance",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S09",
+      "code": "VC2HH10S09",
+      "kind": "outcome",
+      "parentId": "strand-bd6fe113af802f09",
+      "title": null,
+      "text": "evaluate the significance of individuals, groups, movements, ideas or events",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    },
+    {
+      "id": "strand-137b55444a360a1f",
+      "code": null,
+      "title": "community",
+      "text": null,
+      "kind": "strand",
+      "parentId": "root",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": null
+    },
+    {
+      "id": "VC2HH10S10",
+      "code": "VC2HH10S10",
+      "kind": "outcome",
+      "parentId": "strand-137b55444a360a1f",
+      "title": null,
+      "text": "construct sustained historical interpretations and arguments",
+      "confidence": "high",
+      "edited": false,
+      "original": null,
+      "domain": "skill"
+    }
+  ],
+  "topics": [
+    {
+      "id": "topic-b39d1544ae23c5fa",
+      "title": "Investigations: Australians at War 1914-1945",
+      "text": null,
+      "order": 0,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10K13",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K14",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K15",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K16",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K17",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K18",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K20",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K22",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10K23",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-7f17270932d1c79f",
+      "title": "Concepts, Skills & Historical Method",
+      "text": null,
+      "order": 1,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S01",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S02",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S03",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S05",
+          "coverage": "full",
+          "note": null
+        },
+        {
+          "nodeId": "VC2HH10S06",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-6962bbff188c6d5d",
+      "title": "Continuity and change",
+      "text": null,
+      "order": 2,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S07",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-8dc874033d457402",
+      "title": "Causes and consequences",
+      "text": null,
+      "order": 3,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S08",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-69fef3c4ad066e1b",
+      "title": "Historical significance",
+      "text": null,
+      "order": 4,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S09",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "topic-f354ee99e2bc863c",
+      "title": "Community",
+      "text": null,
+      "order": 5,
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S10",
+          "coverage": "full",
+          "note": null
+        }
+      ]
+    }
+  ],
+  "bigIdeas": [
+    {
+      "id": "bi--31e71080",
+      "title": "Why nations go to war, and what it costs",
+      "text": null,
+      "parentId": null,
+      "order": 0,
+      "topicId": "topic-b39d1544ae23c5fa",
+      "coverage": [
+        {
+          "nodeId": "VC2HH10K13",
+          "coverage": "full",
+          "note": "Alliances, empire, arms race — direct causal chain to 1914."
+        },
+        {
+          "nodeId": "VC2HH10K17",
+          "coverage": "full",
+          "note": "Gallipoli and the Western Front as the human cost of the causes studied."
+        },
+        {
+          "nodeId": "VC2HH10K18",
+          "coverage": "partial",
+          "note": "Trench warfare covered; naval/air change-in-warfare left for extension."
+        }
+      ]
+    },
+    {
+      "id": "bi--6da9b6d1",
+      "title": "How historians know what they know",
+      "text": null,
+      "parentId": null,
+      "order": 1,
+      "topicId": "topic-7f17270932d1c79f",
+      "coverage": [
+        {
+          "nodeId": "VC2HH10S03",
+          "coverage": "full",
+          "note": "Source analysis skill drilled across every mini-assessment."
+        },
+        {
+          "nodeId": "VC2HH10S06",
+          "coverage": "full",
+          "note": "Anzac legend debate is the vehicle for evaluating interpretations."
+        }
+      ]
+    },
+    {
+      "id": "bi--home-dissent",
+      "title": "Loyalty and dissent on the home front",
+      "text": null,
+      "parentId": null,
+      "order": 2,
+      "topicId": "topic-b39d1544ae23c5fa",
+      "coverage": [
+        {
+          "nodeId": "VC2HH10K14",
+          "coverage": "full",
+          "note": "Why people enlisted vs why they resisted conscription."
+        },
+        {
+          "nodeId": "VC2HH10K16",
+          "coverage": "partial",
+          "note": "Women's and workers' experiences covered; internment left uncovered — deliberate gap for Coverage Grid."
+        }
+      ]
+    },
+    {
+      "id": "bi--identity",
+      "title": "How war reshaped Australian identity",
+      "text": null,
+      "parentId": null,
+      "order": 3,
+      "topicId": "topic-b39d1544ae23c5fa",
+      "coverage": [
+        {
+          "nodeId": "VC2HH10K23",
+          "coverage": "full",
+          "note": "The Anzac legend as contested national myth."
+        }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "les--339571e3",
+      "number": 1,
+      "nodeIds": [
+        "VC2HH10K13"
+      ],
+      "bigIdeaId": "bi--31e71080",
+      "keyExample": "The alliance system, imperial rivalry and the July Crisis of 1914 (VC2HH10K13)",
+      "practiceQuestion": "Which single alliance obligation, if removed, would most likely have prevented a continent-wide war in 1914?",
+      "assessmentLink": {
+        "miniAssessmentIds": [],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Map of the alliance blocs in 1914; short timeline of the July Crisis.",
+          "studentTask": "Label the alliance blocs and circle the trigger event.",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Same map plus excerpts from the Triple Entente and Triple Alliance treaties.",
+          "studentTask": "Explain in two paragraphs how the alliance system turned a regional crisis into a European war.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Treaty excerpts plus a historian's extract on 'sleepwalking to war'.",
+          "studentTask": "Evaluate whether the alliance system caused the war or merely widened it.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": "Key term: casus belli",
+      "completed": true,
+      "date": "2026-07-20",
+      "lessonPeriod": "P3",
+      "provenance": "manual",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--enlist01",
+      "number": 2,
+      "nodeIds": [
+        "VC2HH10K14"
+      ],
+      "bigIdeaId": "bi--home-dissent",
+      "keyExample": "Why Australians, including Aboriginal and Torres Strait Islander men, volunteered in 1914-15 (VC2HH10K14)",
+      "practiceQuestion": "List three different motives that led Australians to enlist, and rank them by how well-evidenced they are.",
+      "assessmentLink": {
+        "miniAssessmentIds": [
+          "mini-70a5c085"
+        ],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Recruitment poster gallery (three posters).",
+          "studentTask": "Identify the appeal each poster makes (duty, adventure, mateship).",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Posters plus a recruitment sergeant's diary extract.",
+          "studentTask": "Compare the poster message with the lived recruiting-office experience.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Posters, diary extract, and Defence Act 1909 exclusion clauses.",
+          "studentTask": "Explain why Aboriginal men who wanted to enlist were formally barred, then often accepted anyway.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": null,
+      "completed": true,
+      "date": "2026-07-21",
+      "lessonPeriod": "P3",
+      "provenance": "generated",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--gallipoli",
+      "number": 3,
+      "nodeIds": [
+        "VC2HH10K15",
+        "VC2HH10K17"
+      ],
+      "bigIdeaId": "bi--6da9b6d1",
+      "keyExample": "Gallipoli: competing accounts of the 25 April 1915 landing (VC2HH10K15, VC2HH10K17)",
+      "practiceQuestion": "Two soldiers' letters describe the same landing differently. What in each source explains the difference?",
+      "assessmentLink": {
+        "miniAssessmentIds": [
+          "mini-70a5c085"
+        ],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Two short soldier letters describing the landing.",
+          "studentTask": "Underline one factual claim and one opinion in each letter.",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Letters plus Bean's official history extract.",
+          "studentTask": "Explain why the official history and the letters differ in tone and detail.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Letters, Bean extract, and a 2015 historian's revisionist critique.",
+          "studentTask": "Argue which account is most reliable for reconstructing the landing, with reasons.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": "Key term: provenance",
+      "completed": true,
+      "date": "2026-07-22",
+      "lessonPeriod": "P4",
+      "provenance": "manual",
+      "bigIdeaNote": "Central case study for source reliability.",
+      "imageRefs": []
+    },
+    {
+      "id": "les--westfront",
+      "number": 4,
+      "nodeIds": [
+        "VC2HH10K16",
+        "VC2HH10K18"
+      ],
+      "bigIdeaId": "bi--31e71080",
+      "keyExample": "Trench conditions on the Western Front and continuity/change in warfare (VC2HH10K16, VC2HH10K18)",
+      "practiceQuestion": "What changed about warfare on the Western Front between 1914 and 1918, and what stayed the same?",
+      "assessmentLink": {
+        "miniAssessmentIds": [],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Diagram of a WWI trench system.",
+          "studentTask": "Label the trench diagram (fire trench, support, reserve, no man's land).",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Trench diagram plus a soldier's field diary on daily routine.",
+          "studentTask": "Describe a typical 24 hours in the trenches using the diary.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Diagram, diary, and casualty statistics 1914 vs 1918.",
+          "studentTask": "Analyse how tactics changed in response to trench stalemate, citing the statistics.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": null,
+      "completed": true,
+      "date": "2026-07-27",
+      "lessonPeriod": "P3",
+      "provenance": "generated",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--conscript",
+      "number": 5,
+      "nodeIds": [
+        "VC2HH10K14",
+        "VC2HH10S08"
+      ],
+      "bigIdeaId": "bi--home-dissent",
+      "keyExample": "The 1916 and 1917 conscription referenda and why they split the nation (VC2HH10K14, VC2HH10S08)",
+      "practiceQuestion": "Identify one short-term and one long-term cause of the conscription referenda being called.",
+      "assessmentLink": {
+        "miniAssessmentIds": [
+          "mini-conscript"
+        ],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Yes/No campaign postcards from 1916.",
+          "studentTask": "Sort the postcards into Yes and No and note one argument each makes.",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Postcards plus Hughes's campaign speech extract.",
+          "studentTask": "Explain why the Labor Party split over conscription.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Postcards, speech extract, and referendum result tables for both votes.",
+          "studentTask": "Analyse why the No vote won twice despite government campaigning.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": "Key term: plebiscite",
+      "completed": false,
+      "date": "2026-07-28",
+      "lessonPeriod": "P4",
+      "provenance": "manual",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--homefront",
+      "number": 6,
+      "nodeIds": [
+        "VC2HH10K16",
+        "VC2HH10S05"
+      ],
+      "bigIdeaId": "bi--home-dissent",
+      "keyExample": "Women, war work and propaganda on the Australian home front (VC2HH10K16, VC2HH10S05)",
+      "practiceQuestion": "How did propaganda posters try to shape what women should feel about the war effort?",
+      "assessmentLink": {
+        "miniAssessmentIds": [
+          "mini-propaganda"
+        ],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Three home-front propaganda posters aimed at women.",
+          "studentTask": "Describe what each poster is asking women to do.",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Posters plus a Red Cross volunteer's letter home.",
+          "studentTask": "Compare the poster ideal with the volunteer's own account of her work.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Posters, letter, and post-war female workforce statistics.",
+          "studentTask": "Evaluate how far the war permanently changed women's roles, using the statistics.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": null,
+      "completed": false,
+      "date": "2026-08-05",
+      "lessonPeriod": "P2",
+      "provenance": "generated",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--interwar",
+      "number": 7,
+      "nodeIds": [
+        "VC2HH10K13",
+        "VC2HH10S02"
+      ],
+      "bigIdeaId": "bi--identity",
+      "keyExample": "Interwar Australia and rising international tensions through the 1920s-30s",
+      "practiceQuestion": "Sequence three events between 1919 and 1939 that made a second world war more likely.",
+      "assessmentLink": {
+        "miniAssessmentIds": [],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "Interwar timeline strip (blank).",
+          "studentTask": "Place five given events on the timeline.",
+          "workspaceLines": 8,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "Timeline strip plus a Treaty of Versailles summary.",
+          "studentTask": "Explain how the Treaty's terms fed resentment in Germany.",
+          "workspaceLines": 14,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "Timeline, Treaty summary, and Depression-era unemployment data.",
+          "studentTask": "Assess how far economic collapse, not just the Treaty, drove the path to a second war.",
+          "workspaceLines": 20,
+          "imageRefs": []
+        }
+      },
+      "sidebar": null,
+      "completed": false,
+      "date": null,
+      "lessonPeriod": null,
+      "provenance": "manual",
+      "bigIdeaNote": null,
+      "imageRefs": []
+    },
+    {
+      "id": "les--kokoda",
+      "number": 8,
+      "nodeIds": [],
+      "bigIdeaId": "bi--31e71080",
+      "keyExample": "WWII: Kokoda and the fall of Singapore — not yet mapped to a curriculum outcome",
+      "practiceQuestion": "",
+      "assessmentLink": {
+        "miniAssessmentIds": [],
+        "majorAssessment": false,
+        "note": null
+      },
+      "tiers": {
+        "pass": {
+          "material": "",
+          "studentTask": "",
+          "workspaceLines": 0,
+          "imageRefs": []
+        },
+        "intermediate": {
+          "material": "",
+          "studentTask": "",
+          "workspaceLines": 0,
+          "imageRefs": []
+        },
+        "advanced": {
+          "material": "",
+          "studentTask": "",
+          "workspaceLines": 0,
+          "imageRefs": []
+        }
+      },
+      "sidebar": null,
+      "completed": false,
+      "date": null,
+      "lessonPeriod": null,
+      "provenance": "manual",
+      "bigIdeaNote": "Placeholder — not linked to a big idea's curriculum coverage yet; deliberate orphan for orphan-cleanup testing.",
+      "imageRefs": []
+    }
+  ],
+  "cribSheet": {
+    "id": "crib-sheet-1",
+    "title": "Australians at War — Crib Sheet",
+    "orientation": "portrait",
+    "sections": [
+      {
+        "bigIdeaId": "bi--31e71080",
+        "half": "upper",
+        "text": "Trace the chain from alliance system to July Crisis to general war. Students should be able to name at least three alliance blocs, one flashpoint (Sarajevo), and explain why a regional dispute escalated. Link forward to the human cost studied at Gallipoli and the Western Front, and back to the Industrial Revolution's role in enabling total war (mass production of munitions, rail mobilisation, mechanised killing). Common misconception to correct: the war was not caused by any single assassination alone — the alliance obligations made a wider war structurally likely once mobilisation began.",
+        "imageRefs": [],
+        "size": "large",
+        "provenance": "edited"
+      },
+      {
+        "bigIdeaId": "bi--6da9b6d1",
+        "half": "lower",
+        "text": "Every source has a purpose, an audience and a context. Model the routine: who made this, when, why, for whom, and what does that mean for how much we trust it. The Gallipoli letters-vs-official-history contrast is the reusable worked example.",
+        "imageRefs": [],
+        "size": "medium",
+        "provenance": "edited"
+      },
+      {
+        "bigIdeaId": "bi--home-dissent",
+        "half": "upper",
+        "text": "Two referenda, both lost by the government, both deeply divisive. Enlistment was voluntary throughout the war in Australia — uniquely among the major combatants. Connect the propaganda posters aimed at women to the conscription campaign posters: same techniques, different targets.",
+        "imageRefs": [],
+        "size": "medium",
+        "provenance": "edited"
+      },
+      {
+        "bigIdeaId": "bi--identity",
+        "half": "lower",
+        "text": "The Anzac legend formed almost immediately after the Gallipoli landing (Bean's despatches) and has been contested ever since. Keep the essay question front of mind: earned tradition, or convenient myth? Both readings need evidence, not assertion.",
+        "imageRefs": [],
+        "size": "medium",
+        "provenance": "edited"
+      }
+    ],
+    "pageCount": 1,
+    "provenance": "manual",
+    "isOverflow": false
+  },
+  "resourcesPage": {
+    "id": "resources-page",
+    "items": [
+      {
+        "id": "ri-awm",
+        "kind": "link",
+        "order": 0,
+        "url": "https://www.awm.gov.au/",
+        "label": "Australian War Memorial",
+        "note": "Primary source collections, unit histories and the Roll of Honour."
+      },
+      {
+        "id": "ri-naa",
+        "kind": "link",
+        "order": 1,
+        "url": "https://www.naa.gov.au/",
+        "label": "National Archives of Australia — conscription records",
+        "note": "Digitised WWI attestation papers and referendum campaign material."
+      },
+      {
+        "id": "ri-glossary",
+        "kind": "text",
+        "order": 2,
+        "text": "Glossary — AIF (Australian Imperial Force, the volunteer expeditionary force raised for overseas service); Anzac (Australian and New Zealand Army Corps, later a term for the shared military tradition); conscription (compulsory military service, twice rejected by referendum in 1916 and 1917); propaganda (information, often one-sided, designed to shape public opinion); home front (the civilian side of a country during wartime, encompassing work, rationing and morale).",
+        "note": "Key terms for the unit — hand out before Lesson 1."
+      },
+      {
+        "id": "ri-excursion",
+        "kind": "text",
+        "order": 3,
+        "text": "Excursion note: Shrine of Remembrance, Melbourne. Half-day visit recommended after the Gallipoli lesson — Sanctuary, Galleries of Remembrance and the WWI display connect directly to the source-reliability case study.",
+        "note": "Book via the Shrine's Learning Programs team at least 6 weeks ahead."
+      },
+      {
+        "id": "ri-image-poster",
+        "kind": "image",
+        "order": 4,
+        "imageId": "aif-poster",
+        "x": 20,
+        "y": 20,
+        "width": 160,
+        "height": 120,
+        "note": "AIF slouch-hat colour swatch, standing in for a recruitment-poster scan."
+      },
+      {
+        "id": "ri-image-poster2",
+        "kind": "image",
+        "order": 5,
+        "imageId": "aif-poster",
+        "x": 220,
+        "y": 20,
+        "width": 100,
+        "height": 75,
+        "note": "Same source image, resources-page thumbnail placement."
+      }
+    ]
+  },
+  "unitAssessment": {
+    "id": "major-assessment",
+    "title": "Investigation essay — Was the Anzac legend earned?",
+    "bigIdeaId": "bi--identity",
+    "coverage": [
+      {
+        "nodeId": "VC2HH10K23",
+        "coverage": "full",
+        "note": "Direct assessment of the debate over significance."
+      },
+      {
+        "nodeId": "VC2HH10S06",
+        "coverage": "full",
+        "note": "Evaluating historical interpretations is the essay's core skill."
+      }
+    ],
+    "majorAssessment": {
+      "pass": {
+        "tier": "pass",
+        "material": "Three short extracts: a 1915 newspaper report, a 2010 textbook summary, and the Anzac Day dawn service order of service.",
+        "studentTask": "State what the Anzac legend claims about Australian character, using one quote from each extract.",
+        "workspaceLines": 20,
+        "imageRefs": []
+      },
+      "intermediate": {
+        "tier": "intermediate",
+        "material": "The pass extracts plus a 1980s revisionist historian's critique of the legend.",
+        "studentTask": "Explain two ways the revisionist critique challenges the popular legend.",
+        "workspaceLines": 24,
+        "imageRefs": []
+      },
+      "advanced": {
+        "tier": "advanced",
+        "material": "All prior sources plus a comparative extract on the Kiwi 'Anzac' tradition.",
+        "studentTask": "Argue, with evidence from at least four sources, whether the Anzac legend is historically earned or a national myth.",
+        "workspaceLines": 28,
+        "imageRefs": []
+      }
+    },
+    "majorAssessmentCompleted": true,
+    "majorAssessmentDate": "2026-08-12",
+    "majorAssessmentPeriod": "P3-P4 (double)",
+    "miniAssessments": [
+      {
+        "id": "mini-70a5c085",
+        "name": "Source analysis check-in",
+        "bigIdeaId": "bi--6da9b6d1",
+        "coverage": [
+          {
+            "nodeId": "VC2HH10S03",
+            "coverage": "full",
+            "note": "Direct check of source-analysis skill."
+          }
+        ],
+        "order": 0,
+        "tiers": {
+          "pass": {
+            "material": "One Gallipoli-landing letter.",
+            "studentTask": "Identify fact vs opinion.",
+            "workspaceLines": 6,
+            "imageRefs": []
+          },
+          "intermediate": {
+            "material": "Letter plus official history extract.",
+            "studentTask": "Explain one difference in tone.",
+            "workspaceLines": 10,
+            "imageRefs": []
+          },
+          "advanced": {
+            "material": "Letter, official history, revisionist critique.",
+            "studentTask": "Rank the three sources by reliability with reasons.",
+            "workspaceLines": 14,
+            "imageRefs": []
+          }
+        }
+      },
+      {
+        "id": "mini-propaganda",
+        "name": "Propaganda poster analysis",
+        "bigIdeaId": "bi--home-dissent",
+        "coverage": [
+          {
+            "nodeId": "VC2HH10S05",
+            "coverage": "full",
+            "note": "Perspectives/values analysis via posters."
+          }
+        ],
+        "order": 1,
+        "tiers": {
+          "pass": {
+            "material": "One home-front propaganda poster.",
+            "studentTask": "Describe the poster's message.",
+            "workspaceLines": 6,
+            "imageRefs": []
+          },
+          "intermediate": {
+            "material": "Poster plus a Red Cross volunteer letter.",
+            "studentTask": "Compare the poster's ideal with the letter's reality.",
+            "workspaceLines": 10,
+            "imageRefs": []
+          },
+          "advanced": {
+            "material": "Poster, letter, and workforce statistics.",
+            "studentTask": "Evaluate how effectively propaganda shaped behaviour, citing the statistics.",
+            "workspaceLines": 14,
+            "imageRefs": []
+          }
+        }
+      },
+      {
+        "id": "mini-conscript",
+        "name": "Conscription debate source pack",
+        "bigIdeaId": "bi--home-dissent",
+        "coverage": [
+          {
+            "nodeId": "VC2HH10K14",
+            "coverage": "partial",
+            "note": "Enlistment motive covered; referendum campaign mechanics left for the final essay."
+          }
+        ],
+        "order": 2,
+        "tiers": {
+          "pass": {
+            "material": "Yes/No campaign postcards.",
+            "studentTask": "Sort postcards Yes/No and give one reason each.",
+            "workspaceLines": 6,
+            "imageRefs": []
+          },
+          "intermediate": {
+            "material": "Postcards plus a Hughes speech extract.",
+            "studentTask": "Explain the Labor Party split over conscription.",
+            "workspaceLines": 10,
+            "imageRefs": []
+          },
+          "advanced": {
+            "material": "Postcards, speech extract, referendum result tables.",
+            "studentTask": "Analyse why the No vote won twice.",
+            "workspaceLines": 14,
+            "imageRefs": []
+          }
+        }
+      },
+      {
+        "id": "mini-identity",
+        "name": "Home front source study",
+        "bigIdeaId": "bi--identity",
+        "coverage": [],
+        "order": 3,
+        "tiers": {
+          "pass": {
+            "material": "",
+            "studentTask": "",
+            "workspaceLines": 0,
+            "imageRefs": []
+          },
+          "intermediate": {
+            "material": "",
+            "studentTask": "",
+            "workspaceLines": 0,
+            "imageRefs": []
+          },
+          "advanced": {
+            "material": "",
+            "studentTask": "",
+            "workspaceLines": 0,
+            "imageRefs": []
+          }
+        }
+      }
+    ]
+  },
+  "matrixTemplate": {
+    "orientation": "portrait",
+    "criteria": [
+      {
+        "id": "crit-p1",
+        "tier": "pass",
+        "criterion": "Identifies relevant sources",
+        "maxScore": 5,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      },
+      {
+        "id": "crit-p2",
+        "tier": "pass",
+        "criterion": "States the main argument",
+        "maxScore": 5,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      },
+      {
+        "id": "crit-i1",
+        "tier": "intermediate",
+        "criterion": "Explains cause and consequence",
+        "maxScore": 8,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      },
+      {
+        "id": "crit-i2",
+        "tier": "intermediate",
+        "criterion": "Corroborates across two sources",
+        "maxScore": 6,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": true
+      },
+      {
+        "id": "crit-a1",
+        "tier": "advanced",
+        "criterion": "Evaluates competing interpretations",
+        "maxScore": 10,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      },
+      {
+        "id": "crit-a2",
+        "tier": "advanced",
+        "criterion": "Constructs a sustained, evidenced argument",
+        "maxScore": 10,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      },
+      {
+        "id": "crit-a3",
+        "tier": "advanced",
+        "criterion": "Uses historical terminology accurately",
+        "maxScore": 6,
+        "assessmentIds": [
+          "major-assessment"
+        ],
+        "allocationOverridden": false
+      }
+    ]
+  },
+  "matrices": [
+    {
+      "id": "mtx-priya",
+      "studentId": "stu-priya",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 4.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 8,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 6,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 9,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 9.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 5,
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "id": "mtx-kai",
+      "studentId": "stu-kai",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 4,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 4,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 7,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 8,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 8,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 5,
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "id": "mtx-zainab",
+      "studentId": "stu-zainab",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 8,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 6,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 10,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 9,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 6,
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "id": "mtx-lachlan",
+      "studentId": "stu-lachlan",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 3,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 3.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 6,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 4,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 6,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 6.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 3,
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "id": "mtx-amara",
+      "studentId": "stu-amara",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 4.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 4,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 7.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 8.5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 9,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 5.5,
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "id": "mtx-ren",
+      "studentId": "stu-ren",
+      "scores": [
+        {
+          "criterionId": "crit-p1",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-p2",
+          "awardedScore": 5,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i1",
+          "awardedScore": 8,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-i2",
+          "awardedScore": 6,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a1",
+          "awardedScore": 9,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a2",
+          "awardedScore": 10,
+          "comment": ""
+        },
+        {
+          "criterionId": "crit-a3",
+          "awardedScore": 6,
+          "comment": ""
+        }
+      ]
+    }
+  ],
+  "students": [
+    {
+      "id": "stu-priya",
+      "name": "Priya Nandakumar"
+    },
+    {
+      "id": "stu-kai",
+      "name": "Kai Whetu-Robinson"
+    },
+    {
+      "id": "stu-zainab",
+      "name": "Zainab Osei"
+    },
+    {
+      "id": "stu-lachlan",
+      "name": "Lachlan Petrov"
+    },
+    {
+      "id": "stu-amara",
+      "name": "Amara Diallo-Smith"
+    },
+    {
+      "id": "stu-ren",
+      "name": "Ren Nakamura-Jones"
+    },
+    {
+      "id": "stu-theo",
+      "name": "Théo Marchetti"
+    }
+  ],
+  "images": [
+    {
+      "id": "aif-poster",
+      "filename": "aif-poster.png",
+      "mimeType": "image/png",
+      "width": 40,
+      "height": 30,
+      "byteSize": 101,
+      "addedAt": "2026-07-14T00:00:00.000Z"
+    }
+  ]
+}

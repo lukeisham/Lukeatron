@@ -260,7 +260,6 @@ class BundleHandlerExistsTest(unittest.TestCase):
         self.assertTrue(hasattr(serve.BundleHandler, "do_DELETE"))
 
 
-
 class ApiUnitContentLengthTests(unittest.TestCase):
     """Regression: GET /api/unit must send Content-Length in BYTES, not
     characters (BUG-1). unit.json is read with Path.read_text() (a str) and
@@ -380,6 +379,7 @@ class ApiUnitContentLengthTests(unittest.TestCase):
                     proc.wait(timeout=5)
                 if proc.stdout:
                     proc.stdout.close()
+
 
 if __name__ == "__main__":
     unittest.main()

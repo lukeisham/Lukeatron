@@ -13,7 +13,7 @@
  * not on the assessment. This function scans all lessons to find references.
  *
  * @param {string} assessmentId - The assessment ID to search for
- * @param {string} assessmentKind - "final" | "mini"
+ * @param {string} assessmentKind - "major" | "mini"
  * @param {Array} allLessons - All lesson objects from unit.lessons[]
  * @returns {Array} Array of lessons that reference this assessment
  */
@@ -25,8 +25,8 @@ export function findReferencingLessons(assessmentId, assessmentKind, allLessons 
 
     const link = lesson.assessmentLink;
 
-    // Check for final assessment reference
-    if (assessmentKind === 'final' && link.finalAssessment === true) {
+    // Check for major assessment reference
+    if (assessmentKind === 'major' && link.majorAssessment === true) {
       referencing.push(lesson);
     }
 
@@ -58,7 +58,7 @@ export function formatLessonCitation(lesson) {
  * Useful for quick "Lessons 1, 3, 5" style summaries.
  *
  * @param {string} assessmentId - The assessment ID
- * @param {string} assessmentKind - "final" | "mini"
+ * @param {string} assessmentKind - "major" | "mini"
  * @param {Array} allLessons - All lessons
  * @returns {Array} Array of lesson numbers
  */

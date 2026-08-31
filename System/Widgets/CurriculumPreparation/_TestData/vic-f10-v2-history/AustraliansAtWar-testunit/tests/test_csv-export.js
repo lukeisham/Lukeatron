@@ -85,7 +85,7 @@ function createFixtureUnit() {
           tier: 'pass',
           criterion: 'Identify main ideas',
           maxScore: 10,
-          assessmentIds: ['final-1'],
+          assessmentIds: ['major-1'],
           allocationOverridden: false
         },
         {
@@ -93,7 +93,7 @@ function createFixtureUnit() {
           tier: 'pass',
           criterion: 'Explain, analyze, and compare',
           maxScore: 10,
-          assessmentIds: ['final-1'],
+          assessmentIds: ['major-1'],
           allocationOverridden: false
         },
         {
@@ -101,7 +101,7 @@ function createFixtureUnit() {
           tier: 'intermediate',
           criterion: 'Synthesize information',
           maxScore: 12.5,
-          assessmentIds: ['final-1'],
+          assessmentIds: ['major-1'],
           allocationOverridden: false
         },
         {
@@ -109,7 +109,7 @@ function createFixtureUnit() {
           tier: 'advanced',
           criterion: 'Evaluate and critique',
           maxScore: 12.5,
-          assessmentIds: ['final-1'],
+          assessmentIds: ['major-1'],
           allocationOverridden: false
         }
       ]
@@ -240,7 +240,7 @@ test('generateCSV: criterion with comma in text is quoted', () => {
     tier: 'pass',
     criterion: 'Identify, analyze, and compare',
     maxScore: 5,
-    assessmentIds: ['final-1'],
+    assessmentIds: ['major-1'],
     allocationOverridden: false
   });
   // Add scores for this criterion

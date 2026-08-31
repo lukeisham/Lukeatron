@@ -515,9 +515,9 @@ export class MarkingMatrix {
 
   /**
    * Assessment coverage, keyed by nodeId, normalized so both the canonical
-   * shape (unitAssessment.finalAssessment.coverage[]) and the shape actually
+   * shape (unitAssessment.majorAssessment.coverage[]) and the shape actually
    * produced by this app's seed data (coverage[] living directly on
-   * unitAssessment, with finalAssessment only carrying the fixed tier pages)
+   * unitAssessment, with majorAssessment only carrying the fixed tier pages)
    * resolve to the same map. assessmentId on each entry is the id
    * _getAssessmentsList() itself uses, so it lines up with addCriterion's
    * validation and with matrixTemplate.criteria[].assessmentIds.
@@ -528,15 +528,15 @@ export class MarkingMatrix {
     if (!ua) return new Map();
 
     const assessments = this._getAssessmentsList();
-    const finalEntry = assessments.find((a) => a.name === 'Final Assessment');
+    const majorEntry = assessments.find((a) => a.name === 'Major Assessment');
 
     const normalizedUA = {
-      finalAssessment: ua.finalAssessment
+      majorAssessment: ua.majorAssessment
         ? {
-            id: finalEntry ? finalEntry.id : ua.finalAssessment.id,
+            id: majorEntry ? majorEntry.id : ua.majorAssessment.id,
             title: ua.title,
-            coverage: Array.isArray(ua.finalAssessment.coverage)
-              ? ua.finalAssessment.coverage
+            coverage: Array.isArray(ua.majorAssessment.coverage)
+              ? ua.majorAssessment.coverage
               : (ua.coverage || [])
           }
         : undefined,
@@ -980,7 +980,7 @@ export class MarkingMatrix {
   }
 
   /**
-   * Get list of all assessments (final + minis)
+   * Get list of all assessments (major + minis)
    * @returns {Array} - array of assessment objects with id, name
    */
   _getAssessmentsList() {
@@ -988,10 +988,10 @@ export class MarkingMatrix {
 
     const ua = this.unit.unitAssessment;
     if (ua) {
-      if (ua.finalAssessment) {
+      if (ua.majorAssessment) {
         assessments.push({
-          id: ua.finalAssessment.id || 'final',
-          name: 'Final Assessment'
+          id: ua.majorAssessment.id || 'major',
+          name: 'Major Assessment'
         });
       }
       if (ua.miniAssessments && Array.isArray(ua.miniAssessments)) {

@@ -129,11 +129,11 @@ test('computeOrphanImages handles missing images array', async (t) => {
 test('getReferencedImageIds finds images in unit assessment', async (t) => {
   const unit = {
     unitAssessment: {
-      finalAssessment: {
+      majorAssessment: {
         tiers: {
           pass: {
             tier: 'pass',
-            imageRefs: [{ imageId: 'img-ua-final' }]
+            imageRefs: [{ imageId: 'img-ua-major' }]
           },
           intermediate: { tier: 'intermediate', imageRefs: [] },
           advanced: { tier: 'advanced', imageRefs: [] }
@@ -156,7 +156,7 @@ test('getReferencedImageIds finds images in unit assessment', async (t) => {
   };
 
   const refs = getReferencedImageIds(unit);
-  assert(refs.has('img-ua-final'));
+  assert(refs.has('img-ua-major'));
   assert(refs.has('img-mini-1'));
   assert.strictEqual(refs.size, 2);
 });

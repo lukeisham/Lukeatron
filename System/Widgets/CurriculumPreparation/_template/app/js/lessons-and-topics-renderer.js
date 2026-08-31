@@ -96,16 +96,16 @@ export function renderDateMode(allData, callbacks) {
     });
   }
 
-  // Add final assessment
+  // Add major assessment
   if (unitAssessment && unitAssessment.id) {
     const topicId = resolveTopic(unitAssessment.id, [unitAssessment], bigIdeas);
     const topic = topics.find(t => t.id === topicId);
     allItems.push({
       ...unitAssessment,
-      type: 'final',
+      type: 'major',
       topicId,
       topicTitle: topic?.title || 'Unassigned',
-      date: unitAssessment.finalAssessmentDate || null,
+      date: unitAssessment.majorAssessmentDate || null,
     });
   }
 
@@ -189,15 +189,15 @@ function renderItemRow(item, callbacks, bigIdeas, nodes) {
     }
   });
 
-  // Tag (L1, MINI, FINAL, etc.)
+  // Tag (L1, MINI, MAJOR, etc.)
   const tag = document.createElement('span');
   tag.className = 'item-tag';
   if (item.type === 'lesson') {
     tag.textContent = `L${item.number || '?'}`;
   } else if (item.type === 'mini') {
     tag.textContent = 'MINI';
-  } else if (item.type === 'final') {
-    tag.textContent = 'FINAL';
+  } else if (item.type === 'major') {
+    tag.textContent = 'MAJOR';
   }
 
   // Label with domain glyphs

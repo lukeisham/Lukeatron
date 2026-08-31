@@ -2,7 +2,7 @@
  * test_unit-assessment-document.js — Smoke tests for assessment document
  *
  * Uses node:test (stdlib), no external dependencies.
- * Tests: import, happy-path create final/mini, guards (delete refusal, missing-big-idea).
+ * Tests: import, happy-path create major/mini, guards (delete refusal, missing-big-idea).
  */
 
 import test from 'node:test';
@@ -81,7 +81,7 @@ const FIXTURE_LESSONS = [
     number: 1,
     name: 'Intro to Energy',
     assessmentLink: {
-      finalAssessment: true,
+      majorAssessment: true,
       miniAssessmentIds: ['mini-test001'],
       note: '',
     },
@@ -91,14 +91,14 @@ const FIXTURE_LESSONS = [
     number: 2,
     name: 'Energy Transfer',
     assessmentLink: {
-      finalAssessment: false,
+      majorAssessment: false,
       miniAssessmentIds: [],
       note: '',
     },
   },
 ];
 
-const FIXTURE_FINAL_ASSESSMENT = {
+const FIXTURE_MAJOR_ASSESSMENT = {
   bigIdeaId: 'bi-test001',
   coverage: [
     { nodeId: 'node-test001', coverage: 'full', note: 'Core concept' },
@@ -131,9 +131,9 @@ test('UnitAssessmentDocument imports cleanly', () => {
   assert.equal(typeof UnitAssessmentDocument, 'function', 'should be a constructor');
 });
 
-test('UnitAssessmentDocument: happy-path final assessment render', () => {
+test('UnitAssessmentDocument: happy-path major assessment render', () => {
   const unitAssessment = {
-    finalAssessment: FIXTURE_FINAL_ASSESSMENT,
+    majorAssessment: FIXTURE_MAJOR_ASSESSMENT,
     miniAssessments: FIXTURE_MINI_ASSESSMENTS,
   };
 
@@ -142,13 +142,13 @@ test('UnitAssessmentDocument: happy-path final assessment render', () => {
     FIXTURE_LESSONS,
     FIXTURE_BIG_IDEAS,
     FIXTURE_NODES,
-    'final',
+    'major',
     0
   );
 
   assert.ok(doc, 'document should construct');
-  assert.equal(doc.getAssessmentKind(), 'final', 'kind should be final');
-  assert.equal(doc.getAssessment(), FIXTURE_FINAL_ASSESSMENT, 'should return final assessment');
+  assert.equal(doc.getAssessmentKind(), 'major', 'kind should be major');
+  assert.equal(doc.getAssessment(), FIXTURE_MAJOR_ASSESSMENT, 'should return major assessment');
 
   // Render into mock SVG
   const svg = new MockSVGElement('svg');
@@ -156,14 +156,14 @@ test('UnitAssessmentDocument: happy-path final assessment render', () => {
 
   assert.ok(svg.children.length > 0, 'should render content');
   assert.ok(
-    svg.children.some(el => el.textContent && el.textContent.includes('Final Assessment')),
+    svg.children.some(el => el.textContent && el.textContent.includes('Major Assessment')),
     'should render title'
   );
 });
 
 test('UnitAssessmentDocument: mini assessment render', () => {
   const unitAssessment = {
-    finalAssessment: FIXTURE_FINAL_ASSESSMENT,
+    majorAssessment: FIXTURE_MAJOR_ASSESSMENT,
     miniAssessments: FIXTURE_MINI_ASSESSMENTS,
   };
 
@@ -182,12 +182,12 @@ test('UnitAssessmentDocument: mini assessment render', () => {
 
 test('UnitAssessmentDocument: guard - missing big idea', () => {
   const assessmentNoBigIdea = {
-    ...FIXTURE_FINAL_ASSESSMENT,
+    ...FIXTURE_MAJOR_ASSESSMENT,
     bigIdeaId: null,
   };
 
   const unitAssessment = {
-    finalAssessment: assessmentNoBigIdea,
+    majorAssessment: assessmentNoBigIdea,
     miniAssessments: [],
   };
 
@@ -198,7 +198,7 @@ test('UnitAssessmentDocument: guard - missing big idea', () => {
     [],
     [],
     [],
-    'final'
+    'major'
   );
 
   const svg = new MockSVGElement('svg');
@@ -207,9 +207,9 @@ test('UnitAssessmentDocument: guard - missing big idea', () => {
   }, 'should not crash on missing big idea');
 });
 
-test('assessment-lesson-links: findReferencingLessons for final', () => {
-  const refs = findReferencingLessons('final', 'final', FIXTURE_LESSONS);
-  assert.equal(refs.length, 1, 'should find 1 lesson referencing final assessment');
+test('assessment-lesson-links: findReferencingLessons for major', () => {
+  const refs = findReferencingLessons('major', 'major', FIXTURE_LESSONS);
+  assert.equal(refs.length, 1, 'should find 1 lesson referencing major assessment');
   assert.equal(refs[0].number, 1, 'should be lesson 1');
 });
 
@@ -226,7 +226,7 @@ test('assessment-lesson-links: no references returns empty array', () => {
 
 test('UnitAssessmentDocument: exportSVG generates valid SVG markup', () => {
   const unitAssessment = {
-    finalAssessment: FIXTURE_FINAL_ASSESSMENT,
+    majorAssessment: FIXTURE_MAJOR_ASSESSMENT,
     miniAssessments: [],
   };
 
@@ -235,7 +235,7 @@ test('UnitAssessmentDocument: exportSVG generates valid SVG markup', () => {
     FIXTURE_LESSONS,
     FIXTURE_BIG_IDEAS,
     FIXTURE_NODES,
-    'final'
+    'major'
   );
 
   const svgMarkup = doc.exportSVG();
@@ -245,13 +245,13 @@ test('UnitAssessmentDocument: exportSVG generates valid SVG markup', () => {
 
 test('UnitAssessmentDocument: setData updates internal state', () => {
   const unitAssessment = {
-    finalAssessment: FIXTURE_FINAL_ASSESSMENT,
+    majorAssessment: FIXTURE_MAJOR_ASSESSMENT,
     miniAssessments: [],
   };
 
   const doc = new UnitAssessmentDocument(unitAssessment);
-  const newAssessment = { ...FIXTURE_FINAL_ASSESSMENT, tiers: {} };
-  const newUnit = { finalAssessment: newAssessment, miniAssessments: [] };
+  const newAssessment = { ...FIXTURE_MAJOR_ASSESSMENT, tiers: {} };
+  const newUnit = { majorAssessment: newAssessment, miniAssessments: [] };
 
   doc.setData(newUnit);
   assert.equal(doc.unitAssessment, newUnit, 'should update internal state');
@@ -269,7 +269,7 @@ test('newId generates unique IDs with correct prefix', () => {
 
 // ===== Coverage Structure Guard =====
 test('assessment coverage array structure is correct', () => {
-  const assessment = FIXTURE_FINAL_ASSESSMENT;
+  const assessment = FIXTURE_MAJOR_ASSESSMENT;
   assert.ok(Array.isArray(assessment.coverage), 'coverage should be array');
 
   for (const link of assessment.coverage) {
@@ -281,7 +281,7 @@ test('assessment coverage array structure is correct', () => {
 
 // ===== Tier Structure Guard =====
 test('assessment tiers have required structure', () => {
-  const assessment = FIXTURE_FINAL_ASSESSMENT;
+  const assessment = FIXTURE_MAJOR_ASSESSMENT;
   const tiers = ['pass', 'intermediate', 'advanced'];
 
   for (const tierKey of tiers) {
@@ -296,7 +296,7 @@ test('assessment tiers have required structure', () => {
 
 // ===== No Reverse Edge Test (INV-DM-12) =====
 test('assessment should not store lessonIds reverse field', () => {
-  const assessment = FIXTURE_FINAL_ASSESSMENT;
+  const assessment = FIXTURE_MAJOR_ASSESSMENT;
   assert.ok(!('lessonIds' in assessment), 'assessment should not have lessonIds field');
 });
 
@@ -310,7 +310,7 @@ test('mini assessment order is explicit, not array position', () => {
 
 // ===== D1: material/studentTask save/load round-trip (blocker fix) =====
 // Builds a minimal valid unit matching the schema in unit.json / datamodel spec:
-// unitAssessment.finalAssessment IS the tier map (pass/intermediate/advanced
+// unitAssessment.majorAssessment IS the tier map (pass/intermediate/advanced
 // directly, no .tiers wrapper); each miniAssessment carries an explicit .tiers.
 function createValidUnitForAssessment() {
   return {
@@ -350,14 +350,14 @@ function createValidUnitForAssessment() {
       title: 'Unit Assessment',
       bigIdeaId: 'idea-1',
       coverage: [],
-      finalAssessment: {
+      majorAssessment: {
         pass: { tier: 'pass', material: 'Read the source excerpt', studentTask: 'Answer the three questions', workspaceLines: 5, imageRefs: [] },
         intermediate: { tier: 'intermediate', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
         advanced: { tier: 'advanced', material: null, studentTask: null, workspaceLines: null, imageRefs: [] },
       },
-      finalAssessmentCompleted: false,
-      finalAssessmentDate: null,
-      finalAssessmentPeriod: null,
+      majorAssessmentCompleted: false,
+      majorAssessmentDate: null,
+      majorAssessmentPeriod: null,
       miniAssessments: [
         {
           id: 'mini-1',
@@ -433,18 +433,18 @@ test('D1: assessment material/studentTask survive a save -> load round-trip thro
   const store2 = new LocalStore(mockClient);
   await store2.loadUnit();
 
-  const loadedFinalPass = store2.unit.unitAssessment.finalAssessment.pass;
-  assert.equal(loadedFinalPass.material, 'Read the source excerpt', 'final assessment material should survive round-trip');
-  assert.equal(loadedFinalPass.studentTask, 'Answer the three questions', 'final assessment studentTask should survive round-trip');
-  assert.equal(loadedFinalPass.prompt, undefined, 'no stray .prompt field should exist after round-trip');
-  assert.equal(loadedFinalPass.task, undefined, 'no stray .task field should exist after round-trip');
+  const loadedMajorPass = store2.unit.unitAssessment.majorAssessment.pass;
+  assert.equal(loadedMajorPass.material, 'Read the source excerpt', 'major assessment material should survive round-trip');
+  assert.equal(loadedMajorPass.studentTask, 'Answer the three questions', 'major assessment studentTask should survive round-trip');
+  assert.equal(loadedMajorPass.prompt, undefined, 'no stray .prompt field should exist after round-trip');
+  assert.equal(loadedMajorPass.task, undefined, 'no stray .task field should exist after round-trip');
 
   const loadedMiniPass = store2.unit.unitAssessment.miniAssessments[0].tiers.pass;
   assert.equal(loadedMiniPass.material, 'Mini material text', 'mini assessment material should survive round-trip');
   assert.equal(loadedMiniPass.studentTask, 'Mini student task text', 'mini assessment studentTask should survive round-trip');
 
   // Confirm the renderer actually reads material/studentTask off the loaded, real-schema data.
-  const doc = new UnitAssessmentDocument(store2.unit.unitAssessment, [], store2.unit.bigIdeas, store2.unit.nodes, 'final');
+  const doc = new UnitAssessmentDocument(store2.unit.unitAssessment, [], store2.unit.bigIdeas, store2.unit.nodes, 'major');
   const svg = new MockSVGElement('svg');
   doc.render(svg);
   assert.ok(
@@ -457,22 +457,22 @@ test('D1: assessment material/studentTask survive a save -> load round-trip thro
   );
 });
 
-// ===== MINOR: final-assessment delete guard is data-layer, not UI-only =====
-test('deleteAssessment: refuses to delete the final assessment', () => {
+// ===== MINOR: major-assessment delete guard is data-layer, not UI-only =====
+test('deleteAssessment: refuses to delete the major assessment', () => {
   const unitAssessment = {
-    finalAssessment: { pass: {}, intermediate: {}, advanced: {} },
+    majorAssessment: { pass: {}, intermediate: {}, advanced: {} },
     miniAssessments: [{ id: 'mini-1', name: 'Mini 1' }],
   };
 
-  const result = deleteAssessment(unitAssessment, 'final');
-  assert.equal(result.ok, false, 'deleting the final assessment should be refused');
+  const result = deleteAssessment(unitAssessment, 'major');
+  assert.equal(result.ok, false, 'deleting the major assessment should be refused');
   assert.ok(result.reason && result.reason.length > 0, 'refusal should include a reason');
-  assert.ok(unitAssessment.finalAssessment, 'finalAssessment should be untouched');
+  assert.ok(unitAssessment.majorAssessment, 'majorAssessment should be untouched');
 });
 
 test('deleteAssessment: permits deleting a mini assessment', () => {
   const unitAssessment = {
-    finalAssessment: { pass: {}, intermediate: {}, advanced: {} },
+    majorAssessment: { pass: {}, intermediate: {}, advanced: {} },
     miniAssessments: [{ id: 'mini-1', name: 'Mini 1' }, { id: 'mini-2', name: 'Mini 2' }],
   };
 

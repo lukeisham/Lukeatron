@@ -1,7 +1,7 @@
 /**
  * unit-assessment-document.js — Assessment document renderer (FR-UAB-1…16)
  *
- * Renders unit assessments (one final + many minis) as 4-page A4 portrait documents.
+ * Renders unit assessments (one major + many minis) as 4-page A4 portrait documents.
  * Each assessment: 1 header page + 3 tier pages (Pass/Intermediate/Advanced).
  * Binds to big ideas, links to curriculum nodes, shows referencing lessons.
  */
@@ -56,11 +56,11 @@ function wrapToLines(text, maxWidth, fontSize, maxLines = 2) {
 /**
  * UnitAssessmentDocument — Page model for assessment rendering
  *
- * @param {Object} unitAssessment - { finalAssessment, miniAssessments[] }
+ * @param {Object} unitAssessment - { majorAssessment, miniAssessments[] }
  * @param {Array} allLessons - All lessons (for deriving referencing-lessons list)
  * @param {Array} allBigIdeas - All big ideas (for title lookups)
  * @param {Array} allNodes - All curriculum nodes (for coverage link rendering)
- * @param {string} mode - "final" | "mini"
+ * @param {string} mode - "major" | "mini"
  * @param {number} miniIndex - Which mini to render (if mode="mini")
  */
 export class UnitAssessmentDocument {
@@ -69,7 +69,7 @@ export class UnitAssessmentDocument {
     allLessons = [],
     allBigIdeas = [],
     allNodes = [],
-    mode = 'final',
+    mode = 'major',
     miniIndex = 0
   ) {
     this.unitAssessment = unitAssessment;
@@ -81,18 +81,18 @@ export class UnitAssessmentDocument {
   }
 
   /**
-   * Get the assessment being rendered (final or one mini).
+   * Get the assessment being rendered (major or one mini).
    */
   getAssessment() {
-    if (this.mode === 'final') {
-      return this.unitAssessment.finalAssessment;
+    if (this.mode === 'major') {
+      return this.unitAssessment.majorAssessment;
     } else {
       return this.unitAssessment.miniAssessments[this.miniIndex];
     }
   }
 
   /**
-   * Get the assessment kind ("final" | "mini").
+   * Get the assessment kind ("major" | "mini").
    */
   getAssessmentKind() {
     return this.mode;
@@ -103,8 +103,8 @@ export class UnitAssessmentDocument {
    */
   getAssessmentId() {
     const assessment = this.getAssessment();
-    if (this.mode === 'final') {
-      return 'final';  // Final assessment doesn't have an ID; use "final" as sentinel
+    if (this.mode === 'major') {
+      return 'major';  // Major assessment doesn't have an ID; use "major" as sentinel
     }
     return assessment ? assessment.id : null;
   }
@@ -121,7 +121,7 @@ export class UnitAssessmentDocument {
     this.renderHeaderPage(assessment, svgElement);
 
     // Pages 2–4: Tier pages.
-    // Per the data model, unitAssessment.finalAssessment IS the tier map
+    // Per the data model, unitAssessment.majorAssessment IS the tier map
     // (pass/intermediate/advanced directly), while each miniAssessment
     // carries an explicit .tiers wrapper. getTierMap() resolves either shape.
     const tierMap = this.getTierMap(assessment);
@@ -135,7 +135,7 @@ export class UnitAssessmentDocument {
 
   /**
    * Resolve the { pass, intermediate, advanced } tier map for an assessment,
-   * regardless of whether it's a final assessment (tier map at the top level)
+   * regardless of whether it's a major assessment (tier map at the top level)
    * or a mini assessment (tier map under .tiers).
    */
   getTierMap(assessment) {
@@ -154,8 +154,8 @@ export class UnitAssessmentDocument {
     title.setAttribute('font-weight', 'bold');
     title.setAttribute('fill', 'var(--color-text-primary)');
     title.setAttribute('class', 'assessment-title');
-    if (this.mode === 'final') {
-      title.textContent = 'Final Assessment';
+    if (this.mode === 'major') {
+      title.textContent = 'Major Assessment';
     } else {
       title.textContent = assessment.name || 'Mini Assessment';
     }

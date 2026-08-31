@@ -1,6 +1,6 @@
 // local-store.js — Browser-side data layer for local persistence
 // Owns: load/save unit.json, validate all invariants, manage unsaved changes
-// Exports: ServerClient, validateUnit, LocalStore
+// Exports: ServerClient, validateUnit, migrateFinalToMajorAssessment, LocalStore
 
 const API_BASE = 'http://127.0.0.1';
 const SCHEMA_VERSION = '1.0.0';
@@ -259,6 +259,35 @@ class ServerClient {
       console.error(`Error fetching image ${imageId}:`, err);
       return null;
     }
+  }
+}
+
+/**
+ * Migrate a unit.json still using the pre-rename "finalAssessment*" keys to the
+ * current "majorAssessment*" keys, in place. Read-side only — the file on disk is
+ * left untouched until the app next saves it (at which point it's written with the
+ * new keys). Older unit.json files created from a pre-rename template would
+ * otherwise fail validation (INV-DM-1/4/18) and refuse to load.
+ * @param {Object} unit - The loaded unit.json, mutated in place
+ */
+export function migrateFinalToMajorAssessment(unit) {
+  const ua = unit && unit.unitAssessment;
+  if (!ua || typeof ua !== 'object') return;
+  if (ua.majorAssessment === undefined && ua.finalAssessment !== undefined) {
+    ua.majorAssessment = ua.finalAssessment;
+    delete ua.finalAssessment;
+  }
+  if (ua.majorAssessmentCompleted === undefined && ua.finalAssessmentCompleted !== undefined) {
+    ua.majorAssessmentCompleted = ua.finalAssessmentCompleted;
+    delete ua.finalAssessmentCompleted;
+  }
+  if (ua.majorAssessmentDate === undefined && ua.finalAssessmentDate !== undefined) {
+    ua.majorAssessmentDate = ua.finalAssessmentDate;
+    delete ua.finalAssessmentDate;
+  }
+  if (ua.majorAssessmentPeriod === undefined && ua.finalAssessmentPeriod !== undefined) {
+    ua.majorAssessmentPeriod = ua.finalAssessmentPeriod;
+    delete ua.finalAssessmentPeriod;
   }
 }
 
@@ -565,13 +594,13 @@ export function validateUnit(unit) {
     }
   }
 
-  // Check unit assessment finalAssessment and miniAssessments
+  // Check unit assessment majorAssessment and miniAssessments
   if (unit.unitAssessment) {
-    if (unit.unitAssessment.finalAssessment && unit.unitAssessment.finalAssessment.tiers) {
-      for (const [tierName, tier] of Object.entries(unit.unitAssessment.finalAssessment.tiers)) {
+    if (unit.unitAssessment.majorAssessment && unit.unitAssessment.majorAssessment.tiers) {
+      for (const [tierName, tier] of Object.entries(unit.unitAssessment.majorAssessment.tiers)) {
         if (Array.isArray(tier.imageRefs)) {
           for (const ref of tier.imageRefs) {
-            checkImageRef(ref, `finalAssessment tier ${tierName}`);
+            checkImageRef(ref, `majorAssessment tier ${tierName}`);
           }
         }
       }
@@ -656,8 +685,8 @@ export function validateUnit(unit) {
     if (lesson.tiers) tierCheck(lesson.tiers, lesson.id, 'lesson');
   }
   if (unit.unitAssessment) {
-    if (unit.unitAssessment.finalAssessment) {
-      tierCheck(unit.unitAssessment.finalAssessment.tiers, 'unitAssessment.finalAssessment', 'finalAssessment');
+    if (unit.unitAssessment.majorAssessment) {
+      tierCheck(unit.unitAssessment.majorAssessment.tiers, 'unitAssessment.majorAssessment', 'majorAssessment');
     }
     for (const mini of unit.unitAssessment.miniAssessments || []) {
       tierCheck(mini.tiers, mini.id, 'miniAssessment');
@@ -790,6 +819,12 @@ export class LocalStore {
   async loadUnit() {
     try {
       const unit = await this.serverClient.load();
+
+      // Migrate pre-rename unit.json files: "final assessment" was renamed to
+      // "major assessment" (finalAssessment* -> majorAssessment*). Read-side only —
+      // never write the old keys back out. Keeps older unit.json files (created from
+      // an earlier template) loading instead of failing validation.
+      migrateFinalToMajorAssessment(unit);
 
       // Validate schema version (FR-LS-6)
       if (unit.schemaVersion && unit.schemaVersion > SCHEMA_VERSION) {

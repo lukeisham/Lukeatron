@@ -51,7 +51,7 @@
     "title": "",
     "bigIdeaId": "",
     "coverage": [],
-    "finalAssessment": {
+    "majorAssessment": {
       "pass": {
         "tier": "pass",
         "material": null,
@@ -74,9 +74,9 @@
         "imageRefs": []
       }
     },
-    "finalAssessmentCompleted": false,
-    "finalAssessmentDate": null,
-    "finalAssessmentPeriod": null,
+    "majorAssessmentCompleted": false,
+    "majorAssessmentDate": null,
+    "majorAssessmentPeriod": null,
     "miniAssessments": []
   },
   "matrixTemplate": {

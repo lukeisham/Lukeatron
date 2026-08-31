@@ -199,7 +199,7 @@ test('arbor-tree: a node with all three coverage kinds renders three independent
     lessons: [],
     bigIdeas: [{ id: 'bi1', title: 'BI One', coverage: [{ nodeId: 'n1', coverage: 'full' }] }],
     unitAssessment: {
-      finalAssessment: { id: 'fa1', title: 'Final', coverage: [{ nodeId: 'n1', coverage: 'partial' }] },
+      majorAssessment: { id: 'fa1', title: 'Major', coverage: [{ nodeId: 'n1', coverage: 'partial' }] },
       miniAssessments: []
     },
     topics: [{

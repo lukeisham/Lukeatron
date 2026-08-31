@@ -9,7 +9,7 @@ import { resolveTopic } from './bigidea-list.js';
  * Returns: "not started" | "in progress" | "complete"
  *
  * Algorithm (AD-LTB-4):
- * 1. Collect every lesson + mini + final assessment bound to this topic (via FR-BIB-17 resolution)
+ * 1. Collect every lesson + mini + major assessment bound to this topic (via FR-BIB-17 resolution)
  * 2. If none: return "not started" (optional topics are OK)
  * 3. If all completed: return "complete"
  * 4. If some completed: return "in progress"
@@ -20,11 +20,11 @@ import { resolveTopic } from './bigidea-list.js';
  * @param {string} topicId - The topic.id
  * @param {Array} allLessons - unit.lessons[]
  * @param {Array} allMiniAssessments - unit.miniAssessments[] (may be undefined)
- * @param {Object|undefined} finalAssessment - unit.unitAssessment (may be undefined)
+ * @param {Object|undefined} majorAssessment - unit.unitAssessment (may be undefined)
  * @param {Array} allBigIdeas - unit.bigIdeas[]
  * @returns {string} "not started" | "in progress" | "complete"
  */
-export function computeTopicStatus(topicId, allLessons, allMiniAssessments, finalAssessment, allBigIdeas) {
+export function computeTopicStatus(topicId, allLessons, allMiniAssessments, majorAssessment, allBigIdeas) {
   if (!topicId || typeof topicId !== 'string') {
     return 'not started';
   }
@@ -49,10 +49,10 @@ export function computeTopicStatus(topicId, allLessons, allMiniAssessments, fina
     }
   }
 
-  // Collect final assessment if bound to this topic
-  if (finalAssessment && finalAssessment.id) {
-    if (resolveTopic(finalAssessment.id, [finalAssessment], allBigIdeas) === topicId) {
-      items.push({ completed: finalAssessment.finalAssessmentCompleted || false });
+  // Collect major assessment if bound to this topic
+  if (majorAssessment && majorAssessment.id) {
+    if (resolveTopic(majorAssessment.id, [majorAssessment], allBigIdeas) === topicId) {
+      items.push({ completed: majorAssessment.majorAssessmentCompleted || false });
     }
   }
 

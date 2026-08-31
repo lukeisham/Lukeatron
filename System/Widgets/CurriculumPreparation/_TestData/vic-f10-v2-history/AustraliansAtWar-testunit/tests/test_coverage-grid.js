@@ -52,7 +52,7 @@ function createMockUnit() {
     ],
     unitAssessment: {
       id: 'ua-1',
-      title: 'Final Assessment',
+      title: 'Major Assessment',
       coverage: [],
       miniAssessments: [
         { id: 'mini-1', name: 'Quiz 1', coverage: [] },
@@ -126,17 +126,17 @@ test('TEST-2c: Assessment cell write goes to assessment.coverage[], not big-idea
   const unit = createMockUnit();
   const store = new MockLocalStore();
 
-  const finalAssessment = unit.unitAssessment;
+  const majorAssessment = unit.unitAssessment;
   const nodeId = 'node-1';
 
   // Add coverage to assessment
-  finalAssessment.coverage.push({ nodeId, coverage: 'full', note: null });
+  majorAssessment.coverage.push({ nodeId, coverage: 'full', note: null });
   store.setData({ unitAssessment: unit.unitAssessment });
 
   // Verify it was written to assessment, not to big idea
-  assert.strictEqual(finalAssessment.coverage.length, 1);
-  assert.strictEqual(finalAssessment.coverage[0].nodeId, nodeId);
-  assert.strictEqual(finalAssessment.coverage[0].coverage, 'full');
+  assert.strictEqual(majorAssessment.coverage.length, 1);
+  assert.strictEqual(majorAssessment.coverage[0].nodeId, nodeId);
+  assert.strictEqual(majorAssessment.coverage[0].coverage, 'full');
 
   // Big ideas should be untouched
   assert.strictEqual(unit.bigIdeas[0].coverage.length, 0);
@@ -476,7 +476,7 @@ function createKeyboardFixtureUnit() {
     topics: [],
     unitAssessment: {
       id: 'ua-1',
-      title: 'Final Assessment',
+      title: 'Major Assessment',
       coverage: [],
       miniAssessments: [
         { id: 'mini-1', name: 'Quiz 1', coverage: [] },
@@ -502,7 +502,7 @@ test('F1: AC-CG-9 — a full keyboard pass reaches the same end state as the mou
         return rowDiff !== 0 ? rowDiff : parseInt(a.dataset.col, 10) - parseInt(b.dataset.col, 10);
       });
 
-    // 2 outcomes x 3 assessments (final + 2 minis) = 6 cells
+    // 2 outcomes x 3 assessments (major + 2 minis) = 6 cells
     assert.strictEqual(cells.length, 6);
     const cell00 = cells.find(c => c.dataset.row === '0' && c.dataset.col === '0');
 

@@ -1,0 +1,109 @@
+/* orphan-cleanup.css — Styling for the orphan-image cleanup confirmation dialog
+   (split out of image-paste.css to stay under CSS-1's 150-line cap). */
+
+.orphan-cleanup-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.orphan-cleanup-content {
+  background: var(--color-bg-default);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px var(--color-overlay-shadow);
+  border: 1px solid var(--color-border-default);
+}
+
+.orphan-cleanup-content h2 {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.orphan-cleanup-content p {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.orphan-cleanup-list {
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-border-warning);
+}
+
+.orphan-cleanup-list strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.orphan-cleanup-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.orphan-cleanup-list li {
+  font-size: var(--font-size-lg);
+  margin: 6px 0;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.orphan-cleanup-list code {
+  flex: 1;
+  background: var(--color-bg-default);
+  padding: var(--space-1) 6px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  word-break: break-all;
+  font-size: var(--font-size-md);
+}
+
+.file-size {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-md);
+  white-space: nowrap;
+}
+
+.orphan-cleanup-warning {
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  background: var(--color-bg-warning);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-border-warning);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-warning);
+}
+
+.orphan-cleanup-warning strong {
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+.orphan-cleanup-buttons {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  margin-top: var(--space-6);
+}

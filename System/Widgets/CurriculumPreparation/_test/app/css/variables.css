@@ -1,0 +1,276 @@
+/* ========================================
+   CurriculumPreparation Design Tokens
+   Source: AD-13c (rev 12)
+   Date: 2026-08-29
+   ======================================== */
+
+:root {
+  /* ===== NEUTRAL PALETTE ===== */
+  --color-text-primary: #1a1a17;
+  --color-text-secondary: #9a9891;
+  --color-text-tertiary: #5f5e5a;
+  --color-bg-white: #fff;
+  --color-bg-light: #f4f3ee;
+  --color-bg-very-light: #faf9f5;
+  --color-border-strong: #1a1a17;
+  --color-border-medium: #c9c7bd;
+  --color-border-light: #e3e1d9;
+  --color-border-dashed: #c9c7bd;
+
+  /* Legacy alias names — --color-ink (vs --color-text-primary) and
+     --color-ink-muted (vs --color-text-secondary) were two competing names
+     for the same roles. Standardised on --color-text-*; --color-ink* kept
+     only as aliases so no call site needed touching. */
+  --color-ink: var(--color-text-primary);
+  --color-ink-muted: var(--color-text-secondary);
+
+  /* ===== INTERACTIVE / COMPONENT TOKENS =====
+     Previously referenced with no fallback (silently resolved to nothing) —
+     buttons.css, image-paste.css and orphan-cleanup.css. Defined here on the
+     existing neutral + tier palette so the whole system stays coherent. */
+  --color-primary: var(--color-intermediate-line);       /* #185FA5 */
+  --color-primary-dark: var(--color-intermediate-ink);    /* #0C447C */
+  --color-primary-rgb: 24, 95, 165;
+  --color-on-primary: var(--color-bg-white);
+
+  --color-bg-default: var(--color-bg-white);
+  --color-bg-subtle: var(--color-bg-light);
+  --color-bg-secondary: var(--color-bg-light);
+  --color-bg-hover: #ece9df;   /* one step darker than --color-bg-light */
+  --color-bg-active: var(--color-intermediate-tint);
+
+  --color-border-default: var(--color-border-medium);
+  --color-border-hover: var(--color-text-tertiary);
+  --color-border-active: var(--color-primary);
+
+  --color-focus-ring: var(--color-primary);
+  --color-focus-bg: var(--color-intermediate-tint);
+
+  --color-bg-error: var(--color-gap-neither-bg);
+  --color-border-error: var(--color-gap-neither-border);
+  --color-text-error: var(--color-gap-neither-ink);
+
+  --color-bg-success: var(--color-pass-tint);
+  --color-border-success: var(--color-pass-line);
+  --color-text-success: var(--color-pass-ink);
+
+  --color-bg-warning: var(--color-advanced-tint);
+  --color-border-warning: var(--color-advanced-line);
+  --color-text-warning: var(--color-advanced-ink);
+
+  --color-danger: var(--color-gap-neither-border);
+  --color-danger-bg: var(--color-gap-neither-bg);
+  --color-accent: var(--color-primary);
+  --color-ink-error: var(--color-text-error);
+
+  /* ===== BUTTON SYSTEM =====
+     One coherent scale shared by every button-like control in the app
+     (.button in buttons.css, .app-nav-button / .app-toolbar-button in
+     app.css, .toolbar-actions-button in toolbar-actions.css) — previously
+     three different paddings/font-sizes/unit-systems for the same control. */
+  --btn-font-size: var(--font-ui-sm);
+  --btn-padding-y: var(--space-2);
+  --btn-padding-x: var(--space-3);
+  --btn-radius: var(--radius-sm);
+
+  /* ===== TIER COLOURS — PASS (Green) ===== */
+  --color-pass-line: #1F6B41;
+  --color-pass-tint: #E4F4E9;
+  --color-pass-ink: #14502F;
+
+  /* ===== TIER COLOURS — INTERMEDIATE (Blue) ===== */
+  --color-intermediate-line: #185FA5;
+  --color-intermediate-tint: #E6F1FB;
+  --color-intermediate-ink: #0C447C;
+
+  /* ===== TIER COLOURS — ADVANCED (Orange) ===== */
+  --color-advanced-line: #9A4E12;
+  --color-advanced-tint: #FCEEE2;
+  --color-advanced-ink: #703508;
+
+  /* ===== DOMAIN GLYPHS ===== */
+  --color-skill-glyph: #0F7B6C;
+  --color-knowledge-glyph: #B23A6B;
+
+  /* ===== COVERAGE CELL STATES ===== */
+  --color-coverage-full-bg: #185FA5;
+  --color-coverage-full-border: #0C447C;
+  --color-coverage-partial-bg: linear-gradient(135deg, #B5D4F4 0 50%, #fff 50% 100%);
+  --color-coverage-partial-border: #185FA5;
+  --color-coverage-none-border: #c9c7bd;
+  --color-coverage-none-bg: #fff;
+
+  /* ===== COMPLETION ROW TINT ===== */
+  --color-row-tint-completion: #F4FAF6;
+
+  /* ===== COVERAGE GAP CHIPS ===== */
+  --color-gap-taught-ink: #703508;
+  --color-gap-taught-bg: #FCEEE2;
+  --color-gap-taught-border: #9A4E12;
+  --color-gap-assessed-ink: #0C447C;
+  --color-gap-assessed-bg: #E6F1FB;
+  --color-gap-assessed-border: #185FA5;
+  --color-gap-neither-ink: #791F1F;
+  --color-gap-neither-bg: #FCEBEB;
+  --color-gap-neither-border: #E24B4A;
+
+  /* ===== SPACING — 4px geometric scale =====
+     Real scale (replaces the old one-name-per-pixel list): each step is a
+     multiple of 4px. The legacy --space-* names below are kept as ALIASES
+     onto this scale so every existing call site keeps working unchanged —
+     nothing was renamed at the call sites, only re-pointed onto real steps. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+
+  /* Legacy names — aliased onto the scale above (transition compatibility) */
+  --space-xs: var(--space-1);
+  --space-2xs: var(--space-1);
+  --space-sm: var(--space-2);
+  --space-base: var(--space-2);
+  --space-md: var(--space-2);
+  --space-lg: var(--space-2);
+  --space-xl: var(--space-2);
+  --space-2xl: var(--space-3);
+  --space-3xl: var(--space-3);
+  --space-4xl: var(--space-4);
+  --space-5xl: var(--space-4);
+  --space-6xl: var(--space-5);
+  --space-7xl: var(--space-5);
+  --space-8xl: var(--space-6);
+  --space-9xl: var(--space-6);
+  --space-10xl: var(--space-7);
+  --space-11xl: var(--space-7);
+  --space-12xl: var(--space-8);
+  --space-13xl: var(--space-9);
+
+  /* ===== TYPOGRAPHY — FONT STACKS =====
+     --font-body and --font-mono were undefined duplicates of --font-system /
+     --font-monospace; kept only as aliases so no call site needed touching. */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-monospace: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: Georgia, serif;
+  --font-body: var(--font-system);
+  --font-mono: var(--font-monospace);
+
+  /* ===== TYPOGRAPHY — ON-SCREEN UI TYPE SCALE =====
+     Real scale on a ~1.125 (major second) ratio, base 15px — legible for
+     screen reading (the old 9.5-14px scale below was sized for print, not
+     screen). Print/SVG document pages are UNAFFECTED — they use the
+     -mm tokens further down, never this scale. */
+  --font-ui-xs: 12px;
+  --font-ui-sm: 13px;
+  --font-ui-base: 15px;
+  --font-ui-md: 16px;
+  --font-ui-lg: 18px;
+  --font-ui-xl: 20px;
+  --font-ui-2xl: 23px;
+  --font-ui-3xl: 26px;
+
+  /* Legacy px font-size names — aliased onto the UI scale above. The old
+     "-alt" half-pixel-step duplicates now simply resolve to their base
+     step (there is no on-screen use case for a 0.5px difference). */
+  --font-size-xs: var(--font-ui-xs);
+  --font-size-sm: var(--font-ui-sm);
+  --font-size-sm-alt: var(--font-ui-sm);
+  --font-size-base: var(--font-ui-base);
+  --font-size-base-alt: var(--font-ui-base);
+  --font-size-md: var(--font-ui-md);
+  --font-size-md-alt: var(--font-ui-md);
+  --font-size-lg: var(--font-ui-lg);
+  --font-size-lg-alt: var(--font-ui-lg);
+  --font-size-xl: var(--font-ui-xl);
+  --font-size-xl-alt: var(--font-ui-xl);
+  --font-size-2xl: var(--font-ui-2xl);
+  --font-size-3xl: var(--font-ui-3xl);
+  --font-size-4xl: 28px;
+  --font-size-5xl: 30px;
+  --font-size-6xl: 32px;
+
+  /* ===== TYPOGRAPHY — FONT SIZES FOR SVG DOCUMENT PAGES (mm / SVG user units) =====
+     BUG CONTEXT (do not re-introduce): document-shell.js builds each document page
+     as an <svg viewBox="0 0 210 297" width="210mm" height="297mm">. Inside that
+     viewBox, ONE SVG USER UNIT = ONE MILLIMETRE — the renderers author all x/y
+     coordinates in mm on purpose (e.g. 8mm line gaps). A CSS font-size declared
+     in px (the tokens above) is consumed as that many *user units*, i.e. that
+     many millimetres, inside the SVG — so `font-size: 11px` on an SVG element
+     renders ~11mm-tall glyphs (3.78x too big), overlapping every line below it
+     and overflowing the page width.
+     Conversion factor: 96 px/inch ÷ 25.4 mm/inch = 3.7795 px per mm.
+     Token value = intended px size / 3.7795 (rounded to 2 decimal places).
+
+     TRAP — these values are written in `px`, NOT in `mm`, even though they
+     represent millimetres. `mm` is an *absolute* CSS unit that always resolves
+     at 96dpi, so `2.91mm` is just another spelling of `11px` and lands back on
+     the exact bug this block exists to fix. Inside a viewBox, CSS `px` IS the
+     user unit — and here one user unit is one millimetre — so 2.91px is what
+     actually renders 2.91mm-tall glyphs. Verified in-browser: at `2.91mm` a
+     line of text measures 13 user units tall, at `2.91px` it measures 4.
+     Do not "correct" these to mm.
+     RULE: any font-size rule that targets text inside an SVG document page
+     (svg.document-page, svg.crib-sheet-page, .front-page, .tier-*, etc. — look
+     for sibling `fill:` declarations, or a selector under `svg`) MUST use one of
+     these -mm tokens, never the plain px tokens above. Plain HTML UI (buttons,
+     toolbars, on-screen editors) keeps using the px tokens as normal. */
+  --font-size-xs-mm: 2.51px;      /* 9.5px */
+  --font-size-sm-mm: 2.65px;      /* 10px */
+  --font-size-sm-alt-mm: 2.78px;  /* 10.5px */
+  --font-size-base-mm: 2.91px;    /* 11px */
+  --font-size-base-alt-mm: 3.04px; /* 11.5px */
+  --font-size-md-mm: 3.17px;      /* 12px */
+  --font-size-md-alt-mm: 3.31px;  /* 12.5px */
+  --font-size-lg-mm: 3.44px;      /* 13px */
+  --font-size-lg-alt-mm: 3.57px;  /* 13.5px */
+  --font-size-xl-mm: 3.70px;      /* 14px */
+  --font-size-xl-alt-mm: 3.97px;  /* 15px */
+  --font-size-2xl-mm: 4.50px;     /* 17px */
+  --font-size-3xl-mm: 4.76px;     /* 18px */
+  --font-size-4xl-mm: 5.29px;     /* 20px */
+  --font-size-5xl-mm: 5.56px;     /* 21px */
+  --font-size-6xl-mm: 6.09px;     /* 23px */
+  /* One-off: document-shell.css .image-container text uses a bare 9px not on
+     the token scale above; give it an mm counterpart too rather than inventing
+     a new px token. */
+  --font-size-image-caption-mm: 2.38px; /* 9px */
+
+  /* ===== OVERLAY / SHADOW ===== */
+  --color-overlay-bg: rgba(0, 0, 0, 0.5);      /* modal backdrop */
+  --color-overlay-shadow: rgba(0, 0, 0, 0.15); /* modal drop shadow */
+  --color-pass-tint-soft: rgba(31, 107, 65, 0.1);
+
+  /* ===== HIGHLIGHT (caution amber — distinct from the advanced-tier tone) ===== */
+  --color-highlight-bg: #FFF3CD;
+  --color-highlight-border: #FFB81C;
+
+  /* ===== BORDERS & RADIUS ===== */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 5px;
+  --radius-lg: 6px;
+  --radius-xl: 7px;
+  --radius-2xl: 8px;
+  --radius-round: 50%;
+
+  /* ===== BORDER STYLES ===== */
+  --border-solid: 1px solid;
+  --border-solid-thick: 1.5px solid;
+  --border-dashed: 1px dashed;
+
+  /* ===== PRINT COLOUR-ADJUST ===== */
+  /* FR-DS-11: Force exact colour printing on tier backgrounds */
+  --print-color-adjust: exact;
+
+  /* ===== A4 PRINT GEOMETRY (px at 96dpi) ===== */
+  --a4-width: 794px;
+  --a4-height: 1123px;
+  --a4-margin-top: 40px;
+  --a4-margin-bottom: 40px;
+  --a4-margin-left: 44px;
+  --a4-margin-right: 44px;
+}

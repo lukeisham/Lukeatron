@@ -1,0 +1,158 @@
+/* app.css — Top-level shell layout for the bootstrap script (app.js).
+   Nav strip + status/error states. Part-owned CSS files style each
+   mounted part's own markup; this file only styles the shell around them. */
+
+body {
+  margin: 0;
+  padding: 0 var(--space-md) var(--space-lg);
+  font-family: var(--font-body);
+  font-size: var(--font-ui-base);
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-bg-white);
+}
+
+body > h1 {
+  font-size: var(--font-ui-2xl);
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+.app-title-subtitle {
+  font-size: var(--font-ui-sm);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+#app-nav {
+  border-bottom: 1px solid var(--color-border-medium);
+  margin-bottom: var(--space-md);
+}
+
+.app-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-nav-button {
+  border: 1px solid var(--color-border-medium);
+  border-bottom: none;
+  background: var(--color-bg-subtle);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--btn-radius) var(--btn-radius) 0 0;
+  cursor: pointer;
+  font-size: var(--btn-font-size);
+  font-family: inherit;
+}
+
+.app-nav-button:hover {
+  background: var(--color-bg-hover);
+}
+
+.app-nav-button.is-active {
+  background: var(--color-bg-white);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-bg-white);
+  position: relative;
+  top: 1px;
+}
+
+.app-nav-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+#app-content {
+  min-height: 200px;
+}
+
+.app-status {
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  max-width: 60ch;
+}
+
+.app-status-loading {
+  color: var(--color-ink-muted);
+}
+
+.app-status-error {
+  background: var(--color-bg-error);
+  border: 1px solid var(--color-border-error);
+  color: var(--color-ink-error);
+}
+
+.app-status-hint {
+  font-size: var(--font-ui-sm);
+  color: var(--color-ink-muted);
+}
+
+.lesson-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.lesson-plan-pages,
+.unit-assessment-pages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+.app-bigidea-toolbar {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+  background: var(--color-bg-very-light);
+}
+
+.app-bigidea-toolbar h3 {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-ui-sm);
+}
+
+.app-bigidea-topic-list {
+  list-style: none;
+  margin: 0 0 var(--space-sm);
+  padding: 0;
+}
+
+.app-bigidea-topic-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) 0;
+  font-size: var(--font-ui-sm);
+}
+
+.app-bigidea-names {
+  color: var(--color-ink-muted);
+}
+
+.app-toolbar-button {
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--btn-radius);
+  background: var(--color-bg-subtle);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  cursor: pointer;
+  font-size: var(--btn-font-size);
+  font-family: inherit;
+}
+
+.app-toolbar-button:hover {
+  background: var(--color-bg-hover);
+}
+
+.app-toolbar-button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+}

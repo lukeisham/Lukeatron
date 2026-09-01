@@ -1,0 +1,138 @@
+/**
+ * resources-page-controls.css — Form controls for resource item add/edit
+ *
+ * Styles for the resource page form interface:
+ * - Control panel layout and grouping
+ * - Input, textarea, select field styling
+ * - Button styles (primary, danger)
+ * - Item action buttons (edit, delete, reorder)
+ *
+ * Implements CSS-1 (one file, one job), CSS-2 (tokens only),
+ * CSS-4 (semantic names), CSS-5 (low specificity)
+ */
+
+/* ===== Add/Edit/Delete Controls Container ===== */
+.resource-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  padding: var(--space-12xl);
+  background: var(--color-bg-very-light);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ===== Control Group ===== */
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.control-group label {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: var(--color-text-primary);
+  display: block;
+}
+
+/* ===== Form Inputs ===== */
+.control-group input,
+.control-group textarea,
+.control-group select {
+  font-size: var(--font-size-base);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  font-family: var(--font-system);
+}
+
+.control-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.control-group input:focus,
+.control-group textarea:focus,
+.control-group select:focus {
+  outline: none;
+  border-color: var(--color-intermediate-line);
+  box-shadow: 0 0 0 2px var(--color-intermediate-tint);
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+button:hover {
+  background: var(--color-bg-light);
+  border-color: var(--color-border-strong);
+}
+
+button.primary {
+  background: var(--color-intermediate-line);
+  color: var(--color-bg-white);
+  border-color: var(--color-intermediate-line);
+}
+
+button.primary:hover {
+  background: var(--color-intermediate-ink);
+  border-color: var(--color-intermediate-ink);
+}
+
+button.danger {
+  background: var(--color-gap-neither-border);
+  color: var(--color-bg-white);
+  border-color: var(--color-gap-neither-border);
+}
+
+button.danger:hover {
+  background: var(--color-gap-neither-ink);
+  border-color: var(--color-gap-neither-ink);
+}
+
+/* ===== Item Actions (Edit/Delete/Reorder) ===== */
+.item-actions {
+  display: flex;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+  justify-content: flex-start;
+}
+
+.item-actions button {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-xs);
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .resource-controls {
+    padding: var(--space-8xl);
+  }
+
+  .control-group {
+    gap: var(--space-md);
+  }
+
+  .item-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* ===== Hide Controls in Print ===== */
+@media print {
+  .resource-controls,
+  .item-actions,
+  button,
+  [role="button"],
+  .screen-only {
+    display: none;
+  }
+}

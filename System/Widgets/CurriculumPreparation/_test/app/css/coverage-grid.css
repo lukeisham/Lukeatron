@@ -1,0 +1,37 @@
+/* coverage-grid.css — Two-axis grid: outcomes × big ideas + assessments (CSS-1,2) */
+.coverage-grid { display: flex; flex-direction: column; gap: var(--space-5xl); padding: var(--space-5xl); font-family: var(--font-system); font-size: var(--font-size-base); color: var(--color-text-primary); }
+.coverage-grid-summary { display: flex; gap: var(--space-5xl); padding: var(--space-3xl) 0; border-bottom: var(--border-solid) var(--color-border-light); }
+.summary-content { display: flex; gap: var(--space-5xl); align-items: center; }
+.gap-count { display: flex; gap: var(--space-md); align-items: center; font-size: var(--font-size-sm); }
+.gap-kind { display: inline-block; width: 12px; height: 12px; border-radius: var(--radius-sm); border: var(--border-solid-thick); }
+.gap-kind.taught-not-assessed { background-color: var(--color-gap-taught-bg); border-color: var(--color-gap-taught-border); }
+.gap-kind.assessed-not-taught { background-color: var(--color-gap-assessed-bg); border-color: var(--color-gap-assessed-border); }
+.gap-kind.neither { background-color: var(--color-gap-neither-bg); border-color: var(--color-gap-neither-border); }
+.coverage-grid-main { display: grid; grid-template-columns: 1fr; gap: 0; }
+.coverage-grid-header-row { display: grid; grid-template-columns: 200px 40px 1fr 1fr; gap: var(--space-2xs); padding: var(--space-md); background-color: var(--color-bg-light); border-bottom: var(--border-solid) var(--color-border-medium); position: sticky; top: 0; z-index: 10; }
+.row-label-cell.header, .gap-indicator-cell.header { font-size: var(--font-size-sm); font-weight: bold; color: var(--color-text-secondary); padding: var(--space-md); }
+.coverage-header { font-size: var(--font-size-sm-alt); font-weight: bold; color: var(--color-text-secondary); padding: var(--space-md) 0; text-align: center; }
+.strand-section { display: contents; }
+.strand-header { grid-column: 1 / -1; padding: var(--space-md); background-color: var(--color-bg-very-light); font-size: var(--font-size-sm-alt); font-weight: bold; color: var(--color-text-tertiary); border-top: var(--border-solid) var(--color-border-light); }
+.coverage-grid-row { display: grid; grid-template-columns: 200px 40px 1fr 1fr; gap: var(--space-2xs); padding: var(--space-md); }
+.coverage-grid-row:nth-child(even) { background-color: var(--color-bg-very-light); }
+.row-label { font-size: var(--font-size-base); line-height: 1.4; }
+.row-label .code { font-family: var(--font-monospace); font-size: var(--font-size-sm); color: var(--color-text-tertiary); }
+.row-label .title { display: block; font-size: var(--font-size-base); color: var(--color-text-primary); }
+.gap-indicator { display: flex; align-items: center; justify-content: center; min-height: 21px; border-radius: var(--radius-md); }
+.gap-indicator.gap-taught-not-assessed { background-color: var(--color-gap-taught-bg); border: var(--border-solid) var(--color-gap-taught-border); }
+.gap-indicator.gap-assessed-not-taught { background-color: var(--color-gap-assessed-bg); border: var(--border-solid) var(--color-gap-assessed-border); }
+.gap-indicator.gap-neither { background-color: var(--color-gap-neither-bg); border: var(--border-solid) var(--color-gap-neither-border); }
+.big-idea-cells, .assessment-cells { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
+.coverage-cell { width: 21px; height: 21px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); cursor: pointer; font-size: var(--font-size-sm-alt); font-weight: bold; border: var(--border-solid); transition: background-color 80ms, border-color 80ms; }
+.coverage-cell.state-empty { background-color: var(--color-coverage-none-bg); border-color: var(--color-coverage-none-border); color: transparent; }
+.coverage-cell.state-full { background-color: var(--color-coverage-full-bg); border-color: var(--color-coverage-full-border); color: white; }
+.coverage-cell.state-partial { background: var(--color-coverage-partial-bg); border-color: var(--color-coverage-partial-border); color: var(--color-coverage-full-bg); }
+.coverage-cell.sub-idea { margin-left: var(--space-3xl); }
+.coverage-cell:focus { outline: 2px solid var(--color-coverage-full-border); outline-offset: 2px; }
+/* Collapse/expand column groups (FR-CG-19, AC-CG-17) */
+.coverage-header { display: flex; align-items: center; justify-content: center; gap: var(--space-md); }
+.coverage-header.collapsed { justify-content: flex-start; }
+.collapse-toggle { background: var(--color-bg-light); border: var(--border-solid) var(--color-border-medium); border-radius: var(--radius-sm); cursor: pointer; font-size: var(--font-size-sm); line-height: 1; padding: var(--space-2xs) var(--space-sm); color: var(--color-text-secondary); }
+.collapse-toggle:focus { outline: 2px solid var(--color-coverage-full-border); outline-offset: 2px; }
+.big-idea-cells.collapsed, .assessment-cells.collapsed { flex: 0 0 auto; min-width: 0; }

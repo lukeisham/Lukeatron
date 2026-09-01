@@ -1,0 +1,88 @@
+/* lessons-and-topics-print.css — Print-specific styles for A4 portrait output */
+/* Page breaks between topics only (FR-LTB-3). Under 80 lines (CSS-1). */
+
+@page {
+  size: A4 portrait;
+  margin: 40px 44px;
+  orphans: 3;
+  widows: 3;
+}
+
+@media print {
+  /* Hide screen-only controls */
+  .lessons-and-topics-header,
+  .mode-toggle,
+  button,
+  [role="button"],
+  .screen-only {
+    display: none;
+  }
+
+  /* Body and view styling */
+  .lessons-and-topics-view {
+    padding: 0;
+    gap: var(--space-xl);
+  }
+
+  .topic-mode {
+    gap: var(--space-4xl);
+  }
+
+  /* Topic cards: page break after (except last) */
+  .topic-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: var(--space-4xl);
+  }
+
+  .topic-card:not(:last-child) {
+    break-after: page;
+    page-break-after: page;
+  }
+
+  /* Item rows: don't break inside */
+  .item-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Date mode: page break after date sections */
+  .date-heading,
+  .unscheduled-heading {
+    break-before: page;
+    page-break-before: page;
+    margin-top: 0;
+  }
+
+  /* Force colours on tier backgrounds */
+  .status-badge {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .completion-dot.filled {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .item-row.completed {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .date-pill,
+  .period-pill {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Reduce spacing for print */
+  .topic-heading {
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Increase font sizes for better readability in print */
+  .item-row {
+    padding: var(--space-lg);
+  }
+}

@@ -1,0 +1,51 @@
+/* lessons-and-topics-interaction.css — Drag, hover, and focus states */
+/* Separate from main layout per CSS-1 (each file one job, under 150 lines) */
+
+/* Drag-to-reorder visual feedback */
+.drag-source {
+  opacity: 0.5;
+  background-color: var(--color-bg-hover);
+}
+
+.insertion-marker {
+  height: 2px;
+  background-color: var(--color-pass-line);
+  margin: var(--space-md) 0;
+}
+
+/* Hover states */
+.completion-dot {
+  transition: background-color 0.1s ease, border-color 0.1s ease;
+}
+
+.mode-toggle:active {
+  opacity: 0.9;
+}
+
+.item-row:hover {
+  background-color: var(--color-bg-very-light);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .lessons-and-topics-view {
+    padding: var(--space-3xl);
+  }
+
+  .item-row {
+    flex-wrap: wrap;
+  }
+
+  .pills-group {
+    flex-basis: 100%;
+    margin-top: var(--space-md);
+  }
+
+  .topic-card {
+    padding: var(--space-2xl);
+  }
+
+  .item-row {
+    padding: var(--space-md);
+  }
+}

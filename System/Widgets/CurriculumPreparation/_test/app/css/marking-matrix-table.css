@@ -1,0 +1,159 @@
+/**
+ * marking-matrix-table.css — Criteria table layout
+ *
+ * Implements:
+ * - Spreadsheet-like criteria table (FR-MMB-19)
+ * - Tier-coloured bands, right-aligned decimals
+ * - Keyboard focus states (FR-MMB-20)
+ *
+ * Under 150 lines, one job (CSS-1)
+ * Uses only variables.css tokens (CSS-2)
+ */
+
+/* ===== CRITERIA TABLE ===== */
+.criteria-table {
+  display: grid;
+  grid-template-columns: 1fr 40px 64px auto 120px;
+  gap: 0;
+  margin-bottom: var(--space-7xl);
+  border-collapse: collapse;
+}
+
+/* Tier band rows */
+.tier-band {
+  display: grid;
+  grid-template-columns: subgrid;
+  col-span: 5;
+  align-items: center;
+  gap: var(--space-md);
+  background-color: var(--color-pass-tint);
+  padding: var(--space-lg) var(--space-xl);
+  border-left: var(--border-solid-thick) var(--color-pass-line);
+  font-size: var(--font-size-base-alt);
+  font-weight: bold;
+  color: var(--color-pass-ink);
+  margin-top: var(--space-3xl);
+  print-color-adjust: exact;
+}
+
+.tier-band.tier-unbalanced,
+.tier-band.notYetSetUp {
+  border: var(--border-solid-thick) var(--color-border-medium);
+}
+
+/* Unbalanced / not-yet-set-up badge (FR-MMB-39, FR-MMB-40) */
+.tier-flag-badge {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: var(--space-2xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-light);
+}
+
+.tier-band.intermediate {
+  background-color: var(--color-intermediate-tint);
+  border-left-color: var(--color-intermediate-line);
+  color: var(--color-intermediate-ink);
+}
+.tier-band.advanced {
+  background-color: var(--color-advanced-tint);
+  border-left-color: var(--color-advanced-line);
+  color: var(--color-advanced-ink);
+}
+
+/* Criterion rows */
+.criterion-row {
+  display: grid;
+  grid-template-columns: subgrid;
+  col-span: 5;
+  align-items: center;
+  padding: var(--space-md) var(--space-xl);
+  border-bottom: var(--border-solid) var(--color-border-light);
+  min-height: var(--space-12xl);
+}
+
+.criterion-text {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+/* Curriculum code, shown compactly alongside a criterion linked to a
+   curriculum outcome (matrixTemplate.criteria[].nodeId) */
+.criterion-code {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  margin-right: var(--space-md);
+}
+
+.criterion-max {
+  font-size: var(--font-size-base);
+  text-align: right;
+  color: var(--color-text-secondary);
+  padding-right: var(--space-xl);
+}
+
+.criterion-score {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  text-align: right;
+  color: var(--color-text-primary);
+  padding-right: var(--space-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.criterion-score.unmarked .score-input {
+  color: var(--color-text-secondary);
+  font-weight: normal;
+  font-style: italic;
+}
+
+.criterion-contribution {
+  font-size: var(--font-size-base);
+  text-align: right;
+  color: var(--color-text-secondary);
+  padding-right: var(--space-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Score + comment input controls (comment is the Tab target, AC-MMB-17) */
+.score-input,
+.comment-input {
+  padding: var(--space-sm);
+  border: var(--border-solid) var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-system);
+}
+
+.score-input {
+  width: 64px;
+  font-size: var(--font-size-base-alt);
+  text-align: right;
+}
+
+.criterion-comment {
+  padding-left: var(--space-md);
+}
+
+.comment-input {
+  width: 100%;
+  font-size: var(--font-size-sm-alt);
+}
+
+.score-input:focus,
+.comment-input:focus {
+  outline: none;
+  border-color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px var(--color-border-light);
+}
+
+/* ===== PRINT RULES ===== */
+@media print {
+  .score-input,
+  .comment-input,
+  button {
+    display: none;
+  }
+}

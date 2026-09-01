@@ -1,0 +1,130 @@
+/* arbor-tree-print.css — Print rules for A4 landscape curriculum map (FR-ATB-2)
+ * Page geometry, colour-adjust: exact for tiers, page breaks
+ * Under 150 lines per CSS-1
+ */
+
+/* ===== A4 Landscape Page Rules ===== */
+@page {
+  size: A4 landscape;
+  margin: 15mm;
+  orphans: 3;
+  widows: 3;
+}
+
+@page :first {
+  margin-top: 15mm;
+}
+
+/* ===== SVG Page Break ===== */
+@media print {
+  svg.document-page {
+    page-break-after: always;
+    break-after: page;
+    display: block;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  /* ===== Hide Screen-Only Controls ===== */
+  .arbor-tree-toolbar,
+  button,
+  [role="button"],
+  .screen-only {
+    display: none;
+  }
+
+  /* ===== Container & Viewport ===== */
+  .arbor-tree-container,
+  .arbor-tree-viewport {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+  }
+
+  .arbor-tree-canvas {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ===== Force Tier Colours in Print ===== */
+  /* FR-DS-11: exact colour printing (risk in spec's 6. Risks table) */
+  [fill*="#1F6B41"],
+  [fill*="#E4F4E9"],
+  [fill*="#14502F"] {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  [fill*="#185FA5"],
+  [fill*="#E6F1FB"],
+  [fill*="#0C447C"] {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  [fill*="#9A4E12"],
+  [fill*="#FCEEE2"],
+  [fill*="#703508"] {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Generic tier classes */
+  .pass, [class*="pass"],
+  .intermediate, [class*="intermediate"],
+  .advanced, [class*="advanced"] {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* ===== Avoid Breaks Inside Elements ===== */
+  .card-content,
+  .description-header,
+  .big-idea-panel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ===== No Background Clipping ===== */
+  body {
+    background: #fff;
+    color: #000;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* ===== SVG Default Print Handling ===== */
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ===== Font Floor: 12pt (≈16px@96dpi) ===== */
+  /* (AC-ATB-10 requirement; enforced via style-guide --font-size-* tokens) */
+  svg text {
+    font-size: max(var(--font-size-base), 12px);
+  }
+
+  /* ===== No Negative Margins in Print ===== */
+  * {
+    margin: auto;
+  }
+}
+
+/* ===== Screen Preview (Before Print) ===== */
+@media screen {
+  .arbor-tree-container {
+    display: flex;
+  }
+
+  svg.document-page {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: var(--space-5xl);
+  }
+}

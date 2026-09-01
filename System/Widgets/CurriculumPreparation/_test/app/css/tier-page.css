@@ -1,0 +1,52 @@
+/**
+ * tier-page.css — Shared tier page styling (FR-LPB-4, AD-LPB-1)
+ *
+ * Tier page colour bands, section labels, workspace.
+ * Shared between lesson-plan-document and unit-assessment-document.
+ * CSS-2: All tokens from variables.css
+ * CSS-5: No !important
+ */
+
+/* Tier page containers with 5px left accent (AD-LPB-1) */
+.tier-pass,
+.tier-intermediate,
+.tier-advanced {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.tier-pass { border-left: 5px solid var(--color-pass-line);
+             background: var(--color-pass-tint); }
+.tier-intermediate { border-left: 5px solid var(--color-intermediate-line);
+                     background: var(--color-intermediate-tint); }
+.tier-advanced { border-left: 5px solid var(--color-advanced-line);
+                 background: var(--color-advanced-tint); }
+
+/* Tier name styling */
+.tier-pass .tier-name { fill: var(--color-pass-ink); }
+.tier-intermediate .tier-name { fill: var(--color-intermediate-ink); }
+.tier-advanced .tier-name { fill: var(--color-advanced-ink); }
+
+.tier-name {
+  font-size: var(--font-size-md-mm); font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Section labels (material, task, workspace) */
+.material-label,
+.student-task-label,
+.workspace-label {
+  font-size: var(--font-size-xs-mm); font-weight: bold;
+  text-transform: uppercase; fill: var(--color-text-secondary);
+}
+
+/* Section bodies */
+.material-body,
+.student-task-body {
+  font-size: var(--font-size-md-mm); fill: var(--color-text-primary);
+  white-space: pre-wrap;
+}
+
+.page-number {
+  font-size: var(--font-size-sm-mm); fill: var(--color-text-secondary);
+}

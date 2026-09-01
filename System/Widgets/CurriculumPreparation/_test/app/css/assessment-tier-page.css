@@ -1,0 +1,152 @@
+/**
+ * assessment-tier-page.css — Shared tier page styling
+ *
+ * Styling for tier pages (Pass/Intermediate/Advanced).
+ * Shared between unit-assessment-document and lesson-plan-document.
+ * Single source of truth; imported by both, never duplicated.
+ */
+
+@import './variables.css';
+
+.assessment-tier-page,
+.lesson-tier-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 1123px;
+  padding: var(--space-12xl);
+  page-break-after: always;
+  background-color: var(--color-bg-white);
+}
+
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-8xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.tier-band {
+  display: block;
+  width: 5px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+}
+
+.tier-band.pass { background-color: var(--color-pass-line); }
+.tier-band.intermediate { background-color: var(--color-intermediate-line); }
+.tier-band.advanced { background-color: var(--color-advanced-line); }
+
+.tier-name {
+  /* SVG text (rendered by assessment-tier-page.js) — mm, not px. */
+  font-size: var(--font-size-md-mm);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.tier-name.pass { color: var(--color-pass-ink); }
+.tier-name.intermediate { color: var(--color-intermediate-ink); }
+.tier-name.advanced { color: var(--color-advanced-ink); }
+
+.prompt-section, .material-section, .task-section, .student-task-section,
+.workspace-section, .writing-section {
+  margin-bottom: var(--space-8xl);
+}
+
+/* SVG text (rendered by assessment-tier-page.js) — mm, not px. */
+.prompt-label, .material-label, .task-label, .student-task-label {
+  display: block;
+  font-size: var(--font-size-sm-mm);
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-base);
+}
+
+.prompt-text, .material-text, .task-text, .student-task-text {
+  font-size: var(--font-size-md-mm);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.workspace-lines, .ruled-lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 200px;
+  gap: var(--space-base);
+  flex: 1;
+}
+
+.workspace-line, .ruled-line {
+  border-bottom: 1px solid var(--color-border-medium);
+  flex: 0 0 0;
+}
+
+.tier-images {
+  margin-top: var(--space-8xl);
+  margin-bottom: var(--space-8xl);
+}
+
+.image-ref {
+  display: inline-block;
+  margin: var(--space-lg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.image-ref img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background-color: var(--color-bg-light);
+  border: 1px dashed var(--color-border-medium);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: var(--space-lg);
+}
+
+@media print {
+  .assessment-tier-page,
+  .lesson-tier-page {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .tier-pass {
+    background-color: var(--color-pass-tint);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .tier-intermediate {
+    background-color: var(--color-intermediate-tint);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .tier-advanced {
+    background-color: var(--color-advanced-tint);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .tier-band {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

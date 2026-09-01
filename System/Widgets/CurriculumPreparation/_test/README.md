@@ -1,3 +1,24 @@
+> # ⚠ TEST COPY — NOT A REAL UNIT ⚠
+>
+> This is `_test/`, the refactor sandbox that sits beside `_template/`. Every
+> piece of content in it is invented: a fictional "Dragonology" curriculum in the
+> fictional jurisdiction of TESTLAND, taught by Ms Testerina Faketeacher to seven
+> students named things like Testy McTestface. None of it is Luke's teaching work.
+>
+> **Changes are made here first, never in `_template/` directly.** Once a change is
+> accepted it is ported into `_template/` and the fake data stripped back out. See
+> `../refactor-registry.md`.
+>
+> Regenerate the data at any time with `python3 ../_TestData/seed-test-fake.py`
+> — it overwrites `unit.json` and `images/`, so local experiments in the data are
+> disposable by design.
+>
+> Two things here deliberately differ from `_template/` and must **never** be
+> ported back: the red TEST banner and titles in `app/index.html`, and the notice
+> in this file.
+
+---
+
 # Curriculum Unit Bundle
 
 One self-contained unit of teaching preparation: a curriculum tree, big ideas,

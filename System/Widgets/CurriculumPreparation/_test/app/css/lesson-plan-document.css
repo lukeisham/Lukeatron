@@ -1,0 +1,60 @@
+/**
+ * lesson-plan-document.css — Lesson plan typography
+ *
+ * Front page styles. All sizes from tokens (FR-LPB-11, AC-LPB-11).
+ * CSS-2: All colours from variables.css only
+ * CSS-5: No !important
+ */
+
+.front-page { font-family: var(--font-system); }
+
+.front-page .lesson-number {
+  font-size: var(--font-size-md-mm); font-weight: bold; fill: var(--color-text-primary);
+}
+
+.front-page .topic-label {
+  font-size: var(--font-size-lg-mm); fill: var(--color-text-secondary);
+}
+
+.front-page .big-idea-name {
+  font-size: var(--font-size-md-mm); font-weight: 600; fill: var(--color-text-tertiary);
+}
+
+.front-page .section-label {
+  font-size: var(--font-size-sm-mm); font-weight: bold; text-transform: uppercase;
+}
+
+.front-page .node-citation {
+  font-size: var(--font-size-sm-mm); font-family: var(--font-monospace);
+  fill: var(--color-text-tertiary);
+}
+
+.front-page .key-example,
+.front-page .practice-question,
+.front-page .sidebar-text {
+  font-size: var(--font-size-md-mm); white-space: pre-wrap;
+}
+
+.front-page .mini-assessment,
+.front-page .major-assessment,
+.front-page .tier-label {
+  font-size: var(--font-size-xs-mm); fill: var(--color-text-secondary);
+}
+
+.front-page .sidebar-label {
+  font-size: var(--font-size-sm-mm); font-weight: bold;
+}
+
+.front-page .page-number {
+  font-size: var(--font-size-sm-mm); fill: var(--color-text-secondary);
+}
+
+/* Utility classes */
+.text-primary { fill: var(--color-text-primary); }
+.text-secondary { fill: var(--color-text-secondary); }
+.text-tertiary { fill: var(--color-text-tertiary); }
+
+svg.document-page {
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}

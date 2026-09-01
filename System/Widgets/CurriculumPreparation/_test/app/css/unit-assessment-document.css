@@ -1,0 +1,98 @@
+/**
+ * unit-assessment-document.css — Assessment document layout index
+ *
+ * Main stylesheet for assessment documents. Imports component styles.
+ * Uses CSS tokens from variables.css only. A4 portrait via document-shell.
+ */
+
+@import './variables.css';
+@import './assessment-tier-page.css';
+@import './assessment-header.css';
+@import './assessment-coverage.css';
+@import './mini-assessment-ui.css';
+@import './assessment-forms.css';
+
+/* ===== Document Container ===== */
+.unit-assessment-document {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 794px;
+  margin: 0 auto;
+  font-family: var(--font-system);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-white);
+}
+
+.assessment-tier-page {
+  page-break-after: always;
+  padding: var(--space-12xl);
+  min-height: 1123px;
+  background-color: var(--color-bg-white);
+}
+
+.tier-header {
+  margin-bottom: var(--space-8xl);
+}
+
+.tier-band {
+  display: block;
+  height: 5px;
+  margin-bottom: var(--space-lg);
+}
+
+.tier-name {
+  /* SVG text (unit-assessment-document.js renderTierPageContent) — mm, not px. */
+  font-size: var(--font-size-md-mm);
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-bottom: var(--space-8xl);
+}
+
+/* Tier-specific colours */
+.tier-pass {
+  border-left: 4px solid var(--color-pass-line);
+  background-color: var(--color-pass-tint);
+}
+
+.tier-intermediate {
+  border-left: 4px solid var(--color-intermediate-line);
+  background-color: var(--color-intermediate-tint);
+}
+
+.tier-advanced {
+  border-left: 4px solid var(--color-advanced-line);
+  background-color: var(--color-advanced-tint);
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .unit-assessment-document {
+    max-width: none;
+    margin: 0;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    display: none;
+  }
+
+  .assessment-tier-page {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .tier-pass,
+  .tier-intermediate,
+  .tier-advanced {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 40px 44px;
+  }
+}

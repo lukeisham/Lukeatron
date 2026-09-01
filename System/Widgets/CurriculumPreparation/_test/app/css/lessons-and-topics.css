@@ -1,0 +1,38 @@
+/* lessons-and-topics.css — Main layout for topic/date view */
+/* Under 150 lines (CSS-1). Colours from style-guide tokens (CSS-2). */
+
+.lessons-and-topics-view { display: flex; flex-direction: column; gap: var(--space-2xl); padding: var(--space-5xl); background-color: var(--color-bg-white); }
+.lessons-and-topics-header { display: flex; padding-bottom: var(--space-lg); border-bottom: var(--border-solid) var(--color-border-light); }
+.mode-toggle { padding: var(--space-md) var(--space-lg); background-color: var(--color-bg-light); border: var(--border-solid) var(--color-border-medium); border-radius: var(--radius-md); font-size: var(--font-size-base); font-weight: bold; cursor: pointer; }
+
+.topic-mode { display: flex; flex-direction: column; gap: var(--space-2xl); }
+.topic-card { border: var(--border-solid) var(--color-border-medium); border-radius: var(--radius-2xl); padding: var(--space-3xl); }
+
+.topic-heading { display: flex; justify-content: space-between; margin-bottom: var(--space-2xl); padding-bottom: var(--space-lg); border-bottom: var(--border-solid) var(--color-border-light); }
+.topic-heading h3 { margin: 0; font-size: var(--font-size-lg-alt); font-weight: bold; }
+
+.status-badge { font-size: var(--font-size-sm); font-weight: bold; padding: var(--space-base) var(--space-lg); border-radius: var(--radius-md); text-transform: uppercase; }
+.status-badge.status-complete { background-color: var(--color-pass-tint); color: var(--color-pass-ink); }
+.status-badge.status-in-progress { background-color: var(--color-intermediate-tint); color: var(--color-intermediate-ink); }
+.status-badge.status-not-started { background-color: var(--color-bg-light); color: var(--color-text-secondary); }
+
+.item-row { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-xl); border-bottom: var(--border-dashed) var(--color-border-light); }
+.item-row.completed { background-color: var(--color-row-tint-completion); }
+
+.completion-dot { flex-shrink: 0; width: 9px; height: 9px; border-radius: var(--radius-round); border: 1px solid var(--color-border-medium); cursor: pointer; }
+.completion-dot.filled { background-color: var(--color-pass-line); border-color: var(--color-pass-line); }
+
+.item-tag { flex-shrink: 0; font-size: var(--font-size-sm); font-weight: bold; background-color: var(--color-bg-light); padding: var(--space-base) var(--space-md); border-radius: var(--radius-md); }
+.item-label { flex-grow: 1; font-size: var(--font-size-base); }
+
+.glyph-skill { color: var(--color-skill-glyph); margin-right: var(--space-sm); }
+.glyph-knowledge { color: var(--color-knowledge-glyph); margin-right: var(--space-sm); }
+
+.pills-group { display: flex; gap: var(--space-md); flex-shrink: 0; }
+.date-pill { font-size: var(--font-size-sm); padding: var(--space-base) var(--space-md); border: var(--border-solid) var(--color-intermediate-line); border-radius: var(--radius-md); background-color: var(--color-intermediate-tint); color: var(--color-intermediate-ink); }
+.period-pill { font-size: var(--font-size-sm); padding: var(--space-base) var(--space-md); border: var(--border-solid) var(--color-advanced-line); border-radius: var(--radius-md); background-color: var(--color-advanced-tint); color: var(--color-advanced-ink); }
+
+.date-heading, .unscheduled-heading { margin-top: var(--space-3xl); margin-bottom: var(--space-lg); padding-bottom: var(--space-md); border-bottom: var(--border-solid) var(--color-border-light); }
+.date-heading h3, .unscheduled-heading h3 { margin: 0; font-size: var(--font-size-lg-alt); font-weight: bold; }
+
+.topic-label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-style: italic; }

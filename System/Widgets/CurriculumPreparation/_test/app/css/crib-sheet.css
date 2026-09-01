@@ -1,0 +1,128 @@
+/* crib-sheet.css — Print & screen styling for crib sheets */
+
+@media print {
+  .half-section { break-inside: avoid-page; }
+  .section-card { break-inside: avoid-page; }
+  .overflow-flag { color: var(--color-gap-neither-border); font-weight: bold; }
+  .placeholder-text, .empty-section-placeholder { display: none; }
+  svg.document-page { page-break-after: always; break-after: page; }
+}
+
+svg.crib-sheet-page {
+  font-family: var(--font-system);
+  font-size: var(--font-size-base-mm);
+  color: var(--color-text-primary);
+  background: white;
+  margin: var(--space-4xl) auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg.crib-sheet-page text {
+  font-family: var(--font-system);
+  fill: var(--color-text-primary);
+}
+
+svg.crib-sheet-page .subject-label {
+  font-size: var(--font-size-md-mm);
+  fill: var(--color-text-tertiary);
+}
+
+svg.crib-sheet-page .sheet-title {
+  font-size: var(--font-size-2xl-mm);
+  font-weight: bold;
+  fill: var(--color-text-primary);
+}
+
+svg.crib-sheet-page .page-number {
+  font-size: var(--font-size-xs-mm);
+  fill: var(--color-text-secondary);
+}
+
+svg.crib-sheet-page .half-label {
+  font-size: var(--font-size-lg-mm);
+  font-weight: bold;
+}
+
+svg.crib-sheet-page .section-title {
+  font-size: var(--font-size-md-alt-mm);
+  font-weight: bold;
+}
+
+svg.crib-sheet-page .section-text {
+  font-size: var(--font-size-base-mm);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+svg.crib-sheet-page .citation {
+  font-size: var(--font-size-xs-mm);
+  fill: var(--color-text-secondary);
+  font-style: italic;
+}
+
+svg.crib-sheet-page .overflow-flag {
+  font-size: var(--font-size-md-mm);
+  font-weight: bold;
+  fill: var(--color-gap-neither-border);
+}
+
+svg.crib-sheet-page .placeholder-text,
+svg.crib-sheet-page .empty-section-placeholder {
+  font-size: var(--font-size-base-mm);
+  fill: var(--color-text-secondary);
+  font-style: italic;
+}
+
+svg.crib-sheet-page .section-card {
+  stroke: var(--color-border-light);
+  stroke-width: 1;
+  fill: var(--color-bg-white);
+  border-radius: var(--radius-md);
+}
+
+svg.crib-sheet-page strong {
+  font-weight: bold;
+}
+
+svg.crib-sheet-page em {
+  font-style: italic;
+}
+
+svg.crib-sheet-page ul {
+  font-size: var(--font-size-base-mm);
+}
+
+svg.crib-sheet-page li {
+  font-size: var(--font-size-base-mm);
+  margin-left: var(--space-2xl);
+}
+
+@media print {
+  svg.crib-sheet-page .subject-label { font-size: var(--font-size-md-mm); }
+  svg.crib-sheet-page .sheet-title { font-size: var(--font-size-3xl-mm); }
+  svg.crib-sheet-page .page-number { font-size: var(--font-size-sm-mm); }
+  svg.crib-sheet-page .half-label { font-size: var(--font-size-lg-mm); }
+  svg.crib-sheet-page .section-title { font-size: var(--font-size-md-alt-mm); }
+  svg.crib-sheet-page .section-text { font-size: var(--font-size-base-mm); }
+  svg.crib-sheet-page .citation { font-size: var(--font-size-sm-mm); }
+}
+
+svg.crib-sheet-page .image-container {
+  max-height: 80px;
+  border-radius: var(--radius-md);
+}
+
+svg.crib-sheet-page .image-placeholder {
+  fill: var(--color-bg-light);
+  stroke: var(--color-border-dashed);
+  stroke-dasharray: 5, 5;
+  stroke-width: 1;
+}
+
+@media (max-width: 768px) {
+  svg.crib-sheet-page {
+    margin: var(--space-lg) auto;
+  }
+}

@@ -1,0 +1,142 @@
+/* !HouseStyle — SUBORDINATE (spine only). The always-on house design skill
+   (.claude/skills/!HouseStyle/) governs the SHARED SPINE here: ground, ink, rule,
+   accent, spacing, type, motion and focus.
+
+   It is SILENT on this file's generated colour model (--hue-CH/PP/TE/PR, --sat,
+   --light-lo/-hi, --hue-step: 137.508deg) and on every FR-numbered channel — the
+   fluorescent urgency outlines, cube-face shading, weight-carried strokes and
+   halos. A hue GENERATOR is not expressible as a flat token set, and the house
+   doctrine deliberately does not absorb one. This is the standing precedent for a
+   justified local excess: declared, named, and reasoned. */
+/* Project Dashboard — Design Tokens (the styleguide spec, FR-1/FR-2)
+
+   Every colour, size and weight the app uses lives here as a custom property on :root.
+   No other module writes a colour literal, a spacing value, or a radius of its own —
+   add a token here instead and reference it (documentation.spec.md, "colours live in
+   exactly one file"). STYLE.md is this file's companion: every value below is explained
+   there, and AC-2 checks the two against each other in both directions. */
+
+:root {
+  /* Ground and ink — Dusk (FR-4, FR-5) */
+  --bg: #11131a;
+  --ink: #e6e6ee;            /* body text on --bg, 14.95:1 */
+  --ink-guessed: #e6e6ee8c;  /* FR-14: the guessed-vs-stated underline — --ink at 55% */
+  --panel: #1b2030;
+  --line: #ffffff10;
+  --bare: #1b2030;           /* an unused lattice slot */
+  --mind: #2a3040;           /* a mind project's plate */
+  --edge: #00000055;         /* the stroke between cube faces */
+
+  /* Quadrant hues (degrees) and the project-colour ramp. A project's own fill is
+     generated from these, never listed (FR-6) — the generator lives in monitor. */
+  --hue-CH: 212;
+  --hue-PP: 34;
+  --hue-TE: 148;
+  --hue-PR: 280;
+  --sat: 42%;
+  --light-lo: 34%;
+  --light-hi: 70%;
+  --hue-variance: 13deg;     /* FR-6: hue ± this, per project */
+  --sat-variance: 8%;        /* FR-6: sat ± this, per project */
+  --hue-step: 137.508deg;    /* the golden angle — FR-6's per-project stepping constant */
+
+  /* Kind — 1 waiting, 2 unshaped, 3 mine, 4 hand-over, 5 incoming (FR-5) */
+  --k1: #7f93b8;
+  --k2: #8e8b84;
+  --k3: #ffc46b;
+  --k4: #7fd6a2;
+  --k5: #b79be8;
+
+  /* Fluorescent — reserved for the two urgency outlines and nothing else (FR-7).
+     A third reference anywhere in the app fails AC-3. */
+  --fluoro-week: #00e5ff;    /* due within seven days, 12.06:1 on --bg */
+  --fluoro-over: #ff2d78;    /* overdue, 5.21:1 on --bg */
+
+  /* Cube face shading — one fill, two filters, via feColorMatrix (FR-11).
+     The crown's "waiting" state reuses --face-shade-mid rather than a new colour (FR-10). */
+  --face-shade-mid: 0.78;    /* right face; also the crown's "waiting" dim */
+  --face-shade-dark: 0.56;   /* left face */
+
+  /* Stack-outline urgency stroke — the guaranteed channel. Colour alone collides with
+     the cube fill it sits against (ΔL 0.015 week, 0.014 overdue), so weight carries it (FR-8) */
+  --stroke-week: 2.4px;
+  --stroke-over: 3.1px;      /* always the thicker of the two */
+  --glow-blur: 4px;          /* soft blur behind the stroke; never animated (FR-9) */
+
+  /* Small-mark halo — the week rail's 11px dots can't carry a stroke, so the fluorescent
+     is a two-ring halo instead: an inner ring in --bg, then a coloured outer ring (FR-8a) */
+  --halo-inner: 2.4px;
+  --halo-outer-week: 4.6px;
+  --halo-outer-over: 5.5px;  /* always the wider of the two */
+  --mark-size: 11px;         /* week-rail dot: circle = due, square = wake, diamond = incoming (FR-9b) */
+
+  /* Mind plate vs bare tile — close in lightness; dash is the second cue (FR-6a) */
+  --dash-mind: 3 2;
+  --dash-bare: none;
+
+  /* The one moving element in the app — the depot ticker (FR-9) */
+  --tick-rate: 10.5s;        /* per job; a lane's cycle time is this × its job count */
+  --tick-ease: linear;       /* the only permitted timing function anywhere in the app */
+  --tick-rest-below: 8;      /* a lane holding fewer jobs than this does not roll */
+
+  /* Type — one system stack, no web font (FR-12) */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-size-body: 13px;
+  --line-height-body: 1.45;
+
+  /* Spacing — a 4px scale (FR-13) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radii — exactly three, no more (FR-13) */
+  --r-swatch: 2px;
+  --r-panel: 8px;
+  --r-rail: 26px;
+}
+
+/* FR-9a: the ticker freezes under reduced motion, defined here rather than in a module
+   so no module can forget it. Contract: the element that actually carries the rolling
+   animation (`.ticker-track-rolling`, monitor.css) must keep that exact class name for
+   this rule to reach it — CSS `animation` is not inherited, so a rule on an ancestor
+   (`.ticker-lane`) cannot stop a descendant's own animation. `.ticker-viewport` is the
+   actual scroll container (`overflow: hidden` in monitor.css), so that is what relaxes
+   to hand-scrollable, not its ancestor. */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track-rolling {
+    animation: none;
+  }
+  .ticker-viewport {
+    overflow-x: auto;
+  }
+}
+
+/* STYLE.md "Guessed, not stated" — the one treatment, defined once here so
+   `monitor.css` and `unblock.css`/`candidate-list.css` (both loaded on every
+   page, index.html) never author their own competing `.guessed` rule that
+   would stack with this one (FR-14/AC-9: a single identical treatment). */
+.guessed {
+  text-decoration: underline dashed var(--ink-guessed) 1px;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/* FR-15: print drops to ink on white and drops both fluorescents — the project sheet is
+   a list, not a picture, so it names kind in words instead of leaning on colour. Kind
+   colours and shading are read unchanged; the board itself does not print (no furniture). */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --ink: #11131a;
+    --ink-guessed: #11131a99;  /* 60%, not the screen palette's 55% (AC-7: 55% only clears 4.09:1 on white) */
+    --panel: #ffffff;
+    --line: #00000022;
+    --fluoro-week: transparent;
+    --fluoro-over: transparent;
+  }
+}

@@ -481,6 +481,12 @@ def build_project(row):
 # ============================================================================
 # HTML
 # ============================================================================
+# !HouseStyle — SUBORDINATE. The inline :root below is a rendered surface governed
+# by the always-on house design skill (.claude/skills/!HouseStyle/) for tokens,
+# motion and glyphs. NOTE: this is a DIFFERENT dashboard from
+# System/Apps/ProjectDashboard/ — it shares no token file with it. It is dark-only;
+# under the house ground contract that is expressed as [data-theme="dark"] on the
+# root, not by inverting :root. Migrate when this CSS is next touched.
 CSS = """
 :root{--bg:#0f1115;--panel:#171a21;--panel2:#1d212b;--line:#2a2f3a;--ink:#e6e9ef;
 --mut:#8b93a3;--acc:#6aa6ff;

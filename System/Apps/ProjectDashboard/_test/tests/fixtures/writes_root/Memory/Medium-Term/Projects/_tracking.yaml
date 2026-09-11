@@ -1,0 +1,40 @@
+# Fixture tracking file for writes.py tests only (TEST-4) — a miniature of
+# the real Memory/Medium-Term/Projects/_tracking.yaml, same shape, synthetic
+# ids (ZZ-*) so a test can never be mistaken for a real project.
+
+projects:
+  - id: ZZ-10
+    project: sample-writes-target
+    title: "Sample Writes Target"
+    context: Personal Research
+    status: Active
+    state: "🟠 your move"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: Memory/Medium-Term/Projects/ZZ-10-sample-writes-target/registry.md
+
+  - id: ZZ-11
+    project: sample-writes-streams
+    title: "Sample Writes Streams"
+    context: Personal Research
+    status: Active
+    state: "🟢 on track"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: Memory/Medium-Term/Projects/ZZ-11-sample-writes-streams/registry.md
+
+  - id: ZZ-12
+    project: sample-writes-escape
+    title: "Sample Writes Escape"
+    context: Personal Research
+    status: Active
+    state: "⚪ undefined"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: ../../../../outside-fence/registry.md

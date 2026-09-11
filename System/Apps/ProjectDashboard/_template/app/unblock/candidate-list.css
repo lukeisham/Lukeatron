@@ -1,0 +1,118 @@
+/* B-7 unblock UI — the candidate list, one file one job (CSS-1): this is
+   the row/list half of unblock's styling, unblock.css the panel/capacity
+   half. Every colour is a var(--token) from shared/tokens.css. */
+
+.candidate-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.candidate-row {
+  background: var(--panel);
+  border-radius: var(--r-panel);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+}
+
+.candidate-row.pending {
+  opacity: 0.6; /* JS-5: a loading state before every request completes */
+}
+
+/* The row scrolled to on arrival from monitor's "take this to Unblock" door
+   (unblock.js `open(projectId)`) — a neutral highlight, never a kind colour:
+   the arriving row can be kind 3 or 4, and --k4 would misname a kind-3 row
+   as a hand-over. */
+.candidate-row.candidate-row-focused {
+  border-color: var(--ink);
+}
+
+.candidate-main {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.candidate-depot-badge {
+  font-weight: 400;
+  color: var(--ink-guessed);
+  font-size: 0.85em;
+}
+
+/* styleguide FR-7/AC-3: the two fluorescents are reserved for exactly two
+   sites — the stack silhouette (board-view.js) and the week-rail halo
+   (week-view.js) — never a text colour here. The badge's own text ("overdue"
+   / "due this week", render.js's outlineBadge) already names the state;
+   weight alone (D-27's doctrine) carries it visually, in --ink. */
+.candidate-outline-overdue {
+  color: var(--ink);
+  border-bottom: var(--stroke-over) solid var(--ink);
+}
+
+.candidate-outline-this-week {
+  color: var(--ink);
+  border-bottom: var(--stroke-week) solid var(--ink);
+}
+
+.candidate-action {
+  margin: var(--space-1) 0;
+}
+
+.candidate-meta {
+  display: flex;
+  gap: var(--space-3);
+  color: var(--ink-guessed);
+  font-size: 0.9em;
+  margin-bottom: var(--space-2);
+}
+
+.candidate-meta .candidate-effort,
+.candidate-meta .candidate-tokens {
+  color: var(--ink);
+}
+
+.candidate-exempt-note {
+  color: var(--ink); /* styleguide FR-7/AC-3: text already says "overdue"; no third fluorescent site */
+  font-size: 0.9em;
+  margin: 0 0 var(--space-2);
+}
+
+.candidate-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.candidate-control {
+  background: var(--bare);
+  border: 1px solid var(--line);
+  border-radius: var(--r-swatch);
+  color: var(--ink);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+}
+
+.candidate-inline-form {
+  display: flex;
+  gap: var(--space-1);
+  flex-basis: 100%;
+}
+
+.candidate-inline-form input {
+  flex: 1;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-swatch);
+  padding: var(--space-1);
+}
+
+.candidate-row-error {
+  color: var(--ink); /* styleguide FR-7/AC-3: a save/validation error, unrelated to overdue urgency */
+  margin: var(--space-2) 0 0;
+}

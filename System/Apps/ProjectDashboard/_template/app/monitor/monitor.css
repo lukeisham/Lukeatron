@@ -1,0 +1,156 @@
+/* Monitor's own shared chrome — page shell, buttons, toolbar/breadcrumb/
+   legend, the this-week panel. Every colour is a token from shared/tokens.css
+   (documentation spec: "colours live in exactly one file"). This file styles
+   layout, spacing and motion only.
+
+   Split by component (CSS-1: one file, one job, under 150 lines) —
+   board-view.css, list-view.css, week-view.css, ticker.css and
+   opened-stack.css each style one rendering module; this file keeps only
+   what more than one of them shares. */
+
+.monitor {
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.muted {
+  color: var(--ink-guessed);
+}
+
+/* .guessed lives in shared/tokens.css (FR-14/AC-9: one treatment, defined once). */
+
+.link-button,
+.icon-button,
+.primary-button,
+.toggle {
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.primary-button {
+  background: var(--k3);
+  color: var(--bg);
+  border: none;
+  font-weight: 600;
+}
+
+.toggle-active {
+  outline: 2px solid var(--k3);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Toolbar, breadcrumb, diagnostics                                       */
+/* ---------------------------------------------------------------------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.toggle-group {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.breadcrumb {
+  font-family: var(--font-mono);
+  color: var(--ink-guessed);
+}
+
+.occlusion-diagnostic {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--ink-guessed);
+}
+
+.wiki-door {
+  color: var(--ink);
+}
+
+/* FR-0b: the legend, always on screen — never a hover-only tooltip (FR-0c). */
+.legend {
+  margin: 0;
+  padding: var(--space-1) var(--space-4);
+  color: var(--ink-guessed);
+  font-size: 0.85em;
+}
+
+/* The page's one <h1> (HTML-3): present at every altitude, but Monitor's own
+   landing job is "eight seconds, no decisions" — a screen-reader-only
+   heading satisfies the semantic requirement without adding visible chrome
+   the design doesn't call for. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The loading/error states (monitor.js) — CSS-2: a token, not an inline style. */
+.state-message {
+  padding: var(--space-8);
+}
+
+.this-week-panel {
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.this-week-panel summary {
+  cursor: pointer;
+}
+
+.nothing-needs-you {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Print (styleguide FR-15, monitor FR-8) — furniture never prints. Kept   */
+/* here rather than in any one component file since it names selectors    */
+/* from all of them at once.                                              */
+/* ---------------------------------------------------------------------- */
+
+@media print {
+  .toolbar,
+  .this-week-panel,
+  .depot-ticker,
+  .mass-svg,
+  .quadrant-labels,
+  .week-view,
+  .list-view,
+  .opened-toolbar {
+    display: none;
+  }
+
+  .opened-stack {
+    display: block;
+  }
+}

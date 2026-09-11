@@ -1,0 +1,47 @@
+/* The opened stack — the third altitude (opened-stack.js). Split out of
+   monitor.css (CSS-1: one file, one job). */
+
+.opened-toolbar {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.opened-heading {
+  font-size: 1.4em;
+  margin: 0 0 var(--space-3);
+}
+
+.slice-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+}
+
+.slice-leader {
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.slice-group {
+  margin: var(--space-2) 0;
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--line);
+}
+
+.slice-stem {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.slice-due {
+  color: var(--ink-guessed);
+  margin-left: var(--space-2);
+}
+
+.footings,
+.incoming {
+  margin-top: var(--space-4);
+}

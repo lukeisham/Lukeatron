@@ -1,0 +1,117 @@
+/* B-7 unblock UI — layout and colour. Every colour below is a var(--token)
+   from shared/tokens.css; no literal hex/rgb/named colour appears here
+   (documentation spec: "colours live in exactly one file"). Kept under
+   CSS-1's 150-line guidance by splitting into two sibling files — this one
+   is the panel chrome and capacity controls. */
+
+.unblock-panel {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+  color: var(--ink);
+  font: var(--font-size-body)/var(--line-height-body) var(--font-body);
+}
+
+.unblock-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.unblock-header h2 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.unblock-back {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  color: var(--ink);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.unblock-capacity {
+  background: var(--panel);
+  border-radius: var(--r-panel);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.worker-select {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.worker-btn {
+  flex: 1;
+  background: var(--bare);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  color: var(--ink);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+
+/* FR-2: the worker choice is a genuine either/or, not a preference — the
+   pressed state is the strongest visual distinction on this small a
+   control, doubled by the (accessible-tree) aria-pressed state itself.
+   Uses the neutral ink/bg pair, never a kind colour (--k3/--k4): either
+   button can be the one pressed, including "I have capacity" (Luke, kind
+   3's worker), so a kind-4 (hand-over) green here would misname which
+   worker is selected. */
+.worker-btn[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.capacity-control[hidden] {
+  display: none;
+}
+
+.capacity-control label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-right: var(--space-4);
+}
+
+.capacity-control select {
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-swatch);
+  padding: var(--space-1);
+}
+
+/* FR-2b: the acknowledged-placeholder caption — screen text for Luke
+   (SR-9), not a code comment's worth of detail. */
+.capacity-caveat {
+  margin: var(--space-2) 0 0;
+  color: var(--ink-guessed);
+}
+
+.capacity-figure {
+  margin: var(--space-2) 0 0;
+}
+
+.unblock-summary {
+  margin: 0 0 var(--space-3);
+  color: var(--ink-guessed);
+}
+
+/* styleguide FR-7/AC-3: not the overdue fluorescent — a save/validation
+   error has nothing to do with due-date urgency (`role="alert"` in the
+   markup already carries the meaning; --ink plus that role is enough). */
+.unblock-error {
+  background: var(--panel);
+  border-left: var(--stroke-over) solid var(--ink);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--r-swatch);
+}
+
+/* .guessed lives in shared/tokens.css (FR-14/AC-9: one treatment, defined once). */

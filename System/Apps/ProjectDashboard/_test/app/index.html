@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Dashboard — TEST</title>
+  <link rel="stylesheet" href="/shared/tokens.css" />
+  <!-- HTML-4: CSS in <head>. Each rendering module's own stylesheet, added
+       as that module lands — CSS-1 keeps each file to one job, so B-7
+       (unblock) is two files, not one. -->
+  <link rel="stylesheet" href="/monitor/monitor.css" />
+  <link rel="stylesheet" href="/monitor/board-view.css" />
+  <link rel="stylesheet" href="/monitor/list-view.css" />
+  <link rel="stylesheet" href="/monitor/week-view.css" />
+  <link rel="stylesheet" href="/monitor/ticker.css" />
+  <link rel="stylesheet" href="/monitor/opened-stack.css" />
+  <link rel="stylesheet" href="/unblock/unblock.css" />
+  <link rel="stylesheet" href="/unblock/candidate-list.css" />
+  <!-- TEST-BUILD LABEL ONLY — this file and its one rule exist solely to make
+       this copy unmistakable (!AppDevelopment phase4-refactor.md STEP 5's
+       divergence allowlist: "TEST banner/title/launcher markers"). Not
+       present in _template/app/index.html. Loaded last so it never has to
+       fight another module's specificity. -->
+  <link rel="stylesheet" href="/shared/test-banner.css" />
+</head>
+<body>
+  <!--
+    Host shell only — this is server.py's "GET / (the front end)" (server
+    spec §2), not a rendering module. It decides nothing about what a mark
+    means; monitor.js and unblock.js own their own mount points' contents,
+    including the page's one <h1> (HTML-3), once B-6/B-7 land. The ids
+    below (monitor-root, unblock-root) are this file's proposal — the
+    modules that mount into them are the authority on what they need.
+  -->
+  <!-- Static, not written by either module — survives every monitor.js
+       render() (which only clears #monitor-root's own children) and every
+       unblock.js open/close (which only toggles the two mount points'
+       `hidden`), so it is visible at every board altitude and on Unblock
+       without either module needing to know it exists. TEST-build only. -->
+  <div id="test-banner" role="note">🧪 TEST DATA — fabricated projects, not Luke's real board 🧪</div>
+  <main id="monitor-root" aria-label="Monitor"></main>
+  <section id="unblock-root" aria-label="Unblock" hidden></section>
+  <script type="module" src="/monitor/monitor.js"></script>
+  <script type="module" src="/unblock/unblock.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+projects:
+  - id: ZZ-01
+    project: sample-multi
+    title: "Sample Multi-Stream"
+    context: Personal Research
+    status: Active
+    state: "🟢 on track"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: tests/fixtures/registry_multi_stream.md
+
+  - id: ZZ-02
+    project: sample-legacy
+    title: "Sample Legacy"
+    context: Personal Research
+    status: Active
+    state: "⚪ undefined"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: tests/fixtures/registry_legacy_no_columns.md
+
+  - id: ZZ-05
+    project: sample-corrupt
+    title: "Sample Corrupt"
+    context: Personal Research
+    status: Active
+    state: "⚪ undefined"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: tests/fixtures/registry_corrupt.md

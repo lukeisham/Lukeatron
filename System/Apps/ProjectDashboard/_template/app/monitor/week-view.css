@@ -1,0 +1,89 @@
+/* The week rail, reading strip and day view (week-view.js). Split out of
+   monitor.css (CSS-1: one file, one job). */
+
+.week-nav {
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.week-rail {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+  overflow-x: auto;
+}
+
+.week-overdue-cap {
+  flex: 0 0 auto;
+  background: var(--panel);
+  /* styleguide FR-7/AC-3: not a third fluorescent site — the cap's own count
+     and the word "overdue" beside it (renderWeekView) already name this. */
+  border: var(--stroke-over) solid var(--ink);
+  border-radius: var(--r-rail);
+  padding: var(--space-2);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.week-overdue-count {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.week-day {
+  flex: 1 1 0;
+  min-width: 5.5em;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-rail);
+  padding: var(--space-2);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.week-weekday {
+  font-size: 0.8em;
+  color: var(--ink-guessed);
+}
+
+.week-date-past {
+  color: var(--ink-guessed);
+}
+
+.week-date-today {
+  font-weight: 700;
+}
+
+.week-count {
+  color: var(--ink-guessed);
+}
+
+.week-strip {
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--panel);
+  border-radius: var(--r-panel);
+  min-height: 3em;
+}
+
+.week-strip-heading {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.week-strip-row {
+  display: flex;
+  gap: var(--space-2);
+  padding: 2px 0;
+}
+
+.week-strip-source {
+  color: var(--ink-guessed);
+  min-width: 5em;
+}

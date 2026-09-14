@@ -177,7 +177,7 @@ function board(overrides = {}) {
 test("FR-1: lanes are fixed in demand order, columns in the fixed left-to-right order", () => {
   assert.deepEqual(
     render.LANE_ORDER.map((l) => l.value),
-    ["mine", "hand-over", "waiting", "incoming", "unshaped"]
+    ["mine", "delegate", "waiting", "incoming", "unshaped"]
   );
   assert.deepEqual(render.COLUMN_ORDER, ["OVERDUE", "THIS WEEK", "NEXT WEEK", "LATER", "NO DATE"]);
 
@@ -186,7 +186,7 @@ test("FR-1: lanes are fixed in demand order, columns in the fixed left-to-right 
   const laneRows = mount.querySelectorAll(".board-lane-row");
   assert.deepEqual(
     laneRows.map((r) => r.dataset.lane),
-    ["mine", "hand-over", "waiting", "incoming", "unshaped"]
+    ["mine", "delegate", "waiting", "incoming", "unshaped"]
   );
 });
 
@@ -245,7 +245,7 @@ test("FR-8/AD-2: every lane×column cell renders even when the board is empty, k
   assert.equal(mount.querySelectorAll(".board-cell").length, 25);
 });
 
-test("FR-9: MINE and HAND-OVER both empty shows the plain-English banner, and the grid still renders in full", () => {
+test("FR-9: MINE and DELEGATE both empty shows the plain-English banner, and the grid still renders in full", () => {
   const b = board({ lane_counts: { waiting: 3 }, column_counts: { LATER: 3 } });
   const mount = new FakeElement("div");
   render.renderBoard(mount, b);
@@ -255,7 +255,7 @@ test("FR-9: MINE and HAND-OVER both empty shows the plain-English banner, and th
   assert.equal(mount.querySelectorAll(".board-lane-row").length, 5);
 });
 
-test("FR-9: the banner is absent once either MINE or HAND-OVER has anything in it", () => {
+test("FR-9: the banner is absent once either MINE or DELEGATE has anything in it", () => {
   const b = board({ lane_counts: { mine: 1 } });
   const mount = new FakeElement("div");
   render.renderBoard(mount, b);

@@ -1,0 +1,335 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   wiki-page.css — the house style for !GenerateWiki knowledge pages.
+
+   Owned by Template_WikiPage.md. A rendered page links this file; it never
+   inlines its own copy and never adds rules of its own. If a page needs a
+   treatment that is not here, the treatment is missing from the system —
+   raise it, don't patch it locally.
+
+   THE FOUR PROVENANCE LAYERS
+     .p-luke    verbatim · Luke's own words      marker: ochre FILL
+     .p-source  verbatim · another human's words marker: mulberry BOX
+     .p-gen     written by Lukeatron             marker: cool slate ink
+     .p-seam    structure (headings, links)      marker: verdigris ink
+
+   Both verbatim layers share ONE ink (--ink-verbatim). Untouched text always
+   reads at full weight; whose words it is changes the marker, never the
+   darkness. Fill = his. Box = someone else's. Never swap.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ground */
+  --paper:        #F7F6F1;
+  --paper-sunk:   #EFEEE7;
+  --rule:         #D8D6CB;
+  --rule-faint:   #E5E3DA;
+
+  /* the inks */
+  --ink-verbatim:  #16130D;   /* both verbatim layers */
+  --ink-gen:       #3F4753;
+  --ink-seam:      #4A6B5E;
+
+  /* the markers */
+  --edge-luke:     #A8843C;
+  --wash-luke:     rgba(168, 132, 60, 0.10);
+  --edge-source:   #7E4F63;
+  --wash-source:   rgba(126, 79, 99, 0.055);
+  --edge-gen:      #98A0AC;
+
+  --ink-quiet:    #7C8189;
+  --focus:        #A8843C;
+
+  /* type scale */
+  --t-display: 2.9rem;
+  --t-h2:      1.34rem;
+  --t-h3:      1.02rem;
+  --t-body:    1.0625rem;
+  --t-small:   0.8125rem;
+  --t-micro:   0.6875rem;
+
+  --measure: 38rem;
+  --margin-col: 13rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #15171B;
+    --paper-sunk:   #1C1F25;
+    --rule:         #2E333B;
+    --rule-faint:   #23272E;
+    --ink-verbatim:  #F3EFE4;
+    --ink-gen:       #A9B2BF;
+    --ink-seam:      #7FB6A1;
+    --edge-luke:     #C6A768;
+    --wash-luke:     rgba(198, 167, 104, 0.11);
+    --edge-source:   #C08FA3;
+    --wash-source:   rgba(192, 143, 163, 0.07);
+    --edge-gen:      #5A6472;
+    --ink-quiet:    #79818D;
+    --focus:        #C6A768;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:        #15171B;
+  --paper-sunk:   #1C1F25;
+  --rule:         #2E333B;
+  --rule-faint:   #23272E;
+  --ink-verbatim:  #F3EFE4;
+  --ink-gen:       #A9B2BF;
+  --ink-seam:      #7FB6A1;
+  --edge-luke:     #C6A768;
+  --wash-luke:     rgba(198, 167, 104, 0.11);
+  --edge-source:   #C08FA3;
+  --wash-source:   rgba(192, 143, 163, 0.07);
+  --edge-gen:      #5A6472;
+  --ink-quiet:    #79818D;
+  --focus:        #C6A768;
+}
+
+/* ── base ──────────────────────────────────────────────────────────────── */
+body {
+  background: var(--paper);
+  color: var(--ink-gen);
+  font-family: "Source Serif 4", Charter, Georgia, serif;
+  font-size: var(--t-body);
+  line-height: 1.62;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: calc(var(--measure) + var(--margin-col) + 3rem);
+  margin: 0 auto;
+  padding: 3.25rem 1.5rem 6rem;
+}
+
+a { color: var(--ink-seam); text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink-seam) 35%, transparent); }
+a:hover { border-bottom-color: var(--ink-seam); }
+a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+
+/* ── masthead ──────────────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-seam); font-weight: 600;
+  display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;
+}
+.eyebrow .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-quiet); }
+
+h1 {
+  font-family: Newsreader, Georgia, serif;
+  font-size: var(--t-display); font-weight: 500; line-height: 1.04;
+  letter-spacing: -0.018em; color: var(--ink-verbatim);
+  margin: 0.75rem 0 0; text-wrap: balance;
+}
+
+.standfirst {
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.15rem; font-style: italic; line-height: 1.5;
+  color: var(--ink-gen); max-width: 30rem; margin: 0.6rem 0 0;
+}
+
+.masthead-meta {
+  display: flex; flex-wrap: wrap; gap: 0 1.4rem;
+  margin-top: 1.4rem; padding-top: 0.85rem; border-top: 1px solid var(--rule);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+.masthead-meta b { color: var(--ink-gen); font-weight: 600; letter-spacing: 0.04em; }
+
+/* ── the key — the whole of the user-facing instruction ─────────────────── */
+.key {
+  margin: 1.6rem 0 2.6rem; padding: 0.85rem 1rem;
+  background: var(--paper-sunk); border-left: 2px solid var(--ink-seam);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1.4rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: var(--t-small);
+}
+.key-lead { color: var(--ink-quiet); font-size: var(--t-micro); letter-spacing: 0.12em;
+            text-transform: uppercase; font-weight: 600; width: 100%; }
+.key-item { display: inline-flex; align-items: center; gap: 0.45rem; }
+.key-item span { color: var(--ink-gen); }
+.key-item b { color: var(--ink-verbatim); font-weight: 600; }
+.key-swatch { width: 0.72rem; height: 0.72rem; border-radius: 1px; flex: none; }
+.key-swatch.kl { background: var(--wash-luke);
+                 box-shadow: inset 2px 0 0 var(--edge-luke), inset 0 0 0 1px var(--rule); }
+.key-swatch.ks { background: var(--wash-source); box-shadow: inset 0 0 0 1px var(--edge-source); }
+.key-swatch.kg { background: transparent; box-shadow: inset 0 0 0 1px var(--edge-gen); }
+.key-swatch.ke { background: var(--ink-seam); }
+
+.key-toggle {
+  margin-left: auto;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-seam); background: transparent;
+  border: 1px solid color-mix(in srgb, var(--ink-seam) 40%, transparent);
+  border-radius: 2px; padding: 0.28rem 0.6rem; cursor: pointer;
+}
+.key-toggle:hover { border-color: var(--ink-seam); }
+.key-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* ── article + margin column ────────────────────────────────────────────── */
+article {
+  max-width: var(--measure);
+  padding-right: calc(var(--margin-col) + 1.75rem);
+  box-sizing: content-box;
+}
+article > * { max-width: var(--measure); }
+
+.sidenote {
+  float: right; clear: right; width: var(--margin-col);
+  margin-right: calc(-1 * (var(--margin-col) + 1.75rem));
+  margin-top: 0.35rem; margin-bottom: 1.1rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-small); line-height: 1.45;
+  color: var(--ink-quiet);
+  border-top: 1px solid var(--rule); padding-top: 0.4rem;
+}
+.sidenote cite { font-style: normal; color: var(--ink-gen); }
+
+h2 {
+  font-family: Newsreader, Georgia, serif;
+  font-size: var(--t-h2); font-weight: 600; color: var(--ink-seam);
+  letter-spacing: 0.005em;
+  margin: 2.6rem 0 0.9rem; padding-top: 0.55rem; border-top: 1px solid var(--rule);
+  display: flex; align-items: baseline; gap: 1rem;
+}
+h2 .label { flex: 1; text-wrap: balance; }
+
+h3 {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-h3); font-weight: 600; color: var(--ink-seam);
+  margin: 1.7rem 0 0.5rem;
+}
+
+p { margin: 0 0 1.05rem; }
+
+/* the sparkbar — four real proportions, by word count. Data, not decoration. */
+.mix { display: flex; width: 3.6rem; height: 3px; flex: none; align-self: center; gap: 1px; }
+.mix i { display: block; height: 100%; }
+.mix .m-luke   { background: var(--edge-luke); }
+.mix .m-source { background: var(--edge-source); }
+.mix .m-gen    { background: var(--edge-gen); }
+.mix .m-seam   { background: var(--ink-seam); }
+
+/* ── layer 1 · verbatim, Luke — ochre FILL ──────────────────────────────── */
+.p-luke {
+  color: var(--ink-verbatim);
+  background: var(--wash-luke);
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  padding: 0.02em 0.14em; border-radius: 1px;
+}
+blockquote.p-luke {
+  margin: 1.3rem 0; padding: 0.7rem 1rem 0.7rem 0.9rem;
+  border-left: 2px solid var(--edge-luke);
+  font-size: 1.03rem; border-radius: 0;
+}
+blockquote.p-luke p { margin: 0 0 0.55rem; }
+blockquote.p-luke p:last-of-type { margin-bottom: 0; }
+
+/* ── layer 2 · verbatim, another human — mulberry BOX ───────────────────── */
+.p-source {
+  color: var(--ink-verbatim);
+  border-bottom: 1px solid color-mix(in srgb, var(--edge-source) 55%, transparent);
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+blockquote.p-source {
+  margin: 1.4rem 0; padding: 0.85rem 1.05rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--edge-source) 45%, transparent);
+  border-left-width: 2px; border-left-color: var(--edge-source);
+  background: var(--wash-source);
+  color: var(--ink-verbatim); font-size: 1.03rem;
+}
+blockquote.p-source p { margin: 0 0 0.55rem; }
+blockquote.p-source p:last-of-type { margin-bottom: 0; }
+
+blockquote footer {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-quiet); margin-top: 0.6rem;
+}
+
+/* ── layer 3 · generated ────────────────────────────────────────────────── */
+.p-gen { color: var(--ink-gen); }
+.gen-block {
+  border-left: 1px dotted var(--edge-gen);
+  padding-left: 0.9rem; margin: 1.15rem 0; color: var(--ink-gen);
+}
+.gen-block > p:last-child { margin-bottom: 0; }
+.gen-tag {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--ink-quiet); display: block; margin-bottom: 0.28rem;
+}
+
+/* ── layer 4 · seam ─────────────────────────────────────────────────────── */
+.p-seam { color: var(--ink-seam); }
+
+/* ── ink off — every layer collapses to one reading ink ─────────────────── */
+body.plain .p-luke { background: transparent; padding: 0; }
+body.plain .p-source { border-bottom: 0; }
+body.plain blockquote.p-luke { border-left-color: var(--rule); }
+body.plain blockquote.p-source { border-color: var(--rule); background: transparent; }
+body.plain .p-luke, body.plain .p-source,
+body.plain .p-gen, body.plain .gen-block { color: var(--ink-gen); }
+body.plain .mix { opacity: 0.22; }
+body.plain .gen-block { border-left-style: solid; border-left-color: var(--rule-faint); }
+body.plain .gen-tag { display: none; }
+
+/* ── See Also / References ──────────────────────────────────────────────── */
+ul.seealso, ol.refs { margin: 0; padding: 0; list-style: none; }
+ul.seealso li {
+  display: grid; grid-template-columns: 11rem 1fr; gap: 0 1rem;
+  padding: 0.42rem 0; border-bottom: 1px solid var(--rule-faint);
+  font-size: var(--t-small);
+}
+ul.seealso li:last-child { border-bottom: 0; }
+ul.seealso .why { color: var(--ink-gen); font-family: "IBM Plex Sans", system-ui, sans-serif; }
+
+ol.refs { counter-reset: r; font-size: var(--t-small); line-height: 1.5; }
+ol.refs li {
+  counter-increment: r;
+  display: grid; grid-template-columns: 1.6rem 1fr; gap: 0 0.5rem;
+  padding: 0.45rem 0; border-bottom: 1px solid var(--rule-faint);
+}
+ol.refs li::before {
+  content: counter(r);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); color: var(--ink-quiet);
+  font-variant-numeric: tabular-nums; padding-top: 0.28em;
+}
+ol.refs li:last-child { border-bottom: 0; }
+
+.foot {
+  margin-top: 3rem; padding-top: 0.8rem; border-top: 1px solid var(--rule);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+
+/* ── narrow: the margin column folds inline ─────────────────────────────── */
+@media (max-width: 60rem) {
+  :root { --t-display: 2.2rem; }
+  article { padding-right: 0; }
+  .sidenote {
+    float: none; width: auto; margin: 0.4rem 0 1.1rem;
+    border-top: 0; border-left: 1px solid var(--rule);
+    padding: 0.1rem 0 0.1rem 0.8rem;
+  }
+  ul.seealso li { grid-template-columns: 1fr; gap: 0.15rem; }
+  .key-toggle { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ── print: ink survives, chrome does not ───────────────────────────────── */
+@media print {
+  .key-toggle { display: none; }
+  article { padding-right: 0; }
+  .sidenote { float: none; width: auto; border-left: 1px solid var(--rule);
+              border-top: 0; padding-left: 0.8rem; }
+}

@@ -238,6 +238,10 @@
      the token scale above; give it an mm counterpart too rather than inventing
      a new px token. */
   --font-size-image-caption-mm: 2.38px; /* 9px */
+  /* One-off: lesson-plan-document.css's studio-grid poster numeral (lesson
+     number / tier index) — the one place a document page wants a size above
+     6xl. Same px-value-means-mm convention as the rest of this block. */
+  --font-size-jumbo-mm: 11.11px; /* 42px */
 
   /* ===== OVERLAY / SHADOW ===== */
   --color-overlay-bg: rgba(0, 0, 0, 0.5);      /* modal backdrop */

@@ -13,7 +13,9 @@ status: <drafting | current | stale>
 ## 1. Cross-boundary behaviour
 <What talks to what, across a module or host boundary. What each side may assume about the other,
 and what breaks if that assumption changes. Only behaviour that crosses a boundary belongs here —
-anything inside one module belongs in that module's own spec.>
+anything inside one module belongs in that module's own spec.
+For a widget this always includes its named host boundary (what it receives from the host, what
+it emits back). An app has no host boundary — only module boundaries apply.>
 
 | From | To | What crosses | What breaks if it changes |
 |---|---|---|---|

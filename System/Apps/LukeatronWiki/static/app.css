@@ -1,0 +1,802 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   app.css — the chrome stylesheet for LukeatronWiki.
+
+   Companion to wiki-page.css. Styles the shell and UI elements:
+   the three-column layout, top bar, rail, slot states, ink legend, footer.
+
+   Uses ONLY neutral tokens (--paper, --paper-sunk, --rule, --rule-faint,
+   --ink-quiet, --focus) and defines UI-specific tokens (--ui-*).
+   NEVER touches provenance ink tokens or classes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* UI chrome tokens */
+  --ui-bg-rail:        #EFEEE7;
+  --ui-bg-section:     rgba(212, 209, 196, 0.35);
+  --ui-border-divider: #D8D6CB;
+  --ui-text-label:     #7C8189;
+  --ui-hover-bg:       rgba(212, 209, 196, 0.5);
+  --ui-focus-ring:     #A8843C;
+  --ui-empty-button:   #D8D6CB;
+  --ui-state-glyph:    #3F4753;
+  --ui-draft-border:   #9B9C9A;
+
+  /* motion + spacing from house tokens */
+  --motion-quick: 0.15s ease-in-out;
+  --motion-smooth: 0.3s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ui-bg-rail:        #1C1F25;
+    --ui-bg-section:     rgba(46, 51, 59, 0.6);
+    --ui-border-divider: #2E333B;
+    --ui-text-label:     #79818D;
+    --ui-hover-bg:       rgba(46, 51, 59, 0.8);
+    --ui-focus-ring:     #C6A768;
+    --ui-empty-button:   #3E4450;
+    --ui-state-glyph:    #A9B2BF;
+    --ui-draft-border:   #6B6F73;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ui-bg-rail:        #1C1F25;
+  --ui-bg-section:     rgba(46, 51, 59, 0.6);
+  --ui-border-divider: #2E333B;
+  --ui-text-label:     #79818D;
+  --ui-hover-bg:       rgba(46, 51, 59, 0.8);
+  --ui-focus-ring:     #C6A768;
+  --ui-empty-button:   #3E4450;
+  --ui-state-glyph:    #A9B2BF;
+  --ui-draft-border:   #6B6F73;
+}
+
+/* ── global baseline ───────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; background: var(--paper); }
+
+/* ── top bar ───────────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--paper-sunk);
+  border-bottom: 1px solid var(--rule);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-wordmark {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink-gen);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
+
+.topbar-search {
+  flex: 1 1 300px;
+  max-width: 480px;
+}
+
+.topbar-search input {
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--ink-gen);
+}
+
+.topbar-search input::placeholder {
+  color: var(--ink-quiet);
+}
+
+.topbar-search input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-color: var(--focus);
+}
+
+.topbar-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.topbar button {
+  padding: 0.4rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink-quiet);
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  transition: var(--motion-quick);
+}
+
+.topbar button:hover {
+  background: var(--ui-hover-bg);
+  border-color: var(--ui-border-divider);
+}
+
+.topbar button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ── three-column shell ────────────────────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: 200px 1fr 220px;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 100%;
+  min-height: calc(100vh - 60px);
+}
+
+.rail {
+  background: var(--ui-bg-rail);
+  border-radius: 3px;
+  padding: 1rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+}
+
+.content {
+  min-width: 0;
+  background: var(--paper);
+}
+
+.margin {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.8125rem;
+}
+
+/* ── rail sections ─────────────────────────────────────────────────────── */
+.rail-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ui-border-divider);
+}
+
+.rail-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.rail-filter {
+  margin-bottom: 0.8rem;
+}
+
+.rail-filter input {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--paper);
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-gen);
+}
+
+.rail-filter input::placeholder {
+  color: var(--ink-quiet);
+}
+
+.rail-filter input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  border-color: var(--focus);
+}
+
+.rail-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--ink-gen);
+  margin: 0 0 0.6rem 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+.rail-section-title:hover {
+  color: var(--ink-gen);
+}
+
+.rail-section-count {
+  color: var(--ui-text-label);
+  font-weight: 400;
+}
+
+.rail-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rail-items li {
+  padding: 0.35rem 0;
+  color: var(--ink-quiet);
+  transition: color var(--motion-quick);
+}
+
+.rail-items a {
+  color: var(--ink-seam);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.rail-items a:hover {
+  color: var(--ink-gen);
+}
+
+.rail-items a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── margin column ─────────────────────────────────────────────────────── */
+.margin-box {
+  background: var(--ui-bg-section);
+  border-left: 1px solid var(--rule);
+  padding: 0.8rem;
+  border-radius: 2px;
+}
+
+.margin-box-title {
+  font-weight: 600;
+  color: var(--ink-gen);
+  margin: 0 0 0.6rem 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.margin-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.margin-items li {
+  padding: 0.2rem 0;
+  color: var(--ink-quiet);
+  font-size: 0.75rem;
+}
+
+.margin-items a {
+  color: var(--ink-seam);
+  text-decoration: none;
+  border: none;
+}
+
+.margin-items a:hover {
+  color: var(--ink-gen);
+}
+
+.margin-items a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* ── ink legend ────────────────────────────────────────────────────────── */
+.ink-legend {
+  background: var(--ui-bg-section);
+  border-left: 1px solid var(--rule);
+  padding: 0.8rem;
+  border-radius: 2px;
+}
+
+.ink-legend-title {
+  font-weight: 600;
+  color: var(--ink-gen);
+  margin: 0 0 0.6rem 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ink-legend-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ink-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-quiet);
+}
+
+/* Swatch colour/sizing comes from wiki-page.css's own .key-swatch (kl/ks/kg/ke)
+   classes, unmodified (FR-10) — app.css never defines rules against
+   --edge-luke/--wash-luke/--edge-source/--wash-source/--edge-gen itself. */
+
+/* ── slot states ───────────────────────────────────────────────────────── */
+.slot-container {
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-seam);
+  margin-bottom: 0.8rem;
+}
+
+.slot-state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.slot-state-badge.empty {
+  color: var(--ui-empty-button);
+}
+
+.slot-state-badge.requested {
+  color: var(--ui-text-label);
+}
+
+.slot-state-badge.draft {
+  color: var(--ui-state-glyph);
+  background: rgba(63, 71, 83, 0.08);
+}
+
+.slot-state-badge.filled {
+  color: var(--ink-seam);
+}
+
+/* ⊕ empty button */
+.slot-empty {
+  text-align: center;
+  padding: 1rem;
+}
+
+.btn-add-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  background: transparent;
+  border: 1px dashed var(--ui-empty-button);
+  color: var(--ui-empty-button);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--motion-quick);
+  font-family: system-ui, sans-serif;
+}
+
+.btn-add-slot:hover {
+  background: var(--ui-hover-bg);
+  border-color: var(--ink-quiet);
+  color: var(--ink-quiet);
+}
+
+.btn-add-slot:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ⏳ requested state */
+.slot-requested {
+  padding: 1rem;
+  background: var(--paper-sunk);
+  border-radius: 2px;
+  color: var(--ink-quiet);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* ● draft state */
+.slot-draft {
+  background: var(--paper-sunk);
+  border-left: 2px solid var(--ui-draft-border);
+  padding: 1rem;
+  border-radius: 2px;
+}
+
+.slot-draft-content {
+  color: var(--ink-gen);
+  font-size: 0.875rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.slot-draft-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.slot-draft-actions button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-gen);
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: var(--motion-quick);
+}
+
+.slot-draft-actions button:hover {
+  background: var(--ui-hover-bg);
+}
+
+.slot-draft-actions button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.slot-draft-actions button.accept {
+  background: var(--paper);
+  border-color: var(--ink-seam);
+  color: var(--ink-seam);
+}
+
+/* ── search results ────────────────────────────────────────────────────── */
+.search-results {
+  padding: 1rem 0;
+}
+
+.search-result-group {
+  margin-bottom: 2rem;
+}
+
+.search-result-group-title {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-seam);
+  margin: 0 0 0.8rem 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+
+.search-result-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule-faint);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-title {
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+  font-size: 0.875rem;
+}
+
+.search-result-title a {
+  color: var(--ink-seam);
+  text-decoration: none;
+  border: none;
+}
+
+.search-result-title a:hover {
+  color: var(--ink-gen);
+}
+
+.search-result-excerpt {
+  font-size: 0.8125rem;
+  color: var(--ink-quiet);
+  line-height: 1.4;
+}
+
+.search-result-kind {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  background: var(--paper-sunk);
+  color: var(--ink-quiet);
+  border-radius: 2px;
+  margin-top: 0.3rem;
+}
+
+.search-result-kind.title {
+  background: rgba(74, 107, 94, 0.15);
+  color: var(--ink-seam);
+}
+
+.search-result-kind.body {
+  background: rgba(212, 209, 196, 0.3);
+}
+
+/* ── quick-capture form ────────────────────────────────────────────────── */
+.capture-form {
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1.2rem;
+  margin: 2rem 0;
+}
+
+.capture-form-title {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-gen);
+  margin: 0 0 1rem 0;
+}
+
+.capture-form-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.capture-form-group.full {
+  grid-template-columns: 1fr;
+}
+
+.capture-form-group label {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-gen);
+  gap: 0.3rem;
+}
+
+.capture-form-group input,
+.capture-form-group select,
+.capture-form-group textarea {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--ink-gen);
+  background: var(--paper);
+}
+
+.capture-form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.capture-form-group input:focus,
+.capture-form-group select:focus,
+.capture-form-group textarea:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-color: var(--focus);
+}
+
+.capture-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.capture-form-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-gen);
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--motion-quick);
+}
+
+.capture-form-actions button:hover {
+  background: var(--ui-hover-bg);
+}
+
+.capture-form-actions button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ── red links (unresolved wikilinks) ──────────────────────────────────── */
+a.redlink {
+  color: #B85450;
+  border-bottom: 1px dotted #B85450;
+  cursor: not-allowed;
+}
+
+a.redlink:hover {
+  color: #D66B6F;
+}
+
+/* ── integrity footer ──────────────────────────────────────────────────── */
+.integrity-footer {
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+  margin-top: 3rem;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-quiet);
+  letter-spacing: 0.06em;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.integrity-footer .count {
+  display: inline-block;
+}
+
+.integrity-footer .count strong {
+  color: var(--ink-gen);
+  font-weight: 600;
+}
+
+.integrity-link {
+  margin-left: auto;
+}
+
+.integrity-link a {
+  color: var(--ink-seam);
+  text-decoration: none;
+  border: none;
+}
+
+.integrity-link a:hover {
+  color: var(--ink-gen);
+}
+
+/* ── responsive: collapse to single column under ~900px ────────────────── */
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .rail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 0;
+    background: transparent;
+  }
+
+  .rail-section {
+    background: var(--ui-bg-rail);
+    border: none;
+    border-radius: 3px;
+    padding: 0.8rem;
+    margin-bottom: 0;
+    padding-bottom: 0.8rem;
+  }
+
+  .capture-form-group {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .topbar-wordmark {
+    margin-right: 0;
+  }
+
+  .topbar-search {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .topbar-controls {
+    margin-left: 0;
+  }
+}
+
+/* ── print: hide chrome, keep content + margin ──────────────────────────── */
+@media print {
+  @page {
+    size: auto;
+    margin: 18mm;
+  }
+
+  html, body {
+    background: white;
+  }
+
+  .topbar,
+  .rail,
+  .slot-empty,
+  .btn-add-slot,
+  .slot-draft-actions,
+  .capture-form,
+  .integrity-link {
+    display: none !important;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 1.5rem;
+    padding: 0;
+    min-height: auto;
+  }
+
+  .content {
+    grid-column: 1;
+  }
+
+  .margin {
+    grid-column: 2;
+  }
+
+  .margin-box,
+  .ink-legend {
+    page-break-inside: avoid;
+    background: white;
+    border: 1px solid #ddd;
+  }
+
+  .integrity-footer {
+    display: none;
+  }
+}
+
+/* ── reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Accept and Reject are two separate forms (each posts to its own route);
+   keep them on one row so the split is invisible to the reader. */
+.slot-draft-actions { display: flex; gap: 0.5rem; align-items: center; }
+.slot-action-form { display: inline; margin: 0; }

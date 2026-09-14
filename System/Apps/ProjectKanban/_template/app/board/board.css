@@ -1,0 +1,136 @@
+/* board.css — the lane × column grid, its headers, and the board-level
+   states (nothing-needs-you banner, load-error). Card styling lives in the
+   sibling card.css (CSS-1: one file, one job — both together were past 150
+   lines).
+
+   Every colour, space, radius and duration below is a custom property this
+   module references but never defines (CSS-2) — `controls`' app/tokens.css
+   is the one place that defines them (documentation.spec.md §1). Full list
+   this module (board.css + card.css) needs `controls` to supply:
+
+     Lane colours (fixed convention — board.spec.md FR-3):
+       --l-mine  --l-delegate  --l-waiting  --l-incoming  --l-unshaped
+
+     Ink / surface:
+       --ink  --ink-muted  --panel-bg  --panel-bg-alt  --border  --border-width
+
+     Spacing:  --space-2xs  --space-xs  --space-sm  --space-md  --space-lg
+     Radii:    --radius-sm  --radius-md
+     Motion:   --motion-fast
+     Focus:    --focus-ring  --focus-ring-width  --focus-ring-offset
+     Type:     --font-size-sm (outline-print.spec.md FR-11's print trigger)
+
+     Board layout (used only in board.css / card.css):
+       --board-rail-width          width of the lane-label rail column
+       --board-rail-spine-width    thickness of the coloured lane spine
+       --board-lane-wash-strength  color-mix() percentage for the lane wash
+       --board-cell-min-height     keeps an empty cell the same size as a full one
+       --board-card-rail-width     thickness of a card's left lane-colour border
+
+   Toggle contract — see board.js's own header comment for the authoritative
+   list; body[data-lane-hues="mono"] is handled at the bottom of this file. */
+
+/* One shared grid for the header row and every lane row, rather than each
+   row sizing its own `1fr` tracks from its own content (a `1fr` track's
+   default minimum is `auto` — its content's min-content size — so a wide
+   card could push one row's tracks wider than the header's, and column
+   boundaries would drift row to row). `.board-header-row`/`.board-lane-row`
+   below go `display: contents` so their children (the rail/spacer and the
+   five cells) become direct items of this one grid, and a single set of
+   column tracks governs every row. */
+.board {
+  display: grid;
+  grid-template-columns: var(--board-rail-width) repeat(5, 1fr);
+  gap: var(--space-2xs);
+}
+
+.board-header-row,
+.board-lane-row {
+  display: contents;
+}
+
+.board-column-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--panel-bg-alt);
+  border-radius: var(--radius-sm);
+}
+
+.board-column-title {
+  font-weight: 600;
+}
+
+.board-count {
+  color: var(--ink-muted);
+}
+
+/* FR-3: one custom property per lane, set on the row so it inherits into
+   both the rail and every card beneath it (siblings under the same row). */
+.board-lane-row[data-lane="mine"] { --lane-color: var(--l-mine); }
+.board-lane-row[data-lane="delegate"] { --lane-color: var(--l-delegate); }
+.board-lane-row[data-lane="waiting"] { --lane-color: var(--l-waiting); }
+.board-lane-row[data-lane="incoming"] { --lane-color: var(--l-incoming); }
+.board-lane-row[data-lane="unshaped"] { --lane-color: var(--l-unshaped); }
+
+.board-lane-rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: var(--space-sm);
+  border-inline-start: var(--board-rail-spine-width) solid var(--lane-color);
+  background: color-mix(in srgb, var(--lane-color) var(--board-lane-wash-strength), var(--panel-bg-alt));
+  border-radius: var(--radius-sm);
+}
+
+.board-lane-title {
+  margin: 0;
+  font-size: inherit; /* an <h2> here is a document-outline level (HTML-3), not a visual size */
+}
+
+.board-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-height: var(--board-cell-min-height); /* FR-8/AD-2: an empty cell keeps the grid's shape */
+  padding: var(--space-2xs);
+}
+
+.board-nothing-needed {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--panel-bg-alt);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+}
+
+.board-error {
+  padding: var(--space-md);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--panel-bg);
+}
+
+.board-error-title {
+  margin: 0 0 var(--space-xs) 0;
+  font-weight: 600;
+}
+
+.board-error-detail {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+/* board.spec.md §4: the deferred lane-colour-count decision. Until answered,
+   `controls` can flip this attribute to collapse all five hues to one
+   neutral ink with no change to this module's markup or logic. */
+body[data-lane-hues="mono"] {
+  --l-mine: var(--ink-muted);
+  --l-delegate: var(--ink-muted);
+  --l-waiting: var(--ink-muted);
+  --l-incoming: var(--ink-muted);
+  --l-unshaped: var(--ink-muted);
+}

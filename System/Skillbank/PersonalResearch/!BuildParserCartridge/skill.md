@@ -95,3 +95,14 @@ Log: `[AGENT: !BuildParserCartridge] [SUCCESS] cartridge=<Store> | tokens≈[N]`
   `Memory/Long-Term/Logs/skills.log`
 Error path: Content still DRAFT / `[UNVERIFIED]` / `[PROPOSED SCOPE]` ➔ stop and route to Luke —
   never build a shipped widget against unreviewed content.
+
+## 🎨 House style — SUBORDINATE
+
+`!HouseStyle` is an always-on core skill (`.claude/skills/!HouseStyle/`) and the default for every rendered surface.
+This surface is classified **SUBORDINATE** in its `reference/sources.md` register: the existing
+chassis keeps **layout and structure**; the house style governs **tokens, motion, glyphs and
+focus**. A new cartridge inherits the Parser chassis and therefore inherits this verdict — it takes the shared tokens rather than defining its own.
+
+Do not invent a palette, spacing value or easing curve here. The flourish budget is counted
+(2 animating elements · 3 elevation levels · 2 accent hues · 2 glyph weights · 3 motion durations
+· 2 typeface families per view) — exceeding a count is a failure, not a judgment.

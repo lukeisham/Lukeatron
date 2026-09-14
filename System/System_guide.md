@@ -20,7 +20,7 @@
 4. [Intake Fan-Out](#4--intake-fan-out)
 5. [The Interactions Model (x · y · z)](#5--the-interactions-model-x--y--z)
 6. [Memory Architecture](#6--memory-architecture)
-7. [The Two Sweep Engines](#7--the-two-sweep-engines)
+7. [The Sweep Engine](#7--the-sweep-engine)
 8. [Skill Map](#8--skill-map)
 
 ---
@@ -209,9 +209,9 @@ outcomes (they are compoundable) — or none, in which case it is discarded.
                   (gated)                    for outgoing)
 ```
 
-A self-contained one-off that belongs to no project goes to `!MinorTask`. An item that
-won't classify becomes an `Intake:ambiguous` queue row (Impact High, 🟠) for Luke to
-decide — never a guess.
+A self-contained one-off becomes a Next Action in the best-fit Active project, or else in its
+context's catch-all (PP-18 · CH-28 · TE-13 · LU-03 · PR-08). An item that won't classify stays in
+`Inbox/`, flagged for Luke to decide — never a guess.
 
 *→ CLAUDE.md § Inbox Disposition*
 
@@ -284,10 +284,10 @@ Two memory stores that must **never duplicate** each other. One test decides whi
         │                          │    │                          │
         │  Purpose · Preferences   │    │  Projects/               │
         │  Tone · Style Guide      │    │    └▶ !ProjectSweep      │
-        │  People · Groups         │    │  MinorTasks/             │
-        │  subject stores (Bible,  │    │    └▶ !Initiative        │
-        │   Theology, Coding …)    │    │  Contacts/               │
-        │  LukeatronWiki           │    │  temp-skills/            │
+        │  People · Groups         │    │  Contacts/               │
+        │  subject stores (Bible,  │    │  temp-skills/            │
+        │   Theology, Coding …)    │    │                          │
+        │  LukeatronWiki           │    │                          │
         │                          │    │                          │
         │  prune gate:             │    │  prune gate:             │
         │  └▶ !ArchiveMemory       │    │  └▶ !PruneMemory         │
@@ -302,39 +302,44 @@ gated and user-reviewed.
 
 ---
 
-## 7 · The Two Sweep Engines
+## 7 · The Sweep Engine
 
-Two engines, two **disjoint** data stores. Neither ever touches the other's store.
-Each sends its own digest; `!Review` covers Projects/ only.
+One engine advances the work; one digest distils it. Every task — large or small — lives in a
+project, so there is a single store to sweep. (A second engine, `!Initiative`, worked a separate
+MinorTasks queue until both were retired on 2026-09-14.)
 
 ```
-        ┌──────────────────────────┐    ┌──────────────────────────┐
-        │  !ProjectSweep           │    │  !Initiative             │
-        │  generative              │    │  generative              │
-        │                          │    │                          │
-        │  owns ▶ Projects/        │    │  owns ▶ MinorTasks/      │
-        │                          │    │                          │
-        │  triage each project:    │    │  Low-impact rows:        │
-        │   🔴 urgent              │    │    auto-action unattended│
-        │   🟠 your move           │    │  High-impact rows:       │
-        │   🔵 waiting             │    │    propose sketch to     │
-        │   🟢 on track            │    │    Sandbox/ (never run)  │
-        │   ⚪ undefined           │    │                          │
-        │                          │    │  NEVER reads/writes      │
-        │  maintains _tracking.yaml│    │  Projects/ or registries │
-        └────────────┬─────────────┘    └────────────┬─────────────┘
-                     ▼                                ▼
-          ┌─────────────────────┐       ┌─────────────────────────┐
-          │  !Review            │       │  !Initiative digest      │
-          │  distils Projects/  │       │  distils MinorTasks/     │
-          │  only → emails Luke │       │  only → emails Luke      │
-          │  (advances nothing) │       │  (separate email)        │
-          └─────────────────────┘       └─────────────────────────┘
+        ┌──────────────────────────┐
+        │  !ProjectSweep           │
+        │  generative              │
+        │                          │
+        │  owns ▶ Projects/        │
+        │                          │
+        │  triage each project:    │
+        │   🔴 Incoming            │
+        │   🟠 Mine                │
+        │   🔵 Waiting             │
+        │   🟢 Delegate            │
+        │   ⚪ Undefined           │
+        │                          │
+        │  Low-impact actions: may │
+        │   advance unattended     │
+        │  High-impact: propose    │
+        │                          │
+        │  maintains _tracking.yaml│
+        └────────────┬─────────────┘
+                     ▼
+          ┌─────────────────────┐
+          │  !Review            │
+          │  distils Projects/  │
+          │  → emails Luke      │
+          │  (advances nothing) │
+          └─────────────────────┘
 
-        feeder:  !MinorTask ──appends rows──▶ MinorTasks/ ──▶ !Initiative
+        feeder:  !Intake ──adds Next Actions / new projects──▶ Projects/
 ```
 
-*→ CLAUDE.md § Key Skills (`!ProjectSweep`, `!Initiative`, `!Review`, `!MinorTask`)*
+*→ CLAUDE.md § Key Skills (`!ProjectSweep`, `!Review`, `!Intake`)*
 
 ---
 
@@ -347,7 +352,6 @@ description of each lives in CLAUDE.md § Key Skills, Checkpoints and Templates.
         ┌─ FRONT DOOR ─────────────────────────────────────────┐
         │  !DetermineContext   pick 1 of 4 contexts            │
         │  !Intake             route an item to ①②③④ / ∅      │
-        │  !MinorTask          log a small self-contained task  │
         └──────────────────────────────────────────────────────┘
 
         ┌─ PLANNING ───────────────────────────────────────────┐
@@ -363,12 +367,9 @@ description of each lives in CLAUDE.md § Key Skills, Checkpoints and Templates.
         │  !GenerateWiki       build a standalone article        │
         └──────────────────────────────────────────────────────┘
 
-        ┌─ SWEEP ENGINES (disjoint stores) ────────────────────┐
+        ┌─ SWEEP ENGINE ───────────────────────────────────────┐
         │  !ProjectSweep   advance ▶ Projects/   (weekly Mon)   │
-        │  !Initiative     work    ▶ MinorTasks/ (daily)        │
         │  !Review         distil  ▶ Projects/ → digest (2×/wk)│
-        │                  (reads Projects/ only; !Initiative   │
-        │                   sends its own MinorTasks digest)    │
         └──────────────────────────────────────────────────────┘
 
         ┌─ GATES (fail closed) ────────────────────────────────┐
@@ -387,7 +388,7 @@ description of each lives in CLAUDE.md § Key Skills, Checkpoints and Templates.
 
         who-calls-whom (the load-bearing edges):
 
-          !Intake ───▶ !MinorTask ───▶ (MinorTasks queue) ───▶ !Initiative
+          !Intake ───▶ !CreateProject / registry Next Action ───▶ !ProjectSweep
           !Intake ───▶ !CreatePlan ──▶ !ReviewPlan
           !Checkpoint ─┬─▶ !OutgoingContentCheck
                        └─▶ !ArchiveMemory

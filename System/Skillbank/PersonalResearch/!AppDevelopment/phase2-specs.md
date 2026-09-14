@@ -79,6 +79,23 @@ Phase 2 of `!AppDevelopment`, or `!AppSpecs` directly on a project whose registr
   BUILD mockups of the surfaces the PRD describes — enough for Luke to react to, not a prototype.
   Mockups live in `System/Sandbox/<name>/_mockups/` and are listed in the registry.
   They are throwaway by design; they are deleted in Phase 3 (G-2) and no build code comes from them.
+
+  Draw on two design-system references for componentry, layout, and visual language — never copy
+  verbatim, use them as a vocabulary to remix:
+    - Material Design 3 — https://m3.material.io/
+    - Ant Design — https://ant.design/
+
+  Mockups always come in a batch of SIX, covering one seam of the PRD's surfaces per pass:
+    2 favouring FORM     — visual polish, personality, motion/interaction flourish leads
+    2 favouring FUNCTION — density, clarity, speed-of-use leads; decoration stripped to what earns
+                            its place
+    2 BALANCED           — a deliberate middle between form and function, AND the two balanced
+                            options must visibly contrast each other (different layout grammar,
+                            palette, or component language) — they are not two shades of the same
+                            idea
+  Every one of the six is a genuine attempt at the same surface, not a form-vs-function strawman.
+  Log the batch in the registry's Mockups table, one row per mockup, tagged with its category
+  (form / function / balance) so the six-way split is visible at a glance.
   SHOW them to Luke. COLLECT feedback.
 
 **STEP 6 — Propagate change**
@@ -93,6 +110,8 @@ Phase 2 of `!AppDevelopment`, or `!AppSpecs` directly on a project whose registr
     MARK every affected spec `stale` in the registry's Documents table
     The registry now carries a visible reminder; no spec is marked current again until it has
     been rewritten against the new PRD.
+    IF `wishlist.md` exists for this project ➔ RUN its STEP 3 conflict scan against the updated
+    PRD/specs and report any duplicate/overlap/conflict to Luke (G-5).
   ASSERT no spec is left `stale` at the end of the phase ELSE the phase cannot close.
 
 **STEP 7 — Loop**

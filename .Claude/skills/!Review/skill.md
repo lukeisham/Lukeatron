@@ -10,7 +10,8 @@ dependencies:
   - "System/Templates/Template_ProjectRegistry.md"
   - ".Claude/skills/!AgentMail/scripts/agentmail.py"
   - ".Claude/skills/!Calendar"
-version: 1.3.0
+  - ".Claude/skills/!PlainEnglish"
+version: 1.6.0
 ---
 
 ## ⚡ TRIGGER
@@ -90,14 +91,14 @@ STEP 4 — HARVEST (board-first; open registries lazily to save tokens).
   green has nothing live to surface. !ProjectSweep runs 30 min before the Monday Review and leaves the
   board fresh, so trust it: from each project's _tracking.yaml row (state, waiting_on, wake, updated)
   decide whether to OPEN registry.md this run. OPEN it when ANY of these holds — otherwise distil the
-  project from its board row alone as a one-liner ("✅ <title> — on track, wakes <wake>"):
-    • state is not 🟢 on track — 🔴/🟠/🔵/⚪ may need Luke's eye. Open.
+  project from its board row alone as a one-liner ("✅ <title> — Delegate, wakes <wake>"):
+    • state is not 🟢 Delegate — 🔴/🟠/🔵/⚪ may need Luke's eye. Open.
     • wake is within the next 14 days, or absent — a near-term or unconfirmed item to surface. Open.
     • STALE — `updated` is absent or > 21 days ago. Open and re-verify.
     • the registry mtime is NEWER than the row's `updated` (best-effort `ls -la`/`stat`) — edited since
       the last sweep. Open.
     • the project was just created or promoted by STEP 2 this run (no board state yet). Open.
-  WHEN IN DOUBT, OPEN. Confirmed-green projects appear in the digest as a single "on track" line.
+  WHEN IN DOUBT, OPEN. Confirmed-green projects appear in the digest as a single "Delegate" line.
 
   For each project being OPENED, pull relative to today (2026 dates, local Melbourne time):
   • 🗓️ Events     — any with a date ≥ today, soonest first. These are the UPCOMING EVENTS.
@@ -129,19 +130,43 @@ STEP 5c — SYSTEM GUIDE DRIFT-CHECK (cheap; flag-only; never block on it).
   silently edit the guide here; just flag it for Luke. IF it reads consistent, or either file is
   unreadable → add nothing (note unreadability only if it blocks the check).
 
-STEP 6 — ASSEMBLE THE DIGEST (Luke's voice — to-the-point, warm, lightly witty).
-  Order projects by focus: lead-context projects first, then the rest. Within the digest use three
-  standing sections, each grouped by project:
-    1. 🗓️ Upcoming events        — soonest first; overdue/this-week called out.
-    2. ✅ Tasks                  — open actions; OVERDUE and DUE-SOON flagged at the top; blockers noted.
-    3. 🧾 Decisions              — recent decisions + decisions Luke needs to make.
-  Add a short "📥 From your to-dos" note when STEP 2 did anything: the projects it promoted this run,
-  the to-dos it cleared as already-tracked, and any to-do it LEFT as ambiguous ("needs your eye").
-  Add a "📤 Awaiting your approval — <N>" line (from STEP 5b) whenever Outbox/ holds ≥ 1 staged file,
-  listing each filename, so nothing sits approved-but-unsent without Luke seeing it.
-  Open with a one-line state-of-play ("3 things need you this week"). End with the lead context's
-  items if anything there is time-critical. Keep it skimmable — bullets, not prose.
-  IF a project has nothing live, omit it (don't pad). IF nothing is live anywhere, say so in one line.
+STEP 6 — ASSEMBLE THE DIGEST (the !PlainEnglish four-part shape; Luke's voice — to-the-point,
+  warm, lightly witty). This digest is self-addressed to Luke, so its reader is internal and the
+  four-part shape governs. Plain-text email: render the Context table as an aligned ASCII table.
+  Order projects by focus within every section — lead-context projects first, then the rest.
+
+    ── NEXT ACTION ──  dot-points, each flagged. ONLY two kinds of item:
+       🔸 Decision: — a decision Luke must make. Sources: 🧾 open decisions a Next Action waits on;
+          any to-do STEP 2 LEFT as ambiguous ("needs your eye"); any project needing his call.
+       ℹ️ Note: — something he must know. Sources: OVERDUE and due-within-7-days tasks; events in
+          the next 7 days; ⊘ blockers; the "📤 Awaiting your approval — <N>" Outbox line (STEP 5b),
+          which ALWAYS appears here when Outbox/ holds ≥ 1 file — never buried in Context.
+       Lead with the one-line state-of-play ("3 things need you this week") above the dot-points.
+       IF nothing needs him, say so in one line and let the section be that line.
+
+    ── EXPLANATION ──  paragraphs (or an ASCII diagram), one block per Next Action item, same order,
+       in ONE !PlainEnglish mode (Rule 2), never blended:
+         CATCH-UP for anything with a history — a project resumed after a gap, a reopened decision,
+           a task overdue for reasons that go back.
+         IMPACT for anything whose difficulty is reach — local (this project) then global (other
+           projects, the calendar, standing behaviour); say "no global effect" when there is none.
+       COLD-READER TEST applies: every item must be followable from this email alone, with no memory
+       of last week's digest. Length is the agent's call (!PlainEnglish Rule 1).
+
+    ── CONTEXT ──  one ASCII table, continuity and background only — detail NOT needed to make the
+       decisions above. Columns: Project · State · What's live · Wake/Due. Rows cover 🗓️ upcoming
+       events beyond 7 days, ✅ open tasks not already flagged, 🧾 decisions logged in the last ~7
+       days, and every confirmed-green project as its single "Delegate, wakes <wake>" line (STEP 4).
+       Below the table, the "📥 From your to-dos" note when STEP 2 did anything: projects promoted,
+       to-dos cleared as already-tracked, to-dos left ambiguous.
+
+    ── SEE ALSO ──  dot-points, genuinely optional and genuinely interesting; omit rather than pad.
+       Natural residents: the 🗺️ System Guide drift line (STEP 5c); calendar items not tied to any
+       project (STEP 5); patterns noticed across projects this run; a context whose file was
+       unreadable and skipped.
+
+  IF a project has nothing live, omit it (don't pad). IF nothing is live anywhere, say so in one line
+  and send the short digest — silence is never the answer (invariant: never stall silently).
 
 STEP 7 — DELIVER.
   Write the digest to System/Sandbox/review-digest.txt.
@@ -155,15 +180,21 @@ STEP 7 — DELIVER.
       --text-file "System/Sandbox/review-digest.txt"
 
 ## ✅ OUTPUT
-State: A digest email in Luke's inbox — upcoming events, open/overdue tasks and recent/needed
-  decisions across all active projects, led by the day's focus context (Mon: PP+PR · Fri: CH) — plus,
-  when the scratchpads weren't empty, a "From your to-dos" note of what was promoted/cleared/flagged.
+State: A digest email in Luke's inbox, written in the !PlainEnglish four-part shape — Next Action
+  (flagged decisions + must-know items) · Explanation (what each involves) · Context (an ASCII table of
+  continuity detail) · See Also (incidental findings). It covers upcoming events, open/overdue tasks and
+  recent/needed decisions across all active projects, led by the day's focus context (Mon: PP+PR · Fri:
+  CH) — plus, when the scratchpads weren't empty, a "From your to-dos" note of what was promoted/cleared/flagged.
   Each context's To-Do scratchpad is drained: open to-dos became (or matched) projects and were removed;
   done items cleared; ambiguous ones left and flagged. Any content staged in Outbox/ awaiting approval
   is surfaced as an "Awaiting your approval" line so fail-closed staging never becomes a silent stall.
   On --dry: the same content saved to System/Sandbox/review-digest.txt, unsent, and NO mutations —
   the to-do/project changes are reported as "would do", not applied.
-Validation: every Active project in _tracking.yaml either appears in the digest or was deliberately
+Validation: every Explanation block is in ONE mode (catch-up or impact), impact blocks state the global
+  scale explicitly, and the digest passes the cold-reader test — an item unintelligible without last week's
+  digest is under-explained; the digest carries the four sections in order, with empty ones omitted; Next Action holds
+  ONLY flagged decisions and must-know items; any Outbox file appears in Next Action, not Context;
+  every Active project in _tracking.yaml either appears in the digest or was deliberately
   omitted for having nothing live; the lead context is ordered first; no context To-Do block still holds
   a non-blank open to-do that wasn't either promoted, matched-and-cleared, or flagged as ambiguous;
   no duplicate project was created.

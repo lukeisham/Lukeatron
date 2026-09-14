@@ -34,6 +34,22 @@ svg.document-page {
   padding: 0;
 }
 
+/* ===== Screen/Print Toggle Pair =====
+   .screen-only (existing, below) hides screen chrome from print.
+   .print-only is the mirror: content that exists only to be printed (an SVG
+   projection of an interactive HTML surface, e.g. Marking Matrix's rubric
+   editor / class grid) stays out of the way on screen and appears only in
+   the print output. */
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block;
+  }
+}
+
 /* ===== Print Styling ===== */
 @media print {
   /* Force exact colour printing on tier backgrounds and accents.

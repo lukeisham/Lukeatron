@@ -33,6 +33,9 @@ Phase 3 of `!AppDevelopment`, or `!AppBuildPrep` directly on a project whose reg
   ASSERT the documentation spec exists
   READ each mockup and ASK of each: is every behaviour it shows written down in a spec?
     IF no ➔ write it into the owning spec now. This is the last chance; the mockup is about to go.
+  IF `wishlist.md` exists for this project ➔ RUN its STEP 3 conflict scan one final time against
+  the about-to-be-frozen PRD and specs (G-5). The PRD still exists after this — the scan can still
+  be invoked on demand — but it stops for good once `phase4-refactor.md` STEP 3 retires the PRD.
   ELSE ➔ STOP and report which check failed. Nothing is deleted while a check is failing.
 
 **STEP 2 — Refresh the registry**
@@ -64,6 +67,9 @@ Phase 3 of `!AppDevelopment`, or `!AppBuildPrep` directly on a project whose reg
   It names the refreshed registry as the resume point if the context is refreshed or the build is
   interrupted, and it restates G-1: the Vibe Coding Rules bind the build, exceptions only by
   explicit permission, and the granted exceptions are listed in the file.
+  IF `kind` = widget ➔ fill in the template's widget-only "Done when" clause with the host named
+  in the PRD; the build is not complete until the widget has been exercised inside that host.
+  IF `kind` = app ➔ delete that clause; an app's own front door is its only required context.
 
 **STEP 5 — Hand over**
   SHOW Luke the build prompt and tell him plainly that this skill's part is done until Phase 4.
@@ -82,6 +88,8 @@ VERIFY every behaviour previously shown only in a mockup now appears in a spec
 VERIFY _mockups/ is deleted AND the deletion is logged with its authorising check
 VERIFY build.md names the registry as the resume point and states the three agent tiers
 VERIFY build.md carries the Vibe Coding Rules clause and the granted exceptions list
+VERIFY build.md's widget-only "Done when" clause is present and names the host for a widget,
+  and is deleted (not merely left blank) for an app
 ELSE ➔ do not advance the phase
 ```
 

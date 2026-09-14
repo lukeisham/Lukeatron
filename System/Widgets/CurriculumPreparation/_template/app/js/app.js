@@ -352,6 +352,9 @@ function mountLessonPlans(main, unit) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'app-nav-button';
+    if (lesson.completed) {
+      btn.classList.add('is-lesson-completed');
+    }
     btn.textContent = `Lesson ${lesson.number != null ? lesson.number : index + 1}`;
     btn.addEventListener('click', () => showLesson(lesson));
     picker.appendChild(btn);

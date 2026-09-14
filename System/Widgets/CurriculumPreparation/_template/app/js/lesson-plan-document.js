@@ -10,6 +10,41 @@ import { shouldRenderTierPage } from './tier-page-emission.js';
 import { resolveTopic } from './bigidea-list.js';
 import { renderCode } from './traceability.js';
 
+// Estimate-based word wrap for SVG <text>, which never wraps on its own
+// (JS-6). Same approach as arbor-tree.js, resources-page.js and
+// assessment-tier-page.js — each document renderer keeps its own copy
+// rather than sharing one, per this codebase's existing convention.
+function wrapToLines(text, maxWidth, fontSize, maxLines = 2) {
+  if (!text) return [''];
+  const avgCharWidth = fontSize * 0.55;
+  const maxChars = Math.max(1, Math.floor(maxWidth / avgCharWidth));
+  const words = text.split(' ');
+  const lines = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (testLine.length > maxChars && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+      if (lines.length === maxLines) break;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (lines.length < maxLines && currentLine) {
+    lines.push(currentLine);
+  }
+
+  if (lines.length === maxLines) {
+    const consumed = lines.join(' ').length;
+    if (consumed < text.length) {
+      lines[maxLines - 1] = lines[maxLines - 1].replace(/.{3}$/, '...');
+    }
+  }
+  return lines;
+}
+
 export class LessonPlanDocument {
   constructor(lesson, allLessons, allBigIdeas, allTopics, allNodes, unitAssessment) {
     this.lesson = lesson;
@@ -46,123 +81,124 @@ export class LessonPlanDocument {
 
   _renderFront(g) {
     const pageCount = this.computePageCount();
-    let y = 20;
+    const hasSidebar = !!this.lesson.sidebar?.trim();
+    const right = hasSidebar ? 142 : 196;
 
-    // Lesson number
-    if (this.lesson.number) {
-      this._text(g, 10, y, `Lesson ${this.lesson.number}`, 'lesson-number');
-      y += 15;
-    }
-
-    // Topic
+    // Masthead: big numeral + topic, black rule beneath
     const topicId = resolveTopic(this.lesson.id, this.allLessons, this.allBigIdeas);
     const topic = topicId ? this.topicsMap[topicId] : null;
-    if (topic) {
-      this._text(g, 10, y, topic.title || '', 'topic-label text-secondary');
-      y += 15;
+    const hasNumber = !!this.lesson.number;
+    const topicX = hasNumber ? 42 : 10;
+    if (hasNumber) {
+      this._text(g, 10, 12, 'Lesson', 'studio-eyebrow');
+      this._text(g, 10, 32, String(this.lesson.number), 'studio-numeral');
     }
+    if (topic) {
+      this._text(g, topicX, hasNumber ? 20 : 16, topic.title || '', 'studio-kicker');
+    }
+    this._rule(g, 10, 40, right);
 
-    // Big idea box
+    let y = 50;
+
+    // Big idea
     const bi = this.bigIdeasMap[this.lesson.bigIdeaId];
     if (bi) {
       const count = this.allLessons.filter(l => l.bigIdeaId === this.lesson.bigIdeaId).length;
-      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      rect.setAttribute('x', '10');
-      rect.setAttribute('y', y);
-      rect.setAttribute('width', '190');
-      rect.setAttribute('height', '18');
-      rect.setAttribute('fill', 'var(--color-bg-light)');
-      rect.setAttribute('stroke', 'var(--color-border-light)');
-      rect.setAttribute('stroke-width', '0.5');
-      g.appendChild(rect);
-
-      let biText = bi.title || '(untitled)';
-      if (count > 0) biText += ` · ${count} lesson${count !== 1 ? 's' : ''}`;
-      this._text(g, 12, y + 13, biText, 'big-idea-name text-tertiary');
-      y += 25;
+      this._bar(g, 10, y, 22);
+      this._text(g, 16, y + 5, 'Big idea', 'studio-section-label');
+      const titleY = y + 11;
+      const lines = this._wrappedText(g, 16, titleY, bi.title || '(untitled)', 'studio-title', right - 20, 3.31, 2);
+      if (count > 0) {
+        const countY = titleY + (lines - 1) * 4.3 + 6;
+        this._text(g, 16, countY, `${count} lesson${count !== 1 ? 's' : ''} build toward this idea`, 'studio-body-sm');
+      }
+      y += 30;
     }
 
     // Curriculum nodes
     if (this.lesson.nodeIds && this.lesson.nodeIds.length > 0) {
-      this._text(g, 10, y, 'Curriculum:', 'section-label');
-      y += 8;
+      const rowCount = this.lesson.nodeIds.length;
+      this._bar(g, 10, y, 12 + rowCount * 6);
+      this._text(g, 16, y + 5, 'Curriculum', 'studio-section-label');
+      let rowY = y + 13;
       for (const nodeId of this.lesson.nodeIds) {
         const node = this.nodesMap[nodeId];
         if (node) {
-          const codeStr = renderCode(node.code || '—', false);
-          const text = `${codeStr} ${node.title || ''}`.trim();
-          this._text(g, 12, y, text, 'node-citation text-tertiary text-sm');
-          y += 6;
+          this._text(g, 16, rowY, renderCode(node.code || '—', false), 'studio-code');
+          this._text(g, 38, rowY, node.title || '', 'studio-body-sm');
+          rowY += 6;
         }
       }
-      y += 6;
+      y += 18 + rowCount * 6;
     }
 
-    // Key example & practice question
-    if (this.lesson.keyExample) {
-      this._text(g, 10, y, 'Key Example:', 'section-label');
-      this._text(g, 12, y + 6, this.lesson.keyExample, 'key-example');
-      y += 20;
-    }
-
-    if (this.lesson.practiceQuestion) {
-      this._text(g, 10, y, 'Practice Question:', 'section-label');
-      this._text(g, 12, y + 6, this.lesson.practiceQuestion, 'practice-question');
-      y += 20;
+    // Key example / practice question — side by side when both present
+    const hasKey = !!this.lesson.keyExample;
+    const hasQuestion = !!this.lesson.practiceQuestion;
+    if (hasKey && hasQuestion) {
+      const colWidth = (right - 10 - 8) / 2;
+      const col2X = 10 + colWidth + 8;
+      this._rule(g, 10, y, 10 + colWidth);
+      this._text(g, 10, y + 5, 'Example', 'studio-section-label');
+      this._wrappedText(g, 10, y + 11, this.lesson.keyExample, 'studio-body', colWidth - 4, 3.04, 3);
+      this._rule(g, col2X, y, col2X + colWidth);
+      this._text(g, col2X, y + 5, 'Question', 'studio-section-label');
+      this._wrappedText(g, col2X, y + 11, this.lesson.practiceQuestion, 'studio-body', colWidth - 4, 3.04, 3);
+      y += 34;
+    } else if (hasKey || hasQuestion) {
+      this._rule(g, 10, y, right);
+      this._text(g, 10, y + 5, hasKey ? 'Example' : 'Question', 'studio-section-label');
+      this._wrappedText(g, 10, y + 11, hasKey ? this.lesson.keyExample : this.lesson.practiceQuestion, 'studio-body', right - 10, 3.04, 2);
+      y += 26;
     }
 
     // Assessment links
     if (this.lesson.assessmentLink) {
-      this._text(g, 10, y, 'Assessments:', 'section-label');
-      y += 6;
-      if (this.lesson.assessmentLink.miniAssessmentIds) {
-        for (const miniId of this.lesson.assessmentLink.miniAssessmentIds) {
-          const mini = (this.unitAssessment?.miniAssessments || []).find(m => m.id === miniId);
-          if (mini) {
-            this._text(g, 12, y, `• ${mini.name}`, 'mini-assessment text-sm');
-            y += 5;
-          }
+      const miniIds = this.lesson.assessmentLink.miniAssessmentIds || [];
+      const minis = miniIds
+        .map(id => (this.unitAssessment?.miniAssessments || []).find(m => m.id === id))
+        .filter(Boolean);
+      const hasMajor = !!(this.lesson.assessmentLink.majorAssessment && this.unitAssessment?.title);
+      const rowCount = minis.length + (hasMajor ? 1 : 0);
+      if (rowCount > 0) {
+        this._bar(g, 10, y, 12 + rowCount * 5);
+        this._text(g, 16, y + 5, 'Assessments', 'studio-section-label');
+        let rowY = y + 13;
+        for (const mini of minis) {
+          this._text(g, 16, rowY, `— ${mini.name}`, 'studio-body-sm');
+          rowY += 5;
+        }
+        if (hasMajor) {
+          this._text(g, 16, rowY, `— ${this.unitAssessment.title}`, 'studio-body-sm');
         }
       }
-      if (this.lesson.assessmentLink.majorAssessment && this.unitAssessment?.title) {
-        this._text(g, 12, y, `• ${this.unitAssessment.title}`, 'major-assessment text-sm');
-      }
+    }
+
+    // Sidebar / notes column
+    if (hasSidebar) {
+      this._bar(g, 150, 48, 196);
+      this._text(g, 156, 55, 'Notes', 'studio-section-label');
+      this._wrappedText(g, 156, 62, this.lesson.sidebar, 'studio-body-sm', 40, 2.65, 10);
     }
 
     // Tier key
-    y = 220;
-    this._text(g, 10, y, 'Tiers:', 'section-label');
-    let x = 40;
+    this._rule(g, 10, 246, right);
+    this._text(g, 10, 252, 'Tiers', 'studio-section-label');
+    let x = 34;
     for (const [tierName, colors] of Object.entries(TIERS)) {
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', x);
-      rect.setAttribute('y', y - 3);
-      rect.setAttribute('width', '4');
-      rect.setAttribute('height', '4');
+      rect.setAttribute('y', 249.6);
+      rect.setAttribute('width', '6');
+      rect.setAttribute('height', '1.6');
       rect.setAttribute('fill', colors.line);
       g.appendChild(rect);
-      this._text(g, x + 6, y + 1, tierName.charAt(0).toUpperCase() + tierName.slice(1), 'tier-label text-xs');
-      x += 35;
-    }
-
-    // Sidebar (if not empty)
-    if (this.lesson.sidebar?.trim()) {
-      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      rect.setAttribute('x', '130');
-      rect.setAttribute('y', '10');
-      rect.setAttribute('width', '70');
-      rect.setAttribute('height', '190');
-      rect.setAttribute('fill', 'var(--color-bg-very-light)');
-      rect.setAttribute('stroke', 'var(--color-border-dashed)');
-      rect.setAttribute('stroke-width', '0.5');
-      rect.setAttribute('stroke-dasharray', '2,2');
-      g.appendChild(rect);
-      this._text(g, 133, 15, 'Notes:', 'sidebar-label');
-      this._text(g, 133, 23, this.lesson.sidebar, 'sidebar-text text-sm');
+      this._text(g, x + 8, 252.6, tierName.charAt(0).toUpperCase() + tierName.slice(1), 'studio-tier-key-label');
+      x += 38;
     }
 
     // Page number
-    this._text(g, 180, 290, `page 1 of ${pageCount}`, 'page-number text-secondary text-sm');
+    this._text(g, 180, 290, `page 1 of ${pageCount}`, 'studio-page-number');
   }
 
   _renderTier(g, tierName) {
@@ -172,8 +208,9 @@ export class LessonPlanDocument {
     const pageCount = this.computePageCount();
     const tierIndex = ['pass', 'intermediate', 'advanced'].indexOf(tierName) + 1;
     const colors = TIERS[tierName];
+    g.setAttribute('class', g.getAttribute('class') + ' lesson-tier-page');
 
-    // Left accent bar
+    // Left accent bar — tier colour stays confined to this thin strip
     const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bar.setAttribute('x', '0');
     bar.setAttribute('y', '0');
@@ -182,43 +219,46 @@ export class LessonPlanDocument {
     bar.setAttribute('fill', colors.line);
     g.appendChild(bar);
 
-    this._text(g, 10, 20, tierName.toUpperCase(), 'tier-name text-md text-bold');
+    // Masthead: big tier-index numeral + tier name, black rule beneath
+    this._text(g, 10, 12, 'Tier', 'studio-eyebrow');
+    this._text(g, 10, 32, String(tierIndex), 'studio-numeral');
+    this._text(g, 42, 20, tierName.toUpperCase(), 'studio-tier-name');
+    this._rule(g, 10, 40, 196);
 
-    let y = 35;
+    let y = 50;
 
-    // Material
     if (tier.material) {
-      this._text(g, 10, y, 'Material:', 'material-label');
-      this._text(g, 12, y + 5, tier.material, 'material-body');
-      y += 25;
+      this._bar(g, 10, y, 30);
+      this._text(g, 16, y + 5, 'Material', 'studio-section-label');
+      this._wrappedText(g, 16, y + 11, tier.material, 'studio-body', 178, 3.04, 3);
+      y += 38;
     }
 
-    // Student task
     if (tier.studentTask) {
-      this._text(g, 10, y, 'Task:', 'student-task-label');
-      this._text(g, 12, y + 5, tier.studentTask, 'student-task-body');
-      y += 25;
+      this._bar(g, 10, y, 30);
+      this._text(g, 16, y + 5, 'Task', 'studio-section-label');
+      this._wrappedText(g, 16, y + 11, tier.studentTask, 'studio-body', 178, 3.04, 3);
+      y += 38;
     }
 
-    // Workspace lines
     if (tier.workspaceLines && tier.workspaceLines > 0) {
-      this._text(g, 10, y, 'Workspace:', 'workspace-label');
-      y += 6;
-      const spacing = (240 - y) / tier.workspaceLines;
+      this._text(g, 10, y, 'Workspace', 'studio-section-label');
+      y += 8;
+      const spacing = (250 - y) / tier.workspaceLines;
       for (let i = 0; i < tier.workspaceLines; i++) {
         const lineY = y + i * spacing;
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', '10');
         line.setAttribute('y1', lineY);
-        line.setAttribute('x2', '200');
+        line.setAttribute('x2', '196');
         line.setAttribute('y2', lineY);
         line.setAttribute('stroke', 'var(--color-border-light)');
-        line.setAttribute('stroke-width', '0.5');
+        line.setAttribute('stroke-width', '0.35');
         g.appendChild(line);
       }
     }
 
-    this._text(g, 180, 290, `page ${tierIndex + 1} of ${pageCount}`, 'page-number text-secondary text-sm');
+    this._text(g, 180, 290, `page ${tierIndex + 1} of ${pageCount}`, 'studio-page-number');
   }
 
   _createGroup(svg, className) {
@@ -235,6 +275,53 @@ export class LessonPlanDocument {
     if (className) t.setAttribute('class', className);
     t.textContent = String(text || '');
     g.appendChild(t);
+  }
+
+  // Wrapped multi-line text (studio grid needs this far more than the old
+  // single-line layout did, since sections are now narrower — side-by-side
+  // columns, a right-hand notes rail). Returns the number of lines drawn.
+  _wrappedText(g, x, y, text, className, maxWidth, fontSizeMm, maxLines) {
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', x);
+    t.setAttribute('y', y);
+    if (className) t.setAttribute('class', className);
+    const lines = wrapToLines(String(text || ''), maxWidth, fontSizeMm, maxLines);
+    const lineHeight = fontSizeMm * 1.5;
+    lines.forEach((line, i) => {
+      const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan.setAttribute('x', String(x));
+      tspan.setAttribute('dy', i === 0 ? '0' : String(lineHeight));
+      tspan.textContent = line;
+      t.appendChild(tspan);
+    });
+    g.appendChild(t);
+    return lines.length;
+  }
+
+  // Thick left-border accent bar — the studio grid's structural marker for
+  // every non-tier section (big idea, curriculum, assessments, notes).
+  // Tier colour is deliberately never used here; only the tier key and each
+  // tier page's own accent bar carry tier colour, per FR-DS-11.
+  _bar(g, x, y, height) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', '1.6');
+    rect.setAttribute('height', height);
+    rect.setAttribute('fill', 'var(--color-border-strong)');
+    g.appendChild(rect);
+  }
+
+  // Thin horizontal rule — the studio grid's structural marker for the
+  // masthead and the key-example/practice-question columns.
+  _rule(g, x1, y, x2) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x1);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', x2 - x1);
+    rect.setAttribute('height', '0.5');
+    rect.setAttribute('fill', 'var(--color-border-strong)');
+    g.appendChild(rect);
   }
 
   setData(updatedLesson) {

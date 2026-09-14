@@ -17,22 +17,21 @@ intent: "Make intake deterministic: context first (the coordinate system), then 
 dependencies:
   - ".claude/skills/!DetermineContext"
   - ".claude/skills/!CreatePlan"
-  - ".claude/skills/!MinorTask"
+  - ".claude/skills/!CreateProject"
   - ".claude/skills/!Checkpoint · !OutgoingContentCheck (whitelist.yaml)"
   - "System/Skillbank/GeneralPurposeSkills/!IdeaWiki/skill.md"
   - ".claude/skills/!AgentMail/scripts/agentmail.py"
   - "Memory/Medium-Term/Projects/_tracking.yaml + System/Templates/Template_ProjectRegistry.md"
-  - "Memory/Medium-Term/MinorTasks/queue.md"
   - "Memory/Medium-Term/Contacts/_index.yaml + System/Templates/Template_Contact.md"
   - "Memory/Long-Term/<store>/_index.yaml (per-store, on demand)"
-version: 1.1.0
+version: 1.3.2
 calibration:
   context: Any
   level: Extended
   scope: Global
 memory_footprint:
-  read: [Memory/Medium-Term/Projects, Memory/Medium-Term/MinorTasks, Memory/Medium-Term/Contacts, Memory/Long-Term, System/Context, System/Templates]
-  write: [Memory/Medium-Term/Projects, Memory/Medium-Term/MinorTasks, Memory/Medium-Term/Contacts, Memory/Long-Term, Memory/Long-Term/LukeatronWiki, System/Sandbox, Outbox]
+  read: [Memory/Medium-Term/Projects, Memory/Medium-Term/Contacts, Memory/Long-Term, System/Context, System/Templates]
+  write: [Memory/Medium-Term/Projects, Memory/Medium-Term/Contacts, Memory/Long-Term, Memory/Long-Term/LukeatronWiki, System/Sandbox, Outbox]
 ---
 
 ## ⚡ TRIGGER
@@ -68,22 +67,27 @@ FOR EACH arrived item:
                UPDATE its registry.md (Next Actions / Events / Decision Log / People)
                + bump _tracking row (updated; state/waiting_on/wake if changed)
           CASE new multi-step endeavour (needs tracking; not self-contained) THEN
-               CREATE a project (System/Templates/Template_ProjectRegistry.md)
-               + ALWAYS create notes.md alongside registry.md in the same step
-                 (System/Templates/Template_ProjectNotes.md → notes.md — the mandatory
-                 scratchpad for misc info & small scraps; a project folder without one is incomplete)
-               + add a _tracking.yaml row (next free <CTX>-<NN>)
-          CASE minor/one-off self-contained (single action, no ongoing stake, no project needed) THEN
-               skip ① → DELEGATE to !MinorTask LOG (source = "Intake:{channel}")
-          CASE ambiguous (genuinely unclear whether project / minor task / something else) THEN
-               DELEGATE to !MinorTask LOG with:
-                 task   = "Ask Luke what to do with: <item title or one-line summary>"
-                 source = "Intake:ambiguous"
-                 impact = High   // always High — escalates to Luke; never auto-actioned by !Initiative
-                 state  = 🟠    // your move
-               ARCHIVE the original item with a back-pointer in filename/note: "#<queue row #>"
-               ADVANCE the processed-marker for this item (must not re-process on next sweep)
-               // Fail-closed fallback: IF !MinorTask unavailable → leave in Inbox/ and FLAG Luke
+               DELEGATE to !CreateProject WITH {title, context, purpose (drafted from the item),
+                 initial next action (if the item implies one)} INTO {id, path}
+               // !CreateProject owns the templates, notes.md, the Purpose/Definition of Done fill,
+               // and the _tracking.yaml row — Intake only decides THAT a new project is warranted.
+          CASE minor/one-off self-contained (single action, no ongoing stake) THEN
+               ADD it as ONE Next Action to the best-fit Active project IN THIS CONTEXT — a looser
+               "fits under" test than "belongs to": the project whose Purpose would naturally hold
+               the task (e.g. a household chore → PP-18 Chores and Errands; a church-inbox problem →
+               CH-25 Work Email Triage). Owner/Type as the item implies; Status ☐ Open; State
+               ⚪ Undefined unless the item carries urgency (🔴) or needs Luke's call (🟠).
+               Log the addition in that registry's 🧾 Decision Log ("<date> — Added via !Intake: …").
+               // The MinorTasks queue was retired 2026-09-14 — small tasks live in projects now.
+               IF no specific project fits THEN add it to THIS CONTEXT'S CATCH-ALL project:
+                 Personal Productivity → PP-18 Chores and Errands · Church → CH-28 Church Odds and Ends
+                 Teaching → TE-13 Teaching Odds and Ends · Lukeatron → LU-03 Lukeatron Odds and Ends
+                 Personal Research → PR-08 Research Odds and Ends
+               Never invent a new project for a one-off.
+          CASE ambiguous (genuinely unclear whether project / one-off / something else) THEN
+               leave the original in Inbox/ and FLAG Luke in the per-item report:
+                 "Ask Luke what to do with: <item title or one-line summary>"
+               DO NOT mark processed — it re-surfaces until Luke decides.
           CASE neither THEN skip ①
         (Medium-Term Projects are apply-safe — write directly, per !ProjectSweep precedent.)
         🔗 LINK CHECK — when adding a Next Action, fuzzy-match it (STRICT: same task + same object,
@@ -94,11 +98,13 @@ FOR EACH arrived item:
           !ProjectSweep reconciles links every run regardless.
         📇 CONTACTS CHECK — if the arrival carries contact details (email/phone) for a person linked
           to this project or task but that person doesn't warrant a full People/ record:
-          READ People/ first — if found there, skip; else DELEGATE to !MinorTask contacts-check
-          (adds a non-listed per-contact file, Contacts/<TC-NN Name>/<TC-NN Name>.md from
-          Template_Contact.md, + a row in Contacts/_index.yaml, linked to the project ID or
-          queue row #). A Contacts/-only recipient is ALWAYS non-listed — this check NEVER
-          relaxes the gate.
+          READ People/ first — if found there, skip. Else READ Contacts/_index.yaml and search by
+          name (case-insensitive):
+            found     → add the project ID to that contact's `linked_to` (file frontmatter + index row)
+            not found → CREATE Contacts/<TC-NN Name>/<TC-NN Name>.md from Template_Contact.md
+                        (TC-NN = last number + 1, zero-padded; interaction_tier non-listed;
+                        linked_to = the project ID) + APPEND a matching row to Contacts/_index.yaml.
+          A Contacts/-only recipient is ALWAYS non-listed — this check NEVER relaxes the gate.
 
    ② MEMORY — is there a durable FACT to keep?
         IF yes THEN WRITE it to the matching Memory/Long-Term/<subject> store (+ its _index.yaml)

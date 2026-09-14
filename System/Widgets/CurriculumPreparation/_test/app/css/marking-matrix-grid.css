@@ -103,3 +103,65 @@
 .grid-row-header.tier-band.notYetSetUp {
   border: var(--border-solid-thick) var(--color-border-medium);
 }
+
+/* Data cells: actual mark (input) + hypothetical ceiling (0/x, x greyed —
+   wishlist #10, 2026-09-02). Pre-existing gap: this file's own header
+   comment names a marking-matrix-grid-cells.css sibling for cell styling
+   that was never created — .grid-cell itself has carried no rules until
+   now. Left as bare layout (not a full restyle) since fixing that older
+   gap generally is a separate task from this one. */
+.grid-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border-right: var(--border-solid) var(--color-border-light);
+  border-bottom: var(--border-solid) var(--color-border-light);
+}
+
+.grid-cell-score-input {
+  width: 48px;
+  padding: var(--space-sm);
+  border: var(--border-solid) var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-system);
+  font-size: var(--font-size-base-alt);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.grid-cell-score-input:focus {
+  outline: none;
+  border-color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px var(--color-border-light);
+}
+
+.score-actual {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+.score-max-hint {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.grid-subtotal-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2xs);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg-very-light);
+  border-right: var(--border-solid) var(--color-border-light);
+  border-bottom: var(--border-solid-thick) var(--color-border-medium);
+  font-weight: bold;
+  font-size: var(--font-size-base);
+}
+
+.grid-row-header.unit-total-row-header,
+.grid-subtotal-cell.unit-total-cell {
+  border-top: var(--border-solid-thick) var(--color-border-medium);
+  background-color: var(--color-intermediate-tint);
+  print-color-adjust: exact;
+}

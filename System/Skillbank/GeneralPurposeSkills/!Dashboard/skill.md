@@ -31,8 +31,9 @@ ASSERT Memory/Medium-Term/Projects/_tracking.yaml is reachable
 
 STEP 1 — READ THE INDEX.
   READ _tracking.yaml. MAP each project → {id, ctx=id[:2], title, status, state}.
-  state token from the `state` field: "🟢 on track"→ontrack · "🔵 waiting"→waiting ·
-  "🟠 your move"→yourmove · "🔴 urgent"→urgent · "⚪ undefined"→undefined ·
+  state token from the `state` field (renamed 2026-09-13; internal token names below are unchanged):
+  "🟢 Delegate"→ontrack · "🔵 Waiting"→waiting ·
+  "🟠 Mine"→yourmove · "🔴 Incoming"→urgent · "⚪ Undefined"→undefined ·
   "<pending first sweep>"→pending.
   IF status=Complete → state=complete.
 
@@ -82,3 +83,14 @@ Error:
   CATCH [registry unreadable] ➔ render the row from _tracking.yaml alone (tasks=null), flag it dim.
   CATCH [_tracking.yaml unreachable] ➔ fail closed per ASSERT above.
 Log: "[WORKER: !Dashboard] [SUCCESS|FAIL] projects=<N> urgent=<N> | tokens≈[N]" → Logs/skills.log
+
+## 🎨 House style — UNCLASSIFIED
+
+`!HouseStyle` is an always-on core skill (`.claude/skills/!HouseStyle/`) and the default for every rendered surface.
+This surface is classified **UNCLASSIFIED** in its `reference/sources.md` register — it has no
+style contract of its own, so the house style governs it **whole**: tokens, layout, motion, glyphs
+and print. Rendered via `show_widget`, so the tokens must be inlined into the widget markup.
+
+Use `reference/tokens.css`; never a colour, spacing or duration literal. `:root` is light, dark is
+the override, print is the base path. The flourish budget is counted, so a breach is a failure
+rather than an opinion.

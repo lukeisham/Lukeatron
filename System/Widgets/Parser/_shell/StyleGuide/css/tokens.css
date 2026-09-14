@@ -1,3 +1,14 @@
+/* !HouseStyle — SUBORDINATE. The always-on house design skill
+   (.claude/skills/!HouseStyle/) governs this chassis's TOKENS, MOTION, GLYPHS and
+   FOCUS; the chassis keeps its own LAYOUT and STRUCTURE. See that skill's
+   reference/sources.md register.
+
+   NOTE: Parser's and Generator's StyleGuide/css/tokens.css are BYTE-IDENTICAL and
+   are kept synchronised on purpose — a token change lands on BOTH in the same
+   pass, or the pair silently forks. This file is a human-readable MIRROR, not a
+   build input (see ../index.md); the canonical values live in ../../src/shell.css,
+   which is kept byte-clean so nothing extra ships in every widget. */
+
 /* ==========================================================================
    Parser Shell — design tokens (readable reference)
 

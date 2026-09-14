@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LukeatronWiki — Specimen</title>
+  <link rel="stylesheet" href="../../../Templates/wiki-page.css">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    /* Specimen-only helper styles */
+    .specimen-marker {
+      background: rgba(212, 209, 196, 0.2);
+      border: 1px dashed #ccc;
+      padding: 0.5rem;
+      margin: 1rem 0;
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ────────────────────────────────────────────────────────────────── -->
+<!-- TOP BAR -->
+<!-- ────────────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-wordmark">LukeatronWiki</div>
+  <form class="topbar-search" method="get" action="/search">
+    <input type="text" name="q" placeholder="Search all 33 stores...">
+  </form>
+  <div class="topbar-controls">
+    <button class="btn-theme-toggle" title="Toggle theme">◐</button>
+    <button class="btn-print" title="Print">⎙</button>
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── -->
+<!-- THREE-COLUMN SHELL -->
+<!-- ────────────────────────────────────────────────────────────────── -->
+<div class="shell">
+
+  <!-- LEFT RAIL: Navigation -->
+  <div class="rail">
+    <div class="specimen-marker">.rail</div>
+
+    <div class="rail-section" id="stores">
+      <div class="rail-section-title">
+        <span>STORES <span class="rail-section-count">33</span></span>
+      </div>
+      <div class="rail-filter">
+        <input type="text" placeholder="Filter stores…">
+      </div>
+      <ul class="rail-items">
+        <li><a href="#theology">Bible</a> <span class="rail-section-count">10</span></li>
+        <li><a href="#theology">Theology</a> <span class="rail-section-count">4</span></li>
+        <li><a href="#philosophy">Philosophy</a> <span class="rail-section-count">3</span></li>
+        <li><a href="#sociology">Sociology</a> <span class="rail-section-count">4</span></li>
+        <li><a href="#more">More stores…</a></li>
+      </ul>
+    </div>
+
+    <div class="rail-section" id="hubs">
+      <div class="rail-section-title">
+        <span>HUBS</span>
+      </div>
+      <ul class="rail-items">
+        <li><a href="#hub-theology">Theology</a></li>
+        <li><a href="#hub-philosophy">Philosophy</a></li>
+        <li><a href="#hub-sociology">Sociology</a></li>
+      </ul>
+    </div>
+
+    <div class="rail-section" id="backlog">
+      <div class="rail-section-title">
+        <span>BACKLOG</span>
+      </div>
+      <ul class="rail-items">
+        <li><a href="#read">read</a> <span class="rail-section-count">3</span></li>
+        <li><a href="#watch">watch</a> <span class="rail-section-count">5</span></li>
+        <li><a href="#write">write</a> <span class="rail-section-count">1</span></li>
+      </ul>
+    </div>
+
+    <div class="rail-section" id="tools">
+      <div class="rail-section-title">
+        <span>⚙ <a href="#integrity" style="border: none;">INTEGRITY</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Content -->
+  <div class="content">
+    <div class="specimen-marker">.content</div>
+
+    <h1>Augustine and the two cities</h1>
+    <p class="eyebrow">Theology › Church & State</p>
+
+    <!-- Sample content with provenance inks -->
+    <p class="p-luke">This is Luke's own words. Ochre fill, full weight. Verbatim, never touched.</p>
+
+    <blockquote class="p-source">
+      <p>Another human's words. Mulberry box, also verbatim, also full weight. This quote shows the source ink.</p>
+    </blockquote>
+
+    <!-- Wikilink examples -->
+    <p>Link to a live page: <a href="#secular-age">[[secular-age]]</a>. Link to an unresolved page: <a class="redlink" href="#nonexistent">[[nonexistent-page]]</a>.</p>
+
+    <div class="specimen-marker">.slot-container — EMPTY state</div>
+    <div class="slot-container">
+      <div class="slot-header">
+        <span>References</span>
+        <span class="slot-state-badge empty">⊕</span>
+      </div>
+      <div class="slot-empty">
+        <button class="btn-add-slot" title="Request references">⊕</button>
+      </div>
+    </div>
+
+    <div class="specimen-marker">.slot-container — REQUESTED state</div>
+    <div class="slot-container">
+      <div class="slot-header">
+        <span>Supporting Quotes</span>
+        <span class="slot-state-badge requested">⏳</span>
+      </div>
+      <div class="slot-requested">
+        Request pending… Check back later or <a href="#inbox">view pending requests</a>.
+      </div>
+    </div>
+
+    <div class="specimen-marker">.slot-container — DRAFT state</div>
+    <div class="slot-container">
+      <div class="slot-header">
+        <span>See Also</span>
+        <span class="slot-state-badge draft">●</span>
+      </div>
+      <div class="slot-draft">
+        <form method="post" action="/do/accept">
+          <div class="slot-draft-content">
+            <p><strong>Verified: </strong>WorldCat lookup, ISBN 978-0-19-926741-4</p>
+            <ul>
+              <li>Augustine. <em>The City of God</em>. Tr. Henry Bettenson. Penguin Classics, 2003.</li>
+              <li>O'Daly, Gerard J. <em>Augustine's Philosophy of Mind</em>. U California P, 1987.</li>
+            </ul>
+          </div>
+          <div class="slot-draft-actions">
+            <button type="submit" name="action" value="reject" class="reject">Reject</button>
+            <button type="submit" name="action" value="accept" class="accept">Accept</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="specimen-marker">.slot-container — FILLED state</div>
+    <div class="slot-container">
+      <div class="slot-header">
+        <span>Historical Context</span>
+        <span class="slot-state-badge filled">✓</span>
+      </div>
+      <div class="gen-block">
+        <span class="gen-tag">generated · verified: 2026-08-15</span>
+        <p>Augustine wrote the City of God (begun 412, finished 426) after Alaric sacked Rome in 410.</p>
+      </div>
+    </div>
+
+    <!-- Search results section -->
+    <div class="specimen-marker">.search-results — grouped by store</div>
+    <div class="search-results">
+      <div class="search-result-group">
+        <div class="search-result-group-title">Theology</div>
+        <div class="search-result-item">
+          <div class="search-result-title">
+            <a href="#theology-augustine">Augustine and the Two Cities</a>
+          </div>
+          <div class="search-result-excerpt">
+            Augustine's political theology from the City of God, distinguishing earthly and heavenly cities…
+          </div>
+          <div>
+            <span class="search-result-kind title">title hit</span>
+          </div>
+        </div>
+        <div class="search-result-item">
+          <div class="search-result-title">
+            <a href="#theology-church-state">Church and State in Medieval Europe</a>
+          </div>
+          <div class="search-result-excerpt">
+            …drawing on Augustine's framework, medieval theologians developed a two-kingdoms model…
+          </div>
+          <div>
+            <span class="search-result-kind body">body hit</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-result-group">
+        <div class="search-result-group-title">Philosophy</div>
+        <div class="search-result-item">
+          <div class="search-result-title">
+            <a href="#philosophy-political">Political Authority in Augustine</a>
+          </div>
+          <div class="search-result-excerpt">
+            How Augustine treats secular authority and the limits of human law…
+          </div>
+          <div>
+            <span class="search-result-kind title">title hit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick-capture form -->
+    <div class="specimen-marker">.capture-form</div>
+    <form class="capture-form" method="post" action="/do/capture">
+      <div class="capture-form-title">Quick Capture</div>
+      <div class="capture-form-group">
+        <label>
+          Title
+          <input type="text" name="title" placeholder="What are you reading?" required>
+        </label>
+        <label>
+          Kind
+          <select name="kind" required>
+            <option value="">Select…</option>
+            <option value="book">Book</option>
+            <option value="article">Article</option>
+            <option value="video">Video</option>
+            <option value="note">Note</option>
+          </select>
+        </label>
+      </div>
+      <div class="capture-form-group">
+        <label>
+          Intent
+          <select name="intent" required>
+            <option value="">Select…</option>
+            <option value="read">Read</option>
+            <option value="watch">Watch</option>
+            <option value="write">Write</option>
+          </select>
+        </label>
+        <label>
+          Source
+          <input type="text" name="source" placeholder="Author, creator, or URL">
+        </label>
+      </div>
+      <div class="capture-form-group full">
+        <label>
+          Page
+          <select name="page" required>
+            <option value="">Choose a page…</option>
+            <option value="theology-augustine">Augustine and the Two Cities</option>
+            <option value="philosophy-political">Political Authority in Augustine</option>
+            <option value="preaching-2026-luke">2026 Luke Preaching</option>
+          </select>
+        </label>
+      </div>
+      <div class="capture-form-group full">
+        <label>
+          Note (optional)
+          <textarea name="note" placeholder="Any additional context…"></textarea>
+        </label>
+      </div>
+      <div class="capture-form-actions">
+        <button type="reset">Cancel</button>
+        <button type="submit">Add to Backlog</button>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- RIGHT MARGIN: Infobox, backlinks, legend -->
+  <div class="margin">
+    <div class="specimen-marker">.margin</div>
+
+    <!-- Infobox -->
+    <div class="margin-box">
+      <div class="margin-box-title">Info</div>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60'%3E%3Crect fill='%23ddd' width='100' height='60'/%3E%3C/svg%3E" style="width: 100%; height: auto; border-radius: 2px; margin-bottom: 0.5rem;" alt="thumbnail">
+      <table style="width: 100%; font-size: 0.75rem; line-height: 1.4;">
+        <tr><td style="font-weight: 600;">store</td><td>Theology</td></tr>
+        <tr><td style="font-weight: 600;">kind</td><td>theme</td></tr>
+        <tr><td style="font-weight: 600;">updated</td><td>2026-07-14</td></tr>
+      </table>
+    </div>
+
+    <!-- In Long-Term -->
+    <div class="margin-box">
+      <div class="margin-box-title">In Long-Term</div>
+      <ul class="margin-items">
+        <li><a href="#theology.md">theology.md</a></li>
+        <li><a href="#augustine.md">augustine.md</a></li>
+      </ul>
+    </div>
+
+    <!-- What Links Here -->
+    <div class="margin-box">
+      <div class="margin-box-title">What Links Here</div>
+      <ul class="margin-items">
+        <li><a href="#secular-age">secular-age</a></li>
+        <li><a href="#wisdom-list">wisdom-list</a></li>
+        <li><a href="#medieval-church">medieval-church</a></li>
+      </ul>
+    </div>
+
+    <!-- Ink Legend -->
+    <div class="specimen-marker">.ink-legend</div>
+    <div class="ink-legend">
+      <div class="ink-legend-title">Ink</div>
+      <ul class="ink-legend-items">
+        <li class="ink-legend-item">
+          <div class="ink-legend-swatch luke"></div>
+          <span>Luke</span>
+        </li>
+        <li class="ink-legend-item">
+          <div class="ink-legend-swatch source"></div>
+          <span>source</span>
+        </li>
+        <li class="ink-legend-item">
+          <div class="ink-legend-swatch gen"></div>
+          <span>Lukeatron</span>
+        </li>
+        <li class="ink-legend-item">
+          <div class="ink-legend-swatch seam"></div>
+          <span>seam</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── -->
+<!-- FOOTER: Integrity counts -->
+<!-- ────────────────────────────────────────────────────────────────── -->
+<div style="padding: 1.5rem; border-top: 1px solid var(--rule); background: var(--paper-sunk);">
+  <div class="specimen-marker">.integrity-footer</div>
+  <div class="integrity-footer">
+    <span class="count"><strong>33</strong> stores</span>
+    <span class="count"><strong>251</strong> files</span>
+    <span class="count"><strong>251</strong> rendered</span>
+    <span class="count"><strong>11</strong> sealed</span>
+    <span class="count"><strong>0</strong> dead links</span>
+    <span class="count"><strong>0</strong> one-way edges</span>
+    <span class="integrity-link"><a href="#integrity" title="Integrity report">⚙ Report</a></span>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

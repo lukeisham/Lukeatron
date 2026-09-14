@@ -1,49 +1,54 @@
-# Opening the Dashboard and the Wiki — a plain guide
+# Opening ProjectKanban and the Wiki — a plain guide
 
 Two browser windows show you what Lukeatron is tracking:
 
-- **Project Dashboard** — every active project, colour-coded by what needs your attention. `http://localhost:8788`
+- **ProjectKanban** — every active project, lane by whose move it is, column by how soon it's due. `http://localhost:8789`
 - **LukeatronWiki** — the reading/watching/writing backlog and the idea pages. `http://localhost:8787`
 
 ## 1. Just open them
 
 Both are **already running** whenever Claude is open — you don't need to start anything. Just type the address into your browser:
 
-- Dashboard: `http://localhost:8788`
+- ProjectKanban: `http://localhost:8789`
 - Wiki: `http://localhost:8787`
 
 (Bookmark them if you like — they don't move.)
 
-## 2. Turning on editing
+## 2. Editing — neither tool has a mode switch
 
-By default both open in **View** — you can look, but clicking a button won't change anything. To edit:
+**ProjectKanban** — the board itself (the lane × column grid) is always read-only — click a card to
+open that project's own page, and every field there (checkboxes, due dates, owner, kind, notes) is
+live and editable straight away, no switch to flip. Click **"← Back to board"** to return. A
+**Copy** button next to a field copies its text for pasting elsewhere; it doesn't change anything.
 
-1. Look at the left-hand sidebar, just below **"Other tools."**
-2. You'll see two small buttons side by side: **View** and **Edit**.
-3. Click **Edit**. The page reloads and editing controls appear — on the Dashboard, an "✏️ Edit" section on each project; on the Wiki, a "🌱 Quick-capture" box on the backlog board.
-4. When you're done, click **View** again to switch editing back off.
+**The Wiki has no View/Edit toggle either** (the old viewer's did — that tool was retired
+2026-09-12). Reading a page is always read-only. Two safe, deliberate ways to add something, both
+always visible, neither needing a mode switch first:
 
-That's it — no restarting anything, no separate app to open. The click takes effect immediately, for that browser, on this Mac.
+- **🌱 Quick-capture**, at the bottom of the **Backlog** page — a small form (title, kind, intent,
+  source, the page it belongs to, an optional note). Submitting it writes one queue row straight
+  away; nothing else on the page changes and no agent is involved.
+- **⊕ on a References / Supporting Quotes / See Also slot**, on any page — this doesn't write
+  content itself. It leaves a request that waits until a Claude session picks it
+  up and drafts something for you to accept or reject; the store itself is untouched until you
+  click Accept.
 
-## 3. How do I know which mode I'm in?
+Nothing else on the Wiki writes anything — there is no third, broader "edit mode" to leave on or
+forget about.
 
-Look at the same two buttons. Whichever one is **highlighted** (lit up) is the mode you're in. If neither looks highlighted, you're most likely in View — refresh the page.
-
-## 4. One thing to know
-
-Editing being "on" applies to **that whole browser** on this Mac, not just the tab you clicked in — so if you leave it on Edit and someone else uses this laptop, they could also edit until you switch it back. On a personal, secured laptop like this one that's a fine trade-off; just get in the habit of clicking back to **View** when you're done, the same way you'd lock your screen.
-
-## 5. Stopping a viewer
+## 3. Stopping a viewer
 
 You almost never need to — they're designed to run quietly in the background. If you ever do want to stop one:
 
 - Open Terminal and run:
   ```
-  pkill -f project-dashboard/serve.py      # stops the Dashboard
-  pkill -f lukeatronwiki-viewer/serve.py    # stops the Wiki
+  pkill -f "ProjectKanban/_template/server.py"      # stops ProjectKanban
+  pkill -f "Apps/LukeatronWiki/server.py"            # stops the Wiki
   ```
 - They'll come back automatically the next time a Claude session starts.
 
 ## Advanced (optional, most people can skip this)
 
-Each tool also has a **"(Edit Mode)"** double-click launcher inside its folder (`System/Tools/project-dashboard/` and `System/Tools/lukeatronwiki-viewer/`) that starts a copy already switched to Edit. This is a shortcut for scripting or automation — for normal day-to-day use, the **View/Edit toggle in the browser is simpler and does the same thing.**
+Both tools have exactly one double-click launcher each — `System/Apps/LukeatronWiki/Start
+LukeatronWiki.command` and `System/Apps/ProjectKanban/_template/Start ProjectKanban.command` —
+since neither has a mode to start into beyond its normal one.

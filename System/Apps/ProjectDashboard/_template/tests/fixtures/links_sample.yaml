@@ -1,9 +1,0 @@
-links:
-  - key: sample-link
-    canonical:
-      status: "☐ Open"
-      state: "🔵 waiting"
-    updated: 2026-09-01
-    members:
-      - { project: ZZ-01, action: 1, text: "Do alpha thing" }
-      - { project: ZZ-02, action: 2, text: "Do alpha thing again" }

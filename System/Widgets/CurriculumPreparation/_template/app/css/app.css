@@ -98,6 +98,16 @@ body > h1 {
   margin-bottom: var(--space-md);
 }
 
+/* Wishlist #2 — colour-code lesson plan tabs by completion, same tint token
+   as the completed-row background in Lessons & Topics (lessons-and-topics-renderer.js). */
+.lesson-picker .app-nav-button.is-lesson-completed {
+  background: var(--color-row-tint-completion);
+}
+
+.lesson-picker .app-nav-button.is-lesson-completed:hover {
+  background: var(--color-bg-hover);
+}
+
 .lesson-plan-pages,
 .unit-assessment-pages {
   display: flex;

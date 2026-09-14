@@ -13,7 +13,7 @@ import CoverageGrid from './coverage-grid.js';
 import { LessonsAndTopicsView } from './lessons-and-topics.js';
 import { renderLessonPlan } from './lesson-plan-document.js';
 import { UnitAssessmentDocument } from './unit-assessment-document.js';
-import MarkingMatrix from './marking-matrix.js';
+import MarkingMatrix, { DISPLAY_MODES } from './marking-matrix.js';
 import { openPopulateFromCurriculumModal } from './marking-matrix-populate.js';
 import { CribSheet } from './crib-sheet.js';
 import { ResourcesPage } from './resources-page.js';
@@ -21,6 +21,7 @@ import { getBigIdeas, initBigIdeasModule, addBigIdea } from './bigidea-list.js';
 import { openLessonGenerator } from './lesson-plan-generator.js';
 import { renderMiniAssessmentManager } from './mini-assessment-manager.js';
 import { mountToolbar, extractSurfaceText } from './toolbar-actions.js';
+import { openTextPrompt } from './text-prompt.js';
 
 /**
  * Parts shown in the nav. Each entry names the #app-nav label and the
@@ -39,6 +40,12 @@ const PARTS = [
 
 let localStore = null;
 let currentPartId = null;
+
+// Marking Matrix's own edit/entry mode (wishlist #10, 2026-09-02) — module
+// state like currentPartId, since it must survive a re-mount triggered by
+// its own toggle or by a criteria/score edit. Starts on 'edit' (no student
+// data on screen by default) rather than 'entry'.
+let markingMatrixMode = 'edit';
 
 // ===== Boot =====
 
@@ -352,6 +359,9 @@ function mountLessonPlans(main, unit) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'app-nav-button';
+    if (lesson.completed) {
+      btn.classList.add('is-lesson-completed');
+    }
     btn.textContent = `Lesson ${lesson.number != null ? lesson.number : index + 1}`;
     btn.addEventListener('click', () => showLesson(lesson));
     picker.appendChild(btn);
@@ -413,21 +423,92 @@ function mountUnitAssessment(main, unit) {
   }
 }
 
+/**
+ * Marking Matrix: two modes (wishlist #10, 2026-09-02) —
+ * 'edit' shows the rubric only (no student names or marks anywhere: add,
+ * remove and directly set each criterion's hypothetical score, which
+ * live-rebalances its tier's other criteria) and 'entry' shows every
+ * student with their actual marks against those hypotheticals (0/x, x
+ * greyed). Print/Copy work in both; each mode adopts its own print-only SVG
+ * pages (renderSetupPrint / renderStudentDataPrint) since the on-screen HTML
+ * editing surface can't double as the print surface the way every other
+ * document's SVG-only view does.
+ */
 function mountMarkingMatrix(main, unit) {
   ensureSingleH1(main, 'Marking Matrix');
 
   const matrix = new MarkingMatrix(unit, localStore);
-  const grid = matrix.renderClassGrid();
+  matrix.setDisplayMode(
+    markingMatrixMode === 'edit' ? DISPLAY_MODES.DEFAULT_FULL : DISPLAY_MODES.DATA_ENTRY
+  );
+
+  main.appendChild(buildMarkingMatrixModeToggle());
+
+  const onChange = () => mountPart(currentPartId);
+  const body = markingMatrixMode === 'edit'
+    ? matrix.renderCriteriaEditor(onChange)
+    : matrix.renderClassGrid();
+  body.classList.add('screen-only');
 
   main.appendChild(
     mountToolbar({
       label: 'Marking Matrix',
-      getText: () => extractSurfaceText(grid),
-      getCSVSource: () => ({ unit, markingMatrix: matrix })
+      getText: () => extractSurfaceText(body),
+      getCSVSource: markingMatrixMode === 'entry' ? () => ({ unit, markingMatrix: matrix }) : null
     })
   );
-  main.appendChild(buildPopulateFromCurriculumButton(matrix));
-  main.appendChild(grid);
+  if (markingMatrixMode === 'edit') {
+    main.appendChild(buildPopulateFromCurriculumButton(matrix));
+  }
+  main.appendChild(body);
+
+  const printOnly = document.createElement('div');
+  printOnly.className = 'print-only';
+  if (markingMatrixMode === 'edit') {
+    adoptShellPages(matrix.renderSetupPrint(), printOnly);
+  } else {
+    for (const student of unit.students || []) {
+      adoptShellPages(matrix.renderStudentDataPrint(student.id), printOnly);
+    }
+  }
+  main.appendChild(printOnly);
+}
+
+/**
+ * The Edit Rubric / Enter Marks toggle. Styled like the app-nav tab strip
+ * (same .app-nav-button class) so the two mode buttons read as a matched
+ * pair rather than a one-off control (wishlist #6 territory, not solved
+ * here — just not fighting it).
+ * @returns {HTMLElement}
+ */
+function buildMarkingMatrixModeToggle() {
+  const wrap = document.createElement('div');
+  wrap.className = 'matrix-mode-toggle screen-only';
+  wrap.setAttribute('role', 'tablist');
+  wrap.setAttribute('aria-label', 'Marking Matrix mode');
+
+  const modes = [
+    { id: 'edit', label: 'Edit Rubric' },
+    { id: 'entry', label: 'Enter Marks' }
+  ];
+
+  for (const m of modes) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'app-nav-button';
+    btn.classList.toggle('is-active', markingMatrixMode === m.id);
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', markingMatrixMode === m.id ? 'true' : 'false');
+    btn.textContent = m.label;
+    btn.addEventListener('click', () => {
+      if (markingMatrixMode === m.id) return;
+      markingMatrixMode = m.id;
+      mountPart(currentPartId);
+    });
+    wrap.appendChild(btn);
+  }
+
+  return wrap;
 }
 
 /**
@@ -435,12 +516,13 @@ function mountMarkingMatrix(main, unit) {
  * feature): lets a teacher choose curriculum outcomes and add them as rubric
  * rows, instead of retyping curriculum criteria into the matrix by hand.
  * Same "re-mount after mutation" pattern as buildBigIdeaAndLessonToolbar.
+ * Edit mode only — this is rubric-building, not mark entry.
  * @param {MarkingMatrix} matrix
  * @returns {HTMLElement}
  */
 function buildPopulateFromCurriculumButton(matrix) {
   const wrap = document.createElement('div');
-  wrap.className = 'app-bigidea-toolbar';
+  wrap.className = 'app-bigidea-toolbar screen-only';
 
   const btn = document.createElement('button');
   btn.type = 'button';
@@ -552,73 +634,6 @@ function buildBigIdeaAndLessonToolbar(unit) {
   toolbar.appendChild(generateBtn);
 
   return toolbar;
-}
-
-/**
- * A single-field text modal. window.prompt() is unusable here — it blocks
- * the tab entirely, which any UI-driving test harness (and some browser
- * automation) can't dismiss. Built on the same overlay/content classes as
- * node-picker.js so it needs no CSS of its own. Built via createElement,
- * not innerHTML, since the label carries store text (JS-6).
- *
- * @param {string} labelText
- * @returns {Promise<string|null>} Trimmed input on confirm, null on cancel
- */
-function openTextPrompt(labelText) {
-  return new Promise((resolve) => {
-    const modal = document.createElement('div');
-    modal.className = 'node-picker-modal';
-    modal.setAttribute('role', 'dialog');
-
-    const content = document.createElement('div');
-    content.className = 'node-picker-content';
-
-    const label = document.createElement('label');
-    label.className = 'generator-label';
-    label.textContent = labelText;
-    content.appendChild(label);
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    content.appendChild(input);
-
-    const actions = document.createElement('div');
-    actions.className = 'node-picker-actions';
-
-    const confirmBtn = document.createElement('button');
-    confirmBtn.type = 'button';
-    confirmBtn.className = 'btn-primary';
-    confirmBtn.textContent = 'Add';
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.type = 'button';
-    cancelBtn.className = 'btn-secondary';
-    cancelBtn.textContent = 'Cancel';
-
-    actions.appendChild(confirmBtn);
-    actions.appendChild(cancelBtn);
-    content.appendChild(actions);
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-
-    const cleanup = () => modal.remove();
-
-    confirmBtn.addEventListener('click', () => {
-      const value = input.value.trim();
-      cleanup();
-      resolve(value || null);
-    });
-    cancelBtn.addEventListener('click', () => {
-      cleanup();
-      resolve(null);
-    });
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') confirmBtn.click();
-      if (e.key === 'Escape') cancelBtn.click();
-    });
-
-    input.focus();
-  });
 }
 
 /**

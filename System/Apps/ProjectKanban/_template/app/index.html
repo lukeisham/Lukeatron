@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lukeatron Project Dashboard</title>
+    <!-- tokens.css loads first: board.css and controls.css both reference its
+         custom properties and define none of their own (CSS-2). -->
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="board/board.css" />
+    <link rel="stylesheet" href="board/card.css" />
+    <link rel="stylesheet" href="controls/controls.css" />
+    <link rel="stylesheet" href="project/project.css" />
+    <link rel="stylesheet" href="project/task-row.css" />
+    <link rel="stylesheet" href="project/note-box.css" />
+    <link rel="stylesheet" href="project/print.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Lukeatron Project Dashboard</h1>
+      <nav class="app-toolbar" aria-label="Board controls">
+        <div class="toolbar-group" role="group" aria-label="View">
+          <button type="button" data-action="view" data-view-value="Church" aria-pressed="false">Church</button>
+          <button type="button" data-action="view" data-view-value="Teaching" aria-pressed="false">Teaching</button>
+          <button type="button" data-action="view" data-view-value="Personal Productivity" aria-pressed="false">Personal Productivity</button>
+          <button type="button" data-action="view" data-view-value="Personal Research" aria-pressed="false">Personal Research</button>
+          <button type="button" data-action="view" data-view-value="Lukeatron" aria-pressed="false">Lukeatron</button>
+          <button type="button" data-action="view" data-view-value="All" aria-pressed="true">All</button>
+        </div>
+        <div class="toolbar-group" role="group" aria-label="Display">
+          <button type="button" data-action="density-toggle">Density: expanded</button>
+          <button type="button" data-action="palette-cycle">Palette: default</button>
+          <button type="button" data-action="refresh">Refresh</button>
+        </div>
+        <a class="wiki-link" href="http://localhost:8787" target="_blank" rel="noopener">LukeatronWiki ↗</a>
+      </nav>
+    </header>
+    <main id="board-root" aria-live="polite">
+      <!-- board.js renders the grid into this element once, on load (FR-2) -->
+    </main>
+    <!-- outline-print.spec.md FR-1/AC-9: project.js renders here while the
+         hash names a project; hidden by default, shown by project.js. -->
+    <main id="project-root" hidden></main>
+    <script type="module" src="board/board.js"></script>
+    <script type="module" src="controls/controls.js"></script>
+    <script type="module" src="project/project.js"></script>
+  </body>
+</html>

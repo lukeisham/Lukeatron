@@ -90,10 +90,10 @@ The live action list — humans AND agents. The heartbeat of the registry.
 
 | # | Action | Owner | Type | Status | State | 🔗 Link | Due |
 |---|--------|-------|------|--------|-------|---------|-----|
-| 1 | <action> | Luke / <PersonID> / Agent | Human / Agent | ☐ Open | 🟢 on track | — | <date> |
+| 1 | <action> | Luke / <PersonID> / Agent | Human / Agent | ☐ Open | 🟢 Delegate | — | <date> |
 <!-- Status: ☐ Open · ◐ Doing · ☑ Done · ⊘ Blocked · ○ Undefined -->
 <!-- State (the type of attention the action needs, precedence 🔴→🟠→🔵→🟢→⚪):
-     🔴 urgent · 🟠 your move · 🔵 waiting · 🟢 on track · ⚪ undefined.
+     🔴 Incoming · 🟠 Mine · 🔵 Waiting · 🟢 Delegate · ⚪ Undefined.
      Same colour vocabulary !ProjectSweep uses for the whole-project roll-up in _tracking.yaml —
      the project's colour is the highest-precedence State among its open actions. -->
 <!-- 🔗 Link: a shared link key (kebab slug, e.g. `bas-2026-q1`) when THE SAME task lives in more than
@@ -120,7 +120,7 @@ When the *same* task appears in more than one project, its copies share a **link
   in every copy and drop the key from `_links.yaml`.
 <!-- ○ Undefined = no owner assigned (not Luke, an agent, or a named person) AND/OR no Due set — the row
      needs SHAPING, not chasing. !ProjectSweep rolls the whole project up to ⚪ grey when its only open
-     items are undefined. This is about the action itself being unshaped — distinct from the supporting
+     items are Undefined. This is about the action itself being unshaped — distinct from the supporting
      information in 📄 Documents / 🗓️ Events / 👥 People, which is context, never an "undefined item". -->
 
 # 🗓️ Events

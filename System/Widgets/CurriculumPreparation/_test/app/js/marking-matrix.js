@@ -14,6 +14,7 @@ import { TIERS, DocumentShell, pxToUserUnits } from './document-shell.js';
 import { newId } from './ids.js';
 import { deriveAssessmentCoverage } from './coverage-derivers.js';
 import { renderCode } from './traceability.js';
+import { openTextPrompt } from './text-prompt.js';
 
 // ===== Tier Budget Constants (FR-MMB-37, Change U) =====
 const TIER_BUDGETS = {
@@ -470,8 +471,12 @@ export class MarkingMatrix {
   }
 
   /**
-   * Edit a criterion's maxScore (in-grid, FR-MMB-28)
-   * Sets allocationOverridden flag and writes to template immediately
+   * Edit a criterion's maxScore directly (edit-mode "hypothetical score", FR-MMB-28)
+   * Sets allocationOverridden and immediately rebalances every other
+   * non-overridden criterion in the same tier so the tier's fixed budget
+   * always stays exact (AD-MMB-18, corrected 2026-09-02: the tier used to be
+   * left untouched on a direct edit — that was drift from the original
+   * intent, not a decision, and this restores the live rebalance).
    * @param {string} criterionId
    * @param {number} newMaxScore
    */
@@ -484,7 +489,9 @@ export class MarkingMatrix {
     criterion.maxScore = newMaxScore;
     criterion.allocationOverridden = true;
 
-    // Do NOT re-allocate this tier; overridden criteria are excluded (AD-MMB-18)
+    const tierCriteria = this.unit.matrixTemplate.criteria.filter(c => c.tier === criterion.tier);
+    allocateTier(tierCriteria, TIER_BUDGETS[criterion.tier]);
+
     this.localStore.saveUnit(this.unit);
   }
 
@@ -1249,6 +1256,37 @@ export class MarkingMatrix {
   }
 
   /**
+   * Split a "num/denom" display string into two spans, appended directly
+   * into `container`, so the actual mark and the hypothetical ceiling can
+   * be styled differently on screen (0/x, x greyed — wishlist #10,
+   * 2026-09-02). Reuses `display`'s own formatting (formatSubtotal's
+   * decimal handling) rather than re-deriving it from the raw numbers, so
+   * the two never drift apart. Appends directly rather than returning a
+   * DocumentFragment — the test suite's hand-built fake DOM (TEST-8) has no
+   * createDocumentFragment, and every real call site already has a
+   * container to append into.
+   * @param {HTMLElement} container
+   * @param {number} numerator
+   * @param {number} denominator
+   * @param {string} display - already-formatted "num/denom" (or a dash form)
+   */
+  _renderScoreSplit(container, numerator, denominator, display) {
+    const slashIndex = display.indexOf('/');
+    const numText = slashIndex >= 0 ? display.slice(0, slashIndex) : display;
+    const denomText = slashIndex >= 0 ? display.slice(slashIndex) : `/${denominator}`;
+
+    const actual = document.createElement('span');
+    actual.className = 'score-actual';
+    actual.textContent = numText;
+    container.appendChild(actual);
+
+    const hypothetical = document.createElement('span');
+    hypothetical.className = 'score-max-hint';
+    hypothetical.textContent = denomText;
+    container.appendChild(hypothetical);
+  }
+
+  /**
    * Build the Default Full mode standing notice element (FR-MMB-28,
    * AC-MMB-30). Present and visible only while Default Full is active.
    * @returns {HTMLElement}
@@ -1349,6 +1387,7 @@ export class MarkingMatrix {
 
           const input = document.createElement('input');
           input.type = 'text';
+          input.className = 'grid-cell-score-input';
           input.value = score?.awardedScore ?? '';
           input.placeholder = '—';
           input.disabled = this.displayMode === DISPLAY_MODES.DEFAULT_FULL || this.displayMode === DISPLAY_MODES.DEFAULT_EMPTY;
@@ -1366,7 +1405,15 @@ export class MarkingMatrix {
             }
           });
 
+          // Hypothetical score alongside the actual mark (0/x, x greyed —
+          // wishlist #10, 2026-09-02): the actual mark is the live input
+          // above, the hypothetical ceiling is this muted suffix.
+          const maxHint = document.createElement('span');
+          maxHint.className = 'score-max-hint';
+          maxHint.textContent = `/ ${criterion.maxScore}`;
+
           cell.appendChild(input);
+          cell.appendChild(maxHint);
           grid.appendChild(cell);
           rowInputs.push(input);
         }
@@ -1384,9 +1431,26 @@ export class MarkingMatrix {
         const subtotal = this.computeTierSubtotal(student.id, tier);
         const cell = document.createElement('div');
         cell.className = 'grid-subtotal-cell';
-        cell.textContent = subtotal.display;
+        this._renderScoreSplit(cell, subtotal.numerator, subtotal.denominator, subtotal.display);
         grid.appendChild(cell);
       }
+    }
+
+    // Unit total row (wishlist #10, 2026-09-02): the whole-unit counterpart
+    // to the three tier subtotal rows above — same 0/x split, never summed
+    // from them on screen (computeUnitTotal always reads full-unit criteria
+    // directly, FR-MMB-35).
+    const unitTotalHeader = document.createElement('div');
+    unitTotalHeader.className = 'grid-row-header unit-total-row-header';
+    unitTotalHeader.textContent = 'Unit Total';
+    grid.appendChild(unitTotalHeader);
+
+    for (const student of this.unit.students) {
+      const unitTotal = this.computeUnitTotal(student.id);
+      const cell = document.createElement('div');
+      cell.className = 'grid-subtotal-cell unit-total-cell';
+      this._renderScoreSplit(cell, unitTotal.numerator, unitTotal.denominator, unitTotal.display);
+      grid.appendChild(cell);
     }
 
     // Single delegated keydown handler for 2D navigation (AC-MMB-17,
@@ -1409,6 +1473,149 @@ export class MarkingMatrix {
     });
 
     container.appendChild(grid);
+
+    return container;
+  }
+
+  /**
+   * Render the Edit-mode criteria editor: tier-grouped rubric rows, no
+   * student names or marks anywhere. Each row's hypothetical score is
+   * directly editable — committing a new value runs it through
+   * setMaxScore(), which live-rebalances every other non-overridden
+   * criterion in that tier. Add/remove criteria here too; a new criterion
+   * defaults to every current assessment (criteria/assessment interaction
+   * design deferred — Luke, 2026-09-02).
+   * @param {Function} [onChange] - called after any mutation, so the caller can remount
+   * @returns {HTMLElement}
+   */
+  renderCriteriaEditor(onChange) {
+    const container = document.createElement('div');
+    container.className = 'criteria-editor-container';
+
+    const header = document.createElement('div');
+    header.className = 'class-grid-header';
+    const h2 = document.createElement('h2');
+    h2.textContent = `Rubric Setup — ${this.unit.meta?.unitName || 'Unit'}`;
+    header.appendChild(h2);
+    container.appendChild(header);
+
+    container.appendChild(this._renderDefaultFullNotice());
+
+    const table = document.createElement('div');
+    table.className = 'criteria-editor-table';
+
+    let unitTotal = 0;
+
+    for (const tier of ['pass', 'intermediate', 'advanced']) {
+      const criteria = this.unit.matrixTemplate.criteria.filter(c => c.tier === tier);
+      const tierSum = criteria.reduce((sum, c) => sum + (c.maxScore || 0), 0);
+      unitTotal += tierSum;
+
+      const unbalanced = isTierUnbalanced(criteria, TIER_BUDGETS[tier]);
+      const notYetSetUp = criteria.length === 0;
+
+      const tierBand = document.createElement('div');
+      tierBand.className = `criteria-editor-tier-band ${tier}${unbalanced ? ' tier-unbalanced' : ''}${notYetSetUp ? ' notYetSetUp' : ''}`;
+      const tierLabel = document.createElement('strong');
+      tierLabel.textContent = `${tier.charAt(0).toUpperCase() + tier.slice(1)} Tier`;
+      tierBand.appendChild(tierLabel);
+      const tierBudgetEl = document.createElement('span');
+      tierBudgetEl.className = 'criteria-editor-tier-budget';
+      tierBudgetEl.textContent = `${tierSum} / ${TIER_BUDGETS[tier]}`;
+      tierBand.appendChild(tierBudgetEl);
+      if (notYetSetUp) {
+        const badge = document.createElement('span');
+        badge.className = 'tier-flag-badge';
+        badge.textContent = 'Not yet set up';
+        tierBand.appendChild(badge);
+      } else if (unbalanced) {
+        const badge = document.createElement('span');
+        badge.className = 'tier-flag-badge';
+        badge.textContent = 'Unbalanced';
+        tierBand.appendChild(badge);
+      }
+      table.appendChild(tierBand);
+
+      for (const criterion of criteria) {
+        const row = document.createElement('div');
+        row.className = 'criteria-editor-row';
+
+        const text = document.createElement('div');
+        text.className = 'criterion-text';
+        text.appendChild(this._renderCriterionLabel(criterion));
+        row.appendChild(text);
+
+        const maxInput = document.createElement('input');
+        maxInput.type = 'text';
+        maxInput.className = 'criteria-editor-max-input';
+        maxInput.value = criterion.maxScore;
+        maxInput.setAttribute('aria-label', `Hypothetical score for ${criterion.criterion}`);
+        maxInput.addEventListener('change', () => {
+          const value = parseFloat(maxInput.value);
+          if (Number.isNaN(value) || value < 0) {
+            maxInput.value = criterion.maxScore;
+            alert('The hypothetical score must be a number of 0 or more.');
+            return;
+          }
+          this.setMaxScore(criterion.id, value);
+          if (onChange) onChange();
+        });
+        row.appendChild(maxInput);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'criteria-editor-remove-button';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          const { count, onConfirm } = this.removeCriterion(criterion.id);
+          const msg = count > 0
+            ? `Remove "${criterion.criterion}"? This deletes ${count} student mark${count === 1 ? '' : 's'} already entered for it.`
+            : `Remove "${criterion.criterion}"?`;
+          if (!confirm(msg)) return;
+          onConfirm();
+          if (onChange) onChange();
+        });
+        row.appendChild(removeBtn);
+
+        table.appendChild(row);
+      }
+
+      const addRow = document.createElement('div');
+      addRow.className = 'criteria-editor-add-row';
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'app-toolbar-button';
+      addBtn.textContent = '+ Add Criterion';
+      addBtn.addEventListener('click', async () => {
+        const text = await openTextPrompt(`New ${tier} criterion`);
+        if (!text) return;
+        const assessmentIds = this._getAssessmentsList().map((a) => a.id);
+        if (assessmentIds.length === 0) {
+          alert('Add an assessment (Unit Assessment page) before adding marking criteria.');
+          return;
+        }
+        const { warning, onConfirm } = this.addCriterion(tier, text, assessmentIds);
+        if (warning && !confirm(warning)) return;
+        onConfirm();
+        if (onChange) onChange();
+      });
+      addRow.appendChild(addBtn);
+      table.appendChild(addRow);
+    }
+
+    container.appendChild(table);
+
+    const totalBudget = Object.values(TIER_BUDGETS).reduce((a, b) => a + b, 0);
+    const totalRow = document.createElement('div');
+    totalRow.className = 'criteria-editor-unit-total';
+    const totalLabel = document.createElement('span');
+    totalLabel.textContent = 'Unit hypothetical total';
+    const totalValue = document.createElement('span');
+    totalValue.className = 'criteria-editor-unit-total-value';
+    totalValue.textContent = `${unitTotal} / ${totalBudget}`;
+    totalRow.appendChild(totalLabel);
+    totalRow.appendChild(totalValue);
+    container.appendChild(totalRow);
 
     return container;
   }
@@ -1661,12 +1868,19 @@ export class MarkingMatrix {
   }
 
   /**
-   * Render Setup blank marking sheet (empty cells for handwriting)
-   * No student data; used for printing templates (FR-MMB-43)
+   * Render the rubric print sheet: every criterion's hypothetical score,
+   * no student names or marks anywhere (edit-mode print — wishlist #10,
+   * 2026-09-02). Was a blank handwriting sheet (empty boxes, a "Student:"
+   * line); Luke's instruction was explicit that printing from edit mode
+   * shows the hypothetical numbers, not a blank sheet, so this now prints
+   * the resolved rubric instead.
    * @returns {DocumentShell}
    */
   renderSetupPrint() {
     const orientation = this.getOrientation();
+    const totalBudget = Object.values(TIER_BUDGETS).reduce((a, b) => a + b, 0);
+    const unitHypotheticalTotal = this.unit.matrixTemplate.criteria
+      .reduce((sum, c) => sum + (c.maxScore || 0), 0);
 
     const renderFn = (pageData, svgElement) => {
       let yPos = 20;
@@ -1677,23 +1891,16 @@ export class MarkingMatrix {
       header.setAttribute('y', yPos);
       header.setAttribute('font-size', String(pxToUserUnits(14)));
       header.setAttribute('font-weight', 'bold');
-      header.textContent = 'Blank Marking Sheet';
+      header.textContent = `Marking Rubric — ${this.unit.meta?.unitName || 'Unit'}`;
       svgElement.appendChild(header);
       yPos += 20;
 
-      // Student name line
-      const nameLine = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      nameLine.setAttribute('x', '20');
-      nameLine.setAttribute('y', yPos + 6);
-      nameLine.setAttribute('font-size', String(pxToUserUnits(10)));
-      nameLine.textContent = 'Student: ___________________________';
-      svgElement.appendChild(nameLine);
-
       const totalLine = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      totalLine.setAttribute('x', '140');
+      totalLine.setAttribute('x', '20');
       totalLine.setAttribute('y', yPos + 6);
       totalLine.setAttribute('font-size', String(pxToUserUnits(10)));
-      totalLine.textContent = 'Total: ____ / 100';
+      totalLine.setAttribute('font-weight', 'bold');
+      totalLine.textContent = `Hypothetical total: ${unitHypotheticalTotal} / ${totalBudget}`;
       svgElement.appendChild(totalLine);
       yPos += 20;
 
@@ -1736,25 +1943,17 @@ export class MarkingMatrix {
           text.textContent = criterion.criterion.substring(0, 40);
           row.appendChild(text);
 
-          // Empty box for handwritten score
-          const box = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          box.setAttribute('x', '155');
-          box.setAttribute('y', yPos - 2);
-          box.setAttribute('width', '20');
-          box.setAttribute('height', '10');
-          box.setAttribute('fill', '#fafaf9');
-          box.setAttribute('stroke', '#ccc');
-          box.setAttribute('stroke-width', '0.5');
-          row.appendChild(box);
-
-          // Max score label
-          const maxText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          maxText.setAttribute('x', '180');
-          maxText.setAttribute('y', yPos + 6);
-          maxText.setAttribute('font-size', String(pxToUserUnits(9)));
-          maxText.setAttribute('fill', '#666');
-          maxText.textContent = `/ ${criterion.maxScore}`;
-          row.appendChild(maxText);
+          // Hypothetical score for this criterion — no student data, so
+          // there is no "actual" half to print; the number itself is the
+          // whole point of this sheet.
+          const scoreText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          scoreText.setAttribute('x', '180');
+          scoreText.setAttribute('y', yPos + 6);
+          scoreText.setAttribute('font-size', String(pxToUserUnits(10)));
+          scoreText.setAttribute('font-weight', 'bold');
+          scoreText.setAttribute('text-anchor', 'end');
+          scoreText.textContent = String(criterion.maxScore);
+          row.appendChild(scoreText);
 
           // Divider
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -1771,12 +1970,14 @@ export class MarkingMatrix {
         }
 
         // Tier total
+        const tierSum = tierCriteria.reduce((sum, c) => sum + (c.maxScore || 0), 0);
         const totalText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        totalText.setAttribute('x', '155');
+        totalText.setAttribute('x', '190');
         totalText.setAttribute('y', yPos + 6);
         totalText.setAttribute('font-size', String(pxToUserUnits(10)));
         totalText.setAttribute('font-weight', 'bold');
-        totalText.textContent = `____ / ${TIER_BUDGETS[tier]}`;
+        totalText.setAttribute('text-anchor', 'end');
+        totalText.textContent = `${tierSum} / ${TIER_BUDGETS[tier]}`;
         svgElement.appendChild(totalText);
         yPos += 14;
       }

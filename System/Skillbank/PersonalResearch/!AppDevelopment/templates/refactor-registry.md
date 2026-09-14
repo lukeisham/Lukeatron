@@ -40,12 +40,16 @@ found by a diff is drift, not a label — resolve it before closing the board ro
 
 ## Refactor board
 
-| # | Requested change | Status | Notes |
-|---|---|---|---|
-| R-1 | | requested | |
+| # | Requested change | Status | Health | Notes |
+|---|---|---|---|---|
+| R-1 | | requested | | |
 
 Status values: `requested` · `in test` · `accepted` · `in template` · `rejected`.
 A rejected change is reverted in `_test/` and left on the board — not silently dropped.
+
+Health is the score out of 10 from STEP 7's Refactor Health Check, run once per row immediately
+before the port. 8/8 (10) closes the row; 6-7 ports but stays open with the unmet item(s) noted
+in Notes; <=5 does not port — fix and re-run. A row not yet ported carries no Health score.
 
 ## Granted rule exceptions
 <Carried forward from the build, plus any granted during refactoring. Must match `_template/README.md`

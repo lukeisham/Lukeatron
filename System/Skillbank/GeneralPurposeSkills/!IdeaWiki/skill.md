@@ -261,3 +261,14 @@ VERIFY (if a new theme was approved: _index.yaml themes: block + meta-about.md l
 ```
 CATCH [*] ➔ never drop the item silently: if it can't be placed, leave its _queue.yaml row with page unset (status: queued) and tell Luke it's unfiled and needs a home. Do NOT invent a page just to park it.
 ```
+
+## 🎨 House style — UNCLASSIFIED
+
+`!HouseStyle` is an always-on core skill (`.claude/skills/!HouseStyle/`) and the default for every rendered surface.
+This surface is classified **UNCLASSIFIED** in its `reference/sources.md` register — it has no
+style contract of its own, so the house style governs it **whole**: tokens, layout, motion, glyphs
+and print. Applies to node rendering and any view this skill emits — NOT to `wiki-page.css`, which is EXEMPT.
+
+Use `reference/tokens.css`; never a colour, spacing or duration literal. `:root` is light, dark is
+the override, print is the base path. The flourish budget is counted, so a breach is a failure
+rather than an opinion.

@@ -263,6 +263,40 @@ test('MarkingMatrix: maxScore edit in Data entry is blocked (AC-MMB-29)', () => 
   assert.doesNotThrow(() => matrix.setMaxScore('crit-1', 6));
 });
 
+test('MarkingMatrix: setMaxScore rebalances the tier\'s other non-overridden criteria live (wishlist #10, 2026-09-02)', () => {
+  const unit = createFixtureUnit();
+  unit.matrixTemplate.criteria = [
+    { id: 'c1', tier: 'pass', criterion: 'C1', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: 'c2', tier: 'pass', criterion: 'C2', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false },
+    { id: 'c3', tier: 'pass', criterion: 'C3', maxScore: 0, assessmentIds: ['major-1'], allocationOverridden: false }
+  ];
+  allocateMaxScores(unit.matrixTemplate.criteria);
+  // Baseline: pass's 50-point budget split evenly across 3 criteria.
+  assert.deepStrictEqual(
+    unit.matrixTemplate.criteria.map((c) => c.maxScore),
+    [17, 16.5, 16.5]
+  );
+
+  const store = new MockLocalStore();
+  const matrix = new MarkingMatrix(unit, store);
+
+  // Directly editing one criterion's hypothetical score must live-rebalance
+  // its tier's other non-overridden criteria (restores the original intent;
+  // "leave siblings untouched" was unnoticed drift, not a decision).
+  matrix.setMaxScore('c1', 20);
+
+  const [c1, c2, c3] = unit.matrixTemplate.criteria;
+  assert.strictEqual(c1.maxScore, 20);
+  assert.strictEqual(c1.allocationOverridden, true);
+  assert.strictEqual(c2.allocationOverridden, false);
+  assert.strictEqual(c3.allocationOverridden, false);
+  // Remaining budget (50 - 20 = 30) splits evenly across the two untouched criteria.
+  assert.strictEqual(c2.maxScore, 15);
+  assert.strictEqual(c3.maxScore, 15);
+  // The tier still sums to exactly its fixed budget after the edit.
+  assert.strictEqual(c1.maxScore + c2.maxScore + c3.maxScore, 50);
+});
+
 // ===== TEST 8: Scope Filter (FR-MMB-33, AC-MMB-31) =====
 test('MarkingMatrix: scope filter reduces criteria list (AC-MMB-31)', () => {
   const unit = createFixtureUnit();

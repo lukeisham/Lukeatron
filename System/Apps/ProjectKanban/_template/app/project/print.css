@@ -1,0 +1,27 @@
+/* print.css — FR-10's print path. Screen-only rules live in
+   project.css/task-row.css; this file is @media print only (CSS-1). Every
+   value is a token from ../tokens.css (CSS-2) — tokens.css's own @media
+   print block already drops the whole app to the paper palette (D-13), so
+   nothing here sets colour, only layout. */
+
+@media print {
+  /* FR-10: a clean sheet — no toolbar, no note box, no board furniture.
+     .app-header carries index.html's own <h1>ProjectKanban</h1> site
+     wordmark — hiding the whole header (not just .app-toolbar within it)
+     is what keeps that off the printed sheet too, and leaves the project's
+     own heading as the sheet's only one. */
+  .app-header,
+  .project-note-box,
+  #board-root,
+  [data-print-hide] {
+    display: none;
+  }
+
+  /* AC-6: nothing orphans across a page break. */
+  .project-section,
+  .project-stem-group,
+  .project-task-row,
+  .project-row {
+    break-inside: avoid;
+  }
+}

@@ -1,0 +1,192 @@
+/* tokens.css — every colour, space, type size and motion duration in
+   ProjectKanban (controls.spec.md FR-11). `board` (app/board/*.css) and
+   `outline-print` (built later) both consume these; neither defines its
+   own. board.css's own header comment lists, in full, the exact set of
+   tokens it needs from here — treat that list (and card.css's) as the
+   contract; this file is obliged to satisfy every name on it.
+
+   !HouseStyle (UNCLASSIFIED — this app has no outer chassis) governs the
+   whole surface. The five lane tokens (--l-*) exist because board.css
+   needs five named colours to key off, but each resolves to `--ink-muted`
+   below — Luke's 2026-09-12 decision to keep the house two-accent cap
+   rather than run a sixth/seventh accent hue per lane. The
+   `body[data-lane-hues="mono"]` toggle in board.css is now a no-op (it
+   sets the same values this file already ships as default) and is left
+   wired, not removed, in case a future need for a distinct per-lane
+   colour mode reopens the question.
+
+   Palette contract (FR-4, FR-10): three palettes, cycled by `controls` via
+   body.dataset.palette — "default" (this file's bare :root), "paper" (a
+   warmer, print-like light palette) and "dark". Dark is reachable two
+   ways so the explicit toggle always wins over the system: automatically
+   under `prefers-color-scheme: dark` when the viewer has never chosen a
+   palette, and explicitly via `body[data-palette="dark"]`. The two dark
+   blocks below carry identical values by construction — this is the same
+   duplicated-block pattern the platform's own theming guidance uses for
+   exactly this problem, not a copy-paste accident, and check_contrast.py
+   deliberately checks only the explicit `[data-palette="dark"]` block
+   (see that file's own comment) because a change to one without the
+   other is a defect this comment exists to catch by inspection.
+
+   Print (FR-10, D-13): the paper palette IS the print base path — the
+   @media print block below reuses paper's own values rather than
+   inventing a fourth set, so nothing needs to stay in step with anything
+   else when either one changes. */
+
+:root {
+  /* Page ground and ink — "default" (FR-10: :root is light) */
+  --bg: #ffffff;
+  --ink: #1f2430;
+  --ink-muted: #5b6472;
+  --panel-bg: #f3f4f6;
+  --panel-bg-alt: #e5e7eb;
+  --border: #d3d7dd;
+  --border-width: 1px;
+
+  /* The one accent hue, plus a focus colour on its own channel (never the
+     same hue as an "active/selected" cue — !HouseStyle Step 5.5) */
+  --accent: #2f5fdb;
+  --focus-ring: #c2410c;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* Lane colours — fixed convention, board.css FR-3. House two-accent cap:
+     all five resolve to --ink-muted, see header comment above. */
+  --l-mine: var(--ink-muted);
+  --l-delegate: var(--ink-muted);
+  --l-waiting: var(--ink-muted);
+  --l-incoming: var(--ink-muted);
+  --l-unshaped: var(--ink-muted);
+
+  /* Type — one system stack, no web font (FR-13, SR-2). "New York" is
+     Apple's system serif (macOS/iOS "San Francisco"'s serif sibling);
+     Georgia/Times New Roman carry the same feel on Windows/Linux. Luke's
+     2026-09-12 pick, over the previous system-sans default. */
+  --font-body: ui-serif, "New York", Georgia, "Times New Roman", serif;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --line-height-base: 1.45;
+
+  /* Spacing — one 4px-rooted scale, the full set board.css/card.css need
+     plus one larger step for controls' own toolbar chrome */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  /* Radii — three, no more */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  /* Motion — exactly three durations in the whole app (FR-12). Nothing
+     outside this file may write a literal duration; every transition
+     reads one of these three, which is what lets the reduced-motion
+     block below zero every animation in the app for free. */
+  --motion-fast: 120ms;
+  --motion-medium: 220ms;
+  --motion-slow: 360ms;
+  --motion-ease: ease;
+
+  /* Board layout — consumed only by board.css / card.css */
+  --board-rail-width: 140px;
+  --board-rail-spine-width: 4px;
+  --board-lane-wash-strength: 8%;
+  --board-cell-min-height: 72px;
+  --board-card-rail-width: 3px;
+
+  /* Project-page layout — consumed only by project.css/task-row.css/print.css */
+  --project-page-max-width: 860px;
+}
+
+/* FR-10: dark reached automatically, only while the viewer has never made
+   an explicit choice — an explicit "default" or "paper" pick must survive
+   a dark system, which is what the two :not() guards below are for. */
+@media (prefers-color-scheme: dark) {
+  body:not([data-palette="default"]):not([data-palette="paper"]) {
+    --bg: #14171c;
+    --ink: #e7e9ee;
+    --ink-muted: #98a1b0;
+    --panel-bg: #1d2129;
+    --panel-bg-alt: #262b35;
+    --border: #333944;
+    --accent: #6ea8fe;
+    --focus-ring: #ffb454;
+  }
+}
+
+/* FR-4/FR-10: the explicit toggle — same values as the media block above
+   by construction (see this file's header comment). */
+body[data-palette="dark"] {
+  --bg: #14171c;
+  --ink: #e7e9ee;
+  --ink-muted: #98a1b0;
+  --panel-bg: #1d2129;
+  --panel-bg-alt: #262b35;
+  --border: #333944;
+  --accent: #6ea8fe;
+  --focus-ring: #ffb454;
+}
+
+/* FR-4: the "paper" palette — a warmer, cream-and-ink light mode. Also the
+   source of truth the @media print block below reuses (D-13). */
+body[data-palette="paper"] {
+  --bg: #f7f3e8;
+  --ink: #2b2013;
+  --ink-muted: #5f5340;
+  --panel-bg: #efe8d6;
+  --panel-bg-alt: #e6dcc2;
+  --border: #d9cca4;
+  --accent: #8a4b12;
+  --focus-ring: #1f6f5c;
+}
+
+/* FR-10/D-13: print drops straight to the paper palette's own values — the
+   printed page is never the dark or default screen palette, whichever was
+   showing on screen. Lane colours are left at whatever the screen palette
+   set; board itself is out of controls' scope to print (`outline-print`
+   owns the printed project view), so no board furniture rules live here. */
+@media print {
+  :root {
+    --bg: #f7f3e8;
+    --ink: #2b2013;
+    --ink-muted: #5f5340;
+    --panel-bg: #efe8d6;
+    --panel-bg-alt: #e6dcc2;
+    --border: #d9cca4;
+  }
+}
+
+/* FR-12/AC-7: reduced motion zeroes the three durations rather than
+   stripping `transition`/`animation` properties one by one — every
+   consumer in the app already reads var(--motion-*), so this is the one
+   place the whole app's motion turns off (CSS-5: no !important needed). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0s;
+    --motion-medium: 0s;
+    --motion-slow: 0s;
+  }
+}
+
+/* The page-ground reset (!HouseStyle Step 4/5.5): UA margins zeroed first,
+   html/body carry --bg directly rather than trusting a wrapper div to
+   cover the viewport — the standing defect that skill's own doctrine
+   warns against. Layout beyond this belongs to controls.css (the header
+   and toolbar chrome) and board.css (the grid); this file only paints the
+   ground and sets the one type stack the whole app inherits. */
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  min-height: 100vh;
+}

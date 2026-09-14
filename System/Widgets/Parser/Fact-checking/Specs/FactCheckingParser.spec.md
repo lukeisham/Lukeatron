@@ -4,7 +4,7 @@
 |---|---|
 | **Type** | Build |
 | **Date** | 2026-08-13 |
-| **Status** | Draft, no gating blocker. `Fact-checking_content.md`'s wording (the EVAL system prompt) still needs drafting, but per FR-FC11 that's regular deferred content work, same as the codification-patterns document — it doesn't block code from starting. Everything architectural is closed (§5 Decisions, §11 Open questions). |
+| **Status** | Draft, no gating blocker. **2026-09-13 — the companion Skillbank skill (§8) is now built and Sandbox-tested**: `System/Skillbank/Teaching/!FactCheck/skill.md` runs this spec's Stage 1–4 pipeline directly with an agent session's own WebSearch/WebFetch, per Luke's explicit architecture decision that the skill is the primary, agent-run Tier B path (see AD-FC6, §8). **The browser widget/cartridge itself remains unbuilt** — this rebuild deliberately shipped the skill first; the widget stays tracked as TE-08's next action (`Memory/Medium-Term/Projects/TE-08-fact-checking-app/registry.md`), not silently dropped. `Fact-checking_content.md`'s wording (the EVAL system prompt) still needs drafting for the eventual widget build, but per FR-FC11 that's regular deferred content work, same as the codification-patterns document — it doesn't block widget code from starting whenever that's next. Everything architectural is closed (§5 Decisions, §11 Open questions). |
 | **One-liner** | The Fact-checking cartridge's deltas from the shared shell contract — the first Tier-B build, and a pure HTML/JS/CSS shell with **no backend and no API key anywhere**. Two explicit controls drive four stages, **two fuzzy logics**: **Tag claims** (this cartridge's label for Parse) runs fuzzy logic A — claim-finding (Tier A, offline): user-tagged claims/chunks (with an optional category hint) → granular-or-broad discovery → codification + granular-only chunking → format-validation gate — populating the Explainer with tagged claims and no Source data. **Check claims** then renders a copy-pasteable verification request for fuzzy logic B — verification (Tier B): a strict, fail-closed **provenance** EVAL against five categories — **Exists / Direct-quote / Paraphrase / Claimed / Observed** — confirming or correcting Tier A's candidate category, with no truth verdict, a whitelist-first source search (Wayback Machine fallback), and a found-source double-check before anything is cited. The user runs that request in a separate Claude conversation (or a companion Claude Code skill) and pastes the JSON answer back — the browser itself never makes a network request. Output is a **Claim | Chunk | Source | Category** Explainer table plus claim/chunk shading on the text with an interactive chunk reveal. |
 
 Cites `System/Widgets/Parser/_shell/Specs/ParserShell.spec.md` (and, for inherited precedent,
@@ -362,9 +362,16 @@ detection is pattern-level, not phrase matching, and covers the remaining cases 
   graded, or fabricated. The widget's job is provenance, not adjudication: Tier B finds evidence the
   chunk was claimed by someone somewhere, not whether it's wrong or misleading. A four-value verdict
   model (`verified`/`false`/`misleading`/`unable-to-verify`) was considered and rejected.
-- **AD-FC6 — One batched request per fact-check run, not one per claim.** Cost and latency scale with
-  round-trips, and cross-claim context (e.g. two claims citing the same report) helps the EVAL;
-  per-claim calls would be N× cost and latency with no shared context.
+- **AD-FC6 — Batched by ≤250-word input span, not by claim-count or by the whole input at once
+  (revised 2026-09-13).** Originally "one batched request per fact-check run" — still true for the
+  browser widget's copy-paste handoff, where one round-trip per run is the only cost that matters.
+  The agent-run path (`!FactCheck`, §8) batches differently: the input is split into sequential
+  ≤250-word spans (sentence-boundary-safe), each verified as its own pass, because an agent session
+  pays per-token for its own search/fetch calls rather than for round-trips to a separate
+  conversation — bounding each pass's token cost matters more there than minimising round-trip
+  count. Cross-claim context within a 250-word span is preserved exactly as before; only spans
+  larger than that no longer share one pass. Per-claim calls (one request per claim) remain
+  rejected for both paths — still N× cost/latency with no shared context.
 - **AD-FC7 — No result colours.** With no verdicts (FR-FC7) there are no verdict hues; the only span
   visuals are the claim/chunk tags (user neutral, AI lighter) plus the interactive chunk-reveal. The
   manifest keeps a minimal single-hue `clausePalette` only because the shell's FR-2 requires ≥1 entry.
@@ -556,12 +563,17 @@ same four-column shape, so a checked paragraph pastes cleanly into a marked essa
   and the five-category question) and `Fact-checking_codification_patterns.md` (`1.*`) are drafted
   separately, per FR-FC11 — deferred content work, not a code blocker (same treatment both documents
   have always had).
-- **Downstream (out of scope, not gating):** a companion Skillbank skill (`System/Skillbank/`, not yet
-  built) is expected to let Claude Code run Stage 4 directly — using its own web tools instead of the
-  copy-paste round trip — for when Luke is working from an agent session rather than a bare browser
-  tab. It would consume the same `CONTENT["5.*"]` system prompt, chunk payload, and response contract
-  (FR-FC6) the request block already generates, so drafting `Fact-checking_content.md` benefits both.
-  The widget itself gains no third path from this — AD-FC9's zero-network-request design is unchanged.
+- **Companion Skillbank skill — built 2026-09-13, now the primary Tier B path.** Originally tracked
+  here as downstream/out-of-scope future work; per Luke's explicit architecture decision this
+  session, `System/Skillbank/Teaching/!FactCheck/skill.md` now runs Stages 1–4 directly inside an
+  agent session, using its own WebSearch/WebFetch instead of the copy-paste round trip. It reuses
+  this spec's chunk contract, five-category taxonomy, 17-row whitelist, and found-source
+  double-check verbatim (own AD-FC6 batching variant, see above) rather than `CONTENT["5.*"]`'s
+  system-prompt text, since there is no separate paste-back conversation to prompt — the agent *is*
+  the Tier B executor. Sandbox-tested against a live worked example
+  (`System/Sandbox/factcheck-skill-test.md`). **The browser widget itself gains no third path from
+  this and remains unbuilt** — AD-FC9's zero-network-request design for that surface is unchanged;
+  the widget is TE-08's remaining next action, not superseded by the skill.
 
 **Gate:** none. Code can start once this spec is approved; `Fact-checking_content.md` and
 `Fact-checking_codification_patterns.md` can be drafted in parallel or after, same as any other

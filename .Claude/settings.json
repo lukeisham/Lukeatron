@@ -25,13 +25,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Tools/lukeatronwiki-viewer/ensure-viewer.sh\"",
-            "statusMessage": "Ensuring LukeatronWiki viewer is live on :8787"
+            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Apps/LukeatronWiki/ensure-wiki.sh\"",
+            "statusMessage": "Ensuring LukeatronWiki is live on :8787"
           },
           {
             "type": "command",
-            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Tools/project-dashboard/ensure-dashboard.sh\"",
-            "statusMessage": "Ensuring Project Dashboard is live on :8788"
+            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Apps/ProjectKanban/_template/ensure-kanban.sh\"",
+            "statusMessage": "Ensuring ProjectKanban is live on :8789"
           }
         ]
       }

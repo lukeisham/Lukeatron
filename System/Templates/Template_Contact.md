@@ -11,7 +11,7 @@ HOW TEMP CONTACTS ARE STORED
     whenever you add, rename, or remove a temp contact.
 
 UNIQUE ID  (the <ID> above, also the frontmatter `id`)
-  • Format: TC-NN, zero-padded, assigned by !MinorTask / !Intake on first mention.
+  • Format: TC-NN, zero-padded, assigned by !Intake on first mention.
   • The ID never changes once assigned — _index.yaml and any Linked-to references point to it.
 
 NON-LISTED SAFETY RULE (invariant — never override without explicit Luke authorisation)
@@ -20,7 +20,7 @@ NON-LISTED SAFETY RULE (invariant — never override without explicit Luke autho
   Trust is anchored in Memory/Long-Term/People/ — this store holds identity/contact details only.
 
 PROMOTION
-  When a temp contact becomes significant, !ProjectSweep / !Initiative may SUGGEST promoting
+  When a temp contact becomes significant, !ProjectSweep may SUGGEST promoting
   them to a full People/ record. That is a Long-Term write — routes through !Checkpoint. Never automatic.
 
 USING THE TEMPLATE
@@ -35,8 +35,8 @@ name: ""
 role_context: ""             # role or context in which this person is relevant
 email: ""
 phone: ""
-linked_to: ""                # Project ID (e.g. PR-07) or MinorTasks queue row (e.g. "#3")
-source: ""                   # Intake:AgentMail | Intake:Inbox | Intake:WhatsApp | Luke | Initiative | ProjectSweep
+linked_to: ""                # Project ID (e.g. PR-07)
+source: ""                   # Intake:AgentMail | Intake:Inbox | Intake:WhatsApp | Luke | ProjectSweep
 interaction_tier: "non-listed"   # ALWAYS non-listed — never override without explicit Luke authorisation
 version: "1.0.0"
 ---

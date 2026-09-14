@@ -25,9 +25,13 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
 // EXECUTION_START
 
 **STEP 1 — Settle name and kind**
-  ASK Luke for the project name (used verbatim as the folder name) and confirm `kind` (app | widget).
-  IF `kind` = widget ➔ ASK what hosts it (a page, another widget suite, the local computer, a
-  shell/chassis it plugs into). A widget with no named host is not yet specified.
+  ASK Luke for the project name (used verbatim as the folder name) and confirm `kind` (app | widget)
+  using the test from `!AppDevelopment` STEP 0: can it be opened on its own, nothing else already
+  running, and it is the whole thing? Yes ➔ app. No ➔ widget — optional embeddability alone does
+  not make it a widget; needing a host to run at all does.
+  IF `kind` = widget ➔ ASK what hosts it (a page, another app, a widget suite/chassis, or the
+  local OS/shell — e.g. a menu-bar item, a cron/launchd job, a CLI invoked from a folder).
+  A widget with no named host is not yet specified.
 
 **STEP 2 — Create the working folder**
   ASSERT `System/Sandbox/<name>/` does not already exist
@@ -71,6 +75,8 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
   SHOW the PRD to Luke in full.
   FLAG any requirement that will collide with the Vibe Coding Rules (a dependency, a framework,
   a performance cost). Raise it now, as a design question, not later as an exception request (G-1).
+  IF `wishlist.md` exists for this project ➔ RUN its STEP 3 conflict scan against this PRD and
+  report any duplicate/overlap/conflict before Luke approves (G-5).
   AWAIT Luke's approval THEN update the registry ELSE loop to STEP 3 on the sections he names.
 
 **STEP 7 — Close the phase**

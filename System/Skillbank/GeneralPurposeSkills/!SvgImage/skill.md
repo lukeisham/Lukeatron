@@ -296,3 +296,13 @@ Error:
   per line, and proceed exactly the same way.
 Log: "[SKILL: !SvgImage] [SUCCESS] file=[path] size=[WxH] style=[name|none] groups=[N]" →
   Logs/skills.log
+
+## 🎨 House style — EXEMPT
+
+`!HouseStyle` (`.claude/skills/!HouseStyle/`) is the always-on default for rendered surfaces, and this skill is one of its
+two standing **exemptions**. Its 24-style illustration library is a deliberately different
+contract: `!HouseStyle` governs **UI marks** — icons, glyphs, chrome, the furniture of an
+interface — while this skill governs **illustration**. A picture is not an interface.
+
+The one seam: an SVG produced here that ships *as a UI glyph* rather than as an illustration takes
+the house `--glyph-stroke` and glyph sizes, so it matches the set it sits in.

@@ -1,10 +1,10 @@
 # 🔬 Context · Personal Research
 
-> General research across a very broad range of topics — gathering, verifying, and synthesising knowledge to a defined standard — **and the coding / builds it feeds** (amateur builds, scripts, and the Lukeatron system itself).
+> General research across a very broad range of topics — gathering, verifying, and synthesising knowledge to a defined standard — **and the coding / builds it feeds** (amateur builds and scripts). Building **the Lukeatron system itself** has its own context now — see `System/Context/lukeatron.md`.
 
 ```
 CONTEXT      Personal Research
-TRIGGERS     research · investigate · gather sources · synthesise findings · coding · amateur builds · the Lukeatron system itself
+TRIGGERS     research · investigate · gather sources · synthesise findings · coding · amateur builds
 LOADS WITH   !DetermineContext  →  /context
 TONE         curious, rigorous, well-sourced — Luke's own voice
 ```
@@ -24,7 +24,7 @@ TONE         curious, rigorous, well-sourced — Luke's own voice
 
 Research, **very broadly** — both standing interests and one-off investigations as they arise. The range of topics is wide; the live map of it is the subject stores in `Memory/Long-Term/` (Bible, Philosophy, Sociology, Medical, Theology, Wisdom, Writing, YouTube, and the rest).
 
-It also owns **coding / builds** — amateur builds, scripts, and **the Lukeatron system itself** (conventions & notes in `Memory/Long-Term/Coding/`). Research and the building it feeds now live together here.
+It also owns **coding / builds** — amateur builds and scripts (conventions & notes in `Memory/Long-Term/Coding/`). Research and the building it feeds now live together here. Building **the Lukeatron system itself** is out of scope here — that's the Lukeatron context (`System/Context/lukeatron.md`).
 
 If the primary goal is "find out / verify / synthesise" **or "build the thing,"** this is the context.
 
@@ -32,19 +32,12 @@ If the primary goal is "find out / verify / synthesise" **or "build the thing,"*
 
 ---
 
-## 📌 Current Focus — *Building Lukeatron + the other builds* ⚠️ IMPORTANT
+## 📌 Current Focus — *The other builds* ⚠️ IMPORTANT
 
-> The dominant work right now is three builds and the research feeding them. Both the **building** and the **research** live here. Treat building Lukeatron as the live priority when no other goal is clearly named.
+> The dominant work right now is two builds and the research feeding them. Both the **building** and the **research** live here. (Building Lukeatron itself moved to its own context — see `System/Context/lukeatron.md`.)
 
-- **🧠 Lukeatron** — building the system *and* researching how it (and the Claude harness) should work
 - **🌐 A website** — its build and the research feeding it
 - **🍎 A macOS app in Swift** — its build and the research feeding it
-
-**Building Lukeatron means active, hands-on work on the system:**
-
-- **🛠️ Creating skills** — authoring new capability/checkpoint skills to the house format (frontmatter → ⚡TRIGGER / 🛠️LOGIC / ✅OUTPUT, plus `manifest.json` and `EVAL.md`).
-- **♻️ Refactoring skills** — tidying, consolidating, deleting and repairing existing skills (e.g. broken top-level symlinks under `.claude/skills/`, aligning log paths, pruning dead sub-skills).
-- **🧠 Learning how Claude works** — the harness: skills & slash commands, hooks, MCP servers, memory, settings, subagents, and how it wires into the CLAUDE.md bootloader.
 
 **Working posture for build work (the build bar, not research-citation standards):**
 - Match existing house style before inventing a new one — *read a sibling skill first.*

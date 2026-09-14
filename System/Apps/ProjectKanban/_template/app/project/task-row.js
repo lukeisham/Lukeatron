@@ -1,0 +1,146 @@
+// task-row.js — one Next Actions row: the four per-row edits (tick done,
+// due date, owner, lane) plus its copy button, or — for a linked row
+// (FR-5/D-7) — a plain-English explanation in place of every control. Used
+// both for a solo task and for one chip inside a stem group (actions.js
+// decides which text to show as the row's label; the edit controls and the
+// copy button are identical either way).
+//
+// `submitEdit(field, task, value)` is injected by project.js, which owns
+// the network round-trip, the mtime and the error banner — this file only
+// ever calls it and reacts to `{ ok }`, reverting its own control's value
+// on a refusal so the screen never shows an edit that didn't actually save.
+
+import { el } from "../shared/dom.js";
+import { buildCopyButton, taskCopyText } from "./copy.js";
+
+// Grounded in the Kind column's own live vocabulary (a scan of registry.md
+// files under Memory/Medium-Term/Projects/), not invented: these five
+// values are what board.spec.md's own five lanes are derived from.
+const LANE_KIND_OPTIONS = [
+  { value: "mine", label: "Mine" },
+  { value: "delegate", label: "Delegate" },
+  { value: "waiting", label: "Waiting" },
+  { value: "incoming", label: "Incoming" },
+  { value: "unshaped", label: "Unshaped" },
+];
+
+function buildTickControl(task, submitEdit) {
+  const checkbox = el("input", { type: "checkbox", class: "project-task-tick", "aria-label": `Mark "${task.action}" done` });
+  checkbox.addEventListener("change", async () => {
+    checkbox.disabled = true;
+    const { ok } = await submitEdit("status", task, "☑ Done");
+    if (!ok) {
+      checkbox.checked = false;
+      checkbox.disabled = false;
+    }
+    // On success project.js re-renders the whole page from a fresh fetch —
+    // a done task is no longer in tasks[] at all, so nothing more to do here.
+  });
+  return checkbox;
+}
+
+function buildDueControl(task, submitEdit) {
+  const input = el("input", {
+    type: "date",
+    class: "project-task-due",
+    "aria-label": `Due date for "${task.action}"`,
+    value: task.due_date ?? "",
+  });
+  input.addEventListener("change", async () => {
+    const previous = task.due_date ?? "";
+    input.disabled = true;
+    const { ok } = await submitEdit("due", task, input.value);
+    if (!ok) {
+      input.value = previous;
+      input.disabled = false;
+    }
+  });
+  return input;
+}
+
+function buildOwnerControl(task, submitEdit) {
+  // FR-9: a free-text field, so spellcheck applies.
+  const input = el("input", {
+    type: "text",
+    class: "project-task-owner",
+    "aria-label": `Owner of "${task.action}"`,
+    value: task.owner ?? "",
+    spellcheck: "true",
+  });
+  input.addEventListener("change", async () => {
+    const previous = task.owner ?? "";
+    const next = input.value.trim();
+    input.disabled = true;
+    const { ok } = await submitEdit("owner", task, next);
+    if (!ok) {
+      input.value = previous;
+      input.disabled = false;
+    }
+  });
+  return input;
+}
+
+function buildLaneControl(task, submitEdit) {
+  const options = [...LANE_KIND_OPTIONS];
+  // JS-2: live data has a handful of stray Kind values outside the five
+  // canonical ones (e.g. "Human") — showing the raw value rather than
+  // silently snapping to "Mine" keeps the control honest about what's
+  // actually on disk.
+  if (task.kind && !options.some((opt) => opt.value === task.kind)) {
+    options.push({ value: task.kind, label: task.kind });
+  }
+  const select = el(
+    "select",
+    { class: "project-task-lane", "aria-label": `Lane for "${task.action}"` },
+    options.map((opt) => el("option", { value: opt.value, selected: opt.value === task.kind ? "true" : null }, opt.label))
+  );
+  select.addEventListener("change", async () => {
+    const previous = task.kind ?? "";
+    select.disabled = true;
+    const { ok } = await submitEdit("kind", task, select.value);
+    if (!ok) {
+      select.value = previous;
+      select.disabled = false;
+    }
+  });
+  return select;
+}
+
+function buildLinkedRow(task, displayLabel) {
+  return el("li", { class: "project-row project-task-row project-task-row--linked" }, [
+    el("span", { class: "project-task-label" }, displayLabel),
+    // FR-5/AC-4: plain words, no error code, no spec language.
+    el("p", { class: "project-linked-note" }, "This action is shared with another project — edit it there; !ProjectSweep keeps them in sync."),
+    buildCopyButton(`Copy ${task.action}`, () => taskCopyText(task)),
+  ]);
+}
+
+/**
+ * `displayLabel` is the text this row shows — the full action for a solo
+ * task, or just the differing tail for one chip inside a stem group
+ * (grouping.js's stemDifference). The copy button always reaches for
+ * `task.action` itself (FR-6), never `displayLabel`.
+ */
+export function buildTaskRow(task, displayLabel, submitEdit) {
+  if (task.link_key) return buildLinkedRow(task, displayLabel);
+
+  return el("li", { class: "project-row project-task-row", dataset: { taskIndex: task.index } }, [
+    buildTickControl(task, submitEdit),
+    el("span", { class: "project-task-label" }, displayLabel),
+    buildDueControl(task, submitEdit),
+    buildOwnerControl(task, submitEdit),
+    buildLaneControl(task, submitEdit),
+    buildCopyButton(`Copy ${task.action}`, () => taskCopyText(task)),
+  ]);
+}
+
+// wishlist #4b: a done row is read-only — it's already resolved, so none of
+// the four edit controls apply (mirroring `buildLinkedRow`'s own
+// no-controls-at-all shape, not a disabled version of the live row).
+export function buildDoneTaskRow(task) {
+  return el("li", { class: "project-row project-task-row project-task-row--done" }, [
+    el("span", { class: "project-task-label" }, task.action),
+    el("span", { class: "project-task-owner-label" }, task.owner ?? "—"),
+    buildCopyButton(`Copy ${task.action}`, () => taskCopyText(task)),
+  ]);
+}

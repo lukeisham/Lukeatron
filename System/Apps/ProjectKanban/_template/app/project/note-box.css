@@ -1,0 +1,65 @@
+/* note-box.css — FR-8/D-9's note box: the section choice, the always-on
+   Agent guidance hint, and the submit flow. Split from project.css
+   (CSS-1: one file, one job, mirroring note-box.js's own split). Every
+   value is a token from ../tokens.css (CSS-2); none defined here. */
+
+.project-note-box {
+  padding: var(--space-md);
+  background: var(--panel-bg);
+  border-radius: var(--radius-md);
+}
+
+.project-note-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.project-note-section-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--font-size-sm);
+}
+
+/* Permanently visible, not a tooltip — FR-8 requires Agent guidance's
+   consequence to be stated before it can be chosen, not discovered after. */
+.project-note-guidance-hint {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+}
+
+.project-note-text {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: var(--space-xs);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.project-note-submit {
+  align-self: flex-start;
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel-bg-alt);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2xs) var(--space-sm);
+  cursor: pointer;
+}
+
+.project-note-submit:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.project-note-status {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+}

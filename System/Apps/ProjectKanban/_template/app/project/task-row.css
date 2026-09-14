@@ -1,0 +1,126 @@
+/* task-row.css — Next Actions: stem groups, chips, and the four per-row
+   edit controls (FR-3/FR-4). Split from project.css (CSS-1: one file, one
+   job). Every value is a token from ../tokens.css (CSS-2); none defined
+   here. */
+
+.project-next-actions {
+  gap: var(--space-xs);
+}
+
+/* wishlist #4b: a plain top border is the only separator from the open
+   list above it — no new colour, no extra heading (the toggle button's own
+   label already says what this list is). */
+.project-done-actions {
+  gap: var(--space-2xs);
+  padding-block-start: var(--space-sm);
+  border-block-start: var(--border-width) solid var(--border);
+}
+
+.project-stem-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-sm);
+  background: var(--panel-bg-alt);
+  border-radius: var(--radius-sm);
+}
+
+.project-stem-heading {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.project-stem-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.project-task-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: var(--space-2xs) var(--space-sm);
+  background: var(--panel-bg);
+  border-radius: var(--radius-sm);
+}
+
+/* Chips sit on the group's own wash, not a second panel layer on top of it. */
+.project-stem-chips .project-task-row {
+  background: var(--bg);
+}
+
+.project-task-label {
+  flex: 1;
+  min-width: 8ch;
+}
+
+.project-task-tick {
+  width: var(--space-md);
+  height: var(--space-md);
+}
+
+.project-task-due,
+.project-task-owner,
+.project-task-lane {
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+  background: var(--bg);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2xs);
+}
+
+.project-task-owner {
+  width: 10ch;
+}
+
+.project-task-row :focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* FR-5/D-7: a linked row is visibly non-interactive — no inputs at all,
+   just its label, the plain-English reason, and a copy button. */
+.project-task-row--linked {
+  background: var(--panel-bg-alt);
+  color: var(--ink-muted);
+}
+
+.project-linked-note {
+  margin: 0;
+  flex-basis: 100%;
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+}
+
+/* wishlist #4b: a done row reuses the linked row's dimmed treatment (same
+   panel-bg-alt + ink-muted pairing) plus a strikethrough on the label —
+   read-only in both cases, so the same "not a live row" cue applies. */
+.project-task-row--done {
+  background: var(--panel-bg-alt);
+  color: var(--ink-muted);
+}
+
+.project-task-row--done .project-task-label {
+  text-decoration: line-through;
+}
+
+.project-task-owner-label {
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+}
+
+@media (max-width: 640px) {
+  .project-task-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

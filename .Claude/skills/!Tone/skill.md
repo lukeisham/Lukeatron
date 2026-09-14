@@ -7,7 +7,8 @@ dependencies:
   - "Memory/Long-Term/Tone/_index.yaml"
   - "Memory/Long-Term/People/<ID>/tone.md (per-person, on demand)"
   - "Memory/Long-Term/Groups/ (per-group, on demand)"
-version: 1.1.0
+  - "System/Skillbank/GeneralPurposeSkills/!SimpleEnglish/skill.md (formal-register requests only, on demand)"
+version: 1.2.0
 ---
 
 ## ⚡ TRIGGER
@@ -30,6 +31,17 @@ STEP 2 — CLASSIFY the content's addressing:
     CASE directed at a specific named person (email, letter, personal message)
       THEN mark PERSON-DIRECTED, recipient = that person
     DEFAULT mark INTERNAL (sermon draft, wiki article, notes, teaching material — no single named recipient)
+
+STEP 2b — FLAG register (independent of STEP 2; formality is a PROSE-RULES layer, not a tone source):
+  MATCH the request
+    CASE Luke asks for a "report", a "formal email", or a document "in a formal tone"
+      THEN mark FORMAL-REGISTER ➔ additionally load `!SimpleEnglish`
+      (`System/Skillbank/GeneralPurposeSkills/!SimpleEnglish/skill.md`), pragmatic mode, and apply
+      its rules alongside whatever tone source STEP 3 resolves. Here "formal" means clear,
+      unambiguous, slop-free prose — NOT ornamentation — so classify the draft per !SimpleEnglish
+      Step 1 (a report/formal email is mostly descriptive; an instructional passage inside it is
+      procedural) and run its Self-Check before delivery.
+    DEFAULT no register flag ➔ the resolved tone source applies alone, !SimpleEnglish not invoked.
 
 STEP 3 — RESOLVE, most specific wins, falling through each unfilled/missing layer:
   IF PERSON-DIRECTED:
@@ -63,13 +75,18 @@ STEP 4 — RETURN to the calling task:
   • the resolved tone source path(s) + which layer(s) matched
   • the resolved `authorship` value + which layer set it
   • IF authorship = `luke-voice` ➔ RETURN the staging requirement with it (see OUTPUT).
+  • IF FORMAL-REGISTER (STEP 2b) ➔ RETURN the !SimpleEnglish reference, pragmatic mode, alongside
+    the tone source — the calling skill applies both together, tone source for voice/register,
+    !SimpleEnglish for sentence/word rules and the de-slop pass.
   !Tone does not draft, edit, or judge content; it only names where tone comes from and what
   authorship applies. The calling skill reads the named file(s) itself and applies them.
 
 ## ✅ OUTPUT
 State: One or more tone sources named, in resolution order (person `tone.md` > group page > context
-  `Tone/` folder > email baseline), PLUS the resolved `authorship` value and the layer that set it.
-  The calling skill applies them; !Tone itself changes nothing.
+  `Tone/` folder > email baseline), PLUS the resolved `authorship` value and the layer that set it,
+  PLUS — for a report, a formal email, or a document requested "in a formal tone" — a reference to
+  `!SimpleEnglish` (pragmatic mode) to apply alongside the tone source. The calling skill applies
+  them; !Tone itself changes nothing.
 
 Authorship contract returned to the caller:
   `agent-disclosed`  ➔ agent writes as itself; MUST close with the standard footer, verbatim:
@@ -81,7 +98,7 @@ Authorship contract returned to the caller:
                        ⚠️ ALWAYS staged in `Outbox/` — NEVER auto-sent, whatever the trust tier.
                        This floor is not overridable per-person and !Tone must always report it.
 
-Log: "[AGENT: !Tone] [SUCCESS] mode=<internal|person> resolved=<path(s)> authorship=<value>@<layer> | tokens≈[N]" → Logs/skills.log
+Log: "[AGENT: !Tone] [SUCCESS] mode=<internal|person> resolved=<path(s)> authorship=<value>@<layer> register=<formal|-> | tokens≈[N]" → Logs/skills.log
 Error: A resource in the chain is missing ➔ fall through to the next layer, flag the gap in the reply,
   never invent tone content. If `authorship` cannot be resolved for ANY reason ➔ return
   `agent-disclosed` (the safe default — never default to impersonating Luke).

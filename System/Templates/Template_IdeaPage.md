@@ -61,7 +61,10 @@ FORMATS — pick one per page (the `format` field; orthogonal to `type`)
   • topic    — a HUB. Its member roll (every page sharing this topic/tag) is built
                LIVE by the viewer, so it never goes stale. The page body is just a
                short orientation + curated See Also; do NOT hand-list members. (A hub
-               holds no absorbed content, so it need not carry a longterm_ref.)
+               MUST carry a longterm_ref for every file in the store it fronts —
+               the hub IS the store's entry point, and a hub with no refs is an
+               empty shell the reader cannot get out of. Settled by Luke
+               2026-09-12; supersedes the earlier "need not carry a longterm_ref".)
   • support  — how-the-wiki-works / setup / help (e.g. meta-about). The wiki's own
                self-documentation — NOT absorbed material — so it may carry body text
                and need not point to a store. Excluded from the auto Main-Page feeds.

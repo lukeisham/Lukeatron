@@ -41,9 +41,11 @@ Empty is the normal state. A row here means Luke explicitly granted a break from
 reason. Every row here is also written into the documentation spec.
 
 ## Mockups
-<!-- Phase 2 only. Deleted in Phase 3, after the specs are verified to carry everything they show. -->
-| Mockup | Shows | Behaviours confirmed written into a spec |
-|---|---|---|
+<!-- Phase 2 only. Deleted in Phase 3, after the specs are verified to carry everything they show.
+     Built in batches of six per surface: 2 form / 2 function / 2 balance (the two balance
+     options must contrast each other in appearance). Draw on m3.material.io and ant.design. -->
+| Mockup | Category | Shows | Behaviours confirmed written into a spec |
+|---|---|---|---|
 
 ## Build board
 <!-- Added by Phase 3's refresh. One row per spec/module. -->

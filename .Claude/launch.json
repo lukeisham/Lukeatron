@@ -4,8 +4,35 @@
     {
       "name": "grammar-parser",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8791", "--directory", "Memory/Long-Term/Grammar"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8791",
+        "--directory",
+        "Memory/Long-Term/Grammar"
+      ],
       "port": 8791
+    },
+    {
+      "name": "project-kanban",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/ProjectKanban/_template",
+      "port": 8789
+    },
+    {
+      "name": "wiki-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8794",
+        "--directory",
+        "System"
+      ],
+      "port": 8794
     }
   ]
 }

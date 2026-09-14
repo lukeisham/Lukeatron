@@ -61,3 +61,14 @@ On a miss (no result, no cover_i, or fetch failure) at any step: return nothing 
 proceeds to the next rung of its `SET_THUMBNAIL` ladder (Thumbnails store → one lightweight
 web search → none). A miss here costs exactly one search + one fetch, never more.
 Log: "[AGENT: !BookCover] [SUCCESS|MISS] slug=[slug] title=[title]" → Logs/skills.log
+
+## 🎨 House style — UNCLASSIFIED
+
+`!HouseStyle` is an always-on core skill (`.claude/skills/!HouseStyle/`) and the default for every rendered surface.
+This surface is classified **UNCLASSIFIED** in its `reference/sources.md` register — it has no
+style contract of its own, so the house style governs it **whole**: tokens, layout, motion, glyphs
+and print. Governs how a fetched cover is framed and presented, not the cover artwork itself.
+
+Use `reference/tokens.css`; never a colour, spacing or duration literal. `:root` is light, dark is
+the override, print is the base path. The flourish budget is counted, so a breach is a failure
+rather than an opinion.

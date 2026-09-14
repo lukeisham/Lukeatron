@@ -45,6 +45,10 @@ changes. If the context is refreshed or the build is interrupted, the next agent
 `registry.md` first and picks up from the board — so the board must always be true.
 
 **Done when:** every build-board row is complete, every spec's own verification checklist passes,
-and the whole thing runs. Then report to Luke; do not begin Phase 4 yourself.
+and the whole thing runs.
+<!-- Widget projects only — delete this line for an app: -->
+For a widget, "runs" means exercised inside its named host (`<host>`, from the PRD's Host
+contract), not merely opened standalone — a widget that only works outside its host is not done.
+Then report to Luke; do not begin Phase 4 yourself.
 
 ---

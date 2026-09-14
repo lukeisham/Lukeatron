@@ -138,3 +138,14 @@ Glossaries, in particular, are an essential reference. Once one is created, it s
 ## `NOTES.md`
 
 The user will sometimes express preferences of how they want to be taught, or things you should keep in mind. This is the place to record those preferences, so you can refer back to them when designing lessons or working with the user.
+
+## 🎨 House style — UNCLASSIFIED
+
+`!HouseStyle` is an always-on core skill (`.claude/skills/!HouseStyle/`) and the default for every rendered surface.
+This surface is classified **UNCLASSIFIED** in its `reference/sources.md` register — it has no
+style contract of its own, so the house style governs it **whole**: tokens, layout, motion, glyphs
+and print. Lesson pages and the shared components under `./assets/` are rendered surfaces; the house tokens belong in that shared stylesheet, not per-lesson.
+
+Use `reference/tokens.css`; never a colour, spacing or duration literal. `:root` is light, dark is
+the override, print is the base path. The flourish budget is counted, so a breach is a failure
+rather than an opinion.

@@ -1,55 +1,108 @@
 /**
- * lesson-plan-document.css — Lesson plan typography
+ * lesson-plan-document.css — Lesson plan typography ("studio grid" style)
  *
- * Front page styles. All sizes from tokens (FR-LPB-11, AC-LPB-11).
- * CSS-2: All colours from variables.css only
- * CSS-5: No !important
+ * Front page and tier page styles, local to this document only.
+ * Deliberately does NOT reuse tier-page.css's .tier-name/.material-label/
+ * .material-body/.student-task-label/.workspace-label/.page-number classes —
+ * that file is shared with unit-assessment-document.css and its tier ink
+ * colouring on .tier-name is exactly what this style avoids (tier colour
+ * here is confined to thin accent bars, never text fill). Every class below
+ * is prefixed studio- and scoped under .front-page / .lesson-tier-page so it
+ * cannot leak onto, or be affected by, any other document.
+ * All sizes from tokens (FR-LPB-11, AC-LPB-11). CSS-2: all colours from
+ * variables.css only. CSS-5: no !important.
  */
 
-.front-page { font-family: var(--font-system); }
-
-.front-page .lesson-number {
-  font-size: var(--font-size-md-mm); font-weight: bold; fill: var(--color-text-primary);
+.front-page,
+.lesson-tier-page {
+  font-family: var(--font-system);
 }
 
-.front-page .topic-label {
-  font-size: var(--font-size-lg-mm); fill: var(--color-text-secondary);
-}
+/* ===== Shared eyebrow / numeral / body vocabulary ===== */
 
-.front-page .big-idea-name {
-  font-size: var(--font-size-md-mm); font-weight: 600; fill: var(--color-text-tertiary);
-}
-
-.front-page .section-label {
-  font-size: var(--font-size-sm-mm); font-weight: bold; text-transform: uppercase;
-}
-
-.front-page .node-citation {
-  font-size: var(--font-size-sm-mm); font-family: var(--font-monospace);
+.studio-eyebrow {
+  font-family: var(--font-monospace);
+  font-size: var(--font-size-xs-mm);
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
   fill: var(--color-text-tertiary);
 }
 
-.front-page .key-example,
-.front-page .practice-question,
-.front-page .sidebar-text {
-  font-size: var(--font-size-md-mm); white-space: pre-wrap;
+.studio-numeral {
+  font-family: var(--font-system);
+  font-size: var(--font-size-jumbo-mm);
+  font-weight: 800;
+  fill: var(--color-text-primary);
 }
 
-.front-page .mini-assessment,
-.front-page .major-assessment,
-.front-page .tier-label {
-  font-size: var(--font-size-xs-mm); fill: var(--color-text-secondary);
+.studio-kicker {
+  font-family: var(--font-system);
+  font-size: var(--font-size-xl-mm);
+  font-weight: 700;
+  fill: var(--color-text-primary);
 }
 
-.front-page .sidebar-label {
-  font-size: var(--font-size-sm-mm); font-weight: bold;
+.studio-section-label {
+  font-family: var(--font-system);
+  font-size: var(--font-size-xs-mm);
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  fill: var(--color-text-tertiary);
 }
 
-.front-page .page-number {
-  font-size: var(--font-size-sm-mm); fill: var(--color-text-secondary);
+.studio-title {
+  font-family: var(--font-system);
+  font-size: var(--font-size-md-alt-mm);
+  font-weight: 600;
+  fill: var(--color-text-primary);
 }
 
-/* Utility classes */
+.studio-body {
+  font-family: var(--font-system);
+  font-size: var(--font-size-base-mm);
+  fill: var(--color-text-primary);
+}
+
+.studio-body-sm {
+  font-family: var(--font-system);
+  font-size: var(--font-size-sm-mm);
+  fill: var(--color-text-secondary);
+}
+
+.studio-code {
+  font-family: var(--font-monospace);
+  font-size: var(--font-size-sm-mm);
+  font-weight: 700;
+  fill: var(--color-text-primary);
+}
+
+.studio-tier-key-label {
+  font-family: var(--font-system);
+  font-size: var(--font-size-sm-mm);
+  font-weight: 600;
+  fill: var(--color-text-secondary);
+}
+
+.studio-page-number {
+  font-family: var(--font-monospace);
+  font-size: var(--font-size-sm-mm);
+  fill: var(--color-text-secondary);
+}
+
+/* ===== Tier page only ===== */
+
+.studio-tier-name {
+  font-family: var(--font-system);
+  font-size: var(--font-size-3xl-mm);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  fill: var(--color-text-primary);
+}
+
+/* Utility classes (also used by other renderers on this page) */
 .text-primary { fill: var(--color-text-primary); }
 .text-secondary { fill: var(--color-text-secondary); }
 .text-tertiary { fill: var(--color-text-tertiary); }

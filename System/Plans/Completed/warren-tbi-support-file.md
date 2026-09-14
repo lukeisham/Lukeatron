@@ -15,7 +15,7 @@ skills_used: ["WebSearch", "!Checkpoint"]
 Process `Inbox/Warren notes.md` into a structured, six-section reference file in Warren
 Ditterich's People record covering his TBI symptoms, a plain description of what's
 happening, how to get a professional (public-system) neuropsychological diagnosis, a
-Melbourne support option, an incident log, and simple talking points — so Luke and Noella
+Melbourne support option, an incident log, and simple talking points — so Luke and Noela
 can understand and support Warren. Specialises the Church charter's pastoral-care admin
 remit (same footing as CH-01's "pastoral care of Balaclava PC people, faithfully and in
 good time").
@@ -37,7 +37,7 @@ good time").
 
 ## Resources
 - **Memory to read:** `Memory/Long-Term/People/WD26 Warren Ditterich/`,
-  `Memory/Medium-Term/Projects/CH-01-housing-warren-noella/registry.md` (background only)
+  `Memory/Medium-Term/Projects/CH-01-helping-noela/registry.md` (background only)
 - **Capability skills:** WebSearch (read-only research; equivalent free-tier use to
   `!HeadlessChromeBrowser` — no state-changing web action, so no `!OutgoingContentCheck` needed)
 - **Domain skills (Skillbank):** none

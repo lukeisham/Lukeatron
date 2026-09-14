@@ -1,0 +1,110 @@
+/* controls.css — the toolbar's own chrome, plus the CSS half of every
+   toggle contract controls.js/toolbar.js write to <body>. Every value is a
+   token from ../tokens.css (CSS-2); this file defines none.
+
+   Two jobs, in the order they appear below:
+   1. Toolbar layout and button chrome.
+   2. The six-view filter (FR-1/FR-2) — a rule per view, keyed off
+      body[data-view] and each card's own data-context (card.js already
+      stamps this; see board.js's header comment). */
+
+.app-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--panel-bg-alt);
+  border-block-end: var(--border-width) solid var(--border);
+}
+
+.toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.app-toolbar button,
+.app-toolbar a.wiki-link {
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+  background: var(--panel-bg);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2xs) var(--space-xs);
+  cursor: pointer;
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+
+.app-toolbar button:hover {
+  border-color: var(--accent);
+}
+
+.app-toolbar button:focus-visible,
+.app-toolbar a.wiki-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* A pressed view button reads as active via a border + weight change, never
+   colour alone (an accent-only "selected" cue is exactly what !HouseStyle
+   Step 5.5 rules out — colour here is reserved for lane identity, not
+   toolbar state). */
+.app-toolbar button[aria-pressed="true"] {
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.app-toolbar a.wiki-link {
+  text-decoration: none;
+  margin-inline-start: auto;
+}
+
+/* ---------------------------------------------------------------------
+   The six-view filter (FR-1/FR-2). "All" (the default) shows every card;
+   the other five hide any card whose data-context doesn't match. Views
+   are mutually exclusive by construction (body carries exactly one
+   data-view at a time), so no view rule needs :not() chains against the
+   others.
+
+   Known limitation, not a bug: the lane/column HEADER counts always show
+   the JSON's whole-board totals (board.spec.md FR-7 — board.js never
+   computes its own count, and the fetched Board carries one set of counts
+   for the whole board, not one per context). Filtering to one view hides
+   the non-matching CARDS; the counts above them stay whole-board counts.
+   Making per-view counts accurate would mean model.py deriving a board
+   per context, which is outside every module built so far — flagged to
+   the boss agent as a real product gap, not solved by CSS invention here. */
+body[data-view="Church"] .board-card:not([data-context="Church"]),
+body[data-view="Teaching"] .board-card:not([data-context="Teaching"]),
+body[data-view="Personal Productivity"] .board-card:not([data-context="Personal Productivity"]),
+body[data-view="Personal Research"] .board-card:not([data-context="Personal Research"]),
+body[data-view="Lukeatron"] .board-card:not([data-context="Lukeatron"]) {
+  display: none;
+}
+
+/* "Lukeatron" was a genuinely different kind of thing at documentation.spec.md
+   §4's writing — no card carried data-context="Lukeatron" yet, so this view
+   showed an empty grid by design. That changed once the Lukeatron context
+   (CLAUDE.md's Types of Contexts) started tagging real projects (PR-01,
+   2026-09-12 onward) — this view now filters like the other four, on the
+   same card attribute. model.py's separate Lukeatron orphaned-plans
+   content (its own report) is still not built; this rule only ever covered
+   project cards, so that gap is unaffected. */
+
+/* FR-2: "All" marks each card with its context — a label, not a filter.
+   Every other view leaves this pseudo-element absent (`content: none` is
+   the default; only "All" sets `content: attr(...)`), so the badge never
+   competes with the per-view filter rules above. */
+body[data-view="All"] .board-card::before {
+  content: attr(data-context);
+  display: inline-block;
+  align-self: flex-start;
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+  background: var(--panel-bg-alt);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-2xs);
+}

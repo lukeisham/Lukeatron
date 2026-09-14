@@ -25,6 +25,7 @@ How Luke likes Claude to respond and collaborate:
 - **No unsolicited commentary** on approach or alternatives — execute the task unless something genuinely needs a decision.
 - **Confirm before destructive or irreversible actions** (deleting files, sending outgoing content, modifying Long-Term memory).
 - **Flag gaps rather than invent.** If a resource is missing or context is ambiguous, say so — never fabricate.
+- **Scrub stale references when trashing/archiving.** When a document moves to `Trash/` (or a project is archived) while still cited in a registry (Documents table, Next Actions, etc.), remove the reference outright rather than just annotating it as trashed — ProjectKanban reads `registry.md` live, so a marked-but-kept row still surfaces on the dashboard.
 - **Spelling & grammar review.** Always review Luke's spelling. Correct obvious errors silently/automatically; but if the word looks unique or unusual (a name, coinage, or term where the intended word is uncertain), leave it and put the proposed correction in {curly brackets afterwards} rather than overwriting it. Spelling convention: **internal** text uses **z over s** (e.g. organize, realize) but otherwise British spelling; **outward communication** uses British spelling throughout (organise, realise — no z). Also grammar-check all **outward** communication, surfacing any ambiguous suggestions in {curly brackets}.
 
 ---

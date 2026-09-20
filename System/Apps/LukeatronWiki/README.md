@@ -48,8 +48,13 @@ System/Apps/LukeatronWiki/
 ├── tests/
 │   └── test_*.py                         stdlib unittest, no pytest
 ├── serve.log                             Server output and errors (appended by ensure-wiki.sh)
+├── StyleGuide.md                         the visual contract for app.css — tokens, palettes, motion
 └── README.md                             This file
 ```
+
+See [StyleGuide.md](StyleGuide.md) before touching any colour, space, radius, duration, or type
+value in `static/app.css` — it's the app-local record of how `!HouseStyle` and
+`Templates/wiki-page.css`'s shared tokens land there.
 
 The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores live in `Memory/Long-Term/<store>/`. See `Memory/Long-Term/Lukeatron/memory-structure.md` for the full store directory.
 

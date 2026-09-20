@@ -29,7 +29,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, timedelta
 from typing import Any, Generic, Protocol, TypeVar
 
@@ -70,6 +70,7 @@ class NextActionRowLike(Protocol):
     state: FieldLike[str]
     due: FieldLike[str]
     link: FieldLike[str]
+    recurring_if_done: FieldLike[str]
 
 
 class PeopleRowLike(Protocol):
@@ -103,6 +104,7 @@ class TrackingRowLike(Protocol):
 class RegistryRecordLike(Protocol):
     project_id: str
     mtime: float  # a filesystem fact, not a Field — writes' concurrency gate (documentation.spec.md)
+    multi_stream: bool  # true if Next Actions section has more than one table block
     frontmatter: dict[str, FieldLike[Any]]
     next_actions: Sequence[NextActionRowLike]
     events: Sequence[EventRowLike]
@@ -325,6 +327,16 @@ def _classify_due(raw_value: str | None, today: date) -> DueOutcome:
 # Task and project views (FR-1..FR-12)
 # ---------------------------------------------------------------------------
 
+# A real 🔗 Link value is a bare kebab-slug — _links.yaml's own schema for a
+# link `key` (e.g. "LK-04"). Some registries reuse the same column for an
+# unrelated pointer (a markdown link to a Sandbox dev registry, say); that
+# text is stated but never a key, so it must not be treated as one (FR-11).
+_LINK_KEY_RE = re.compile(r"^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$")
+
+
+def _is_link_key(text: str) -> bool:
+    return bool(_LINK_KEY_RE.fullmatch(text))
+
 
 @dataclass(frozen=True)
 class TaskView:
@@ -338,7 +350,9 @@ class TaskView:
     due_column: Guessable[str]
     due_date: date | None
     due_text: str | None  # FR-5: raw Due cell text, carried through whenever the cell was stated
-    link_key: str | None  # FR-11: the 🔗 Link value when it names a real key, else None
+    link_key: str | None  # FR-11: the 🔗 Link value when it IS a real key (a bare kebab-slug), else None
+    recurring_if_done: str | None  # raw 🔁 Recur cell ("weekly-tue"/"monthly-1st"), else None
+    lane_source: bool = False  # this row's own lane is the one `_lane_driver` rolled the project's lane up from
 
 
 def _build_task(row: NextActionRowLike, *, today: date) -> TaskView:
@@ -354,7 +368,12 @@ def _build_task(row: NextActionRowLike, *, today: date) -> TaskView:
         due_column=due.column,
         due_date=due.parsed_date,
         due_text=due.raw_text,
-        link_key=row.link.value if row.link.stated else None,
+        link_key=(
+            row.link.value
+            if row.link.stated and row.link.value and _is_link_key(row.link.value)
+            else None
+        ),
+        recurring_if_done=row.recurring_if_done.value if row.recurring_if_done.stated else None,
     )
 
 
@@ -396,6 +415,7 @@ class ProjectView:
     done_tasks: list[TaskView]  # wishlist #4b: completed rows, in file order — never feeds lane/due/count
     next_action: TaskView | None  # first open task in file order, for a card's lead line
     mtime: float  # registry.md's mtime as read this pass — outline-print's edits must send this back verbatim
+    multi_stream: bool  # true if Next Actions section has more than one table block
     purpose: str | None  # frontmatter `purpose:` — the one-sentence north star, not the body's fuller paragraph
     definition_of_done: list[str]  # outline-print FR-2, read-only
     decision_log: list[str]  # outline-print FR-2, read-only, file order (append-only source)
@@ -415,6 +435,17 @@ def _resolve_incoming_override(tasks: Sequence[TaskView], wake_field: FieldLike[
     return all_undated and wake_field.stated and bool(wake_field.value)
 
 
+def _lane_driver(tasks: Sequence[TaskView]) -> TaskView | None:
+    """FR-7: the single open task whose own lane sets the project's rolled-up
+    lane — `min`'s first-of-ties behaviour, so this always names the same
+    task `_project_lane` derives its answer from (it calls this too, so the
+    two can never disagree about which row it is). None when there is
+    nothing to roll up (no open tasks)."""
+    if not tasks:
+        return None
+    return min(tasks, key=lambda task: _LANE_DEMAND_RANK[task.lane.value])
+
+
 def _project_lane(tasks: Sequence[TaskView], *, incoming: bool) -> Guessable[str]:
     """FR-6/FR-7: the lane of the highest-demand open action, unless the
     wake override applies. A project with no open actions and no override
@@ -422,9 +453,8 @@ def _project_lane(tasks: Sequence[TaskView], *, incoming: bool) -> Guessable[str
     here that could have stated anything."""
     if incoming:
         return Guessable(LANE_INCOMING, True)
-    if not tasks:
-        return Guessable(LANE_UNSHAPED, True)
-    return min(tasks, key=lambda task: _LANE_DEMAND_RANK[task.lane.value]).lane
+    driver = _lane_driver(tasks)
+    return driver.lane if driver is not None else Guessable(LANE_UNSHAPED, True)
 
 
 def _project_due(
@@ -466,6 +496,16 @@ def build_project(source: ProjectSourceLike, *, today: date) -> ProjectView:
     lane = _project_lane(tasks, incoming=incoming)
     due_column, due_date, due_text = _project_due(tasks, tracking.wake, today, incoming=incoming)
 
+    # UI cue: mark whichever open task actually drove `lane` above, so the
+    # Next Actions list can show which row sets the board lane. The wake
+    # override (`incoming`) bypasses every task to reach its answer, so
+    # nothing is marked in that case — matching `_project_lane`'s own
+    # incoming branch, which never consults `_lane_driver` either.
+    if not incoming:
+        driver = _lane_driver(tasks)
+        if driver is not None:
+            tasks = [replace(t, lane_source=True) if t is driver else t for t in tasks]
+
     purpose_field = reg.frontmatter.get("purpose", _NOT_STATED)
 
     return ProjectView(
@@ -481,6 +521,7 @@ def build_project(source: ProjectSourceLike, *, today: date) -> ProjectView:
         done_tasks=done_tasks,
         next_action=tasks[0] if tasks else None,
         mtime=reg.mtime,
+        multi_stream=reg.multi_stream,
         purpose=purpose_field.value if purpose_field.stated else None,
         definition_of_done=list(reg.definition_of_done),
         decision_log=list(reg.decision_log),

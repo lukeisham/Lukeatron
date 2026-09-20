@@ -9,19 +9,20 @@ import { el } from "../shared/dom.js";
 import { groupByStem, stemDifference } from "./grouping.js";
 import { buildTaskRow, buildDoneTaskRow } from "./task-row.js";
 import { buildCopyButton, taskCopyText, sectionCopyText } from "./copy.js";
+import { wireReorder } from "./reorder.js";
 
 // wishlist #4b: reuses the section heading's existing small-button look
 // (project-copy-btn, project.css) rather than inventing a second button
 // style for what is functionally the same kind of control.
 const DONE_TOGGLE_CLASS = "project-copy-btn";
 
-function buildStemGroup(group, submitEdit) {
+function buildStemGroup(group, submitEdit, reorderCtx) {
   return el("li", { class: "project-stem-group" }, [
     el("h3", { class: "project-stem-heading" }, group.stem),
     el(
       "ul",
       { class: "project-stem-chips" },
-      group.tasks.map((task) => buildTaskRow(task, stemDifference(group, task), submitEdit))
+      group.tasks.map((task) => buildTaskRow(task, stemDifference(group, task), submitEdit, reorderCtx))
     ),
   ]);
 }
@@ -47,7 +48,7 @@ function buildDoneList(doneTasks) {
   );
 }
 
-export function buildNextActionsSection(project, submitEdit, showDone, onToggleDone) {
+export function buildNextActionsSection(project, submitEdit, showDone, onToggleDone, submitReorder) {
   const tasks = project.tasks ?? [];
   const doneTasks = project.done_tasks ?? [];
   const headingChildren = [el("h2", {}, "Next Actions")];
@@ -61,17 +62,26 @@ export function buildNextActionsSection(project, submitEdit, showDone, onToggleD
   if (!tasks.length) {
     children.push(el("p", { class: "project-empty" }, "No open actions."));
   } else {
+    const reorderCtx = project.multi_stream ? null : { submitReorder };
+
+    if (project.multi_stream && tasks.length) {
+      children.push(el("p", { class: "project-multi-stream-note" }, "Reordering isn't available for multi-stream projects yet."));
+    }
+
     // AC-1: three or more siblings sharing a stem become one heading and N
     // chips; anything not sharing a stem (including the stray one that only
     // looks alike) renders as its own row (grouping.js's own risk mitigation).
     const list = el("ul", { class: "project-list project-next-actions" });
     for (const group of groupByStem(tasks)) {
       if (group.stem === null) {
-        list.appendChild(buildTaskRow(group.tasks[0], group.tasks[0].action, submitEdit));
+        list.appendChild(buildTaskRow(group.tasks[0], group.tasks[0].action, submitEdit, reorderCtx));
       } else {
-        list.appendChild(buildStemGroup(group, submitEdit));
+        list.appendChild(buildStemGroup(group, submitEdit, reorderCtx));
       }
     }
+
+    if (!project.multi_stream && tasks.length) wireReorder(list, submitReorder);
+
     children.push(list);
   }
 

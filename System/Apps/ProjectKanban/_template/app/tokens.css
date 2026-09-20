@@ -6,14 +6,25 @@
    contract; this file is obliged to satisfy every name on it.
 
    !HouseStyle (UNCLASSIFIED — this app has no outer chassis) governs the
-   whole surface. The five lane tokens (--l-*) exist because board.css
-   needs five named colours to key off, but each resolves to `--ink-muted`
-   below — Luke's 2026-09-12 decision to keep the house two-accent cap
-   rather than run a sixth/seventh accent hue per lane. The
-   `body[data-lane-hues="mono"]` toggle in board.css is now a no-op (it
-   sets the same values this file already ships as default) and is left
-   wired, not removed, in case a future need for a distinct per-lane
-   colour mode reopens the question.
+   whole surface. The five lane tokens (--l-*) key board.css's rail spine,
+   rail wash and (via --lane-color's inheritance into every card under a
+   lane row) card.css's own card-left border. Luke's 2026-09-12 house
+   two-accent cap (all five sharing one hue) was reopened at his own
+   request on 2026-09-14: each lane now carries its own hue, chosen to sit
+   in the same register as --accent/--focus-ring (medium-saturated, not
+   neon, not pastel) and to stay distinct from both of those and from each
+   other in every palette. `--l-mine` is kept identical to --accent's own
+   value in every palette, but as its own literal hex, not `var(--accent)`
+   — a custom property's var() reference resolves against the element it's
+   declared on (:root), not lazily per point of use, so a reference here
+   would have stayed pinned to :root's default-palette accent even under a
+   body[data-palette] override (caught during 2026-09-14 verification, not
+   shipped). All five lane tokens are literal per palette for that reason,
+   which is why each is repeated in the dark/paper blocks further down
+   this file rather than left to fall through. The
+   `body[data-lane-hues="mono"]` toggle in board.css still
+   collapses all five to `--ink-muted` — the escape hatch back to one
+   shared neutral, kept for whenever the colour is more noise than signal.
 
    Palette contract (FR-4, FR-10): three palettes, cycled by `controls` via
    body.dataset.palette — "default" (this file's bare :root), "paper" (a
@@ -50,22 +61,39 @@
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
-  /* Lane colours — fixed convention, board.css FR-3. House two-accent cap:
-     all five resolve to --ink-muted, see header comment above. */
-  --l-mine: var(--ink-muted);
-  --l-delegate: var(--ink-muted);
-  --l-waiting: var(--ink-muted);
-  --l-incoming: var(--ink-muted);
-  --l-unshaped: var(--ink-muted);
+  /* Press-down feedback (card.css .board-card-copy:active, project.css
+     .project-copy-btn:active) — a fixed black wash, not palette-tinted
+     (like --border-width/motion, it doesn't change across palettes). */
+  --shadow-press: rgb(0 0 0 / 0.18);
+
+  /* Lane colours — fixed convention, board.css FR-3. One hue per lane
+     (2026-09-14, see header comment above). --l-mine is deliberately the
+     same literal hex as --accent rather than `var(--accent)` — a custom
+     property's var() reference resolves against the element it's declared
+     on (here, :root), not lazily per point of use, so `var(--accent)` here
+     would stay pinned to :root's own default-palette accent even under a
+     body[data-palette] override further down this file. All five lane
+     tokens are literal per palette for that reason, --l-mine included. */
+  --l-mine: #2f5fdb;
+  --l-delegate: #1a8f6b;
+  --l-waiting: #b8860b;
+  --l-incoming: #a3266b;
+  --l-unshaped: #7a6f9e;
 
   /* Type — one system stack, no web font (FR-13, SR-2). "New York" is
      Apple's system serif (macOS/iOS "San Francisco"'s serif sibling);
      Georgia/Times New Roman carry the same feel on Windows/Linux. Luke's
-     2026-09-12 pick, over the previous system-sans default. */
+     2026-09-12 pick, over the previous system-sans default. StyleGuide.md's
+     "never introduce a fourth size" line held until 2026-09-14, when Luke
+     asked for the app's own <h1> to look designed rather than left at the
+     browser default — reopened the same deliberate, documented way the
+     lane-hue cap was, for exactly one role (controls.css's .app-header h1,
+     nothing else may read --font-size-xl). */
   --font-body: ui-serif, "New York", Georgia, "Times New Roman", serif;
   --font-size-sm: 0.8125rem;
   --font-size-base: 0.875rem;
   --font-size-lg: 1.125rem;
+  --font-size-xl: 1.75rem;
   --line-height-base: 1.45;
 
   /* Spacing — one 4px-rooted scale, the full set board.css/card.css need
@@ -92,7 +120,7 @@
 
   /* Board layout — consumed only by board.css / card.css */
   --board-rail-width: 140px;
-  --board-rail-spine-width: 4px;
+  --board-rail-spine-width: 8px;
   --board-lane-wash-strength: 8%;
   --board-cell-min-height: 72px;
   --board-card-rail-width: 3px;
@@ -114,6 +142,11 @@
     --border: #333944;
     --accent: #6ea8fe;
     --focus-ring: #ffb454;
+    --l-mine: #6ea8fe;
+    --l-delegate: #4fd1a5;
+    --l-waiting: #f0b93d;
+    --l-incoming: #e08fc7;
+    --l-unshaped: #a8a0c9;
   }
 }
 
@@ -128,6 +161,11 @@ body[data-palette="dark"] {
   --border: #333944;
   --accent: #6ea8fe;
   --focus-ring: #ffb454;
+  --l-mine: #6ea8fe;
+  --l-delegate: #4fd1a5;
+  --l-waiting: #f0b93d;
+  --l-incoming: #e08fc7;
+  --l-unshaped: #a8a0c9;
 }
 
 /* FR-4: the "paper" palette — a warmer, cream-and-ink light mode. Also the
@@ -141,6 +179,11 @@ body[data-palette="paper"] {
   --border: #d9cca4;
   --accent: #8a4b12;
   --focus-ring: #1f6f5c;
+  --l-mine: #8a4b12;
+  --l-delegate: #4f7a4a;
+  --l-waiting: #a67c1f;
+  --l-incoming: #8f3a5c;
+  --l-unshaped: #7a6f5f;
 }
 
 /* FR-10/D-13: print drops straight to the paper palette's own values — the

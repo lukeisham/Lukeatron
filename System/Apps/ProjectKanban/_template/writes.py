@@ -76,6 +76,12 @@ class TableCorruptionError(WritesError):
     committed (FR-4, the writes.spec.md Risks-table mitigation)."""
 
 
+class ReorderMismatchError(WritesError):
+    """No single Next Actions table block's row-id set exactly matches the
+    given row_order — a stale client, a multi-stream project, or a row that
+    has since gone done/deleted/renumbered. Nothing is written."""
+
+
 # ---------------------------------------------------------------------------
 # Results
 # ---------------------------------------------------------------------------
@@ -97,6 +103,14 @@ class NoteResult:
     project_id: str
     section: str
     mtime: float
+
+
+@dataclass(frozen=True)
+class ReorderResult:
+    ok: bool
+    project_id: str
+    row_order: list[str]
+    mtime: float  # the file's new mtime, so the caller's next edit doesn't 409 needlessly
 
 
 # ---------------------------------------------------------------------------
@@ -307,6 +321,49 @@ def _locate_next_action_row(lines: list[str], row_id: str) -> tuple[int, list[st
     return matches[0]
 
 
+def _locate_reorder_block(lines: list[str], row_order: list[str]) -> tuple[int, int]:
+    """Returns (data_start, data_end) — the exclusive-end line-index bounds
+    of the data rows (not the header/separator) of the ONE Next Actions
+    table block whose rows' '#' cell values, as a SET, exactly equal
+    set(row_order), with no duplicates and the same count. Raises
+    ReorderMismatchError if zero or more than one block qualifies — never
+    guesses and never reorders a partial match."""
+    bounds = _find_section_bounds(lines, "next actions")
+    if bounds is None:
+        raise ReorderMismatchError("registry.md has no '# ... Next Actions' section")
+    section_start, section_end = bounds
+
+    wanted = set(row_order)
+    matches: list[tuple[int, int]] = []
+    for block_start, block_end in _find_table_block_bounds(lines, section_start, section_end):
+        if block_end - block_start < 2:
+            continue  # header + separator with no data rows
+        header_cells = stores._split_row(lines[block_start].rstrip("\n"))
+        columns = stores._resolve_columns(header_cells, stores._NEXT_ACTION_ALIASES, has_index_column=True)
+        if "index" not in columns:
+            continue
+        index_pos = columns.index("index")
+        data_start = block_start + 2
+        ids: list[str] = []
+        malformed = False
+        for idx in range(data_start, block_end):
+            cells = stores._split_row(lines[idx].rstrip("\n"))
+            if len(cells) != len(columns):
+                malformed = True
+                break
+            ids.append(cells[index_pos].strip())
+        if malformed:
+            continue
+        if len(ids) == len(row_order) and set(ids) == wanted:
+            matches.append((data_start, block_end))
+
+    if not matches:
+        raise ReorderMismatchError(f"no single Next Actions table block's rows match {row_order!r}")
+    if len(matches) > 1:
+        raise ReorderMismatchError(f"ambiguous: {len(matches)} blocks match {row_order!r}")
+    return matches[0]
+
+
 def _row_link_value(cells: list[str], columns: list[str | None]) -> str:
     if "link" not in columns:
         return ""
@@ -349,6 +406,15 @@ def _verify_cell_written(
         raise TableCorruptionError(
             f"{tmp_path}: row {row_id!r} column {column!r} reads {actual!r}, expected {expected!r}"
         )
+
+
+def _verify_reorder_written(tmp_path: Path, project_id: str, row_order: list[str], baseline_skipped: int) -> None:
+    registry = stores.read_registry(tmp_path, project_id)
+    if len(registry.skipped_rows) > baseline_skipped:
+        raise TableCorruptionError(f"{tmp_path}: the reorder produced a malformed Next Actions row")
+    actual_order = [r.index.value for r in registry.next_actions if r.index.value in row_order]
+    if actual_order != row_order:
+        raise TableCorruptionError(f"{tmp_path}: reorder did not land in the intended sequence (got {actual_order!r})")
 
 
 def _reject_unsafe_cell_value(value: str) -> None:
@@ -505,8 +571,9 @@ def _log_refusal(root: Path, **kwargs: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Public API — the three calls that cover the six edits (AD-2: named
-# fields only, no positional API, which is also why there is no drag).
+# Public API — three calls covering six edits, plus one reorder operation
+# (AD-2: named fields only, no positional API). The reorder function
+# reorders Next Actions rows without changing their cell contents.
 # ---------------------------------------------------------------------------
 
 
@@ -595,3 +662,63 @@ def append_note(root: Path, *, project_id: str, section: str, text: str, mtime: 
     new_mtime = notes_path.stat().st_mtime
     _append_edit_log(root, action="append_note", project_id=project_id, row="-", column=section, outcome="ok", detail=f"text={single_line[:80]!r}")
     return NoteResult(ok=True, project_id=project_id, section=section, mtime=new_mtime)
+
+
+def reorder_next_actions(root: Path, *, project_id: str, row_order: list[str], mtime: float) -> ReorderResult:
+    """Reorders the data rows of ONE Next Actions table block to match
+    row_order exactly. Every row's own cells are carried through unchanged —
+    only line position moves. Reuses the same fence / mtime / re-parse-verify
+    / record guards set_cell already uses."""
+    if len(row_order) < 2:
+        raise ValueError("row_order must name at least 2 rows")
+    row_order = [str(r) for r in row_order]
+    if len(set(row_order)) != len(row_order):
+        raise ValueError("row_order must not contain duplicate row ids")
+
+    medium_term = _medium_term_root(root)
+    row_label = ",".join(row_order)
+    try:
+        registry_path = _find_project_registry_path(root, project_id)
+    except (FenceError, ProjectNotFoundError) as exc:
+        _log_refusal(root, action="reorder_next_actions", project_id=project_id, row=row_label, column="-", outcome=f"refused:{type(exc).__name__}")
+        raise
+
+    try:
+        _check_mtime(registry_path, mtime)
+    except StaleMtimeError:
+        _log_refusal(root, action="reorder_next_actions", project_id=project_id, row=row_label, column="-", outcome="refused:stale_mtime")
+        raise
+
+    baseline = stores.read_registry(registry_path, project_id)
+    baseline_skipped = len(baseline.skipped_rows)
+
+    lines = _read_lines(registry_path)
+    try:
+        data_start, data_end = _locate_reorder_block(lines, row_order)
+    except ReorderMismatchError:
+        _log_refusal(root, action="reorder_next_actions", project_id=project_id, row=row_label, column="-", outcome="refused:reorder_mismatch")
+        raise
+
+    header_cells = stores._split_row(lines[data_start - 2].rstrip("\n"))
+    columns = stores._resolve_columns(header_cells, stores._NEXT_ACTION_ALIASES, has_index_column=True)
+    index_pos = columns.index("index")
+
+    id_to_line: dict[str, str] = {}
+    for idx in range(data_start, data_end):
+        cells = stores._split_row(lines[idx].rstrip("\n"))
+        id_to_line[cells[index_pos].strip()] = lines[idx]
+
+    new_block_lines = [id_to_line[row_id] for row_id in row_order]
+    new_lines = lines[:data_start] + new_block_lines + lines[data_end:]
+
+    _atomic_write_verified(
+        registry_path, "".join(new_lines),
+        verify=lambda p: _verify_reorder_written(p, project_id, row_order, baseline_skipped),
+    )
+
+    tracking_path = _ensure_within(root / "Memory" / "Medium-Term" / "Projects" / "_tracking.yaml", medium_term)
+    _stamp_pending_sweep(tracking_path, project_id)
+
+    new_mtime = registry_path.stat().st_mtime
+    _append_edit_log(root, action="reorder_next_actions", project_id=project_id, row=row_label, column="-", outcome="ok")
+    return ReorderResult(ok=True, project_id=project_id, row_order=row_order, mtime=new_mtime)

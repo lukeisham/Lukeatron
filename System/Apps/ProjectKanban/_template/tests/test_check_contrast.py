@@ -44,10 +44,10 @@ class TestParsePaletteOverrides(unittest.TestCase):
     def test_finds_named_palette_blocks_and_ignores_the_media_query_block(self) -> None:
         css = """
         :root { --bg: #ffffff; --ink: #111111; }
-        :root[data-palette="paper"] { --bg: #f7f3e8; }
-        :root[data-palette="dark"] { --bg: #14171c; --ink: #e7e9ee; }
+        body[data-palette="paper"] { --bg: #f7f3e8; }
+        body[data-palette="dark"] { --bg: #14171c; --ink: #e7e9ee; }
         @media (prefers-color-scheme: dark) {
-          :root:not([data-palette="default"]):not([data-palette="paper"]) { --bg: #14171c; }
+          body:not([data-palette="default"]):not([data-palette="paper"]) { --bg: #14171c; }
         }
         """
         overrides = cc.parse_palette_overrides(css)

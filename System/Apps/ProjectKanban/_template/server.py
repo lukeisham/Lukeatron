@@ -44,13 +44,15 @@ MAX_BODY_BYTES = 65536  # SR-3: no unbounded read of a request body
 # FR-5: the field names a caller may name on an edit, and which of writes.py's
 # functions each routes to. "status"/"due"/"owner"/"kind" are one cell on an
 # existing Next Actions row (writes.set_cell); "note" appends a line to
-# notes.md (writes.append_note). Fixed here, not derived from writes.py, so a
+# notes.md (writes.append_note); "reorder" reorders data rows of one block
+# (writes.reorder_next_actions). Fixed here, not derived from writes.py, so a
 # rename over there is a loud ValueError here, never a silent drift (SR-4's
 # "grep before copying" cousin: it is the single place the request shape is
 # spelled out for `board`/`controls`/`project` to read).
 _CELL_FIELDS = ("status", "due", "owner", "kind")
 _NOTE_FIELD = "note"
-_EDIT_FIELDS = _CELL_FIELDS + (_NOTE_FIELD,)
+_REORDER_FIELD = "reorder"
+_EDIT_FIELDS = _CELL_FIELDS + (_NOTE_FIELD, _REORDER_FIELD)
 
 
 # ---------------------------------------------------------------------------
@@ -72,6 +74,7 @@ ERROR_STATUS: dict[str, int] = {
     "stale_mtime": 409,
     "linked_row": 409,
     "table_corruption": 422,
+    "reorder_mismatch": 422,
     "internal": 500,
 }
 
@@ -218,6 +221,21 @@ def _validate_edit_body(body: dict[str, Any]) -> tuple[dict[str, Any] | None, st
             return None, "value"
         return {"project_id": project_id, "mtime": mtime, "field": field, "row": row, "value": value}, None
 
+    if field == _REORDER_FIELD:
+        row_order = body.get("row_order")
+        if not isinstance(row_order, list) or len(row_order) < 2:
+            return None, "row_order"
+        # Validate each entry: must be str or int (not bool), and if str must be non-empty
+        for entry in row_order:
+            if isinstance(entry, bool) or not isinstance(entry, (str, int)):
+                return None, "row_order"
+            if isinstance(entry, str) and not entry:
+                return None, "row_order"
+        # Check for duplicates by comparing stringified entries
+        if len(set(str(x) for x in row_order)) != len(row_order):
+            return None, "row_order"
+        return {"project_id": project_id, "mtime": mtime, "field": field, "row_order": [str(x) for x in row_order]}, None
+
     if field == _NOTE_FIELD:
         text = body.get("value")
         if not isinstance(text, str) or not text.strip():
@@ -253,6 +271,10 @@ def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
                 root, project_id=parsed["project_id"], row=parsed["row"],
                 column=field, value=parsed["value"], mtime=parsed["mtime"],
             )
+        elif field == _REORDER_FIELD:
+            result = writes.reorder_next_actions(
+                root, project_id=parsed["project_id"], row_order=parsed["row_order"], mtime=parsed["mtime"],
+            )
         else:
             result = writes.append_note(
                 root, project_id=parsed["project_id"], section=parsed["section"],
@@ -273,6 +295,9 @@ def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
     except writes.RowNotFoundError as exc:
         _log_failure(handler, exc)
         return send_error(handler, "row_not_found")
+    except writes.ReorderMismatchError as exc:
+        _log_failure(handler, exc)
+        return send_error(handler, "reorder_mismatch")
     except writes.TableCorruptionError as exc:
         _log_failure(handler, exc)
         return send_error(handler, "table_corruption")
@@ -286,6 +311,19 @@ def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
         return send_error(handler, "internal")
 
     _send_json(handler, 200, result)
+
+
+def set_cell_for_script(root: Path, *, project_id: str, row: str, column: str, value: str, mtime: float) -> writes.EditResult:
+    """The one other caller of `writes.set_cell` besides `_handle_edit` above
+    — `recur.py`'s scheduled cadence reset (README.md D-16). Kept here, not
+    in `recur.py`, so `writes` stays imported by exactly one file on the
+    whole Python side (FR-9,
+    `test_server.TestImport.test_imports_writes_and_no_other_module_does`).
+    A thin pass-through, same as every other caller in this module (module
+    docstring: "moves data; owns no rules") — it validates nothing and
+    catches nothing; `recur.py` sees `writes`'s own exceptions unchanged."""
+    import writes  # deferred: see module docstring
+    return writes.set_cell(root, project_id=project_id, row=row, column=column, value=value, mtime=mtime)
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+# Fixture tracking file for recur.py tests only (TEST-4 convention, reused
+# from writes.py's own fixtures) — a miniature of the real
+# Memory/Medium-Term/Projects/_tracking.yaml, synthetic id (ZZ-20) so a test
+# can never be mistaken for a real project.
+
+projects:
+  - id: ZZ-20
+    project: sample-recur-target
+    title: "Sample Recur Target"
+    context: Personal Research
+    status: Active
+    state: "🟠 your move"
+    waiting_on: ""
+    wake: ""
+    created: 2026-09-01
+    updated: 2026-09-01
+    path: Memory/Medium-Term/Projects/ZZ-20-sample-recur-target/registry.md

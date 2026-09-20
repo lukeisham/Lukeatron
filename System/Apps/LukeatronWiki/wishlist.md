@@ -10,8 +10,9 @@ nothing invented.
 |---|---|---|---|---|---|
 | 1 | A button/link from the wiki viewer over to ProjectKanban (`:8789`) | Low | 2026-09-13 | open | The two viewers already run side-by-side on fixed ports (wiki `:8787`, kanban `:8789`); this is just a cross-link in the nav/header. |
 
-Status values: `open` · `adopted` (folded into a spec — kept here for history) ·
-`built` (shipped) · `rejected` (considered and declined, not silently dropped).
+Status values: `open` · `adopted` (folded into a spec — kept here for history).
+`built` and `rejected` are not statuses that persist here — once an idea ships or Luke declines
+it outright, its row is deleted from this table on the spot (the `!AppWishlist` skill's own rule).
 
 ## Conflict log
 | Date | Wishlist item | PRD/spec section | Nature | Resolution |

@@ -87,6 +87,25 @@
   outline-offset: var(--focus-ring-offset);
 }
 
+/* wishlist: the one open row `_lane_driver` (model.py) actually rolled the
+   project's board lane up from — a glyph tag, not colour alone, so the
+   cue survives body[data-lane-hues="mono"] (tokens.css). */
+.project-task-lane-source {
+  font-size: var(--font-size-sm);
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* recurring_if_done (model.py/task-row.js): a Done row with this set reopens
+   itself on its own cadence (recur.py) — the dashed border is Tufte-style
+   informational shorthand for "this one comes back", not decoration. A
+   plain literal to match this file's own border-style precedent (line 76's
+   `solid` inside the edit controls' shorthand): dashed isn't a colour, size
+   or duration value, so it doesn't belong in tokens.css (StyleGuide.md). */
+.project-task-row--recurring {
+  border: var(--border-width) dashed var(--ink-muted);
+}
+
 /* FR-5/D-7: a linked row is visibly non-interactive — no inputs at all,
    just its label, the plain-English reason, and a copy button. */
 .project-task-row--linked {
@@ -116,6 +135,45 @@
 .project-task-owner-label {
   font-size: var(--font-size-sm);
   color: var(--ink-muted);
+}
+
+.project-task-row[draggable="true"] {
+  cursor: grab;
+}
+
+.project-task-row--drag-over {
+  outline: var(--border-width) dashed var(--accent);
+  outline-offset: calc(-1 * var(--border-width));
+}
+
+.project-task-drag-handle {
+  color: var(--ink-muted);
+  padding-inline: var(--space-2xs);
+  cursor: grab;
+}
+
+.project-task-move-up,
+.project-task-move-down {
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+  background: var(--panel-bg-alt);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2xs);
+  cursor: pointer;
+}
+
+.project-task-move-up:focus-visible,
+.project-task-move-down:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.project-multi-stream-note {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--ink-muted);
+  font-size: var(--font-size-sm);
 }
 
 @media (max-width: 640px) {

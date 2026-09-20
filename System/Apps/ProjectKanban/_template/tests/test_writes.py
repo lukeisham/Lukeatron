@@ -75,8 +75,8 @@ class WritesTestCase(unittest.TestCase):
 class TestImport(unittest.TestCase):
     def test_imports_cleanly_and_exposes_the_public_api(self) -> None:
         for name in (
-            "set_cell", "append_note",
-            "FenceError", "StaleMtimeError", "RowNotFoundError", "LinkedRowError",
+            "set_cell", "append_note", "reorder_next_actions",
+            "FenceError", "StaleMtimeError", "RowNotFoundError", "LinkedRowError", "ReorderMismatchError",
         ):
             self.assertTrue(hasattr(writes, name), name)
 
@@ -430,6 +430,215 @@ class TestProjectNotFound(WritesTestCase):
             writes.set_cell(self.root, project_id="ZZ-99", row="1", column="status", value="☑ Done", mtime=0.0)
         log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
         self.assertIn("refused:ProjectNotFoundError", log_lines[-1])
+
+
+# ---------------------------------------------------------------------------
+# reorder_next_actions — testing the new reorder operation
+# ---------------------------------------------------------------------------
+
+
+class TestReorderNextActionsHappyPath(WritesTestCase):
+    def test_reorders_rows_in_correct_sequence_with_cells_unchanged(self) -> None:
+        """Happy path: reorder 4 rows, verify new order and all cells intact."""
+        path = self.registry_path("ZZ-10")
+        mtime = self.mtime_of(path)
+        before_text = path.read_text(encoding="utf-8")
+        before_record = stores.read_registry(path, "ZZ-10")
+
+        # Get the action text and other cell values before reorder
+        row_1_before = next(r for r in before_record.next_actions if r.index.value == "1")
+        row_2_before = next(r for r in before_record.next_actions if r.index.value == "2")
+        row_3_before = next(r for r in before_record.next_actions if r.index.value == "3")
+        row_4_before = next(r for r in before_record.next_actions if r.index.value == "4")
+        action_1_before = row_1_before.action.value
+        action_2_before = row_2_before.action.value
+        action_3_before = row_3_before.action.value
+        action_4_before = row_4_before.action.value
+        due_1_before = row_1_before.due.value
+        due_2_before = row_2_before.due.value
+        due_3_before = row_3_before.due.value
+        due_4_before = row_4_before.due.value
+
+        # Reorder: 4, 2, 3, 1 (reverse-ish of 1, 2, 3, 4)
+        result = writes.reorder_next_actions(
+            self.root, project_id="ZZ-10", row_order=["4", "2", "3", "1"], mtime=mtime
+        )
+
+        self.assertTrue(result.ok)
+        self.assertEqual(result.project_id, "ZZ-10")
+        self.assertEqual(result.row_order, ["4", "2", "3", "1"])
+
+        # Re-read the file and verify order
+        after_record = stores.read_registry(path, "ZZ-10")
+        after_order = [r.index.value for r in after_record.next_actions]
+        self.assertEqual(after_order, ["4", "2", "3", "1"])
+
+        # Verify all cells are byte-identical (untouched)
+        row_1_after = next(r for r in after_record.next_actions if r.index.value == "1")
+        row_2_after = next(r for r in after_record.next_actions if r.index.value == "2")
+        row_3_after = next(r for r in after_record.next_actions if r.index.value == "3")
+        row_4_after = next(r for r in after_record.next_actions if r.index.value == "4")
+        self.assertEqual(row_1_after.action.value, action_1_before)
+        self.assertEqual(row_2_after.action.value, action_2_before)
+        self.assertEqual(row_3_after.action.value, action_3_before)
+        self.assertEqual(row_4_after.action.value, action_4_before)
+        self.assertEqual(row_1_after.due.value, due_1_before)
+        self.assertEqual(row_2_after.due.value, due_2_before)
+        self.assertEqual(row_3_after.due.value, due_3_before)
+        self.assertEqual(row_4_after.due.value, due_4_before)
+
+        # Verify the special Action cell with pipes is still intact
+        self.assertIn("Alpha|Beta|Gamma", row_2_after.action.value)
+
+
+class TestReorderNextActionsFenceGuard(WritesTestCase):
+    def test_blocked_escaping_path_raises_fence_error_and_touches_nothing(self) -> None:
+        """Project ID that resolves outside the fence is refused like set_cell."""
+        outside = Path(self.root).parent / "outside-fence" / "registry.md"
+        outside.parent.mkdir(parents=True, exist_ok=True)
+        outside.write_text("should never be touched", encoding="utf-8")
+
+        with self.assertRaises(writes.FenceError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-12", row_order=["1", "2"], mtime=0.0
+            )
+
+        self.assertEqual(outside.read_text(encoding="utf-8"), "should never be touched")
+        log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(log_lines), 1)
+        self.assertIn("refused:FenceError", log_lines[0])
+
+    def test_permitted_in_tree_path_succeeds(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = self.mtime_of(path)
+        result = writes.reorder_next_actions(
+            self.root, project_id="ZZ-10", row_order=["4", "2", "3", "1"], mtime=mtime
+        )
+        self.assertTrue(result.ok)
+
+
+class TestReorderNextActionsMtimeGuard(WritesTestCase):
+    def test_blocked_stale_mtime_refused_and_file_byte_unchanged(self) -> None:
+        """Stale mtime raises StaleMtimeError before any write."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        stale = self.mtime_of(path) - 999
+
+        with self.assertRaises(writes.StaleMtimeError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["2", "1", "4"], mtime=stale
+            )
+
+        self.assertEqual(path.read_bytes(), original)
+        log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(log_lines), 1)
+        self.assertIn("refused:stale_mtime", log_lines[0])
+
+    def test_permitted_current_mtime_with_valid_rows_succeeds(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = self.mtime_of(path)
+        result = writes.reorder_next_actions(
+            self.root, project_id="ZZ-10", row_order=["4", "2", "3", "1"], mtime=mtime
+        )
+        self.assertTrue(result.ok)
+
+
+class TestReorderNextActionsMismatch(WritesTestCase):
+    def test_blocked_row_order_with_nonexistent_id_raises_reorder_mismatch(self) -> None:
+        """A row_order that doesn't match any block's actual rows is refused."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.mtime_of(path)
+
+        # Try to reorder with a row ID that doesn't exist
+        with self.assertRaises(writes.ReorderMismatchError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["1", "99"], mtime=mtime
+            )
+
+        self.assertEqual(path.read_bytes(), original)
+        log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
+        self.assertIn("refused:reorder_mismatch", log_lines[-1])
+
+    def test_blocked_row_order_partial_subset_raises_reorder_mismatch(self) -> None:
+        """A row_order that is a proper subset of a block's rows is refused."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.mtime_of(path)
+
+        # Try to reorder only 2 rows when the block has more
+        with self.assertRaises(writes.ReorderMismatchError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["1", "2"], mtime=mtime
+            )
+
+        self.assertEqual(path.read_bytes(), original)
+
+
+class TestReorderNextActionsValidation(WritesTestCase):
+    def test_row_order_too_short_raises_value_error(self) -> None:
+        """row_order must have at least 2 rows."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.mtime_of(path)
+
+        with self.assertRaises(ValueError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["1"], mtime=mtime
+            )
+
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_row_order_with_duplicates_raises_value_error(self) -> None:
+        """row_order must not contain duplicates."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.mtime_of(path)
+
+        with self.assertRaises(ValueError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["1", "2", "1"], mtime=mtime
+            )
+
+        self.assertEqual(path.read_bytes(), original)
+
+
+class TestReorderNextActionsRecordGuard(WritesTestCase):
+    def test_permitted_success_logs_one_ok_line_and_stamps_pending_sweep(self) -> None:
+        """Successful reorder logs an ok line and stamps pending_sweep."""
+        path = self.registry_path("ZZ-10")
+        mtime = self.mtime_of(path)
+        writes.reorder_next_actions(
+            self.root, project_id="ZZ-10", row_order=["4", "2", "3", "1"], mtime=mtime
+        )
+
+        log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(log_lines), 1)
+        self.assertIn("reorder_next_actions", log_lines[0])
+        self.assertIn("project=ZZ-10", log_lines[0])
+        self.assertIn("outcome=ok", log_lines[0])
+
+        data = stores.yaml_load(self.tracking_path().read_text(encoding="utf-8"))
+        row = next(p for p in data["projects"] if p["id"] == "ZZ-10")
+        self.assertIs(row["pending_sweep"], True)
+        other = next(p for p in data["projects"] if p["id"] == "ZZ-11")
+        self.assertNotIn("pending_sweep", other)
+
+    def test_refusal_still_produces_log_line(self) -> None:
+        """Even when the reorder is refused, a log line is recorded."""
+        path = self.registry_path("ZZ-10")
+        mtime = self.mtime_of(path)
+        with self.assertRaises(writes.ReorderMismatchError):
+            writes.reorder_next_actions(
+                self.root, project_id="ZZ-10", row_order=["1", "99"], mtime=mtime
+            )
+        log_lines = self.edits_log_path().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(log_lines), 1)
+        self.assertIn("refused:reorder_mismatch", log_lines[0])
+        # and pending_sweep was never touched
+        data = stores.yaml_load(self.tracking_path().read_text(encoding="utf-8"))
+        row = next(p for p in data["projects"] if p["id"] == "ZZ-10")
+        self.assertNotIn("pending_sweep", row)
 
 
 if __name__ == "__main__":

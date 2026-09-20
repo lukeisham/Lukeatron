@@ -1,12 +1,12 @@
 ---
 name: "!AppRefactor"
-description: "Phase 4 of !AppDevelopment — move a built app or widget to a permanent home as a template plus a clearly-labelled test copy with obviously fake data, delete the design documents only after the new location is verified, then refactor the test on Luke's feedback and fold the result back into the template. Can be run cold on an app or widget this skill set never built."
+description: "Phase 4 of !AppDevelopment — move a built app or widget to a permanent home as a template plus a clearly-labelled test copy with obviously fake data, delete the design documents only after the new location is verified, then refactor the test on Luke's feedback and fold the result back into the template. Every app also gets a StyleGuide.md sibling to README.md, written from its actual tokens/CSS. Can be run cold on an app or widget this skill set never built."
 type: Skill
 status: Active
 core_function: System
 intent: "Give a finished build a permanent template, a safe place to try changes, and a registry that makes refactoring resumable."
-version: 1.1.1
-dependencies: [templates/refactor-registry.md]
+version: 1.2.0
+dependencies: [templates/refactor-registry.md, templates/style-guide.md]
 calibration:
   context: [PersonalResearch]
   level: Extended
@@ -29,7 +29,9 @@ app", "give <name> a permanent home", "set up a test copy of <name>".
   MATCH entry CASE
     from Phase 3 ➔ READ the Sandbox registry, the PRD, and the specs. There is a migration to do.
     cold         ➔ ASK Luke where the existing app/widget lives. There is no PRD, no specs, and
-                   nothing to delete. Skip STEP 3 and STEP 4 entirely; go STEP 1 → 2 → 5.
+                   nothing to delete. Skip STEP 3 and STEP 4 entirely (there is no doc-spec to
+                   fold); STEP 4B still runs — an app with no build history still gets a Style
+                   Guide, written from its code as it stands. Go STEP 1 → 2 → 4B → 5.
 
 **STEP 1 — Agree the permanent home**
   PROPOSE a location and get Luke's explicit confirmation. Do not move anything until he confirms.
@@ -81,6 +83,35 @@ app", "give <name> a permanent home", "set up a test copy of <name>".
   already says through its own names. If a line of it could be deleted and the code would still
   tell you the same thing, delete the line.
   THEN DELETE the documentation spec itself along with the rest.
+
+**STEP 4B — Write the Style Guide (apps only; runs whether or not STEP 4 ran)**
+  IF `kind` = widget ➔ skip this step — a widget's visual contract already lives with its host
+  chassis (Parser/Generator's own shared `StyleGuide/`), or, if it has none, is out of this step's
+  scope.
+  Every app in `_template/` carries a `StyleGuide.md` sibling to `README.md` — the visual
+  contract, kept to a scope separate from README's (architecture/decisions): a token/colour
+  table read off the real code, not a CSS tutorial and not a restatement of what the code already
+  says through its own names (SR-7 applies here too).
+  WRITE it from `templates/style-guide.md`, sourced from the app's actual token/CSS files as they
+  stand today — never redrafted from memory, intention, or the PRD:
+    - open with the surface's verdict from `!HouseStyle`'s `reference/sources.md` register
+      (EXEMPT / SUBORDINATE / UNCLASSIFIED) and what it means for this app specifically
+    - the one rule — where every visual value must live (normally one token file every other file
+      cites rather than writing a literal), and what enforces it if anything does
+    - the palette table(s) — every named token and its value per mode, read off the real CSS
+    - type — stack(s) and the fixed size scale
+    - spacing, radii, motion — the fixed scales and their ceiling
+    - layout scope by file, when styling is split across more than one file — what each file owns,
+      what it must never touch
+    - a short "before shipping a visual change" checklist scoped to what this app specifically
+      needs checked, not generic HouseStyle doctrine restated
+  IF the surface is SUBORDINATE to a shared chassis ➔ this file says so and points there rather
+  than re-deriving shared rules.
+  UPDATE `README.md`'s navigation map to list `StyleGuide.md`, and add one line telling a reader
+  to read it before touching colour/space/radius/duration/type in the app — the cross-reference,
+  not a copy of its content.
+  This step runs on every Phase 4 entry, cold or not — that is why it is its own step rather than
+  folded into STEP 4, which only runs when there is a doc-spec to fold.
 
 **STEP 5 — Build the test copy**
   COPY `_template/` to `_test/`.
@@ -153,7 +184,7 @@ whether the change is *sound*, not whether it looks good.
 | 5 | Does `_test/`/`_template/` still diff clean against the divergence allowlist? | Finish the port, or name the new item and add it to the allowlist with a reason. |
 | 6 | (widget only) Was it exercised inside its named host, not just standalone? | Open it in the host before closing the row. |
 | 7 | If a Vibe-Coding rule exception was introduced, is it recorded in both the registry and the template's README? | Add both now, with the reason (G-1). |
-| 8 | Is the README's cross-boundary section still accurate after this change? | Update it — SR-7's scope, nothing more. |
+| 8 | Is the README's cross-boundary section, and (for an app) `StyleGuide.md` if the change touched any colour/space/radius/duration/type value, still accurate after this change? | Update whichever changed — SR-7's scope, nothing more. |
 
 **Common Mistakes**
 | Symptom | Why it fails | Fix |
@@ -167,8 +198,9 @@ whether the change is *sound*, not whether it looks good.
 
 ## ✅ OUTPUT
 A permanent home containing `_template/` — a raw, current-version instance of the working app
-or widget, carrying nothing but its code and one short `README.md` — a labelled `_test/` full of
-obviously fake data, and `refactor-registry.md`.
+or widget, carrying nothing but its code, one short `README.md`, and (for an app) one
+`StyleGuide.md` that README's navigation map points to — a labelled `_test/` full of obviously
+fake data, and `refactor-registry.md`.
 
 **Validation Check (Self-Test)**
 ```
@@ -176,6 +208,8 @@ VERIFY the new location was confirmed by Luke before anything moved
 VERIFY the copy was checked file-by-file and the project's own checks were run and reported
 VERIFY nothing was deleted before that verification passed and Luke confirmed
 VERIFY _template/ carries the working code plus README.md and NO spec, PRD, or build file
+VERIFY an app's _template/ also carries StyleGuide.md, sourced from its real tokens/CSS, and
+  README.md's navigation map points to it — cold entry included
 VERIFY _test/ is labelled TEST and contains no real or plausible-looking data
 VERIFY _template/, _test/ and refactor-registry.md are siblings
 VERIFY wishlist.md, if the project had one, was carried into the permanent home and is NOT among

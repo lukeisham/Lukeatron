@@ -15,7 +15,8 @@ last_updated: <YYYY-MM-DD>
 ## Where things are
 ```
 <Name>/
-├── _template/              the canonical copy — raw working code + README.md, no data, no specs
+├── _template/              the canonical copy — raw working code + README.md (+ StyleGuide.md
+│                           for an app), no data, no specs
 ├── _test/                  labelled TEST, obviously fake data, where every change is tried first
 └── refactor-registry.md    this file
 ```
@@ -63,7 +64,8 @@ exactly. Empty is the normal state.>
 A cold agent picks this up by reading, in order:
 1. This registry — the board, and which row is in flight.
 2. `_template/README.md` — key decisions and their reasons, cross-boundary behaviour, navigation map.
-3. `_test/` — the current state of whatever is being tried.
+3. `_template/StyleGuide.md` (apps only) — the visual contract: tokens, palettes, motion, layout scope.
+4. `_test/` — the current state of whatever is being tried.
 Do not reconstruct state from conversation history. This file is the state.
 
 ## Migration log

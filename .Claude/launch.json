@@ -23,6 +23,18 @@
       "port": 8789
     },
     {
+      "name": "storytelling-mockups",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8795",
+        "--directory",
+        "System/Sandbox/Storytelling/_mockups"
+      ],
+      "port": 8795
+    },
+    {
       "name": "wiki-preview",
       "runtimeExecutable": "python3",
       "runtimeArgs": [

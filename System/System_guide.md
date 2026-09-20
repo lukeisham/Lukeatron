@@ -381,7 +381,6 @@ description of each lives in CLAUDE.md § Key Skills, Checkpoints and Templates.
         ┌─ SKILLBANK (on-demand; load on trigger, not at boot) ┐
         │  !IdeaWiki       tend the LukeatronWiki graph         │
         │  !PruneMemory    on-demand Medium-Term maintenance     │
-        │  !Dashboard      live project urgency widget          │
         │  !WhatsApp       read-only WhatsApp portal            │
         │  !ThinPortal     build pattern for new portal skills  │
         └──────────────────────────────────────────────────────┘

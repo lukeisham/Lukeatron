@@ -18,8 +18,9 @@ import { printProject } from "./print.js";
 // wishlist #4b: showDone is a per-page-visit UI toggle, not a stored
 // preference (unlike controls.js's density/palette) — it resets to off on
 // every fresh project visit, same as the toolbar's own view state does not
-// carry over from board to project.
-const state = { project: null, mtime: null, showDone: false };
+// carry over from board to project. showDecisionLog (hide/reveal Decision
+// Log) follows the exact same rule for the exact same reason.
+const state = { project: null, mtime: null, showDone: false, showDecisionLog: false };
 
 function isProjectRoute() {
   return location.hash.startsWith("#project=");
@@ -85,6 +86,19 @@ async function submitEdit(field, task, value) {
   }
 }
 
+async function submitReorder(rowOrder) {
+  try {
+    const result = await postEdit({ project_id: state.project.id, mtime: state.mtime, field: "reorder", row_order: rowOrder });
+    state.mtime = result.mtime;
+    clearEditError();
+    await loadProject(state.project.id, { silent: true });
+    return { ok: true };
+  } catch (err) {
+    showEditError(err.message);
+    return { ok: false, message: err.message };
+  }
+}
+
 async function submitNote(section, text) {
   try {
     const result = await postEdit({ project_id: state.project.id, mtime: state.mtime, field: "note", section, value: text });
@@ -98,6 +112,11 @@ async function submitNote(section, text) {
 
 function toggleShowDone() {
   state.showDone = !state.showDone;
+  renderProjectPage(projectRoot(), state.project);
+}
+
+function toggleShowDecisionLog() {
+  state.showDecisionLog = !state.showDecisionLog;
   renderProjectPage(projectRoot(), state.project);
 }
 
@@ -117,11 +136,11 @@ function renderProjectPage(root, project) {
   const sections = [
     buildPurposeSection(project),
     buildDefinitionOfDoneSection(project),
-    buildNextActionsSection(project, submitEdit, state.showDone, toggleShowDone),
+    buildNextActionsSection(project, submitEdit, state.showDone, toggleShowDone, submitReorder),
     buildEventsSection(project),
     buildDocumentsSection(project),
     buildPeopleSection(project),
-    buildDecisionLogSection(project),
+    buildDecisionLogSection(project, state.showDecisionLog, toggleShowDecisionLog),
     buildNoteBox(submitNote),
   ].filter(Boolean);
 
@@ -145,8 +164,11 @@ async function loadProject(projectId, { silent = false } = {}) {
     // wishlist #4b: a fresh navigation to a (possibly different) project
     // resets the toggle; an edit's own silent refetch of the SAME project
     // must not — flipping it back off mid-edit would be a surprise, not a
-    // safety feature.
-    if (!silent) state.showDone = false;
+    // safety feature. Decision Log's toggle resets the same way, same reason.
+    if (!silent) {
+      state.showDone = false;
+      state.showDecisionLog = false;
+    }
     renderProjectPage(root, project);
   } catch (err) {
     console.warn("project.js: could not load the project —", err);

@@ -14,6 +14,7 @@ const ERROR_SENTENCES = {
   project_not_found: "That row no longer exists — refresh the page.",
   row_not_found: "That row no longer exists — refresh the page.",
   table_corruption: "That value can't be safely stored (likely a \"|\" or a newline) — try again without it.",
+  reorder_mismatch: "That list doesn't match what's on this row's table anymore — refresh and try again.",
   bad_request: "That edit didn't go through — try again.",
   internal: "Something went wrong on this end — nothing was changed. Try again in a moment.",
 };

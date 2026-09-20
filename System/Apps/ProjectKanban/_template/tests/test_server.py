@@ -427,6 +427,69 @@ class TestEditValidation(unittest.TestCase):
         self.assertIsNone(field)
         self.assertEqual(parsed["section"], "scraps")
 
+    def test_reorder_edit_with_valid_row_order(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", "2"], "mtime": 1.0}
+        )
+        self.assertIsNone(field)
+        self.assertEqual(parsed["row_order"], ["1", "2"])
+
+    def test_reorder_edit_with_numeric_entries_converts_to_strings(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": [1, 2, 3], "mtime": 1.0}
+        )
+        self.assertIsNone(field)
+        self.assertEqual(parsed["row_order"], ["1", "2", "3"])
+
+    def test_reorder_edit_with_too_few_entries(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1"], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_duplicate_entries(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", "2", "1"], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_numeric_duplicate_entries_detected_by_stringified_comparison(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", 1], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_non_list_row_order(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": "1,2", "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_boolean_entry(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", True], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_empty_string_entry(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", ""], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
+    def test_reorder_edit_with_non_string_non_int_entry(self) -> None:
+        parsed, field = server._validate_edit_body(
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", 2.5], "mtime": 1.0}
+        )
+        self.assertIsNone(parsed)
+        self.assertEqual(field, "row_order")
+
 
 class TestEditEndpointBadRequest(FixtureServerTestCase):
     def test_missing_project_id_over_http_is_400(self) -> None:
@@ -606,6 +669,90 @@ class TestTableCorruptionMapping(FixtureServerTestCase):
         )
         self.assertEqual(status, 422)
         self.assertEqual(body["error"], "table_corruption")
+
+
+# ---------------------------------------------------------------------------
+# Reorder edits (field reorder)
+# ---------------------------------------------------------------------------
+
+
+class TestReorderEdits(FixtureServerTestCase):
+    def test_reorder_edit_with_valid_row_order_succeeds(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        # ZZ-10 fixture has rows 1, 2, 3, 4 in one table block; reorder requires
+        # all rows in the block to be specified (exact match), so use all four.
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", "2", "3", "4"], "mtime": mtime},
+        )
+        self.assertEqual(status, 200)
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["row_order"], ["1", "2", "3", "4"])
+        self.assertNotEqual(body["mtime"], mtime)
+
+    def test_reorder_edit_with_too_few_entries_is_400(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1"], "mtime": mtime},
+        )
+        self.assertEqual(status, 400)
+        self.assertEqual(body["error"], "bad_request")
+        self.assertEqual(body["field"], "row_order")
+
+    def test_reorder_edit_with_duplicate_entries_is_400(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", "2", "1"], "mtime": mtime},
+        )
+        self.assertEqual(status, 400)
+        self.assertEqual(body["error"], "bad_request")
+        self.assertEqual(body["field"], "row_order")
+
+    def test_reorder_edit_with_non_list_row_order_is_400(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": "1,2", "mtime": mtime},
+        )
+        self.assertEqual(status, 400)
+        self.assertEqual(body["error"], "bad_request")
+        self.assertEqual(body["field"], "row_order")
+
+    def test_reorder_edit_with_boolean_entry_is_400(self) -> None:
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", True], "mtime": mtime},
+        )
+        self.assertEqual(status, 400)
+        self.assertEqual(body["error"], "bad_request")
+        self.assertEqual(body["field"], "row_order")
+
+    def test_reorder_mismatch_is_422_with_its_own_code(self) -> None:
+        original = writes.reorder_next_actions
+
+        def _boom(*args: Any, **kwargs: Any) -> None:
+            raise writes.ReorderMismatchError("simulated reorder mismatch")
+
+        writes.reorder_next_actions = _boom
+        self.addCleanup(lambda: setattr(writes, "reorder_next_actions", original))
+
+        path = self.registry_path("ZZ-10")
+        mtime = path.stat().st_mtime
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "reorder", "row_order": ["1", "2"], "mtime": mtime},
+        )
+        self.assertEqual(status, 422)
+        self.assertEqual(body["error"], "reorder_mismatch")
+        self.assertNotEqual(body["error"], "table_corruption", "reorder_mismatch must be distinguishable from table_corruption")
 
 
 if __name__ == "__main__":

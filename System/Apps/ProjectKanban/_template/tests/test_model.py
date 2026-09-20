@@ -50,6 +50,7 @@ class FakeNextActionRow:
     state: FakeField = NOT_STATED
     due: FakeField = NOT_STATED
     link: FakeField = NOT_STATED
+    recurring_if_done: FakeField = NOT_STATED
 
 
 @dataclass(frozen=True)
@@ -89,6 +90,7 @@ class FakeTrackingRow:
 class FakeRegistryRecord:
     project_id: str = "PP-00"
     mtime: float = 0.0
+    multi_stream: bool = False
     frontmatter: dict = field(default_factory=dict)
     next_actions: list = field(default_factory=list)
     events: list = field(default_factory=list)
@@ -118,6 +120,7 @@ def make_project(
     definition_of_done: list[str] | None = None,
     decision_log: list[str] | None = None,
     mtime: float = 0.0,
+    multi_stream: bool = False,
 ) -> FakeProjectSource:
     return FakeProjectSource(
         tracking=FakeTrackingRow(
@@ -126,6 +129,7 @@ def make_project(
         registry=FakeRegistryRecord(
             project_id=project_id,
             mtime=mtime,
+            multi_stream=multi_stream,
             frontmatter=frontmatter or {},
             next_actions=actions,
             events=events or [],
@@ -269,6 +273,32 @@ class TestRollup(unittest.TestCase):
         # OVERDUE (from the waiting action's ASAP) is still the soonest column present
         self.assertEqual(view.due_column, model.Guessable(model.COLUMN_OVERDUE, False))
 
+    def test_lane_source_marks_the_one_row_that_actually_drove_the_lane(self) -> None:
+        # same fixture as above: the second row (Luke's) outranks the first
+        # (Keith's) — the UI cue must land on that row, not the first one.
+        waiting_action = FakeNextActionRow(action=stated("with Keith"), owner=stated("Keith"), due=stated("ASAP"))
+        mine_action = FakeNextActionRow(action=stated("urgent"), owner=stated("Luke"), due=stated("Aug 2026"))
+        project = make_project("PP-01", [waiting_action, mine_action])
+        view = model.build_project(project, today=TODAY)
+        self.assertFalse(view.tasks[0].lane_source)
+        self.assertTrue(view.tasks[1].lane_source)
+
+    def test_lane_source_is_unmarked_everywhere_under_the_wake_override(self) -> None:
+        # FR-6: an all-undated project with a dated wake rolls up to INCOMING
+        # off the wake, bypassing every task — no row drove that answer, so
+        # none should claim to.
+        undated_action = FakeNextActionRow(action=stated("someday"), owner=stated("Luke"))
+        project = make_project("PP-01", [undated_action], wake=stated("2026-10-01"))
+        view = model.build_project(project, today=TODAY)
+        self.assertEqual(view.lane, model.Guessable(model.LANE_INCOMING, True))
+        self.assertFalse(view.tasks[0].lane_source)
+
+    def test_lane_source_is_none_with_no_open_tasks(self) -> None:
+        project = make_project("PP-01", [])
+        view = model.build_project(project, today=TODAY)
+        self.assertEqual(view.tasks, [])
+        self.assertEqual(view.lane, model.Guessable(model.LANE_UNSHAPED, True))
+
 
 class TestDoneTasks(unittest.TestCase):
     """wishlist #4b: done rows are built into their own `done_tasks` list,
@@ -341,6 +371,20 @@ class TestLinkedRows(unittest.TestCase):
         self.assertEqual(view.tasks[0].link_key, "LK-04")
         self.assertIsNone(view.tasks[1].link_key)
 
+    def test_a_stated_link_cell_that_is_not_a_real_key_is_not_linked(self) -> None:
+        """A Link cell can carry something other than a _links.yaml key — a
+        markdown pointer to a Sandbox dev registry, say. That text is stated
+        but is not a kebab-slug key, so it must not trigger the linked-row
+        treatment (regression: TE-11 rebuild-rhetoric-app false-flagged as
+        shared with another project when its Link cell held a Sandbox link)."""
+        markdown_link = FakeNextActionRow(
+            action=stated("own task"),
+            link=stated("[Sandbox/Rhetoric](../../../System/Sandbox/Rhetoric/registry.md)"),
+        )
+        project = make_project("TE-11", [markdown_link])
+        view = model.build_project(project, today=TODAY)
+        self.assertIsNone(view.tasks[0].link_key)
+
 
 class TestProjectDetailPassthrough(unittest.TestCase):
     """outline-print.spec.md FR-2's project-page fields: purpose, definition
@@ -398,6 +442,15 @@ class TestProjectDetailPassthrough(unittest.TestCase):
         self.assertEqual(task.kind, "mine")
         self.assertEqual(task.status, "◐ Doing")
         self.assertEqual(task.state, "🟢 on track")
+
+    def test_multi_stream_passes_through_unchanged(self) -> None:
+        project_single = make_project("PP-03", [], multi_stream=False)
+        view_single = model.build_project(project_single, today=TODAY)
+        self.assertFalse(view_single.multi_stream)
+
+        project_multi = make_project("PP-03", [], multi_stream=True)
+        view_multi = model.build_project(project_multi, today=TODAY)
+        self.assertTrue(view_multi.multi_stream)
 
 
 class TestBoardCounts(unittest.TestCase):

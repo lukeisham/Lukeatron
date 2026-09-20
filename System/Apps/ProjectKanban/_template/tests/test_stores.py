@@ -82,6 +82,10 @@ class TestRegistryMultiStream(unittest.TestCase):
         self.assertEqual(len(record.events), 1)
         self.assertEqual(record.events[0].type, stores.Field("Milestone", True))
 
+    def test_multi_stream_true_for_registry_with_multiple_table_blocks(self) -> None:
+        record = stores.read_registry(FIXTURES / "registry_multi_stream.md", "ZZ-01")
+        self.assertTrue(record.multi_stream)
+
 
 class TestRegistryLegacyColumns(unittest.TestCase):
     """AC-3 (this app's numbering) — a Next Actions table missing optional
@@ -98,6 +102,10 @@ class TestRegistryLegacyColumns(unittest.TestCase):
         self.assertEqual(row.state, stores.Field(None, False))
         self.assertEqual(row.status, stores.Field("☐ Open", True))
         self.assertEqual(row.due, stores.Field(None, False))  # "—" is the blank glyph, not a value
+
+    def test_multi_stream_false_for_registry_with_single_table_block(self) -> None:
+        record = stores.read_registry(FIXTURES / "registry_full_sections.md", "ZZ-06")
+        self.assertFalse(record.multi_stream)
 
 
 class TestNextActionKindTypeAlias(unittest.TestCase):

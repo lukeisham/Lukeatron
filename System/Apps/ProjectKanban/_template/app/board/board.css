@@ -19,6 +19,7 @@
      Motion:   --motion-fast
      Focus:    --focus-ring  --focus-ring-width  --focus-ring-offset
      Type:     --font-size-sm (outline-print.spec.md FR-11's print trigger)
+     Depth:    --shadow-press (card.css .board-card-copy:active)
 
      Board layout (used only in board.css / card.css):
        --board-rail-width          width of the lane-label rail column
@@ -38,10 +39,18 @@
    below go `display: contents` so their children (the rail/spacer and the
    five cells) become direct items of this one grid, and a single set of
    column tracks governs every row. */
+/* #board-root was unstyled — the grid ran edge-to-edge against the viewport
+   and its own header row sat flush against the toolbar's bottom border with
+   no seam between them. One page-level padding, same role project.css's
+   own .project-page padding already plays on the other route. */
+#board-root {
+  padding: var(--space-md);
+}
+
 .board {
   display: grid;
   grid-template-columns: var(--board-rail-width) repeat(5, 1fr);
-  gap: var(--space-2xs);
+  gap: var(--space-sm);
 }
 
 .board-header-row,
@@ -78,7 +87,7 @@
 .board-lane-rail {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-2xs);
   padding: var(--space-sm);
   border-inline-start: var(--board-rail-spine-width) solid var(--lane-color);
@@ -96,7 +105,7 @@
   flex-direction: column;
   gap: var(--space-sm);
   min-height: var(--board-cell-min-height); /* FR-8/AD-2: an empty cell keeps the grid's shape */
-  padding: var(--space-2xs);
+  padding: var(--space-xs);
 }
 
 .board-nothing-needed {
@@ -124,9 +133,10 @@
   color: var(--ink-muted);
 }
 
-/* board.spec.md §4: the deferred lane-colour-count decision. Until answered,
-   `controls` can flip this attribute to collapse all five hues to one
-   neutral ink with no change to this module's markup or logic. */
+/* board.spec.md §4: the lane-colour-count escape hatch. Default is one
+   distinct hue per lane (tokens.css, 2026-09-14); `controls` can flip this
+   attribute to collapse all five back to one shared --ink-muted rail, with
+   no change to this module's markup or logic. */
 body[data-lane-hues="mono"] {
   --l-mine: var(--ink-muted);
   --l-delegate: var(--ink-muted);

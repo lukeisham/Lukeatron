@@ -438,7 +438,7 @@ def _parse_bullet_section(body: list[_Line], heading_fragment: str) -> list[str]
 # Next Actions
 # ---------------------------------------------------------------------------
 
-_NEXT_ACTION_FIELDS = ("index", "action", "owner", "kind", "status", "state", "due", "link")
+_NEXT_ACTION_FIELDS = ("index", "action", "owner", "kind", "status", "state", "due", "link", "recurring_if_done")
 
 _NEXT_ACTION_ALIASES = {
     "action": "action",
@@ -449,6 +449,7 @@ _NEXT_ACTION_ALIASES = {
     "state": "state",
     "due": "due",
     "link": "link",
+    "recur": "recurring_if_done",  # "🔁 Recur" header cell; emoji strips out under _normalize_header_cell
 }
 
 
@@ -462,6 +463,7 @@ class NextActionRow:
     state: Field[str]
     due: Field[str]
     link: Field[str]
+    recurring_if_done: Field[str]  # cadence a Done row reopens on ("weekly-tue" | "monthly-1st"), else unstated
 
 
 # ---------------------------------------------------------------------------
@@ -559,6 +561,7 @@ class RegistryRecord:
     path: Path
     mtime: float  # a filesystem fact observed just now (FR-5) — never a Field, never something a
     # source file could itself state or omit; `writes` needs it as its concurrency gate.
+    multi_stream: bool  # true if Next Actions section has more than one table block
     frontmatter: dict[str, Field[Any]]
     next_actions: list[NextActionRow]
     events: list[EventRow]
@@ -595,10 +598,14 @@ def read_registry(path: Path, project_id: str) -> RegistryRecord:
     definition_of_done = _parse_bullet_section(body, "definition of done")
     decision_log = _parse_bullet_section(body, "decision log")
 
+    next_actions_lines = _find_section(body, "next actions")
+    multi_stream = len(_find_table_blocks(next_actions_lines)) > 1
+
     return RegistryRecord(
         project_id=project_id,
         path=path,
         mtime=mtime,
+        multi_stream=multi_stream,
         frontmatter=frontmatter,
         next_actions=next_actions,
         events=events,

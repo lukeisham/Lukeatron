@@ -83,7 +83,7 @@ export function buildDocumentsSection(project) {
           "li",
           { class: "project-row" },
           [
-            el("span", { class: "project-row-text", title: doc.file ?? "" }, basename(doc.file)),
+            el("span", { class: "project-row-text project-row-text--accent", title: doc.file ?? "" }, basename(doc.file)),
             doc.description ? el("span", { class: "project-row-detail" }, doc.description) : null,
             buildCopyButton(`Copy ${basename(doc.file)}`, () => documentCopyText(doc)),
           ].filter(Boolean)
@@ -103,7 +103,7 @@ export function buildPeopleSection(project) {
       { class: "project-list project-people" },
       people.map((person) =>
         el("li", { class: "project-row" }, [
-          el("span", { class: "project-row-text" }, personCopyText(person)),
+          el("span", { class: "project-row-text project-row-text--accent" }, personCopyText(person)),
           buildCopyButton(`Copy ${person.person ?? "person"}`, () => personCopyText(person)),
         ])
       )
@@ -111,10 +111,27 @@ export function buildPeopleSection(project) {
   ]);
 }
 
-export function buildDecisionLogSection(project) {
+// wishlist: "Hide/reveal Decision Log" — reuses the Next Actions section's
+// done-toggle pattern (same button class, same aria-expanded/onclick shape,
+// same closed-by-default rule) rather than inventing a second disclosure
+// control for what is functionally the same kind of thing: a list that can
+// grow long and isn't needed at a glance.
+function buildDecisionLogToggle(entries, showDecisionLog, onToggle) {
+  if (!entries.length) return null;
+  return el(
+    "button",
+    { type: "button", class: "project-copy-btn", "aria-expanded": String(showDecisionLog), onclick: onToggle },
+    showDecisionLog ? `Hide Decision Log (${entries.length})` : `Show Decision Log (${entries.length})`
+  );
+}
+
+export function buildDecisionLogSection(project, showDecisionLog, onToggleDecisionLog) {
   // D-15/model.py: file order, append-only at the source — never re-sorted
   // here on an assumption about which end is newest.
   const entries = project.decision_log ?? [];
   if (!entries.length) return null;
-  return el("section", { class: "project-section" }, [sectionHeading("Decision Log"), el("ul", { class: "project-list" }, entries.map((text) => el("li", {}, text)))]);
+  const heading = el("div", { class: "project-section-heading" }, [el("h2", {}, "Decision Log"), buildDecisionLogToggle(entries, showDecisionLog, onToggleDecisionLog)].filter(Boolean));
+  const children = [heading];
+  if (showDecisionLog) children.push(el("ul", { class: "project-list" }, entries.map((text) => el("li", {}, text))));
+  return el("section", { class: "project-section" }, children);
 }

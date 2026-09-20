@@ -6,6 +6,11 @@ back to the markdown so the board still works when no agent is available. Replac
 **ProjectDashboard** (retired 2026-09-12, archived to `Archive/ProjectDashboard-app-2026-09-12/`)
 as the project dashboard kept live on `:8789`.
 
+This document covers code layout and code behaviour — modules, data flow, decisions, and why the
+tree splits the way it does. It carries no visual or interaction detail; that contract lives in
+[StyleGuide.md](StyleGuide.md), which points back here (its "Interaction & UX conventions" section)
+for the *why* behind the decisions it cites.
+
 ## Cross-boundary behaviour
 
 | From | To | What crosses | What breaks if it changes |
@@ -42,6 +47,7 @@ client. `writes` is imported by `server` and by nothing else.
 | D-13 | Nothing the browser loads may reference an external file | Keeps an offline copy free; proved itself on day one when the mockups wouldn't render until self-contained |
 | D-14 | Screen text serves the reader; build explanation lives in comments | The server sends codes; the browser writes the sentence |
 | D-15 | `model`/`stores` carry purpose, definition of done, decision log, events, documents, people and mtime onto `ProjectView` as plain passthrough | Keeps D-2's single point of derivation; avoids a second endpoint or the browser reading files directly |
+| D-16 | A row's own 🔁 Recur cell (`recurring_if_done` in `stores`/`model`/`task-row.js`) is read-only in the browser — reopening a Done recurring row is done by a separate `recur.py`, run on a schedule, never by an in-app edit | Keeps D-5's "one place edits happen" — the browser's five edits change what's on the page now; a cadence firing later is a different kind of write and gets its own script rather than a sixth edit path |
 
 ## Navigation map
 
@@ -52,14 +58,20 @@ ProjectKanban/
 ├── model.py              the only place a fact is derived. No file, no clock, no network
 ├── writes.py             the only place a file changes. Six edits, four guards
 ├── server.py             moves data; owns no rules
+├── recur.py              scheduled caller, not server.py's — reopens a Done recurring row (D-16)
 ├── check_contrast.py     every palette must pass this before it ships
 ├── app/
 │   ├── tokens.css        every colour, space, type size and duration in the app
 │   ├── board/            the lane × column grid. Never imports the edit client
 │   ├── controls/         the toolbar and the three remembered choices
 │   └── project/          the project page, the five edits, the print path
+├── StyleGuide.md         the visual contract for app/ — palettes, tokens, motion, layout scope
 └── tests/                one file per module, mirroring the tree
 ```
+
+See [StyleGuide.md](StyleGuide.md) before touching any colour, space, radius, duration, or type
+value in `app/` — it's the app-local record of how `!HouseStyle` lands in `tokens.css` and the CSS
+files that consume it.
 
 Why `app/` splits three ways: `board` draws, `controls` holds state, `project` is the only place
 anything changes. The split is what keeps a toggle a class flip and keeps the edit client out of
@@ -71,7 +83,9 @@ the board's reach.
 |---|---|---|---|
 | SR-4 — share, don't copy-paste | The whole app: its own copies of the parsing, write and palette modules rather than sharing ProjectDashboard's | A new app expected to replace the old one; divergence was the intended outcome | 2026-09-10 |
 
-**Resolved 2026-09-12:** the five-lane-hues question was decided in favour of the house two-accent
-cap. `app/tokens.css` ships all five `--l-*` tokens resolved to `--ink-muted` by default — no
-distinct per-lane colour. The `body[data-lane-hues="mono"]` toggle in `board.css`/`board.js` is now
-a no-op (kept wired, not removed, in case a future need reopens the question).
+**Resolved 2026-09-12, reopened 2026-09-14:** the five-lane-hues question was first decided in
+favour of the house two-accent cap (all five `--l-*` tokens sharing one hue), then reopened at
+Luke's own request two days later. `app/tokens.css` now gives each lane its own hue — see
+StyleGuide.md's "Lane colours" section for the actual values and the per-palette contract. The
+`body[data-lane-hues="mono"]` toggle in `board.css`/`board.js` is a real toggle again: it collapses
+all five back to the shared `--ink-muted` rail this app shipped with before.

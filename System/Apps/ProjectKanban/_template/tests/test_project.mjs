@@ -200,6 +200,7 @@ function task(overrides = {}) {
     due_date: null,
     due_text: null,
     link_key: null,
+    lane_source: false,
     ...overrides,
   };
 }
@@ -407,6 +408,22 @@ test("AC-10: copying the whole Documents section yields full paths, not the file
   assert.ok(!written[0].includes("one.pdf\n") || written[0].includes("a/b/one.pdf"), "must be full paths, not basenames");
 });
 
+test("Luke's call, 2026-09-14: Documents and People row names carry the accent colour class, Events does not", () => {
+  const doc = { file: "documents/plan.md" };
+  const person = { person: "Keith", role: "Elder" };
+  const event = { date: "2026-09-13", event: "Milestone", type: "Milestone" };
+  const p = project({ documents: [doc], people: [person], events: [event] });
+
+  const docText = sections.buildDocumentsSection(p).querySelectorAll("project-row-text")[0];
+  assert.ok(docText._classes.has("project-row-text--accent"), "Documents row name is accent-coloured");
+
+  const personText = sections.buildPeopleSection(p).querySelectorAll("project-row-text")[0];
+  assert.ok(personText._classes.has("project-row-text--accent"), "People row name is accent-coloured");
+
+  const eventText = sections.buildEventsSection(p).querySelectorAll("project-row-text")[0];
+  assert.ok(!eventText._classes.has("project-row-text--accent"), "Events stays plain ink — Luke did not ask for it");
+});
+
 test("FR-2: an empty section (no purpose written) renders nothing rather than an empty heading", () => {
   assert.equal(sections.buildPurposeSection(project({ purpose: null })), null);
   assert.equal(sections.buildDocumentsSection(project({ documents: [] })), null);
@@ -513,6 +530,44 @@ test("wishlist #4b: clicking the toggle calls onToggleDone rather than mutating 
   assert.ok(toggled, "the section defers state ownership to project.js's callback, per D-2");
 });
 
+test("wishlist: no Decision Log toggle renders when a project has no decisions logged", () => {
+  const p = project({ decision_log: [] });
+  const section = sections.buildDecisionLogSection(p, false, () => {});
+  assert.equal(section, null, "an empty Decision Log renders nothing at all, matching every other section here");
+});
+
+test("wishlist: showDecisionLog=false hides the entries even when decisions exist", () => {
+  const p = project({ decision_log: ["2026-09-13 — Opened the project."] });
+  const section = sections.buildDecisionLogSection(p, false, () => {});
+  assert.equal(section.querySelectorAll("project-list").length, 0);
+  const toggle = section.querySelectorAll("project-copy-btn").find((b) => /show decision log/i.test(deepText(b)));
+  assert.ok(toggle, "a 'Show Decision Log' toggle is present");
+  assert.match(deepText(toggle), /\(1\)/, "the toggle names the count, matching the done-toggle's own convention");
+});
+
+test("wishlist: showDecisionLog=true reveals every entry, in file order (D-15)", () => {
+  const entries = ["2026-09-13 — First decision.", "2026-09-14 — Second decision."];
+  const p = project({ decision_log: entries });
+  const section = sections.buildDecisionLogSection(p, true, () => {});
+  const list = section.querySelectorAll("project-list")[0];
+  assert.ok(list, "the Decision Log list renders when showDecisionLog is true");
+  const items = list.children;
+  assert.equal(items.length, 2);
+  assert.equal(deepText(items[0]), entries[0]);
+  assert.equal(deepText(items[1]), entries[1]);
+});
+
+test("wishlist: clicking the Decision Log toggle calls onToggleDecisionLog rather than mutating state itself", async () => {
+  let toggled = false;
+  const p = project({ decision_log: ["2026-09-13 — A decision."] });
+  const section = sections.buildDecisionLogSection(p, false, () => {
+    toggled = true;
+  });
+  const toggle = section.querySelectorAll("project-copy-btn").find((b) => /show decision log/i.test(deepText(b)));
+  await toggle.dispatch("click", {});
+  assert.ok(toggled, "the section defers state ownership to project.js's callback, per D-2, same as #4b's done toggle");
+});
+
 test("wishlist #4b: buildDoneTaskRow carries the task's own full action text on copy, never the display label", async () => {
   const written = [];
   setNavigator({ writeText: async (text) => written.push(text) });
@@ -521,6 +576,26 @@ test("wishlist #4b: buildDoneTaskRow carries the task's own full action text on 
   const copyBtn = row.querySelectorAll("project-copy-btn")[0];
   await copyBtn.dispatch("click", {});
   assert.equal(written[0], "Full completed action text");
+});
+
+test("model.py's lane_source: the row that drove the project's board lane carries a visible cue, others don't", () => {
+  const driver = task({ index: "2", lane_source: true });
+  const other = task({ index: "1", lane_source: false });
+  const driverRow = taskRow.buildTaskRow(driver, driver.action, async () => ({ ok: true }));
+  const otherRow = taskRow.buildTaskRow(other, other.action, async () => ({ ok: true }));
+  const badges = driverRow.querySelectorAll("project-task-lane-source");
+  assert.equal(badges.length, 1);
+  assert.equal(otherRow.querySelectorAll("project-task-lane-source").length, 0);
+  // Luke's call, 2026-09-15: just the glyph at rest, the explanation on hover.
+  assert.equal(badges[0].textContent, "⚑");
+  assert.match(badges[0].getAttribute("title"), /sets the project's board lane/i);
+  assert.match(badges[0].getAttribute("aria-label"), /sets the project's board lane/i);
+});
+
+test("lane_source cue also appears on a linked row when it's the one driving the lane", () => {
+  const t = task({ link_key: "bas-2026-q1", lane_source: true });
+  const row = taskRow.buildTaskRow(t, t.action, async () => ({ ok: true }));
+  assert.equal(row.querySelectorAll("project-task-lane-source").length, 1);
 });
 
 test("FR-5/AC-4: a linked task offers none of the four edit controls and explains itself in plain words", () => {

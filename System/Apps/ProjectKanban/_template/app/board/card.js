@@ -81,7 +81,7 @@ export function buildCard(project, { navigate = defaultNavigate, copy = copyToCl
     [
       el("h3", { class: "board-card-title" }, displayTitle),
       el("p", { class: "board-card-due" }, due),
-      el("p", { class: "board-card-next-action" }, nextActionText),
+      el("p", { class: "board-card-next-action", dataset: { lane: project.next_action?.lane?.value ?? "" } }, nextActionText),
       el("dl", { class: "board-card-meta" }, [
         el("dt", {}, "ID"),
         el("dd", {}, project.id ?? "—"),

@@ -42,7 +42,14 @@ PAIRS: list[tuple[str, str, float, str]] = [
     ("--ink-muted", "--bg", 4.5, "muted text on the page ground"),
     ("--ink-muted", "--panel-bg", 4.5, "muted text on the panel ground (card due-date, meta labels)"),
     ("--ink-muted", "--panel-bg-alt", 4.5, "muted text on the alt panel ground (board counts)"),
+    ("--accent", "--panel-bg", 4.5, "Documents/People row names on the panel ground (project.css .project-row-text--accent)"),
 ]
+# Note: the next-action line's lane colour (card.css
+# .board-card-next-action[data-lane="..."]) is a decorative border, not the
+# text colour — the text itself stays --ink, so it is not a text/ground pair
+# this file needs to check (a border colour has no minimum-contrast rule;
+# three of the five lane tokens measured 2.66-4.15:1 as TEXT here, which is
+# exactly why the design uses a border instead — see card.css's own comment).
 
 # The print palette (FR-10/D-13: paper is the print base path) — a second
 # `:root` override under `@media print`, so it needs its own pass rather than
@@ -52,6 +59,7 @@ PAIRS: list[tuple[str, str, float, str]] = [
 PRINT_PAIRS: list[tuple[str, str, float, str]] = [
     ("--ink", "--bg", 4.5, "print sheet body text on the paper ground"),
     ("--ink-muted", "--bg", 4.5, "print sheet muted text on the paper ground"),
+    ("--accent", "--panel-bg", 4.5, "print sheet Documents/People row names on the panel ground"),
 ]
 
 # The three palettes AC-4 requires — "default" has no override block of its

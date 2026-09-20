@@ -1,12 +1,26 @@
-/* controls.css — the toolbar's own chrome, plus the CSS half of every
-   toggle contract controls.js/toolbar.js write to <body>. Every value is a
-   token from ../tokens.css (CSS-2); this file defines none.
+/* controls.css — the app's page-header chrome (the <h1> and everything in
+   it) plus the toolbar's own chrome and the CSS half of every toggle
+   contract controls.js/toolbar.js write to <body>. Every value is a token
+   from ../tokens.css (CSS-2); this file defines none.
 
-   Two jobs, in the order they appear below:
-   1. Toolbar layout and button chrome.
-   2. The six-view filter (FR-1/FR-2) — a rule per view, keyed off
+   Three jobs, in the order they appear below:
+   1. Header/title chrome — .app-header was unstyled (raw browser <h1>
+      defaults) until 2026-09-14.
+   2. Toolbar layout and button chrome.
+   3. The six-view filter (FR-1/FR-2) — a rule per view, keyed off
       body[data-view] and each card's own data-context (card.js already
       stamps this; see board.js's header comment). */
+
+.app-header {
+  padding: var(--space-lg) var(--space-md) 0;
+}
+
+.app-header h1 {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 
 .app-toolbar {
   display: flex;
@@ -15,14 +29,22 @@
   gap: var(--space-sm);
   padding: var(--space-xs) var(--space-md);
   background: var(--panel-bg-alt);
-  border-block-end: var(--border-width) solid var(--border);
+  border-block-end: var(--border-width) solid var(--accent);
 }
 
 .toolbar-group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-2xs);
+  gap: var(--space-xs);
+}
+
+/* The View filter and the Display controls are two different jobs (what's
+   shown vs how it's shown) — a rule between them lets the eye parse two
+   clusters instead of one undifferentiated row of identical buttons. */
+.toolbar-group + .toolbar-group {
+  padding-inline-start: var(--space-sm);
+  border-inline-start: var(--border-width) solid var(--border);
 }
 
 .app-toolbar button,
@@ -31,15 +53,26 @@
   font-size: var(--font-size-sm);
   color: var(--ink);
   background: var(--panel-bg);
-  border: var(--border-width) solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2xs) var(--space-xs);
+  border: var(--border-width) solid var(--ink-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-md);
   cursor: pointer;
-  transition: background var(--motion-fast), border-color var(--motion-fast);
+  box-shadow: 0 1px 0 0 var(--border);
+  transition: background var(--motion-fast), border-color var(--motion-fast),
+    box-shadow var(--motion-fast), transform var(--motion-fast);
 }
 
 .app-toolbar button:hover {
   border-color: var(--accent);
+}
+
+/* A firmer press-down than the hover/focus states above — the shadow
+   flattens and the button nudges down one pixel, the same "give" a real
+   key has (!HouseStyle's small-purposeful-animation budget). */
+.app-toolbar button:active,
+.app-toolbar a.wiki-link:active {
+  box-shadow: none;
+  transform: translateY(1px);
 }
 
 .app-toolbar button:focus-visible,

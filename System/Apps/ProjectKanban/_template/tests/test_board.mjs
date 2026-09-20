@@ -350,6 +350,20 @@ test("AC-6/FR-14: a project title containing <script> renders as literal text, n
   assert.equal(scan(cardNode), false, "no <script> element may exist anywhere in the built card");
 });
 
+test("next-action lane colouring: when next_action.lane.value is set, data-lane attribute matches", () => {
+  const p = project({ next_action: { action: "Do something", lane: guessable("waiting"), owner: "Me" } });
+  const cardNode = card.buildCard(p);
+  const nextActionEl = cardNode.querySelectorAll(".board-card-next-action")[0];
+  assert.equal(nextActionEl.dataset.lane, "waiting");
+});
+
+test("next-action lane colouring: when next_action is null, data-lane is an empty string", () => {
+  const p = project({ next_action: null });
+  const cardNode = card.buildCard(p);
+  const nextActionEl = cardNode.querySelectorAll(".board-card-next-action")[0];
+  assert.equal(nextActionEl.dataset.lane, "", "data-lane must be empty string, never undefined");
+});
+
 // ---------------------------------------------------------------------------
 // Static checks — FR-12, FR-13/AC-7, JS-6, grepped rather than left to a
 // manual pass before every change (mirrors test_unblock.mjs's own vocabulary checks).

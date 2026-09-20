@@ -13,12 +13,12 @@
 //
 //   body[data-density="condensed"]  — card density. Absent, or "expanded",
 //                                      shows the full card.
-//   body[data-lane-hues="mono"]       — no-op since 2026-09-12: tokens.css
-//                                      now ships all five lanes at one
-//                                      neutral ink by default (house
-//                                      two-accent cap). "full" is inert too
-//                                      — kept wired for a future distinct
-//                                      per-lane colour mode, not removed.
+//   body[data-lane-hues="mono"]       — collapses all five lanes to one
+//                                      shared --ink-muted rail. Default
+//                                      (attribute absent) is one distinct
+//                                      hue per lane (tokens.css, reopened
+//                                      2026-09-14 from the prior house
+//                                      two-accent cap).
 //
 // This file reads none of these attributes and never listens for them to
 // change (AC-3) — that is entirely `controls`' and this module's CSS's job.

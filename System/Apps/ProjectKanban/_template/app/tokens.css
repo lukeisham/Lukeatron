@@ -118,6 +118,22 @@
   --motion-slow: 360ms;
   --motion-ease: ease;
 
+  /* Flourish (shared/flourish.css) — the small acknowledgements: a wash on
+     what was just copied or saved, the Next row's tint and edge, a failed
+     edit's red. --motion-flash is the one duration outside the three above:
+     a wash has to outlast a 360ms fade to be seen at all, so it is its own
+     token (Luke signed off the fourth, 2026-09-20 plan
+     projectkanban-ui-flourishes) and is zeroed with the others under
+     prefers-reduced-motion. --danger is the app's one semantic red, used
+     for a failed edit's border and wash only, never as text. */
+  --motion-flash: 800ms;
+  --danger: #c0392b;
+  --accent-text: #2650c0; /* --accent, darkened to clear 4.5:1 as text on a tint (--accent itself is 4.37:1 on the worst lane tint) */
+  --wash-strength: 18%;
+  --next-tint-strength: 9%;
+  --next-edge-width: 3px;
+  --tracking-caps: 0.06em;
+
   /* Board layout — consumed only by board.css / card.css */
   --board-rail-width: 140px;
   --board-rail-spine-width: 8px;
@@ -147,6 +163,8 @@
     --l-waiting: #f0b93d;
     --l-incoming: #e08fc7;
     --l-unshaped: #a8a0c9;
+    --danger: #ff7b6b;
+    --accent-text: #6ea8fe;
   }
 }
 
@@ -166,6 +184,8 @@ body[data-palette="dark"] {
   --l-waiting: #f0b93d;
   --l-incoming: #e08fc7;
   --l-unshaped: #a8a0c9;
+  --danger: #ff7b6b;
+  --accent-text: #6ea8fe;
 }
 
 /* FR-4: the "paper" palette — a warmer, cream-and-ink light mode. Also the
@@ -184,6 +204,7 @@ body[data-palette="paper"] {
   --l-waiting: #a67c1f;
   --l-incoming: #8f3a5c;
   --l-unshaped: #7a6f5f;
+  --accent-text: #8a4b12;
 }
 
 /* FR-10/D-13: print drops straight to the paper palette's own values — the
@@ -211,6 +232,7 @@ body[data-palette="paper"] {
     --motion-fast: 0s;
     --motion-medium: 0s;
     --motion-slow: 0s;
+    --motion-flash: 0s;
   }
 }
 

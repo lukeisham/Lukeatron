@@ -1,0 +1,148 @@
+/* flourish.css — the small acknowledgements (plan projectkanban-ui-flourishes):
+   the Next row, a wash on what was just copied or saved, a failed edit's red.
+   One job (CSS-1), linked after every component sheet so a same-specificity
+   rule here wins by order. Every value is a token from ../tokens.css (CSS-2);
+   --next-lane and --next-base are local to the Next row. Tokens needed:
+   --accent --accent-text --danger --ink-muted --bg --panel-bg --l-* --wash-strength
+   --next-tint-strength --next-edge-width --font-size-sm --tracking-caps
+   --motion-flash --motion-ease. Meaning is never carried by colour or motion
+   alone: the Next word, "Copied", the ✓ and aria-invalid survive animation off. */
+
+/* --- The Next row: the first open action (model.py's next_action) --------
+   A lane-coloured edge and a faint tint of that lane — decorative only, never
+   text (some lane tokens miss 4.5:1 as text). The word is --accent-text: plain
+   --accent misses 4.5:1 on a tinted ground (check_contrast.py's MIXED_PAIRS). */
+.project-task-row { position: relative; } /* the copy wash and saved ✓ position against it */
+
+.project-task-row--next {
+  --next-lane: var(--ink-muted);
+  --next-base: var(--panel-bg);
+  background: color-mix(in srgb, var(--next-lane) var(--next-tint-strength), var(--next-base));
+  box-shadow: inset var(--next-edge-width) 0 0 var(--next-lane);
+}
+
+.project-stem-chips .project-task-row--next { --next-base: var(--bg); }
+
+.project-task-row--next[data-lane="mine"] { --next-lane: var(--l-mine); }
+.project-task-row--next[data-lane="delegate"] { --next-lane: var(--l-delegate); }
+.project-task-row--next[data-lane="waiting"] { --next-lane: var(--l-waiting); }
+.project-task-row--next[data-lane="incoming"] { --next-lane: var(--l-incoming); }
+.project-task-row--next[data-lane="unshaped"] { --next-lane: var(--l-unshaped); }
+
+.project-task-row--next .project-task-label { font-weight: 600; }
+
+.project-task-next-tag {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+
+/* --- Copy: a wash over the thing copied, and the button confirms --------- */
+.project-list,
+.board-card {
+  position: relative;
+}
+
+.is-washed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none; /* never swallows the click that follows */
+  animation: flourish-wash var(--motion-flash) var(--motion-ease);
+}
+
+@keyframes flourish-wash {
+  from { background: color-mix(in srgb, var(--accent) var(--wash-strength), transparent); }
+  to { background: transparent; }
+}
+
+/* Border in --accent, text in --accent-text: plain --accent text on
+   --panel-bg-alt is 4.49:1 in the default palette, just under the floor. */
+.project-copy-btn.is-copied,
+.board-card-copy.is-copied {
+  border-color: var(--accent);
+}
+
+.project-copy-btn.is-copied { color: var(--accent-text); }
+
+.project-copy-btn.is-copied::after { content: " ✓"; }
+
+/* The card's icon keeps its size: the two squares give way to a tick. */
+.board-card-copy-icon-check {
+  display: none;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+}
+
+.board-card-copy.is-copied .board-card-copy-icon-check { display: inline; }
+
+.board-card-copy.is-copied .board-card-copy-icon-back,
+.board-card-copy.is-copied .board-card-copy-icon-front {
+  display: none;
+}
+
+/* --- Saved: a wash on the control, a ✓ on its corner ---------------------- */
+.is-saved {
+  animation: flourish-saved var(--motion-flash) var(--motion-ease);
+}
+
+@keyframes flourish-saved {
+  from {
+    background-color: color-mix(in srgb, var(--accent) var(--wash-strength), var(--bg));
+    border-color: var(--accent);
+  }
+}
+
+.project-saved-mark {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent-text);
+  pointer-events: none;
+  animation: flourish-mark var(--motion-flash) var(--motion-ease) forwards;
+}
+
+@keyframes flourish-mark {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Reduced motion zeroes --motion-flash; a 0s fade would make the ✓ vanish at
+   once, so it stays until the next render replaces it. */
+@media (prefers-reduced-motion: reduce) {
+  .project-saved-mark {
+    animation: none;
+  }
+}
+
+/* --- Failed: red that stays until the control is touched again ------------ */
+.is-failed {
+  border-color: var(--danger);
+  background-color: color-mix(in srgb, var(--danger) var(--wash-strength), var(--bg));
+}
+
+.project-task-tick.is-failed {
+  accent-color: var(--danger);
+  outline: var(--border-width) solid var(--danger);
+}
+
+/* --- Print: no wash, no tint, no floating mark ---------------------------- */
+@media print {
+  .is-washed::after,
+  .project-saved-mark {
+    display: none;
+  }
+
+  .project-task-row--next {
+    background: none;
+    box-shadow: none;
+  }
+}

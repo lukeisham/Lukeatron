@@ -779,3 +779,195 @@ test("AC-6: print.css keeps sections/groups/rows whole across a page break", () 
   assert.match(text, /break-inside:\s*avoid/);
 });
 
+
+// ---------------------------------------------------------------------------
+// flourish — plan projectkanban-ui-flourishes: the Next word, the copy wash,
+// the saved/failed-edit feedback. Fake-DOM tests exercise the class wiring;
+// the visuals themselves (flourish.css) are checked live in a browser.
+// ---------------------------------------------------------------------------
+
+const flourish = await import(moduleUrl("../shared/flourish.js"));
+const tokensCss = readFileSync(path.join(projectDir, "..", "tokens.css"), "utf8");
+const flourishCss = readFileSync(path.join(projectDir, "..", "shared", "flourish.css"), "utf8");
+
+test("Next: exactly one row carries the Next word, and it is the first open action", () => {
+  const tasks = [task({ index: "1", action: "First" }), task({ index: "2", action: "Second" }), task({ index: "3", action: "Third" })];
+  const section = actions.buildNextActionsSection(project({ tasks }), async () => ({ ok: true }));
+  const tags = section.querySelectorAll("project-task-next-tag");
+  const nextRows = section.querySelectorAll("project-task-row--next");
+  assert.equal(tags.length, 1);
+  assert.equal(tags[0].textContent, "Next");
+  assert.equal(nextRows.length, 1);
+  assert.equal(nextRows[0].dataset.taskIndex, "1");
+  assert.equal(nextRows[0].dataset.lane, "mine", "the row carries its own lane so flourish.css can colour its edge");
+  assert.equal(section.querySelectorAll("project-task-row")[1].querySelectorAll("project-task-next-tag").length, 0);
+});
+
+test("Next: a stem group gives the word to its first chip only", () => {
+  const tasks = ["A", "B", "C"].map((s, i) => task({ index: String(i), action: `Email Keith about ${s}` }));
+  const section = actions.buildNextActionsSection(project({ tasks }), async () => ({ ok: true }));
+  assert.equal(section.querySelectorAll("project-stem-group").length, 1);
+  assert.equal(section.querySelectorAll("project-task-next-tag").length, 1);
+  assert.equal(section.querySelectorAll("project-task-row")[0].querySelectorAll("project-task-next-tag").length, 1);
+});
+
+test("Next: a project with no open actions has no Next word", () => {
+  const section = actions.buildNextActionsSection(project({ tasks: [] }), async () => ({ ok: true }));
+  assert.equal(section.querySelectorAll("project-task-next-tag").length, 0);
+});
+
+test("Next: a linked row gets the word when it is the first open action", () => {
+  const tasks = [task({ index: "1", link_key: "bas-2026-q1" }), task({ index: "2" })];
+  const section = actions.buildNextActionsSection(project({ tasks }), async () => ({ ok: true }));
+  assert.equal(section.querySelectorAll("project-task-next-tag").length, 1);
+  assert.equal(section.querySelectorAll("project-task-row--next")[0].querySelectorAll("project-task-label").length, 1);
+});
+
+test("Next: done rows never carry the word", () => {
+  const p = project({ tasks: [task({ index: "1" })], done_tasks: [task({ index: "9", status: "☑ Done" })] });
+  const section = actions.buildNextActionsSection(p, async () => ({ ok: true }), true, () => {});
+  assert.equal(section.querySelectorAll("project-task-next-tag").length, 1);
+  assert.equal(section.querySelectorAll("project-task-row--done")[0].querySelectorAll("project-task-next-tag").length, 0);
+});
+
+test("copy: a successful copy washes the target and marks the button; a refused copy does neither", async () => {
+  const originalWarn = console.warn;
+  console.warn = () => {};
+  try {
+    const target = new FakeElement("li");
+    setNavigator({ writeText: async () => {} });
+    const ok = copy.buildCopyButton("Copy thing", () => "text", { washTarget: () => target });
+    await ok.dispatch("click", {});
+    assert.equal(target.classList.contains("is-washed"), true);
+    assert.equal(ok.classList.contains("is-copied"), true);
+    assert.equal(ok.textContent, "Copied", "the ✓ is added by CSS, so the text stays exactly Copied");
+
+    const refusedTarget = new FakeElement("li");
+    setNavigator({ writeText: async () => { throw new Error("denied"); } });
+    const bad = copy.buildCopyButton("Copy thing", () => "text", { washTarget: () => refusedTarget });
+    await bad.dispatch("click", {});
+    assert.equal(refusedTarget.classList.contains("is-washed"), false);
+    assert.equal(bad.classList.contains("is-copied"), false);
+    assert.equal(bad.textContent, "Copy failed");
+  } finally {
+    console.warn = originalWarn;
+  }
+});
+
+test("copy: a button with no reachable wash target (no closest() in the DOM) still copies without throwing", async () => {
+  const written = [];
+  setNavigator({ writeText: async (text) => written.push(text) });
+  const button = copy.buildCopyButton("Copy thing", () => "text");
+  await assert.doesNotReject(button.dispatch("click", {}));
+  assert.deepEqual(written, ["text"]);
+});
+
+test("flourish: wash restarts cleanly when copied twice, and clears on its own animationend", () => {
+  const target = new FakeElement("li");
+  flourish.wash(target);
+  flourish.wash(target);
+  assert.equal(target.classList.contains("is-washed"), true);
+  target.dispatch("animationend", { target });
+  assert.equal(target.classList.contains("is-washed"), false, "the wash class comes off when its own animation ends");
+  flourish.wash(target);
+  target.dispatch("animationend", { target: new FakeElement("span") });
+  assert.equal(target.classList.contains("is-washed"), true, "a child's bubbling animationend must not end the row's wash");
+  assert.doesNotThrow(() => flourish.wash(null));
+});
+
+test("failed edit: the control that failed turns red and stays red until it is next touched", async () => {
+  const t = task({ due_date: "2026-10-01" });
+  const row = taskRow.buildTaskRow(t, t.action, async () => ({ ok: false, message: "refused" }));
+  const due = row.querySelectorAll("project-task-due")[0];
+  due.value = "2026-11-01";
+  await due.dispatch("change", {});
+  assert.equal(due.classList.contains("is-failed"), true);
+  assert.equal(due.getAttribute("aria-invalid"), "true");
+  assert.equal(due.value, "2026-10-01", "the revert is unchanged");
+  await due.dispatch("input", {});
+  assert.equal(due.classList.contains("is-failed"), false, "typing again clears the red");
+});
+
+test("failed edit: a refused owner, lane and tick each mark their own control", async () => {
+  const refuse = async () => ({ ok: false, message: "refused" });
+  const t = task();
+  const row = taskRow.buildTaskRow(t, t.action, refuse);
+  for (const cls of ["project-task-owner", "project-task-lane", "project-task-tick"]) {
+    const control = row.querySelectorAll(cls)[0];
+    await control.dispatch("change", {});
+    assert.equal(control.classList.contains("is-failed"), true, `${cls} should be marked failed`);
+  }
+});
+
+test("failed edit: a saved edit never marks the control failed", async () => {
+  const t = task();
+  const row = taskRow.buildTaskRow(t, t.action, async () => ({ ok: true }));
+  const owner = row.querySelectorAll("project-task-owner")[0];
+  await owner.dispatch("change", {});
+  assert.equal(owner.classList.contains("is-failed"), false);
+});
+
+test("saved edit: applyFlash flashes the control named by row index and field, once", () => {
+  const control = new FakeElement("input");
+  const seen = [];
+  const root = { querySelector: (selector) => (seen.push(selector), control) };
+  assert.equal(flourish.applyFlash(root, { index: "7", field: "due" }), true);
+  assert.equal(control.classList.contains("is-saved"), true);
+  assert.match(seen[0], /data-task-index="7"/);
+  assert.match(seen[0], /\.project-task-due$/);
+  assert.equal(flourish.applyFlash(root, { index: "7", field: "kind" }), true);
+  assert.match(seen[1], /\.project-task-lane$/);
+});
+
+test("saved edit: no flourish for a ticked-done row, a missing control, or an empty flash", () => {
+  const root = { querySelector: () => null };
+  assert.equal(flourish.applyFlash(root, { index: "7", field: "status" }), false, "a done row has left the open list");
+  assert.equal(flourish.applyFlash(root, { index: "7", field: "due" }), false, "the control did not survive the re-render");
+  assert.equal(flourish.applyFlash(root, null), false);
+  assert.equal(flourish.applyFlash(null, { index: "7", field: "due" }), false);
+});
+
+test("project.js: the flash is applied once per render and cleared straight after", () => {
+  const source = readFileSync(path.join(projectDir, "project.js"), "utf8");
+  assert.match(source, /applyFlash\(root, state\.flash\);\s*state\.flash = null;/);
+  assert.match(source, /state\.flash = \{ index: task\.index, field \}/);
+  assert.match(source, /catch \(err\) \{\s*state\.flash = null;/, "a refused edit must not leave a flash behind");
+});
+
+test("flourish.css: tokens only — no colour literals, raw px or !important, and every var() is defined in tokens.css", () => {
+  const withoutComments = flourishCss.replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.ok(!/#[0-9a-fA-F]{3,8}\b|\brgba?\(/.test(withoutComments), "flourish.css contains a colour literal");
+  assert.ok(!/!important/.test(withoutComments), "flourish.css uses !important");
+  for (const line of withoutComments.split("\n")) {
+    if (/@media/.test(line)) continue;
+    if (/:\s*-?\d+(\.\d+)?px/.test(line) && !/var\(--/.test(line)) assert.fail(`raw px value: "${line.trim()}"`);
+  }
+  for (const [, name] of withoutComments.matchAll(/var\((--[a-z0-9-]+)\)/g)) {
+    const definedHere = withoutComments.includes(`${name}:`); // --next-lane/--next-base are local to the Next row
+    assert.ok(definedHere || tokensCss.includes(`${name}:`), `${name} is used in flourish.css but defined nowhere`);
+  }
+});
+
+test("flourish.css: stays under the ~150-line cap (CSS-1) and index.html links it after the component sheets", () => {
+  assert.ok(flourishCss.split("\n").length <= 150, `flourish.css is ${flourishCss.split("\n").length} lines`);
+  const html = readFileSync(path.join(projectDir, "..", "index.html"), "utf8");
+  assert.ok(html.indexOf("shared/flourish.css") > html.indexOf("project/task-row.css"), "flourish.css must come after task-row.css so it wins by order");
+});
+
+test("tokens.css: --motion-flash is zeroed under reduced motion, and --danger has a value in every palette block", () => {
+  const reduced = tokensCss.match(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\n\}/)[0];
+  assert.match(reduced, /--motion-flash:\s*0s/);
+  assert.equal((tokensCss.match(/--danger:/g) ?? []).length, 3, "default :root plus both identical dark blocks (media + explicit)");
+});
+
+test("flourish.css: print drops the wash, the floating mark and the Next tint; reduced motion keeps the saved mark", () => {
+  const print = flourishCss.match(/@media print\s*\{[\s\S]*?\n\}/)[0];
+  assert.match(print, /\.is-washed::after[\s\S]*display:\s*none/);
+  assert.match(print, /\.project-task-row--next\s*\{[^}]*background:\s*none/);
+  const reduced = flourishCss.match(/@media \(prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\n\}/)[0];
+  assert.match(reduced, /\.project-saved-mark\s*\{[^}]*animation:\s*none/);
+});
+
+test("tokens.css: --accent-text has a value in every palette block (default, both dark blocks, paper)", () => {
+  assert.equal((tokensCss.match(/--accent-text:/g) ?? []).length, 4);
+});

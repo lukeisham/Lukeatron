@@ -9,6 +9,7 @@
 
 import { el, clear } from "../shared/dom.js";
 import { fetchBoard } from "../shared/board-client.js";
+import { applyFlash } from "../shared/flourish.js";
 import { postEdit } from "./edits.js";
 import { buildPurposeSection, buildDefinitionOfDoneSection, buildEventsSection, buildDocumentsSection, buildPeopleSection, buildDecisionLogSection } from "./sections.js";
 import { buildNextActionsSection } from "./actions.js";
@@ -20,7 +21,10 @@ import { printProject } from "./print.js";
 // every fresh project visit, same as the toolbar's own view state does not
 // carry over from board to project. showDecisionLog (hide/reveal Decision
 // Log) follows the exact same rule for the exact same reason.
-const state = { project: null, mtime: null, showDone: false, showDecisionLog: false };
+// `flash` is the one-shot "this control just saved" note submitEdit leaves for
+// the re-render that follows it (flourish.js applyFlash reads it once, then
+// renderProjectPage clears it, so a later re-render never replays it).
+const state = { project: null, mtime: null, showDone: false, showDecisionLog: false, flash: null };
 
 function isProjectRoute() {
   return location.hash.startsWith("#project=");
@@ -78,9 +82,12 @@ async function submitEdit(field, task, value) {
     const result = await postEdit({ project_id: state.project.id, mtime: state.mtime, field, row: task.index, value });
     state.mtime = result.mtime;
     clearEditError();
+    state.flash = { index: task.index, field };
     await loadProject(state.project.id, { silent: true });
+    state.flash = null; // a refetch that failed never rendered, so it must not linger for the next render
     return { ok: true };
   } catch (err) {
+    state.flash = null;
     showEditError(err.message);
     return { ok: false, message: err.message };
   }
@@ -145,6 +152,9 @@ function renderProjectPage(root, project) {
   ].filter(Boolean);
 
   root.appendChild(el("article", { class: "project-page" }, [header, title, errorBanner, ...sections]));
+
+  applyFlash(root, state.flash);
+  state.flash = null;
 }
 
 async function loadProject(projectId, { silent = false } = {}) {

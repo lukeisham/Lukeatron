@@ -6,7 +6,7 @@
 // empty heading; project.js filters the null results out.
 
 import { el } from "../shared/dom.js";
-import { buildCopyButton, eventCopyText, documentCopyText, personCopyText, sectionCopyText } from "./copy.js";
+import { buildCopyButton, eventCopyText, documentCopyText, personCopyText, sectionCopyText, sectionListTarget } from "./copy.js";
 
 // At least 8 of Luke's live registries write an explicit "— | — | —"
 // placeholder row instead of leaving an Events/Documents/People table empty
@@ -25,7 +25,7 @@ function sectionHeading(title, getSectionText) {
   // documents, people) get a section-level copy — Purpose/Definition of
   // Done/Decision Log are plain prose lists with no per-row copy of their
   // own for a section copy to mirror.
-  if (getSectionText) children.push(buildCopyButton(`Copy ${title}`, getSectionText));
+  if (getSectionText) children.push(buildCopyButton(`Copy ${title}`, getSectionText, { washTarget: sectionListTarget }));
   return el("div", { class: "project-section-heading" }, children);
 }
 

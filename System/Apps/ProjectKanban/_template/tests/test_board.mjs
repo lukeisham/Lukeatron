@@ -405,3 +405,37 @@ test("AC-7/FR-13: no external file reference anywhere in this module's own files
   const indexHtml = readFileSync(path.join(appDir, "index.html"), "utf8");
   assert.ok(!pattern.test(indexHtml), "app/index.html references something external");
 });
+
+// ---------------------------------------------------------------------------
+// flourish — the card's copy button used to give no confirmation at all.
+// ---------------------------------------------------------------------------
+
+const settle = async () => {
+  await Promise.resolve();
+  await Promise.resolve();
+};
+
+test("flourish: a successful card copy washes the card and marks the button, without opening the project", async () => {
+  const navigated = [];
+  const cardNode = card.buildCard(project({ id: "P-9", title: "Nine" }), { navigate: (id) => navigated.push(id), copy: async () => true });
+  const copyBtn = cardNode.querySelectorAll(".board-card-copy")[0];
+  copyBtn.dispatch("click", { stopPropagation: () => {} });
+  await settle();
+  assert.equal(cardNode.classList.contains("is-washed"), true);
+  assert.equal(copyBtn.classList.contains("is-copied"), true);
+  assert.deepEqual(navigated, [], "a copy click still never opens the project");
+});
+
+test("flourish: a refused card copy (clipboard returned false) shows no wash and no copied state", async () => {
+  const cardNode = card.buildCard(project({ id: "P-10" }), { navigate: () => {}, copy: async () => false });
+  const copyBtn = cardNode.querySelectorAll(".board-card-copy")[0];
+  copyBtn.dispatch("click", { stopPropagation: () => {} });
+  await settle();
+  assert.equal(cardNode.classList.contains("is-washed"), false);
+  assert.equal(copyBtn.classList.contains("is-copied"), false);
+});
+
+test("flourish: the copy icon carries a hidden tick, so the button keeps its size when it confirms", () => {
+  const cardNode = card.buildCard(project({ id: "P-11" }));
+  assert.equal(cardNode.querySelectorAll("board-card-copy-icon-check").length, 1);
+});

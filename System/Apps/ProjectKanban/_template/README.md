@@ -64,6 +64,7 @@ ProjectKanban/
 │   ├── tokens.css        every colour, space, type size and duration in the app
 │   ├── board/            the lane × column grid. Never imports the edit client
 │   ├── controls/         the toolbar and the three remembered choices
+│   ├── shared/           DOM helpers, the board fetch client, and the flourishes (flourish.css/.js)
 │   └── project/          the project page, the five edits, the print path
 ├── StyleGuide.md         the visual contract for app/ — palettes, tokens, motion, layout scope
 └── tests/                one file per module, mirroring the tree

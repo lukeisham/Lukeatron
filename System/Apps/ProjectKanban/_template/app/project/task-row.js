@@ -13,6 +13,7 @@
 import { el } from "../shared/dom.js";
 import { buildCopyButton, taskCopyText } from "./copy.js";
 import { moveTask } from "./reorder.js";
+import { markFailed } from "../shared/flourish.js";
 
 // Grounded in the Kind column's own live vocabulary (a scan of registry.md
 // files under Memory/Medium-Term/Projects/), not invented: these five
@@ -33,6 +34,7 @@ function buildTickControl(task, submitEdit) {
     if (!ok) {
       checkbox.checked = false;
       checkbox.disabled = false;
+      markFailed(checkbox);
     }
     // On success project.js re-renders the whole page from a fresh fetch —
     // a done task is no longer in tasks[] at all, so nothing more to do here.
@@ -54,6 +56,7 @@ function buildDueControl(task, submitEdit) {
     if (!ok) {
       input.value = previous;
       input.disabled = false;
+      markFailed(input);
     }
   });
   return input;
@@ -76,6 +79,7 @@ function buildOwnerControl(task, submitEdit) {
     if (!ok) {
       input.value = previous;
       input.disabled = false;
+      markFailed(input);
     }
   });
   return input;
@@ -102,6 +106,7 @@ function buildLaneControl(task, submitEdit) {
     if (!ok) {
       select.value = previous;
       select.disabled = false;
+      markFailed(select);
     }
   });
   return select;
@@ -122,9 +127,22 @@ function buildLaneSourceBadge() {
   );
 }
 
-function buildLinkedRow(task, displayLabel) {
-  return el("li", { class: "project-row project-task-row project-task-row--linked" }, [
+// The first open action in file order — the same row model.py hands the board
+// card as `next_action`. A visible word, not colour alone (flourish.css styles
+// the row; this is what keeps the meaning when the styling is off).
+function buildNextTag() {
+  return el("span", { class: "project-task-next-tag" }, "Next");
+}
+
+function nextRowAttrs(task, isNext) {
+  return isNext ? { lane: task.lane?.value ?? "" } : {};
+}
+
+function buildLinkedRow(task, displayLabel, isNext) {
+  const rowClass = ["project-row project-task-row project-task-row--linked", isNext ? "project-task-row--next" : null].filter(Boolean).join(" ");
+  return el("li", { class: rowClass, dataset: nextRowAttrs(task, isNext) }, [
     el("span", { class: "project-task-label" }, displayLabel),
+    isNext ? buildNextTag() : null,
     // FR-5/AC-4: plain words, no error code, no spec language.
     el("p", { class: "project-linked-note" }, "This action is shared with another project — edit it there; !ProjectSweep keeps them in sync."),
     task.lane_source ? buildLaneSourceBadge() : null,
@@ -140,22 +158,28 @@ function buildLinkedRow(task, displayLabel) {
  * `reorderCtx` is either null (no drag/move UI) or { submitReorder } for an
  * editable row in a non-multi_stream project.
  */
-export function buildTaskRow(task, displayLabel, submitEdit, reorderCtx) {
-  if (task.link_key) return buildLinkedRow(task, displayLabel);
+export function buildTaskRow(task, displayLabel, submitEdit, reorderCtx, { isNext = false } = {}) {
+  if (task.link_key) return buildLinkedRow(task, displayLabel, isNext);
 
   // model.py's `recurring_if_done`: a Done row bearing this reopens itself
   // on its own cadence (System/Apps/ProjectKanban/_template/recur.py) — the
   // dashed border is the row's own "this one comes back" mark, task-row.css.
-  const rowClass = ["project-row", "project-task-row", task.recurring_if_done ? "project-task-row--recurring" : null]
+  const rowClass = [
+    "project-row",
+    "project-task-row",
+    task.recurring_if_done ? "project-task-row--recurring" : null,
+    isNext ? "project-task-row--next" : null,
+  ]
     .filter(Boolean)
     .join(" ");
 
   const dragAttrs = reorderCtx ? { draggable: "true" } : {};
 
-  return el("li", { class: rowClass, dataset: { taskIndex: task.index }, ...dragAttrs }, [
+  return el("li", { class: rowClass, dataset: { taskIndex: task.index, ...nextRowAttrs(task, isNext) }, ...dragAttrs }, [
     reorderCtx ? el("span", { class: "project-task-drag-handle", "aria-hidden": "true", title: "Drag to reorder" }, "⠿") : null,
     buildTickControl(task, submitEdit),
     el("span", { class: "project-task-label" }, displayLabel),
+    isNext ? buildNextTag() : null,
     buildDueControl(task, submitEdit),
     buildOwnerControl(task, submitEdit),
     buildLaneControl(task, submitEdit),

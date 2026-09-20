@@ -105,11 +105,44 @@ value happens to be nearby in the file.
 
 ## Motion
 
-Exactly three durations in the whole app (FR-12) — `--motion-fast` 120ms, `--motion-medium` 220ms,
-`--motion-slow` 360ms, all eased with `--motion-ease: ease`. No CSS file outside `tokens.css` may
-write a literal duration; every `transition`/`animation` reads one of the three. That discipline is
-what lets `@media (prefers-reduced-motion: reduce)` zero all three at once and turn off every
+Three durations for interface motion (FR-12) — `--motion-fast` 120ms, `--motion-medium` 220ms,
+`--motion-slow` 360ms, all eased with `--motion-ease: ease` — plus one for flourishes,
+`--motion-flash` 800ms (2026-09-20, see *Flourishes* below). No CSS file outside `tokens.css` may
+write a literal duration; every `transition`/`animation` reads one of the four. That discipline is
+what lets `@media (prefers-reduced-motion: reduce)` zero all four at once and turn off every
 animation in the app for free, with no `!important` anywhere (CSS-5).
+
+## Flourishes — small acknowledgements (2026-09-20)
+
+`app/shared/flourish.css` (styles) and `app/shared/flourish.js` (adds and removes classes, nothing
+else) give three small answers back to the person using the app, so the interface follows the
+app's own focus. Plan: `System/Plans/New/projectkanban-ui-flourishes.md`.
+
+| Flourish | What shows | Where it comes from |
+|---|---|---|
+| **Next** | The first open action (the same row `model.py` hands the board card as `next_action`) gets the word "Next", a lane-coloured 3px edge, a faint tint of that lane and a heavier label. The ⚑ lane-source glyph is a separate cue and is unchanged. | `task-row.js` (`isNext`), `actions.js`, `.project-task-row--next` |
+| **Copy** | The thing copied (a row, a section's list, a board card) gets a soft accent wash that fades; the button reads "Copied ✓" with an accent border; the card's icon becomes a tick. A refused copy shows no wash. | `copy.js`, `card.js`, `.is-washed`, `.is-copied` |
+| **Saved edit** | After the page re-renders, the control that was edited gets a wash and a ✓ on its corner, once. | `project.js` (`state.flash`), `applyFlash`, `.is-saved` |
+| **Failed edit** | The control turns red and stays red until it is touched again (`aria-invalid` is set); the banner sentence is unchanged. | `task-row.js`, `markFailed`, `.is-failed` |
+
+New tokens: `--motion-flash`, `--danger` (border and wash only, never text), `--accent-text`,
+`--wash-strength` (18%), `--next-tint-strength` (9%), `--next-edge-width`, `--tracking-caps`.
+
+**Rules for a new flourish:**
+
+- CSS-only motion, one animation per interaction, nothing on the input path and no layout shift.
+- Meaning is never carried by colour or motion alone — a word, a ✓ or an ARIA state stays when the
+  animation is off. Under reduced motion `--motion-flash` is 0s, and the saved ✓ stays until the
+  next render (`flourish.css` overrides its fade).
+- **A failure never fades.** Success may fade; a refusal stays until acted on.
+- **`--accent-text` for accent-coloured text on a tint.** Plain `--accent` is 4.37:1 on the worst
+  Next-row lane tint in the default palette, under the 4.5:1 floor. `--accent-text` is `--accent`
+  darkened for that one job (default `#2650c0`, 5.52:1 at worst; the paper and dark palettes already
+  pass, so it equals `--accent` there). The Next word, the "Copied" text and the saved ✓ use it; the
+  edge, border and wash keep `--accent`. `check_contrast.py`'s `MIXED_PAIRS` checks every tinted
+  ground, including all five lane tints.
+- Not covered yet: ticking a row done (the row leaves the list) and reordering get no extra
+  flourish.
 
 ## Lane colours — one hue per lane
 

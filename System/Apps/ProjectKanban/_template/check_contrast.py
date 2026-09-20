@@ -43,6 +43,13 @@ PAIRS: list[tuple[str, str, float, str]] = [
     ("--ink-muted", "--panel-bg", 4.5, "muted text on the panel ground (card due-date, meta labels)"),
     ("--ink-muted", "--panel-bg-alt", 4.5, "muted text on the alt panel ground (board counts)"),
     ("--accent", "--panel-bg", 4.5, "Documents/People row names on the panel ground (project.css .project-row-text--accent)"),
+    # Flourish (shared/flourish.css). --danger is a border on a control, never text, so it is a
+    # non-text UI component (WCAG 1.4.11: 3:1) against both grounds the control sits between.
+    ("--danger", "--bg", 3.0, "failed-edit border against the control's own ground"),
+    ("--danger", "--panel-bg", 3.0, "failed-edit border against the row it sits in"),
+    ("--accent-text", "--bg", 4.5, "the saved-edit ✓ mark, which floats over the row's page ground"),
+    ("--accent-text", "--panel-bg-alt", 4.5, "the 'Copied' button text (project.css .project-copy-btn.is-copied)"),
+    ("--accent", "--panel-bg-alt", 3.0, "the copy tick and the 'Copied' button's border (non-text, 1.4.11)"),
 ]
 # Note: the next-action line's lane colour (card.css
 # .board-card-next-action[data-lane="..."]) is a decorative border, not the
@@ -50,6 +57,23 @@ PAIRS: list[tuple[str, str, float, str]] = [
 # this file needs to check (a border colour has no minimum-contrast rule;
 # three of the five lane tokens measured 2.66-4.15:1 as TEXT here, which is
 # exactly why the design uses a border instead — see card.css's own comment).
+
+# Grounds that are a color-mix() of a tint over a base (the Next row, the copy/saved/failed
+# washes). The pairs above resolve literal hex only, so these are mixed here the way CSS's
+# `color-mix(in srgb, <tint> <strength>, <base>)` does — straight sRGB channels. Each entry:
+# (text token, tint tokens, base token, strength token, minimum ratio, where). The lane tint
+# is checked for every lane token, since a row's lane is data. Print drops every one of these
+# (flourish.css @media print), so there is no print pass.
+LANE_TOKENS: tuple[str, ...] = ("--l-mine", "--l-delegate", "--l-waiting", "--l-incoming", "--l-unshaped")
+MIXED_PAIRS: list[tuple[str, tuple[str, ...], str, str, float, str]] = [
+    ("--ink", LANE_TOKENS, "--panel-bg", "--next-tint-strength", 4.5, "the Next row's label on its lane tint"),
+    ("--ink", LANE_TOKENS, "--bg", "--next-tint-strength", 4.5, "a stem chip's label on its lane tint"),
+    ("--accent-text", LANE_TOKENS, "--panel-bg", "--next-tint-strength", 4.5, "the Next word on the Next row's lane tint"),
+    ("--accent-text", LANE_TOKENS, "--bg", "--next-tint-strength", 4.5, "the Next word on a stem chip's lane tint"),
+    ("--ink", ("--accent",), "--panel-bg", "--wash-strength", 4.5, "row text at the peak of the copy wash"),
+    ("--ink", ("--accent",), "--bg", "--wash-strength", 4.5, "control text at the peak of the saved wash"),
+    ("--ink", ("--danger",), "--bg", "--wash-strength", 4.5, "control text on the failed-edit red wash"),
+]
 
 # The print palette (FR-10/D-13: paper is the print base path) — a second
 # `:root` override under `@media print`, so it needs its own pass rather than
@@ -180,6 +204,37 @@ def check_pairs(tokens: dict[str, str], pairs: list[tuple[str, str, float, str]]
     return rows
 
 
+def _mix_to_hex(tint_hex: str, base_hex: str, strength: float) -> str:
+    """`color-mix(in srgb, tint strength, base)` as an opaque hex — both inputs opaque."""
+    tr, tg, tb, _ = _hex_to_rgb(tint_hex)
+    br, bg_, bb, _ = _hex_to_rgb(base_hex)
+    channels = (strength * tr + (1 - strength) * br, strength * tg + (1 - strength) * bg_, strength * tb + (1 - strength) * bb)
+    return "#" + "".join(f"{round(c * 255):02x}" for c in channels)
+
+
+def _strength(value: str) -> float:
+    match = re.fullmatch(r"\s*(\d+(?:\.\d+)?)%\s*", value)
+    if not match:
+        raise ContrastCheckError(f"not a percentage: {value!r}")
+    return float(match.group(1)) / 100
+
+
+def check_mixed(tokens: dict[str, str]) -> list[tuple[str, str, float, float, str]]:
+    """One row per (text, tint, base) combination in MIXED_PAIRS, the ground being the tint mixed
+    over the base at the named strength. Same row shape as check_pairs, so _report prints both."""
+    rows = []
+    for text_token, tint_tokens, base_token, strength_token, minimum, where in MIXED_PAIRS:
+        for name in (text_token, base_token, strength_token, *tint_tokens):
+            if name not in tokens:
+                raise ContrastCheckError(f"{name} is not defined in tokens.css")
+        strength = _strength(tokens[strength_token])
+        for tint_token in tint_tokens:
+            ground = _mix_to_hex(tokens[tint_token], tokens[base_token], strength)
+            ratio = contrast_ratio(tokens[text_token], ground)
+            rows.append((text_token, f"{tint_token}@{strength_token} over {base_token}", ratio, minimum, where))
+    return rows
+
+
 def _report(label: str, rows: list[tuple[str, str, float, float, str]]) -> int:
     print(f"-- {label} --")
     failures = 0
@@ -201,15 +256,16 @@ def main() -> int:
     palette_overrides = parse_palette_overrides(css_text)
     print_tokens = {**default_tokens, **parse_print_overrides(css_text)}
 
-    failures = _report("default palette", check_pairs(default_tokens, PAIRS))
-    total = len(PAIRS)
+    mixed_total = sum(len(tints) for _, tints, *_ in MIXED_PAIRS)
+    failures = _report("default palette", check_pairs(default_tokens, PAIRS) + check_mixed(default_tokens))
+    total = len(PAIRS) + mixed_total
 
     for name in PALETTE_NAMES:
         if name not in palette_overrides:
             raise ContrastCheckError(f'no body[data-palette="{name}"] block found in {TOKENS_CSS}')
         resolved = resolve_palette(default_tokens, palette_overrides[name])
-        failures += _report(f"{name} palette", check_pairs(resolved, PAIRS))
-        total += len(PAIRS)
+        failures += _report(f"{name} palette", check_pairs(resolved, PAIRS) + check_mixed(resolved))
+        total += len(PAIRS) + mixed_total
 
     failures += _report("print", check_pairs(print_tokens, PRINT_PAIRS))
     total += len(PRINT_PAIRS)

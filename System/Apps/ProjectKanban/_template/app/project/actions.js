@@ -8,7 +8,7 @@
 import { el } from "../shared/dom.js";
 import { groupByStem, stemDifference } from "./grouping.js";
 import { buildTaskRow, buildDoneTaskRow } from "./task-row.js";
-import { buildCopyButton, taskCopyText, sectionCopyText } from "./copy.js";
+import { buildCopyButton, taskCopyText, sectionCopyText, sectionListTarget } from "./copy.js";
 import { wireReorder } from "./reorder.js";
 
 // wishlist #4b: reuses the section heading's existing small-button look
@@ -16,13 +16,13 @@ import { wireReorder } from "./reorder.js";
 // style for what is functionally the same kind of control.
 const DONE_TOGGLE_CLASS = "project-copy-btn";
 
-function buildStemGroup(group, submitEdit, reorderCtx) {
+function buildStemGroup(group, submitEdit, reorderCtx, nextTask) {
   return el("li", { class: "project-stem-group" }, [
     el("h3", { class: "project-stem-heading" }, group.stem),
     el(
       "ul",
       { class: "project-stem-chips" },
-      group.tasks.map((task) => buildTaskRow(task, stemDifference(group, task), submitEdit, reorderCtx))
+      group.tasks.map((task) => buildTaskRow(task, stemDifference(group, task), submitEdit, reorderCtx, { isNext: task === nextTask }))
     ),
   ]);
 }
@@ -52,7 +52,7 @@ export function buildNextActionsSection(project, submitEdit, showDone, onToggleD
   const tasks = project.tasks ?? [];
   const doneTasks = project.done_tasks ?? [];
   const headingChildren = [el("h2", {}, "Next Actions")];
-  if (tasks.length) headingChildren.push(buildCopyButton("Copy Next Actions", () => sectionCopyText(tasks, taskCopyText)));
+  if (tasks.length) headingChildren.push(buildCopyButton("Copy Next Actions", () => sectionCopyText(tasks, taskCopyText), { washTarget: sectionListTarget }));
   const toggle = buildDoneToggle(doneTasks, showDone, onToggleDone);
   if (toggle) headingChildren.push(toggle);
   const heading = el("div", { class: "project-section-heading" }, headingChildren);
@@ -71,12 +71,16 @@ export function buildNextActionsSection(project, submitEdit, showDone, onToggleD
     // AC-1: three or more siblings sharing a stem become one heading and N
     // chips; anything not sharing a stem (including the stray one that only
     // looks alike) renders as its own row (grouping.js's own risk mitigation).
+    // The top open row is the Next action — the same task model.py hands the
+    // board card as `next_action` (the first open task in file order).
+    const nextTask = tasks[0];
     const list = el("ul", { class: "project-list project-next-actions" });
     for (const group of groupByStem(tasks)) {
       if (group.stem === null) {
-        list.appendChild(buildTaskRow(group.tasks[0], group.tasks[0].action, submitEdit, reorderCtx));
+        const only = group.tasks[0];
+        list.appendChild(buildTaskRow(only, only.action, submitEdit, reorderCtx, { isNext: only === nextTask }));
       } else {
-        list.appendChild(buildStemGroup(group, submitEdit, reorderCtx));
+        list.appendChild(buildStemGroup(group, submitEdit, reorderCtx, nextTask));
       }
     }
 

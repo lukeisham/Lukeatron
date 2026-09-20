@@ -13,6 +13,11 @@
 // build, and no rebuild happens on that toggle.
 
 import { el, svgEl, copyToClipboard } from "../shared/dom.js";
+import { wash } from "../shared/flourish.js";
+
+// How long the copy button keeps its "copied" look — the same window
+// project/copy.js gives its own Copy button, so both routes feel alike.
+const COPIED_MS = 1200;
 
 // wishlist #9: the standard two-overlapping-documents "copy" icon, in place
 // of the word "Copy" — the button's accessible name (aria-label, set where
@@ -23,6 +28,9 @@ function buildCopyIcon() {
   return svgEl("svg", { class: "board-card-copy-icon", viewBox: "0 0 16 16", role: "img", "aria-hidden": "true" }, [
     svgEl("rect", { class: "board-card-copy-icon-back", x: "3", y: "3", width: "9", height: "9", rx: "1.5" }),
     svgEl("rect", { class: "board-card-copy-icon-front", x: "6", y: "6", width: "7", height: "7", rx: "1.3" }),
+    // Hidden until a copy succeeds (flourish.css .is-copied): the two squares
+    // give way to a tick, so the icon keeps its exact size.
+    svgEl("path", { class: "board-card-copy-icon-check", d: "M3.5 8.5 L7 12 L13 4.5" }),
   ]);
 }
 
@@ -57,6 +65,34 @@ export function buildCard(project, { navigate = defaultNavigate, copy = copyToCl
   const nextActionText = project.next_action ? project.next_action.action : "No open action";
   const owner = project.next_action?.owner || "—";
 
+  // One tick timer per card, so a second copy restarts the same 1.2s window
+  // rather than stacking (mirrors project/copy.js's own resetTimer).
+  let copiedTimer = null;
+  const copyButton = el(
+    "button",
+    {
+      class: "board-card-copy",
+      type: "button",
+      "aria-label": `Copy ${displayTitle}`,
+      title: "Copy",
+      // FR-11: the copy button never also opens the project — stopping
+      // propagation here is what keeps the card's own click listener
+      // (on the card, below) from firing for a click that started on this button.
+      onclick: async (event) => {
+        event.stopPropagation();
+        // `copy` may be an injected stub that returns nothing; only an
+        // explicit `false` (the clipboard refused) counts as a failure.
+        const ok = (await copy(copyText)) !== false;
+        if (!ok) return;
+        copyButton.classList.add("is-copied");
+        wash(card);
+        clearTimeout(copiedTimer);
+        copiedTimer = setTimeout(() => copyButton.classList.remove("is-copied"), COPIED_MS);
+      },
+    },
+    buildCopyIcon()
+  );
+
   const card = el(
     "article",
     {
@@ -88,23 +124,7 @@ export function buildCard(project, { navigate = defaultNavigate, copy = copyToCl
         el("dt", {}, "Owner"),
         el("dd", {}, owner),
       ]),
-      el(
-        "button",
-        {
-          class: "board-card-copy",
-          type: "button",
-          "aria-label": `Copy ${displayTitle}`,
-          title: "Copy",
-          // FR-11: the copy button never also opens the project — stopping
-          // propagation here is what keeps the card's own click listener
-          // (above) from firing for a click that started on this button.
-          onclick: (event) => {
-            event.stopPropagation();
-            copy(copyText);
-          },
-        },
-        buildCopyIcon()
-      ),
+      copyButton,
     ].filter(Boolean)
   );
 

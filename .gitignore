@@ -20,3 +20,6 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Runtime logs (server output etc.) — never version-controlled
+*.log

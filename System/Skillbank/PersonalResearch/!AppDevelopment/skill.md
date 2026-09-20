@@ -5,7 +5,7 @@ type: Skill
 status: Active
 core_function: System
 intent: "Take an app or widget from a blank idea to a permanently housed template, one gated phase at a time, so an interrupted or context-refreshed agent can always resume from the registry."
-version: 1.0.2
+version: 1.1.0
 dependencies:
   - phase1-prd.md
   - phase2-specs.md
@@ -18,6 +18,7 @@ dependencies:
   - templates/build.md
   - templates/refactor-registry.md
   - templates/wishlist.md
+  - templates/style-guide.md
 calibration:
   context: [PersonalResearch]
   level: Extended
@@ -111,6 +112,14 @@ its `reference/sources.md` register (EXEMPT / SUBORDINATE / UNCLASSIFIED), then 
 motion durations and glyph rules rather than deciding taste per build. An app or widget built here
 that invents its own palette, spacing or easing has skipped a standing skill, not exercised
 judgment. Its flourish budget is counted, so a breach is a failure rather than an opinion.
+
+**Every app's `_template/` carries a `StyleGuide.md` sibling to `README.md`.** Written in Phase 4
+STEP 4B, on every entry (cold included) — README stays architecture/decisions scope, StyleGuide.md
+is the visual contract: how this default actually lands in the app's real tokens/CSS (palettes,
+type, spacing, motion, layout scope by file). README's navigation map always points to it. Never
+folded into README, never skipped because the app's own styling work hasn't happened yet — an
+app with a plain default look still gets a Style Guide recording that. A widget's visual contract
+lives with its host chassis instead (see phase4-refactor.md STEP 4B).
 
 The four skills below are **downstream checks against that default**, not alternatives to it. They
 carry scored, checklist-driven frameworks and remain advisory — not binding like G-1's Vibe Coding

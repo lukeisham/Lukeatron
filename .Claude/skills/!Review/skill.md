@@ -11,7 +11,7 @@ dependencies:
   - ".Claude/skills/!AgentMail/scripts/agentmail.py"
   - ".Claude/skills/!Calendar"
   - ".Claude/skills/!PlainEnglish"
-version: 1.6.0
+version: 1.7.0
 ---
 
 ## ⚡ TRIGGER
@@ -34,9 +34,13 @@ ASSERT Memory/Medium-Term/Projects/_tracking.yaml is reachable
 
 STEP 0 — SNAPSHOT (interactive runs only).
   IF this is an interactive `/review` (not a scheduled review-monday/review-friday email run),
-  open by running !Dashboard (System/Skillbank/!Dashboard/) to render the live project urgency
-  dashboard as a widget, THEN proceed to the digest below. On a scheduled email run, SKIP this —
-  a widget cannot render into an email. Best-effort: if !Dashboard errors, note it and continue.
+  open by pointing Luke at the Dashboard (the ProjectKanban app kept live on :8789 — see CLAUDE.md
+  Browser tools), THEN proceed to the digest below. On a scheduled email run, SKIP this — a live
+  app cannot render into an email. Best-effort: if the Dashboard is unreachable, note it and continue.
+  // 2026-09-14 — !Dashboard (the Skillbank show_widget snapshot this step used to invoke) was
+  // retired: fully superseded by the live ProjectKanban board, and its name collided with the
+  // "Dashboard" / "Project Dashboard" nomenclature Luke fixed on the app itself that day.
+  // Archived to Archive/Dashboard-skill-2026-09-14/.
 
 STEP 1 — SET FOCUS.
   Resolve the lead context(s) from the flag, or from today's weekday if no flag (see TRIGGER).

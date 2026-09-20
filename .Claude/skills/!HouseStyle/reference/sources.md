@@ -35,10 +35,10 @@ unclassified surface defaults to UNCLASSIFIED (the house style governs whole).
 | 2 | `!BuildParserCartridge` | SUBORDINATE | Builds onto the Parser chassis; inherits its verdict |
 | 3 | `Parser/_shell/src/shell.css` + `StyleGuide/` | SUBORDINATE | Chassis keeps layout; house style takes tokens, motion, glyphs |
 | 4 | `Generator/_shell/src/shell.css` + `StyleGuide/` | SUBORDINATE | **Byte-identical to 3 — synchronised, not free to diverge.** Any token change lands on both in the same pass |
-| 5 | `Apps/ProjectKanban/_template/app/tokens.css` | SUBORDINATE | Spine only. No exception: Luke resolved the five-lane-hues question on 2026-09-12 in favour of the house two-accent cap — all five `--l-*` tokens resolve to `--ink-muted` by default |
+| 5 | `Apps/ProjectKanban/_template/app/tokens.css` — the **Dashboard** / **Project Dashboard** app (Luke's nomenclature, 2026-09-14; `ProjectKanban` is retained only as the internal folder/project codename) | SUBORDINATE | Spine only. No exception: Luke resolved the five-lane-hues question on 2026-09-12 in favour of the house two-accent cap — all five `--l-*` tokens resolve to `--ink-muted` by default |
 | 5b | ~~`Apps/ProjectDashboard/.../shared/tokens.css`~~ | RETIRED | Retired 2026-09-12, replaced by #5 (`Apps/ProjectKanban/`). Archived to `Archive/ProjectDashboard-app-2026-09-12/` — kept here only as a historical register entry |
 | 6 | `Widgets/CurriculumPreparation/refactor-registry.md` | SUBORDINATE | HTML edit surface governed; the pure-SVG print plane keeps geometry. **This widget has no README** — the registry is the anchor |
-| 7 | `!Dashboard` | UNCLASSIFIED | Renders via `show_widget`; no contract of its own |
+| 7 | ~~`!Dashboard`~~ | RETIRED | Retired 2026-09-14 — superseded by #5 (the live ProjectKanban board); its name collided with the "Dashboard" nomenclature Luke fixed on the app itself that day. Archived to `Archive/Dashboard-skill-2026-09-14/` — kept here only as a historical register entry |
 | 8 | `!GenerateWiki` | **EXEMPT** | Defers wholly to `wiki-page.css`, whose provenance inks encode whose words these are — a semantic no other surface has |
 | 9 | `!IdeaWiki` | UNCLASSIFIED | Node rendering; no contract of its own |
 | 9b | ~~`Tools/project-dashboard/serve.py`~~ | RETIRED | Retired 2026-09-09, replaced by #5 (`Apps/ProjectDashboard/`). Archived to `Archive/ProjectDashboard-tool-2026-09/` — kept here only as a historical register entry |

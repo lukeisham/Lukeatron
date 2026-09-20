@@ -104,13 +104,17 @@ STEP 2 — TRIAGE EACH PROJECT (board-first; open registries lazily to save toke
   Classify into exactly one STATE. Test in PRECEDENCE order — FIRST match wins: 🔴 → 🟠 → 🔵 → 🟢 → ⚪.
     1. 🔴 Incoming   — a Next Action or Event is OVERDUE (date < today, unmet), OR a due date/event is
                        CLOSE (≤ 3 days from today, local Melbourne time) with nothing queued to meet it,
+                       OR the project is parked waiting on a FUTURE DATE OR STATE OF AFFAIRS to arrive
+                       (a calendar date, an external milestone, "once X period closes/opens") — however
+                       far out, since nothing but time itself unblocks it, not a person's action,
                        OR the project is ADRIFT — no open item at all AND no wake (genuinely empty, not
                        merely Undefined; an Undefined-but-populated project is ⚪, see 5).
     2. 🟠 Mine       — not Incoming, but the next move is Luke's: pending his input, a decision, or a
                        Human-owned action. (A looming date does NOT force red here, as long as the action
                        exists and isn't overdue — red is only for "about to slip with no plan".)
-    3. 🔵 Waiting    — nothing for Luke or the agent to do now; parked waiting on an external person's
-                       reply OR a future dated event (> 3 days out). VALID ONLY with a wake condition.
+    3. 🔵 Waiting    — nothing for Luke or the agent to do now; parked waiting on an external PERSON to
+                       reply or act — never a bare date or event (that's 🔴 Incoming). VALID ONLY with a
+                       wake condition (a date or named trigger for when to check back in on that person).
     4. 🟢 Delegate   — healthy and moving: there is a DEFINED next step (an open action with an owner AND,
                        where it matters, a due date) and work is in motion. Nothing to surface.
     5. ⚪ Undefined   — open items exist but are not yet defined: at least one open Next Action has NO
@@ -123,10 +127,14 @@ STEP 2 — TRIAGE EACH PROJECT (board-first; open registries lazily to save toke
     DEFAULT → 🔴 Incoming (if it genuinely can't be classified, it needs your eye).
 
   THE HARD RULES (these are the point of the skill):
-    1. NO 🔵 WITHOUT A WAKE. A project "Waiting" must name what it waits on AND a wake (a date or a named
-       external trigger like "awaiting X's reply by <date>"). Waiting with no date and no named trigger
-       is 🔴 Incoming, not 🔵 Waiting. Waiting ≠ Delegate. (⚪ Undefined is NOT a loophole here — it is for
-       items with no owner/deadline, never an excuse to leave a genuine external wait wakeless.)
+    1. NO 🔵 WITHOUT A WAKE. A project "Waiting" must name WHO it waits on AND a wake (a date or a named
+       trigger for checking back in, like "chase X if no reply by <date>"). Waiting with no date and no
+       named trigger is 🔴 Incoming, not 🔵 Waiting. Waiting ≠ Delegate. (⚪ Undefined is NOT a loophole
+       here — it is for items with no owner/deadline, never an excuse to leave a genuine wait wakeless.)
+    1a. WAITING ≠ INCOMING. 🔵 Waiting is for a PERSON who owes a reply or action — never a bare date or
+       event. A project blocked only by the calendar (a future date, a milestone, "once X period closes")
+       is 🔴 Incoming, however far out that date sits — the distinction is WHO/WHAT it's blocked on, not
+       how soon.
     2. PENDING-LUKE'S-INPUT IS ORANGE. If a project needs material/decision only Luke can give, it is
        🟠 Mine (never 🔵, 🟢 or ⚪) until that material lands in Inbox/. The Inbox arrival is its wake.
     3. ⚪ IS FOR THE UNSHAPED, NOT THE OVERDUE. Precedence keeps 🔴 ahead of grey: an Undefined item that
@@ -301,6 +309,7 @@ Validation:
     in the Context table ELSE promote it — fail-closed staging must never become a silent stall.
   VERIFY every enumerated project has state ∈ {🟢,🔵,🟠,🔴,⚪} in _tracking.yaml ELSE re-triage the missing one.
   VERIFY no 🔵 Waiting project lacks a wake condition ELSE reclassify it 🔴 Incoming.
+  VERIFY no 🔵 Waiting project's waiting_on names a bare date/event with no person ELSE reclassify it 🔴 Incoming.
   VERIFY no pending-Luke-input project is 🔵, 🟢 or ⚪ ELSE reclassify it 🟠 Mine.
   VERIFY no ⚪ Undefined project is overdue or due-within-3-days ELSE precedence makes it 🔴 Incoming.
   VERIFY precedence held — any overdue / close-due-with-no-plan project is 🔴 even if it also fits 🟠/🔵.

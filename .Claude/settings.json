@@ -30,7 +30,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Apps/ProjectKanban/_template/ensure-kanban.sh\"",
+            "command": "bash \"/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Apps/ProjectKanban/ensure-kanban.sh\"",
             "statusMessage": "Ensuring ProjectKanban is live on :8789"
           }
         ]

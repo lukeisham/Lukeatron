@@ -2,7 +2,7 @@
      Its scope is deliberately narrow (Vibe Coding Rules SR-7). It carries only the four sections
      below. It never walks through function bodies, never restates logic in prose, never writes a
      usage tutorial, and never says anything the code already says through its own names.
-     No spec survives Phase 4 — this one is folded down into _template/README.md and then deleted
+     No spec survives Phase 4 — this one is folded down into the app's README.md and then deleted
      with the rest, so write every line to be worth keeping there. Delete these comment lines. -->
 
 # <Name> — Documentation Spec
@@ -40,10 +40,4 @@ without a reason is a note, and notes belong in the PRD.>
 ```
 
 ## 4. Granted rule exceptions
-<Every break from Memory/Long-Term/Coding/vibe-coding-rules.md that Luke explicitly granted,
-with the reason he was given. This table and the registry's must match exactly.
-Empty is the normal state.>
-
-| Rule ID | Where | Reason | Granted on |
-|---|---|---|---|
-| — | — | — | — |
+See `../../app-decisions.md` → Rule exceptions. That file is the only record; do not copy it here.

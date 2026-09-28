@@ -1,0 +1,1 @@
+{ "private": true, "type": "module", "scripts": { "test": "node --test" }, "description": "Storytelling — declares ES-module mode for node:test only, and `npm test` = `node --test`. No dependencies." }

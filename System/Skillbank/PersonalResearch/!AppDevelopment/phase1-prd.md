@@ -1,19 +1,19 @@
 ---
 name: "!AppPRD"
-description: "Phase 1 of !AppDevelopment — interview Luke about a new app or widget and write a short, complete Product Requirements Document in plain English, in a new Sandbox folder, alongside the development registry that makes the work resumable."
+description: "Phase 1 of !AppDevelopment — interview Luke about a new app or widget and write a short, complete Product Requirements Document in plain English into the app's permanent folder (_build/prd.md), alongside app-decisions.md."
 type: Skill
 status: Active
 core_function: Generate
 intent: "Get the purpose and the key design decisions onto one page before a single line of spec is written."
-version: 1.0.0
-dependencies: [templates/prd.md, templates/registry.md]
+version: 2.0.0
+dependencies: [templates/prd.md, templates/app-decisions.md]
 calibration:
   context: [PersonalResearch]
   level: Extended
   scope: Local
 memory_footprint:
   read: [Memory/Long-Term/Coding]
-  write: [System/Sandbox]
+  write: [System/Apps, System/Widgets]
 ---
 
 ## ⚡ TRIGGER
@@ -33,14 +33,16 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
   local OS/shell — e.g. a menu-bar item, a cron/launchd job, a CLI invoked from a folder).
   A widget with no named host is not yet specified.
 
-**STEP 2 — Create the working folder**
-  ASSERT `System/Sandbox/<name>/` does not already exist
+**STEP 2 — Create the permanent folder**
+  SET `home` = `System/Apps/<Name>/` (app) or `System/Widgets/<Name>/` (widget).
+  ASSERT `home/_build/prd.md` does not already exist
     ELSE ➔ it is an existing project; hand back to `!AppDevelopment` STEP 1 to resume, do not overwrite.
-  CREATE `System/Sandbox/<name>/`
-  WRITE `System/Sandbox/<name>/registry.md`   from `templates/registry.md`, phase = 1
-  WRITE `System/Sandbox/<name>/<name>-prd.md` from `templates/prd.md`, skeleton only
-  Both files exist from minute one, before the interview finishes — an interrupted interview
-  must still leave a resumable folder behind (G-4).
+  CREATE `home/` and `home/_build/`
+  WRITE `home/app-decisions.md` from `templates/app-decisions.md` (tables empty)
+  WRITE `home/_build/prd.md`   from `templates/prd.md`, skeleton only
+  Both files exist from minute one — an interrupted interview leaves a PRD on disk that shows
+  exactly how far it got, and nothing needs moving later.
+  IF a tracked project exists for this build ➔ set its Next Action to "finish the PRD interview".
 
 **STEP 3 — Interview, one question at a time**
   Walk these in order. Offer a recommended answer with each question so Luke can accept or
@@ -75,25 +77,25 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
   SHOW the PRD to Luke in full.
   FLAG any requirement that will collide with the Vibe Coding Rules (a dependency, a framework,
   a performance cost). Raise it now, as a design question, not later as an exception request (G-1).
-  IF `wishlist.md` exists for this project ➔ RUN its STEP 3 conflict scan against this PRD and
-  report any duplicate/overlap/conflict before Luke approves (G-5).
-  AWAIT Luke's approval THEN update the registry ELSE loop to STEP 3 on the sections he names.
+  AWAIT Luke's approval ELSE loop to STEP 3 on the sections he names.
 
 **STEP 7 — Close the phase**
-  SET registry `phase:` = 2, PRD status = approved, stamp the Phase Log.
+  SET the PRD's `status:` = approved. APPEND to `app-decisions.md` → Approvals:
+  today · "PRD approved" · the PRD version.
   STATE that Phase 2 may still send the PRD back for rewriting, and that this is normal.
   HAND to `phase2-specs.md`.
 
 // EXECUTION_END
 
 ## ✅ OUTPUT
-`System/Sandbox/<name>/` containing exactly two files: `<name>-prd.md` and `registry.md`.
+`System/Apps/<Name>/` (or `System/Widgets/<Name>/`) containing `app-decisions.md` and
+`_build/prd.md`.
 
 **Validation Check (Self-Test)**
 ```
 VERIFY the PRD names purpose, core job, I/O, boundaries, data, done-looks-like
 VERIFY a widget PRD names its host and the host contract
-VERIFY registry phase == 2 AND the PRD is listed in the registry's Documents table
+VERIFY the PRD's status is approved AND app-decisions.md records that approval with its version
 VERIFY the PRD contains no implementation detail that belongs in a spec
 ELSE ➔ return to the failing step
 ```
@@ -101,7 +103,7 @@ ELSE ➔ return to the failing step
 **Error Path**
 ```
 CATCH folder-exists   ➔ do not overwrite; resume via !AppDevelopment STEP 1.
-CATCH luke-unavailable ➔ save the partial PRD, mark the open questions in the registry as
-                          "awaiting Luke", hold. Never invent an answer to an interview question.
-CATCH [*]             ➔ update the registry with the current step, report, hold.
+CATCH luke-unavailable ➔ save the partial PRD with its open questions marked "awaiting Luke"
+                          in the PRD itself, hold. Never invent an answer to an interview question.
+CATCH [*]             ➔ save what is written, report, hold.
 ```

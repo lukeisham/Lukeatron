@@ -1,0 +1,1641 @@
+{
+ "note": "Reconciled poster data 2026-09-21: pass A and pass B (independent image readings) agree on all 181 tiles incl. every popularity; matches pass1 except name capitalisation (Jhg). popText = popularity exactly as printed; popularity = numeric. Luke still reviews the checklist (FR-D8/AC-D4).",
+ "count": 181,
+ "elements": [
+  {
+   "id": "Can",
+   "name": "Canon",
+   "group": "production",
+   "popText": ".87",
+   "popularity": 0.87,
+   "col": 18,
+   "row": 4
+  },
+  {
+   "id": "Fan",
+   "name": "Fanon",
+   "group": "fandom",
+   "popText": "1.3",
+   "popularity": 1.3,
+   "col": 19,
+   "row": 4
+  },
+  {
+   "id": "Sho",
+   "name": "Shout Out",
+   "group": "production",
+   "popText": "10",
+   "popularity": 10.0,
+   "col": 18,
+   "row": 5
+  },
+  {
+   "id": "Sus",
+   "name": "Willing Suspension of Disbelief",
+   "group": "fandom",
+   "popText": ".67",
+   "popularity": 0.67,
+   "col": 19,
+   "row": 5
+  },
+  {
+   "id": "T",
+   "name": "Trope",
+   "group": "metatropes",
+   "popText": ".20",
+   "popularity": 0.2,
+   "col": 16,
+   "row": 5
+  },
+  {
+   "id": "Ls",
+   "name": "Lampshade Hanging",
+   "group": "metatropes",
+   "popText": "12",
+   "popularity": 12.0,
+   "col": 16,
+   "row": 6
+  },
+  {
+   "id": "Tru",
+   "name": "Truth In Television",
+   "group": "metatropes",
+   "popText": "4.4",
+   "popularity": 4.4,
+   "col": 17,
+   "row": 6
+  },
+  {
+   "id": "Tt",
+   "name": "Take That",
+   "group": "production",
+   "popText": "4.1",
+   "popularity": 4.1,
+   "col": 18,
+   "row": 6
+  },
+  {
+   "id": "Fri",
+   "name": "Fridge Logic",
+   "group": "fandom",
+   "popText": "5.8",
+   "popularity": 5.8,
+   "col": 19,
+   "row": 6
+  },
+  {
+   "id": "Jt",
+   "name": "Justified Trope",
+   "group": "metatropes",
+   "popText": "4.2",
+   "popularity": 4.2,
+   "col": 16,
+   "row": 7
+  },
+  {
+   "id": "Rur",
+   "name": "Reality Is Unrealistic",
+   "group": "metatropes",
+   "popText": ".74",
+   "popularity": 0.74,
+   "col": 17,
+   "row": 7
+  },
+  {
+   "id": "Res",
+   "name": "Did Not Do The Research",
+   "group": "production",
+   "popText": "3.9",
+   "popularity": 3.9,
+   "col": 18,
+   "row": 7
+  },
+  {
+   "id": "Et",
+   "name": "Epileptic Trees",
+   "group": "fandom",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 19,
+   "row": 7
+  },
+  {
+   "id": "Sv",
+   "name": "Subverted Trope",
+   "group": "metatropes",
+   "popText": "3.2",
+   "popularity": 3.2,
+   "col": 16,
+   "row": 8
+  },
+  {
+   "id": "Lr",
+   "name": "Like Reality Unless Noted",
+   "group": "metatropes",
+   "popText": ".08",
+   "popularity": 0.08,
+   "col": 17,
+   "row": 8
+  },
+  {
+   "id": "Vam",
+   "name": "Viewers Are Morons",
+   "group": "production",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 18,
+   "row": 8
+  },
+  {
+   "id": "Dlp",
+   "name": "Draco in Leather Pants",
+   "group": "fandom",
+   "popText": "1.5",
+   "popularity": 1.5,
+   "col": 19,
+   "row": 8
+  },
+  {
+   "id": "Old",
+   "name": "Oldest Ones In The Book",
+   "group": "metatropes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "col": 16,
+   "row": 9
+  },
+  {
+   "id": "Anp",
+   "name": "Anthropic Principle",
+   "group": "metatropes",
+   "popText": ".07",
+   "popularity": 0.07,
+   "col": 17,
+   "row": 9
+  },
+  {
+   "id": "Wob",
+   "name": "Writer On Board",
+   "group": "production",
+   "popText": ".49",
+   "popularity": 0.49,
+   "col": 18,
+   "row": 9
+  },
+  {
+   "id": "Mem",
+   "name": "Memetic Mutation",
+   "group": "fandom",
+   "popText": "6.8",
+   "popularity": 6.8,
+   "col": 19,
+   "row": 9
+  },
+  {
+   "id": "Roc",
+   "name": "Rule of Cool",
+   "group": "metatropes",
+   "popText": "4.1",
+   "popularity": 4.1,
+   "col": 16,
+   "row": 10
+  },
+  {
+   "id": "Con",
+   "name": "Law of Conservation of Detail",
+   "group": "metatropes",
+   "popText": ".30",
+   "popularity": 0.3,
+   "col": 17,
+   "row": 10
+  },
+  {
+   "id": "Xm",
+   "name": "Executive Meddling",
+   "group": "production",
+   "popText": "3.0",
+   "popularity": 3.0,
+   "col": 18,
+   "row": 10
+  },
+  {
+   "id": "Wog",
+   "name": "Word of God",
+   "group": "fandom",
+   "popText": "7.4",
+   "popularity": 7.4,
+   "col": 19,
+   "row": 10
+  },
+  {
+   "id": "Rof",
+   "name": "Rule of Funny",
+   "group": "metatropes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "col": 16,
+   "row": 11
+  },
+  {
+   "id": "Lah",
+   "name": "Literary Agent Hypothesis",
+   "group": "metatropes",
+   "popText": ".46",
+   "popularity": 0.46,
+   "col": 17,
+   "row": 11
+  },
+  {
+   "id": "Rad",
+   "name": "Getting Crap Past The Radar",
+   "group": "production",
+   "popText": "2.5",
+   "popularity": 2.5,
+   "col": 18,
+   "row": 11
+  },
+  {
+   "id": "Mst",
+   "name": "MST3K Mantra",
+   "group": "fandom",
+   "popText": ".92",
+   "popularity": 0.92,
+   "col": 19,
+   "row": 11
+  },
+  {
+   "id": "Rod",
+   "name": "Rule of Drama",
+   "group": "metatropes",
+   "popText": ".51",
+   "popularity": 0.51,
+   "col": 16,
+   "row": 12
+  },
+  {
+   "id": "Md",
+   "name": "Moral Dissonance",
+   "group": "metatropes",
+   "popText": ".71",
+   "popularity": 0.71,
+   "col": 17,
+   "row": 12
+  },
+  {
+   "id": "Dh",
+   "name": "Development Hell",
+   "group": "production",
+   "popText": ".72",
+   "popularity": 0.72,
+   "col": 18,
+   "row": 12
+  },
+  {
+   "id": "Sqi",
+   "name": "Squick",
+   "group": "fandom",
+   "popText": "5.7",
+   "popularity": 5.7,
+   "col": 19,
+   "row": 12
+  },
+  {
+   "id": "4wl",
+   "name": "The Fourth Wall",
+   "group": "highlight",
+   "popText": ".38",
+   "popularity": 0.38,
+   "col": 16,
+   "row": 13
+  },
+  {
+   "id": "Tbl",
+   "name": "Parodic Table of the Elements",
+   "group": "metatropes",
+   "popText": ".01",
+   "popularity": 0.01,
+   "col": 17,
+   "row": 13
+  },
+  {
+   "id": "Sbn",
+   "name": "Screwed By The Network",
+   "group": "production",
+   "popText": ".78",
+   "popularity": 0.78,
+   "col": 18,
+   "row": 13
+  },
+  {
+   "id": "Fwr",
+   "name": "Freud Was Right",
+   "group": "fandom",
+   "popText": "1.3",
+   "popularity": 1.3,
+   "col": 19,
+   "row": 13
+  },
+  {
+   "id": "Bad",
+   "name": "Big Bad",
+   "group": "villains",
+   "popText": "13",
+   "popularity": 13.0,
+   "col": 12,
+   "row": 7
+  },
+  {
+   "id": "Etw",
+   "name": "Evil Twin",
+   "group": "villains",
+   "popText": "1.6",
+   "popularity": 1.6,
+   "col": 13,
+   "row": 7
+  },
+  {
+   "id": "Rch",
+   "name": "Archenemy",
+   "group": "villains",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 14,
+   "row": 7
+  },
+  {
+   "id": "Emp",
+   "name": "The Empire",
+   "group": "villains",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 15,
+   "row": 7
+  },
+  {
+   "id": "Mgb",
+   "name": "Magnificent Bastard",
+   "group": "villains",
+   "popText": "5.1",
+   "popularity": 5.1,
+   "col": 12,
+   "row": 8
+  },
+  {
+   "id": "Ewi",
+   "name": "Enemy Within",
+   "group": "villains",
+   "popText": ".42",
+   "popularity": 0.42,
+   "col": 13,
+   "row": 8
+  },
+  {
+   "id": "Dra",
+   "name": "The Dragon",
+   "group": "villains",
+   "popText": "4.6",
+   "popularity": 4.6,
+   "col": 14,
+   "row": 8
+  },
+  {
+   "id": "Av",
+   "name": "Anti-Villain",
+   "group": "villains",
+   "popText": "2.0",
+   "popularity": 2.0,
+   "col": 15,
+   "row": 8
+  },
+  {
+   "id": "Mpb",
+   "name": "Manipulative Bastard",
+   "group": "villains",
+   "popText": "2.9",
+   "popularity": 2.9,
+   "col": 12,
+   "row": 9
+  },
+  {
+   "id": "Law",
+   "name": "Amoral Attorney",
+   "group": "villains",
+   "popText": ".32",
+   "popularity": 0.32,
+   "col": 13,
+   "row": 9
+  },
+  {
+   "id": "Mol",
+   "name": "The Mole",
+   "group": "villains",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 14,
+   "row": 9
+  },
+  {
+   "id": "Vp",
+   "name": "Villain Protagonist",
+   "group": "villains",
+   "popText": "1.8",
+   "popularity": 1.8,
+   "col": 15,
+   "row": 9
+  },
+  {
+   "id": "Chs",
+   "name": "The Chessmaster",
+   "group": "villains",
+   "popText": "2.8",
+   "popularity": 2.8,
+   "col": 12,
+   "row": 10
+  },
+  {
+   "id": "Ob",
+   "name": "Obstructive Bureaucrat",
+   "group": "villains",
+   "popText": ".80",
+   "popularity": 0.8,
+   "col": 13,
+   "row": 10
+  },
+  {
+   "id": "Vir",
+   "name": "The Virus",
+   "group": "villains",
+   "popText": "1.2",
+   "popularity": 1.2,
+   "col": 14,
+   "row": 10
+  },
+  {
+   "id": "4te",
+   "name": "For The Evulz",
+   "group": "villains2",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 15,
+   "row": 10
+  },
+  {
+   "id": "Mon",
+   "name": "Complete Monster",
+   "group": "villains",
+   "popText": "7.5",
+   "popularity": 7.5,
+   "col": 12,
+   "row": 11
+  },
+  {
+   "id": "Ws",
+   "name": "Wicked Stepmother",
+   "group": "villains",
+   "popText": ".26",
+   "popularity": 0.26,
+   "col": 13,
+   "row": 11
+  },
+  {
+   "id": "Eld",
+   "name": "Eldritch Abomination",
+   "group": "villains",
+   "popText": "5.6",
+   "popularity": 5.6,
+   "col": 14,
+   "row": 11
+  },
+  {
+   "id": "Lol",
+   "name": "Evil Laugh",
+   "group": "villains2",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 15,
+   "row": 11
+  },
+  {
+   "id": "Om",
+   "name": "Omnicidal Maniac",
+   "group": "villains",
+   "popText": "1.7",
+   "popularity": 1.7,
+   "col": 12,
+   "row": 12
+  },
+  {
+   "id": "Bru",
+   "name": "The Brute",
+   "group": "villains",
+   "popText": ".96",
+   "popularity": 0.96,
+   "col": 13,
+   "row": 12
+  },
+  {
+   "id": "1wa",
+   "name": "One Winged Angel",
+   "group": "villains",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 14,
+   "row": 12
+  },
+  {
+   "id": "Fai",
+   "name": "You Have Failed Me",
+   "group": "villains2",
+   "popText": ".85",
+   "popularity": 0.85,
+   "col": 15,
+   "row": 12
+  },
+  {
+   "id": "Kt",
+   "name": "Knight Templar",
+   "group": "villains",
+   "popText": "2.4",
+   "popularity": 2.4,
+   "col": 12,
+   "row": 13
+  },
+  {
+   "id": "Chi",
+   "name": "Creepy Child",
+   "group": "villains",
+   "popText": "1.5",
+   "popularity": 1.5,
+   "col": 13,
+   "row": 13
+  },
+  {
+   "id": "Cce",
+   "name": "Corrupt Corporate Executive",
+   "group": "villains",
+   "popText": "2.2",
+   "popularity": 2.2,
+   "col": 14,
+   "row": 13
+  },
+  {
+   "id": "Cat",
+   "name": "Right Hand Cat",
+   "group": "villains2",
+   "popText": ".23",
+   "popularity": 0.23,
+   "col": 15,
+   "row": 13
+  },
+  {
+   "id": "Wb",
+   "name": "Woobie",
+   "group": "charmod",
+   "popText": "5.5",
+   "popularity": 5.5,
+   "col": 8,
+   "row": 7
+  },
+  {
+   "id": "Mad",
+   "name": "Mad Scientist",
+   "group": "archetypes",
+   "popText": "4.0",
+   "popularity": 4.0,
+   "col": 9,
+   "row": 7
+  },
+  {
+   "id": "Wes",
+   "name": "The Wesley",
+   "group": "archetypes",
+   "popText": ".90",
+   "popularity": 0.9,
+   "col": 10,
+   "row": 7
+  },
+  {
+   "id": "Scl",
+   "name": "Star-Crossed Lovers",
+   "group": "archetypes",
+   "popText": ".77",
+   "popularity": 0.77,
+   "col": 11,
+   "row": 7
+  },
+  {
+   "id": "Ccl",
+   "name": "Cloud Cuckoolander",
+   "group": "charmod",
+   "popText": "6.1",
+   "popularity": 6.1,
+   "col": 8,
+   "row": 8
+  },
+  {
+   "id": "Sue",
+   "name": "Mary Sue",
+   "group": "archetypes",
+   "popText": "1.7",
+   "popularity": 1.7,
+   "col": 9,
+   "row": 8
+  },
+  {
+   "id": "Tsu",
+   "name": "Tsundere",
+   "group": "archetypes",
+   "popText": "3.8",
+   "popularity": 3.8,
+   "col": 10,
+   "row": 8
+  },
+  {
+   "id": "St",
+   "name": "The Storyteller",
+   "group": "archetypes",
+   "popText": ".68",
+   "popularity": 0.68,
+   "col": 11,
+   "row": 8
+  },
+  {
+   "id": "Ham",
+   "name": "Large Ham",
+   "group": "charmod",
+   "popText": "5.1",
+   "popularity": 5.1,
+   "col": 8,
+   "row": 9
+  },
+  {
+   "id": "Moo",
+   "name": "Mooks",
+   "group": "archetypes",
+   "popText": "3.9",
+   "popularity": 3.9,
+   "col": 9,
+   "row": 9
+  },
+  {
+   "id": "Dbd",
+   "name": "The Dumbledore",
+   "group": "archetypes",
+   "popText": ".33",
+   "popularity": 0.33,
+   "col": 10,
+   "row": 9
+  },
+  {
+   "id": "Lei",
+   "name": "Rebel Leader",
+   "group": "archetypes",
+   "popText": ".16",
+   "popularity": 0.16,
+   "col": 11,
+   "row": 9
+  },
+  {
+   "id": "Rnd",
+   "name": "Rounded Character",
+   "group": "charmod",
+   "popText": ".06",
+   "popularity": 0.06,
+   "col": 8,
+   "row": 10
+  },
+  {
+   "id": "Red",
+   "name": "Redshirts",
+   "group": "archetypes",
+   "popText": "1.2",
+   "popularity": 1.2,
+   "col": 9,
+   "row": 10
+  },
+  {
+   "id": "Mus",
+   "name": "Dumb Muscle",
+   "group": "archetypes",
+   "popText": ".83",
+   "popularity": 0.83,
+   "col": 10,
+   "row": 10
+  },
+  {
+   "id": "Mal",
+   "name": "Rebellious Spirit",
+   "group": "archetypes",
+   "popText": ".33",
+   "popularity": 0.33,
+   "col": 11,
+   "row": 10
+  },
+  {
+   "id": "Fla",
+   "name": "Flat Character",
+   "group": "charmod",
+   "popText": ".34",
+   "popularity": 0.34,
+   "col": 8,
+   "row": 11
+  },
+  {
+   "id": "Mug",
+   "name": "Muggles",
+   "group": "archetypes",
+   "popText": ".90",
+   "popularity": 0.9,
+   "col": 9,
+   "row": 11
+  },
+  {
+   "id": "Gia",
+   "name": "Gentle Giant",
+   "group": "archetypes",
+   "popText": "1.3",
+   "popularity": 1.3,
+   "col": 10,
+   "row": 11
+  },
+  {
+   "id": "Kz",
+   "name": "The Klutz",
+   "group": "archetypes",
+   "popText": ".27",
+   "popularity": 0.27,
+   "col": 11,
+   "row": 11
+  },
+  {
+   "id": "Dyn",
+   "name": "Dynamic Character",
+   "group": "charmod",
+   "popText": ".04",
+   "popularity": 0.04,
+   "col": 8,
+   "row": 12
+  },
+  {
+   "id": "Scr",
+   "name": "The Scrappy",
+   "group": "archetypes",
+   "popText": "2.8",
+   "popularity": 2.8,
+   "col": 9,
+   "row": 12
+  },
+  {
+   "id": "Foo",
+   "name": "The Fool",
+   "group": "archetypes",
+   "popText": ".44",
+   "popularity": 0.44,
+   "col": 10,
+   "row": 12
+  },
+  {
+   "id": "Lrg",
+   "name": "Loveable Rogue",
+   "group": "archetypes",
+   "popText": ".77",
+   "popularity": 0.77,
+   "col": 11,
+   "row": 12
+  },
+  {
+   "id": "Sta",
+   "name": "Static Character",
+   "group": "charmod",
+   "popText": ".06",
+   "popularity": 0.06,
+   "col": 8,
+   "row": 13
+  },
+  {
+   "id": "Edh",
+   "name": "Ensemble Darkhorse",
+   "group": "archetypes",
+   "popText": "4.0",
+   "popularity": 4.0,
+   "col": 9,
+   "row": 13
+  },
+  {
+   "id": "Tc",
+   "name": "Turncoat",
+   "group": "archetypes",
+   "popText": ".13",
+   "popularity": 0.13,
+   "col": 10,
+   "row": 13
+  },
+  {
+   "id": "Pmd",
+   "name": "Person of Mass Destruction",
+   "group": "archetypes",
+   "popText": ".98",
+   "popularity": 0.98,
+   "col": 11,
+   "row": 13
+  },
+  {
+   "id": "A",
+   "name": "Antagonist",
+   "group": "charmod",
+   "popText": ".01",
+   "popularity": 0.01,
+   "col": 8,
+   "row": 6
+  },
+  {
+   "id": "P",
+   "name": "Protagonist",
+   "group": "charmod",
+   "popText": ".13",
+   "popularity": 0.13,
+   "col": 7,
+   "row": 6
+  },
+  {
+   "id": "H",
+   "name": "The Hero",
+   "group": "heroes",
+   "popText": "4.9",
+   "popularity": 4.9,
+   "col": 4,
+   "row": 7
+  },
+  {
+   "id": "Kni",
+   "name": "Knight in Shining Armor",
+   "group": "heroes",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 5,
+   "row": 7
+  },
+  {
+   "id": "Bbw",
+   "name": "Badass Bookworm",
+   "group": "heroes",
+   "popText": "1.7",
+   "popularity": 1.7,
+   "col": 6,
+   "row": 7
+  },
+  {
+   "id": "Ib",
+   "name": "Idiot Ball",
+   "group": "charmod",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 7,
+   "row": 7
+  },
+  {
+   "id": "Ah",
+   "name": "Anti Hero",
+   "group": "heroes",
+   "popText": "3.2",
+   "popularity": 3.2,
+   "col": 4,
+   "row": 8
+  },
+  {
+   "id": "Neo",
+   "name": "The Chosen One",
+   "group": "heroes",
+   "popText": "1.7",
+   "popularity": 1.7,
+   "col": 5,
+   "row": 8
+  },
+  {
+   "id": "Tp",
+   "name": "Technical Pacifist",
+   "group": "heroes",
+   "popText": ".74",
+   "popularity": 0.74,
+   "col": 6,
+   "row": 8
+  },
+  {
+   "id": "Fln",
+   "name": "Flanderization",
+   "group": "charmod",
+   "popText": "1.6",
+   "popularity": 1.6,
+   "col": 7,
+   "row": 8
+  },
+  {
+   "id": "Ih",
+   "name": "Idiot Hero",
+   "group": "heroes",
+   "popText": "1.4",
+   "popularity": 1.4,
+   "col": 4,
+   "row": 9
+  },
+  {
+   "id": "Ag",
+   "name": "Action Girl",
+   "group": "heroes",
+   "popText": "5.0",
+   "popularity": 5.0,
+   "col": 5,
+   "row": 9
+  },
+  {
+   "id": "Ace",
+   "name": "The Ace",
+   "group": "heroes",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 6,
+   "row": 9
+  },
+  {
+   "id": "Bda",
+   "name": "Badass",
+   "group": "charmod",
+   "popText": "7.9",
+   "popularity": 7.9,
+   "col": 7,
+   "row": 9
+  },
+  {
+   "id": "Sh",
+   "name": "Super Hero",
+   "group": "heroes",
+   "popText": ".95",
+   "popularity": 0.95,
+   "col": 4,
+   "row": 10
+  },
+  {
+   "id": "Pg",
+   "name": "Plucky Girl",
+   "group": "heroes",
+   "popText": ".95",
+   "popularity": 0.95,
+   "col": 5,
+   "row": 10
+  },
+  {
+   "id": "Cap",
+   "name": "The Captain",
+   "group": "heroes",
+   "popText": ".88",
+   "popularity": 0.88,
+   "col": 6,
+   "row": 10
+  },
+  {
+   "id": "Bb",
+   "name": "Berserk Button",
+   "group": "charmod",
+   "popText": "5.8",
+   "popularity": 5.8,
+   "col": 7,
+   "row": 10
+  },
+  {
+   "id": "Kh",
+   "name": "Kid Hero",
+   "group": "heroes",
+   "popText": ".77",
+   "popularity": 0.77,
+   "col": 4,
+   "row": 11
+  },
+  {
+   "id": "Det",
+   "name": "Determinator",
+   "group": "heroes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "col": 5,
+   "row": 11
+  },
+  {
+   "id": "Gun",
+   "name": "The Gunslinger",
+   "group": "heroes",
+   "popText": ".67",
+   "popularity": 0.67,
+   "col": 6,
+   "row": 11
+  },
+  {
+   "id": "Jhg",
+   "name": "Jerk With a Heart of Gold",
+   "group": "charmod",
+   "popText": "3.7",
+   "popularity": 3.7,
+   "col": 7,
+   "row": 11
+  },
+  {
+   "id": "Gh",
+   "name": "Guile Hero",
+   "group": "heroes",
+   "popText": ".60",
+   "popularity": 0.6,
+   "col": 4,
+   "row": 12
+  },
+  {
+   "id": "Gb",
+   "name": "Genius Bruiser",
+   "group": "heroes",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 5,
+   "row": 12
+  },
+  {
+   "id": "Ir",
+   "name": "Intrepid Reporter",
+   "group": "heroes",
+   "popText": ".57",
+   "popularity": 0.57,
+   "col": 6,
+   "row": 12
+  },
+  {
+   "id": "Ja",
+   "name": "Jerkass",
+   "group": "charmod",
+   "popText": "9.0",
+   "popularity": 9.0,
+   "col": 7,
+   "row": 12
+  },
+  {
+   "id": "Th",
+   "name": "Tragic Hero",
+   "group": "heroes",
+   "popText": ".30",
+   "popularity": 0.3,
+   "col": 4,
+   "row": 13
+  },
+  {
+   "id": "5ma",
+   "name": "Five Man Band",
+   "group": "highlight",
+   "popText": "2.4",
+   "popularity": 2.4,
+   "col": 5,
+   "row": 13
+  },
+  {
+   "id": "Ind",
+   "name": "Adventurer Archeologist",
+   "group": "heroes",
+   "popText": ".39",
+   "popularity": 0.39,
+   "col": 6,
+   "row": 13
+  },
+  {
+   "id": "Sav",
+   "name": "Genre Savvy",
+   "group": "charmod",
+   "popText": "4.9",
+   "popularity": 4.9,
+   "col": 7,
+   "row": 13
+  },
+  {
+   "id": "C",
+   "name": "Conflict",
+   "group": "structure",
+   "popText": ".04",
+   "popularity": 0.04,
+   "col": 0,
+   "row": 0
+  },
+  {
+   "id": "3as",
+   "name": "Three Act Structure",
+   "group": "structure",
+   "popText": ".03",
+   "popularity": 0.03,
+   "col": 0,
+   "row": 1
+  },
+  {
+   "id": "Ae",
+   "name": "An Aesop",
+   "group": "setting",
+   "popText": "2.0",
+   "popularity": 2.0,
+   "col": 1,
+   "row": 1
+  },
+  {
+   "id": "Re",
+   "name": "The Reveal",
+   "group": "structure",
+   "popText": "2.5",
+   "popularity": 2.5,
+   "col": 0,
+   "row": 2
+  },
+  {
+   "id": "Srs",
+   "name": "Serious Business",
+   "group": "setting",
+   "popText": "2.7",
+   "popularity": 2.7,
+   "col": 1,
+   "row": 2
+  },
+  {
+   "id": "Anv",
+   "name": "Anvilicious",
+   "group": "storymod",
+   "popText": "2.0",
+   "popularity": 2.0,
+   "col": 2,
+   "row": 2
+  },
+  {
+   "id": "Phl",
+   "name": "Applied Phlebotinum",
+   "group": "plotdev",
+   "popText": "2.3",
+   "popularity": 2.3,
+   "col": 3,
+   "row": 2
+  },
+  {
+   "id": "Cmx",
+   "name": "The Climax",
+   "group": "structure",
+   "popText": ".03",
+   "popularity": 0.03,
+   "col": 0,
+   "row": 3
+  },
+  {
+   "id": "Msq",
+   "name": "The Masquerade",
+   "group": "setting",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 1,
+   "row": 3
+  },
+  {
+   "id": "Bti",
+   "name": "Beyond The Impossible",
+   "group": "storymod",
+   "popText": "5.1",
+   "popularity": 5.1,
+   "col": 2,
+   "row": 3
+  },
+  {
+   "id": "Tb",
+   "name": "Techno Babble",
+   "group": "plotdev",
+   "popText": ".75",
+   "popularity": 0.75,
+   "col": 3,
+   "row": 3
+  },
+  {
+   "id": "Den",
+   "name": "The D\u00e9nouement",
+   "group": "structure",
+   "popText": ".05",
+   "popularity": 0.05,
+   "col": 0,
+   "row": 4
+  },
+  {
+   "id": "Rcy",
+   "name": "Recycled IN SPACE",
+   "group": "setting",
+   "popText": "1.7",
+   "popularity": 1.7,
+   "col": 1,
+   "row": 4
+  },
+  {
+   "id": "Cl2",
+   "name": "Crosses the Line Twice",
+   "group": "storymod",
+   "popText": "1.5",
+   "popularity": 1.5,
+   "col": 2,
+   "row": 4
+  },
+  {
+   "id": "Wav",
+   "name": "Hand Wave",
+   "group": "plotdev",
+   "popText": "2.4",
+   "popularity": 2.4,
+   "col": 3,
+   "row": 4
+  },
+  {
+   "id": "End",
+   "name": "The End",
+   "group": "structure",
+   "popText": ".06",
+   "popularity": 0.06,
+   "col": 0,
+   "row": 5
+  },
+  {
+   "id": "X",
+   "name": "X Meets Y",
+   "group": "setting",
+   "popText": "1.2",
+   "popularity": 1.2,
+   "col": 1,
+   "row": 5
+  },
+  {
+   "id": "Ria",
+   "name": "Refuge in Audacity",
+   "group": "storymod",
+   "popText": "2.1",
+   "popularity": 2.1,
+   "col": 2,
+   "row": 5
+  },
+  {
+   "id": "Dx",
+   "name": "Deus Ex Machina",
+   "group": "plotdev",
+   "popText": "1.6",
+   "popularity": 1.6,
+   "col": 3,
+   "row": 5
+  },
+  {
+   "id": "Chk",
+   "name": "Chekhov's Gun",
+   "group": "structure",
+   "popText": "2.4",
+   "popularity": 2.4,
+   "col": 0,
+   "row": 6
+  },
+  {
+   "id": "Aa",
+   "name": "Magic A Is Magic A",
+   "group": "setting",
+   "popText": ".53",
+   "popularity": 0.53,
+   "col": 1,
+   "row": 6
+  },
+  {
+   "id": "Dae",
+   "name": "Darker And Edgier",
+   "group": "storymod",
+   "popText": "3.5",
+   "popularity": 3.5,
+   "col": 2,
+   "row": 6
+  },
+  {
+   "id": "Ass",
+   "name": "Ass Pull",
+   "group": "plotdev",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 3,
+   "row": 6
+  },
+  {
+   "id": "Mcg",
+   "name": "MacGuffin",
+   "group": "structure",
+   "popText": "2.7",
+   "popularity": 2.7,
+   "col": 0,
+   "row": 7
+  },
+  {
+   "id": "Ivc",
+   "name": "Sliding Scale of Idealism vs. Cynicism",
+   "group": "setting",
+   "popText": "1.4",
+   "popularity": 1.4,
+   "col": 1,
+   "row": 7
+  },
+  {
+   "id": "Scw",
+   "name": "Mind Screw",
+   "group": "storymod",
+   "popText": "3.8",
+   "popularity": 3.8,
+   "col": 2,
+   "row": 7
+  },
+  {
+   "id": "Iac",
+   "name": "Sealed Evil In A Can",
+   "group": "plotdev",
+   "popText": "2.1",
+   "popularity": 2.1,
+   "col": 3,
+   "row": 7
+  },
+  {
+   "id": "Bks",
+   "name": "Backstory",
+   "group": "structure",
+   "popText": "1.5",
+   "popularity": 1.5,
+   "col": 0,
+   "row": 8
+  },
+  {
+   "id": "Sq",
+   "name": "Status Quo Is God",
+   "group": "setting",
+   "popText": "1.2",
+   "popularity": 1.2,
+   "col": 1,
+   "row": 8
+  },
+  {
+   "id": "Aws",
+   "name": "What Do You Mean, It's Not Awesome?",
+   "group": "storymod",
+   "popText": "2.1",
+   "popularity": 2.1,
+   "col": 2,
+   "row": 8
+  },
+  {
+   "id": "Aod",
+   "name": "Artifact of Doom",
+   "group": "plotdev",
+   "popText": "2.1",
+   "popularity": 2.1,
+   "col": 3,
+   "row": 8
+  },
+  {
+   "id": "Ret",
+   "name": "Retcon",
+   "group": "structure",
+   "popText": "2.6",
+   "popularity": 2.6,
+   "col": 0,
+   "row": 9
+  },
+  {
+   "id": "Cal",
+   "name": "Call To Adventure",
+   "group": "highlight",
+   "popText": ".29",
+   "popularity": 0.29,
+   "col": 1,
+   "row": 9
+  },
+  {
+   "id": "Bwb",
+   "name": "Fanservice",
+   "group": "storymod",
+   "popText": "4.1",
+   "popularity": 4.1,
+   "col": 2,
+   "row": 9
+  },
+  {
+   "id": "Xan",
+   "name": "Xanatos Gambit",
+   "group": "plotdev",
+   "popText": "3.7",
+   "popularity": 3.7,
+   "col": 3,
+   "row": 9
+  },
+  {
+   "id": "Arc",
+   "name": "Story Arc",
+   "group": "structure",
+   "popText": "1.1",
+   "popularity": 1.1,
+   "col": 0,
+   "row": 10
+  },
+  {
+   "id": "Rq",
+   "name": "Redemption Quest",
+   "group": "setting",
+   "popText": ".10",
+   "popularity": 0.1,
+   "col": 1,
+   "row": 10
+  },
+  {
+   "id": "Cry",
+   "name": "Tear Jerker",
+   "group": "storymod",
+   "popText": "7.4",
+   "popularity": 7.4,
+   "col": 2,
+   "row": 10
+  },
+  {
+   "id": "Bdh",
+   "name": "Big Damn Heroes",
+   "group": "plotdev",
+   "popText": "2.9",
+   "popularity": 2.9,
+   "col": 3,
+   "row": 10
+  },
+  {
+   "id": "Rar",
+   "name": "Romance Arc",
+   "group": "structure",
+   "popText": ".05",
+   "popularity": 0.05,
+   "col": 0,
+   "row": 11
+  },
+  {
+   "id": "Hj",
+   "name": "The Hero's Journey",
+   "group": "setting",
+   "popText": ".16",
+   "popularity": 0.16,
+   "col": 1,
+   "row": 11
+  },
+  {
+   "id": "Ang",
+   "name": "Wangst",
+   "group": "storymod",
+   "popText": "1.6",
+   "popularity": 1.6,
+   "col": 2,
+   "row": 11
+  },
+  {
+   "id": "Pet",
+   "name": "Pet The Dog",
+   "group": "plotdev",
+   "popText": "1.9",
+   "popularity": 1.9,
+   "col": 3,
+   "row": 11
+  },
+  {
+   "id": "Tri",
+   "name": "Love Triangle",
+   "group": "structure",
+   "popText": "1.5",
+   "popularity": 1.5,
+   "col": 0,
+   "row": 12
+  },
+  {
+   "id": "Stw",
+   "name": "Saving the World",
+   "group": "setting",
+   "popText": ".26",
+   "popularity": 0.26,
+   "col": 1,
+   "row": 12
+  },
+  {
+   "id": "Jts",
+   "name": "Jumping the Shark",
+   "group": "storymod",
+   "popText": ".74",
+   "popularity": 0.74,
+   "col": 2,
+   "row": 12
+  },
+  {
+   "id": "Kik",
+   "name": "Kick The Dog",
+   "group": "plotdev",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "col": 3,
+   "row": 12
+  },
+  {
+   "id": "Hil",
+   "name": "Hilarity Ensues",
+   "group": "structure",
+   "popText": "4.1",
+   "popularity": 4.1,
+   "col": 0,
+   "row": 13
+  },
+  {
+   "id": "Tfc",
+   "name": "They Fight Crime",
+   "group": "setting",
+   "popText": ".45",
+   "popularity": 0.45,
+   "col": 1,
+   "row": 13
+  },
+  {
+   "id": "Gtb",
+   "name": "Growing the Beard",
+   "group": "storymod",
+   "popText": ".86",
+   "popularity": 0.86,
+   "col": 2,
+   "row": 13
+  },
+  {
+   "id": "Hrz",
+   "name": "Moral Event Horizon",
+   "group": "plotdev",
+   "popText": "4.0",
+   "popularity": 4.0,
+   "col": 3,
+   "row": 13
+  },
+  {
+   "id": "Hft",
+   "name": "Heel Face Turn",
+   "group": "charmod",
+   "popText": "5.0",
+   "popularity": 5.0,
+   "col": 7,
+   "row": 14
+  },
+  {
+   "id": "Fht",
+   "name": "Face Heel Turn",
+   "group": "charmod",
+   "popText": "3.2",
+   "popularity": 3.2,
+   "col": 8,
+   "row": 14
+  },
+  {
+   "id": "5maH",
+   "name": "The Hero",
+   "group": "heroes",
+   "symbol": "H",
+   "popText": "4.9",
+   "popularity": 4.9,
+   "x": 135,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "L",
+   "name": "The Lancer",
+   "group": "heroes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "x": 197,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "S",
+   "name": "The Smart Guy",
+   "group": "heroes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "x": 259,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "B",
+   "name": "The Big Guy",
+   "group": "heroes",
+   "popText": "3.1",
+   "popularity": 3.1,
+   "x": 321,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "Ch",
+   "name": "The Chick",
+   "group": "heroes",
+   "popText": "2.8",
+   "popularity": 2.8,
+   "x": 383,
+   "y": 1125,
+   "parent": "5ma"
+  }
+ ]
+}

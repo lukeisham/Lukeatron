@@ -1,0 +1,92 @@
+:root {
+  /* Colour tokens — sampled from reference/periodic-table-of-storytelling.png (PRD Style guide) */
+
+  /* Ground and ink */
+  --color-ground: #d3e1d2; /* PRD page ground */
+  --color-ink: #1a1a1c; /* Darkened for 4.5:1 contrast on all group colours (FR-S8) */
+  --color-ink-soft: #505050; /* Darkened for ≥3:1 contrast on all group colours (popularity, FR-S14) */
+  --color-edge: #404040; /* Darkened for ≥3:1 contrast on all group colours (UI outlines) */
+
+  /* Group colours — PRD Colour table */
+  --g-structure: #bdbec0;
+  --g-setting: #e4d1ba;
+  --g-storymod: #f0e7d9;
+  --g-plotdev: #e7e8e9;
+  --g-genre: #d9cfe8; /* Added, PRD "new lavender" */
+  --g-heroes: #c6e9f2;
+  --g-charmod: #cae4b7;
+  --g-archetypes: #83c76f;
+  --g-villains: #fabba3; /* Main villains tiles */
+  --g-villains2: #fcd7c8; /* PRD "four paler villain tiles" */
+  --g-metatropes: #faf8c1;
+  --g-production: #fdbf68;
+  --g-fandom: #f6adcd;
+  --g-highlight: #fff200; /* PRD highlight yellow for Cal, 5ma, 4wl */
+  --g-rogue: #ffffff; /* Rogue card, FR-S16 */
+
+  /* Accent */
+  --color-highlight: #fff200; /* Drop target and save cue (PRD highlight yellow) */
+
+  /* Grayscale tokens for print (FR-S11) — each group differs by ≥10 L* from touching neighbours */
+  /* Touching pairs (revised layout order): Fandom·Production·Metatropes·Charmod·Villains·Villains2·Archetypes·Heroes·Genre·Plotdev·Storymod·Setting·Structure */
+  --gray-fandom: #d8d8d8; /* L* ≈ 85 */
+  --gray-production: #b0b0b0; /* L* ≈ 69 — Δ16 from fandom */
+  --gray-metatropes: #f0f0f0; /* L* ≈ 94 — Δ25 from production */
+  --gray-charmod: #d0d0d0; /* L* ≈ 83.5 — Δ11.3 from metatropes */
+  --gray-villains: #a0a0a0; /* L* ≈ 65.9 */
+  --gray-villains2: #c8c8c8; /* L* ≈ 80.6 — Δ14.7 from villains */
+  --gray-archetypes: #989898; /* L* ≈ 60 — Δ17 from villains2 */
+  --gray-heroes: #e8e8e8; /* L* ≈ 91 — Δ31 from archetypes */
+  --gray-genre: #c8c8c8; /* L* ≈ 79 — Δ12 from heroes */
+  --gray-plotdev: #f0f0f0; /* L* ≈ 94 — Δ15 from genre */
+  --gray-storymod: #d0d0d0; /* L* ≈ 83.5 — Δ11.3 from plotdev */
+  --gray-setting: #b0b0b0; /* L* ≈ 71.8 — Δ11.6 from storymod */
+  --gray-structure: #888888; /* L* ≈ 56.7 — Δ15.1 from setting */
+  --gray-highlight: #f8f8f8; /* L* ≈ 97 */
+  --gray-rogue: #ffffff; /* L* ≈ 100 */
+
+  /* Typography */
+  --font-title: Georgia, serif; /* FR-S5 */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System sans */
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Radii */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Motion tokens — FR-S6 */
+  --m-fast: 90ms;
+  --m-base: 180ms;
+  --m-slow: 320ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-mid: cubic-bezier(0.42, 0, 0.58, 1);
+
+  /* Shadows (elevation levels — FR-S4) */
+  --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-floating: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    /* FR-S7: Zero motion, keep static cues */
+    --m-fast: 0ms;
+    --m-base: 0ms;
+    --m-slow: 0ms;
+  }
+}
+
+/* Print grayscale overrides — printed on white with group colors swapped to grayscale */
+@media print {
+  @page {
+    size: landscape;
+  }
+}

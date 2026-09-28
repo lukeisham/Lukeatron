@@ -42,7 +42,7 @@ You almost never need to — they're designed to run quietly in the background. 
 
 - Open Terminal and run:
   ```
-  pkill -f "ProjectKanban/_template/server.py"      # stops ProjectKanban
+  pkill -f "ProjectKanban/server.py"      # stops ProjectKanban
   pkill -f "Apps/LukeatronWiki/server.py"            # stops the Wiki
   ```
 - They'll come back automatically the next time a Claude session starts.
@@ -50,5 +50,5 @@ You almost never need to — they're designed to run quietly in the background. 
 ## Advanced (optional, most people can skip this)
 
 Both tools have exactly one double-click launcher each — `System/Apps/LukeatronWiki/Start
-LukeatronWiki.command` and `System/Apps/ProjectKanban/_template/Start ProjectKanban.command` —
+LukeatronWiki.command` and `System/Apps/ProjectKanban/Start ProjectKanban.command` —
 since neither has a mode to start into beyond its normal one.

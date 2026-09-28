@@ -49,12 +49,17 @@ System/Apps/LukeatronWiki/
 │   └── test_*.py                         stdlib unittest, no pytest
 ├── serve.log                             Server output and errors (appended by ensure-wiki.sh)
 ├── StyleGuide.md                         the visual contract for app.css — tokens, palettes, motion
+├── app-decisions.md                      Luke's approvals + granted rule exceptions
+├── wishlist.md                           wishes for the app (!AppWishlist)
 └── README.md                             This file
 ```
 
 See [StyleGuide.md](StyleGuide.md) before touching any colour, space, radius, duration, or type
 value in `static/app.css` — it's the app-local record of how `!HouseStyle` and
 `Templates/wiki-page.css`'s shared tokens land there.
+
+`CONTRACT.md`, cited in comments in `render.py` and `enrich.py`, was the build-time contract; it
+is retired to `Archive/appdevelopment-restructure-2026-09-28/LukeatronWiki/CONTRACT.md`.
 
 The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores live in `Memory/Long-Term/<store>/`. See `Memory/Long-Term/Lukeatron/memory-structure.md` for the full store directory.
 
@@ -80,15 +85,11 @@ The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores l
 
 ## Granted rule exceptions
 
-These are the ONLY three places where the app writes to disk:
-
-| Where | What | Reason |
-|---|---|---|
-| capture module | Append one row to `_queue.yaml` + append a verbatim note to the chosen store list file | D-5 — deterministic capture with no agent step; Luke's click is the approval |
-| enrich module | Write a ⊕ request file to `System/Sandbox/wiki-enrich/_requests/` | D-6 — requests must persist until an agent comes online |
-| enrich module | On Accept, write an accepted draft into its store slot | D-13 — Luke's Accept click is the `!Checkpoint` approval |
-
-All three writes are fixed-template; the same input always produces the same bytes. Nothing is parsed or guessed.
+The app writes to disk in exactly three places — capture (queue row + verbatim store note),
+enrich request (a ⊕ file in `System/Sandbox/wiki-enrich/_requests/`), and enrich accept (a draft
+into its store slot). Each is a granted Vibe-Coding exception, recorded with its reason in
+[app-decisions.md](app-decisions.md) → Rule exceptions. All three writes are fixed-template; the
+same input always produces the same bytes. Nothing is parsed or guessed.
 
 ## What it will not do
 

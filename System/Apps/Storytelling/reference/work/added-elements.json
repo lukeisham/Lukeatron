@@ -1,0 +1,329 @@
+{
+ "note": "REBUILT 2026-09-21 after an accidental deletion; same content as the original (ids assigned by the boss agent). block = structureB (Structure 2nd column, revised col 21), genre1/genre2 (revised cols 16/17); order = top to bottom, rows 2-13.",
+ "elements": [
+  {
+   "id": "Pro",
+   "name": "Prologue",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 0
+  },
+  {
+   "id": "Imr",
+   "name": "In Medias Res",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 1
+  },
+  {
+   "id": "Inc",
+   "name": "Inciting Incident",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 2
+  },
+  {
+   "id": "Fsh",
+   "name": "Foreshadowing",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 3
+  },
+  {
+   "id": "Sbp",
+   "name": "Subplot",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 4
+  },
+  {
+   "id": "Rsa",
+   "name": "Rising Action",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 5
+  },
+  {
+   "id": "Tck",
+   "name": "Ticking Clock",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 6
+  },
+  {
+   "id": "Rts",
+   "name": "Raising the Stakes",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 7
+  },
+  {
+   "id": "Pt",
+   "name": "Plot Twist",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 8
+  },
+  {
+   "id": "Fbk",
+   "name": "Flashback",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 9
+  },
+  {
+   "id": "Clh",
+   "name": "Cliffhanger",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 10
+  },
+  {
+   "id": "Epi",
+   "name": "Epilogue",
+   "group": "structure",
+   "category": "structure",
+   "added": true,
+   "block": "structureB",
+   "order": 11
+  },
+  {
+   "id": "Com",
+   "name": "Comedy",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 0
+  },
+  {
+   "id": "Tra",
+   "name": "Tragedy",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 1
+  },
+  {
+   "id": "Sat",
+   "name": "Satire",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 2
+  },
+  {
+   "id": "Rom",
+   "name": "Romance",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 3
+  },
+  {
+   "id": "Whd",
+   "name": "Whodunit",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 4
+  },
+  {
+   "id": "Ccs",
+   "name": "Closed Circle",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 5
+  },
+  {
+   "id": "Dys",
+   "name": "Dystopia",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 6
+  },
+  {
+   "id": "Hei",
+   "name": "Heist",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 7
+  },
+  {
+   "id": "Hor",
+   "name": "Horror",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 8
+  },
+  {
+   "id": "Cma",
+   "name": "Coming of Age",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 9
+  },
+  {
+   "id": "Rdt",
+   "name": "Road Trip",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 10
+  },
+  {
+   "id": "Sol",
+   "name": "Slice of Life",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre1",
+   "order": 11
+  },
+  {
+   "id": "Fnt",
+   "name": "Fantasy",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 0
+  },
+  {
+   "id": "Sf",
+   "name": "Science Fiction",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 1
+  },
+  {
+   "id": "Wst",
+   "name": "Western",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 2
+  },
+  {
+   "id": "Thr",
+   "name": "Thriller",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 3
+  },
+  {
+   "id": "Adv",
+   "name": "Adventure",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 4
+  },
+  {
+   "id": "War",
+   "name": "War Story",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 5
+  },
+  {
+   "id": "Esp",
+   "name": "Espionage",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 6
+  },
+  {
+   "id": "Sup",
+   "name": "Superhero",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 7
+  },
+  {
+   "id": "Fty",
+   "name": "Fairy Tale",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 8
+  },
+  {
+   "id": "Gth",
+   "name": "Gothic",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 9
+  },
+  {
+   "id": "Fnr",
+   "name": "Film Noir",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 10
+  },
+  {
+   "id": "Hfc",
+   "name": "Historical Fiction",
+   "group": "genre",
+   "category": "genre",
+   "added": true,
+   "block": "genre2",
+   "order": 11
+  }
+ ]
+}

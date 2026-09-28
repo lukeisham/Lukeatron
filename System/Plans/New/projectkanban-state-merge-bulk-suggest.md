@@ -12,6 +12,13 @@ review: "RETURNED pass 1 (11 flags) → revised; RETURNED pass 2 (6 flags) → r
 
 # Plan — Dashboard: one State column, bulk State edits, and suggested States you confirm
 
+> ⚠️ **Needs revision before execution (2026-09-28).** This plan was written against the old
+> `!AppDevelopment` layout: `_template/` (now flattened into `System/Apps/ProjectKanban/`) and
+> `refactor-registry.md` (retired — Luke's approvals and rule exceptions now live in
+> `app-decisions.md`; the build history is in git). Its paths, docs step and staging approach must be
+> revised against `!AppDevelopment` v2.0.0 before it runs. See
+> `System/Plans/New/appdevelopment-registry-to-decisions.md`.
+
 ## Objective
 Replace today's two overlapping per-action fields with **one State column** that means the same thing in the files, the Dashboard and `!ProjectSweep`. A project's State becomes **the State of its Next Action** (the top open row). Luke can **set State on several selected actions in one go**. **Suggested States** are offered for him to confirm or change, so nothing sets a per-action State without him. This specialises the Lukeatron North Star (*keep it correct and legible, extend it deliberately*): it removes a duplicated field and a silent writer rather than adding a feature on top of them.
 
@@ -90,7 +97,7 @@ The two use the same words but mean different things and are ranked in different
 ## Steps
 **Order with the urgency-shading plan** (`projectkanban-urgency-shading.md`, LU-02 #2): decided in Step 1. Recommended: urgency shading runs **first**, since it is smaller and read-only. Its Step 9 checks that `Projects/` is unchanged, which would fail if this plan's migration landed in between. This plan then reuses its "within 3 days" helper and re-checks the shading on the renamed lane tokens in Steps 10–11.
 
-- [ ] **Step 1 — Luke decides.** Answers go in **Notes → Decisions**. [human input — LU-02]
+- [x] **Step 1 — Luke decides.** Answers go in **Notes → Decisions**. [human input — LU-02]
   1. **Column set.** Recommended: drop **both** `Kind` and `Type`, and keep `State`. Owner already says Luke / Agent / a person.
   2. **Migration map.** Recommended: Kind/Type wins where set, because it is Luke's hand-set value. Otherwise the old State label is normalised.
      - From Kind/Type: `mine`/`Human` → 🟠 Mine · `delegate`/`hand-over`/`Agent` → 🟢 Delegate · `waiting` → 🔵 Waiting · `incoming` → 🔴 Incoming · `unshaped` → ⚪ Undefined.
@@ -206,7 +213,19 @@ The two use the same words but mean different things and are ranked in different
 - Pass 4: APPROVED (single remaining flag resolved as specified by the reviewer's fix).
 
 ### Decisions
-_(Step 1.)_
+_(Step 1 — answered 2026-09-28.)_
+
+1. **Column set.** Drop both `Kind` and `Type`; keep only `State`. Owner already carries Luke / Agent / a person.
+2. **Migration map.** Kind/Type wins where set (Luke's hand-set value); otherwise the old State label is normalised, per the map in Step 1.2. Unrecognised → ⚪ Undefined, listed in the report.
+3. **Project-State rule (wishlist #16).** Base rule (i)–(iii) as written in Step 1.3. Overrides:
+   - Overdue Event → 🔴 — **kept**.
+   - Any overdue row → 🔴 — **kept**.
+   - No 🔵 without a wake (Hard rule 1) — **kept**.
+   - "Pending Luke's input" → 🟠 (Hard rule 2) — **dropped**. Not selected when the other three overrides were kept; the app and sweep will not force Mine on a row just because it's marked pending Luke's input — it falls through to the base top-open-row rule instead.
+4. **Bulk scope.** Within one project view only, not across the whole board.
+5. **Suggestion source.** Deterministic rules in the app (`suggest.py`) as the primary source, plus `!SuggestState` run in chat for a judgement pass on cases the rules can't see (logged in `notes.md`'s Decision Log).
+6. **Recurring rows.** A row reopened by `recur.py` **keeps its last State** rather than getting a fresh suggestion. This is a deliberate departure from the plan's own recommendation (fresh suggestion) — flagged so Step 6/11 implementation doesn't silently "correct" it back.
+7. **Order vs urgency-shading plan.** `projectkanban-urgency-shading.md` (LU-02 #2) runs **first**; this plan reuses its "within 3 days" helper and re-checks shading on the renamed lane tokens in Steps 10–11.
 
 ### Sign-offs
 _(Steps 2, 11, 13.)_

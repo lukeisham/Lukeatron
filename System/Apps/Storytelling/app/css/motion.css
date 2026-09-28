@@ -1,0 +1,56 @@
+/* motion.css — the ten animations of style.spec FR-S6, on the motion tokens only (--m-fast/-base/-slow, --ease-*).
+   Where each lives:
+   #1 hover, #2 select ........ transitions below (the lifted/edge values are tiles.css)
+   #3 pick up ................. .st-ghost keyframe below; the placeholder fade is story-map.css `.is-picked`
+   #4 over a drop target ...... colour eases in story-map.css (--m-base, --ease-mid); its label fades in below
+   #5 release ................. JS (Web Animations in drag-drop.js); no CSS
+   #6 beads re-arrange ........ story-map.css `.st-bead` transform transition
+   #7 table re-size ........... NO HOOK (see report): the story area's height change is instant
+   #8 open detail/panels ...... keyframe below (open only: closing is `hidden`, so it is instant)
+   #9 toolbar zoom ............ JS (viewport.js eases the viewBox)
+   #10 Save / Copy tint ....... keyframe below
+   Limits: at most 2 things animate at once (release's #5/#6/#7 are the one declared excess); 3 durations; the
+   yellow appears only on drop-target (story-map.css) and Save cues. Only opacity, translate, scale, stroke, filter
+   and background-color are animated — never layout. */
+
+/* ---- #1 hover and #2 select: one shared, fast ease-out ---- */
+.tile { transition: transform var(--m-fast) var(--ease-out), filter var(--m-fast) var(--ease-out), opacity var(--m-fast) var(--ease-out); }
+.tile-rect { transition: stroke var(--m-fast) var(--ease-out), stroke-width var(--m-fast) var(--ease-out); }
+
+/* ---- #3 pick up: the ghost lifts (the independent `scale` property, so drag-drop.js's transform is untouched) ---- */
+.st-ghost { animation: st-ghost-lift var(--m-fast) var(--ease-out) both; }
+@keyframes st-ghost-lift { from { scale: 1; } to { scale: 1.05; } }
+
+/* ---- #4 over a drop target: the action label fades in (opacity only; its transform is story-map.css's) ---- */
+.st-tray[data-hint]::after { animation: st-fade-in var(--m-base) var(--ease-mid) both; }
+@keyframes st-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---- #8 open a panel: fade and slide in. The detail column slides from the right at 900px and up, from the bottom below ---- */
+.st-detail:not([hidden]), .st-list-panel:not([hidden]), .st-about:not([hidden]), .st-library-panel:not([hidden]) {
+  --st-panel-from: 0 8px; animation: st-panel-in var(--m-base) var(--ease-out) both;
+}
+.st-detail:not([hidden]) { --st-panel-from: 12px 0; }
+@media (max-width: 899.98px) { .st-detail:not([hidden]) { --st-panel-from: 0 12px; } }
+@keyframes st-panel-in { from { opacity: 0; translate: var(--st-panel-from); } to { opacity: 1; translate: 0 0; } }
+
+/* ---- #10 Save (and the Copy confirmation that reuses it): the "Saved" tint fades in ---- */
+.st-story__message[data-kind="info"]:not(:empty), .st-story__message[data-kind="saved"]:not(:empty),
+.st-detail__status:not(:empty), .st-list-panel__status.is-shown {
+  border-radius: var(--radius-sm); animation: st-saved-tint var(--m-base) var(--ease-out) both;
+}
+@keyframes st-saved-tint {
+  from { background-color: transparent; }
+  to { background-color: color-mix(in srgb, var(--color-highlight) 55%, transparent); }
+}
+
+/* ---- Reduced motion (FR-S7): every animation is an instant change; each cue stays as a static state
+   (selected edge, placeholder outline, highlighted target and its label, the panel itself, the "Saved" text).
+   The tokens already read 0ms here; this block also removes the keyframes outright. Selectors repeat the
+   animating ones above so their specificity matches. ---- */
+@media (prefers-reduced-motion: reduce) {
+  .tile, .tile-rect { transition: none; }
+  .st-ghost, .st-tray[data-hint]::after { animation: none; }
+  .st-detail:not([hidden]), .st-list-panel:not([hidden]), .st-about:not([hidden]), .st-library-panel:not([hidden]),
+  .st-story__message[data-kind="info"]:not(:empty), .st-story__message[data-kind="saved"]:not(:empty),
+  .st-detail__status:not(:empty), .st-list-panel__status.is-shown { animation: none; }
+}

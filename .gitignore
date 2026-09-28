@@ -23,3 +23,9 @@ __pycache__/
 
 # Runtime logs (server output etc.) — never version-controlled
 *.log
+
+# Storytelling: the source poster image, its working crops and the shareable bundle stay local
+# until the poster's licence (PRD open question OQ-X1) is settled — this repo is public.
+/System/Apps/Storytelling/reference/**/*.png
+/System/Apps/Storytelling/reference/**/*.pdf
+/System/Apps/Storytelling/dist/

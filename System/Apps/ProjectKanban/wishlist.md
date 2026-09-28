@@ -1,8 +1,8 @@
 # ProjectKanban — Wishlist
 
-A running backlog of future ideas for this app/widget. Ranked Low → High by perceived complexity
-so the cheapest wins surface first. Reworded lightly for clarity on the way in — intent kept,
-nothing invented.
+Wishes for this app — a dumping ground, not a tracker. The Complexity/Status columns below are
+from the older format and are kept only for the rows already here; new wishes need just the wish
+and a date.
 
 ## Ideas
 
@@ -16,17 +16,4 @@ nothing invented.
 
 <!-- 2026-09-13: a "new AI skill to triage Next Actions" idea (+ its calendar-events question) was logged here as #17/#18 and moved out same day at Luke's correction — it's skill-level system work, not a ProjectKanban app/UI feature. Now tracked in PR-01-lukeatron-future-improvements/registry.md's Future Agent Actions. -->
 
-Status values: `open` · `adopted` (folded into the PRD or a spec — kept here for history).
-`built` and `rejected` are not statuses that persist here — once an idea is ported into
-`_template/` (built) or Luke declines it outright (rejected), its row is deleted from this table
-on the spot (the `!AppWishlist` skill's own rule). Built history lives in
-`refactor-registry.md`'s Migration log instead; a rejection's reasoning, if worth keeping, goes
-there too rather than lingering on a dead row here.
-
-## Conflict log
-<!-- Phases 1-3, and Phase 4 up to the PRD's retirement (Step 3) only. Stops updating once the
-     PRD is gone — leave what's here as history, don't backfill after. -->
-| Date | Wishlist item | PRD/spec section | Nature | Resolution |
-|---|---|---|---|---|
-
-Nature values: `duplicate` · `overlap` · `conflict`.
+A wish is deleted once it is acted on or declined (`!AppWishlist`); git keeps the history.

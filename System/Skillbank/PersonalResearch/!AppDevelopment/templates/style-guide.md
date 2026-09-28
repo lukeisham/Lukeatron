@@ -1,7 +1,7 @@
-<!-- Template — an app's Style Guide, written by !AppDevelopment Phase 4 STEP 4B and kept
-     current through the refactor loop (STEP 7's Health Check row 8). Lives permanently beside
-     README.md in _template/ — never folded into it, never deleted. Apps only; a widget's visual
-     contract lives with its host chassis instead (see STEP 4B). Source every value from the
+<!-- Template — an app's Style Guide, written by !AppDevelopment Phase 4 STEP 4 and kept
+     current by every later change (Refactor Health Check question 7). Lives permanently beside
+     README.md at the app's folder root — never folded into it, never deleted. Apps only; a
+     widget's visual contract lives with its host chassis instead. Source every value from the
      app's actual code as it stands, never from memory, intention, or the PRD. Delete these
      comment lines. -->
 

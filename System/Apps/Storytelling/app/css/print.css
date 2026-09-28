@@ -1,0 +1,95 @@
+/* print.css — print for A4 and Letter (style.spec FR-S9, FR-S11, FR-S12–S15; lists FR-K6; story-map FR-C13).
+   Keys off two attributes that shared/output.js puts on <body> only while printing:
+   data-print = element | story | story-with-table | table | list      data-tone = colour | gray
+   Paper size is left to the printer (only the orientation is set), so one sheet rule serves A4 and Letter.
+   Group colours are the `--tile-fill` property (tiles.css); gray re-points it to the designed --gray-* tokens (not a filter).
+   JS side (events from shared/output.js): viewport.js resets the SVG viewBox to the whole poster for table prints; story-canvas.js sets --print-scale on .st-tray__content. */
+
+@page { size: landscape; margin: 10mm; }
+@page st-portrait { size: portrait; margin: 15mm; }
+
+/* The list's print-only twin (list-panel.js): never shown on screen; the <pre> preview is what the screen and Copy use. */
+.st-list-panel__print { display: none; }
+
+@media print {
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  html, body { display: block; height: auto; margin: 0; overflow: visible; background: none; color: var(--color-ink); }
+  .st-page, .st-page__top { display: block; }
+
+  /* ---- Screen chrome never prints ("body" first so these outrank the component files) ---- */
+  body :is(.st-toolbar, .st-about, .st-library-panel, .st-visually-hidden, .st-ghost, .st-thread-cut, .st-thread__hit, .st-thread--temp,
+    .st-tray__empty, .st-story__saved, .st-story__status, .st-story__actions, .st-story__save, .st-story__message,
+    .st-story__storage-note, .st-story__prompt, .st-story__name-caption, .st-bead__remove, .st-bead__link-dot, .st-bead__dock,
+    .st-bead__swap, .st-bead__split) { display: none; }
+  body .st-tray::after { display: none; }
+  body:not([data-print="element"]) .st-detail, body:not([data-print="list"]) .st-list-panel { display: none; }
+
+  /* ---- Diagram: the whole poster, centred by preserveAspectRatio inside a fixed-height box; on white ---- */
+  body .st-diagram-host { height: 186mm; overflow: hidden; outline: none; break-inside: avoid; }
+  body .st-diagram { background: none; }
+  body[data-print="story-with-table"] .st-diagram-host { height: 110mm; margin-bottom: var(--space-md); }
+  body[data-print="story-with-table"] .st-story { break-inside: avoid; }
+
+  /* No selection cue and no in-story mark on any printed poster (FR-S9, FR-S12); the added dash and rogue dots stay. */
+  body .tile.is-selected, body .tile.is-in-story, body .tile:hover { transform: none; filter: none; }
+  body .tile:is(.is-selected, .is-in-story) .tile-rect { stroke: var(--color-edge); stroke-width: var(--tile-edge-width); }
+  body .tile.is-added:is(.is-selected, .is-in-story) .tile-rect { stroke: var(--color-ink); stroke-width: 1.4; }
+  body .tile.tile-rogue:is(.is-selected, .is-in-story) .tile-rect { stroke: var(--color-ink-soft); stroke-width: 1.4; stroke-dasharray: 0 3; }
+  body .tile.is-in-story .step-badge:not([hidden]):not(:empty) { display: none; }
+
+  /* ---- Story map: uncapped, no scroll, no dashed frame; the name (kept from the save bar) heads it ---- */
+  body .st-story { max-height: none; overflow: visible; padding: 0; border: 0; }
+  body .st-tray { min-height: 0; overflow: visible; padding: 0; border: 0; background: none; }
+  body .st-tray__content { zoom: var(--print-scale, 1); }
+  body .st-tray .st-bead .st-bead__tiles { box-shadow: none; outline: none; }
+  body .st-story__name { width: 100%; min-height: 0; padding: 0; border: 0; background: none; font: 900 16pt var(--font-title); }
+  body .st-story__name:placeholder-shown { display: none; }
+
+  /* ---- One target at a time ---- */
+  body[data-print="element"] :is(.st-diagram-host, .st-story) { display: none; }
+  body[data-print="element"] .st-detail {
+    position: static; width: auto; max-width: 160mm; max-height: none; overflow: visible; padding: 0; border: 0; border-radius: 0;
+    box-shadow: none; animation: none; font-size: 11pt; page: st-portrait;
+  }
+  body[data-print="element"] :is(.st-detail__actions, .st-detail__status, .st-detail__close) { display: none; }
+  body[data-print="story"] .st-page__top { display: none; }
+  body[data-print="table"] .st-story { display: none; }
+  body[data-print="list"] .st-page { display: none; }
+  body[data-print="list"] .st-list-panel {
+    position: static; display: block; width: auto; max-height: none; margin: 0; padding: 0; overflow: visible; border: 0;
+    border-radius: 0; background: none; box-shadow: none; animation: none;
+  }
+  body[data-print="list"] .st-list-panel > :not([data-print-list]) { display: none; }
+  body[data-print="list"] [data-print-list] {
+    page: st-portrait; max-height: none; overflow: visible; padding: 0; border: 0; border-radius: 0; background: none;
+    color: var(--color-ink); font: 11pt/1.5 var(--font-ui); white-space: pre-wrap;
+  }
+  /* The panel's print block: category headings, one per page for "all", bullets kept whole. */
+  body[data-print="list"] .st-list-panel__print { display: block; white-space: normal; }
+  body[data-print="list"] [data-print-list] ul { margin: 0 0 12pt; padding-left: 1.3em; list-style: disc; }
+  body[data-print="list"] [data-print-list] li div { margin-top: 1pt; color: var(--color-ink-soft); }
+  body[data-print="list"] [data-print-list] p { margin: 0; font-size: 9pt; color: var(--color-ink-soft); }
+  body[data-print="list"] [data-print-list] h2 { margin: 0 0 6pt; font: 700 14pt/1.3 var(--font-ui); break-after: avoid; }
+  body[data-print="list"] [data-print-list] h2:not(:first-child) { break-before: page; }
+  body[data-print="list"] [data-print-list] li { break-inside: avoid; }
+
+  /* ---- Grayscale: each group's fill becomes its designed gray token; popularity numbers go black (FR-S14) ---- */
+  body[data-tone="gray"] :is(.tile-structure, .chip-structure) { --tile-fill: var(--gray-structure); --st-tile-bg: var(--gray-structure); }
+  body[data-tone="gray"] :is(.tile-setting, .chip-setting) { --tile-fill: var(--gray-setting); --st-tile-bg: var(--gray-setting); }
+  body[data-tone="gray"] :is(.tile-storymod, .chip-storymod) { --tile-fill: var(--gray-storymod); --st-tile-bg: var(--gray-storymod); }
+  body[data-tone="gray"] :is(.tile-plotdev, .chip-plotdev) { --tile-fill: var(--gray-plotdev); --st-tile-bg: var(--gray-plotdev); }
+  body[data-tone="gray"] :is(.tile-genre, .chip-genre) { --tile-fill: var(--gray-genre); --st-tile-bg: var(--gray-genre); }
+  body[data-tone="gray"] :is(.tile-heroes, .chip-heroes) { --tile-fill: var(--gray-heroes); --st-tile-bg: var(--gray-heroes); }
+  body[data-tone="gray"] :is(.tile-charmod, .chip-charmod) { --tile-fill: var(--gray-charmod); --st-tile-bg: var(--gray-charmod); }
+  body[data-tone="gray"] :is(.tile-archetypes, .chip-archetypes) { --tile-fill: var(--gray-archetypes); --st-tile-bg: var(--gray-archetypes); }
+  body[data-tone="gray"] :is(.tile-villains, .chip-villains) { --tile-fill: var(--gray-villains); --st-tile-bg: var(--gray-villains); }
+  body[data-tone="gray"] :is(.tile-villains2, .chip-villains2) { --tile-fill: var(--gray-villains2); --st-tile-bg: var(--gray-villains2); }
+  body[data-tone="gray"] :is(.tile-metatropes, .chip-metatropes) { --tile-fill: var(--gray-metatropes); --st-tile-bg: var(--gray-metatropes); }
+  body[data-tone="gray"] :is(.tile-production, .chip-production) { --tile-fill: var(--gray-production); --st-tile-bg: var(--gray-production); }
+  body[data-tone="gray"] :is(.tile-fandom, .chip-fandom) { --tile-fill: var(--gray-fandom); --st-tile-bg: var(--gray-fandom); }
+  body[data-tone="gray"] :is(.tile-highlight, .chip-highlight) { --tile-fill: var(--gray-highlight); --st-tile-bg: var(--gray-highlight); }
+  body[data-tone="gray"] :is(.tile-rogue, .chip-rogue) { --tile-fill: var(--gray-rogue); --st-tile-bg: var(--gray-rogue); }
+  body[data-tone="gray"] [data-box-id="call-to-adventure-box"] { --tile-fill: var(--gray-setting); }
+  body[data-tone="gray"] [data-box-id="fourth-wall-box"] { --tile-fill: var(--gray-metatropes); }
+  body[data-tone="gray"] :is(.pop, .tile-rogue .sym) { fill: var(--color-ink); }
+}

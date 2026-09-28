@@ -6,13 +6,13 @@ status: Active
 core_function: Verify
 intent: "Run FactCheckingParser.spec.md's Stage 1–4 pipeline directly, using this session's own WebSearch/WebFetch tools instead of the browser widget's copy-paste-to-Claude handoff (spec §8's 'companion Skillbank skill', now built)."
 version: 1.0.0
-dependencies: ["System/Apps/Fact-checking/legacy-widget/Specs/FactCheckingParser.spec.md"]
+dependencies: ["Archive/Fact-checking-legacy-widget-2026-09-28/Specs/FactCheckingParser.spec.md"]
 calibration:
   context: [Teaching]
   level: Extended
   scope: Local
 memory_footprint:
-  read: ["System/Apps/Fact-checking/legacy-widget/Specs/FactCheckingParser.spec.md"]
+  read: ["Archive/Fact-checking-legacy-widget-2026-09-28/Specs/FactCheckingParser.spec.md"]
   write: []
 ---
 

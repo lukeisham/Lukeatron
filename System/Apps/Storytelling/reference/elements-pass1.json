@@ -1,0 +1,1278 @@
+{
+ "note": "First-pass transcription of the poster, 2026-09-20. UNVERIFIED. Grid: 20 cols x 14 rows (+2 tiles in row 14), origin (29,49), cell 62.1 x 75 px, in poster pixels. Sub-tiles (parent 5ma) carry explicit x,y. Popularity not yet transcribed. Groups checked cell-by-cell against the image colours.",
+ "count": 181,
+ "elements": [
+  {
+   "id": "C",
+   "name": "Conflict",
+   "group": "structure",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "id": "3as",
+   "name": "Three Act Structure",
+   "group": "structure",
+   "col": 0,
+   "row": 1
+  },
+  {
+   "id": "Ae",
+   "name": "An Aesop",
+   "group": "setting",
+   "col": 1,
+   "row": 1
+  },
+  {
+   "id": "Re",
+   "name": "The Reveal",
+   "group": "structure",
+   "col": 0,
+   "row": 2
+  },
+  {
+   "id": "Srs",
+   "name": "Serious Business",
+   "group": "setting",
+   "col": 1,
+   "row": 2
+  },
+  {
+   "id": "Anv",
+   "name": "Anvilicious",
+   "group": "storymod",
+   "col": 2,
+   "row": 2
+  },
+  {
+   "id": "Phl",
+   "name": "Applied Phlebotinum",
+   "group": "plotdev",
+   "col": 3,
+   "row": 2
+  },
+  {
+   "id": "Cmx",
+   "name": "The Climax",
+   "group": "structure",
+   "col": 0,
+   "row": 3
+  },
+  {
+   "id": "Msq",
+   "name": "The Masquerade",
+   "group": "setting",
+   "col": 1,
+   "row": 3
+  },
+  {
+   "id": "Bti",
+   "name": "Beyond The Impossible",
+   "group": "storymod",
+   "col": 2,
+   "row": 3
+  },
+  {
+   "id": "Tb",
+   "name": "Techno Babble",
+   "group": "plotdev",
+   "col": 3,
+   "row": 3
+  },
+  {
+   "id": "Den",
+   "name": "The Dénouement",
+   "group": "structure",
+   "col": 0,
+   "row": 4
+  },
+  {
+   "id": "Rcy",
+   "name": "Recycled IN SPACE",
+   "group": "setting",
+   "col": 1,
+   "row": 4
+  },
+  {
+   "id": "Cl2",
+   "name": "Crosses the Line Twice",
+   "group": "storymod",
+   "col": 2,
+   "row": 4
+  },
+  {
+   "id": "Wav",
+   "name": "Hand Wave",
+   "group": "plotdev",
+   "col": 3,
+   "row": 4
+  },
+  {
+   "id": "Can",
+   "name": "Canon",
+   "group": "production",
+   "col": 18,
+   "row": 4
+  },
+  {
+   "id": "Fan",
+   "name": "Fanon",
+   "group": "fandom",
+   "col": 19,
+   "row": 4
+  },
+  {
+   "id": "End",
+   "name": "The End",
+   "group": "structure",
+   "col": 0,
+   "row": 5
+  },
+  {
+   "id": "X",
+   "name": "X Meets Y",
+   "group": "setting",
+   "col": 1,
+   "row": 5
+  },
+  {
+   "id": "Ria",
+   "name": "Refuge in Audacity",
+   "group": "storymod",
+   "col": 2,
+   "row": 5
+  },
+  {
+   "id": "Dx",
+   "name": "Deus Ex Machina",
+   "group": "plotdev",
+   "col": 3,
+   "row": 5
+  },
+  {
+   "id": "T",
+   "name": "Trope",
+   "group": "metatropes",
+   "col": 16,
+   "row": 5
+  },
+  {
+   "id": "Sho",
+   "name": "Shout Out",
+   "group": "production",
+   "col": 18,
+   "row": 5
+  },
+  {
+   "id": "Sus",
+   "name": "Willing Suspension of Disbelief",
+   "group": "fandom",
+   "col": 19,
+   "row": 5
+  },
+  {
+   "id": "Chk",
+   "name": "Chekhov's Gun",
+   "group": "structure",
+   "col": 0,
+   "row": 6
+  },
+  {
+   "id": "Aa",
+   "name": "Magic A Is Magic A",
+   "group": "setting",
+   "col": 1,
+   "row": 6
+  },
+  {
+   "id": "Dae",
+   "name": "Darker And Edgier",
+   "group": "storymod",
+   "col": 2,
+   "row": 6
+  },
+  {
+   "id": "Ass",
+   "name": "Ass Pull",
+   "group": "plotdev",
+   "col": 3,
+   "row": 6
+  },
+  {
+   "id": "P",
+   "name": "Protagonist",
+   "group": "charmod",
+   "col": 7,
+   "row": 6
+  },
+  {
+   "id": "A",
+   "name": "Antagonist",
+   "group": "charmod",
+   "col": 8,
+   "row": 6
+  },
+  {
+   "id": "Ls",
+   "name": "Lampshade Hanging",
+   "group": "metatropes",
+   "col": 16,
+   "row": 6
+  },
+  {
+   "id": "Tru",
+   "name": "Truth In Television",
+   "group": "metatropes",
+   "col": 17,
+   "row": 6
+  },
+  {
+   "id": "Tt",
+   "name": "Take That",
+   "group": "production",
+   "col": 18,
+   "row": 6
+  },
+  {
+   "id": "Fri",
+   "name": "Fridge Logic",
+   "group": "fandom",
+   "col": 19,
+   "row": 6
+  },
+  {
+   "id": "Mcg",
+   "name": "MacGuffin",
+   "group": "structure",
+   "col": 0,
+   "row": 7
+  },
+  {
+   "id": "Ivc",
+   "name": "Sliding Scale of Idealism vs. Cynicism",
+   "group": "setting",
+   "col": 1,
+   "row": 7
+  },
+  {
+   "id": "Scw",
+   "name": "Mind Screw",
+   "group": "storymod",
+   "col": 2,
+   "row": 7
+  },
+  {
+   "id": "Iac",
+   "name": "Sealed Evil In A Can",
+   "group": "plotdev",
+   "col": 3,
+   "row": 7
+  },
+  {
+   "id": "H",
+   "name": "The Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 7
+  },
+  {
+   "id": "Kni",
+   "name": "Knight in Shining Armor",
+   "group": "heroes",
+   "col": 5,
+   "row": 7
+  },
+  {
+   "id": "Bbw",
+   "name": "Badass Bookworm",
+   "group": "heroes",
+   "col": 6,
+   "row": 7
+  },
+  {
+   "id": "Ib",
+   "name": "Idiot Ball",
+   "group": "charmod",
+   "col": 7,
+   "row": 7
+  },
+  {
+   "id": "Wb",
+   "name": "Woobie",
+   "group": "charmod",
+   "col": 8,
+   "row": 7
+  },
+  {
+   "id": "Mad",
+   "name": "Mad Scientist",
+   "group": "archetypes",
+   "col": 9,
+   "row": 7
+  },
+  {
+   "id": "Wes",
+   "name": "The Wesley",
+   "group": "archetypes",
+   "col": 10,
+   "row": 7
+  },
+  {
+   "id": "Scl",
+   "name": "Star-Crossed Lovers",
+   "group": "archetypes",
+   "col": 11,
+   "row": 7
+  },
+  {
+   "id": "Bad",
+   "name": "Big Bad",
+   "group": "villains",
+   "col": 12,
+   "row": 7
+  },
+  {
+   "id": "Etw",
+   "name": "Evil Twin",
+   "group": "villains",
+   "col": 13,
+   "row": 7
+  },
+  {
+   "id": "Rch",
+   "name": "Archenemy",
+   "group": "villains",
+   "col": 14,
+   "row": 7
+  },
+  {
+   "id": "Emp",
+   "name": "The Empire",
+   "group": "villains",
+   "col": 15,
+   "row": 7
+  },
+  {
+   "id": "Jt",
+   "name": "Justified Trope",
+   "group": "metatropes",
+   "col": 16,
+   "row": 7
+  },
+  {
+   "id": "Rur",
+   "name": "Reality Is Unrealistic",
+   "group": "metatropes",
+   "col": 17,
+   "row": 7
+  },
+  {
+   "id": "Res",
+   "name": "Did Not Do The Research",
+   "group": "production",
+   "col": 18,
+   "row": 7
+  },
+  {
+   "id": "Et",
+   "name": "Epileptic Trees",
+   "group": "fandom",
+   "col": 19,
+   "row": 7
+  },
+  {
+   "id": "Bks",
+   "name": "Backstory",
+   "group": "structure",
+   "col": 0,
+   "row": 8
+  },
+  {
+   "id": "Sq",
+   "name": "Status Quo Is God",
+   "group": "setting",
+   "col": 1,
+   "row": 8
+  },
+  {
+   "id": "Aws",
+   "name": "What Do You Mean, It's Not Awesome?",
+   "group": "storymod",
+   "col": 2,
+   "row": 8
+  },
+  {
+   "id": "Aod",
+   "name": "Artifact of Doom",
+   "group": "plotdev",
+   "col": 3,
+   "row": 8
+  },
+  {
+   "id": "Ah",
+   "name": "Anti Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 8
+  },
+  {
+   "id": "Neo",
+   "name": "The Chosen One",
+   "group": "heroes",
+   "col": 5,
+   "row": 8
+  },
+  {
+   "id": "Tp",
+   "name": "Technical Pacifist",
+   "group": "heroes",
+   "col": 6,
+   "row": 8
+  },
+  {
+   "id": "Fln",
+   "name": "Flanderization",
+   "group": "charmod",
+   "col": 7,
+   "row": 8
+  },
+  {
+   "id": "Ccl",
+   "name": "Cloud Cuckoolander",
+   "group": "charmod",
+   "col": 8,
+   "row": 8
+  },
+  {
+   "id": "Sue",
+   "name": "Mary Sue",
+   "group": "archetypes",
+   "col": 9,
+   "row": 8
+  },
+  {
+   "id": "Tsu",
+   "name": "Tsundere",
+   "group": "archetypes",
+   "col": 10,
+   "row": 8
+  },
+  {
+   "id": "St",
+   "name": "The Storyteller",
+   "group": "archetypes",
+   "col": 11,
+   "row": 8
+  },
+  {
+   "id": "Mgb",
+   "name": "Magnificent Bastard",
+   "group": "villains",
+   "col": 12,
+   "row": 8
+  },
+  {
+   "id": "Ewi",
+   "name": "Enemy Within",
+   "group": "villains",
+   "col": 13,
+   "row": 8
+  },
+  {
+   "id": "Dra",
+   "name": "The Dragon",
+   "group": "villains",
+   "col": 14,
+   "row": 8
+  },
+  {
+   "id": "Av",
+   "name": "Anti-Villain",
+   "group": "villains",
+   "col": 15,
+   "row": 8
+  },
+  {
+   "id": "Sv",
+   "name": "Subverted Trope",
+   "group": "metatropes",
+   "col": 16,
+   "row": 8
+  },
+  {
+   "id": "Lr",
+   "name": "Like Reality Unless Noted",
+   "group": "metatropes",
+   "col": 17,
+   "row": 8
+  },
+  {
+   "id": "Vam",
+   "name": "Viewers Are Morons",
+   "group": "production",
+   "col": 18,
+   "row": 8
+  },
+  {
+   "id": "Dlp",
+   "name": "Draco in Leather Pants",
+   "group": "fandom",
+   "col": 19,
+   "row": 8
+  },
+  {
+   "id": "Ret",
+   "name": "Retcon",
+   "group": "structure",
+   "col": 0,
+   "row": 9
+  },
+  {
+   "id": "Cal",
+   "name": "Call To Adventure",
+   "group": "highlight",
+   "col": 1,
+   "row": 9
+  },
+  {
+   "id": "Bwb",
+   "name": "Fanservice",
+   "group": "storymod",
+   "col": 2,
+   "row": 9
+  },
+  {
+   "id": "Xan",
+   "name": "Xanatos Gambit",
+   "group": "plotdev",
+   "col": 3,
+   "row": 9
+  },
+  {
+   "id": "Ih",
+   "name": "Idiot Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 9
+  },
+  {
+   "id": "Ag",
+   "name": "Action Girl",
+   "group": "heroes",
+   "col": 5,
+   "row": 9
+  },
+  {
+   "id": "Ace",
+   "name": "The Ace",
+   "group": "heroes",
+   "col": 6,
+   "row": 9
+  },
+  {
+   "id": "Bda",
+   "name": "Badass",
+   "group": "charmod",
+   "col": 7,
+   "row": 9
+  },
+  {
+   "id": "Ham",
+   "name": "Large Ham",
+   "group": "charmod",
+   "col": 8,
+   "row": 9
+  },
+  {
+   "id": "Moo",
+   "name": "Mooks",
+   "group": "archetypes",
+   "col": 9,
+   "row": 9
+  },
+  {
+   "id": "Dbd",
+   "name": "The Dumbledore",
+   "group": "archetypes",
+   "col": 10,
+   "row": 9
+  },
+  {
+   "id": "Lei",
+   "name": "Rebel Leader",
+   "group": "archetypes",
+   "col": 11,
+   "row": 9
+  },
+  {
+   "id": "Mpb",
+   "name": "Manipulative Bastard",
+   "group": "villains",
+   "col": 12,
+   "row": 9
+  },
+  {
+   "id": "Law",
+   "name": "Amoral Attorney",
+   "group": "villains",
+   "col": 13,
+   "row": 9
+  },
+  {
+   "id": "Mol",
+   "name": "The Mole",
+   "group": "villains",
+   "col": 14,
+   "row": 9
+  },
+  {
+   "id": "Vp",
+   "name": "Villain Protagonist",
+   "group": "villains",
+   "col": 15,
+   "row": 9
+  },
+  {
+   "id": "Old",
+   "name": "Oldest Ones In The Book",
+   "group": "metatropes",
+   "col": 16,
+   "row": 9
+  },
+  {
+   "id": "Anp",
+   "name": "Anthropic Principle",
+   "group": "metatropes",
+   "col": 17,
+   "row": 9
+  },
+  {
+   "id": "Wob",
+   "name": "Writer On Board",
+   "group": "production",
+   "col": 18,
+   "row": 9
+  },
+  {
+   "id": "Mem",
+   "name": "Memetic Mutation",
+   "group": "fandom",
+   "col": 19,
+   "row": 9
+  },
+  {
+   "id": "Arc",
+   "name": "Story Arc",
+   "group": "structure",
+   "col": 0,
+   "row": 10
+  },
+  {
+   "id": "Rq",
+   "name": "Redemption Quest",
+   "group": "setting",
+   "col": 1,
+   "row": 10
+  },
+  {
+   "id": "Cry",
+   "name": "Tear Jerker",
+   "group": "storymod",
+   "col": 2,
+   "row": 10
+  },
+  {
+   "id": "Bdh",
+   "name": "Big Damn Heroes",
+   "group": "plotdev",
+   "col": 3,
+   "row": 10
+  },
+  {
+   "id": "Sh",
+   "name": "Super Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 10
+  },
+  {
+   "id": "Pg",
+   "name": "Plucky Girl",
+   "group": "heroes",
+   "col": 5,
+   "row": 10
+  },
+  {
+   "id": "Cap",
+   "name": "The Captain",
+   "group": "heroes",
+   "col": 6,
+   "row": 10
+  },
+  {
+   "id": "Bb",
+   "name": "Berserk Button",
+   "group": "charmod",
+   "col": 7,
+   "row": 10
+  },
+  {
+   "id": "Rnd",
+   "name": "Rounded Character",
+   "group": "charmod",
+   "col": 8,
+   "row": 10
+  },
+  {
+   "id": "Red",
+   "name": "Redshirts",
+   "group": "archetypes",
+   "col": 9,
+   "row": 10
+  },
+  {
+   "id": "Mus",
+   "name": "Dumb Muscle",
+   "group": "archetypes",
+   "col": 10,
+   "row": 10
+  },
+  {
+   "id": "Mal",
+   "name": "Rebellious Spirit",
+   "group": "archetypes",
+   "col": 11,
+   "row": 10
+  },
+  {
+   "id": "Chs",
+   "name": "The Chessmaster",
+   "group": "villains",
+   "col": 12,
+   "row": 10
+  },
+  {
+   "id": "Ob",
+   "name": "Obstructive Bureaucrat",
+   "group": "villains",
+   "col": 13,
+   "row": 10
+  },
+  {
+   "id": "Vir",
+   "name": "The Virus",
+   "group": "villains",
+   "col": 14,
+   "row": 10
+  },
+  {
+   "id": "4te",
+   "name": "For The Evulz",
+   "group": "villains2",
+   "col": 15,
+   "row": 10
+  },
+  {
+   "id": "Roc",
+   "name": "Rule of Cool",
+   "group": "metatropes",
+   "col": 16,
+   "row": 10
+  },
+  {
+   "id": "Con",
+   "name": "Law of Conservation of Detail",
+   "group": "metatropes",
+   "col": 17,
+   "row": 10
+  },
+  {
+   "id": "Xm",
+   "name": "Executive Meddling",
+   "group": "production",
+   "col": 18,
+   "row": 10
+  },
+  {
+   "id": "Wog",
+   "name": "Word of God",
+   "group": "fandom",
+   "col": 19,
+   "row": 10
+  },
+  {
+   "id": "Rar",
+   "name": "Romance Arc",
+   "group": "structure",
+   "col": 0,
+   "row": 11
+  },
+  {
+   "id": "Hj",
+   "name": "The Hero's Journey",
+   "group": "setting",
+   "col": 1,
+   "row": 11
+  },
+  {
+   "id": "Ang",
+   "name": "Wangst",
+   "group": "storymod",
+   "col": 2,
+   "row": 11
+  },
+  {
+   "id": "Pet",
+   "name": "Pet The Dog",
+   "group": "plotdev",
+   "col": 3,
+   "row": 11
+  },
+  {
+   "id": "Kh",
+   "name": "Kid Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 11
+  },
+  {
+   "id": "Det",
+   "name": "Determinator",
+   "group": "heroes",
+   "col": 5,
+   "row": 11
+  },
+  {
+   "id": "Gun",
+   "name": "The Gunslinger",
+   "group": "heroes",
+   "col": 6,
+   "row": 11
+  },
+  {
+   "id": "Jhg",
+   "name": "Jerk With A Heart Of Gold",
+   "group": "charmod",
+   "col": 7,
+   "row": 11
+  },
+  {
+   "id": "Fla",
+   "name": "Flat Character",
+   "group": "charmod",
+   "col": 8,
+   "row": 11
+  },
+  {
+   "id": "Mug",
+   "name": "Muggles",
+   "group": "archetypes",
+   "col": 9,
+   "row": 11
+  },
+  {
+   "id": "Gia",
+   "name": "Gentle Giant",
+   "group": "archetypes",
+   "col": 10,
+   "row": 11
+  },
+  {
+   "id": "Kz",
+   "name": "The Klutz",
+   "group": "archetypes",
+   "col": 11,
+   "row": 11
+  },
+  {
+   "id": "Mon",
+   "name": "Complete Monster",
+   "group": "villains",
+   "col": 12,
+   "row": 11
+  },
+  {
+   "id": "Ws",
+   "name": "Wicked Stepmother",
+   "group": "villains",
+   "col": 13,
+   "row": 11
+  },
+  {
+   "id": "Eld",
+   "name": "Eldritch Abomination",
+   "group": "villains",
+   "col": 14,
+   "row": 11
+  },
+  {
+   "id": "Lol",
+   "name": "Evil Laugh",
+   "group": "villains2",
+   "col": 15,
+   "row": 11
+  },
+  {
+   "id": "Rof",
+   "name": "Rule of Funny",
+   "group": "metatropes",
+   "col": 16,
+   "row": 11
+  },
+  {
+   "id": "Lah",
+   "name": "Literary Agent Hypothesis",
+   "group": "metatropes",
+   "col": 17,
+   "row": 11
+  },
+  {
+   "id": "Rad",
+   "name": "Getting Crap Past The Radar",
+   "group": "production",
+   "col": 18,
+   "row": 11
+  },
+  {
+   "id": "Mst",
+   "name": "MST3K Mantra",
+   "group": "fandom",
+   "col": 19,
+   "row": 11
+  },
+  {
+   "id": "Tri",
+   "name": "Love Triangle",
+   "group": "structure",
+   "col": 0,
+   "row": 12
+  },
+  {
+   "id": "Stw",
+   "name": "Saving the World",
+   "group": "setting",
+   "col": 1,
+   "row": 12
+  },
+  {
+   "id": "Jts",
+   "name": "Jumping the Shark",
+   "group": "storymod",
+   "col": 2,
+   "row": 12
+  },
+  {
+   "id": "Kik",
+   "name": "Kick The Dog",
+   "group": "plotdev",
+   "col": 3,
+   "row": 12
+  },
+  {
+   "id": "Gh",
+   "name": "Guile Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 12
+  },
+  {
+   "id": "Gb",
+   "name": "Genius Bruiser",
+   "group": "heroes",
+   "col": 5,
+   "row": 12
+  },
+  {
+   "id": "Ir",
+   "name": "Intrepid Reporter",
+   "group": "heroes",
+   "col": 6,
+   "row": 12
+  },
+  {
+   "id": "Ja",
+   "name": "Jerkass",
+   "group": "charmod",
+   "col": 7,
+   "row": 12
+  },
+  {
+   "id": "Dyn",
+   "name": "Dynamic Character",
+   "group": "charmod",
+   "col": 8,
+   "row": 12
+  },
+  {
+   "id": "Scr",
+   "name": "The Scrappy",
+   "group": "archetypes",
+   "col": 9,
+   "row": 12
+  },
+  {
+   "id": "Foo",
+   "name": "The Fool",
+   "group": "archetypes",
+   "col": 10,
+   "row": 12
+  },
+  {
+   "id": "Lrg",
+   "name": "Loveable Rogue",
+   "group": "archetypes",
+   "col": 11,
+   "row": 12
+  },
+  {
+   "id": "Om",
+   "name": "Omnicidal Maniac",
+   "group": "villains",
+   "col": 12,
+   "row": 12
+  },
+  {
+   "id": "Bru",
+   "name": "The Brute",
+   "group": "villains",
+   "col": 13,
+   "row": 12
+  },
+  {
+   "id": "1wa",
+   "name": "One Winged Angel",
+   "group": "villains",
+   "col": 14,
+   "row": 12
+  },
+  {
+   "id": "Fai",
+   "name": "You Have Failed Me",
+   "group": "villains2",
+   "col": 15,
+   "row": 12
+  },
+  {
+   "id": "Rod",
+   "name": "Rule of Drama",
+   "group": "metatropes",
+   "col": 16,
+   "row": 12
+  },
+  {
+   "id": "Md",
+   "name": "Moral Dissonance",
+   "group": "metatropes",
+   "col": 17,
+   "row": 12
+  },
+  {
+   "id": "Dh",
+   "name": "Development Hell",
+   "group": "production",
+   "col": 18,
+   "row": 12
+  },
+  {
+   "id": "Sqi",
+   "name": "Squick",
+   "group": "fandom",
+   "col": 19,
+   "row": 12
+  },
+  {
+   "id": "Hil",
+   "name": "Hilarity Ensues",
+   "group": "structure",
+   "col": 0,
+   "row": 13
+  },
+  {
+   "id": "Tfc",
+   "name": "They Fight Crime",
+   "group": "setting",
+   "col": 1,
+   "row": 13
+  },
+  {
+   "id": "Gtb",
+   "name": "Growing the Beard",
+   "group": "storymod",
+   "col": 2,
+   "row": 13
+  },
+  {
+   "id": "Hrz",
+   "name": "Moral Event Horizon",
+   "group": "plotdev",
+   "col": 3,
+   "row": 13
+  },
+  {
+   "id": "Th",
+   "name": "Tragic Hero",
+   "group": "heroes",
+   "col": 4,
+   "row": 13
+  },
+  {
+   "id": "5ma",
+   "name": "Five Man Band",
+   "group": "highlight",
+   "col": 5,
+   "row": 13
+  },
+  {
+   "id": "Ind",
+   "name": "Adventurer Archeologist",
+   "group": "heroes",
+   "col": 6,
+   "row": 13
+  },
+  {
+   "id": "Sav",
+   "name": "Genre Savvy",
+   "group": "charmod",
+   "col": 7,
+   "row": 13
+  },
+  {
+   "id": "Sta",
+   "name": "Static Character",
+   "group": "charmod",
+   "col": 8,
+   "row": 13
+  },
+  {
+   "id": "Edh",
+   "name": "Ensemble Darkhorse",
+   "group": "archetypes",
+   "col": 9,
+   "row": 13
+  },
+  {
+   "id": "Tc",
+   "name": "Turncoat",
+   "group": "archetypes",
+   "col": 10,
+   "row": 13
+  },
+  {
+   "id": "Pmd",
+   "name": "Person of Mass Destruction",
+   "group": "archetypes",
+   "col": 11,
+   "row": 13
+  },
+  {
+   "id": "Kt",
+   "name": "Knight Templar",
+   "group": "villains",
+   "col": 12,
+   "row": 13
+  },
+  {
+   "id": "Chi",
+   "name": "Creepy Child",
+   "group": "villains",
+   "col": 13,
+   "row": 13
+  },
+  {
+   "id": "Cce",
+   "name": "Corrupt Corporate Executive",
+   "group": "villains",
+   "col": 14,
+   "row": 13
+  },
+  {
+   "id": "Cat",
+   "name": "Right Hand Cat",
+   "group": "villains2",
+   "col": 15,
+   "row": 13
+  },
+  {
+   "id": "4wl",
+   "name": "The Fourth Wall",
+   "group": "highlight",
+   "col": 16,
+   "row": 13
+  },
+  {
+   "id": "Tbl",
+   "name": "Parodic Table of the Elements",
+   "group": "metatropes",
+   "col": 17,
+   "row": 13
+  },
+  {
+   "id": "Sbn",
+   "name": "Screwed By The Network",
+   "group": "production",
+   "col": 18,
+   "row": 13
+  },
+  {
+   "id": "Fwr",
+   "name": "Freud Was Right",
+   "group": "fandom",
+   "col": 19,
+   "row": 13
+  },
+  {
+   "id": "Hft",
+   "name": "Heel Face Turn",
+   "group": "charmod",
+   "col": 7,
+   "row": 14
+  },
+  {
+   "id": "Fht",
+   "name": "Face Heel Turn",
+   "group": "charmod",
+   "col": 8,
+   "row": 14
+  },
+  {
+   "id": "H",
+   "name": "The Hero",
+   "group": "heroes",
+   "x": 135,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "L",
+   "name": "The Lancer",
+   "group": "heroes",
+   "x": 197,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "S",
+   "name": "The Smart Guy",
+   "group": "heroes",
+   "x": 259,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "B",
+   "name": "The Big Guy",
+   "group": "heroes",
+   "x": 321,
+   "y": 1125,
+   "parent": "5ma"
+  },
+  {
+   "id": "Ch",
+   "name": "The Chick",
+   "group": "heroes",
+   "x": 383,
+   "y": 1125,
+   "parent": "5ma"
+  }
+ ]
+}

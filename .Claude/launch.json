@@ -19,20 +19,8 @@
       "runtimeArgs": [
         "server.py"
       ],
-      "cwd": "System/Apps/ProjectKanban/_template",
+      "cwd": "System/Apps/ProjectKanban",
       "port": 8789
-    },
-    {
-      "name": "storytelling-mockups",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": [
-        "-m",
-        "http.server",
-        "8795",
-        "--directory",
-        "System/Sandbox/Storytelling/_mockups"
-      ],
-      "port": 8795
     },
     {
       "name": "wiki-preview",
@@ -52,7 +40,7 @@
       "runtimeArgs": [
         "server.py"
       ],
-      "cwd": "System/Sandbox/Storytelling",
+      "cwd": "System/Apps/Storytelling",
       "port": 8793
     },
     {
@@ -65,7 +53,7 @@
         "--bind",
         "127.0.0.1"
       ],
-      "cwd": "System/Sandbox/Storytelling",
+      "cwd": "System/Apps/Storytelling",
       "port": 8792
     }
   ]

@@ -717,23 +717,19 @@ class TestNoDirectDiskAccessOutsideLibrary(unittest.TestCase):
 
 class TestRealFilesystemZeroDeadRefs(unittest.TestCase):
     """No monkey-patching — exercises library.py against the real, on-disk
-    Memory/Long-Term/. Read-only. Skips gracefully if the rebuilt-nodes
-    sandbox folder is absent (it is a pending-promotion staging area, not a
-    permanent fixture of this project)."""
+    Memory/Long-Term/. Read-only. Checks the live nodes (promoted out of the
+    old Sandbox staging folder on 2026-09-12); skips only if they are absent."""
 
-    REBUILD_NODES_DIR = (
-        paths.ROOT / "System" / "Sandbox" / "LukeatronWiki" / "_nodes-rebuild" / "Nodes"
-    )
+    REBUILD_NODES_DIR = paths.ROOT / "Memory" / "Long-Term" / "LukeatronWiki" / "Nodes"
 
     def test_every_unsealed_longterm_ref_is_readable(self):
         if not self.REBUILD_NODES_DIR.is_dir():
             self.skipTest(
-                f"{self.REBUILD_NODES_DIR} not present — rebuilt nodes are "
-                "pending promotion and may not exist/may have moved."
+                f"{self.REBUILD_NODES_DIR} not present."
             )
 
         node_files = sorted(self.REBUILD_NODES_DIR.glob("*.md"))
-        self.assertTrue(node_files, "expected at least one rebuilt node file")
+        self.assertTrue(node_files, "expected at least one node file")
 
         dead = []
         checked = 0

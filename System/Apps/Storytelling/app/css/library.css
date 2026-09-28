@@ -1,0 +1,25 @@
+/* library.css — the Library panel: twelve ready-made story maps as cards (library.spec FR-L2, FR-L3;
+   style.spec FR-S15 look). The white frame itself (border, shadow, padding) comes from panels.css.
+   On-screen-only chrome (print.css hides it): the whole .st-library-panel. */
+
+.st-library-panel { position: fixed; top: var(--space-xl); left: 0; right: 0; z-index: 50; width: min(44rem, calc(100vw - 2 * var(--space-md))); max-height: calc(100vh - 2 * var(--space-xl)); margin: 0 auto; overflow: auto; }
+.st-library-panel[hidden], .st-library-panel [hidden] { display: none !important; }
+.st-library-panel__title { margin: 0 var(--space-xl) var(--space-xs) 0; font: 900 24px/1.15 var(--font-title); }
+.st-library-panel__hint { margin: 0 0 var(--space-md); font-size: 13px; color: var(--color-ink-soft); }
+.st-library-panel__close, .st-library-panel__replace, .st-library-panel__keep {
+  box-sizing: border-box; min-height: 36px; padding: 0 var(--space-md); border: 1px solid var(--color-edge); border-radius: var(--radius-md);
+  background: var(--g-rogue); color: var(--color-ink); font: 600 13px var(--font-ui); cursor: pointer;
+  transition: border-color var(--m-fast) var(--ease-out), box-shadow var(--m-fast) var(--ease-out);
+}
+.st-library-panel__close { position: absolute; top: var(--space-md); right: var(--space-md); }
+.st-library-panel__close:hover, .st-library-panel__replace:hover, .st-library-panel__keep:hover, .st-library-panel__entry:hover { border-color: var(--color-ink); box-shadow: var(--shadow-raised); }
+.st-library-panel__close:focus-visible, .st-library-panel__replace:focus-visible, .st-library-panel__keep:focus-visible, .st-library-panel__entry:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.st-library-panel__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-sm); margin: 0; padding: 0; list-style: none; }
+.st-library-panel__entry { box-sizing: border-box; width: 100%; height: 100%; min-height: 44px; padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: var(--g-rogue); color: var(--color-ink); font: 13px/1.4 var(--font-ui); text-align: left; cursor: pointer; transition: border-color var(--m-fast) var(--ease-out), box-shadow var(--m-fast) var(--ease-out); }
+.st-library-panel__type { display: block; font: 900 15px/1.2 var(--font-title); }
+.st-library-panel__lead { font-weight: 700; }
+.st-library-panel__credit { display: block; margin-top: var(--space-xs); font-size: 11px; font-style: italic; color: var(--color-ink-soft); }
+.st-library-panel__confirm { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-top: var(--space-md); padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-ink); border-radius: var(--radius-md); background: var(--g-rogue); box-shadow: var(--shadow-raised); }
+.st-library-panel__confirm-question { margin: 0 var(--space-sm) 0 0; font-weight: 700; }
+.st-library-panel__status { min-height: 1.4em; margin: var(--space-sm) 0 0; font-size: 12px; color: var(--color-ink-soft); }
+@media (pointer: coarse) { .st-library-panel__close, .st-library-panel__replace, .st-library-panel__keep { min-height: 44px; } }

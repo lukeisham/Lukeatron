@@ -1,0 +1,77 @@
+/* panels.css — the diagram toolbar and the poster's white legend panels: element detail, Lists, About
+   (style.spec FR-S3, FR-S4, FR-S15). White panel, grey frame, raised level, no group colour except the
+   detail symbol tile. The Library panel frame is shared here; its insides are in library.css.
+   Motion: the open/close fade (#8) is motion.css's; nothing here animates but plain transitions.
+   On-screen-only chrome (print.css hides it): .st-toolbar, .st-detail (except when printing an element),
+   .st-list-panel (except its preview when printing a list), .st-about, .st-library-panel. */
+
+/* ---- Panel frame (shared) ---- */
+.st-detail, .st-list-panel, .st-about, .st-library-panel { box-sizing: border-box; padding: var(--space-md); border: 1px solid var(--color-edge); border-radius: var(--radius-lg); background: var(--g-rogue); box-shadow: var(--shadow-raised); color: var(--color-ink); font-family: var(--font-ui); font-size: 14px; line-height: 1.45; }
+.st-detail [hidden], .st-toolbar [hidden] { display: none !important; }
+.st-detail[hidden], .st-list-panel[hidden], .st-about[hidden] { display: none !important; }
+
+/* ---- Buttons (shared by toolbar and panels) ---- */
+.st-toolbar__button, .st-toolbar__menu-item, .st-detail__button, .st-list-panel__button, .st-about__close {
+  box-sizing: border-box; min-height: 36px; padding: 0 var(--space-md); border: 1px solid var(--color-edge); border-radius: var(--radius-md);
+  background: var(--g-rogue); color: var(--color-ink); font: 600 13px var(--font-ui); cursor: pointer;
+  transition: border-color var(--m-fast) var(--ease-out), box-shadow var(--m-fast) var(--ease-out);
+}
+.st-toolbar__button:hover, .st-toolbar__menu-item:hover, .st-detail__button:hover, .st-list-panel__button:hover, .st-about__close:hover { border-color: var(--color-ink); box-shadow: var(--shadow-raised); }
+.st-toolbar__button:focus-visible, .st-toolbar__menu-item:focus-visible, .st-detail__button:focus-visible, .st-list-panel__button:focus-visible,
+.st-about__close:focus-visible, .st-list-panel__category-select:focus-visible, .st-list-panel__examples-checkbox:focus-visible, .st-detail__credit-link:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.st-toolbar__button:disabled, .st-detail__button:disabled, .st-list-panel__button:disabled { opacity: 0.45; cursor: not-allowed; }
+@media (pointer: coarse) { .st-toolbar__button, .st-toolbar__menu-item, .st-detail__button, .st-list-panel__button, .st-about__close, .st-list-panel__category-select { min-height: 44px; } }
+
+/* ---- Diagram toolbar ---- */
+.st-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); }
+.st-toolbar__button[aria-pressed="true"] { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-ground); }
+.st-toolbar__button[aria-expanded="true"] { border-color: var(--color-ink); }
+.st-toolbar__button[data-action="zoom-in"], .st-toolbar__button[data-action="zoom-out"] { min-width: 36px; padding: 0; font-size: 18px; line-height: 1; }
+.st-toolbar__menu-wrap { position: relative; }
+.st-toolbar__menu { position: absolute; top: 100%; left: 0; z-index: 40; display: flex; flex-direction: column; gap: var(--space-xs); min-width: 100%; margin-top: var(--space-xs); padding: var(--space-xs); border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: var(--g-rogue); box-shadow: var(--shadow-raised); }
+.st-toolbar__menu-item { text-align: left; white-space: nowrap; }
+
+/* ---- Detail panel: a 300px side panel from 900px, a sheet over the diagram below ---- */
+.st-detail { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; max-height: 60vh; overflow: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+@media (min-width: 900px) { .st-detail { position: sticky; top: var(--space-md); left: auto; right: auto; bottom: auto; z-index: auto; align-self: start; width: 300px; max-height: calc(100vh - 2 * var(--space-md)); border-radius: var(--radius-lg); } }
+.st-detail__header { display: flex; align-items: flex-start; gap: var(--space-sm); margin-bottom: var(--space-sm); }
+.st-detail__titles { flex: 1 1 auto; min-width: 0; }
+.st-detail__name { margin: 0; font: 900 20px/1.15 var(--font-title); overflow-wrap: anywhere; }
+.st-detail__group { margin: 2px 0 0; font-size: 12px; color: var(--color-ink-soft); }
+.st-detail__tile { --st-tile-bg: var(--g-rogue); flex: 0 0 auto; box-sizing: border-box; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: var(--st-tile-bg); font: 900 20px/1 var(--font-ui); color: var(--color-ink); }
+.st-detail__tile.tile-structure { --st-tile-bg: var(--g-structure); } .st-detail__tile.tile-setting { --st-tile-bg: var(--g-setting); }
+.st-detail__tile.tile-storymod { --st-tile-bg: var(--g-storymod); } .st-detail__tile.tile-plotdev { --st-tile-bg: var(--g-plotdev); }
+.st-detail__tile.tile-genre { --st-tile-bg: var(--g-genre); } .st-detail__tile.tile-heroes { --st-tile-bg: var(--g-heroes); }
+.st-detail__tile.tile-charmod { --st-tile-bg: var(--g-charmod); } .st-detail__tile.tile-archetypes { --st-tile-bg: var(--g-archetypes); }
+.st-detail__tile.tile-villains { --st-tile-bg: var(--g-villains); } .st-detail__tile.tile-villains2 { --st-tile-bg: var(--g-villains2); }
+.st-detail__tile.tile-metatropes { --st-tile-bg: var(--g-metatropes); } .st-detail__tile.tile-production { --st-tile-bg: var(--g-production); }
+.st-detail__tile.tile-fandom { --st-tile-bg: var(--g-fandom); } .st-detail__tile.tile-highlight { --st-tile-bg: var(--g-highlight); }
+.st-detail__tile.tile-rogue { --st-tile-bg: var(--g-rogue); border: 1.4px dotted var(--color-ink-soft); color: var(--color-ink-soft); }
+.st-detail__tile.is-added { border: 1.4px dashed var(--color-ink); }
+.st-detail__tandem, .st-detail__popularity, .st-detail__description, .st-detail__example, .st-detail__story, .st-detail__credit, .st-detail__status { margin: 0 0 var(--space-sm); }
+.st-detail__tandem { font-style: italic; color: var(--color-ink-soft); }
+.st-detail__popularity-value { font-weight: 700; }
+.st-detail__popularity-note { display: block; font-size: 12px; color: var(--color-ink-soft); }
+.st-detail__label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-soft); }
+.st-detail__credit { font-size: 12px; color: var(--color-ink-soft); overflow-wrap: anywhere; }
+.st-detail__credit-link { color: var(--color-ink); text-decoration: underline; }
+.st-detail__actions { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+.st-detail__status { min-height: 1.45em; font-size: 12px; color: var(--color-ink-soft); }
+
+/* ---- Lists and About: centred legend panels ---- */
+.st-list-panel, .st-about { position: fixed; top: var(--space-xl); left: 0; right: 0; z-index: 50; width: min(36rem, calc(100vw - 2 * var(--space-md))); max-height: calc(100vh - 2 * var(--space-xl)); margin: 0 auto; overflow: auto; }
+.st-list-panel { display: flex; flex-direction: column; gap: var(--space-sm); }
+.st-list-panel__category-label, .st-list-panel__examples-label { display: flex; align-items: center; gap: var(--space-sm); font-weight: 600; }
+.st-list-panel__category-select { min-height: 32px; margin-left: var(--space-sm); padding: 0 var(--space-sm); border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: var(--g-rogue); color: var(--color-ink); font: 14px var(--font-ui); }
+.st-list-panel__examples-checkbox { width: 18px; height: 18px; margin: 0; accent-color: var(--color-ink); }
+.st-list-panel__preview { box-sizing: border-box; max-height: 40vh; margin: 0; padding: var(--space-sm) var(--space-md); overflow: auto; border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: color-mix(in srgb, var(--g-rogue) 60%, var(--color-ground)); font: 14px/1.5 var(--font-ui); white-space: pre-wrap; }
+.st-list-panel__preview:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+.st-list-panel__status { min-height: 1.45em; margin: 0; font-size: 12px; color: var(--color-ink-soft); }
+.st-list-panel__status.is-shown { color: var(--color-ink); font-weight: 600; }
+.st-list-panel__buttons { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.st-list-panel__close-button { margin-left: auto; }
+.st-about__header { margin-bottom: var(--space-sm); }
+.st-about__name { margin: 0; font: 900 24px/1.15 var(--font-title); }
+.st-about__version { margin: 2px 0 0; font-size: 12px; color: var(--color-ink-soft); }
+.st-about__statement { margin: 0 0 var(--space-sm); }
+.st-about__close { margin-top: var(--space-sm); }

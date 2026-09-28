@@ -84,6 +84,9 @@ _SOURCE_STORES = {"Bible"}
 
 _WIKILINK_RE = re.compile(r"\[\[([a-zA-Z0-9_\-]+)\]\]")
 
+# Port defined at System/Apps/ProjectKanban/server.py (PORT).
+_DASHBOARD_URL = "http://localhost:8789/"
+
 
 # ============================================================================
 # Small escaping / URL helpers
@@ -769,6 +772,8 @@ def _page_shell(title, content_html, rail_html, margin_html, counts, search_q=""
         f'<input type="text" name="q" value="{_esc(search_q)}" placeholder="Search all {stores_n} stores...">'
         "</form>"
         '<div class="topbar-controls">'
+        f'<a class="topbar-link" href="{_DASHBOARD_URL}" target="lukeatron-dashboard" '
+        'rel="noopener" title="Open the Dashboard (projects)">Dashboard</a>'
         '<button class="btn-theme-toggle" type="button" title="Toggle theme">&#9680;</button>'
         '<button class="btn-print" type="button" title="Print">&#9033;</button>'
         "</div></div>\n"

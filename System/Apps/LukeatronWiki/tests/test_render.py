@@ -959,6 +959,29 @@ class TestAC6IntegrityFooter(RenderFixtureTestCase):
 
 
 # ============================================================================
+# lukeatronwiki-link-to-projectkanban — the Dashboard cross-link in the top bar
+# ============================================================================
+
+
+class TestDashboardLink(RenderFixtureTestCase):
+    def test_link_present_once_on_every_normal_page_type(self):
+        for page_html in (
+            render.render_home(),
+            render.render_page("theology"),
+            render.render_store("Theology"),
+            render.render_search_results("x", []),
+        ):
+            self.assertEqual(page_html.count('class="topbar-link"'), 1)
+            self.assertIn(f'href="{render._DASHBOARD_URL}"', page_html)
+            self.assertIn('rel="noopener"', page_html)
+
+    def test_link_absent_from_seal_failure_page(self):
+        self.sealed_yaml.unlink()
+        out = render.render_home()
+        self.assertNotIn('class="topbar-link"', out)
+
+
+# ============================================================================
 # PRD Key behaviours / capture.spec.md FR-1 — the quick-capture form on the
 # backlog page. Regression coverage for a gap where capture.py, server.py's
 # POST /do/capture route, and the CSS/JS for .capture-form all existed and

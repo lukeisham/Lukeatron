@@ -138,6 +138,30 @@ body { margin: 0; background: var(--paper); }
   outline-offset: 2px;
 }
 
+.topbar-link {
+  padding: 0.4rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink-quiet);
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1;
+  text-decoration: none;
+  transition: var(--motion-quick);
+}
+
+.topbar-link:hover {
+  background: var(--ui-hover-bg);
+  border-color: var(--ui-border-divider);
+}
+
+.topbar-link:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
 /* ── three-column shell ────────────────────────────────────────────────── */
 .shell {
   display: grid;

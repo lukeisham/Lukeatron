@@ -1,0 +1,23 @@
+/* undo.css — the Undo button in a project's header (undo.js). A new file, not
+   more rules in project.css, which is already over the ~150-line house cap
+   (CSS-1). Tokens used: --ink-muted, --border (both already defined). The
+   button itself inherits every `.project-header button` rule from project.css;
+   this file only adds what differs. */
+
+.project-undo-slot {
+  display: contents; /* the button (when any) sits in the header's own flex row */
+}
+
+.project-header .project-undo {
+  text-align: left; /* the label is a sentence, and may wrap on a narrow page */
+}
+
+/* Unavailable: still visible, still says WHY in its own words — meaning is in
+   the text, the muted ink is only emphasis. */
+.project-header .project-undo:disabled {
+  color: var(--ink-muted);
+  border-color: var(--border);
+  box-shadow: none;
+  cursor: default;
+  transform: none;
+}

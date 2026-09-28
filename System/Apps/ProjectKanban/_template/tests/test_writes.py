@@ -75,7 +75,8 @@ class WritesTestCase(unittest.TestCase):
 class TestImport(unittest.TestCase):
     def test_imports_cleanly_and_exposes_the_public_api(self) -> None:
         for name in (
-            "set_cell", "append_note", "reorder_next_actions",
+            "set_cell", "append_note", "reorder_next_actions", "undo_last", "undo_state",
+            "UndoUnavailableError", "UndoConflictError",
             "FenceError", "StaleMtimeError", "RowNotFoundError", "LinkedRowError", "ReorderMismatchError",
         ):
             self.assertTrue(hasattr(writes, name), name)
@@ -643,3 +644,206 @@ class TestReorderNextActionsRecordGuard(WritesTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------------------------------------------------------------------------
+# Undo (wishlist #1) — the log carries the old value, and undo_last uses it.
+# ---------------------------------------------------------------------------
+
+
+class UndoTestCase(WritesTestCase):
+    def edit(self, row: str, column: str, value: str, project_id: str = "ZZ-10") -> writes.EditResult:
+        path = self.registry_path(project_id)
+        return writes.set_cell(self.root, project_id=project_id, row=row, column=column, value=value,
+                               mtime=self.mtime_of(path))
+
+    def log_lines(self) -> list[str]:
+        return self.edits_log_path().read_text(encoding="utf-8").splitlines()
+
+    def assertRefusedUntouched(self, exc: type, project_id: str = "ZZ-10") -> None:
+        """Run undo and require `exc`, with the registry's bytes AND mtime unchanged."""
+        path = self.registry_path(project_id)
+        before, before_mtime = path.read_bytes(), self.mtime_of(path)
+        with self.assertRaises(exc):
+            writes.undo_last(self.root, project_id=project_id, mtime=before_mtime)
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(self.mtime_of(path), before_mtime)
+
+
+class TestUndoLogsPreviousValue(UndoTestCase):
+    def test_set_cell_logs_prev_beside_value(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        self.assertTrue(self.log_lines()[-1].endswith("detail=value='☑ Done' prev='☐ Open'"), self.log_lines()[-1])
+
+    def test_blank_glyph_prev_is_logged_verbatim(self) -> None:
+        self.edit("4", "owner", "Luke")
+        self.assertTrue(self.log_lines()[-1].endswith("value='Luke' prev='—'"))
+
+    def test_old_format_line_parses_but_is_not_undoable(self) -> None:
+        legacy = "[2026-09-15T09:56:30] set_cell project=ZZ-10 row=1 column=owner outcome=ok detail=value='Anthony'"
+        self.edits_log_path().write_text(legacy + "\n", encoding="utf-8")
+        entry = writes._latest_write_entry(self.root)
+        self.assertEqual((entry.value, entry.prev), ("Anthony", None))
+        self.assertFalse(writes.undo_state(self.root)["available"])
+        self.assertIn("before undo existed", writes.undo_state(self.root)["reason"])
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_parser_ignores_refusals_browser_lines_and_junk(self) -> None:
+        for line in (
+            "[2026-09-15T09:56:30] set_cell project=ZZ-10 row=1 column=owner outcome=refused:stale_mtime",
+            "[BROWSER: wiki] [mode] - on 2026-07-03T08:50:06",
+            "not a log line at all",
+        ):
+            self.assertIsNone(writes._parse_edit_log_line(line), line)
+
+    def test_parser_reads_a_value_containing_both_quote_kinds(self) -> None:
+        line = "[t] set_cell project=ZZ-10 row=1 column=owner outcome=ok detail=value=\"O'Neil \\\"Sr\\\"\" prev=''"
+        entry = writes._parse_edit_log_line(line)
+        self.assertEqual((entry.value, entry.prev), ('O\'Neil "Sr"', ""))
+
+
+class TestUndoHappyPath(UndoTestCase):
+    def test_undo_restores_the_file_byte_for_byte(self) -> None:
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        self.edit("1", "status", "☑ Done")
+        self.assertNotEqual(path.read_bytes(), original)
+        result = writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path))
+        self.assertTrue(result.ok)
+        self.assertEqual((result.row, result.column, result.value), ("1", "status", "☐ Open"))
+        self.assertEqual(path.read_bytes(), original)
+        self.assertEqual(result.mtime, self.mtime_of(path))
+
+    def test_undo_is_logged_as_undo_set_cell_and_stamps_pending_sweep(self) -> None:
+        self.edit("1", "due", "2026-12-25")
+        writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(self.registry_path("ZZ-10")))
+        last = self.log_lines()[-1]
+        self.assertIn(" undo_set_cell project=ZZ-10 row=1 column=due outcome=ok", last)
+        self.assertIn("value='2026-09-10' prev='2026-12-25'", last)
+        self.assertIn("pending_sweep: true", self.tracking_path().read_text(encoding="utf-8"))
+
+    def test_nothing_here_glyph_round_trips(self) -> None:
+        """`—` reads back from stores as None; the verify step must still accept restoring it."""
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        self.edit("4", "owner", "Luke")
+        writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path))
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_blank_cell_round_trips_semantically(self) -> None:
+        path = self.registry_path("ZZ-10")
+        text = path.read_text(encoding="utf-8").replace("| 2026-09-10 | — |", "|  | — |", 1)
+        path.write_text(text, encoding="utf-8")
+        self.edit("1", "due", "2026-12-25")
+        self.assertTrue(self.log_lines()[-1].endswith("prev=''"))
+        writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path))
+        row = next(r for r in stores.read_registry(path, "ZZ-10").next_actions if r.index.value == "1")
+        self.assertIsNone(row.due.value)
+
+    def test_state_names_what_undo_would_do(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        state = writes.undo_state(self.root)
+        self.assertTrue(state["available"])
+        self.assertEqual((state["project_id"], state["row"], state["column"], state["value"], state["prev"]),
+                         ("ZZ-10", "1", "status", "☑ Done", "☐ Open"))
+        self.assertRegex(state["at"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")
+        self.assertIsNone(state["reason"])
+
+
+class TestUndoRefusals(UndoTestCase):
+    def test_no_log_at_all(self) -> None:
+        self.assertFalse(writes.undo_state(self.root)["available"])
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_latest_write_is_a_note(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        writes.append_note(self.root, project_id="ZZ-10", section="scraps", text="hello",
+                           mtime=self.mtime_of(self.notes_path("ZZ-10")))
+        self.assertIn("note", writes.undo_state(self.root)["reason"])
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_latest_write_is_a_reorder(self) -> None:
+        path = self.registry_path("ZZ-10")
+        writes.reorder_next_actions(self.root, project_id="ZZ-10", row_order=["2", "1", "3", "4"],
+                                    mtime=self.mtime_of(path))
+        self.assertIn("reorder", writes.undo_state(self.root)["reason"])
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_a_second_undo_is_refused_so_it_cannot_ping_pong(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit("1", "status", "☑ Done")
+        writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path))
+        self.assertFalse(writes.undo_state(self.root)["available"])
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_refusals_are_ignored_when_finding_the_last_write(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit("1", "status", "☑ Done")
+        with self.assertRaises(writes.StaleMtimeError):
+            writes.set_cell(self.root, project_id="ZZ-10", row="1", column="due", value="2027-01-01", mtime=1.0)
+        result = writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path))
+        self.assertEqual((result.column, result.value), ("status", "☐ Open"))
+
+    def test_wrong_project_is_refused(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        path = self.registry_path("ZZ-11")
+        before = path.read_bytes()
+        with self.assertRaises(writes.UndoUnavailableError):
+            writes.undo_last(self.root, project_id="ZZ-11", mtime=self.mtime_of(path))
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_unsafe_prev_is_refused_not_half_written(self) -> None:
+        line = "[2026-09-21T10:00:00] set_cell project=ZZ-10 row=1 column=owner outcome=ok detail=value='Luke' prev='a|b'"
+        self.edits_log_path().write_text(line + "\n", encoding="utf-8")
+        self.assertRefusedUntouched(writes.UndoUnavailableError)
+
+    def test_refusals_are_logged_but_never_become_the_latest_write(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        path = self.registry_path("ZZ-10")
+        with self.assertRaises(writes.StaleMtimeError):
+            writes.undo_last(self.root, project_id="ZZ-10", mtime=1.0)
+        self.assertIn("undo_set_cell project=ZZ-10 row=1 column=status outcome=refused:stale_mtime", self.log_lines()[-1])
+        self.assertEqual(writes._latest_write_entry(self.root).action, "set_cell")
+
+
+class TestUndoConflictGuard(UndoTestCase):
+    """TEST-7 blocked/permitted pair for the conflict guard."""
+
+    def test_blocked_when_the_cell_changed_out_of_band(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit("1", "status", "☑ Done")
+        path.write_text(path.read_text(encoding="utf-8").replace("☑ Done", "🚫 Blocked", 1), encoding="utf-8")
+        self.assertFalse(writes.undo_state(self.root)["available"])
+        self.assertRefusedUntouched(writes.UndoConflictError)
+        self.assertIn("refused:UndoConflictError", self.log_lines()[-1])
+
+    def test_permitted_when_the_cell_still_holds_the_logged_value(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit("1", "status", "☑ Done")
+        self.assertTrue(writes.undo_state(self.root)["available"])
+        self.assertTrue(writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path)).ok)
+
+
+class TestUndoInheritsTheGuards(UndoTestCase):
+    def test_stale_mtime_refuses_before_any_write(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        path = self.registry_path("ZZ-10")
+        before = path.read_bytes()
+        with self.assertRaises(writes.StaleMtimeError):
+            writes.undo_last(self.root, project_id="ZZ-10", mtime=self.mtime_of(path) - 5)
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_row_that_became_linked_is_refused(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit("1", "status", "☑ Done")
+        path.write_text(path.read_text(encoding="utf-8").replace(
+            "| ☑ Done | 🟠 your move | 2026-09-10 | — |", "| ☑ Done | 🟠 your move | 2026-09-10 | bas-2026-q1 |", 1), encoding="utf-8")
+        self.assertRefusedUntouched(writes.LinkedRowError)
+
+    def test_fence_refuses_a_tracking_row_pointing_outside(self) -> None:
+        self.edit("1", "status", "☑ Done")
+        t = self.tracking_path()
+        t.write_text(t.read_text(encoding="utf-8").replace("Memory/Medium-Term/Projects/ZZ-10", "../../../outside/ZZ-10", 1),
+                     encoding="utf-8")
+        with self.assertRaises(writes.FenceError):
+            writes.undo_last(self.root, project_id="ZZ-10", mtime=0.0)

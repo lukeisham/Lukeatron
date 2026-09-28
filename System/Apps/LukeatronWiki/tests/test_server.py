@@ -125,6 +125,27 @@ class ServerFixtureTestCase(unittest.TestCase):
             conn.close()
 
 
+class TestIdleConnectionsDoNotBlock(ServerFixtureTestCase):
+    """AD-1a: a browser's silent preconnect must not stall real requests on the single thread."""
+
+    def test_idle_socket_is_dropped_and_next_request_served(self):
+        import socket
+
+        idle = socket.create_connection(("127.0.0.1", self.port))  # connects, sends nothing
+        self.addCleanup(idle.close)
+        started = time.monotonic()
+        status, _headers, _data = self._request("GET", "/static/wiki-page.css")
+        elapsed = time.monotonic() - started
+        self.assertEqual(status, 200)
+        # server.Handler.timeout (0.5 s) frees the thread; well under the 5 s client timeout.
+        self.assertLess(elapsed, 2.0)
+
+    def test_connection_closes_after_response(self):
+        status, headers, _data = self._request("GET", "/static/wiki-page.css")
+        self.assertEqual(status, 200)
+        self.assertNotEqual(headers.get("Connection", "").lower(), "keep-alive")
+
+
 class TestAC1BindAddress(ServerFixtureTestCase):
     def test_bound_to_loopback_only(self):
         sockname = self.httpd.socket.getsockname()

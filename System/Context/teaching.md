@@ -89,7 +89,7 @@ Templates this context leans on: the Grammar cartridge (`System/Widgets/Parser/G
 - `System/Widgets/Parser/Style/` — prose style reference
 - `System/Widgets/Parser/Story-tension/` — story tension/plot structure reference
 - `System/Widgets/Parser/Tropes & symbols/` — literary trope/symbol reference
-- `System/Widgets/Parser/Fact-checking/` — fact-checking sources & method
+- `System/Apps/Fact-checking/` — the Fact-checking app (moved out of Widgets 2026-09-27): registry, wishlist, legacy widget spec
 - `Memory/Long-Term/Teaching/` — teaching method & material
 - `Memory/Long-Term/Method/` — working methods that cut across the tools
 

@@ -275,6 +275,18 @@ class TestAC3BacklinksLiveAndStable(LibraryFixtureTestCase):
         slugs = {b["slug"] for b in result}
         self.assertIn("new-linker", slugs)
 
+    def test_backlink_index_matches_backlinks_for_every_target(self):
+        # integrity_counts() uses the one-walk index instead of calling
+        # backlinks() per link (speed); the two must never disagree.
+        index = library._backlink_index()
+        targets = set(index) | {n["slug"] for n in library.list_nodes()} | {"theology"}
+        for target in targets:
+            from_index = sorted(
+                slug for stem, slug in index.get(target, ()) if stem != target
+            )
+            from_backlinks = sorted(b["slug"] for b in library.backlinks(target))
+            self.assertEqual(from_index, from_backlinks, target)
+
     def test_fully_sealed_node_excluded_from_backlinks(self):
         # fully-sealed.md doesn't link to theology, but confirm it never appears
         # for any target, and mixed-node.md (partially sealed) still counts.

@@ -5,10 +5,12 @@ type: Skill
 status: Registered
 core_function: [Categorise, Track]
 intent: "Given an artefact and an independent statement of what it was meant to transmit, measure how much of that meaning a cold reader actually recovers from the prose and from the layout, and return the exact sites where recovery failed — so the repair is a location, not an opinion."
-version: 1.0.0
+version: 1.1.1
 domain: GeneralPurpose
 dependencies:
   - "reference/format-propositions.md (the device-to-claim table — always loaded when the FORMAT surface is in scope)"
+  - "reference/cold-reader-protocol.md (reader package, greeking, evidence rule, stages, JOINT mode — always loaded; shared with !ConceptFidelity)"
+  - "!HeadlessChromeBrowser (captures the rendered and greeked screenshots for a rendered artefact)"
   - "!PlainEnglish (core, always on — governs the FORM of this skill's own report)"
   - "System/Skillbank/GeneralPurposeSkills/!ConceptFidelity/skill.md (sibling; the cross-tab at OUTPUT needs both)"
 calibration:
@@ -30,9 +32,13 @@ memory_footprint:
 "does this actually communicate", "will they get it", "test this on a fresh reader",
 "check the layout reads right", "!Comprehension".
 
-Also fires **from inside another skill's review stage** — `!GrammarFrame` STEP 7B calls it over each
-rendered guide. When called that way it takes its spec from the caller and returns structured
+Also fires **from inside another skill's review stage** — `!GrammarFrame` STEP 7B calls it once per
+NEW/CHANGED heading, in each rendered guide. When called that way it takes its spec from the caller and returns structured
 findings rather than a chat report.
+
+**Separately or jointly.** Run alone, this skill takes its readers through its own stages. Run
+alongside `!ConceptFidelity` on the same artefact, the two share ONE reader set — **JOINT mode**,
+`reference/cold-reader-protocol.md` §5 — each still building its own spec and ruling on its own axis.
 
 Does **not** fire on: drafting or rewriting (that is `!SimpleEnglish` / `!ProseDetox`), truth-checking
 (`!FactCheck`), or whether the right *concept* arrived (`!ConceptFidelity`, the sibling). This skill
@@ -96,6 +102,10 @@ STEP 0 — SCOPE
     both         (a document whose headings, tables and emphasis are doing real work)
   SET surfaces = {PROSE} for prose-only, {PROSE, FORMAT} otherwise
   IF FORMAT in surfaces THEN LOAD reference/format-propositions.md
+  LOAD reference/cold-reader-protocol.md
+  SET MODE = JOINT IF !ConceptFidelity runs on this artefact in the same run, ELSE SEPARATE
+  PREPARE the READER PACKAGE per protocol §1 — for a rendered artefact, full-page screenshots +
+    visible text, NEVER the HTML source — and, IF FORMAT in surfaces, the GREEKED capture (§2)
   IDENTIFY the INTENT SOURCE — the brief, source text, spec, notes, or caller-supplied
     proposition set that the meaning comes FROM
     // this must be a DIFFERENT document from the artefact. The artefact is the thing on trial;
@@ -107,7 +117,8 @@ STEP 1 — PRE-REGISTER THE SPEC        ⛔ the check is invalid without this
     with the artefact closed
   ELSE ENTER REDUCED MODE:
     SAY SO EXPLICITLY at the top of the report
-    RUN STEP 2, STEP 3 and STEP 5 only
+    RUN STEP 2 without CLAIM WITHOUT DEVICE (it needs spec (c)), STEP 3 WITHOUT (b) (it needs
+      the spec's ACTION), and STEP 5
     REPORT ambiguity sites and reader-variance ONLY
     EMIT NO recovery rate, NO distortion count, NO PASS verdict — only REPAIR or INCONCLUSIVE
     // an artefact graded against itself always passes. Reduced mode is honest; a full-looking
@@ -143,9 +154,17 @@ STEP 2 — MECHANICAL CHECKS      (free; no reader needed; run BEFORE spending a
     // actually the first use on the page as read, not as authored?
   IF FORMAT in surfaces:
     ORPHAN DEVICE:
-      FOR EACH formatting device used exactly ONCE in the artefact:
+      FOR EACH CONTRASTIVE device used exactly ONCE in the artefact:
+        // contrastive = it marks one item OFF from its peers: bold, italics, colour/ink, a
+        // callout or box style, a glyph, an indentation level, a monospace span
         RECORD an ORPHAN defect — a device used once asserts a distinction nothing else
         honours, so the reader cannot tell whether it means something or slipped in
+      EXEMPT a singleton whose ONE use is its point — never flag these:
+        the page title / H1 · the single entry point · a lone table, diagram or code block
+        the content needs once · template or house-style chrome (header, footer, nav)
+        that the artefact did not choose
+        // the test: would a SECOND use be expected if the device meant something? A title
+        // is not expected twice; a lone bolded phrase in a page of plain prose is
     DEVICE COLLISION:
       IF one device carries two different claims (bold = key term AND bold = important)
         THEN RECORD a COLLISION defect
@@ -156,21 +175,23 @@ STEP 2 — MECHANICAL CHECKS      (free; no reader needed; run BEFORE spending a
         artefact: RECORD an UNMARKED CLAIM defect — it was meant to be asserted and is not
   // these findings are reported whatever the cold reads say. They are defects on their own.
 
-STEP 3 — THE BLIND COLD READ            (the instrument)
+STEP 3 — THE BLIND COLD READ            (the instrument; mechanics in cold-reader-protocol.md)
   SET N = 3 by default (1 only for a trivial artefact; 5 when the stakes are high)
-  DISPATCH N independent readers. EACH reader MUST have:
+  IF MODE = JOINT THEN the readers are SHARED with !ConceptFidelity: both specs are frozen first,
+    the readers take protocol §5 stages 1-6, and THIS skill scores stages 1, 2 and 3
+  ELSE DISPATCH N independent readers through stages 1, 2, 3. EACH reader MUST have:
     NO conversation context, NO brief, NO spec, NO sight of another reader's answers,
     NO knowledge that this is a test of anything in particular
     // a subagent with a clean context is the mechanism. IF no such reader can be obtained
     // THEN SAY SO AND STOP — do not let the authoring agent grade its own writing. It cannot
     // un-know the intent, and its "cold read" is the intent read back. This fails closed.
-  EACH reader RECEIVES the artefact and RETURNS, in this order:
-    (a) RESTATEMENT — "In your own words, what does this say?" — UNPROMPTED. Never list the
-        propositions and ask which are present; that leaks every answer being tested.
-    (b) ACTION ATTEMPT — the spec's (b) action, performed. Not "could you do this?" but
-        "do it." A reader who believes they understood and cannot perform did not understand.
-    (c) STRUCTURAL READ-BACK  [FORMAT surface only] — answered FROM LAYOUT ALONE, with the
-        prose treated as unreadable text:
+  EACH reader is taken through the stages ONE PER TURN (spawn, then SendMessage), least
+    revealing first, and EVERY prompt carries the protocol §3 evidence rule verbatim:
+    answer only from the page, cite the span for every claim, "not stated" beats what you know.
+    // a blind reader is not an ignorant reader. Without the span, a reader who already knows the
+    // subject "recovers" propositions the page never transmitted, and a weak artefact passes.
+  STAGE 1 [FORMAT surface only] — shown the GREEKED capture ONLY:
+    (c) STRUCTURAL READ-BACK — answered FROM LAYOUT ALONE, the words mechanically removed:
           what is part of what?
           what does this want me to read first?
           which of these matters most?
@@ -178,8 +199,15 @@ STEP 3 — THE BLIND COLD READ            (the instrument)
           which things belong together?
         // the test is whether the shape transmits without the sentences. If a reader
         // cannot answer these from layout, the layout is decoration, not structure.
+        // It comes FIRST because greeking cannot blind a reader who has already read the page.
+  STAGE 2 — shown the LEGIBLE package, and RETURNS:
+    (a) RESTATEMENT — "In your own words, what does this say?" — UNPROMPTED. Never list the
+        propositions and ask which are present; that leaks every answer being tested.
     (d) GUESS LOG — every place they had to assume something to keep going, with the span
     (e) REFERENT LIST — what each pronoun and deictic pointed to, in their reading
+  STAGE 3 — given the spec's ACTION task:
+    (b) ACTION ATTEMPT — the spec's (b) action, performed. Not "could you do this?" but
+        "do it." A reader who believes they understood and cannot perform did not understand.
 
 STEP 4 — DIFF against the frozen spec
   FOR EACH proposition IN spec (a) and spec (c):
@@ -190,6 +218,10 @@ STEP 4 — DIFF against the frozen spec
         MISSING   — absent from the restatement
         DISTORTED — stated, but wrong, weakened, or inverted
         INVENTED  — reader holds a proposition NOBODY put in the spec
+        UNSOURCED — stated correctly, but with no span, or a span that does not support it:
+                    the reader knew it, the page did not tell them. Counts as MISSING for
+                    the verdict; reported under its own label (protocol §3)
+      // CHECK every cited span against the artefact yourself — never take the reader's word
       // DISTORTED and INVENTED are strictly worse than MISSING. A gap the reader notices
       // and can ask about. A distortion they carry away believing they were told it.
   SCORE the ACTION attempt: PERFORMED / PERFORMED-WRONG / NOT PERFORMED
@@ -211,7 +243,7 @@ STEP 5 — VARIANCE            (the reason N > 1)
 STEP 6 — VERDICT
   COUNT defects by TYPE, never as a total, never as a percentage
   ASSIGN exactly one verdict:
-    PASS   — every proposition RECOVERED or PARTIAL by every reader, ACTION PERFORMED,
+    PASS   — every proposition RECOVERED or PARTIAL (sourced) by every reader, ACTION PERFORMED,
              zero DISTORTED, zero INVENTED, zero AMBIGUOUS, no mechanical defect outstanding
     REPAIR — defects exist, all of them located and fixable in place
     REJECT — the ACTION was PERFORMED-WRONG, or a majority of readers DISTORTED the same
@@ -235,7 +267,7 @@ A report — to chat, or structured to a calling skill — carrying exactly four
 - **VERDICT** — PASS / REPAIR / REJECT / INCONCLUSIVE, and the mode it was reached in (full or
   REDUCED).
 - **DEFECT LIST** — typed and located. Types: `MISSING` · `DISTORTED` · `INVENTED` · `AMBIGUOUS` ·
-  `UNRESOLVED REFERENT` · `FORWARD DEPENDENCY` · `ORPHAN DEVICE` · `DEVICE COLLISION` ·
+  `UNSOURCED` · `UNRESOLVED REFERENT` · `FORWARD DEPENDENCY` · `ORPHAN DEVICE` · `DEVICE COLLISION` ·
   `REDUNDANT DEVICE` · `UNMARKED CLAIM` · `ACTION FAILED`.
 - **CONFIRMED AMBIGUITY SITES** — spans two or more readers had to guess at. The repair list.
 - **WHAT CAME BACK** — for any DISTORTED or INVENTED proposition, the reader's actual words. This is
@@ -266,8 +298,17 @@ CATCH [no clean-context reader can be obtained]    ➔ STOP and say so. The auth
 CATCH [the spec cannot name an ACTION]             ➔ report it as FINDING ONE, against the brief
                                                       rather than the writing. An artefact with
                                                       no nameable purpose cannot be tested
-CATCH [a reader was shown the spec, the brief,      ➔ that read is VOID. Discard it, do not
-       or another reader's answer]                    average it in, run a fresh reader
+CATCH [a reader was shown the spec, the brief,      ➔ that read is VOID from that stage on
+       another reader's answer, or a later stage's     (protocol §5). Discard it, do not
+       material early]                                 average it in, run a fresh reader
+CATCH [a rendered artefact was handed to a reader   ➔ VOID. Source shows no weight, size or
+       as HTML source]                                colour, and its class names leak intent.
+                                                      Re-run from the screenshot package (§1)
+CATCH [a reader answers correctly but cites no      ➔ UNSOURCED, not RECOVERED. A reader who
+       span, or a span that does not say it]          knows the subject fills the page's gaps;
+                                                      the page did not transmit that proposition
+CATCH [asked to run a layout read-back on a page    ➔ REFUSE. Greek it first (§2) and show the
+       the reader can read]                           greeked capture BEFORE the legible one
 CATCH [tempted to edit the spec after a cold read]  ➔ REFUSE. A spec edited to match what came
                                                       back measures nothing. Log the temptation
                                                       as a finding about the spec instead

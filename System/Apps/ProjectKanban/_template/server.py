@@ -13,6 +13,8 @@ The sibling interfaces this module routes to:
     model.build_board(sources.projects, *, today)                      -> Board
     writes.set_cell(root, *, project_id, row, column, value, mtime)    -> EditResult
     writes.append_note(root, *, project_id, section, text, mtime)      -> NoteResult
+    writes.undo_last(root, *, project_id, mtime)                       -> EditResult
+    writes.undo_state(root)                                            -> dict
 
 `model` and `writes` are imported inside the handlers that need them, not at
 module level, so importing this module stays free of side effects (PY-3) and
@@ -73,6 +75,8 @@ ERROR_STATUS: dict[str, int] = {
     "method_not_allowed": 405,
     "stale_mtime": 409,
     "linked_row": 409,
+    "undo_unavailable": 409,
+    "undo_conflict": 409,
     "table_corruption": 422,
     "reorder_mismatch": 422,
     "internal": 500,
@@ -248,6 +252,32 @@ def _validate_edit_body(body: dict[str, Any]) -> tuple[dict[str, Any] | None, st
     return None, "field"
 
 
+def _writes_failure(handler: BaseHTTPRequestHandler, writes: Any, exc: Exception) -> None:
+    """The one place a `writes` exception becomes an error code (API-3, API-6),
+    shared by every route that calls into it. The cause is logged; the client
+    only ever sees the code. Order matters only where classes are related —
+    every `writes` error derives from `WritesError`, which is the fallback."""
+    _log_failure(handler, exc)
+    for cls, code in (
+        (writes.StaleMtimeError, "stale_mtime"),
+        (writes.LinkedRowError, "linked_row"),
+        (writes.FenceError, "fence_violation"),
+        (writes.ProjectNotFoundError, "project_not_found"),
+        (writes.RowNotFoundError, "row_not_found"),
+        (writes.ReorderMismatchError, "reorder_mismatch"),
+        (writes.UndoUnavailableError, "undo_unavailable"),
+        (writes.UndoConflictError, "undo_conflict"),
+        (writes.TableCorruptionError, "table_corruption"),
+    ):
+        if isinstance(exc, cls):
+            return send_error(handler, code)
+    if isinstance(exc, (writes.WritesError, ValueError)):
+        # A value writes.py itself rejected (e.g. a cell value containing '|')
+        # is a bad request, not a server fault.
+        return send_error(handler, "bad_request", field="value")
+    return send_error(handler, "internal")
+
+
 def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
     body, bad_field = _read_json_body(handler)
     if bad_field is not None:
@@ -280,37 +310,55 @@ def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
                 root, project_id=parsed["project_id"], section=parsed["section"],
                 text=parsed["text"], mtime=parsed["mtime"],
             )
-    except writes.StaleMtimeError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "stale_mtime")
-    except writes.LinkedRowError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "linked_row")
-    except writes.FenceError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "fence_violation")
-    except writes.ProjectNotFoundError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "project_not_found")
-    except writes.RowNotFoundError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "row_not_found")
-    except writes.ReorderMismatchError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "reorder_mismatch")
-    except writes.TableCorruptionError as exc:
-        _log_failure(handler, exc)
-        return send_error(handler, "table_corruption")
-    except (writes.WritesError, ValueError) as exc:  # noqa: BLE001 — API-6: a value writes.py
-        # itself rejected (e.g. a cell value containing '|') is a bad request,
-        # not a server fault.
-        _log_failure(handler, exc)
-        return send_error(handler, "bad_request", field="value")
-    except Exception as exc:  # noqa: BLE001 — API-6
+    except Exception as exc:  # noqa: BLE001 — API-6, mapped in one place below
+        return _writes_failure(handler, writes, exc)
+
+    _send_json(handler, 200, result)
+
+
+def _validate_undo_body(body: dict[str, Any]) -> tuple[dict[str, Any] | None, str | None]:
+    """Undo names only a project and the mtime the caller last saw. Anything
+    else in the body (a row, a value) is ignored on purpose: what gets undone
+    is re-derived from `Logs/edits.log`, never taken from the client."""
+    project_id = body.get("project_id")
+    if not isinstance(project_id, str) or not project_id:
+        return None, "project_id"
+    mtime = body.get("mtime")
+    if not isinstance(mtime, (int, float)) or isinstance(mtime, bool):
+        return None, "mtime"
+    return {"project_id": project_id, "mtime": mtime}, None
+
+
+def _handle_undo(handler: BaseHTTPRequestHandler) -> None:
+    body, bad_field = _read_json_body(handler)
+    if bad_field is not None:
+        return send_error(handler, "bad_request", field=bad_field)
+    parsed, bad_field = _validate_undo_body(body)
+    if parsed is None:
+        return send_error(handler, "bad_request", field=bad_field)
+
+    try:
+        import writes  # deferred: see module docstring — validated above first
+    except ImportError as exc:
         _log_failure(handler, exc)
         return send_error(handler, "internal")
 
+    try:
+        result = writes.undo_last(paths.find_lukeatron_root(), project_id=parsed["project_id"], mtime=parsed["mtime"])
+    except Exception as exc:  # noqa: BLE001 — API-6, mapped in one place
+        return _writes_failure(handler, writes, exc)
     _send_json(handler, 200, result)
+
+
+def _handle_undo_state(handler: BaseHTTPRequestHandler) -> None:
+    """Read-only: what an undo would restore right now, for the button's label."""
+    try:
+        import writes  # deferred: see module docstring
+        state = writes.undo_state(paths.find_lukeatron_root())
+    except Exception as exc:  # noqa: BLE001 — API-6
+        _log_failure(handler, exc)
+        return send_error(handler, "internal")
+    _send_json(handler, 200, state)
 
 
 def set_cell_for_script(root: Path, *, project_id: str, row: str, column: str, value: str, mtime: float) -> writes.EditResult:
@@ -373,7 +421,8 @@ def _serve_static(handler: BaseHTTPRequestHandler, url_path: str) -> None:
 # shadowed by a same-named file under app/.
 # ---------------------------------------------------------------------------
 
-_WRITE_ONLY_PATHS = ("/api/edit",)
+_WRITE_ONLY_PATHS = ("/api/edit", "/api/undo")
+_READ_ONLY_PATHS = ("/api/board.json", "/api/board-changed.json", "/api/undo-state.json")
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -387,13 +436,17 @@ class Handler(BaseHTTPRequestHandler):
             return _handle_board(self)
         if path == "/api/board-changed.json":
             return _handle_board_changed(self)
+        if path == "/api/undo-state.json":
+            return _handle_undo_state(self)
         return _serve_static(self, "index.html" if path == "/" else path)
 
     def do_POST(self) -> None:  # noqa: N802 — stdlib method name
         path = urllib.parse.urlsplit(self.path).path
         if path == "/api/edit":
             return _handle_edit(self)
-        if path in ("/api/board.json", "/api/board-changed.json", "/") or _static_target(path) is not None:
+        if path == "/api/undo":
+            return _handle_undo(self)
+        if path in _READ_ONLY_PATHS or path == "/" or _static_target(path) is not None:
             return send_error(self, "method_not_allowed")
         return send_error(self, "not_found")
 

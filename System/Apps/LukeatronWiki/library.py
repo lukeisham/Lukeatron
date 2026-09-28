@@ -562,6 +562,36 @@ def resolve_wikilink(slug):
     return {"state": "unresolved", "slug": slug, "title": None}
 
 
+def _backlink_index():
+    """
+    Every backlink in one walk: {target_slug: [(linking_file_stem, linking_slug), ...]}.
+
+    Same rules as backlinks() — hidden files and fully sealed nodes skipped,
+    a link is a body [[wikilink]] or a frontmatter `related:` entry — but
+    built once for all targets. The result lives only for the caller's
+    duration: nothing is cached between requests (AD-1). The stem is kept so
+    a caller can drop a node's link to itself, as backlinks() does.
+    """
+    index = {}
+    if not paths.NODES.is_dir():
+        return index
+
+    for child in sorted(paths.NODES.iterdir(), key=lambda p: p.name.lower()):
+        if not child.is_file() or child.suffix != ".md" or _is_hidden(child.name):
+            continue
+        node = _read_node_raw(child.stem)
+        if node is None or _node_is_fully_sealed(node):
+            continue
+
+        related = node["fm"].get("related")
+        related = related if isinstance(related, list) else []
+
+        for target in set(node["wikilinks"]) | set(related):
+            index.setdefault(target, []).append((child.stem, node["slug"]))
+
+    return index
+
+
 def backlinks(slug):
     """
     "What links here" — every OTHER node whose body contains [[slug]] or
@@ -676,6 +706,11 @@ def integrity_counts():
             if f["relpath"] not in referenced_relpaths:
                 unindexed += 1
 
+    # One walk of the node files, shared by every link below. Calling
+    # backlinks() per link re-read and re-parsed every node each time
+    # (links x nodes file reads on every page render).
+    linked_from = _backlink_index()
+
     dead_links = 0
     one_way_edges = 0
     for n in nodes:
@@ -684,8 +719,8 @@ def integrity_counts():
             if res["state"] == "unresolved":
                 dead_links += 1
             elif res["state"] == "live":
-                back = backlinks(target)
-                if n["slug"] not in {b["slug"] for b in back}:
+                back = {slug for stem, slug in linked_from.get(target, ()) if stem != target}
+                if n["slug"] not in back:
                     one_way_edges += 1
 
     return {

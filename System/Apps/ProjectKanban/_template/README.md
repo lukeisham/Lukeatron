@@ -20,6 +20,7 @@ for the *why* behind the decisions it cites.
 | `model` | `server` | one board object — projects placed in a lane and a column, counts, linked flags, raw date text, plus each project's purpose, definition of done, decision log, events, documents, people and mtime, and each task's raw kind/status/state | every surface reads this exact shape; a field renamed here breaks the board and the project page at once, which is the point |
 | `server` | browser | `GET /api/board.json`, the board verbatim | the one contract the whole browser side depends on |
 | browser | `server` → `writes` | an edit intent: project id, row identity, **field name**, value, and the mtime as read | drop the mtime and two tabs overwrite each other silently — the 409 *is* the concurrency design |
+| browser | `server` → `writes` (undo) | `POST /api/undo` with **only** a project id and the mtime as read; `GET /api/undo-state.json` says what a press would restore | the server re-derives what to undo from `Logs/edits.log` — a client that could name the row or value could undo something Luke was never shown |
 | `writes` | the files | one cell, or one appended line, plus `pending_sweep: true` on that project's `_tracking.yaml` row | `!ProjectSweep` loses its signal that the board moved outside the skill layer |
 | `controls` | `board`, `outline-print` | the token file, and class/attribute flips on the root element | a colour literal written anywhere else means a channel means two things; a toggle that needs JS stops being free |
 | app | wiki viewer `:8787` | a hyperlink, nothing else | nothing — it is a door. The app never reads `LukeatronWiki/` |
@@ -56,16 +57,16 @@ ProjectKanban/
 ├── paths.py              where the root is, without trusting the working directory
 ├── stores.py             read the four sources; say what was stated and what was absent
 ├── model.py              the only place a fact is derived. No file, no clock, no network
-├── writes.py             the only place a file changes. Six edits, four guards
+├── writes.py             the only place a file changes. Six edits, an undo, four guards
 ├── server.py             moves data; owns no rules
 ├── recur.py              scheduled caller, not server.py's — reopens a Done recurring row (D-16)
 ├── check_contrast.py     every palette must pass this before it ships
 ├── app/
 │   ├── tokens.css        every colour, space, type size and duration in the app
-│   ├── board/            the lane × column grid. Never imports the edit client
+│   ├── board/            the lane × column grid and its arrow-key/`c` navigation. Never imports the edit client
 │   ├── controls/         the toolbar and the three remembered choices
 │   ├── shared/           DOM helpers, the board fetch client, and the flourishes (flourish.css/.js)
-│   └── project/          the project page, the five edits, the print path
+│   └── project/          the project page, the five edits, the Undo button, the print path
 ├── StyleGuide.md         the visual contract for app/ — palettes, tokens, motion, layout scope
 └── tests/                one file per module, mirroring the tree
 ```

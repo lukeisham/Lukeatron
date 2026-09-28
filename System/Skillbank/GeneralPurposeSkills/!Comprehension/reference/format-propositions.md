@@ -48,9 +48,13 @@ is being used to make. That set is spec part (c).
 
 These are what STEP 2's mechanical pass looks for, and they need no reader at all.
 
-**ORPHAN DEVICE** — a device used exactly once. It asserts a distinction that nothing else in the
-artefact honours, so the reader cannot tell whether it is meaningful or a slip. Either use it twice
-or drop it.
+**ORPHAN DEVICE** — a *contrastive* device (one that marks an item off from its peers: bold,
+italics, colour, a callout style, a glyph, an indent level, a monospace span) used exactly once. It
+asserts a distinction that nothing else in the artefact honours, so the reader cannot tell whether it
+is meaningful or a slip. Either use it twice or drop it. **Not orphans:** singletons whose one use is
+the point — the page title, the entry point, a lone table/diagram/code block the content needs once,
+and template chrome the artefact did not choose. The test: would a second use be *expected* if the
+device meant something?
 
 **DEVICE COLLISION** — one device carrying two different claims. Bold meaning *key term* in one
 place and *important* in another destroys both. The reader cannot decode a device with two meanings,
@@ -67,8 +71,10 @@ commonest of the four, and invisible to a prose review, because the sentence-lev
 
 ## The read-back, and why it is done blind to the prose
 
-The structural read-back asks a cold reader five questions **from the layout alone**, treating the
-prose as unreadable text:
+The structural read-back asks a cold reader five questions **from the layout alone**. "Treat the
+prose as unreadable" is not an instruction a reader can obey, so the words are removed mechanically —
+the reader sees a **greeked** capture, every letter replaced by `x`/`X`, and sees it **before** the
+legible page (`cold-reader-protocol.md` §2):
 
 ```
    what is part of what?
@@ -78,7 +84,7 @@ prose as unreadable text:
    which things belong together?
 ```
 
-If a reader cannot answer these with the sentences covered, the layout is **decoration, not
+If a reader cannot answer these from the greeked capture, the layout is **decoration, not
 structure** — it looks organised without organising anything. That is a finding on its own, whatever
 the prose surface scores.
 

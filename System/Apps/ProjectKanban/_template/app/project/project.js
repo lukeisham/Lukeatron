@@ -10,11 +10,12 @@
 import { el, clear } from "../shared/dom.js";
 import { fetchBoard } from "../shared/board-client.js";
 import { applyFlash } from "../shared/flourish.js";
-import { postEdit } from "./edits.js";
+import { postEdit, postUndo, fetchUndoState } from "./edits.js";
 import { buildPurposeSection, buildDefinitionOfDoneSection, buildEventsSection, buildDocumentsSection, buildPeopleSection, buildDecisionLogSection } from "./sections.js";
 import { buildNextActionsSection } from "./actions.js";
 import { buildNoteBox } from "./note-box.js";
 import { printProject } from "./print.js";
+import { buildUndoButton } from "./undo.js";
 
 // wishlist #4b: showDone is a per-page-visit UI toggle, not a stored
 // preference (unlike controls.js's density/palette) — it resets to off on
@@ -24,7 +25,9 @@ import { printProject } from "./print.js";
 // `flash` is the one-shot "this control just saved" note submitEdit leaves for
 // the re-render that follows it (flourish.js applyFlash reads it once, then
 // renderProjectPage clears it, so a later re-render never replays it).
-const state = { project: null, mtime: null, showDone: false, showDecisionLog: false, flash: null };
+// `undo` is the last undo-state the server reported (what an Undo press would
+// restore); refreshUndo re-reads it after every write and on every project load.
+const state = { project: null, mtime: null, showDone: false, showDecisionLog: false, flash: null, undo: null };
 
 function isProjectRoute() {
   return location.hash.startsWith("#project=");
@@ -106,11 +109,47 @@ async function submitReorder(rowOrder) {
   }
 }
 
+// Undo the last single-cell write. The request names only the project and the
+// mtime this page holds — the server works out what to restore from its own
+// log, so a stale button can never restore something Luke was not shown.
+async function submitUndo() {
+  try {
+    const result = await postUndo({ project_id: state.project.id, mtime: state.mtime });
+    state.mtime = result.mtime;
+    clearEditError();
+    state.flash = { index: result.row, field: result.column };
+    await loadProject(state.project.id, { silent: true });
+    state.flash = null;
+    return { ok: true };
+  } catch (err) {
+    state.flash = null;
+    showEditError(err.message);
+    await refreshUndo(); // a refusal usually means the state moved on — show the button's true state
+    return { ok: false, message: err.message };
+  }
+}
+
+// Re-read what an undo would do and redraw just the button. Never throws: the
+// Undo button is a convenience, and fetchUndoState already logged any failure.
+let undoRead = 0; // only the newest read may draw, so a slow early answer can't overwrite a later one
+async function refreshUndo() {
+  const mine = ++undoRead;
+  const fresh = await fetchUndoState();
+  if (mine !== undoRead) return;
+  state.undo = fresh;
+  const slot = document.querySelector(".project-undo-slot");
+  if (!slot || !state.project) return;
+  clear(slot);
+  const button = buildUndoButton(state.undo, state.project.id, submitUndo);
+  if (button) slot.appendChild(button);
+}
+
 async function submitNote(section, text) {
   try {
     const result = await postEdit({ project_id: state.project.id, mtime: state.mtime, field: "note", section, value: text });
     state.mtime = result.mtime;
     clearEditError();
+    refreshUndo(); // a note is now the latest write, and notes can't be undone
     return { ok: true };
   } catch (err) {
     return { ok: false, message: err.message };
@@ -132,6 +171,7 @@ function renderProjectPage(root, project) {
   const header = el("div", { class: "project-header", dataset: { printHide: "true" } }, [
     el("button", { type: "button", class: "project-back", onclick: navigateToBoard }, "← Back to board"),
     el("button", { type: "button", class: "project-print", onclick: printProject }, "Print project"),
+    el("span", { class: "project-undo-slot" }),
   ]);
   // HTML-3: index.html's own <h1>ProjectKanban</h1> stays in the DOM (only
   // .app-toolbar is hidden on this route, not the whole header) — an <h2>
@@ -171,6 +211,7 @@ async function loadProject(projectId, { silent = false } = {}) {
     }
     state.project = project;
     state.mtime = project.mtime;
+    state.undo = null; // never draw a button from a previous project's state
     // wishlist #4b: a fresh navigation to a (possibly different) project
     // resets the toggle; an edit's own silent refetch of the SAME project
     // must not — flipping it back off mid-edit would be a surprise, not a
@@ -180,6 +221,7 @@ async function loadProject(projectId, { silent = false } = {}) {
       state.showDecisionLog = false;
     }
     renderProjectPage(root, project);
+    refreshUndo();
   } catch (err) {
     console.warn("project.js: could not load the project —", err);
     if (!silent) showMessage(root, "The project could not be loaded. Try again in a moment.");

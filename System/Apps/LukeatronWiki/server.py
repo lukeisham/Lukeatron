@@ -4,7 +4,10 @@ server.py — the thin stdlib HTTP dispatcher for LukeatronWiki.
 Binds 127.0.0.1 only (FR-1), stdlib only (FR-2: `http.server`, `urllib`,
 `mimetypes`, `pathlib` — nothing else), single-threaded `HTTPServer` (AD-1 —
 no lock needed for capture/enrich's writes because there is never a second
-request in flight). Every handler dispatches to `seal` / `library` /
+request in flight). Because one thread serves everything, each connection is
+closed after its response (HTTP/1.0) and a silent one is dropped after a short
+timeout (AD-1a) — otherwise a browser's idle preconnects would block every
+real request queued behind them. Every handler dispatches to `seal` / `library` /
 `render` / `search` / `capture` / `enrich`; it holds no business logic and
 opens no Long-Term store or wiki control-surface file itself (FR-3) — the
 one exception being `static/` assets and the wiki page stylesheet template,
@@ -118,7 +121,15 @@ _DO_ROUTES = {"/do/capture", "/do/enrich", "/do/accept", "/do/cancel"}
 
 class Handler(BaseHTTPRequestHandler):
     server_version = "LukeatronWiki/1.0"
-    protocol_version = "HTTP/1.1"
+    # AD-1a: one thread serves everything, so a connection must never outlive
+    # its request. HTTP/1.0 closes after each response (no keep-alive), and
+    # `timeout` drops a connection that sends nothing — Chrome opens spare
+    # "preconnect" sockets and leaves them silent, which would otherwise hold
+    # the only thread until Chrome closes them. Idle sockets are dropped one at
+    # a time, so the worst-case stall is (idle sockets) x timeout — hence short;
+    # a localhost client sends its request line the moment it connects.
+    protocol_version = "HTTP/1.0"
+    timeout = 0.5
 
     # ---- quiet, no-network logging -----------------------------------
     # BaseHTTPRequestHandler.address_string() calls socket.getfqdn(), which
@@ -323,10 +334,9 @@ class Handler(BaseHTTPRequestHandler):
         path = unquote(parsed.path)
 
         # Always drain the request body up front, whatever the route turns
-        # out to be (including a 404/503 short-circuit below) — leaving
-        # unread bytes on an HTTP/1.1 keep-alive connection corrupts the
-        # NEXT request read off the same socket (it gets misparsed as a
-        # bogus request line built from the leftover body bytes).
+        # out to be (including a 404/503 short-circuit below). Connections
+        # now close per request (AD-1a), but reading it keeps the client's
+        # send from stalling and keeps the route handlers uniform.
         fields = self._read_form()
 
         if path == "/do/capture":
@@ -411,6 +421,20 @@ def _startup_seal_log():
         )
 
 
+class _QuietHTTPServer(HTTPServer):
+    """HTTPServer that stays silent when a client simply hangs up.
+
+    Chrome drops its speculative sockets without sending a request; the stock
+    handle_error() prints a full traceback for each ConnectionResetError /
+    BrokenPipeError, which only buries real errors in serve.log.
+    """
+
+    def handle_error(self, request, client_address):
+        if isinstance(sys.exc_info()[1], (ConnectionError, TimeoutError)):
+            return
+        super().handle_error(request, client_address)
+
+
 def build_server(port=None):
     """
     Log the startup seal state and bind the socket. Returns the bound
@@ -425,7 +449,7 @@ def build_server(port=None):
     _startup_seal_log()
     bind_port = paths.PORT if port is None else port
     try:
-        return HTTPServer(("127.0.0.1", bind_port), Handler)
+        return _QuietHTTPServer(("127.0.0.1", bind_port), Handler)
     except OSError:
         return None
 

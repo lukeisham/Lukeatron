@@ -47,7 +47,8 @@ unclassified surface defaults to UNCLASSIFIED (the house style governs whole).
 | 10 | `!SkillDocs` | UNCLASSIFIED | Generates an HTML doc site per skill |
 | 11 | `!teach` | UNCLASSIFIED | Self-contained HTML lessons from `./assets/` |
 | 12 | `!BookCover` | UNCLASSIFIED | Renders cover imagery into wiki nodes |
+| 13 | `!GrammarFrame` — `Memory/Long-Term/Grammar/Technical_Outline.html` + `Theatre.html` | SUBORDINATE | Registered 2026-09-26 (Luke). The skill's own contract keeps LAYOUT and STRUCTURE — shared skeleton, diagnostic blocks, box diagrams, interaction tables, reach strip (its `criteria.md` GROUPS A and D). House style takes colour, type, glyphs, focus and print. Offline single files (its A8): tokens are **inlined** from `tokens.css`, never linked. Colour contract: breadth shades in the NEUTRAL ground ladder, reach in the ONE accent, `--danger` for flags only — within the two-accent cap, no local excess. Theatre.html's theatre glyphs (its D6) sit within the two-glyph-weight budget |
 | — | `!SvgImage` | **EXEMPT** | A 24-style illustration library. This skill governs UI marks, not illustration |
 | — | Any outgoing person-directed content | **OUT OF SCOPE** | `!Tone` governs the z-axis |
 
-Fourteen caller surfaces, plus two standing exemptions and the `!Tone` floor.
+Fifteen caller surfaces, plus two standing exemptions and the `!Tone` floor.

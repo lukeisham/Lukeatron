@@ -3,7 +3,9 @@
 Five edits, one cell at a time, behind four guards. 1 Status, 2 Due, 3 Owner
 and 4 Kind are each one cell in one existing Next Actions row of a project's
 `registry.md`; 5 is a note appended under a named section of that project's
-`notes.md`.
+`notes.md`. Two operations are built on the same guards: a reorder of one
+Next Actions table block, and a one-level undo of the latest `set_cell` (which
+is why `set_cell` logs the cell's previous text as `prev=` in `Logs/edits.log`).
 
 The four guards, in order, on every call: the **fence** (FR-2) resolves the
 target path and refuses anything outside `Memory/Medium-Term/`; the
@@ -24,6 +26,7 @@ only caller.
 
 from __future__ import annotations
 
+import ast
 import os
 import re
 from dataclasses import dataclass
@@ -80,6 +83,19 @@ class ReorderMismatchError(WritesError):
     """No single Next Actions table block's row-id set exactly matches the
     given row_order — a stale client, a multi-stream project, or a row that
     has since gone done/deleted/renumbered. Nothing is written."""
+
+
+class UndoUnavailableError(WritesError):
+    """There is nothing the undo button may honestly restore: no logged write,
+    the latest write is a note / reorder / undo, it predates `prev=` logging,
+    it belongs to a different project, or its old value cannot be written
+    back safely. Carries a plain reason for `undo_state`. Nothing is written."""
+
+
+class UndoConflictError(WritesError):
+    """The cell no longer holds the value the log says it was set to —
+    someone (or !ProjectSweep) changed it since. Undoing now would silently
+    discard that change, so nothing is written."""
 
 
 # ---------------------------------------------------------------------------
@@ -370,10 +386,11 @@ def _row_link_value(cells: list[str], columns: list[str | None]) -> str:
     return cells[columns.index("link")].strip()
 
 
-def _mutate_next_action_cell(lines: list[str], row_id: str, column: str, value: str) -> tuple[list[str], str]:
-    """Returns the new line list and the row's current `🔗 Link` cell text,
-    so the caller can refuse a linked row (FR-6) before anything is written
-    — this function only builds the replacement in memory."""
+def _mutate_next_action_cell(lines: list[str], row_id: str, column: str, value: str) -> tuple[list[str], str, str]:
+    """Returns the new line list, the row's current `🔗 Link` cell text (so
+    the caller can refuse a linked row, FR-6, before anything is written) and
+    the cell's raw text before the edit (logged as `prev=` so undo can restore
+    it) — this function only builds the replacement in memory."""
     data_idx, cells, columns = _locate_next_action_row(lines, row_id)
     link_value = _row_link_value(cells, columns)
 
@@ -381,6 +398,7 @@ def _mutate_next_action_cell(lines: list[str], row_id: str, column: str, value: 
         raise RowNotFoundError(f"row {row_id!r}'s table has no {column!r} column")
     col_pos = columns.index(column)
 
+    prev_value = cells[col_pos]
     new_cells = list(cells)
     new_cells[col_pos] = value
     ending = _line_ending(lines[data_idx])
@@ -388,7 +406,7 @@ def _mutate_next_action_cell(lines: list[str], row_id: str, column: str, value: 
 
     new_lines = list(lines)
     new_lines[data_idx] = new_row_line
-    return new_lines, link_value
+    return new_lines, link_value, prev_value
 
 
 def _verify_cell_written(
@@ -571,14 +589,21 @@ def _log_refusal(root: Path, **kwargs: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Public API — three calls covering six edits, plus one reorder operation
-# (AD-2: named fields only, no positional API). The reorder function
-# reorders Next Actions rows without changing their cell contents.
+# Public API — three calls covering six edits, a reorder operation and a
+# one-level undo. The four cell edits and the note are named fields only (no
+# positional API); reorder moves whole Next Actions lines without changing any
+# cell; undo re-issues `set_cell` with the value the log recorded.
 # ---------------------------------------------------------------------------
 
 
-def set_cell(root: Path, *, project_id: str, row: str | int, column: str, value: str, mtime: float) -> EditResult:
-    """Edits 1-4: Status, Due, Owner or Kind on one existing Next Actions row."""
+def set_cell(
+    root: Path, *, project_id: str, row: str | int, column: str, value: str, mtime: float, _log_action: str = "set_cell"
+) -> EditResult:
+    """Edits 1-4: Status, Due, Owner or Kind on one existing Next Actions row.
+
+    `_log_action` is private to this module: `undo_last` passes "undo_set_cell"
+    so an undo is its own log action (and so is never itself undoable) while
+    sharing every guard below rather than copying them."""
     if column not in _EDIT_COLUMNS:
         raise ValueError(f"unknown column {column!r}; must be one of {_EDIT_COLUMNS}")
     _reject_unsafe_cell_value(value)
@@ -588,13 +613,13 @@ def set_cell(root: Path, *, project_id: str, row: str | int, column: str, value:
     try:
         registry_path = _find_project_registry_path(root, project_id)
     except (FenceError, ProjectNotFoundError) as exc:
-        _log_refusal(root, action="set_cell", project_id=project_id, row=row_id, column=column, outcome=f"refused:{type(exc).__name__}")
+        _log_refusal(root, action=_log_action, project_id=project_id, row=row_id, column=column, outcome=f"refused:{type(exc).__name__}")
         raise
 
     try:
         _check_mtime(registry_path, mtime)
     except StaleMtimeError:
-        _log_refusal(root, action="set_cell", project_id=project_id, row=row_id, column=column, outcome="refused:stale_mtime")
+        _log_refusal(root, action=_log_action, project_id=project_id, row=row_id, column=column, outcome="refused:stale_mtime")
         raise
 
     baseline = stores.read_registry(registry_path, project_id)
@@ -602,13 +627,13 @@ def set_cell(root: Path, *, project_id: str, row: str | int, column: str, value:
 
     lines = _read_lines(registry_path)
     try:
-        new_lines, link_value = _mutate_next_action_cell(lines, row_id, column, value)
+        new_lines, link_value, prev_value = _mutate_next_action_cell(lines, row_id, column, value)
     except RowNotFoundError:
-        _log_refusal(root, action="set_cell", project_id=project_id, row=row_id, column=column, outcome="refused:row_not_found")
+        _log_refusal(root, action=_log_action, project_id=project_id, row=row_id, column=column, outcome="refused:row_not_found")
         raise
 
     if link_value not in _UNLINKED_VALUES:
-        _log_refusal(root, action="set_cell", project_id=project_id, row=row_id, column=column, outcome="refused:linked_row")
+        _log_refusal(root, action=_log_action, project_id=project_id, row=row_id, column=column, outcome="refused:linked_row")
         raise LinkedRowError(f"row {row_id!r} is linked ({link_value!r}); it is edited through its canonical copy")
 
     _atomic_write_verified(
@@ -620,7 +645,7 @@ def set_cell(root: Path, *, project_id: str, row: str | int, column: str, value:
     _stamp_pending_sweep(tracking_path, project_id)
 
     new_mtime = registry_path.stat().st_mtime
-    _append_edit_log(root, action="set_cell", project_id=project_id, row=row_id, column=column, outcome="ok", detail=f"value={value!r}")
+    _append_edit_log(root, action=_log_action, project_id=project_id, row=row_id, column=column, outcome="ok", detail=f"value={value!r} prev={prev_value!r}")
     return EditResult(ok=True, project_id=project_id, row=row_id, column=column, value=value, mtime=new_mtime)
 
 
@@ -722,3 +747,169 @@ def reorder_next_actions(root: Path, *, project_id: str, row_order: list[str], m
     new_mtime = registry_path.stat().st_mtime
     _append_edit_log(root, action="reorder_next_actions", project_id=project_id, row=row_label, column="-", outcome="ok")
     return ReorderResult(ok=True, project_id=project_id, row_order=row_order, mtime=new_mtime)
+
+
+# ---------------------------------------------------------------------------
+# Undo — one level, `set_cell` only (wishlist #1).
+#
+# The log is the only record of what was written, so `set_cell` records the
+# cell's old text (`prev=`) and this section reads it back. Undo never has a
+# write path of its own: it calls `set_cell`, so the fence, mtime guard,
+# re-parse guard, pending-sweep stamp and log line all come along. The client
+# names only a project and an mtime; WHAT is undone is re-derived here from the
+# log, never trusted from the request.
+# ---------------------------------------------------------------------------
+
+_WRITE_ACTIONS = ("set_cell", "append_note", "reorder_next_actions", "undo_set_cell")
+
+_QUOTED = r"""(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")"""
+_LOG_LINE_RE = re.compile(
+    r"^\[(?P<at>[^\]]+)\] (?P<action>\w+) project=(?P<project>\S+) row=(?P<row>\S*) "
+    r"column=(?P<column>\S+) outcome=(?P<outcome>\S+)(?: detail=(?P<detail>.*))?$"
+)
+_SET_DETAIL_RE = re.compile(rf"^value=(?P<value>{_QUOTED})(?: prev=(?P<prev>{_QUOTED}))?$")
+
+
+@dataclass(frozen=True)
+class WriteEntry:
+    """One successful write line from `edits.log`. `value` and `prev` are only
+    ever set for `set_cell` / `undo_set_cell`; `prev` is None on a line written
+    before `prev=` was logged."""
+
+    at: str
+    action: str
+    project_id: str
+    row: str
+    column: str
+    value: str | None
+    prev: str | None
+
+
+def _literal(quoted: str | None) -> str | None:
+    # `ast.literal_eval` on a repr we wrote ourselves — never `eval`.
+    if quoted is None:
+        return None
+    try:
+        out = ast.literal_eval(quoted)
+    except (ValueError, SyntaxError):
+        return None
+    return out if isinstance(out, str) else None
+
+
+def _parse_edit_log_line(line: str) -> WriteEntry | None:
+    """A successful write line as a WriteEntry, or None for anything else:
+    a refusal, a legacy `[BROWSER: ...]` line, a non-write action, junk."""
+    m = _LOG_LINE_RE.match(line.rstrip("\n"))
+    if not m or m.group("outcome") != "ok" or m.group("action") not in _WRITE_ACTIONS:
+        return None
+    value = prev = None
+    if m.group("action") in ("set_cell", "undo_set_cell") and m.group("detail"):
+        d = _SET_DETAIL_RE.match(m.group("detail"))
+        if d:
+            value, prev = _literal(d.group("value")), _literal(d.group("prev"))
+    return WriteEntry(
+        at=m.group("at"), action=m.group("action"), project_id=m.group("project"),
+        row=m.group("row"), column=m.group("column"), value=value, prev=prev,
+    )
+
+
+def _latest_write_entry(root: Path) -> WriteEntry | None:
+    path = root.joinpath(*_EDITS_LOG_RELATIVE)
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return None
+    for line in reversed(lines):
+        entry = _parse_edit_log_line(line)
+        if entry is not None:
+            return entry
+    return None
+
+
+def _undo_block_reason(entry: WriteEntry | None) -> str | None:
+    """Why `entry` cannot be undone, in plain words — None when it can."""
+    if entry is None:
+        return "No edit has been logged yet."
+    if entry.action == "append_note":
+        return "The last change was a note, and notes can't be undone."
+    if entry.action == "reorder_next_actions":
+        return "The last change was a reorder, and reorders can't be undone."
+    if entry.action == "undo_set_cell":
+        return "The last change was an undo, and undo only goes back one step."
+    if entry.prev is None or entry.value is None:
+        return "The last change was made before undo existed, so its old value wasn't recorded."
+    if "|" in entry.prev or "\n" in entry.prev or "\r" in entry.prev:
+        return "The old value can't be written back safely."
+    return None
+
+
+def _current_cell_text(registry_path: Path, row_id: str, column: str) -> str:
+    lines = _read_lines(registry_path)
+    _idx, cells, columns = _locate_next_action_row(lines, row_id)
+    if column not in columns:
+        raise RowNotFoundError(f"row {row_id!r}'s table has no {column!r} column")
+    return cells[columns.index(column)]
+
+
+def undo_state(root: Path) -> dict:
+    """Read-only: what an undo would do right now, for the button's label.
+    `available` is False whenever `undo_last` would refuse for a reason that
+    can be seen without writing (nothing to undo, or the cell has since
+    changed); the stale-mtime and linked-row refusals are left to the call."""
+    entry = _latest_write_entry(root)
+    state: dict = {"available": False, "project_id": None, "row": None, "column": None,
+                   "value": None, "prev": None, "at": None, "reason": None}
+    if entry is not None:
+        state.update(project_id=entry.project_id, row=entry.row, column=entry.column,
+                     value=entry.value, prev=entry.prev, at=entry.at)
+    reason = _undo_block_reason(entry)
+    if reason is None:
+        try:
+            current = _current_cell_text(_find_project_registry_path(root, entry.project_id), entry.row, entry.column)
+        except WritesError:
+            reason = "That row can no longer be found."
+        else:
+            if current.strip() != entry.value.strip():
+                reason = "That cell has changed since, so there is nothing safe to undo."
+    state["reason"] = reason
+    state["available"] = reason is None
+    return state
+
+
+def undo_last(root: Path, *, project_id: str, mtime: float) -> EditResult:
+    """Restore the cell changed by the most recent successful write, if that
+    write was a `set_cell` whose old value was logged and the cell still holds
+    what that write put there. Every refusal writes nothing."""
+    entry = _latest_write_entry(root)
+
+    def refuse(exc: WritesError, outcome: str) -> WritesError:
+        _log_refusal(root, action="undo_set_cell", project_id=project_id,
+                     row=entry.row if entry else "-", column=entry.column if entry else "-", outcome=outcome)
+        return exc
+
+    reason = _undo_block_reason(entry)
+    if reason is not None:
+        raise refuse(UndoUnavailableError(reason), "refused:UndoUnavailableError")
+    if entry.project_id != project_id:
+        raise refuse(UndoUnavailableError(f"The last change was in {entry.project_id}, not {project_id}."),
+                     "refused:UndoUnavailableError")
+
+    try:
+        registry_path = _find_project_registry_path(root, project_id)
+    except (FenceError, ProjectNotFoundError) as exc:
+        raise refuse(exc, f"refused:{type(exc).__name__}")
+    try:
+        _check_mtime(registry_path, mtime)
+    except StaleMtimeError as exc:
+        raise refuse(exc, "refused:stale_mtime")
+
+    try:
+        current = _current_cell_text(registry_path, entry.row, entry.column)
+    except RowNotFoundError as exc:
+        raise refuse(exc, "refused:row_not_found")
+    if current.strip() != entry.value.strip():
+        raise refuse(UndoConflictError(f"row {entry.row!r} {entry.column!r} now reads {current!r}, not {entry.value!r}"),
+                     "refused:UndoConflictError")
+
+    return set_cell(root, project_id=project_id, row=entry.row, column=entry.column,
+                    value=entry.prev, mtime=mtime, _log_action="undo_set_cell")

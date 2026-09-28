@@ -5,10 +5,12 @@ type: Skill
 status: Registered
 core_function: [Categorise, Track]
 intent: "Given an artefact and an independent ground for the concept it describes, measure whether the concept a cold reader builds from the artefact is the concept the ground holds — invariant under rewording — and return the exact mode and site of any drift, so the repair is a location and a failure type rather than an opinion."
-version: 1.0.0
+version: 1.1.1
 domain: GeneralPurpose
 dependencies:
   - "reference/concept-tests.md (the four modes, the near-miss construction rules, the probe shapes — always loaded)"
+  - "../!Comprehension/reference/cold-reader-protocol.md (reader package, greeking, evidence rule, multiple-choice controls, stages, JOINT mode — always loaded; shared with !Comprehension)"
+  - "!HeadlessChromeBrowser (captures the rendered and greeked screenshots for a rendered artefact)"
   - "!PlainEnglish (core, always on — governs the FORM of this skill's own report)"
   - "System/Skillbank/GeneralPurposeSkills/!Comprehension/skill.md (sibling; the cross-tab at OUTPUT needs both)"
 calibration:
@@ -28,11 +30,18 @@ memory_footprint:
 
 "is this concept right", "does this describe X accurately", "concept check", "fidelity check",
 "is the idea intact", "did the meaning survive the rewrite", "does the metaphor distort this",
-"check this against the source", "!ConceptFidelity".
+"is this faithful to the source", "!ConceptFidelity".
+*(Not "check this against the source" — too close to `!FactCheck`'s "check the sources on this".
+Checking a claim against the world is `!FactCheck`; checking a concept against its ground is this.)*
 
-Also fires **from inside another skill's review stage** — `!GrammarFrame` STEP 7B calls it over each
-rendered guide, with its metaphor lane doing real work on `Theatre.html`. When called that way it
+Also fires **from inside another skill's review stage** — `!GrammarFrame` STEP 7B calls it once per
+NEW/CHANGED heading, in each rendered guide, with its metaphor lane doing real work on `Theatre.html`. When called that way it
 takes its ground from the caller and returns structured findings rather than a chat report.
+
+**Separately or jointly.** Run alone, this skill takes its readers through its own stages. Run
+alongside `!Comprehension` on the same artefact, the two share ONE reader set — **JOINT mode**,
+`!Comprehension/reference/cold-reader-protocol.md` §5 — each still fixing its own standard and ruling
+on its own axis.
 
 Does **not** fire on: whether a claim is TRUE IN THE WORLD (`!FactCheck` — sources and provenance),
 whether a reader can follow the writing at all (`!Comprehension`, the sibling), or drafting
@@ -86,6 +95,21 @@ STEP 0 — ESTABLISH THE GROUND
     EMIT NO accuracy verdict, NO entailment labels, NO PASS
   NAME the concept under test in one line — the thing the artefact is trying to hand over
   IDENTIFY the artefact's MEDIUM (prose-only | rendered) — rendered enables STEP 6
+  LOAD ../!Comprehension/reference/cold-reader-protocol.md
+  SET MODE = JOINT IF !Comprehension runs on this artefact in the same run, ELSE SEPARATE
+  PREPARE the READER PACKAGE per protocol §1 — for a rendered artefact, full-page screenshots +
+    visible text, NEVER the HTML source — and, IF rendered, the GREEKED capture (§2)
+  SET N = 3 readers by default (1 only for a trivial artefact; 5 when the stakes are high)
+  READERS — every cold reader in STEPS 4-7 is one of the SAME N, taken through protocol §5's
+    stages in order, one per turn, least revealing first:
+      SEPARATE: stage 1 (layout, rendered only) → the legible package → 4 metaphor → 5 apply →
+                6 discriminate
+      JOINT:    all six stages, readers shared with !Comprehension; THIS skill scores 1, 4, 5, 6.
+                The ground and the four options are built and frozen BEFORE the first reader
+    EVERY prompt carries the protocol §3 evidence rule verbatim — answer only from the page,
+      cite the span, "not stated" beats what you know
+    // a blind reader is not an ignorant reader. A reader who already knows the concept picks
+    // the right option from memory, and an artefact that never described it passes
 
 STEP 1 — ATOMISE BOTH SIDES
   DECOMPOSE the GROUND into atomic claims: (subject · relation · object · qualifier)
@@ -144,20 +168,25 @@ STEP 4 — THE DISCRIMINATIVE TEST        (the sharpest single instrument)
     // (2) must be a NEAREST miss, differing in the defining feature and as little else as
     // possible — the same discipline !GrammarFrame's STEP 5B applies to diagnostics.
     // A distant distractor tests nothing.
-  GIVE a COLD READER — no ground, no conversation context — ONLY the artefact's description
-  ASK: which of these four is being described?
-  IF the reader picks wrong ➔ the description is INACCURATE AT CONCEPT LEVEL, whatever the
+  PRESENT per protocol §4 — shuffled per reader, neutral labels A-D (key recorded, never shown),
+    matched in length and form, plus E "can't tell from this description", pick + span
+  GIVE each COLD READER — no ground, no conversation context — ONLY the artefact's description
+  ASK: which of these is being described?  (protocol stage 6 — LAST, it reveals the concept)
+  SCORE by MAJORITY across the N readers; an UNSOURCED pick (no span, or a span that does not
+    decide it) counts as E
+  IF the majority picks wrong ➔ the description is INACCURATE AT CONCEPT LEVEL, whatever the
     prose quality. RECORD which one they picked — that names the drift.
-  IF the reader CANNOT TELL ➔ the description is UNDERDETERMINED. Same finding, different fix.
-  IF the reader picks (1) ➔ this test passes. It is necessary, not sufficient.
-  RUN with N = 3 readers where stakes warrant; disagreement is itself a finding
+  IF the majority picks E, OR there is no majority ➔ the description is UNDERDETERMINED. Same
+    finding, different fix. Report every reader's pick; disagreement is itself a finding
+  IF the majority picks (1) ➔ this test passes. It is necessary, not sufficient.
 
 STEP 5 — THE APPLICATION TEST           (transfer; paraphrase-invariant by construction)
   BUILD novel cases the artefact never mentions:
     POSITIVES  — instances of the concept
     NEGATIVES  — non-instances, including at least one NEAREST-NEIGHBOUR instance
     BOUNDARY   — cases at the edge, where the ground's own answer is known and defensible
-  GIVE a COLD READER the description ONLY, and have them CLASSIFY each case
+  GIVE each COLD READER the description ONLY (protocol stage 5), the cases SHUFFLED, and have
+    them CLASSIFY each case with the span that decided it — an unsourced call scores as wrong
   SCORE the three sets SEPARATELY — never pooled
     // boundary accuracy is where transfer actually shows. A description can score perfectly
     // on clear positives and negatives and still have handed over the wrong boundary, which
@@ -186,8 +215,10 @@ STEP 6 — THE FORMAT LANE                (rendered artefacts only)
   CHECK CONTAINMENT (nested boxes, diagrams):
     an inner box asserts WHOLLY CONTAINED IN
     VERIFY word for word against the ground ➔ a false containment claim is worse than none
-  RUN the TAXONOMY READ-BACK: a cold reader states the classification FROM LAYOUT ALONE,
-    prose covered. COMPARE to the ground's taxonomy.
+  RUN the TAXONOMY READ-BACK on the GREEKED capture (protocol §2, stage 1): each cold reader
+    states the classification FROM LAYOUT ALONE, the words mechanically removed, BEFORE seeing
+    the legible page. COMPARE to the ground's taxonomy.
+    // in JOINT mode this is the same stage 1 answer !Comprehension scores — asked once
 
 STEP 7 — THE METAPHOR LANE              (fires only when the artefact wraps the concept in one)
   // A metaphor is a bundle of entailments, and the reader imports the WHOLE bundle, not the
@@ -199,17 +230,18 @@ STEP 7 — THE METAPHOR LANE              (fires only when the artefact wraps th
     LEAKED     — true of the metaphor, FALSE of the concept, and nothing in the artefact
                  blocks the import ➔ DEFECT, located at the metaphor
     BLOCKED    — false of the concept and the artefact explicitly rules it out ➔ fine
-  CONFIRM WITH A COLD READER: give the metaphor-dressed passage only, and ask what ELSE must
-    be true of the thing being described. Every wrong answer they volunteer is a live leak.
+  CONFIRM WITH THE COLD READERS (protocol stage 4 — BEFORE stages 5-6, which reveal the
+    concept): ask what ELSE must be true of the thing being described. Every wrong answer they
+    volunteer is a live leak.
   // the highest-risk site in any metaphor-dressed artefact, because a leak reads as insight
 
 STEP 8 — VERDICT
   COUNT defects by MODE and TYPE, never as a total, never as a percentage
   ASSIGN exactly one verdict:
     PASS   — zero CONTRADICTED, zero UNSUPPORTED, zero FALSE-structure defects, the
-             discriminative test picked (1), boundary cases all classified with the ground
+             majority discriminative pick was (1), boundary cases all classified with the ground
     REPAIR — defects exist, each located, each fixable in place
-    REJECT — the discriminative test picked (2), (3) or (4); OR the boundary set went
+    REJECT — the MAJORITY discriminative pick was (2), (3) or (4); OR the boundary set went
              systematically against the ground. The reader is receiving a DIFFERENT CONCEPT,
              and no sentence-level edit fixes that — it needs rebuilding from the ground.
   IF COHERENCE-ONLY MODE: verdict may only be REPAIR or INCONCLUSIVE — never PASS
@@ -236,7 +268,8 @@ A report — to chat, or structured to a calling skill — carrying four things:
   `WEAKENED` · `OMITTED` · `OVER-EXTENSION` · `UNDER-EXTENSION` · `ACCIDENTAL-AS-ESSENTIAL` ·
   `NEIGHBOUR NOT RULED OUT` · `LICENSES TOO MUCH` · `FALSE TAXONOMY` · `FALSE CO-ORDINATION` ·
   `FALSE DIMENSION` · `FALSE ORDER` · `FALSE CONTAINMENT` · `METAPHOR LEAK`.
-- **THE DISCRIMINATIVE RESULT** — which of the four the reader picked. If it was not (1), *which*
+- **THE DISCRIMINATIVE RESULT** — every reader's pick, the majority, and the answer key. If the
+  majority was not (1), *which*
   wrong one names the drift precisely, and that is the most actionable line in the report.
 - **THE GROUND'S OWN ACCOUNT** — quoted verbatim for every contradiction or fabrication. Evidence,
   not summary.
@@ -273,6 +306,15 @@ CATCH [no clean-context reader available for         ➔ STEP 4 and STEP 5 are V
                                                       which tests could not run. The authoring
                                                       agent cannot discriminate a concept it
                                                       already holds
+CATCH [a reader was given the HTML source of a       ➔ VOID. Source shows no weight or colour and
+       rendered artefact]                              its class names leak intent. Re-run from
+                                                      the screenshot package (protocol §1)
+CATCH [the options were shown in construction        ➔ VOID for that reader. Shuffle per reader,
+       order, unlabelled-neutral, or unmatched in      neutral labels, matched form, and the E
+       length]                                         option (protocol §4). A longer, more
+                                                      careful option telegraphs the true one
+CATCH [a reader picks right with no span, or a       ➔ score it as E. The reader recognised the
+       span that does not decide it]                   concept from memory, not the description
 CATCH [the reader picks (1) and everything else      ➔ PASS on this axis ONLY. The discriminative
        still fails]                                    test is necessary, not sufficient. Never
                                                       let it overrule a contradiction

@@ -757,3 +757,100 @@ class TestReorderEdits(FixtureServerTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------------------------------------------------------------------------
+# Undo — GET /api/undo-state.json (read-only) and POST /api/undo (wishlist #1)
+# ---------------------------------------------------------------------------
+
+
+class TestUndoEndpoints(FixtureServerTestCase):
+    def edit_status(self, value: str = "☑ Done") -> float:
+        path = self.registry_path("ZZ-10")
+        status, body = self.request(
+            "POST", "/api/edit",
+            {"project_id": "ZZ-10", "field": "status", "row": "1", "value": value, "mtime": path.stat().st_mtime},
+        )
+        self.assertEqual(status, 200)
+        return body["mtime"]
+
+    def test_state_with_nothing_logged_is_unavailable_with_a_reason(self) -> None:
+        status, body = self.request("GET", "/api/undo-state.json")
+        self.assertEqual(status, 200)
+        self.assertFalse(body["available"])
+        self.assertTrue(body["reason"])
+
+    def test_state_after_an_edit_names_what_would_be_restored(self) -> None:
+        self.edit_status()
+        status, body = self.request("GET", "/api/undo-state.json")
+        self.assertEqual(status, 200)
+        self.assertTrue(body["available"])
+        self.assertEqual((body["project_id"], body["row"], body["column"], body["value"], body["prev"]),
+                         ("ZZ-10", "1", "status", "☑ Done", "☐ Open"))
+        self.assertIn("at", body)
+
+    def test_undo_happy_path_restores_the_cell_and_returns_the_new_mtime(self) -> None:
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.edit_status()
+        status, body = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": mtime})
+        self.assertEqual(status, 200)
+        self.assertEqual((body["ok"], body["row"], body["column"], body["value"]), (True, "1", "status", "☐ Open"))
+        self.assertEqual(body["mtime"], path.stat().st_mtime)
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_a_row_or_value_in_the_body_is_ignored_never_trusted(self) -> None:
+        path = self.registry_path("ZZ-10")
+        original = path.read_bytes()
+        mtime = self.edit_status()
+        status, body = self.request(
+            "POST", "/api/undo", {"project_id": "ZZ-10", "mtime": mtime, "row": "4", "column": "owner", "value": "Mallory"})
+        self.assertEqual(status, 200)
+        self.assertEqual((body["row"], body["column"]), ("1", "status"))
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_nothing_to_undo_is_409_undo_unavailable(self) -> None:
+        path = self.registry_path("ZZ-10")
+        before = path.read_bytes()
+        status, body = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": path.stat().st_mtime})
+        self.assertEqual((status, body["error"]), (409, "undo_unavailable"))
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_a_second_undo_is_409_undo_unavailable(self) -> None:
+        mtime = self.edit_status()
+        _, first = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": mtime})
+        status, body = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": first["mtime"]})
+        self.assertEqual((status, body["error"]), (409, "undo_unavailable"))
+
+    def test_a_cell_changed_out_of_band_is_409_undo_conflict_and_nothing_is_written(self) -> None:
+        path = self.registry_path("ZZ-10")
+        self.edit_status()
+        path.write_text(path.read_text(encoding="utf-8").replace("☑ Done", "🚫 Blocked", 1), encoding="utf-8")
+        before = path.read_bytes()
+        status, body = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": path.stat().st_mtime})
+        self.assertEqual((status, body["error"]), (409, "undo_conflict"))
+        self.assertEqual(path.read_bytes(), before)
+
+    def test_stale_mtime_is_409_stale_mtime(self) -> None:
+        self.edit_status()
+        status, body = self.request("POST", "/api/undo", {"project_id": "ZZ-10", "mtime": 1.0})
+        self.assertEqual((status, body["error"]), (409, "stale_mtime"))
+
+    def test_bad_bodies_are_400_naming_the_field(self) -> None:
+        for bad, field in (
+            ({"mtime": 1.0}, "project_id"),
+            ({"project_id": "", "mtime": 1.0}, "project_id"),
+            ({"project_id": "ZZ-10"}, "mtime"),
+            ({"project_id": "ZZ-10", "mtime": True}, "mtime"),
+            ({"project_id": "ZZ-10", "mtime": "soon"}, "mtime"),
+        ):
+            status, body = self.request("POST", "/api/undo", bad)
+            self.assertEqual((status, body["error"], body["field"]), (400, "bad_request", field), bad)
+
+    def test_wrong_methods_are_405(self) -> None:
+        for method, path in (("GET", "/api/undo"), ("POST", "/api/undo-state.json")):
+            status, body = self.request(method, path, {"project_id": "ZZ-10", "mtime": 1.0} if method == "POST" else None)
+            self.assertEqual((status, body["error"]), (405, "method_not_allowed"), (method, path))
+
+    def test_the_two_new_codes_are_registered_as_409(self) -> None:
+        self.assertEqual((server.ERROR_STATUS["undo_unavailable"], server.ERROR_STATUS["undo_conflict"]), (409, 409))

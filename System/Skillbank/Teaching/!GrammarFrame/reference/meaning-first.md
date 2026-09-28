@@ -1,7 +1,7 @@
 # meaning-first.md — the governing frame
 
 The standing doctrine for `!GrammarFrame`. Every heading in both rendered guides is written
-through this frame. The four research sources supply **what** English does; this file supplies
+through this frame. The five research sources supply **what** English does; this file supplies
 **why** it does it. Where the two disagree about the why, this file wins and the source becomes
 plain data.
 
@@ -50,7 +50,7 @@ its own work and should be rewritten until it says something true of THIS rule s
 
 ---
 
-## The seven principles
+## The eight principles
 
 ### 1. Intention precedes form
 
@@ -202,17 +202,42 @@ and it is resolved by asking what was meant — which returns to principle 1.
 
 > What does this modifier belong to? Draw the box. Does the sentence still mean what it meant?
 
+### 8. Categories are roles, not endings
+
+*(Settled with Luke, 2026-09-26, after a researcher proposed that "vocative case" does not apply to
+English because English nouns carry no case ending.)*
+
+**Meaning is set by the author's whole sentence, not assembled from the labels of single words.** A
+category — a case, a mood, a function — is a role the author gave a word in what is meant. An ending
+is only one way of marking that role; position, a preposition, punctuation and the shape of the
+sentence are others. When English lost an ending it did not lose the role. It moved the marking into
+word order and context. This is principle 5 read from the other side.
+
+> *Frankly, my dear, I don't give a damn.* — *my dear* has no ending, yet it is in the vocative: the
+> sentence addresses her, and its position and commas say so.
+
+* Never infer that a category is absent because its marker is absent. Ask what role the author gave
+  the word, then ask how this sentence marks it.
+
+> Notice the ending is missing. Does the word still play the same part in what is meant? If yes, the
+> category is still there — find what marks it instead.
+
+**Working top-down.** Every analysis starts from what the author means by the whole sentence and
+works down to the words. A word-level fact ("this noun has no ending", "this word is usually an
+adverb") is evidence to be weighed against that meaning, never a verdict on its own. A proposed
+correction to Luke's analysis that rests only on the absence of a form is not made.
+
 ---
 
 ## How the frame uses a source
 
-The four research sources (see `sources.md`) are consulted for coverage, conventional labels,
+The five research sources (see `sources.md`) are consulted for coverage, conventional labels,
 exceptions, and worked material. They are never quoted as authority for **why**.
 
 ```
   SOURCE SAYS                              FRAME DOES
   ─────────────────────────────────────    ──────────────────────────────────────────
-  a rule, with a reason                →   check the reason against the seven
+  a rule, with a reason                →   check the reason against the eight
                                            principles; keep it if it agrees
   a rule, flatly, as convention        →   supply the meaning-based reason from the
   ("that's just the order")                principles — this is the skill's main job
@@ -223,6 +248,10 @@ exceptions, and worked material. They are never quoted as authority for **why**.
                                             invent a metaphysical reason to fill a
                                             hole — a fabricated why is worse than a
                                             named gap
+  a claim that English "has no" X       →   read it as a claim about FORM only. If
+  because it has no ending for X            syntax or context still marks the role,
+                                            the category stands (principle 8); never
+                                            propose a correction on that basis
   a label the frame would name          →   use the conventional label; the frame
   differently                               governs explanation, not vocabulary
 ```

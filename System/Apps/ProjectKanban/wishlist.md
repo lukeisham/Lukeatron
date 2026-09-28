@@ -8,8 +8,6 @@ nothing invented.
 
 | # | Idea | Complexity | Raised | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | Undo the last write — restore the cell's previous value from `Logs/edits.log` | Low | 2026-09-10 | open | **Correction 2026-09-20:** `Logs/edits.log` records only the NEW value, not the old — so `set_cell` must first start logging `prev=`, and edits made before that cannot be undone. Undo must also re-take the mtime so it can be refused like any other write. Planned in `System/Plans/New/projectkanban-undo-and-keyboard-nav.md`. |
-| 2 | Keyboard navigation — arrow keys between cards, Enter to open, `c` to copy | Low | 2026-09-10 | open | It is a daily-use personal tool; the mouse round-trip is the cost. Enter/Space to open already work; arrows and `c` are the gap. Planned in the same plan as #1. |
 | 4a | A filter box — type and the board narrows live (project title, action text, person, glyph) | Low | 2026-09-10 | open | Offered for the PRD at Q10 and not taken. With 40 projects and 283 rows this is the likeliest thing to be wanted on day two. |
 | 4 | Filter the board to one person — every project and action involving them | Medium | 2026-09-10 | open | Needs the person glyph's resolution working first (`people:`, the People section, and the Owner column). |
 | 14 | General visual pass on buttons and the toolbar — current controls look rough/unpolished | Medium | 2026-09-13 | open | Raised alongside #13; no specific control named yet — a `!HouseStyle` pass over `controls/controls.css` and the card/board button styles. |

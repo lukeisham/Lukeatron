@@ -119,6 +119,11 @@ job, and a lazy distractor makes the test pass on nothing.
 > the feature under test and as little else as possible. Same rule, different object — there, a span;
 > here, a concept.
 
+**Presenting the options.** Shuffled per reader, neutrally labelled, matched in length and form,
+with a fifth "can't tell" option and a span for the pick — the controls live in
+`!Comprehension/reference/cold-reader-protocol.md` §4, shared with `!Comprehension`. A lazy
+presentation leaks the answer as surely as a lazy distractor.
+
 **Reading the result.** Which wrong option a reader picks **names the drift**, and that is the most
 actionable line the skill produces:
 
@@ -131,6 +136,9 @@ actionable line the skill produces:
    picked (4)  ➔ a necessary condition is missing or stated too weakly
                     ── EXTENSION defect, over-extension side
    cannot tell ➔ underdetermined; not wrong, but not yet a description of anything
+   unsourced   ➔ scored as cannot tell — the reader recognised the concept from what they
+                    already knew, not from the description
+   split       ➔ no majority; underdetermined, and every pick is reported
 ```
 
 ---

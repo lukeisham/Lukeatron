@@ -11,6 +11,7 @@
 
 import { el, clear } from "../shared/dom.js";
 import { buildCard } from "./card.js";
+import { attachKeynav } from "./keynav.js";
 
 export const LANE_ORDER = [
   { value: "mine", label: "Mine" },
@@ -123,6 +124,10 @@ export function renderBoard(container, board) {
     columnHeaderRow(board),
     ...LANE_ORDER.map((lane) => laneRow(lane, board, byLaneColumn)),
   ]);
+  // wishlist #2: arrow keys between cards, `c` to copy. One delegated listener
+  // on the grid, installed here (not in board.js, whose contract test AC-3
+  // forbids any listener) — see keynav.js.
+  attachKeynav(grid, { lanes: LANE_ORDER.map((lane) => lane.value), columns: COLUMN_ORDER });
   if (banner) container.appendChild(banner);
   container.appendChild(grid);
 }

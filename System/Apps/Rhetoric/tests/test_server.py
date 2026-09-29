@@ -42,7 +42,7 @@ class ServerTest(unittest.TestCase):
     def test_root_serves_index_html(self):
         status, body = fetch(self.base + "/")
         self.assertEqual(status, 200)
-        self.assertIn(b"<h1>", body)
+        self.assertIn(b"<h1 ", body)
 
     def test_api_items_counts_and_leaf_resolution(self):
         status, body = fetch(self.base + "/api/items")

@@ -25,7 +25,7 @@ from core.credstore import CredStore  # noqa: E402
 from core.home import Home  # noqa: E402
 from core.settings import load_settings  # noqa: E402
 from core.web import BadRequest, Request, Response, error, redirect  # noqa: E402
-from routes import apps, auth, inbox_note, open as open_routes, page, verse  # noqa: E402
+from routes import apps, auth, inbox_note, larder, open as open_routes, page, verse  # noqa: E402
 
 log = logging.getLogger("home")
 
@@ -47,6 +47,7 @@ DATA_GETS: dict[str, Callable[[Home, Request], Response]] = {
     "/apps.json": apps.apps_json,
     "/llms.txt": apps.llms_txt,
     "/api/verse": verse.api_verse,
+    "/api/larder/recipes": larder.recipes,  # the agent key reaches this table, so the route re-checks the session
 }
 
 
@@ -84,6 +85,8 @@ def dispatch(home: Home, request: Request) -> Response:
         return DATA_GETS[path](home, request)
     if path.startswith("/api/status/"):
         return open_routes.status(home, request, _split(path, "/api/status/")[0])
+    if path.startswith("/api/larder/recipe/"):  # after DATA_GETS: "/api/larder/recipes" has no trailing slash, so no clash
+        return larder.recipe(home, request, _split(path, "/api/larder/recipe/")[0])
     if path.startswith("/open/"):
         return open_routes.open_app(home, request, _split(path, "/open/")[0])
     if path.startswith("/widgets/"):
@@ -142,8 +145,8 @@ def make_handler(home: Home) -> type[BaseHTTPRequestHandler]:
 
 
 def build_home(root: Path, *, credentials_dir: Path | None = None, cache_dir: Path | None = None,
-               inbox_dir: Path | None = None) -> Home:
-    """The two overrides exist for tests/verify_server.py, which must never touch the real secrets."""
+               inbox_dir: Path | None = None, recipes_dir: Path | None = None) -> Home:
+    """The overrides exist for tests/verify_server.py, which must never touch the real secrets."""
     return Home(
         settings=load_settings(paths.SETTINGS_FILE),
         apps_dir=paths.apps_dir(root),
@@ -155,6 +158,7 @@ def build_home(root: Path, *, credentials_dir: Path | None = None, cache_dir: Pa
         creds=CredStore(credentials_dir or paths.credentials_dir(root)),
         widgets_dir=paths.widgets_dir(root),
         inbox_dir=inbox_dir or paths.inbox_dir(root),
+        recipes_dir=recipes_dir or paths.recipes_dir(root),
     )
 
 
@@ -166,7 +170,7 @@ def main() -> int:
         log.error("%s", exc)
         return 1
     found = selfcheck.problems(paths.apps_dir(root), paths.bsb_file(root), paths.credentials_dir(root),
-                              paths.inbox_dir(root))
+                              paths.inbox_dir(root), paths.recipes_dir(root))
     for problem in found:
         log.error("self-check: %s", problem)
     if found:

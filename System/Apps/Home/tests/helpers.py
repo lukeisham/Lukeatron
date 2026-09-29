@@ -4,6 +4,7 @@ ports and no real secrets (TEST-4)."""
 from __future__ import annotations
 
 import json
+import shutil
 import sys
 import tempfile
 from datetime import date
@@ -11,6 +12,7 @@ from pathlib import Path
 
 HOME_DIR = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+LARDER_FIXTURES = HOME_DIR.parents[1] / "Widgets" / "Larder" / "tests" / "fixtures"  # fake recipes, copied, never the real store
 sys.path.insert(0, str(HOME_DIR))
 
 from core.credstore import CredStore  # noqa: E402
@@ -69,6 +71,8 @@ def make_home(root: Path, *, up: set[int] | None = None, fetch=offline) -> Home:
     refs.write_text("JOH 3:16\nPSA 23:1-2\n", encoding="utf-8")
     inbox = root / "Inbox"
     inbox.mkdir()
+    recipes = root / "Recipes"
+    shutil.copytree(LARDER_FIXTURES, recipes)
     return Home(
         settings=SETTINGS,
         apps_dir=apps,
@@ -80,6 +84,7 @@ def make_home(root: Path, *, up: set[int] | None = None, fetch=offline) -> Home:
         creds=CredStore(root / "creds"),
         widgets_dir=HOME_DIR.parents[1] / "Widgets",  # the real widget code, read-only
         inbox_dir=inbox,
+        recipes_dir=recipes,
         probe_fn=FakePorts(up),
         fetch_verse=fetch,
         now=lambda: 1_800_000_000.0,

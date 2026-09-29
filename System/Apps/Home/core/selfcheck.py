@@ -13,7 +13,7 @@ FIX = ("macOS may be blocking Python from the Dropbox folder: System Settings â†
        "Full Disk Access â†’ add {python}")
 
 
-def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: Path) -> list[str]:
+def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: Path, recipes_dir: Path) -> list[str]:
     found: list[str] = []
     fix = FIX.format(python=sys.executable)
     if sys.version_info < MIN_PYTHON:
@@ -22,6 +22,10 @@ def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: P
         next(iter(apps_dir.iterdir()), None)
     except OSError as exc:
         found.append(f"Cannot read {apps_dir} ({exc.strerror}). {fix}.")
+    try:
+        next(iter(recipes_dir.iterdir()), None)
+    except OSError as exc:
+        found.append(f"Cannot read {recipes_dir} ({exc.strerror}). {fix}.")
     try:
         with bsb_file.open(encoding="utf-8") as handle:
             handle.readline()
@@ -40,8 +44,10 @@ def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: P
         probe.unlink()
     except OSError as exc:
         found.append(f"Cannot write to {inbox_dir} ({exc.strerror}). {fix}.")
-    from routes import inbox_note  # here, not at the top: routes import core, not the other way round
+    from routes import inbox_note, larder  # here, not at the top: routes import core, not the other way round
 
     if not inbox_note.widget_loads():
         found.append(f"InboxNote is missing or broken at {inbox_note.WIDGET_DIR}.")
+    if not larder.widget_loads():
+        found.append(f"Larder is missing or broken at {larder.WIDGET_DIR}.")
     return found

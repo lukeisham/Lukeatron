@@ -40,9 +40,36 @@ def render_rows(records: list[AppRecord]) -> str:
     return "\n".join(_row(index, record) for index, record in enumerate(records))
 
 
+# Panels Home hosts in-page instead of launching an app (Larder home-hooks FR-1). Each name must
+# match a static/panels/<name>.js module that exports mount(); the row opens it via home.js go().
+HOSTED_PANELS = {"Larder": {"title": "Larder", "blurb": "Saved recipes, searchable", "context": "Personal Productivity"}}
+
+
+def _panel_row(index: int, name: str, panel: dict[str, str]) -> str:
+    """Same markup as an app row so home.js filters and selects it alike; data-app feeds the filter,
+    and refreshStates skips it because /apps.json never lists a panel."""
+    attr = lambda value: escape(value, quote=True)  # noqa: E731
+    return (
+        f'<li id="app-{index}" role="option" aria-selected="false" class="row file"'
+        f' data-panel="{attr(name)}" data-app="{attr(name)}" data-title="{attr(panel["title"])}"'
+        f' data-context="{attr(panel["context"])}" data-state="file" data-blurb="{attr(panel["blurb"])}">'
+        f'<span class="glyph" aria-hidden="true">{GLYPHS["file"]}</span>'
+        f'<span class="name">{escape(panel["title"])}</span>'
+        f'<span class="tag">{escape(panel["context"])}</span>'
+        f'<span class="blurb">{escape(panel["blurb"])}</span>'
+        f'<span class="state-word">opens here</span></li>'
+    )
+
+
+def render_panel_rows(first_index: int) -> str:
+    return "\n".join(_panel_row(first_index + offset, name, panel) for offset, (name, panel) in enumerate(HOSTED_PANELS.items()))
+
+
 def index(home: Home, request: Request) -> Response:
     template = (home.static_dir / "index.html").read_text(encoding="utf-8")
-    return html_response(template.replace("{{APP_ROWS}}", render_rows(home.records())))
+    records = home.records()
+    rows = render_rows(records) + "\n" + render_panel_rows(len(records))
+    return html_response(template.replace("{{APP_ROWS}}", rows))
 
 
 def signin(home: Home, request: Request) -> Response:
@@ -62,8 +89,8 @@ def holding(home: Home, name: str, mode: str, status: int = 200) -> Response:
     return html_response(text, status)
 
 
-# Widgets Home hosts; only their web/ folder is ever served (InboxNote home-hooks FR-2).
-HOSTED_WIDGETS = ("InboxNote",)
+# Widgets Home hosts; only their web/ folder is ever served (InboxNote and Larder home-hooks FR-2).
+HOSTED_WIDGETS = ("InboxNote", "Larder")
 
 
 def widget_file(home: Home, request: Request, name: str, relative: str) -> Response:

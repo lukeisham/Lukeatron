@@ -3,6 +3,7 @@
 import { rank } from "./filter.js";
 import { mount as mountInbox } from "./slots/inbox.js";
 import { mount as mountNews } from "./slots/news.js";
+import { mount as mountLarder } from "./panels/larder.js";
 
 const plane = document.getElementById("plane");
 const input = document.getElementById("query");
@@ -86,6 +87,14 @@ function close() {
 // press, so the browser treats window.open as user-initiated and does not block it.
 function go(row) {
   if (!row || !choosable(row)) return;
+  if (row.dataset.panel) {
+    // A hosted panel opens in-page; its onClose hands focus back to the bar (Larder AC-5).
+    const panel = panels[row.dataset.panel];
+    close();
+    if (panel) panel.open();
+    else console.warn(`Home: no panel mounted for "${row.dataset.panel}"`);
+    return;
+  }
   window.open(row.dataset.openUrl, "_blank", "noopener");
   close();
 }
@@ -160,6 +169,9 @@ document.getElementById("signout").addEventListener("click", async () => {
   window.location.reload();
 });
 
+// Panels are modal dialogs that handle their own Esc and backdrop; the bar's outside-click handler
+// only closes the bar, so the two do not fight.
+const panels = { Larder: mountLarder(document.getElementById("panel-host"), { onClose: () => input.focus() }) };
 mountInbox(document.querySelector('[data-slot="inbox"]'));
 mountNews(document.querySelector('[data-slot="news"]'));
 applyFilter();

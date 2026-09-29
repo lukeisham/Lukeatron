@@ -58,9 +58,10 @@ class TestInboxNote(GateTest):
 
     def test_selfcheck_needs_a_writable_inbox_and_leaves_it_empty(self):
         args = (self.home.apps_dir, self.home.bsb_file, self.home.creds.directory)
-        self.assertEqual(selfcheck.problems(*args, self.home.inbox_dir), [])
+        recipes = self.home.recipes_dir
+        self.assertEqual(selfcheck.problems(*args, self.home.inbox_dir, recipes), [])
         self.assertEqual(self.inbox(), [])
-        missing = selfcheck.problems(*args, self.home.inbox_dir / "gone")
+        missing = selfcheck.problems(*args, self.home.inbox_dir / "gone", recipes)
         self.assertTrue(any("Cannot write to" in problem and "gone" in problem for problem in missing))
 
 

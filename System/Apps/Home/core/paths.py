@@ -49,6 +49,10 @@ def inbox_dir(root: Path) -> Path:
     return root / "Inbox"
 
 
+def recipes_dir(root: Path) -> Path:
+    return root / "Memory" / "Long-Term" / "Recipes"
+
+
 def credentials_dir(root: Path) -> Path:
     return root / "System" / "Credentials" / "Home"
 

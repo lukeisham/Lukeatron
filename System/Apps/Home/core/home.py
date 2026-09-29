@@ -33,6 +33,7 @@ class Home:
     creds: CredStore
     widgets_dir: Path
     inbox_dir: Path
+    recipes_dir: Path
     probe_fn: Callable[[int], bool] = catalog.probe
     fetch_verse: Callable[[], verse.Verse] = verse.fetch_niv
     now: Callable[[], float] = time.time

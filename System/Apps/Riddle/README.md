@@ -1,9 +1,10 @@
-# Riddle — cartridge README
+# Riddle
 
-A `Generator/_shell` cartridge in **`present` mode**: Generate pulls a
-riddle from the baked pool, an optional Clue reveals a hint, the user types
-an answer and Checks it, and Copy puts the plain riddle text on the
-clipboard. Shipped widget: `Riddle_generator.html`, **218,280 bytes**.
+Promoted from `System/Widgets/Generator/Riddle/` to a standalone Lukeatron app on 2026-09-29. It is
+still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
+Generate pulls a riddle from the baked pool, an optional Clue reveals a hint, the user types an
+answer and Checks it, and Copy puts the plain riddle text on the clipboard. Shipped widget:
+`Riddle_generator.html`, **218,280 bytes**.
 
 ## What it does
 
@@ -64,16 +65,19 @@ by tradition.
 
 ## Build recipe
 
+Run from the `_Lukeatron` root — the shell, its modules, and the seed research stayed behind in
+`System/Widgets/Generator/` when this app was promoted out of it:
+
 ```bash
-python3 Riddle/cartridge/build/compile_riddle_pool.py \
-    _research/seed/riddles.md \
-    Riddle/cartridge/build/pool.json \
-    Riddle/cartridge/build/riddle_content.md
-python3 _shell/build/assemble.py Riddle/cartridge Riddle/Riddle_generator.html
+python3 System/Apps/Riddle/cartridge/build/compile_riddle_pool.py \
+    System/Widgets/Generator/_research/seed/riddles.md \
+    System/Apps/Riddle/cartridge/build/pool.json \
+    System/Apps/Riddle/cartridge/build/riddle_content.md
+python3 System/Widgets/Generator/_shell/build/assemble.py System/Apps/Riddle/cartridge System/Apps/Riddle/Riddle_generator.html
 ```
 
 `riddle_content.md` also feeds
-`_modules/MiniWiki/build/extract_articles.py` to produce
+`System/Widgets/Generator/_modules/MiniWiki/build/extract_articles.py` to produce
 `riddle.miniwiki.json` (`miniwiki.enabled: true`).
 
 ## Tests

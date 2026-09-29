@@ -8,6 +8,11 @@ MiniWiki module injection seams, and the `analyse`/`present` mode switch
 FolkTale, and Psychometric run `present` mode). Full contract:
 `Specs/GeneratorShell.spec.md`.
 
+**All four cartridges were promoted to standalone apps on 2026-09-29** — they now live at
+`System/Apps/AiCharacteristics/`, `System/Apps/FolkTale/`, `System/Apps/Psychometric/`, and
+`System/Apps/Riddle/` rather than beside this shell. This chassis, `_modules/`, and `_research/`
+stayed behind here; each app's README gives the cross-tree rebuild command.
+
 **The app's editable source is `src/`** — edit `shell.html` / `shell.css` /
 `lexicon.js` / `ui.js` / `present-mode.js` / `api.js` / `spelling-seam.js` /
 `miniwiki-seam.js` and rebuild every cartridge that uses it. Nothing in
@@ -16,8 +21,10 @@ bug, not a cartridge quirk.
 
 ## Shared lineage with Parser — read this before touching either shell
 
-This shell was **forked** from `System/Widgets/Parser/_shell/` (read-only
-reference for this project), not shared with it. The two chassis are
+This shell was **forked** from what was then `System/Widgets/Parser/_shell/` (read-only reference
+for this project), not shared with it. The Parser suite was retired on 2026-09-28 — its shell now
+lives at `Archive/Parser-shell-2026-09-28/`, no longer at that path — but the lineage below still
+explains why this code looks the way it does. The two chassis are/were
 independent copies of what started as the same code: `shell.html`/`ui.js`
 here still carry Parser's FR/AD/AC numbering (see
 `Specs/GeneratorShell.spec.md`'s header note), and the assembler, the

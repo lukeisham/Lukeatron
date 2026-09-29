@@ -14,8 +14,9 @@ description: "A taxonomy of surface, syntactic, statistical, and discourse-level
 
 ## Why this is here
 
-Sourced from the Phase 1 research seed for the AI Characteristics Generator cartridge
-(`System/Widgets/Generator/AiCharacteristics/`, seed research August 2026). That research catalogued
+Sourced from the Phase 1 research seed for the AI Characteristics app
+(`System/Apps/AiCharacteristics/`, promoted 2026-09-29 from `System/Widgets/Generator/AiCharacteristics/`;
+seed research August 2026). That research catalogued
 detectable patterns in LLM-generated text across eight categories. This keeper preserves the durable
 knowledge — the taxonomy, the reliability caveat, and the sourcing — independent of the widget's
 build artefacts, which may change or be superseded.

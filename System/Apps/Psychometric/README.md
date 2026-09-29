@@ -1,11 +1,11 @@
-# Psychometric — cartridge README
+# Psychometric
 
-A `Generator/_shell` cartridge in **`present` mode**: Generate pulls a
-practice item from the baked pool, a per-category Clue/Check/Explain set
-engages, and Copy puts the plain question text on the clipboard. Shipped
-widget: `Psychometric_generator.html`, **293,083 bytes** — the largest of
-the four Generator widgets, mostly SVG-rendering rule specs for the
-abstract-reasoning category (below).
+Promoted from `System/Widgets/Generator/Psychometric/` to a standalone Lukeatron app on 2026-09-29.
+It is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present`
+mode**: Generate pulls a practice item from the baked pool, a per-category Clue/Check/Explain set
+engages, and Copy puts the plain question text on the clipboard. Shipped widget:
+`Psychometric_generator.html`, **293,083 bytes** — the largest of the four Generator apps, mostly
+SVG-rendering rule specs for the abstract-reasoning category (below).
 
 ## What it does
 
@@ -74,12 +74,15 @@ every item by category.
 
 ## Build recipe
 
+Run from the `_Lukeatron` root — the shell and the seed research stayed behind in
+`System/Widgets/Generator/` when this app was promoted out of it:
+
 ```bash
-python3 Psychometric/cartridge/build/build_psychometric.py
-python3 _shell/build/assemble.py Psychometric/cartridge Psychometric/Psychometric_generator.html
+python3 System/Apps/Psychometric/cartridge/build/build_psychometric.py
+python3 System/Widgets/Generator/_shell/build/assemble.py System/Apps/Psychometric/cartridge System/Apps/Psychometric/Psychometric_generator.html
 ```
 
-`build_psychometric.py` compiles `_research/seed/psychometrics.md` plus
+`build_psychometric.py` compiles `System/Widgets/Generator/_research/seed/psychometrics.md` plus
 `abstract_specs.py`'s structured rule data into `pool.json`.
 
 ## Tests

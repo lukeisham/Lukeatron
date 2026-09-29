@@ -12,10 +12,10 @@ description: "The five psychometric reasoning categories and the authentic test 
 
 ## Why this is here
 
-Sourced from the Phase 1 research for the Psychometric Generator widget
-(`System/Widgets/Generator/Psychometric/`): the seed research
-(`_research/seed/psychometrics.md`) and the 23-file `samples/` reference set built against real
-test formats (`System/Widgets/Generator/Psychometric/samples/`). This keeper preserves the durable
+Sourced from the Phase 1 research for the Psychometric app
+(`System/Apps/Psychometric/`, promoted 2026-09-29 from `System/Widgets/Generator/Psychometric/`): the
+seed research (`System/Widgets/Generator/_research/seed/psychometrics.md`) and the 23-file `samples/`
+reference set built against real test formats (`System/Apps/Psychometric/samples/`). This keeper preserves the durable
 knowledge — the five-category taxonomy, the authentic formats and conventions, and the
 abstract-reasoning rule-family analysis — independent of the widget's build artefacts.
 

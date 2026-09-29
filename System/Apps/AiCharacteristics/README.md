@@ -1,8 +1,9 @@
-# AiCharacteristics — cartridge README
+# AiCharacteristics
 
-A `Generator/_shell` cartridge in **`analyse` mode**: paste up to a page of
-text, the engine tokenizes and flags AI-associated stylistic and content
-characteristics, and an explainer panel expands on request. Shipped widget:
+Promoted from `System/Widgets/Generator/AiCharacteristics/` to a standalone Lukeatron app on
+2026-09-29. It is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in
+**`analyse` mode**: paste up to a page of text, the engine tokenizes and flags AI-associated
+stylistic and content characteristics, and an explainer panel expands on request. Shipped widget:
 `AiCharacteristics_generator.html`, **174,717 bytes**.
 
 ## What it does
@@ -81,13 +82,16 @@ button opens the glossary catalogue in a new tab.
 
 ## Build recipe
 
+Run from the `_Lukeatron` root — the shell and its modules stayed behind in
+`System/Widgets/Generator/` when this app was promoted out of it:
+
 ```bash
-python3 _shell/build/assemble.py AiCharacteristics/cartridge AiCharacteristics/AiCharacteristics_generator.html
+python3 System/Widgets/Generator/_shell/build/assemble.py System/Apps/AiCharacteristics/cartridge System/Apps/AiCharacteristics/AiCharacteristics_generator.html
 ```
 
-Requires `_modules/MiniWiki/dist/miniwiki.bundle.js` to exist first (build
-via `python3 _modules/MiniWiki/build/bundle_miniwiki.py`) — `miniwiki.enabled:
-true` in `config.yaml`.
+Requires `System/Widgets/Generator/_modules/MiniWiki/dist/miniwiki.bundle.js` to exist first (build
+via `python3 System/Widgets/Generator/_modules/MiniWiki/build/bundle_miniwiki.py`) —
+`miniwiki.enabled: true` in `config.yaml`.
 
 ## Tests
 

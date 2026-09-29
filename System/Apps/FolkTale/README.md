@@ -1,10 +1,10 @@
-# FolkTale — cartridge README
+# FolkTale
 
-A `Generator/_shell` cartridge in **`present` mode**: Generate pulls a
-public-domain folk tale from the baked pool, the shell highlights its three
-narrative beats (setup / twist / result) with a legend, and Copy puts the
-plain tale text on the clipboard. Shipped widget: `FolkTale_generator.html`,
-**282,026 bytes**.
+Promoted from `System/Widgets/Generator/FolkTale/` to a standalone Lukeatron app on 2026-09-29. It
+is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
+Generate pulls a public-domain folk tale from the baked pool, the shell highlights its three
+narrative beats (setup / twist / result) with a legend, and Copy puts the plain tale text on the
+clipboard. Shipped widget: `FolkTale_generator.html`, **282,026 bytes**.
 
 ## What it does
 
@@ -110,12 +110,15 @@ catalogue (`folktale.miniwiki.json`) lists every tale by culture.
 
 ## Build recipe
 
+Run from the `_Lukeatron` root — the shell and the seed research stayed behind in
+`System/Widgets/Generator/` when this app was promoted out of it:
+
 ```bash
-python3 FolkTale/cartridge/build/build_folktale.py
-python3 _shell/build/assemble.py FolkTale/cartridge FolkTale/FolkTale_generator.html
+python3 System/Apps/FolkTale/cartridge/build/build_folktale.py
+python3 System/Widgets/Generator/_shell/build/assemble.py System/Apps/FolkTale/cartridge System/Apps/FolkTale/FolkTale_generator.html
 ```
 
-`build_folktale.py` reads `_research/seed/folk-tales.md` and writes both
+`build_folktale.py` reads `System/Widgets/Generator/_research/seed/folk-tales.md` and writes both
 `pool.json` (present-mode `files.content`) and `folktale_content.md`
 (MiniWiki source) from the same parse, so they cannot drift apart.
 

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Home: the front door to every Lukeatron app. Machine-readable: /apps.json and /llms.txt.">
+<title>Home</title>
+<script>document.documentElement.classList.add("js")</script>
+<link rel="stylesheet" href="/static/tokens.css">
+<link rel="stylesheet" href="/static/home.css">
+<link rel="alternate" type="application/json" href="/apps.json" title="Every app, as data">
+<link rel="help" type="text/plain" href="/llms.txt" title="Guide for agents">
+<script type="module" src="/static/home.js"></script>
+</head>
+<body>
+<main class="stage">
+  <h1 class="visually-hidden">Home — Lukeatron apps</h1>
+  <div class="plane" id="plane">
+    <label class="bar">
+      <svg class="glyph-line" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="query" type="text" role="combobox" aria-expanded="false" aria-controls="apps" aria-autocomplete="list"
+             placeholder="Open an app…" autocomplete="off" spellcheck="false" autofocus aria-label="Open an app">
+      <kbd class="bar-key" aria-hidden="true">↓</kbd>
+    </label>
+    <div class="drop" id="drop">
+      <ul id="apps" class="apps" role="listbox" aria-label="Apps">
+{{APP_ROWS}}
+      </ul>
+      <p class="empty" id="empty" hidden>No app matches.</p>
+      <p class="hint" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> choose</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span>○ starts on open · ◌ in build</span></p>
+    </div>
+  </div>
+  <div class="slots">
+    <section class="slot" data-slot="inbox" aria-label="Inbox"></section>
+    <section class="slot" data-slot="news" aria-label="News"></section>
+  </div>
+</main>
+<footer class="foot">
+  <figure class="verse" id="verse" hidden>
+    <blockquote class="verse-text"></blockquote>
+    <figcaption class="verse-cite"></figcaption>
+    <details class="verse-notice"><summary>Copyright</summary><p></p></details>
+  </figure>
+  <button type="button" class="signout" id="signout">Sign out</button>
+</footer>
+</body>
+</html>

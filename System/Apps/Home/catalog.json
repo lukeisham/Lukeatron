@@ -1,0 +1,61 @@
+{
+  "apps": {
+    "LukeatronWiki": {
+      "context": "Lukeatron",
+      "blurb": "Long-Term memory, read as one interconnected wiki",
+      "launch": {"kind": "ensure", "script": "ensure-wiki.sh", "port": 8787}
+    },
+    "ProjectKanban": {
+      "title": "Dashboard",
+      "context": "Lukeatron",
+      "blurb": "Every tracked project, by whose move and how soon",
+      "launch": {"kind": "ensure", "script": "ensure-kanban.sh", "port": 8789}
+    },
+    "Storytelling": {
+      "context": "Personal Research",
+      "blurb": "The periodic table of story; build your own story maps",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8793}
+    },
+    "CurriculumPreparation": {
+      "context": "Teaching",
+      "blurb": "Unit prep: curriculum tree, lessons, crib sheet, assessment",
+      "launch": {"kind": "self-opening", "entry": "serve.py", "cwd": "_template"}
+    },
+    "Riddle": {
+      "context": "Teaching",
+      "blurb": "A riddle, with a clue and an answer check",
+      "launch": {"kind": "file", "path": "Riddle_generator.html"}
+    },
+    "FolkTale": {
+      "context": "Teaching",
+      "blurb": "A public-domain folk tale, its three beats marked",
+      "launch": {"kind": "file", "path": "FolkTale_generator.html"}
+    },
+    "Psychometric": {
+      "context": "Teaching",
+      "blurb": "Practice reasoning items, with clue, check and explain",
+      "launch": {"kind": "file", "path": "Psychometric_generator.html"}
+    },
+    "AiCharacteristics": {
+      "context": "Teaching",
+      "blurb": "Paste text; flag AI-associated writing traits",
+      "launch": {"kind": "file", "path": "AiCharacteristics_generator.html"}
+    },
+    "Rhetoric": {
+      "context": "Teaching",
+      "blurb": "Rhetoric: reference and practice"
+    },
+    "ASCI_art": {
+      "context": "Personal Research",
+      "blurb": "ASCII art studio"
+    },
+    "Fact-checking": {
+      "context": "Personal Research",
+      "blurb": "Check a claim against its sources"
+    },
+    "HistoryOfPhilosophy": {
+      "context": "Personal Research",
+      "blurb": "The history of philosophy, navigable"
+    }
+  }
+}

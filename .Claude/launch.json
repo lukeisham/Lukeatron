@@ -55,6 +55,26 @@
       ],
       "cwd": "System/Apps/Storytelling",
       "port": 8792
+    },
+    {
+      "name": "home",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Home",
+      "port": 8780,
+      "url": "http://localhost:8780"
+    },
+    {
+      "name": "home-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "tests/verify_server.py"
+      ],
+      "cwd": "System/Apps/Home",
+      "port": 8781,
+      "url": "http://localhost:8781"
     }
   ]
 }

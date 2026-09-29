@@ -1,0 +1,22 @@
+{
+  "rp_id": "localhost",
+  "origin": "http://localhost:8780",
+  "credential_id": "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA",
+  "public_x": "c3b77fbca0c4c18f64a926c2bc7b612aef937462a09bf0b55753d7ba4d74251a",
+  "public_y": "67823a9c4f7b02da5cffc98fa924bd0542cadd7b3e9afc7748ec837ba18d413d",
+  "registration": {
+    "challenge": "cmVnaXN0ZXItY2hhbGxlbmdlLWZpeHR1cmUtMDAwMQ",
+    "clientDataJSON": "eyJ0eXBlIjogIndlYmF1dGhuLmNyZWF0ZSIsICJjaGFsbGVuZ2UiOiAiY21WbmFYTjBaWEl0WTJoaGJHeGxibWRsTFdacGVIUjFjbVV0TURBd01RIiwgIm9yaWdpbiI6ICJodHRwOi8vbG9jYWxob3N0Ojg3ODAifQ",
+    "attestationObject": "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gpQECAyYgASFYIMO3f7ygxMGPZKkmwrx7YSrvk3RioJvwtVdT17pNdCUaIlggZ4I6nE97Atpc_8mPqSS9BULK3Xs-mvx3SOyDe6GNQT0"
+  },
+  "assertion": {
+    "challenge": "bG9naW4tY2hhbGxlbmdlLWZpeHR1cmUtMDAwMDAwMQ",
+    "clientDataJSON": "eyJ0eXBlIjogIndlYmF1dGhuLmdldCIsICJjaGFsbGVuZ2UiOiAiYkc5bmFXNHRZMmhoYkd4bGJtZGxMV1pwZUhSMWNtVXRNREF3TURBd01RIiwgIm9yaWdpbiI6ICJodHRwOi8vbG9jYWxob3N0Ojg3ODAifQ",
+    "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAA",
+    "signature": "MEQCIEphsRKciD8zLCPdmhd_pmY3x6o9AIg-yQXzorqlnxTMAiBB0uWWFFVsWGTNO_J0kBAEtABYS7l-oBUwgfxsfKHsmQ"
+  },
+  "p256": {
+    "message": "Home p256 fixture message",
+    "signature": "MEUCID8xyz5CP9fcWxFSktZj2vYKq-ebwvf3FGFFdYkosdtEAiEAgGy3Kc0BxhIfLF_gSKv4G6Ftz1r19f5xvHptgZE5dXA"
+  }
+}

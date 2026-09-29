@@ -1,0 +1,6 @@
+{
+  "port": 8780,
+  "rp_id": "localhost",
+  "origins": ["http://localhost:8780"],
+  "remote": false
+}

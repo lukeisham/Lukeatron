@@ -11,17 +11,25 @@
 #   !Dashboard, !IdeaWiki, !SkillDocs, !teach, !BookCover, and both System/Tools/ viewers.
 #   Standing exemptions: !GenerateWiki (defers to wiki-page.css) and !SvgImage (illustration, not UI).
 last_updated: 2026-09-29
-# 2026-09-29 — !AppDevelopment v2.1.0: the style guide moved into the PRD as a `## UI` section
-#   (Phase 1 design intent — HouseStyle verdict, the one rule, first-pass palette/type/spacing —
-#   tested against Phase 2's mockups). No separate StyleGuide.md is written any more: the code is
-#   the style guide, per Luke ("if a style impacts multiple files it goes in the readme"), so only
-#   a cross-file style fact (styling split across files, or a shared HouseStyle chassis) lands in
-#   README, under Cross-app behaviour. README now follows templates/readme.md: Purpose (≤1
-#   paragraph of prose, always first), Cross-app behaviour (always present, even to say there is
-#   none), a light Navigation overview (structure only, no per-file "what it does" commentary),
-#   and a pointer to app-decisions.md. Key decisions (architectural/functional, each with a
-#   reason) never land in README any more — they fold into a new app-decisions.md → Key decisions
-#   table at Phase 4 instead. templates/style-guide.md deleted; templates/readme.md added.
+# 2026-09-29 — !AppDevelopment v2.1.0, a Luke-directed refactor of the PRD/README/decisions shape:
+#   (1) the style guide moved into the PRD as a `## UI` section (Phase 1 design intent — HouseStyle
+#   verdict, the one rule, first-pass palette/type/spacing — tested against Phase 2's mockups). No
+#   separate StyleGuide.md is written any more: the code is the style guide; the one exception is a
+#   cross-file style fact (styling split across files, or a shared HouseStyle chassis), which lands
+#   in README's Cross-app behaviour instead. (2) The documentation spec's "key decisions" section
+#   is GONE — the code is self-documenting, decisions are not logged as a matter of course. An
+#   architectural point that is itself cross-app or multi-file goes in README (Cross-app behaviour,
+#   folded from the spec's now-renamed section 1); a decision Luke explicitly wants logged goes
+#   straight into app-decisions.md → Key decisions the moment he flags it — never authored into a
+#   spec first, never landing in README. doc-spec.md is now three sections (cross-app behaviour,
+#   ASCII navigation map, rule-exceptions pointer). (3) README (new templates/readme.md) is built
+#   per-section audience: Purpose (≤1 paragraph of prose, always first, for Luke + agent), an
+#   OPTIONAL Launch/restart dot-point list (Luke only — plain commands, omitted entirely when
+#   opening the app is itself the instruction), an ASCII-style Navigation site map (Luke + agent,
+#   structure only, no per-file commentary), then Cross-app behaviour (written AI for AI, dense and
+#   technical is fine, always present even to say there is none), then a pointer to
+#   app-decisions.md. No decision of any kind ever lands in README. templates/style-guide.md
+#   deleted; templates/readme.md added.
 # 2026-09-24 — !Comprehension + !ConceptFidelity v1.1.0: shared reader rules moved into ONE file,
 #   GeneralPurposeSkills/!Comprehension/reference/cold-reader-protocol.md, loaded by both. Readers
 #   now get screenshots of a rendered artefact, never its HTML source; layout-only questions are
@@ -187,7 +195,7 @@ skills:
   - name: "!AppDevelopment"
     path: "System/Skillbank/PersonalResearch/!AppDevelopment/skill.md"
     domain: "PersonalResearch"
-    intent: "Four-phase lifecycle taking an app (standalone web app) or widget (runs inside a host) from idea to a working app on real data, all in its permanent folder System/Apps/<Name>/ (widgets: System/Widgets/<Name>/) from day one. Phase 1 !AppPRD interviews Luke and writes _build/prd.md (including its `## UI` section — HouseStyle verdict, the one rule, first-pass palette/type/spacing intent, apps only) plus app-decisions.md. Phase 2 !AppSpecs writes modular specs to _build/specs/ under the Vibe Coding Rules (always one documentation spec), with mockups testing the PRD's UI intent — the only thing kept in Sandbox, at System/Sandbox/<Name>-mockups/. Phase 3 !AppBuildPrep closes design (a one-way door), deletes the mockups and writes _build/build.md: a copy-paste prompt for an Opus boss with Haiku bulk and Sonnet craft subagents, building straight into the folder root on real data (fixture data for tests, a dated copy of each real data file before its first write, a commit per module). Phase 4 !AppRetire verifies the build, writes README.md (Purpose in ≤1 paragraph of prose first, Cross-app behaviour always stated, a light navigation overview with no per-file comments), folds the documentation spec's Key decisions into app-decisions.md (never README), then deletes _build/ after Luke confirms (git keeps history); after that, refinement is ordinary editing guarded by git, tests and a Refactor Health Check. The code is the style guide — no separate StyleGuide.md is written; only a cross-file style fact (styling split across files, or a shared HouseStyle chassis) lands in README. No registry, template or test copy: the phase is read off which files exist, and the one state file is app-decisions.md — Luke's approvals, key decisions and granted rule exceptions. v2.1.0, 2026-09-29."
+    intent: "Four-phase lifecycle taking an app (standalone web app) or widget (built only when Luke asks; saved in System/Widgets/<Name>/, nested inside and serving one host app in System/Apps/) from idea to a working app on real data, all in its permanent folder System/Apps/<Name>/ (widgets: System/Widgets/<Name>/) from day one. Phase 1 !AppPRD interviews Luke and writes _build/prd.md (including its `## UI` section — HouseStyle verdict, the one rule, first-pass palette/type/spacing intent, apps only) plus app-decisions.md. Phase 2 !AppSpecs writes modular specs to _build/specs/ under the Vibe Coding Rules (always one three-section documentation spec — cross-app behaviour, an ASCII navigation map, a rule-exceptions pointer; no decisions section, the code is self-documenting), with mockups testing the PRD's UI intent — the only thing kept in Sandbox, at System/Sandbox/<Name>-mockups/. Phase 3 !AppBuildPrep closes design (a one-way door), deletes the mockups and writes _build/build.md: a copy-paste prompt for an Opus boss with Haiku bulk and Sonnet craft subagents, building straight into the folder root on real data (fixture data for tests, a dated copy of each real data file before its first write, a commit per module). Phase 4 !AppRetire verifies the build and writes README.md, each section pitched at its own reader: Purpose (≤1 paragraph of prose, always first, human + agent), an optional Launch/restart dot-point list (human only, omitted when opening the app is itself the instruction), an ASCII-style Navigation site map (human + agent, no per-file comments), then Cross-app behaviour (written AI for AI, always present even to say there is none) — then deletes _build/ after Luke confirms (git keeps history); after that, refinement is ordinary editing guarded by git, tests and a Refactor Health Check. The code is the style guide — no separate StyleGuide.md is written; only a cross-file style fact (styling split across files, or a shared HouseStyle chassis) lands in README's Cross-app behaviour. No decision of any kind lands in README, ever — an architectural point that is cross-app/multi-file goes there instead, and a decision Luke explicitly wants logged goes straight into app-decisions.md → Key decisions the moment he flags it. No registry, template or test copy: the phase is read off which files exist, and the one state file is app-decisions.md — Luke's approvals, any explicitly-flagged decision, and granted rule exceptions. v2.1.0, 2026-09-29."
     triggers: ["build an app", "build a widget", "make a new widget", "start a new app", "new app idea", "write a PRD", "spec out this app", "app development", "resume the app build", "where is the build up to", "retire the build docs", "!AppPRD", "!AppSpecs", "!AppBuildPrep", "!AppRetire"]
   - name: "!AppWishlist"
     path: "System/Skillbank/PersonalResearch/!AppWishlist/skill.md"

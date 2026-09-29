@@ -25,13 +25,14 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
 // EXECUTION_START
 
 **STEP 1 — Settle name and kind**
-  ASK Luke for the project name (used verbatim as the folder name) and confirm `kind` (app | widget)
-  using the test from `!AppDevelopment` STEP 0: can it be opened on its own, nothing else already
-  running, and it is the whole thing? Yes ➔ app. No ➔ widget — optional embeddability alone does
-  not make it a widget; needing a host to run at all does.
-  IF `kind` = widget ➔ ASK what hosts it (a page, another app, a widget suite/chassis, or the
-  local OS/shell — e.g. a menu-bar item, a cron/launchd job, a CLI invoked from a folder).
-  A widget with no named host is not yet specified.
+  ASK Luke for the project name (used verbatim as the folder name). `kind` is `app` unless Luke
+  asked for a widget (`!AppDevelopment` STEP 0) — never propose a widget unprompted.
+  IF `kind` = widget ➔ ASK which app it is nested inside and serves (its host app).
+    ASSERT `System/Apps/<Host>/` exists
+      ELSE ➔ STOP: the host app is built first (its own `!AppDevelopment` run). Tell Luke.
+    READ the host app's README (Purpose + Cross-app behaviour) so the widget is specified
+    against what the host actually does.
+  A widget with no named host app is not yet specified.
 
 **STEP 2 — Create the permanent folder**
   SET `home` = `System/Apps/<Name>/` (app) or `System/Widgets/<Name>/` (widget).
@@ -53,12 +54,13 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
     4. The shape on screen — draw an ASCII layout sketch and get it corrected. Cheaper than a mockup.
     5. UI (apps only) — `!HouseStyle`'s verdict for this surface, the one rule for where visual
        values must live, and a first-pass palette/type/spacing intent. Rough is fine — Phase 2's
-       mockups test it, and the code carries the real values once built. Skip for a widget; its
-       visual contract lives with its host chassis.
+       mockups test it, and the code carries the real values once built. Skip for a widget; it
+       inherits its host app's styling.
     6. Key behaviours — the handful of interactions that define it. Not an exhaustive list.
     7. Boundaries — what it deliberately does NOT do. This section earns its place every time.
     8. Data — what it stores, where, and what happens to it when the app closes.
-    9. For a widget: the host contract — how it is embedded, what it receives, what it emits.
+    9. For a widget: the host contract — what job it does for the host app, where in the host
+       app it sits, what it receives from the host app, and what it emits back.
    10. Constraints — offline? stdlib only? a specific file it must read? a size it must fit?
    11. Done looks like — the checkable statements that mean it works.
   Use an ASCII diagram wherever a shape, a flow, or a state change is easier seen than read.
@@ -99,7 +101,7 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
 ```
 VERIFY the PRD names purpose, core job, I/O, boundaries, data, done-looks-like
 VERIFY an app PRD's UI section names a HouseStyle verdict, the one rule, and a first-pass intent
-VERIFY a widget PRD names its host and the host contract, and carries no UI section
+VERIFY a widget PRD names an existing host app and the host contract, and carries no UI section
 VERIFY the PRD's status is approved AND app-decisions.md records that approval with its version
 VERIFY the PRD contains no implementation detail that belongs in a spec
 ELSE ➔ return to the failing step

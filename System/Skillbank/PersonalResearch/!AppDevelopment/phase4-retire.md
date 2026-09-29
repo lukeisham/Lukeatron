@@ -1,6 +1,6 @@
 ---
 name: "!AppRetire"
-description: "Phase 4 of !AppDevelopment — once the build runs, write README.md (Purpose first in ≤1 paragraph, Cross-app behaviour always stated — including any cross-app/multi-file architecture, a light ASCII-style navigation overview, no per-file comments, no decisions of any kind), and delete _build/ (PRD, specs, build.md) after Luke confirms. app-decisions.md and wishlist.md stay — the code is self-documenting, so app-decisions.md only ever holds Luke's approvals, a decision he explicitly flagged, and granted rule exceptions. The code is also the style guide — no separate style file is written. After that, refinement is ordinary editing on the live app, guarded by git, tests and a Refactor Health Check. Can be run cold on an app or widget this skill set never built."
+description: "Phase 4 of !AppDevelopment — once the build runs, write README.md with each section pitched at its own reader: Purpose first in ≤1 paragraph (human + agent), an optional Launch/restart dot-point list (human only, omitted when opening the app is itself the instruction), a light ASCII-style Navigation site map (human + agent, no per-file comments), and Cross-app behaviour always stated (written AI for AI — including any cross-app/multi-file architecture; no decisions of any kind, anywhere in README). Then delete _build/ (PRD, specs, build.md) after Luke confirms. app-decisions.md and wishlist.md stay — the code is self-documenting, so app-decisions.md only ever holds Luke's approvals, a decision he explicitly flagged, and granted rule exceptions. The code is also the style guide — no separate style file is written. After that, refinement is ordinary editing on the live app, guarded by git, tests and a Refactor Health Check. Can be run cold on an app or widget this skill set never built."
 type: Skill
 status: Active
 core_function: System
@@ -33,25 +33,33 @@ Also fires cold: "retire the build docs for <name>", "give <name> a README".
 
 **STEP 1 — Verify the build**
   RUN the project's own tests and its launch check; a build that does not run is not built.
-  IF `kind` = widget ➔ exercise it inside its named host.
+  IF `kind` = widget ➔ exercise it inside its host app (`System/Apps/<Host>/`).
   REPORT the result to Luke in plain terms — checks run, what passed.
   IF verification fails ➔ STOP. `_build/` stays; the build is not finished.
 
 **STEP 2 — Write README.md**
   **No spec survives Phase 4.** Specs are rebuild instructions; once the thing runs, they are a
   second description of code that already describes itself.
-  WRITE `README.md` at the folder root from `templates/readme.md`:
-    - **Purpose** — one paragraph of prose, at the very start, trimmed from the PRD's Purpose.
-    - **Cross-app behaviour** — always present, even when there is none (say so outright rather
-      than omitting the section): what crosses a module or host boundary, what each side may
-      assume, what breaks if it changes. A widget's host boundary always belongs here.
+  WRITE `README.md` at the folder root from `templates/readme.md`. Each section has a fixed
+  audience — write it for that reader, not the others:
+    - **Purpose** (for Luke, as much as for an agent) — one paragraph of prose, at the very start,
+      trimmed from the PRD's Purpose.
+    - **Launch / restart** (for Luke — plain dot points, not written for an agent) — OPTIONAL.
+      Include it only when there is something non-obvious to say: a server to start, a hook to
+      re-run, a URL/port to open. Omit the whole section (not a stub) when opening the app IS the
+      instruction. Brief, imperative, copy-pasteable commands — no jargon a human would have to
+      look up.
+    - **Navigation** (for Luke, as much as for an agent) — an ASCII-style site map, light:
+      structure only, no per-file "what it does / why it's separate" commentary. A file's own name
+      and contents carry that; if it needs saying, say it in the file, never in README.
+    - **Cross-app behaviour** (written AI for AI — dense and technical is fine, it does not need
+      to read as prose) — always present, even when there is none (say so outright rather than
+      omitting the section): what crosses a module or host boundary, what each side may assume,
+      what breaks if it changes. A widget's host boundary always belongs here.
       **The code is the style guide** — no value, token, colour, size or duration is restated here.
       The one exception: if styling is split across more than one file, or a shared HouseStyle
       classification governs how every file relates to a chassis, name that here — it is the one
       style fact that crosses files and the code's own comments cannot carry.
-    - **Navigation** — light: structure only, no per-file "what it does / why it's separate"
-      commentary. A file's own name and contents carry that; if it needs saying, say it in the
-      file, never in README.
     - one line pointing to `app-decisions.md` for approvals, any logged decision, and granted
       rule exceptions (not a copy)
   There is no decisions section to transcribe — the documentation spec never had one; the code is
@@ -59,6 +67,9 @@ Also fires cold: "retire the build docs for <name>", "give <name> a README".
   in a decisions list. **No decision of any kind lands in README.** If Luke flagged one along the
   way, it is already in `app-decisions.md` → Key decisions (STEP 4 of `!AppDevelopment` itself,
   and phase2-specs.md STEP 2, record it live) — nothing further to do here.
+  IF `kind` = widget ➔ also ADD one line to the HOST app's README → Cross-app behaviour naming
+  the widget (`System/Widgets/<Name>/`), where it mounts, and what it does for the host app — so
+  the host app knows what is nested inside it. Nothing else in the host app's folder changes.
   Keep README to what the code cannot carry (SR-7). If a line could be deleted and the code would
   still tell you the same thing, delete the line.
 
@@ -90,7 +101,7 @@ seven-question pass on whether the change is *sound*, not whether it looks good.
 | 2 | Does it degrade gracefully on missing or empty data? | Add the empty/edge case now. |
 | 3 | Is every new or changed function reachable from something a user can actually click/trigger? | Grep for call sites outside its own file and outside the test suite. |
 | 4 | Do the project's own tests still pass after the change? | Fix before continuing; never leave the live app on a red suite. |
-| 5 | (widget only) Was it exercised inside its named host, not just standalone? | Open it in the host. |
+| 5 | (widget only) Was it exercised inside its host app, not just standalone? | Open it in the host app. |
 | 6 | If a Vibe-Coding exception was introduced, is it in `app-decisions.md`? | Add it now, with the reason (G-1). |
 | 7 | Is README's cross-app behaviour section still accurate after this change (including its cross-file style note, if it has one)? | Update it — SR-7's scope, nothing more. |
 
@@ -112,13 +123,16 @@ The app folder carrying its code, `tests/`, one short `README.md`, `app-decision
 
 **Validation Check (Self-Test)**
 ```
-VERIFY the build was verified (tests + launch; widget in its host) before _build/ was deleted
+VERIFY the build was verified (tests + launch; widget in its host app) before _build/ was deleted
+VERIFY a widget is named in its host app's README → Cross-app behaviour
 VERIFY nothing was deleted before Luke confirmed
 VERIFY the folder carries no spec, PRD, build.md, StyleGuide.md, _template/, _test/ or registry file
 VERIFY README opens with Purpose (≤1 paragraph of prose) before anything else
+VERIFY Launch/restart, if present, is plain dot points a human can run without interpreting them —
+  and is absent (not a stub) if opening the app is itself the whole instruction
+VERIFY README's navigation map is an ASCII-style site map, structure only
 VERIFY README's Cross-app behaviour section is present, even if it just says there is none
 VERIFY README carries no per-file comments and no decisions of any kind
-VERIFY README's navigation map is an ASCII-style site map, structure only
 VERIFY any cross-app or multi-file architecture appears under README's Cross-app behaviour
 VERIFY README points to app-decisions.md rather than copying its tables
 ELSE ➔ stop and report

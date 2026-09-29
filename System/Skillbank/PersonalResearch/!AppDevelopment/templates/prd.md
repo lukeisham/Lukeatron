@@ -7,7 +7,7 @@
 
 version: 0.1
 kind: <app | widget>
-host: <what it runs inside — widgets only>
+host: <the host app it is nested inside and serves, System/Apps/<Host>/ — widgets only>
 status: <drafting | approved>
 
 ## Purpose
@@ -31,7 +31,7 @@ status: <drafting | approved>
 ```
 
 ## UI
-<!-- Apps only — a widget's visual contract lives with its host chassis; delete this section for a widget. -->
+<!-- Apps only — a widget inherits its host app's styling; delete this section for a widget. -->
 <`!HouseStyle`'s verdict for this surface — EXEMPT / SUBORDINATE / UNCLASSIFIED, from
 `.Claude/skills/!HouseStyle/reference/sources.md` — and what that means here.>
 <The one rule: where every visual value must live (normally one token file every other file cites
@@ -50,7 +50,8 @@ Once built, the code carries the real values; this is intent, not a permanent re
 
 ## Host contract
 <!-- Widgets only. Delete for an app. -->
-<How it is embedded, what it receives from the host, what it emits back.>
+<The job it does for the host app, where in the host app it sits, what it receives from the host
+app, what it emits back.>
 
 ## Constraints
 - <Offline? Standard library only? A file it must read? A size it must fit? A speed it must hit?>

@@ -34,7 +34,7 @@ Phase 2 of `!AppDevelopment`, or `!AppSpecs` directly on a project whose PRD is 
   SPLIT the PRD's behaviours into modules along these seams, in order of preference:
     - one job per module (SR-1) — the module is named by what it does
     - a seam where data changes hands
-    - a seam where the host boundary sits (widgets)
+    - a seam where the host-app boundary sits (widgets)
     - a seam where one part could be swapped out without touching the others
   MATCH size CASE
     small widget, one job     ➔ 2 specs: the widget spec + the documentation spec
@@ -85,6 +85,8 @@ Phase 2 of `!AppDevelopment`, or `!AppSpecs` directly on a project whose PRD is 
   BUILD mockups of the surfaces the PRD describes — enough for Luke to react to, not a prototype.
   Mockups live in `System/Sandbox/<Name>-mockups/` — the only thing this skill puts in Sandbox.
   They are throwaway by design; they are deleted in Phase 3 and no build code comes from them.
+  IF `kind` = widget ➔ show the widget in place inside its host app (a screenshot or copy of the
+  host app's surface with the widget drawn in), using the host app's tokens — never standalone.
 
   Draw on two design-system references for componentry, layout, and visual language — never copy
   verbatim, use them as a vocabulary to remix:

@@ -23,8 +23,8 @@ anything inside one module belongs in that module's own spec.
 Also carries any architectural point that is itself cross-app or multi-file — the reasoning behind
 a shared boundary, not just its runtime contract — since the code alone cannot show why a seam
 sits where it does.
-For a widget this always includes its named host boundary (what it receives from the host, what
-it emits back). An app has no host boundary — only module boundaries apply.>
+For a widget this always includes its host-app boundary (the job it does for the host app, where
+it mounts, what it receives from the host app, what it emits back). An app has no host boundary — only module boundaries apply.>
 
 | From | To | What crosses | What breaks if it changes |
 |---|---|---|---|

@@ -55,8 +55,10 @@ records "design closed".
   dated copy of each real data file before the app's first write to it, a commit per module.
   It restates G-1 (Vibe Coding Rules; exceptions only by explicit permission, recorded in
   `app-decisions.md`). An interrupted build resumes from the code, the specs and the git log.
-  IF `kind` = widget ➔ fill in the template's widget-only "Done when" clause with the host named
-  in the PRD. IF `kind` = app ➔ delete that clause.
+  IF `kind` = widget ➔ the build target is `System/Widgets/<Name>/`, and fill in the template's
+  widget-only "Done when" clause with the host app named in the PRD. The build may touch the host
+  app only at the seam the Host contract names (the mount point), committed separately.
+  IF `kind` = app ➔ delete that clause.
 
 **STEP 4 — Hand over**
   SHOW Luke the build prompt and tell him plainly that this skill's part is done until the build

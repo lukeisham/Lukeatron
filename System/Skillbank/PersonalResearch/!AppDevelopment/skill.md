@@ -1,11 +1,11 @@
 ---
 name: "!AppDevelopment"
-description: "Router for the four-phase app/widget development lifecycle — PRD (including its UI section, the app's design intent), technical specs + mockups, build prep, and post-build retirement of the build documents. Everything lives in the app's own folder from day one; the phase is read off which files exist, and the one state file is app-decisions.md (Luke's approvals, key decisions + granted rule exceptions). Apps are standalone web apps, opened directly — they ARE the front door. Widgets need a host — another app, a page, a chassis, or the local OS/shell — and are never opened as their own front door."
+description: "Router for the four-phase app/widget development lifecycle — PRD (including its UI section, the app's design intent), technical specs + mockups, build prep, and post-build retirement of the build documents. Everything lives in the app's own folder from day one; the phase is read off which files exist, and the one state file is app-decisions.md (Luke's approvals, any decision he explicitly flags, + granted rule exceptions — the code is self-documenting, so nothing else is logged as a matter of course). Apps are standalone web apps, opened directly — they ARE the front door. Widgets are built only when Luke asks for one: saved in System/Widgets/<Name>/, each nested inside and serving one host app in System/Apps/, never opened as their own front door."
 type: Skill
 status: Active
 core_function: System
-intent: "Take an app or widget from a blank idea to a working app on real data in its permanent folder, one gated phase at a time, with only Luke's approvals, key decisions and granted exceptions recorded — everything else is read off the files themselves."
-version: 2.1.0
+intent: "Take an app or widget from a blank idea to a working app on real data in its permanent folder, one gated phase at a time, with only Luke's approvals, whatever he explicitly flags, and granted exceptions recorded — everything else is read off the files themselves."
+version: 2.2.0
 dependencies:
   - phase1-prd.md
   - phase2-specs.md
@@ -39,27 +39,30 @@ Scope: One app or widget per invocation. Never two projects in one run.
 // EXECUTION_START
 
 **STEP 0 — Fix the vocabulary**
-  One question decides `kind`: **can this be opened on its own, with nothing else already
-  running, and it is the whole thing?**
-    yes ➔ `kind` = `app`    — a standalone web app; it IS the front door, opened directly by URL.
-    no  ➔ `kind` = `widget` — it has a HOST: something else that must already exist for it to run
-                              at all. The host is not always a web page — it may be another app,
-                              a widget suite/chassis, or the local OS/shell (a menu-bar item, a
-                              cron/launchd job, a CLI invoked from a folder). Whatever it is, name
-                              it — a widget with no named host is not yet specified (Phase 1).
-  A thing that COULD be embedded but is also fully usable opened on its own is an app — optional
-  embeddability does not make something a widget.
+  `kind` defaults to `app`. It becomes `widget` ONLY when Luke asks for a widget — the skill
+  never decides on its own that something should be one.
+    `app`    — a standalone web app; it IS the front door, opened directly by URL.
+    `widget` — NESTED INSIDE and SERVING one other app, its **host app**: an existing app in
+               `System/Apps/<Host>/`. It runs only inside that app, does a job for that app, and
+               is never opened as its own front door. The host is always an app — not a bare
+               page, a chassis, or the OS/shell. Name it — a widget with no named host app is not
+               yet specified (Phase 1). If the host app does not exist yet, it is built first.
+  If Luke asks for a widget but what he describes is fully usable on its own, say so and offer
+  `app` instead; his answer stands.
   The distinction is load-bearing across every phase:
-    Phase 1 — a widget's PRD carries a Host contract section; an app's PRD does not.
-    Phase 2 — the documentation spec additionally covers the named host boundary for a widget.
-    Phase 3 — a widget is not "done" until exercised inside its named host.
-    Home    — `System/Apps/<Name>/` vs `System/Widgets/<Name>/`.
-  Ask Luke if the request does not make it obvious.
+    Phase 1 — a widget's PRD names its host app and carries a Host contract section; an app's
+              PRD does not. A widget has no `## UI` section — it inherits its host app's styling.
+    Phase 2 — the documentation spec additionally covers the host-app boundary; widget mockups
+              show the widget in place inside the host app.
+    Phase 3 — a widget is not "done" until exercised inside its host app.
+    Phase 4 — the host app's README Cross-app behaviour section gains a line naming the widget.
+    Home    — `System/Apps/<Name>/` vs `System/Widgets/<Name>/`. A widget is saved in
+              `System/Widgets/`, never inside the host app's own folder.
 
 **The folder — one home from day one**
 ```
 System/Apps/<Name>/                (widgets: System/Widgets/<Name>/)
-├── app-decisions.md     PERMANENT — Luke's approvals, key decisions + granted rule exceptions
+├── app-decisions.md     PERMANENT — Luke's approvals, anything he explicitly flags + granted rule exceptions
 ├── wishlist.md          PERMANENT — owned by !AppWishlist, not by this skill
 ├── README.md · code · tests/      (from the build onward — no separate style file)
 └── _build/              TEMPORARY — prd.md · specs/ · build.md; deleted in Phase 4
@@ -120,8 +123,8 @@ palette/type/spacing intent), tested against the mockups in Phase 2, then built.
 files that result ARE the record from then on; nothing restates their values. The one exception:
 if styling is split across more than one file, or a HouseStyle classification governs how every
 file relates to a shared chassis, that single cross-file fact lands in README (Phase 4) — the
-code's own comments cannot carry it, and README carries no other style detail. A widget's visual
-contract lives with its host chassis instead; its PRD carries no `## UI` section.
+code's own comments cannot carry it, and README carries no other style detail. A widget inherits
+its host app's tokens and HouseStyle verdict instead; its PRD carries no `## UI` section.
 
 Downstream checks against that default — advisory, consulted at judgment, scaled to personal
 builds: `!RefactoringUI` (visual, Phases 2-4) · `!UXHeuristics` (usability, Phases 2-4) ·
@@ -154,20 +157,22 @@ Phases 3-4). Each scores out of 10 against a fixed table.
   Plain simple English throughout. ASCII diagrams where a shape is easier seen than read.
   If two documents say the same thing, one of them is wrong.
 
-**G-4 — Record an approval or exception the moment Luke gives it.**
-  `app-decisions.md` is written as decisions happen, not at the end of a session. Everything else
-  an interrupted agent needs is on disk in the PRD, specs, `build.md` and the code.
+**G-4 — Record an approval, a flagged decision, or an exception the moment it happens.**
+  `app-decisions.md` is written as these happen, not at the end of a session — and only these
+  three; the code is self-documenting, so nothing else is logged as a matter of course. Everything
+  else an interrupted agent needs is on disk in the PRD, specs, `build.md` and the code.
 
 // EXECUTION_END
 
 ## ✅ OUTPUT
 An app folder whose files answer "what is this and how far along is it" by themselves, plus an
-`app-decisions.md` that answers "what has Luke approved, why the build is shaped as it is, and
+`app-decisions.md` that answers "what has Luke approved, anything he's explicitly flagged, and
 which rule breaks are deliberate".
 
 **Validation Check (Self-Test)**
 ```
 VERIFY the project lives in System/Apps/<Name>/ (or System/Widgets/<Name>/) with app-decisions.md
+VERIFY a widget was built only because Luke asked, and names a host app that exists in System/Apps/
 VERIFY no registry.md, refactor-registry.md, _template/ or _test/ was created
 VERIFY every granted Vibe-Coding exception appears in app-decisions.md
 VERIFY nothing but mockups was written to System/Sandbox/

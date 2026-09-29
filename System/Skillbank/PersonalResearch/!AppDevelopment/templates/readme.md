@@ -47,7 +47,7 @@ Always the first thing under the title. For Luke as much as for an agent.>
 <!-- Written AI for AI — dense and technical is fine. Always present, even when there is none —
      say so outright rather than omitting the section. -->
 <What talks to what across a module or host boundary: what each side may assume, what breaks if
-that assumption changes. A widget's host boundary always belongs here.
+that assumption changes. A widget's host-app boundary always belongs here; a host app lists each widget nested in it.
 Also any architecture that is itself cross-app or multi-file — the reasoning behind a shared
 seam, not just its runtime contract — since no one file's comments can carry it.
 If styling is split across more than one file, or a shared HouseStyle classification governs

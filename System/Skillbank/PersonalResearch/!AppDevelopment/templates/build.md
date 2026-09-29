@@ -12,8 +12,8 @@ You are the **boss agent** for the build of **<Name>**, a <app | widget> whose d
 
 **Read first, in this order:**
 1. `System/Apps/<Name>/app-decisions.md` — what Luke has approved, and the granted rule exceptions.
-2. `System/Apps/<Name>/_build/specs/documentation.spec.md` — cross-boundary behaviour, key
-   decisions, the navigation map.
+2. `System/Apps/<Name>/_build/specs/documentation.spec.md` — cross-app behaviour and the
+   navigation map.
 3. The module specs in `_build/specs/`.
 4. `Memory/Long-Term/Coding/vibe-coding-rules.md` — binding on every file you or any subagent writes.
 
@@ -53,8 +53,10 @@ the log reads as the build's progress.
 
 **Done when:** every spec's own verification checklist passes and the whole thing runs.
 <!-- Widget projects only — delete this line for an app: -->
-For a widget, "runs" means exercised inside its named host (`<host>`, from the PRD's Host
-contract), not merely opened standalone — a widget that only works outside its host is not done.
+For a widget, the code lives in `System/Widgets/<Name>/`, and "runs" means exercised inside its
+host app (`System/Apps/<Host>/`, from the PRD's Host contract), not merely opened standalone — a
+widget that only works outside its host app is not done. Touch the host app only at the mount point
+the Host contract names, in its own commit.
 Then report to Luke; do not begin Phase 4 yourself.
 
 ---

@@ -1,0 +1,101 @@
+/* Larder — the cookbook-page sheet over Home. Cites Home's tokens.css only (Home's one rule); the
+   percentages and 1px hairlines are layout, not visual values. */
+
+/* ── sheet ───────────────────────────────────────────────────────── */
+.larder-backdrop {
+  position: fixed; inset: 0; z-index: 3;
+  display: grid; grid-template-rows: minmax(0, 1fr); place-items: center; padding: var(--s-4);
+  background: color-mix(in srgb, var(--ink) 40%, transparent);
+}
+.larder-backdrop[hidden] { display: none; }
+.larder-sheet {
+  display: grid; grid-template-columns: calc(var(--margin-col) + var(--s-3)) 1fr; grid-template-rows: minmax(0, 1fr);
+  width: 100%; height: 100%; max-width: calc(var(--measure) + var(--margin-col) * 2 + var(--s-7));
+  background: var(--bg-raised); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shade-float);
+  overflow: hidden; animation: larder-lift var(--m-slow) var(--ease-out);
+}
+@keyframes larder-lift { from { opacity: 0; transform: translateY(var(--s-3)); } }
+
+/* ── spine ───────────────────────────────────────────────────────── */
+.larder-spine { padding: var(--s-5) var(--s-4); background: var(--bg-sunk); border-right: 1px solid var(--line); }
+.larder-title { margin: 0; font: italic var(--t-display)/var(--lh-tight) var(--font-prose); }
+.larder-rule { width: var(--s-5); margin: var(--s-3) 0; border: 0; border-top: 1px solid var(--ink-3); }
+.larder-purpose { margin: 0 0 var(--s-3); font: italic var(--t-small)/var(--lh-body) var(--font-prose); color: var(--ink-2); }
+.larder-count { margin: 0; font: var(--t-micro)/var(--lh-ui) var(--font-ui); color: var(--ink-3); }
+
+/* ── leaf ────────────────────────────────────────────────────────── */
+.larder-leaf { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.larder-scroll { flex: 1; overflow-y: auto; padding: var(--s-5) var(--s-5) var(--s-4); }
+.larder-close {
+  position: absolute; top: var(--s-2); right: var(--s-2); z-index: 1;
+  width: var(--s-5); height: var(--s-5); border: 0; border-radius: var(--radius-sm);
+  background: none; color: var(--ink-2); font: var(--t-body) var(--font-ui); cursor: pointer;
+}
+.larder-close:hover, .larder-back:hover, .larder-link:hover { color: var(--ink); }
+.larder-close:focus-visible, .larder-back:focus-visible, .larder-link:focus-visible,
+.larder-copy:focus-visible, .larder-retry:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+.larder-list[hidden], .larder-detail[hidden] { display: none; }
+
+/* ── search and index ────────────────────────────────────────────── */
+.larder-search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.larder-search {
+  width: 100%; box-sizing: border-box; padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--ink); font: var(--t-body)/var(--lh-ui) var(--font-ui);
+}
+.larder-search:focus { outline: 0; border-color: var(--focus); box-shadow: var(--focus-ring); }
+.larder-search::placeholder { color: var(--ink-3); }
+.larder-message-row { display: flex; align-items: baseline; gap: var(--s-2); }
+.larder-message { margin: var(--s-3) 0; font: italic var(--t-body)/var(--lh-body) var(--font-prose); color: var(--ink-2); }
+.larder-message:empty { display: none; }
+.larder-retry, .larder-copy {
+  padding: var(--s-1) var(--s-2); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: none; color: var(--ink); font: var(--t-small)/var(--lh-ui) var(--font-ui); cursor: pointer;
+}
+.larder-results { list-style: none; margin: var(--s-3) 0 0; padding: 0; }
+.larder-row { display: block; padding: var(--s-2) var(--s-2); border-bottom: 1px solid var(--line-faint); cursor: pointer; }
+.larder-row[aria-selected="true"] { background: var(--acc-wash); }
+.larder-row-head { display: flex; align-items: baseline; gap: var(--s-2); }
+.larder-row-title { font: var(--t-h2)/var(--lh-tight) var(--font-prose); }
+.larder-leader { flex: 1; border-bottom: 1px dotted var(--ink-3); }
+.larder-row-time { font: var(--t-small) var(--font-ui); color: var(--ink-2); }
+.larder-row-meta, .larder-row-reason { display: block; font: var(--t-small)/var(--lh-ui) var(--font-ui); color: var(--ink-3); }
+.larder-row-reason { font-style: italic; }
+
+/* ── one recipe ──────────────────────────────────────────────────── */
+.larder-back, .larder-link { padding: 0; border: 0; background: none; color: var(--acc); font: var(--t-small)/var(--lh-ui) var(--font-ui); cursor: pointer; }
+.larder-recipe-title { margin: var(--s-3) 0 var(--s-1); font: var(--t-display)/var(--lh-tight) var(--font-prose); }
+.larder-deck { margin: 0 0 var(--s-3); font: var(--t-small) var(--font-ui); color: var(--ink-2); }
+.larder-table { display: block; max-width: 100%; margin-bottom: var(--s-4); }
+.larder-columns { display: grid; grid-template-columns: minmax(0, var(--measure)) var(--margin-col); gap: 0 var(--s-4); }
+.larder-margin { padding-left: var(--s-4); border-left: 1px solid var(--line); }
+.larder-block-title { margin: 0 0 var(--s-2); font: var(--t-micro) var(--font-ui); text-transform: uppercase; color: var(--ink-2); }
+.larder-block { margin-bottom: var(--s-4); }
+.larder-method p, .larder-block p { margin: 0 0 var(--s-2); font: var(--t-body)/var(--lh-body) var(--font-prose); }
+.larder-margin p, .larder-margin li { font-size: var(--t-small); }
+.larder-ingredients, .larder-equipment { margin: var(--s-2) 0 0; padding-left: var(--s-3); font: var(--t-small)/var(--lh-ui) var(--font-prose); }
+.larder-copy-status { margin-left: var(--s-2); font: var(--t-micro) var(--font-ui); color: var(--ink-2); }
+
+/* ── narrow: spine hides, margin drops below the method ───────────── */
+@media (max-width: 700px) {
+  .larder-backdrop { padding: 0; }
+  .larder-sheet { grid-template-columns: 1fr; border-radius: 0; }
+  .larder-spine { display: none; }
+  .larder-scroll { padding: var(--s-5) var(--s-3) var(--s-3); }
+  .larder-columns { grid-template-columns: 1fr; }
+  .larder-margin { padding: var(--s-3) 0 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ── print: only the open recipe; scoped by the class larder.js sets on <html> ── */
+@media print {
+  .larder-open body > :not(.larder-host) { display: none; }
+  .larder-backdrop { position: static; padding: 0; background: none; }
+  .larder-sheet { display: block; border: 0; box-shadow: none; animation: none; height: auto; overflow: visible;
+    background: none; --ink: var(--print-ink); --ink-2: var(--print-ink); --ink-3: var(--print-ink); color: var(--print-ink); }
+  .larder-spine, .larder-close, .larder-list, .larder-back, .larder-copy, .larder-copy-status,
+  .larder-block-equipment, .larder-block-source, .larder-block-based-on { display: none; }
+  .larder-scroll { overflow: visible; padding: 0; }
+  .larder-columns { grid-template-columns: 1fr; }
+  .larder-margin { border: 0; padding: 0; }
+}

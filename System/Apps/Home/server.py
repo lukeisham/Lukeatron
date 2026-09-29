@@ -25,7 +25,7 @@ from core.credstore import CredStore  # noqa: E402
 from core.home import Home  # noqa: E402
 from core.settings import load_settings  # noqa: E402
 from core.web import BadRequest, Request, Response, error, redirect  # noqa: E402
-from routes import apps, auth, open as open_routes, page, verse  # noqa: E402
+from routes import apps, auth, inbox_note, open as open_routes, page, verse  # noqa: E402
 
 log = logging.getLogger("home")
 
@@ -38,6 +38,10 @@ PUBLIC_POSTS: dict[str, Callable[[Home, Request], Response]] = {
     "/auth/login/options": auth.login_options,
     "/auth/login/verify": auth.login_verify,
     "/auth/signout": auth.signout,
+}
+# POSTs that need a signed-in person (not the agent key); each route checks Origin itself.
+SIGNED_IN_POSTS: dict[str, Callable[[Home, Request], Response]] = {
+    "/api/inbox-note": inbox_note.save,
 }
 DATA_GETS: dict[str, Callable[[Home, Request], Response]] = {
     "/apps.json": apps.apps_json,
@@ -58,7 +62,8 @@ def dispatch(home: Home, request: Request) -> Response:
         return redirect(f"http://localhost:{home.settings.port}{path}", 301)
 
     if method == "POST":
-        handler = PUBLIC_POSTS.get(path)
+        # Signed-in POSTs run their own Origin-then-session gate, so the agent key never qualifies.
+        handler = PUBLIC_POSTS.get(path) or SIGNED_IN_POSTS.get(path)
         return handler(home, request) if handler else error("not_found")
     if method not in ("GET", "HEAD"):
         return error("method_not_allowed")
@@ -81,6 +86,9 @@ def dispatch(home: Home, request: Request) -> Response:
         return open_routes.status(home, request, _split(path, "/api/status/")[0])
     if path.startswith("/open/"):
         return open_routes.open_app(home, request, _split(path, "/open/")[0])
+    if path.startswith("/widgets/"):
+        parts = _split(path, "/widgets/")
+        return page.widget_file(home, request, parts[0], parts[1] if len(parts) > 1 else "")
     if path.startswith("/apps/"):
         parts = _split(path, "/apps/")
         return open_routes.serve_file(home, request, parts[0], parts[1] if len(parts) > 1 else "")
@@ -133,7 +141,8 @@ def make_handler(home: Home) -> type[BaseHTTPRequestHandler]:
     return Handler
 
 
-def build_home(root: Path, *, credentials_dir: Path | None = None, cache_dir: Path | None = None) -> Home:
+def build_home(root: Path, *, credentials_dir: Path | None = None, cache_dir: Path | None = None,
+               inbox_dir: Path | None = None) -> Home:
     """The two overrides exist for tests/verify_server.py, which must never touch the real secrets."""
     return Home(
         settings=load_settings(paths.SETTINGS_FILE),
@@ -144,6 +153,8 @@ def build_home(root: Path, *, credentials_dir: Path | None = None, cache_dir: Pa
         cache_dir=cache_dir or paths.CACHE_DIR,
         static_dir=paths.STATIC_DIR,
         creds=CredStore(credentials_dir or paths.credentials_dir(root)),
+        widgets_dir=paths.widgets_dir(root),
+        inbox_dir=inbox_dir or paths.inbox_dir(root),
     )
 
 
@@ -154,7 +165,8 @@ def main() -> int:
     except paths.RootNotFound as exc:
         log.error("%s", exc)
         return 1
-    found = selfcheck.problems(paths.apps_dir(root), paths.bsb_file(root), paths.credentials_dir(root))
+    found = selfcheck.problems(paths.apps_dir(root), paths.bsb_file(root), paths.credentials_dir(root),
+                              paths.inbox_dir(root))
     for problem in found:
         log.error("self-check: %s", problem)
     if found:

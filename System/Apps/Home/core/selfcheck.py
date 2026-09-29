@@ -13,7 +13,7 @@ FIX = ("macOS may be blocking Python from the Dropbox folder: System Settings â†
        "Full Disk Access â†’ add {python}")
 
 
-def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path) -> list[str]:
+def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: Path) -> list[str]:
     found: list[str] = []
     fix = FIX.format(python=sys.executable)
     if sys.version_info < MIN_PYTHON:
@@ -34,4 +34,14 @@ def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path) -> list[str]
         probe.unlink()
     except OSError as exc:
         found.append(f"Cannot write to {credentials_dir} ({exc.strerror}). {fix}.")
+    try:
+        probe = inbox_dir / f".write-check-{os.getpid()}"
+        probe.write_text("ok", encoding="utf-8")
+        probe.unlink()
+    except OSError as exc:
+        found.append(f"Cannot write to {inbox_dir} ({exc.strerror}). {fix}.")
+    from routes import inbox_note  # here, not at the top: routes import core, not the other way round
+
+    if not inbox_note.widget_loads():
+        found.append(f"InboxNote is missing or broken at {inbox_note.WIDGET_DIR}.")
     return found

@@ -62,6 +62,21 @@ def holding(home: Home, name: str, mode: str, status: int = 200) -> Response:
     return html_response(text, status)
 
 
+# Widgets Home hosts; only their web/ folder is ever served (InboxNote home-hooks FR-2).
+HOSTED_WIDGETS = ("InboxNote",)
+
+
+def widget_file(home: Home, request: Request, name: str, relative: str) -> Response:
+    if name not in HOSTED_WIDGETS:
+        return error("not_found")
+    target = safe_child(home.widgets_dir / name / "web", relative)
+    if target is None or target.suffix not in CONTENT_TYPES:
+        return error("not_found")
+    response = Response(200, target.read_bytes(), CONTENT_TYPES[target.suffix])
+    response.headers.append(("Cache-Control", "no-cache"))
+    return response
+
+
 def static(home: Home, request: Request, relative: str) -> Response:
     target = safe_child(home.static_dir, relative)
     if target is None or target.suffix not in CONTENT_TYPES:

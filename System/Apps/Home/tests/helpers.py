@@ -67,6 +67,8 @@ def make_home(root: Path, *, up: set[int] | None = None, fetch=offline) -> Home:
     bsb.write_text((FIXTURES / "bsb_sample.txt").read_text(encoding="utf-8"), encoding="utf-8")
     refs = root / "verses.txt"
     refs.write_text("JOH 3:16\nPSA 23:1-2\n", encoding="utf-8")
+    inbox = root / "Inbox"
+    inbox.mkdir()
     return Home(
         settings=SETTINGS,
         apps_dir=apps,
@@ -76,6 +78,8 @@ def make_home(root: Path, *, up: set[int] | None = None, fetch=offline) -> Home:
         cache_dir=root / "cache",
         static_dir=HOME_DIR / "static",
         creds=CredStore(root / "creds"),
+        widgets_dir=HOME_DIR.parents[1] / "Widgets",  # the real widget code, read-only
+        inbox_dir=inbox,
         probe_fn=FakePorts(up),
         fetch_verse=fetch,
         now=lambda: 1_800_000_000.0,

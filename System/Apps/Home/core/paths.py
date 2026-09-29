@@ -41,6 +41,14 @@ def apps_dir(root: Path) -> Path:
     return root / "System" / "Apps"
 
 
+def widgets_dir(root: Path) -> Path:
+    return root / "System" / "Widgets"
+
+
+def inbox_dir(root: Path) -> Path:
+    return root / "Inbox"
+
+
 def credentials_dir(root: Path) -> Path:
     return root / "System" / "Credentials" / "Home"
 

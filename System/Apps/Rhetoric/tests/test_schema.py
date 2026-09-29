@@ -92,7 +92,7 @@ class SchemaTest(unittest.TestCase):
         self.assertEqual(wrong_hierarchy_links(self.db, "function_node_id", "function"), 0)
 
     def test_sort_columns_are_indexed(self):
-        indexed = {row[2] for row in self.db.execute("PRAGMA index_list(devices)")}
+        indexed = {row[1] for row in self.db.execute("PRAGMA index_list(devices)")}
         for column in ("name", "popularity", "topical_rank"):
             self.assertIn(f"idx_devices_{column}", indexed)
 

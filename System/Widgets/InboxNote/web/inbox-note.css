@@ -1,0 +1,90 @@
+/* InboxNote — the Side-rail layout inside Home's Inbox slot. Every value cites a token from Home's
+   tokens.css (Home's one rule); 50% is circle geometry, not a visual value. No animation, so
+   Home's flourish budget is unchanged. Print: Home already hides the slots. */
+
+.inbox-note:focus-within { border-color: var(--focus); box-shadow: var(--focus-ring); }
+
+.inbox-note-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+/* ── the rail ─────────────────────────────────────────────────────── */
+
+.inbox-note-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: var(--s-2);
+  border-right: 1px solid var(--line-faint);
+}
+
+.inbox-note-mark {
+  width: calc(var(--glyph-md) + var(--s-2));
+  height: calc(var(--glyph-md) + var(--s-2));
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-3);
+  font: var(--t-small) var(--font-ui);
+  cursor: pointer;
+  transition: background-color var(--m-fast) var(--ease-out), color var(--m-fast) var(--ease-out);
+}
+.inbox-note-mark:hover { background: var(--acc-wash); color: var(--ink); }
+.inbox-note-mark:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+.inbox-note-mark .glyph-line { width: var(--glyph-sm); height: var(--glyph-sm); }
+
+.inbox-note-count {
+  margin-top: auto;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+.inbox-note-count.is-full { color: var(--danger); }
+
+/* ── the note ─────────────────────────────────────────────────────── */
+
+.inbox-note-text {
+  min-height: 9rem;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: none;
+  padding: var(--s-1) 0;
+  color: var(--ink);
+  font: var(--t-body)/var(--lh-body) var(--font-prose);
+}
+.inbox-note-text::placeholder { color: var(--ink-3); font-style: italic; }
+
+/* ── Copy and Save ────────────────────────────────────────────────── */
+
+.inbox-note-actions { display: flex; justify-content: flex-end; gap: var(--s-1); margin-top: var(--s-2); }
+
+.inbox-note-icon {
+  width: calc(var(--glyph-md) + var(--s-3));
+  height: calc(var(--glyph-md) + var(--s-3));
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.inbox-note-icon:hover { color: var(--ink); border-color: var(--line-strong); }
+.inbox-note-icon:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+.inbox-note-icon:disabled { opacity: 0.4; cursor: default; }
+.inbox-note-icon .glyph-line { width: var(--glyph-sm); height: var(--glyph-sm); }
+
+.inbox-note-save { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+.inbox-note-save:hover { color: var(--acc-ink); border-color: var(--acc); }
+
+.inbox-note-status { min-height: 1lh; margin-top: var(--s-2); font-size: var(--t-micro); color: var(--ink-2); }
+.inbox-note-status.is-alert { color: var(--danger); }

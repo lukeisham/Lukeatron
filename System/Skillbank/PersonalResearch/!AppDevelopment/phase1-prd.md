@@ -5,7 +5,7 @@ type: Skill
 status: Active
 core_function: Generate
 intent: "Get the purpose and the key design decisions onto one page before a single line of spec is written."
-version: 2.0.0
+version: 2.1.0
 dependencies: [templates/prd.md, templates/app-decisions.md]
 calibration:
   context: [PersonalResearch]
@@ -51,12 +51,16 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
     2. The core job — the single thing it must do well. If there are two, ask which is the app.
     3. Inputs and outputs — what goes in, what comes out, where each lives.
     4. The shape on screen — draw an ASCII layout sketch and get it corrected. Cheaper than a mockup.
-    5. Key behaviours — the handful of interactions that define it. Not an exhaustive list.
-    6. Boundaries — what it deliberately does NOT do. This section earns its place every time.
-    7. Data — what it stores, where, and what happens to it when the app closes.
-    8. For a widget: the host contract — how it is embedded, what it receives, what it emits.
-    9. Constraints — offline? stdlib only? a specific file it must read? a size it must fit?
-   10. Done looks like — the checkable statements that mean it works.
+    5. UI (apps only) — `!HouseStyle`'s verdict for this surface, the one rule for where visual
+       values must live, and a first-pass palette/type/spacing intent. Rough is fine — Phase 2's
+       mockups test it, and the code carries the real values once built. Skip for a widget; its
+       visual contract lives with its host chassis.
+    6. Key behaviours — the handful of interactions that define it. Not an exhaustive list.
+    7. Boundaries — what it deliberately does NOT do. This section earns its place every time.
+    8. Data — what it stores, where, and what happens to it when the app closes.
+    9. For a widget: the host contract — how it is embedded, what it receives, what it emits.
+   10. Constraints — offline? stdlib only? a specific file it must read? a size it must fit?
+   11. Done looks like — the checkable statements that mean it works.
   Use an ASCII diagram wherever a shape, a flow, or a state change is easier seen than read.
   Never draw one for decoration.
 
@@ -94,7 +98,8 @@ Fires on: "I want to build a widget that…", "new app idea", "write a PRD for�
 **Validation Check (Self-Test)**
 ```
 VERIFY the PRD names purpose, core job, I/O, boundaries, data, done-looks-like
-VERIFY a widget PRD names its host and the host contract
+VERIFY an app PRD's UI section names a HouseStyle verdict, the one rule, and a first-pass intent
+VERIFY a widget PRD names its host and the host contract, and carries no UI section
 VERIFY the PRD's status is approved AND app-decisions.md records that approval with its version
 VERIFY the PRD contains no implementation detail that belongs in a spec
 ELSE ➔ return to the failing step

@@ -48,7 +48,8 @@ unclassified surface defaults to UNCLASSIFIED (the house style governs whole).
 | 11 | `!teach` | UNCLASSIFIED | Self-contained HTML lessons from `./assets/` |
 | 12 | `!BookCover` | UNCLASSIFIED | Renders cover imagery into wiki nodes |
 | 13 | `!GrammarFrame` — `Memory/Long-Term/Grammar/Technical_Outline.html` + `Theatre.html` | SUBORDINATE | Registered 2026-09-26 (Luke). The skill's own contract keeps LAYOUT and STRUCTURE — shared skeleton, diagnostic blocks, box diagrams, interaction tables, reach strip (its `criteria.md` GROUPS A and D). House style takes colour, type, glyphs, focus and print. Offline single files (its A8): tokens are **inlined** from `tokens.css`, never linked. Colour contract: breadth shades in the NEUTRAL ground ladder, reach in the ONE accent, `--danger` for flags only — within the two-accent cap, no local excess. Theatre.html's theatre glyphs (its D6) sit within the two-glyph-weight budget |
+| 14 | `Apps/Storytelling/app/css/variables.css` | **EXEMPT (palette only)** | Registered 2026-09-29 (Luke). Colours are sampled from the source poster (*The Periodic Table of Storytelling*, chart by ComputerSherpa via TV Tropes) rather than the house palette — a scoped exception Luke granted (PRD v0.7), so the app looks like the poster came alive. Spacing (4px grid), radii, the three-duration/three-easing motion budget, three elevation levels, and the reduced-motion floor all still follow the house default in full — see the app's own `StyleGuide.md` |
 | — | `!SvgImage` | **EXEMPT** | A 24-style illustration library. This skill governs UI marks, not illustration |
 | — | Any outgoing person-directed content | **OUT OF SCOPE** | `!Tone` governs the z-axis |
 
-Fifteen caller surfaces, plus two standing exemptions and the `!Tone` floor.
+Sixteen caller surfaces, plus two standing exemptions and the `!Tone` floor.

@@ -30,6 +30,15 @@ status: <drafting | approved>
 +--------------------------------------------------+
 ```
 
+## UI
+<!-- Apps only — a widget's visual contract lives with its host chassis; delete this section for a widget. -->
+<`!HouseStyle`'s verdict for this surface — EXEMPT / SUBORDINATE / UNCLASSIFIED, from
+`.Claude/skills/!HouseStyle/reference/sources.md` — and what that means here.>
+<The one rule: where every visual value must live (normally one token file every other file cites
+rather than writing a literal colour, size, or duration).>
+<First-pass palette / type / spacing / motion intent — tested against the mockups in Phase 2.
+Once built, the code carries the real values; this is intent, not a permanent record.>
+
 ## Key behaviours
 - <The handful of interactions that define it. Not an exhaustive list.>
 

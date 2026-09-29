@@ -5,7 +5,7 @@ type: Skill
 status: Active
 core_function: System
 intent: "Close design and hand a build team everything it needs; the files on disk are the resume point."
-version: 2.0.0
+version: 2.1.0
 dependencies: [templates/build.md, templates/app-decisions.md]
 calibration:
   context: [PersonalResearch]

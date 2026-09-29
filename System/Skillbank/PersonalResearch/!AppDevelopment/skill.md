@@ -1,11 +1,11 @@
 ---
 name: "!AppDevelopment"
-description: "Router for the four-phase app/widget development lifecycle — PRD, technical specs + mockups, build prep, and post-build retirement of the build documents. Everything lives in the app's own folder from day one; the phase is read off which files exist, and the one state file is app-decisions.md (Luke's approvals + granted rule exceptions). Apps are standalone web apps, opened directly — they ARE the front door. Widgets need a host — another app, a page, a chassis, or the local OS/shell — and are never opened as their own front door."
+description: "Router for the four-phase app/widget development lifecycle — PRD (including its UI section, the app's design intent), technical specs + mockups, build prep, and post-build retirement of the build documents. Everything lives in the app's own folder from day one; the phase is read off which files exist, and the one state file is app-decisions.md (Luke's approvals, key decisions + granted rule exceptions). Apps are standalone web apps, opened directly — they ARE the front door. Widgets need a host — another app, a page, a chassis, or the local OS/shell — and are never opened as their own front door."
 type: Skill
 status: Active
 core_function: System
-intent: "Take an app or widget from a blank idea to a working app on real data in its permanent folder, one gated phase at a time, with only Luke's approvals and granted exceptions recorded — everything else is read off the files themselves."
-version: 2.0.0
+intent: "Take an app or widget from a blank idea to a working app on real data in its permanent folder, one gated phase at a time, with only Luke's approvals, key decisions and granted exceptions recorded — everything else is read off the files themselves."
+version: 2.1.0
 dependencies:
   - phase1-prd.md
   - phase2-specs.md
@@ -15,7 +15,7 @@ dependencies:
   - templates/prd.md
   - templates/doc-spec.md
   - templates/build.md
-  - templates/style-guide.md
+  - templates/readme.md
 calibration:
   context: [PersonalResearch]
   level: Extended
@@ -59,9 +59,9 @@ Scope: One app or widget per invocation. Never two projects in one run.
 **The folder — one home from day one**
 ```
 System/Apps/<Name>/                (widgets: System/Widgets/<Name>/)
-├── app-decisions.md     PERMANENT — Luke's approvals + granted rule exceptions
+├── app-decisions.md     PERMANENT — Luke's approvals, key decisions + granted rule exceptions
 ├── wishlist.md          PERMANENT — owned by !AppWishlist, not by this skill
-├── README.md · StyleGuide.md · code · tests/      (from the build onward)
+├── README.md · code · tests/      (from the build onward — no separate style file)
 └── _build/              TEMPORARY — prd.md · specs/ · build.md; deleted in Phase 4
 System/Sandbox/<Name>-mockups/     Phase 2 only; the ONLY thing this skill puts in Sandbox
 ```
@@ -91,13 +91,12 @@ System/Sandbox/<Name>-mockups/     Phase 2 only; the ONLY thing this skill puts 
     1 ➔ READ `phase1-prd.md`       and follow it   // folder + PRD + app-decisions.md
     2 ➔ READ `phase2-specs.md`     and follow it   // specs + mockups, iterating
     3 ➔ READ `phase3-buildprep.md` and follow it   // close design, write build.md
-    4 ➔ READ `phase4-retire.md`    and follow it   // README, StyleGuide, delete _build/
+    4 ➔ READ `phase4-retire.md`    and follow it   // README, delete _build/
   Load exactly ONE phase file. Never read ahead.
 
 **STEP 3 — Cold entry into Phase 4**
   An app or widget that already exists with no `_build/` can be handed to `phase4-retire.md`
-  directly: there is nothing to delete, so it writes the missing README / StyleGuide /
-  app-decisions.md only.
+  directly: there is nothing to delete, so it writes the missing README / app-decisions.md only.
 
 **STEP 4 — Phase advance is an approval, recorded at once**
   A phase ends only when Luke says he is happy with it. On advance:
@@ -115,9 +114,14 @@ app as it lives on. Classify the surface against its `reference/sources.md` regi
 SUBORDINATE / UNCLASSIFIED), then use its tokens, motion durations and glyph rules rather than
 deciding taste per build. Its flourish budget is counted, so a breach is a failure, not an opinion.
 
-**Every app carries a `StyleGuide.md` sibling to `README.md`** at its folder root, written in
-Phase 4 (cold entry included) from the app's real tokens/CSS. A widget's visual contract lives
-with its host chassis instead.
+**The code is the style guide — no separate style file is written.** Design intent is captured
+once, as the PRD's own `## UI` section (Phase 1: HouseStyle verdict, the one rule, a first-pass
+palette/type/spacing intent), tested against the mockups in Phase 2, then built. The token/CSS
+files that result ARE the record from then on; nothing restates their values. The one exception:
+if styling is split across more than one file, or a HouseStyle classification governs how every
+file relates to a shared chassis, that single cross-file fact lands in README (Phase 4) — the
+code's own comments cannot carry it, and README carries no other style detail. A widget's visual
+contract lives with its host chassis instead; its PRD carries no `## UI` section.
 
 Downstream checks against that default — advisory, consulted at judgment, scaled to personal
 builds: `!RefactoringUI` (visual, Phases 2-4) · `!UXHeuristics` (usability, Phases 2-4) ·
@@ -158,7 +162,8 @@ Phases 3-4). Each scores out of 10 against a fixed table.
 
 ## ✅ OUTPUT
 An app folder whose files answer "what is this and how far along is it" by themselves, plus an
-`app-decisions.md` that answers "what has Luke approved, and which rule breaks are deliberate".
+`app-decisions.md` that answers "what has Luke approved, why the build is shaped as it is, and
+which rule breaks are deliberate".
 
 **Validation Check (Self-Test)**
 ```

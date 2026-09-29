@@ -5,7 +5,7 @@ type: Skill
 status: Active
 core_function: Generate
 intent: "Turn an approved PRD into the smallest set of modular specs a build team can work from, proved out against mockups Luke can actually look at."
-version: 2.0.0
+version: 2.1.0
 dependencies: [templates/doc-spec.md, templates/app-decisions.md]
 calibration:
   context: [PersonalResearch]
@@ -48,14 +48,19 @@ Phase 2 of `!AppDevelopment`, or `!AppSpecs` directly on a project whose PRD is 
   Exactly one documentation spec exists in every project, no exceptions, whatever the size.
   WRITE it to `_build/specs/documentation.spec.md` from `templates/doc-spec.md`. Its scope is deliberately narrow (SR-7) — it carries
   ONLY:
-    - cross-widget / cross-app behaviour: what talks to what, across a module or host boundary
-    - key architectural decisions and key functional decisions, each with its reason
-    - a lightweight ASCII navigation map: what lives where, and why
+    - cross-app behaviour: what talks to what across a module or host boundary, plus any
+      architecture that is itself cross-app or multi-file (the reasoning behind a shared seam,
+      not just its runtime contract) — no single file's own comments can carry either
+    - an ASCII-style navigation map: structure only, no per-file "what it does / why" commentary
     - a pointer to `app-decisions.md` for granted rule exceptions (G-1) — not a copy
   It carries NONE of: function walk-throughs, restated logic, per-file prose, usage tutorials,
-  or anything the code says for itself through its own names.
-  Write it knowing where it ends up: in Phase 4 no spec survives, and this one is folded down into
-  the template's `README.md` and then deleted. Every line should still earn its place there.
+  a decisions log, or anything the code says for itself through its own names. The code is
+  self-documenting — there is no "key decisions" section. IF a decision comes up that Luke
+  explicitly wants logged (not every decision — only one he flags) ➔ APPEND it straight to
+  `app-decisions.md` → Key decisions the moment he flags it. Never draft it here first.
+  Write it knowing where it ends up: in Phase 4 no spec survives — both remaining sections fold
+  down into README.md unchanged (they are already in their final, light shape), then the whole
+  spec is deleted with the rest.
 
 **STEP 3 — Write each remaining spec**
   Write each to `_build/specs/<module>.spec.md`, based on `System/Templates/Template_TechSpec.md`.
@@ -130,7 +135,8 @@ specs), `app-decisions.md` recording the design-closed approval, and
 
 **Validation Check (Self-Test)**
 ```
-VERIFY exactly one documentation spec exists and stays within its four permitted sections
+VERIFY exactly one documentation spec exists and stays within its three permitted sections
+VERIFY the documentation spec carries no key-decisions section — the code documents itself
 VERIFY every spec traces its sections back to PRD requirements
 VERIFY every spec's prd_version equals the PRD's version
 VERIFY every rule exception appears in app-decisions.md, with a reason

@@ -21,6 +21,9 @@
 __pycache__/
 *.pyc
 
+# Secrets: an API key file is local-only wherever it sits under the tracked trees
+.env
+
 # Runtime logs (server output etc.) — never version-controlled
 *.log
 

@@ -1,0 +1,57 @@
+/* ==========================================================================
+   tokens.css — the only file that defines a visual value (frontend.spec AD-7,
+   CSS-2). Two zones: the masthead carries the burgundy accent and manuscript
+   type; the list body is dense, monochrome and accent-free (AD-8).
+   ========================================================================== */
+:root {
+  /* Colour */
+  --color-page: #ffffff;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #666666;
+  --color-accent: #6b1f2a;
+  --color-rule-masthead: #e3d9c8;
+  --color-rule-body: #d8d8d8;
+  --color-marker: #9a9a9a;
+
+  /* Type */
+  --font-serif: Georgia, 'Iowan Old Style', serif;
+  --font-ui: -apple-system, 'Helvetica Neue', sans-serif;
+  --font-size-title: 26px;
+  --font-size-subrule: 12px;
+  --font-size-toolbar: 12px;
+  --font-size-toolbar-small: 11.5px;
+  --font-size-search: 14px;
+  --font-size-body: 14px;
+  --font-size-definition: 12.5px;
+  --font-size-example: 13px;
+  --font-size-marker: 13px;
+  --font-size-marker-small: 10px;
+  --line-height-body: 1.35;
+  --letter-spacing-title: 0.04em;
+  --letter-spacing-subrule: 0.3em;
+  --letter-spacing-ornament: 0.2em;
+  --letter-spacing-sort: 0.03em;
+
+  /* Space */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 18px;
+  --space-8: 22px;
+  --space-9: 28px;
+  --space-10: 44px;
+  --space-11: 100px;
+  --indent-step: 14px;
+  --indent-max-depth: 4;
+  --search-width: 300px;
+  --body-max-width: 780px;
+
+  /* Line */
+  --border-hairline: 1px;
+  --border-strong: 2px;
+  --sort-weight-active: 600;
+  --outline-offset: 2px;
+}

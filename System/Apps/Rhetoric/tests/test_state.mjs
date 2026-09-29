@@ -1,0 +1,110 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  COMPARATORS, createState, deviceView, setActiveView, setSortOrder, sortedDevices, subtreeView, toggleExpanded,
+} from '../app/state.js';
+import { currentView, viewToText } from '../app/view.js';
+import { payload } from './fixture.mjs';
+
+const names = (items) => items.map((item) => item.device.name);
+
+function threeDeviceState() {
+  const data = payload();
+  data.devices[3] = { name: 'Zeugma', definition: 'd', popularity: 50, topical_rank: null, examples: [] };
+  data.devices[4] = { name: 'Chiasmus', definition: 'd', popularity: null, topical_rank: 2, examples: [] };
+  return createState(data);
+}
+
+test('topical: ranked devices first in rank order, unranked after, alphabetically', () => {
+  const state = threeDeviceState();
+  assert.deepEqual(sortedDevices(state, 'topical').map((d) => d.name), ['Anaphora', 'Chiasmus', 'Metaphor', 'Zeugma']);
+});
+
+test('popularity: highest first, unscored after, alphabetically', () => {
+  const state = threeDeviceState();
+  assert.deepEqual(sortedDevices(state, 'popularity').map((d) => d.name), ['Metaphor', 'Zeugma', 'Anaphora', 'Chiasmus']);
+  assert.ok(COMPARATORS.alphabetical({ name: 'a' }, { name: 'B' }) < 0);
+});
+
+test('flat sorts render devices only, no heading rows', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'alphabetical');
+  const view = currentView(state);
+  assert.equal(view.mode, 'flat');
+  assert.deepEqual(names(view.items), ['Anaphora', 'Metaphor']);
+});
+
+test('tree sort renders that hierarchy with its own headings and device leaves', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  const view = currentView(state);
+  assert.equal(view.mode, 'tree');
+  assert.equal(view.items[0].name, 'Form Root');
+  assert.equal(view.items[0].children[0].name, 'Form Type');
+  assert.deepEqual(names(view.items[0].children[0].children), ['Metaphor', 'Anaphora']);
+});
+
+test('a subtree view shows only that node; switching to another hierarchy drops it', () => {
+  const state = createState(payload());
+  setActiveView(state, subtreeView('category', 2));
+  assert.equal(currentView(state).items[0].name, 'Category Type');
+  setSortOrder(state, 'function');
+  assert.equal(state.activeView, 'full');
+});
+
+test('a device view survives a sort change and shows that device alone', () => {
+  const state = createState(payload());
+  setActiveView(state, deviceView(1));
+  setSortOrder(state, 'popularity');
+  assert.equal(state.activeView, 'device:1');
+  assert.deepEqual(names(currentView(state).items), ['Metaphor']);
+});
+
+test('search narrows a tree and prunes headings left empty; no query keeps empty headings', () => {
+  const state = createState(payload());
+  state.query = 'metaph';
+  const view = currentView(state);
+  assert.deepEqual(names(view.items[0].children[0].children), ['Metaphor']);
+  state.query = 'zzzz';
+  assert.deepEqual(currentView(state).items, []);
+});
+
+test('the same device record is resolved from every tree', () => {
+  const state = createState(payload());
+  const seen = [];
+  for (const sort of ['category', 'form', 'function']) {
+    setSortOrder(state, sort);
+    seen.push(currentView(state).items[0].children[0].children[0].device);
+  }
+  assert.ok(seen.every((device) => device === state.devices.get(1)));
+});
+
+test('toggleExpanded flips and reports the new state', () => {
+  const state = createState(payload());
+  assert.equal(toggleExpanded(state, 1), true);
+  assert.equal(toggleExpanded(state, 1), false);
+});
+
+test('copy text follows the toggles, but an expanded device shows both', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'alphabetical');
+  state.showDefinitions = false;
+  state.showExamples = false;
+  assert.equal(viewToText(state, currentView(state)), '• Anaphora\n• Metaphor');
+  toggleExpanded(state, 1);
+  assert.equal(
+    viewToText(state, currentView(state)),
+    '• Anaphora\n• Metaphor\n  a comparison without "like"\n  □ carpe diem is a "saying" (Horace)',
+  );
+});
+
+test('copy of a tree view carries headings with definitions, indented', () => {
+  const state = createState(payload());
+  state.showExamples = false;
+  state.showDefinitions = false;
+  assert.equal(
+    viewToText(state, currentView(state)).split('\n')[0],
+    '• Category Root — Category root definition',
+  );
+  assert.match(viewToText(state, currentView(state)), /\n {2}• Category Type — Category type definition\n {4}• Metaphor/);
+});

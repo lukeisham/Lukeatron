@@ -1,4 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
-<title>Rhetoric</title>
-<main><h1>Rhetoric</h1></main>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rhetoric — A Forum of Devices</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="header.css">
+<link rel="stylesheet" href="list.css">
+<link rel="stylesheet" href="print.css">
+</head>
+<body>
+<header class="masthead">
+  <h1 class="masthead-title">Rhetoric</h1>
+  <p class="masthead-subrule">A Forum of Devices</p>
+  <div class="toolbar">
+    <div class="search-row">
+      <label class="search-field">
+        <span class="visually-hidden">Search devices</span>
+        <span class="search-glyph" aria-hidden="true">⌕</span>
+        <input id="search" type="search" placeholder="Search devices…" autocomplete="off">
+      </label>
+      <label class="toolbar-check"><input id="fuzzy" type="checkbox"> Fuzzy match</label>
+    </div>
+    <div id="sort" class="sort-list" role="group" aria-label="Sort order"></div>
+    <div class="options-row">
+      <label class="toolbar-check"><input id="show-definitions" type="checkbox" checked> Show definitions</label>
+      <label class="toolbar-check"><input id="show-examples" type="checkbox" checked> Show examples</label>
+      <button id="print" class="toolbar-link" type="button">Print</button>
+      <button id="copy" class="toolbar-link" type="button">Copy</button>
+      <span id="copy-status" class="toolbar-status" role="status"></span>
+    </div>
+  </div>
+  <p class="ornament" aria-hidden="true">── ❧ ──</p>
+</header>
+<main class="workspace">
+  <div class="workspace-bar">
+    <button id="home" class="home-link" type="button" hidden>← Home</button>
+  </div>
+  <div id="list" class="list" aria-live="polite"></div>
+</main>
+<script type="module" src="main.js"></script>
+</body>
+</html>

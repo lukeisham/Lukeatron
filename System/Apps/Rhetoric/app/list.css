@@ -1,0 +1,90 @@
+/* ==========================================================================
+   list.css — the dense, monochrome list body (no accent colour, AD-8).
+   Tokens: --color-ink*, --color-marker, --color-rule-body, --font-size-*,
+   --line-height-body, --space-*, --indent-*, --border-hairline.
+   Definitions/examples hide by body class; an expanded row overrides both.
+   ========================================================================== */
+.workspace {
+  max-width: var(--body-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-8) var(--space-11);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.workspace-bar { min-height: var(--space-8); }
+
+.home-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-ink-soft);
+  font: inherit;
+  font-size: var(--font-size-definition);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.list ul { margin: 0; padding: 0; list-style: none; }
+
+.list-message { color: var(--color-ink-soft); }
+
+.marker {
+  flex-shrink: 0;
+  color: var(--color-marker);
+  font-size: var(--font-size-marker);
+}
+.marker-example { font-size: var(--font-size-marker-small); }
+
+.heading-row,
+.device-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+}
+
+.node-root { border-bottom: var(--border-hairline) solid var(--color-rule-body); }
+
+.node-name,
+.device-name { font-weight: 700; }
+
+.node-definition {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+.node-definition::before { content: "— "; }
+
+/* Indent grows one step per level up to --indent-max-depth, then stops (the tree stays nested). */
+.node-children {
+  padding-left: calc((min(var(--depth), var(--indent-max-depth)) - min(var(--depth) - 1, var(--indent-max-depth))) * var(--indent-step));
+  padding-bottom: var(--space-2);
+}
+
+.device-definition {
+  margin: 0;
+  padding: 0 0 var(--space-1) var(--space-6);
+  color: var(--color-ink-soft);
+}
+
+.example {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: 0 0 var(--space-2) var(--space-6);
+  font-size: var(--font-size-example);
+}
+
+.latin { font-style: italic; }
+.source { color: var(--color-ink-soft); }
+
+body.hide-definitions .device:not(.expanded) .device-definition,
+body.hide-examples .device:not(.expanded) .examples { display: none; }
+
+.heading-row:focus-visible,
+.device-row:focus-visible,
+.home-link:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}

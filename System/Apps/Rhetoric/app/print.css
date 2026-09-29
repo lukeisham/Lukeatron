@@ -1,0 +1,15 @@
+/* ==========================================================================
+   print.css — prints exactly what is on screen: the current view only, without
+   the toolbar or the Home link. Tokens: --space-*, --color-ink.
+   ========================================================================== */
+@media print {
+  .toolbar,
+  .ornament,
+  .workspace-bar,
+  .masthead-subrule { display: none; }
+
+  .masthead { padding: 0 0 var(--space-5); }
+  .workspace { max-width: none; padding: 0; }
+  .heading-row,
+  .device-row { cursor: auto; }
+}

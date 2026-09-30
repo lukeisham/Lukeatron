@@ -66,12 +66,18 @@ class TypeLayersTest(unittest.TestCase):
         self.assertEqual(len(problems), 2)
         self.assertEqual(type_layers.validate("form", parse_outline("- A — a\n  - B — b\n"), ROOTS), [])
 
+    def test_category_accepts_an_extra_root_that_carries_a_definition(self):
+        conn = seeded_db()
+        entries = load(conn, "category", "- Resemblance\n- Elocutio — style and language choice\n")
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM nodes WHERE hierarchy = 'category' AND parent_id IS NULL").fetchone()[0], 9)
+        self.assertEqual(type_layers.unlisted_nodes(conn, "category", entries), [])
+
     def test_shipped_templates_parse_and_validate_clean(self):
         for hierarchy in type_layers.HIERARCHIES:
             entries = parse_outline(type_layers.outline_path(hierarchy).read_text())
             self.assertEqual(type_layers.validate(hierarchy, entries, ROOTS), [])
         category = parse_outline(type_layers.outline_path("category").read_text())
-        self.assertEqual({e.name for e in category}, ROOTS)
+        self.assertTrue(ROOTS <= {e.name for e in category})
 
 
 if __name__ == "__main__":

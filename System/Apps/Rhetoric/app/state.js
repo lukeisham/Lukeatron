@@ -14,6 +14,9 @@ export const SORTS = [
 
 export const TREE_SORTS = new Set(['form', 'function', 'category']);
 
+/** `sortOrder` is null when no group is selected: search then covers all three trees at once, so one device can appear once per way it is filed. */
+export const EVERYTHING = null;
+
 export const FULL_VIEW = 'full';
 
 export function subtreeView(hierarchy, nodeId) {
@@ -62,7 +65,7 @@ export function createState(payload) {
     trees: payload.trees,
     devices,
     nodesById,
-    sortOrder: 'category',
+    sortOrder: EVERYTHING,
     activeView: FULL_VIEW,
     query: '',
     fuzzy: false,

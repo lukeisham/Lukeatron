@@ -60,7 +60,8 @@ function deviceRow(doc, state, device, mode) {
 
 function nodeRow(doc, state, node, mode, depth) {
   const item = make(doc, 'li', depth === 0 ? 'node node-root' : 'node');
-  item.dataset.nodeId = String(node.id);
+  if (node.group) item.dataset.group = node.hierarchy;
+  else item.dataset.nodeId = String(node.id);
   item.dataset.hierarchy = node.hierarchy;
 
   const row = make(doc, 'div', 'heading-row');
@@ -94,7 +95,7 @@ function message(doc, text) {
 
 export function renderList(doc, container, state, view) {
   if (view.items.length === 0) {
-    container.replaceChildren(message(doc, 'No devices match.'));
+    container.replaceChildren(message(doc, view.hint ?? 'No devices match.'));
     return;
   }
   const list = make(doc, 'ul', 'list-root');

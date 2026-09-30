@@ -13,7 +13,7 @@ import items  # noqa: E402
 SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
 
 
-def build_db(path: Path, *, mislink_form: bool = False) -> None:
+def build_db(path: Path, *, mislink_form: bool = False, multi_category: bool = False) -> None:
     db = sqlite3.connect(path)
     db.executescript(SCHEMA)
     ids = {}
@@ -25,9 +25,16 @@ def build_db(path: Path, *, mislink_form: bool = False) -> None:
     form_link = ids["category"] if mislink_form else ids["form"]
     for name in ("Metaphor", "Anaphora"):
         device = db.execute(
-            "INSERT INTO devices (name, definition, category_node_id, form_node_id, "
-            "function_node_id, popularity, topical_rank) VALUES (?, 'd', ?, ?, ?, 90, NULL)",
-            (name, ids["category"], form_link, ids["function"])).lastrowid
+            "INSERT INTO devices (name, definition, form_node_id, "
+            "function_node_id, popularity, topical_rank) VALUES (?, 'd', ?, ?, 90, NULL)",
+            (name, form_link, ids["function"])).lastrowid
+        db.execute("INSERT INTO device_categories (device_id, node_id) VALUES (?, ?)",
+                   (device, ids["category"]))
+        if multi_category:
+            extra = db.execute("INSERT INTO nodes (hierarchy, name, definition) "
+                               "VALUES ('category', 'Naming', 'd')").lastrowid
+            db.execute("INSERT INTO device_categories (device_id, node_id) VALUES (?, ?)",
+                       (device, extra))
     db.execute("INSERT INTO examples (device_id, body) VALUES (?, 'carpe *diem*')", (device,))
     db.commit()
     db.close()
@@ -63,6 +70,13 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(anaphora["popularity"], 90)
         self.assertIsNone(anaphora["topical_rank"])
         self.assertNotIn("medium", str(payload).lower())
+
+    def test_device_with_several_category_tags_appears_under_each(self):
+        build_db(self.db_path, multi_category=True)
+        payload = items.load_items(self.db_path)
+        category = leaves(payload["trees"]["category"])
+        self.assertEqual(sorted(l["id"] for l in category), [1, 1, 2, 2])
+        self.assertEqual(len(leaves(payload["trees"]["form"])), 2)
 
     def test_misfiled_device_left_out_of_affected_tree_with_warning(self):
         build_db(self.db_path, mislink_form=True)

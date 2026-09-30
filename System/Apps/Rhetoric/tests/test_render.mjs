@@ -15,6 +15,7 @@ function draw(state) {
 
 test('tree view: headings carry their node id and hierarchy, devices sit beneath', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   const container = draw(state);
   const [root] = findAll(container, withClass('node-root'));
   assert.equal(root.dataset.nodeId, '1');
@@ -32,6 +33,7 @@ test('flat view: devices only, no headings', () => {
 
 test('device text is a text node, never markup: a script tag renders as literal text', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   const container = draw(state);
   const definitions = findAll(container, withClass('device-definition')).map((n) => n.textContent);
   assert.ok(definitions.includes('<script>alert(1)</script>'));
@@ -40,6 +42,7 @@ test('device text is a text node, never markup: a script tag renders as literal 
 
 test('examples: Latin is an italic em, quotes and bracketed source stay literal, outline-square marker', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   const container = draw(state);
   const [latin] = findAll(container, withClass('latin'));
   assert.equal(latin.tag, 'em');
@@ -50,6 +53,7 @@ test('examples: Latin is an italic em, quotes and bracketed source stay literal,
 
 test('the same device renders identically from two different trees', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   const rowText = () => findAll(draw(state), (n) => n.dataset.deviceId === '1')[0].textContent;
   const fromCategory = rowText();
   setSortOrder(state, 'form');
@@ -58,6 +62,7 @@ test('the same device renders identically from two different trees', () => {
 
 test('expanded state and the isolated view are reflected in the rows', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   toggleExpanded(state, 2);
   const open = findAll(draw(state), (n) => n.dataset.deviceId === '2')[0];
   assert.match(open.className, /expanded/);

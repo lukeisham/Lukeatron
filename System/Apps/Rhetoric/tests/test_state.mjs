@@ -46,6 +46,7 @@ test('tree sort renders that hierarchy with its own headings and device leaves',
 
 test('a subtree view shows only that node; switching to another hierarchy drops it', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   setActiveView(state, subtreeView('category', 2));
   assert.equal(currentView(state).items[0].name, 'Category Type');
   setSortOrder(state, 'function');
@@ -62,6 +63,7 @@ test('a device view survives a sort change and shows that device alone', () => {
 
 test('search narrows a tree and prunes headings left empty; no query keeps empty headings', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   state.query = 'metaph';
   const view = currentView(state);
   assert.deepEqual(names(view.items[0].children[0].children), ['Metaphor']);
@@ -100,6 +102,7 @@ test('copy text follows the toggles, but an expanded device shows both', () => {
 
 test('copy of a tree view carries headings with definitions, indented', () => {
   const state = createState(payload());
+  state.sortOrder = 'category';
   state.showExamples = false;
   state.showDefinitions = false;
   assert.equal(
@@ -107,4 +110,35 @@ test('copy of a tree view carries headings with definitions, indented', () => {
     '• Category Root — Category root definition',
   );
   assert.match(viewToText(state, currentView(state)), /\n {2}• Category Type — Category type definition\n {4}• Metaphor/);
+});
+
+test('everything search lists a device once per way it is filed, under each group', () => {
+  const state = createState(payload());
+  setSortOrder(state, null);
+  state.query = 'metaph';
+  const view = currentView(state);
+  assert.equal(view.mode, 'tree');
+  assert.deepEqual(view.items.map((group) => group.name), ['Category', 'Form', 'Function']);
+  for (const group of view.items) {
+    assert.deepEqual(names(group.children[0].children[0].children), ['Metaphor']);
+  }
+  const hits = viewToText(state, view).split('\n').filter((line) => line.trim() === '• Metaphor');
+  assert.equal(hits.length, 3);
+});
+
+test('everything search keeps exact as the default and fuzzy behind the checkbox', () => {
+  const state = createState(payload());
+  setSortOrder(state, null);
+  state.query = 'metaphr';
+  assert.deepEqual(currentView(state).items, []);
+  state.fuzzy = true;
+  assert.equal(currentView(state).items.length, 3);
+});
+
+test('no group selected and no query shows a hint, not the whole database', () => {
+  const state = createState(payload());
+  assert.equal(state.sortOrder, null);
+  const view = currentView(state);
+  assert.deepEqual(view.items, []);
+  assert.match(view.hint, /Type to search/);
 });

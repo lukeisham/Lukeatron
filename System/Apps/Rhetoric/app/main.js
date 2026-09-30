@@ -4,7 +4,7 @@ import { fetchItems } from './api.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
 import { renderList, renderSortButtons, renderStatus } from './render.js';
 import {
-  FULL_VIEW, SORTS, createState, deviceView, setActiveView, setSortOrder, subtreeView, toggleExpanded,
+  EVERYTHING, FULL_VIEW, SORTS, createState, deviceView, setActiveView, setSortOrder, subtreeView, toggleExpanded,
 } from './state.js';
 import { currentView } from './view.js';
 
@@ -37,7 +37,11 @@ function onListClick(event) {
   if (hasTextSelection()) return; // a drag-select to copy text must not toggle the row
   const headingRow = event.target.closest('.heading-row');
   if (headingRow) {
-    const node = headingRow.closest('[data-node-id]');
+    const node = headingRow.closest('[data-node-id], [data-group]');
+    if (node.dataset.group) { // a group heading in Everything opens that group's own view
+      setSortOrder(state, node.dataset.group);
+      return refresh();
+    }
     setActiveView(state, subtreeView(node.dataset.hierarchy, node.dataset.nodeId));
     return refresh();
   }
@@ -78,7 +82,8 @@ function bindControls() {
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');
     if (!button) return;
-    setSortOrder(state, button.dataset.sort);
+    // Pressing the selected group again clears it, which is the everything-search state.
+    setSortOrder(state, button.dataset.sort === state.sortOrder ? EVERYTHING : button.dataset.sort);
     refresh();
   });
   els.search.addEventListener('input', () => { state.query = els.search.value; refresh(); });

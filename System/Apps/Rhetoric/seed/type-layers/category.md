@@ -14,6 +14,14 @@
 
 # Category
 
+<!-- The first five roots are Luke's (pasted 2026-09-29): the classical canons of rhetoric. They
+     carry definitions; the last eight are the seeded roots and take name only. -->
+
+- Inventio — generation of ideas and arguments
+- Dispositio — arrangement and organization
+- Elocutio — style and language choice
+- Memoria — memorability and retention
+- Pronuntiatio — delivery and performance
 - Resemblance
 - Association
 - Naming

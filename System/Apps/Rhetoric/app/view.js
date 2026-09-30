@@ -8,7 +8,14 @@
 
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
-import { TREE_SORTS, parseView, sortedDevices } from './state.js';
+import { EVERYTHING, TREE_SORTS, parseView, sortedDevices } from './state.js';
+
+// Heading rows for the Everything view: one per group, in the order the trees are filed.
+const GROUPS = [
+  { hierarchy: 'category', name: 'Category', definition: 'what devices are' },
+  { hierarchy: 'form', name: 'Form', definition: 'what devices look like' },
+  { hierarchy: 'function', name: 'Function', definition: 'what devices do' },
+];
 
 const deviceItem = (device) => ({ kind: 'device', device });
 
@@ -37,6 +44,18 @@ export function currentView(state) {
   if (view.kind === 'device') {
     const device = state.devices.get(view.id);
     return { mode: 'device', items: device && matches(device) ? [deviceItem(device)] : [] };
+  }
+
+  if (state.sortOrder === EVERYTHING) {
+    if (!searching) return { mode: 'tree', items: [], hint: 'Type to search every device, or choose a group above.' };
+    // Each device is listed under every node it is filed in, across all three trees.
+    const items = GROUPS.map(({ hierarchy, name, definition }) => ({
+      kind: 'node', group: true, hierarchy, name, definition,
+      children: state.trees[hierarchy]
+        .map((root) => filterNode(state, hierarchy, root, matches, searching))
+        .filter(Boolean),
+    })).filter((group) => group.children.length > 0);
+    return { mode: 'tree', items };
   }
 
   if (TREE_SORTS.has(state.sortOrder)) {

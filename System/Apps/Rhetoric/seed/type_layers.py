@@ -2,8 +2,8 @@
 
 The pipeline reads this content and never generates it: a node exists only because a line of
 an outline names it. Category's top-level lines must be roots seeded by category_roots.py (they
-carry a name only; their definitions come from the source database). Form and Function
-top-level lines create their roots.
+carry a name only; their definitions come from the source database) or are additional roots Luke
+authors with a definition. Form and Function top-level lines create their roots.
 
 All three outlines are validated before anything is written, and the write is one transaction.
 Re-running applies edited definitions and new lines; a node in the database that an outline no
@@ -18,6 +18,7 @@ import sqlite3
 import sys
 from pathlib import Path
 
+from seed.category_roots import ROOTS
 from seed.db import APP_DIR, DB_PATH, open_database
 from seed.type_outline import Entry, OutlineError, parse_outline
 
@@ -39,11 +40,9 @@ def validate(hierarchy: str, entries: list[Entry], category_roots: set[str]) -> 
             problems.append(f"{where}: {entry.name!r} appears twice under the same parent")
         seen.add(entry.path)
         is_category_root = hierarchy == "category" and entry.depth == 0
-        if is_category_root:
-            if entry.name not in category_roots:
-                problems.append(f"{where}: {entry.name!r} is not one of the 8 seeded Category roots")
+        if is_category_root and entry.name in category_roots:
             if entry.definition:
-                problems.append(f"{where}: a Category root takes its definition from the source database — remove the text after the name")
+                problems.append(f"{where}: a seeded Category root takes its definition from the source database — remove the text after the name")
         elif not entry.definition:
             problems.append(f"{where}: {entry.name!r} needs a definition ('- Name — definition')")
     return problems
@@ -85,7 +84,7 @@ def db_paths(conn: sqlite3.Connection, hierarchy: str) -> set[tuple[str, ...]]:
 
 def unlisted_nodes(conn: sqlite3.Connection, hierarchy: str, entries: list[Entry]) -> list[tuple[str, ...]]:
     """Database nodes the outline no longer lists (AC-2's 'exactly Luke's structure' check).
-    Category roots Luke chose not to list are expected, not extra."""
+    Seeded Category roots Luke chose not to list are expected, not extra."""
     listed = {entry.path for entry in entries}
     extra = db_paths(conn, hierarchy) - listed
     if hierarchy == "category":
@@ -104,8 +103,7 @@ def main() -> None:
         print(f"[seed] {exc}", file=sys.stderr)
         sys.exit(1)
     conn = open_database()
-    roots = {r[0] for r in conn.execute(
-        "SELECT name FROM nodes WHERE hierarchy = 'category' AND parent_id IS NULL")}
+    roots = {name for _, _, name in ROOTS}  # the 8 seeded roots, not any root Luke added later
     problems = [p for h in HIERARCHIES for p in validate(h, outlines[h], roots)]
     if problems:
         print("[seed] nothing written — fix these lines first:", *problems, sep="\n  ", file=sys.stderr)

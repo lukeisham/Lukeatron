@@ -1,0 +1,4171 @@
+[
+ {
+  "name": "Accismus",
+  "definition": "Feigned or pretended refusal of something the speaker actually wants, so that others will press it on them.",
+  "examples": [
+   "\"Oh, I couldn't possibly take the last slice\" (said while eyeing the plate)"
+  ],
+  "aliases": [
+   "coy refusal",
+   "affected refusal",
+   "apparent refusal"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Adnomination",
+  "definition": "Repetition of words that share a root but take different forms, so the family resemblance reinforces the point. Older handbooks also use the term for punning on a person's name.",
+  "examples": [
+   "\"Whoever wants to lead must first learn to be led.\""
+  ],
+  "aliases": [
+   "agnomination",
+   "annominatio",
+   "adnominatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Adynaton",
+  "definition": "Hyperbole taken to the point of impossibility: saying something will happen only when something impossible does, or that expression itself is impossible.",
+  "examples": [
+   "\"I'll pay you back when pigs fly.\"",
+   "\"No words could describe how grateful I am.\""
+  ],
+  "aliases": [
+   "adynata",
+   "impossibilia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Escalation",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Allegory",
+  "definition": "A sustained metaphor carried through a whole narrative or discourse, in which characters and events stand for ideas or moral truths.",
+  "examples": [
+   "A story in which a journey through a dark forest represents a person's struggle with doubt, each creature met standing for a temptation."
+  ],
+  "aliases": [
+   "continued metaphor",
+   "allegoria"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Extended Meaning",
+  "form": "Replacement > Substitution",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Alliteration",
+  "definition": "Repetition of the same initial sound (usually a consonant) in nearby words, giving rhythm and emphasis.",
+  "examples": [
+   "\"Peter's proud pursuit of petty power\""
+  ],
+  "aliases": [
+   "head rhyme",
+   "initial rhyme",
+   "alliteratio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Pronuntiatio",
+  "form": "Sonic > Alliteration",
+  "function": "Emphasis > Memorability",
+  "confidence": "high"
+ },
+ {
+  "name": "Allusion",
+  "definition": "A brief, indirect reference to a person, event, text or idea that the audience is expected to recognise, borrowing its weight without explaining it.",
+  "examples": [
+   "Calling a costly, doomed effort \"his Waterloo\""
+  ],
+  "aliases": [
+   "reference",
+   "allusio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Association",
+  "form": "Replacement > Metonymy",
+  "function": "Connection > Shared Understanding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Anacoluthon",
+  "definition": "A sentence that breaks off its grammatical construction and continues in a different one, often mimicking speech or agitation.",
+  "examples": [
+   "\"If you keep on like this, then — well, I don't know what you're thinking of.\""
+  ],
+  "aliases": [
+   "anacoluthia",
+   "syntactic break"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sentence Shape > Broken Construction",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Anadiplosis",
+  "definition": "Repeating the last word or phrase of one clause at the start of the next, linking them like a chain.",
+  "examples": [
+   "\"Fear leads to anger; anger leads to hate; hate leads to suffering.\""
+  ],
+  "aliases": [
+   "reduplicatio",
+   "the redouble"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Analogy",
+  "definition": "An argument or explanation that draws a parallel between two things on the ground of shared features, in order to clarify or support a claim about the less familiar one.",
+  "examples": [
+   "\"A firewall is to a network what a locked door is to a house.\""
+  ],
+  "aliases": [
+   "comparison",
+   "analogia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Clarity > Clarity",
+  "confidence": "high"
+ },
+ {
+  "name": "Anaphora",
+  "definition": "Repeating the same word or phrase at the start of successive clauses, sentences or lines to build emphasis and rhythm.",
+  "examples": [
+   "\"We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets…\" — Winston Churchill, House of Commons speech, 4 June 1940"
+  ],
+  "aliases": [
+   "epanaphora",
+   "repetitio",
+   "relatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Anastrophe",
+  "definition": "Departing from normal word order, most often by moving a single word, for emphasis or effect; sometimes used as a synonym of hyperbaton.",
+  "examples": [
+   "\"Judge me by my size, do you?\" (Yoda-style inversion)"
+  ],
+  "aliases": [
+   "inversio",
+   "reversio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Foregrounding",
+  "confidence": "high"
+ },
+ {
+  "name": "Anesis",
+  "definition": "Adding a closing remark that lowers the force of what preceded it; the opposite of epitasis (an anticlimax effect).",
+  "examples": [
+   "\"She had written the winning speech, she had rehearsed it for weeks — and then she lost her notes.\""
+  ],
+  "aliases": [
+   "abating"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Antanaclasis",
+  "definition": "Repeating a word in a way that shifts its meaning the second time, exploiting its double sense.",
+  "examples": [
+   "\"If we don't hang together, we'll all hang separately.\" (hang: cooperate / execute)"
+  ],
+  "aliases": [
+   "refractio",
+   "anaclasis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Antanagoge",
+  "definition": "Putting a positive spin on something admitted to be negative, by pairing the drawback with an offsetting benefit.",
+  "examples": [
+   "\"The pay is modest, but the work is meaningful.\""
+  ],
+  "aliases": [
+   "compensatio",
+   "antenagoge"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Pairing > Juxtaposition",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Anthimeria",
+  "definition": "Using a word as a different part of speech from its usual one, most often a noun as a verb.",
+  "examples": [
+   "\"Let's table this and lunch later.\""
+  ],
+  "aliases": [
+   "antimereia",
+   "part-of-speech shift",
+   "functional shift"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Invention",
+  "form": "Replacement > Substitution",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Anthropomorphism",
+  "definition": "Attributing human form, feelings or behaviour to non-human beings, objects or forces. Related to but distinct from personification, which is the rhetorical figure of speaking of things as persons.",
+  "examples": [
+   "\"The angry sea flung itself at the cliffs.\""
+  ],
+  "aliases": [
+   "humanisation"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Resemblance",
+  "form": "Replacement > Substitution",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "low"
+ },
+ {
+  "name": "Antimetabole",
+  "definition": "Repeating words in successive clauses in reverse grammatical order (AB-BA), so the second clause mirrors the first.",
+  "examples": [
+   "\"Ask not what your country can do for you; ask what you can do for your country.\" — John F. Kennedy, Inaugural Address, 1961"
+  ],
+  "aliases": [
+   "commutatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Memorability",
+  "confidence": "high"
+ },
+ {
+  "name": "Antiphrasis",
+  "definition": "Using a word to mean its opposite, usually ironically, so the plain contradiction signals the real meaning.",
+  "examples": [
+   "Calling a very tall man \"Shorty\""
+  ],
+  "aliases": [
+   "ironia (single-word)",
+   "dictio contrarium significans"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "high"
+ },
+ {
+  "name": "Epistrophe",
+  "definition": "Ending successive clauses or sentences with the same word or phrase.",
+  "examples": [
+   "\"If you had known the virtue of the ring, / Or half her worthiness that gave the ring, / Or your own honour to contain the ring\" (Shakespeare, The Merchant of Venice 5.1)"
+  ],
+  "aliases": [
+   "Antistrophe",
+   "antistrophe",
+   "counter turne",
+   "epiphora"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Antithesis",
+  "definition": "Setting contrasting ideas side by side, usually in parallel grammatical form, to sharpen the contrast.",
+  "examples": [
+   "\"That's one small step for man, one giant leap for mankind.\" — Neil Armstrong, Apollo 11, 1969"
+  ],
+  "aliases": [
+   "contrarium",
+   "contentio",
+   "antitheton"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Elocutio",
+  "form": "Pairing > Comparison",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Antonomasia",
+  "definition": "Replacing a proper name with a descriptive title or epithet, or using a proper name to stand for a quality.",
+  "examples": [
+   "\"The Iron Lady\" for Margaret Thatcher",
+   "Calling a traitor \"a Judas\""
+  ],
+  "aliases": [
+   "pronominatio",
+   "epithet substitution"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Aphorism",
+  "definition": "A short, memorable saying that states a general truth or piece of advice, used in argument to lend wisdom-weight to a point.",
+  "examples": [
+   "\"Well begun is half done.\" (traditional saying)"
+  ],
+  "aliases": [
+   "Sententia",
+   "adage",
+   "maxim",
+   "saying",
+   "sententia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Memoria",
+  "form": "Sentence Shape > Compact Saying",
+  "function": "Emphasis > Memorability",
+  "confidence": "medium"
+ },
+ {
+  "name": "Aphorismus",
+  "definition": "Questioning whether a word or term is being properly applied, usually as a challenge to a label ('you call that a friend?').",
+  "examples": [
+   "\"You call that a compromise? That is surrender.\""
+  ],
+  "aliases": [
+   "questioning of terms"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Speech Act > Question",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Apophasis",
+  "definition": "Raising a point by claiming not to raise it ('not to mention…'); often used interchangeably with paralipsis. In Silva's classical sense it is a different figure, rejecting several reasons in favour of one.",
+  "examples": [
+   "\"I won't bring up his record of broken promises.\""
+  ],
+  "aliases": [
+   "paralipsis",
+   "occupatio",
+   "praeteritio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "low"
+ },
+ {
+  "name": "Aporia",
+  "definition": "Expressing real or pretended doubt about how to proceed or what to say, sometimes asking the audience what to do.",
+  "examples": [
+   "\"Where do I even begin? With the cost, or the delay, or the lies?\""
+  ],
+  "aliases": [
+   "diaporesis",
+   "dubitatio",
+   "addubitatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Inventio",
+  "form": "Speech Act > Question",
+  "function": "Connection > Intimacy",
+  "confidence": "low"
+ },
+ {
+  "name": "Aposiopesis",
+  "definition": "Breaking off in mid-sentence, leaving the thought unfinished, often to convey strong emotion or a threat.",
+  "examples": [
+   "\"If you ever do that again, I'll — well, you'll see.\""
+  ],
+  "aliases": [
+   "praecisio",
+   "reticentia",
+   "interruptio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Omission",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Apostrophe",
+  "definition": "Turning away from the audience to address someone absent, dead, or something non-human, such as an object or an idea.",
+  "examples": [
+   "\"O mighty Caesar! dost thou lie so low?\" — Shakespeare, Julius Caesar 3.1"
+  ],
+  "aliases": [
+   "aversio",
+   "direct address (loosely)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Speech Act > Exclamation",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appositio",
+  "definition": "Placing a noun or phrase beside another to explain or describe it, as in 'Einstein, the physicist'.",
+  "examples": [
+   "\"Paris, the city of light, drew crowds all summer.\""
+  ],
+  "aliases": [
+   "apposition",
+   "appositum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Clarity",
+  "confidence": "high"
+ },
+ {
+  "name": "Assonance",
+  "definition": "Repeating similar vowel sounds in nearby stressed syllables, with different surrounding consonants.",
+  "examples": [
+   "\"The rain in Spain stays mainly in the plain.\""
+  ],
+  "aliases": [
+   "vowel rhyme",
+   "vowel repetition"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Pronuntiatio",
+  "form": "Sonic > Assonance",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "high"
+ },
+ {
+  "name": "Asterismos",
+  "definition": "Opening a statement with a small word or phrase whose job is to call attention to what follows.",
+  "examples": [
+   "\"Behold, I tell you a mystery.\"",
+   "\"Listen, this matters.\""
+  ],
+  "aliases": [
+   "prefix word"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Foregrounding",
+  "confidence": "high"
+ },
+ {
+  "name": "Asyndeton",
+  "definition": "Leaving out conjunctions between clauses or items so the sequence feels rapid or urgent.",
+  "examples": [
+   "\"Veni, vidi, vici.\" (I came, I saw, I conquered) — attributed to Julius Caesar"
+  ],
+  "aliases": [
+   "dialyton",
+   "articulus",
+   "brachiepia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Omission",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Bdelygmia",
+  "definition": "Expressing loathing of a person, thing or deed, often through a string of abusive terms.",
+  "examples": [
+   "\"That vile, grasping, slithering parasite!\""
+  ],
+  "aliases": [
+   "abominatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Ornamental Epithet",
+  "form": "Addition & Omission > Addition",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Cacophony",
+  "definition": "Deliberate use of harsh, jarring sounds to create discomfort or reinforce a chaotic or unpleasant meaning.",
+  "examples": [
+   "\"The crackle, clatter and clang of the crashing cart\""
+  ],
+  "aliases": [
+   "dissonance (of sound)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Pronuntiatio",
+  "form": "Sonic",
+  "function": "Disruption",
+  "confidence": "medium"
+ },
+ {
+  "name": "Catachresis",
+  "definition": "Using a word in a way that departs from its proper sense, either from necessity (no proper term exists) or as a strained, deliberately jarring figure.",
+  "examples": [
+   "\"The foot of the mountain\" / \"a table's leg\" (dead-metaphor gap-filling)"
+  ],
+  "aliases": [
+   "abusio",
+   "misuse"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Invention",
+  "form": "Replacement > Substitution",
+  "function": "Clarity > Clarity",
+  "confidence": "low"
+ },
+ {
+  "name": "Circumlocution",
+  "definition": "Talking around a thing with many words rather than naming it directly, for politeness, evasion, emphasis or style.",
+  "examples": [
+   "\"the place where one goes to wash one's hands\" for restroom"
+  ],
+  "aliases": [
+   "periphrasis",
+   "ambage",
+   "circumitio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Naming",
+  "form": "Addition & Omission > Addition",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "low"
+ },
+ {
+  "name": "Climax",
+  "definition": "Arranging words, clauses or ideas in ascending order of importance; the rhetorical figure (gradatio), distinct from the plot climax.",
+  "examples": [
+   "\"He ran, he sprinted, he flew across the line.\""
+  ],
+  "aliases": [
+   "incrementum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Escalation",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Conduplicatio",
+  "definition": "Repeating a word or words in adjacent clauses to emphasise it; a general term for close repetition.",
+  "examples": [
+   "\"Leadership takes courage — the courage to stand alone.\""
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Congeries",
+  "definition": "Piling up words or phrases of different meaning but similar emotional force, to amplify feeling.",
+  "examples": [
+   "\"A liar, a cheat, a thief, a coward, a disgrace.\""
+  ],
+  "aliases": [
+   "synathroesmus",
+   "accumulation",
+   "heaping"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Consonance",
+  "definition": "Repeating consonant sounds, especially final ones, in nearby words with differing vowels; a term mostly from modern poetics.",
+  "examples": [
+   "\"the lonely, tall, ill-tempered hill\""
+  ],
+  "aliases": [
+   "consonant rhyme",
+   "half rhyme (when at line ends)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Pronuntiatio",
+  "form": "Sonic",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Cumulative Sentence",
+  "definition": "A sentence that opens with a main clause and then adds modifying phrases and clauses that build detail after it; also called a loose sentence.",
+  "examples": [
+   "\"She walked home, head down, hands in her pockets, thinking of nothing at all.\""
+  ],
+  "aliases": [
+   "loose sentence",
+   "right-branching sentence"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Diacope",
+  "definition": "Repetition of a word or phrase with one or more words in between, for emphasis or emotion.",
+  "examples": [
+   "\"A horse! A horse! My kingdom for a horse!\" (Shakespeare, Richard III 5.4)",
+   "\"Never, ever, give up on your children.\""
+  ],
+  "aliases": [
+   "broken repetition"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Diction",
+  "definition": "The choice and arrangement of words in speech or writing, including how formal, concrete or emotionally loaded they are, and the effect this has on the audience.",
+  "examples": [
+   "Calling a plan \"cheap\" rather than \"affordable\" or \"thrifty\" makes the same claim sound like a criticism."
+  ],
+  "aliases": [
+   "word choice",
+   "lexical choice"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Replacement > Substitution",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Distinctio",
+  "definition": "Pausing to say which sense of a term is meant, usually by marking it off from other senses, so the argument cannot trade on an ambiguity.",
+  "examples": [
+   "\"By 'freedom' I do not mean licence; I mean the liberty of citizens living under law.\""
+  ],
+  "aliases": [
+   "distinction",
+   "disambiguation"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Clarity > Clarity",
+  "confidence": "low"
+ },
+ {
+  "name": "Double Entendre",
+  "definition": "A phrase deliberately open to two readings, one innocent and one usually risqué or pointed, so the speaker can imply the second while keeping deniability.",
+  "examples": [
+   "\"I'm afraid the new chef really knows how to handle sausages.\""
+  ],
+  "aliases": [
+   "double meaning",
+   "innuendo (related)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Extended Meaning",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "high"
+ },
+ {
+  "name": "Dramatic Irony",
+  "definition": "A situation where the audience knows something that a speaker or character does not, so their words or actions carry a meaning they cannot see.",
+  "examples": [
+   "A character cheerfully invites a stranger in for dinner while the audience already knows he is the burglar."
+  ],
+  "aliases": [
+   "tragic irony"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Extended Meaning",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Disruption > Irony",
+  "confidence": "medium"
+ },
+ {
+  "name": "Dysphemism",
+  "definition": "Substituting a harsh, insulting or unflattering term for a neutral one, to express contempt or to colour the audience's view.",
+  "examples": [
+   "Calling a rival's budget a \"cash grab\" instead of a \"revenue measure\"."
+  ],
+  "aliases": [
+   "cacophemism"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Ellipsis",
+  "definition": "Leaving out words that the audience can easily supply from context, for economy, speed or punch.",
+  "examples": [
+   "\"Some people prefer the city; others, the country.\" (the second 'prefer' is omitted)"
+  ],
+  "aliases": [
+   "elleipsis",
+   "defectus"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Omission",
+  "function": "Clarity > Conciseness",
+  "confidence": "high"
+ },
+ {
+  "name": "Enthymeme",
+  "definition": "An argument stated with a premise or the conclusion left unspoken because the audience is expected to supply it.",
+  "examples": [
+   "\"He's a politician, so he can't be trusted.\" (unspoken premise: politicians cannot be trusted)"
+  ],
+  "aliases": [
+   "rhetorical syllogism"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Addition & Omission > Omission",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Enumeratio",
+  "definition": "Breaking a subject into its parts, causes or effects and listing them one after another.",
+  "examples": [
+   "\"The storm took our roof, our fence, our orchard and our power.\""
+  ],
+  "aliases": [
+   "enumeration"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Clarity",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epanalepsis",
+  "definition": "Beginning and ending a clause or sentence with the same word or phrase.",
+  "examples": [
+   "\"Once more unto the breach, dear friends, once more\" (Shakespeare, Henry V 3.1)"
+  ],
+  "aliases": [
+   "resumption"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Epigram",
+  "definition": "A short, pointed and memorable saying, in prose or verse, often witty or paradoxical.",
+  "examples": [
+   "\"I can resist everything except temptation.\" (Oscar Wilde, Lady Windermere's Fan, Act 1)"
+  ],
+  "aliases": [
+   "witticism (related)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Memoria",
+  "form": "Sentence Shape > Compact Saying",
+  "function": "Emphasis > Memorability",
+  "confidence": "medium"
+ },
+ {
+  "name": "Rhetorical Question",
+  "definition": "A question asked not to elicit an answer but to make a point, persuade, or provoke thought, with the answer often implied or obvious to the audience.",
+  "examples": [
+   "\"Isn't it obvious?\" — implying the answer is yes without genuinely seeking response",
+   "\"Do you think I'm stupid?\" — not seeking clarification, but expressing offense"
+  ],
+  "aliases": [
+   "Erotesis",
+   "erotema",
+   "erotesis",
+   "interrogatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Speech Act > Question",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Euphemism",
+  "definition": "Using a mild or indirect expression in place of one that sounds harsh, blunt or taboo.",
+  "examples": [
+   "Saying a colleague was \"let go\" instead of \"fired\"."
+  ],
+  "aliases": [
+   "Euphemismos",
+   "euphemismus"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Evasion",
+  "confidence": "medium"
+ },
+ {
+  "name": "Euphony",
+  "definition": "An arrangement of words with smooth, pleasant sounds that makes a passage flow easily on the ear.",
+  "examples": [
+   "\"The moan of doves in immemorial elms, / And murmuring of innumerable bees.\" (Tennyson, The Princess, Part VII)"
+  ],
+  "aliases": [
+   "sound harmony"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Pronuntiatio",
+  "form": "Sonic",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "high"
+ },
+ {
+  "name": "Eutrepismus",
+  "definition": "Numbering or ordering the points to be discussed so the audience can follow the division of the subject.",
+  "examples": [
+   "\"There are three reasons to act: first, the cost; second, the risk; third, the delay.\""
+  ],
+  "aliases": [
+   "ordinatio",
+   "numbering"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Dispositio",
+  "form": "Sentence Shape > Numbered Points",
+  "function": "Clarity > Clarity",
+  "confidence": "medium"
+ },
+ {
+  "name": "Exemplum",
+  "definition": "Citing a brief story, historical case or specific instance to illustrate or support a point.",
+  "examples": [
+   "\"Consider Kodak: a giant that ignored a new technology and vanished.\""
+  ],
+  "aliases": [
+   "example"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Speech Act > Recollection & Example",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hyperbole",
+  "definition": "Deliberate exaggeration for emphasis, humour or effect, not meant to be taken literally.",
+  "examples": [
+   "\"I'm so hungry I could eat a horse.\""
+  ],
+  "aliases": [
+   "overstatement"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Addition & Omission",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hypophora",
+  "definition": "Asking a question and then answering it oneself, often to introduce or frame the next point.",
+  "examples": [
+   "\"So what do we do now? We go back to the plan and finish it.\""
+  ],
+  "aliases": [
+   "anthypophora (related)",
+   "antiphora"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Inventio",
+  "form": "Speech Act > Question",
+  "function": "Emphasis > Foregrounding",
+  "confidence": "low"
+ },
+ {
+  "name": "Hypotaxis",
+  "definition": "Building a sentence from clauses linked by subordination, so their logical relation to one another is made explicit.",
+  "examples": [
+   "\"Because the river had flooded, and since the bridge was closed, we turned back.\""
+  ],
+  "aliases": [
+   "subordination"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Sentence Shape > Subordination",
+  "function": "Clarity > Clarity",
+  "confidence": "medium"
+ },
+ {
+  "name": "Irony",
+  "definition": "A gap between what is said or expected and what is meant or actually happens; the main kinds are verbal, situational and dramatic.",
+  "examples": [
+   "A fire station burns down."
+  ],
+  "aliases": [
+   "eironeia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "high"
+ },
+ {
+  "name": "Isocolon",
+  "definition": "Successive clauses or phrases of matching length and structure.",
+  "examples": [
+   "\"Easy come, easy go.\"",
+   "\"Veni, vidi, vici.\" (Julius Caesar, as reported by Suetonius, Divus Julius 37)"
+  ],
+  "aliases": [
+   "parison (related)",
+   "parallel structure"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Juxtaposition",
+  "definition": "Placing two things side by side, usually in contrast, so the comparison itself makes the point.",
+  "examples": [
+   "\"Marble halls beside a row of tents.\""
+  ],
+  "aliases": [
+   "contrast (related)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Dispositio",
+  "form": "Pairing > Juxtaposition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Litotes",
+  "definition": "Affirming something by denying its opposite, usually as understatement.",
+  "examples": [
+   "\"She's no fool.\""
+  ],
+  "aliases": [
+   "antenantiosis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Reversal > Reversal",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Malapropism",
+  "definition": "A mistaken use of a word in place of a similar-sounding one, often creating an unintentionally humorous or absurd effect that reveals character or ignorance.",
+  "examples": [
+   "\"Texas has a lot of electrical votes\" (malapropism of \"electoral votes\") — a classic example of confused word substitution",
+   "\"I have no delusions to that fact\" (instead of \"allusions\") — a mistake that changes meaning entirely"
+  ],
+  "aliases": [
+   "malaprop",
+   "acyrologia",
+   "Dogberryism"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Replacement > Substitution",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Understatement",
+  "definition": "A figure of speech that deliberately represents something as less important, significant, or severe than it actually is, often for ironic or humorous effect.",
+  "examples": [
+   "\"It's just a scratch,\" said of a badly dented car.",
+   "\"It's a bit chilly,\" said during a blizzard."
+  ],
+  "aliases": [
+   "Meiosis",
+   "belittlement",
+   "diminutio",
+   "meiosis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Addition & Omission",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Metanoia",
+  "definition": "A device in which the speaker retracts a statement just made and restates it, either to soften it or to strengthen it.",
+  "examples": [
+   "\"I won't help you — I will help you, because it's the right thing to do.\""
+  ],
+  "aliases": [
+   "correctio",
+   "epanorthosis",
+   "self-correction"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Reversal > Reversal",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Metaphor",
+  "definition": "A figure of speech that describes one thing as if it were another, making an implicit comparison between two unlike things to transfer qualities from one to the other.",
+  "examples": [
+   "Time is money.",
+   "\"All the world's a stage\" (Shakespeare, *As You Like It*, 2.7)"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Clarity > Clarity",
+  "confidence": "high"
+ },
+ {
+  "name": "Metonymy",
+  "definition": "A rhetorical device in which the name of one thing is substituted for another thing closely associated with it, such as using 'the crown' to mean 'the king'.",
+  "examples": [
+   "\"The White House announced new policy\" — using the building to refer to the President and administration",
+   "\"Hollywood has forgotten its roots\" — using the place to refer to the film industry"
+  ],
+  "aliases": [
+   "transnomination",
+   "denominatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Association",
+  "form": "Replacement > Metonymy",
+  "function": "Clarity > Conciseness",
+  "confidence": "medium"
+ },
+ {
+  "name": "Non Sequitur",
+  "definition": "A logical fallacy in which a conclusion does not follow from the premises; a statement or reasoning that lacks logical connection to what precedes it.",
+  "examples": [
+   "\"He is a vegetarian, therefore he must be healthy.\" — the conclusion doesn't necessarily follow from the premise"
+  ],
+  "aliases": [
+   "does not follow"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Fallacy",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Onomatopoeia",
+  "definition": "A word that imitates the sound it represents, creating an auditory effect that directly mimics the thing being described.",
+  "examples": [
+   "\"buzz\", \"hiss\", \"crack\" — words whose pronunciation resembles their meaning",
+   "\"The sizzle of bacon\" — the word evokes the actual sound"
+  ],
+  "aliases": [
+   "onomatopoeic words",
+   "echoism"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Invention",
+  "form": "Sonic",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "low"
+ },
+ {
+  "name": "Oxymoron",
+  "definition": "A figure of speech combining two contradictory or opposite terms in close proximity to create a paradoxical meaning or dramatic effect.",
+  "examples": [
+   "\"bittersweet\" — a combination of opposite emotional states",
+   "\"deafening silence\" — combining contradiction for dramatic impact"
+  ],
+  "aliases": [
+   "oxymora"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Elocutio",
+  "form": "Pairing > Juxtaposition",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Paradox",
+  "definition": "A statement that appears self-contradictory or absurd but may reveal a deeper truth when examined, often used to provoke thought or challenge assumptions.",
+  "examples": [
+   "\"The only way to find true happiness is to stop seeking it.\"",
+   "\"This statement is false.\" — the classic logical paradox"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Parataxis",
+  "definition": "A style that places short clauses side by side, coordinated or simply juxtaposed without subordinating connectives, giving a direct, abrupt rhythm; the opposite of hypotaxis.",
+  "examples": [
+   "He came; he saw; he won."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Dispositio",
+  "form": "Pairing > Juxtaposition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Parenthesis",
+  "definition": "An aside or interpolated remark inserted into a sentence, often set off by parentheses, dashes, or commas, that interrupts the main clause without being grammatically essential.",
+  "examples": [
+   "\"He walked — quite slowly, I might add — to the store.\""
+  ],
+  "aliases": [
+   "parenthetical phrase",
+   "parenthetical expression"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Connection > Intimacy",
+  "confidence": "low"
+ },
+ {
+  "name": "Pathetic Fallacy",
+  "definition": "The attribution of human emotions or qualities to non-human things, especially natural phenomena, to create emotional resonance or pathetic (emotional) effect.",
+  "examples": [
+   "\"The angry storm\" — attributing anger to weather",
+   "\"The weeping willow\" — attributing tears to a tree"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Personification",
+  "definition": "A figure of speech that gives human qualities, emotions, or agency to non-human things, objects, or abstract concepts.",
+  "examples": [
+   "\"Death came for him\" — giving the abstract concept of death human agency",
+   "\"The sun smiled down on us\" — attributing human expression to a celestial object"
+  ],
+  "aliases": [
+   "prosopopoeia",
+   "prosopopeia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Pleonasm",
+  "definition": "The use of more words than necessary to express an idea, either for emphasis, redundancy, or stylistic effect.",
+  "examples": [
+   "\"I saw it with my own eyes\" — 'own' is redundant when 'my' already implies possession",
+   "\"free gift\" — 'free' is redundant since gifts are inherently free"
+  ],
+  "aliases": [
+   "redundancy",
+   "tautology"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Polysyndeton",
+  "definition": "The deliberate repetition of conjunctions (especially 'and') in close succession, creating emphasis, rhythm, or an overwhelming effect through linguistic connection.",
+  "examples": [
+   "\"I came and I saw and I conquered\" — repeated 'and' creates a rhythmic build"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Pun",
+  "definition": "A play on words that exploits multiple meanings or the similar sounds of different words to create a humorous or witty effect.",
+  "examples": [
+   "\"I used to be a banker, but I lost interest\" — 'lost interest' puns on financial and emotional meanings"
+  ],
+  "aliases": [
+   "wordplay",
+   "paronomasia"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "high"
+ },
+ {
+  "name": "Red Herring",
+  "definition": "A fallacy or rhetorical tactic that introduces an irrelevant issue or false clue to distract attention from the main argument or central point.",
+  "examples": [
+   "In a debate about climate policy: \"But what about the cost of solar panels?\" — diverting from the core environmental argument"
+  ],
+  "aliases": [
+   "ignoratio elenchi (related)"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Fallacy",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Scesis Onomaton",
+  "definition": "A series of synonymous or near-synonymous words or phrases piled up to press one idea; originally the term meant a sentence built only of nouns and adjectives.",
+  "examples": [
+   "The task was tedious, tiresome, wearisome, dull."
+  ],
+  "aliases": [
+   "schesis onomaton"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Sibilance",
+  "definition": "The repetition of the 's' sound or other sibilant consonants ('z', 'sh', 'ch') in nearby words to create a flowing, whispered, or hissing auditory effect.",
+  "examples": [
+   "The snake slid silently through the sand."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Pronuntiatio",
+  "form": "Sonic",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Simile",
+  "definition": "A figure of speech that explicitly compares two unlike things using 'like' or 'as,' transferring qualities from one to the other while maintaining the distinction between them.",
+  "examples": [
+   "\"He was as brave as a lion\" — explicit comparison using 'as'",
+   "\"Her smile was like sunshine\" — comparison using 'like'"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Clarity > Clarity",
+  "confidence": "high"
+ },
+ {
+  "name": "Syllogism",
+  "definition": "A logical argument consisting of a major premise, a minor premise, and a conclusion, used in rhetoric to demonstrate valid reasoning or persuade through logical structure.",
+  "examples": [
+   "All humans are mortal. Socrates is human. Therefore, Socrates is mortal. — a classic valid syllogism"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Inventio",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Symploce",
+  "definition": "A rhetorical device combining anaphora (repetition at the beginning of clauses) and epistrophe (repetition at the end) in the same passage for heightened emphasis.",
+  "examples": [
+   "\"When there is talk of hatred, let us stand up and talk against it. When there is talk of violence, let us stand up and talk against it.\" (Bill Clinton, as cited on Wikipedia)"
+  ],
+  "aliases": [
+   "symploke",
+   "complexio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Synecdoche",
+  "definition": "A figure in which a part stands for the whole or the whole for a part, as 'boots' for soldiers.",
+  "examples": [
+   "\"We need more hands on deck\" (hands = workers).",
+   "\"Boots on the ground\" for soldiers."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Naming",
+  "form": "Replacement > Synecdoche",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "high"
+ },
+ {
+  "name": "Zeugma",
+  "definition": "A figure in which one word (usually a verb or adjective) governs two or more other words; when it must be read in a different sense for each, it is often called syllepsis, giving a witty or jarring effect.",
+  "examples": [
+   "She lost her keys and her patience.",
+   "He broke his vow and her heart."
+  ],
+  "aliases": [
+   "syllepsis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hendiadys",
+  "definition": "Expressing one complex idea by joining two nouns (or words) with 'and' where one would normally modify the other.",
+  "examples": [
+   "We suffered through sound and fury when we meant furious noise."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Paradiastole",
+  "definition": "Re-describing a vice with the name of a neighbouring virtue (or the reverse) to soften or sharpen moral judgement.",
+  "examples": [
+   "He is not stingy, he is frugal."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Metalepsis",
+  "definition": "A chain of metonymy in which a word stands for another by way of an intermediate, unstated substitution.",
+  "examples": [
+   "Reading the 'long dark nights' of the north as a reference to winter's whole hardship."
+  ],
+  "aliases": [
+   "transumptio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Association",
+  "form": "Replacement > Metonymy",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "low"
+ },
+ {
+  "name": "Tmesis",
+  "definition": "Splitting a compound word by inserting another word in the middle for emphasis.",
+  "examples": [
+   "Abso-blooming-lutely."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Invention",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Tricolon",
+  "definition": "A series of three parallel words, phrases or clauses, usually of increasing length.",
+  "examples": [
+   "We came, we tasted, we were converted."
+  ],
+  "aliases": [
+   "rule of three"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Memorability",
+  "confidence": "medium"
+ },
+ {
+  "name": "Charientismus",
+  "definition": "Turning a hostile remark aside by answering it with a smooth, good-humoured reply.",
+  "examples": [
+   "Told he was slow, he replied that the tortoise had won the race."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Speech Act > Dismissal",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "low"
+ },
+ {
+  "name": "Anacoenosis",
+  "definition": "Asking the audience or opponent for their opinion on a matter of shared interest, often implying agreement.",
+  "examples": [
+   "You have children of your own; what would you have done?"
+  ],
+  "aliases": [
+   "communicatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Question",
+  "function": "Connection > Shared Understanding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Sermocinatio",
+  "definition": "Speaking in the imagined voice of another person, or of a speaker's own inner dialogue, to dramatise an argument.",
+  "examples": [
+   "I can hear the objector now: 'Why should we pay?'"
+  ],
+  "aliases": [
+   "dialogismus"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Replacement > Substitution",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Epitrope",
+  "definition": "Ironically granting permission or leaving a matter to the hearer's judgement, so as to imply the opposite.",
+  "examples": [
+   "Go ahead, ignore the warning; see how far it gets you."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hysteron Proteron",
+  "definition": "Reversing the natural or logical order of events, putting the later thing first.",
+  "examples": [
+   "Let us die and fight with all our might."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Foregrounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epanodos",
+  "definition": "Returning to the main topic after a digression, or repeating terms in inverted order in a passage.",
+  "examples": [
+   "Enough of that aside; back to the budget, which is short."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Prosonomasia",
+  "definition": "Playing on a proper name, by nickname or etymology, to characterise its bearer.",
+  "examples": [
+   "Call him Mr Steady, who has never once been on time."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "low"
+ },
+ {
+  "name": "Paromologia",
+  "definition": "Conceding a point to an opponent in order to strengthen one's own argument.",
+  "examples": [
+   "True, the plan is costly, but so is doing nothing."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Concession",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Apodioxis",
+  "definition": "Rejecting an opposing claim as too absurd or shameful to deserve reply.",
+  "examples": [
+   "That claim is so silly I will not dignify it."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Dismissal",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "low"
+ },
+ {
+  "name": "Ethopoeia",
+  "definition": "Portraying a person's character by imitating how they would speak, or describing their manners.",
+  "examples": [
+   "Picture the miser counting his coins: 'Not a penny more.'"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Replacement > Substitution",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "low"
+ },
+ {
+  "name": "Enargeia",
+  "definition": "Vivid description that sets an event before the audience's eyes as if present.",
+  "examples": [
+   "The dust rose, the horses screamed, and the line broke before us."
+  ],
+  "aliases": [
+   "hypotyposis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Ekphrasis",
+  "definition": "A detailed verbal description of a work of art or visual object.",
+  "examples": [
+   "The shield showed two cities, one at feast, the other at siege."
+  ],
+  "aliases": [
+   "ecphrasis"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Prosopographia",
+  "definition": "A vivid description of a person's appearance, for characterisation.",
+  "examples": [
+   "Tall, stooped, with a beard like a winter hedge."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Anamnesis",
+  "definition": "Calling to mind past events or past authorities to support the present case.",
+  "examples": [
+   "Remember the winter of '09, when we last ignored the warning."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Recollection & Example",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epexegesis",
+  "definition": "Adding a clause or phrase that explains or clarifies what was just said.",
+  "examples": [
+   "He had one fear, that is, of being forgotten."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Clarity",
+  "confidence": "high"
+ },
+ {
+  "name": "Adianoeta",
+  "definition": "A statement with an evident surface meaning and a second, usually opposite, hidden meaning.",
+  "examples": [
+   "I never met a man so forthright with his opinions of himself."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Extended Meaning",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Disruption > Irony",
+  "confidence": "high"
+ },
+ {
+  "name": "Aetiologia",
+  "definition": "Giving the cause or reason behind a claim, with the reason stated immediately.",
+  "examples": [
+   "Mind the step, for the paint is still wet."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Addition & Omission > Addition",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Pysma",
+  "definition": "Asking several questions in quick succession, demanding an answer to each.",
+  "examples": [
+   "Who stood to gain? Who was there? Who has lied since?"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "low"
+ },
+ {
+  "name": "Asteismus",
+  "definition": "A witty reply that turns the sense of the speaker's own words back on them.",
+  "examples": [
+   "'Give me a hand.' 'Certainly, here it is: a round of applause.'"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Mycterismus",
+  "definition": "A subtle mocking remark that hides its scorn behind a straight face.",
+  "examples": [
+   "How refreshing to hear such a bold idea, after so many quiet ones."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epiplexis",
+  "definition": "A reproachful question meant to shame the hearer, not to elicit an answer.",
+  "examples": [
+   "Have you no shame?"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Question",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epimone",
+  "definition": "Frequent repetition of a phrase or question to press a point home.",
+  "examples": [
+   "Remember the promise; remember it, I say; remember it always."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Homoioteleuton",
+  "definition": "Ending adjacent words, clauses or sentences with the same or similar sounds.",
+  "examples": [
+   "He came, he saw, he conquered with exuberance and brilliance."
+  ],
+  "aliases": [
+   "homeoteleuton"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Assonance",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Homoioptoton",
+  "definition": "Using words with the same case endings, or matching grammatical form, in successive clauses.",
+  "examples": [
+   "With cunning, with running, with stunning speed."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Paromoiosis",
+  "definition": "Parallel clauses of equal length in which corresponding words begin with the same sound.",
+  "examples": [
+   "Better bread than bare bones."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Alliteration",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Pathopoeia",
+  "definition": "Arousing the audience's emotions through language, often for pity or anger.",
+  "examples": [
+   "Think of the widow, alone at her table."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Apoplanesis",
+  "definition": "Evading an awkward question by changing the subject.",
+  "examples": [
+   "As for the budget, let me first speak of our values."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Diversion",
+  "function": "Evasion",
+  "confidence": "low"
+ },
+ {
+  "name": "Brachylogia",
+  "definition": "An abrupt, clipped expression, omitting connectives between short elements.",
+  "examples": [
+   "Dawn. Trench. Wire. Silence."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Omission",
+  "function": "Clarity > Conciseness",
+  "confidence": "high"
+ },
+ {
+  "name": "Hypallage",
+  "definition": "Transferring a modifier from the noun it truly describes to another word nearby (transferred epithet).",
+  "examples": [
+   "He lay on a restless pillow all night."
+  ],
+  "aliases": [
+   "transferred epithet"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Replacement > Substitution",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "low"
+ },
+ {
+  "name": "Metabasis",
+  "definition": "A brief statement of what has been said and what will come next, marking a transition.",
+  "examples": [
+   "So much for the cause; now to the cure."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Addition",
+  "function": "Clarity > Clarity",
+  "confidence": "medium"
+ },
+ {
+  "name": "Exergasia",
+  "definition": "Repeating the same idea in different words or different figures to elaborate it.",
+  "examples": [
+   "He was late, tardy, behind time, no-show."
+  ],
+  "aliases": [
+   "expolitio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Synonymia",
+  "definition": "Using several synonyms in a row to amplify or clarify a point.",
+  "examples": [
+   "A vile, base, contemptible act."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Aganactesis",
+  "definition": "An exclamation of indignation or outrage.",
+  "examples": [
+   "Oh, the injustice of it all!"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Speech Act > Exclamation",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epiphonema",
+  "definition": "A striking exclamatory summation that closes a passage.",
+  "examples": [
+   "So great a task, it was to found Rome!"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Speech Act > Exclamation",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Ecphonesis",
+  "definition": "An emotional exclamation, placed in a speech to signal feeling.",
+  "examples": [
+   "Alas, that I should live to see this day!"
+  ],
+  "aliases": [
+   "exclamatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Speech Act > Exclamation",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Tapinosis",
+  "definition": "Using a demeaning name for something great, which reduces its dignity.",
+  "examples": [
+   "Calling the mighty river a ditch."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Amphibologia",
+  "definition": "Deliberate ambiguity of grammatical construction that admits two readings.",
+  "examples": [
+   "Visiting relatives can be boring."
+  ],
+  "aliases": [
+   "amphiboly"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Extended Meaning",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Synchoresis",
+  "definition": "Granting a point to an opponent in order to make a bolder claim from the concession.",
+  "examples": [
+   "Grant that the policy failed; the fault lay in the delay."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Concession",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Antirrhesis",
+  "definition": "Rejecting an argument or authority as unworthy of a hearing.",
+  "examples": [
+   "That source is unfit to be cited."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Dismissal",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hypozeuxis",
+  "definition": "A sentence where each clause has its own subject and verb, in parallel.",
+  "examples": [
+   "I came; I sat; I listened; I wept."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Aesthetic > Elegance",
+  "confidence": "medium"
+ },
+ {
+  "name": "Paraprosdokian",
+  "definition": "A sentence whose ending unexpectedly reframes what came before.",
+  "examples": [
+   "I plan to retire early and spend my later years working."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Surprise",
+  "confidence": "high"
+ },
+ {
+  "name": "Merism",
+  "definition": "Naming two extremes or parts to signify the whole.",
+  "examples": [
+   "Search high and low."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Naming",
+  "form": "Replacement > Synecdoche",
+  "function": "Clarity > Conciseness",
+  "confidence": "medium"
+ },
+ {
+  "name": "Bathos",
+  "definition": "A sudden descent from the elevated to the trivial, sometimes unintended.",
+  "examples": [
+   "He fought for freedom, honour, and a good parking spot."
+  ],
+  "aliases": [
+   "anticlimax"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Surprise",
+  "confidence": "medium"
+ },
+ {
+  "name": "Eponym",
+  "definition": "A word or name derived from a real or supposed person, used to name a thing.",
+  "examples": [
+   "Boycott, from Captain Boycott."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Naming",
+  "form": "Replacement > Metonymy",
+  "function": "Clarity > Conciseness",
+  "confidence": "medium"
+ },
+ {
+  "name": "Kenning",
+  "definition": "A compound poetic name for a thing that uses metaphor.",
+  "examples": [
+   "Whale-road for the sea."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Naming",
+  "form": "Replacement > Substitution",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "low"
+ },
+ {
+  "name": "Begging the Question",
+  "definition": "Assuming as a premise the very claim the argument is meant to prove.",
+  "examples": [
+   "Honest people do not steal; he stole, so he is not honest."
+  ],
+  "aliases": [
+   "petitio principii"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Equivocation",
+  "definition": "Using one word in two different senses within a single argument so that the conclusion seems to follow.",
+  "examples": [
+   "A feather is light; what is light cannot be dark; so a feather cannot be dark."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Fallacy of Composition",
+  "definition": "Inferring that a whole has a property because each of its parts has it.",
+  "examples": [
+   "Every player is excellent, so the team must be excellent."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Fallacy of Division",
+  "definition": "Inferring that each part has a property because the whole has it.",
+  "examples": [
+   "The firm is rich, so each employee is rich."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Tu Quoque",
+  "definition": "Dismissing an argument because its speaker fails to practise what they say.",
+  "examples": [
+   "You tell me to stop smoking, yet you smoke."
+  ],
+  "aliases": [
+   "appeal to hypocrisy"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Genetic Fallacy",
+  "definition": "Judging a claim good or bad by its origin, not its merits.",
+  "examples": [
+   "That idea came from a tobacco firm, so it must be false."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Ignorance",
+  "definition": "Claiming something is true because it has not been proved false, or false because it has not been proved true.",
+  "examples": [
+   "No one has disproved ghosts, so they exist."
+  ],
+  "aliases": [
+   "argumentum ad ignorantiam"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Absence as Evidence",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Bandwagon Fallacy",
+  "definition": "Arguing that a claim is true because many people believe it.",
+  "examples": [
+   "Millions buy it, so it must be good."
+  ],
+  "aliases": [
+   "argumentum ad populum",
+   "appeal to popularity"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Tradition",
+  "definition": "Arguing that a practice is right because it has long been done.",
+  "examples": [
+   "We have always done it this way, so it is right."
+  ],
+  "aliases": [
+   "argumentum ad antiquitatem"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "low"
+ },
+ {
+  "name": "Appeal to Pity",
+  "definition": "Seeking agreement by arousing sympathy instead of offering reasons.",
+  "examples": [
+   "I must pass this course, I have had such a hard year."
+  ],
+  "aliases": [
+   "argumentum ad misericordiam"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Appeal to Force",
+  "definition": "Urging acceptance of a claim by threatening harm for disagreeing.",
+  "examples": [
+   "Agree with the boss, or look for another job."
+  ],
+  "aliases": [
+   "argumentum ad baculum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "high"
+ },
+ {
+  "name": "Appeal to Novelty",
+  "definition": "Arguing that something is better because it is new.",
+  "examples": [
+   "This is the latest model, so it is best."
+  ],
+  "aliases": [
+   "argumentum ad novitatem"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Gambler's Fallacy",
+  "definition": "Believing that past random outcomes change the odds of the next independent one.",
+  "examples": [
+   "Five reds in a row, so black is due."
+  ],
+  "aliases": [
+   "Monte Carlo fallacy"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "No True Scotsman",
+  "definition": "Protecting a generalisation from a counterexample by redefining the category so the case is excluded.",
+  "examples": [
+   "No true Scotsman puts sugar on his porridge; Angus does, so he is no true Scot."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Loaded Question",
+  "definition": "Asking a question whose wording presupposes a contested claim.",
+  "examples": [
+   "Have you stopped cheating?"
+  ],
+  "aliases": [
+   "complex question",
+   "plurium interrogationum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Cum Hoc Ergo Propter Hoc",
+  "definition": "Concluding that two things occurring together are causally linked.",
+  "examples": [
+   "Ice cream sales and drownings rise together, so ice cream causes drowning."
+  ],
+  "aliases": [
+   "correlation is not causation"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Affirming the Consequent",
+  "definition": "Reasoning that if P then Q, and Q, therefore P.",
+  "examples": [
+   "If it rained the road is wet; the road is wet; so it rained."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Denying the Antecedent",
+  "definition": "Reasoning that if P then Q, not P, therefore not Q.",
+  "examples": [
+   "If it rained the road is wet; it did not rain; so the road is dry."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Undistributed Middle",
+  "definition": "A syllogism whose middle term is not distributed in either premise, so nothing follows.",
+  "examples": [
+   "All dogs are mammals; all cats are mammals; so all dogs are cats."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Argument to Moderation",
+  "definition": "Assuming the truth lies halfway between two opposing positions.",
+  "examples": [
+   "One says the earth is round, one flat; so it must be somewhat curved."
+  ],
+  "aliases": [
+   "middle ground",
+   "argumentum ad temperantiam"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Special Pleading",
+  "definition": "Applying a rule to others but exempting one's own case without good reason.",
+  "examples": [
+   "Rules bind everyone, but my case is different."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Moving the Goalposts",
+  "definition": "Changing the standard of proof after it has been met.",
+  "examples": [
+   "You showed the data; now show me the mechanism too."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Poisoning the Well",
+  "definition": "Discrediting a source in advance so that anything it says is dismissed.",
+  "examples": [
+   "Do not listen to her; she always lies."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Guilt by Association",
+  "definition": "Rejecting a claim because of who else holds or shares it.",
+  "examples": [
+   "Bad people like that idea, so it is bad."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Texas Sharpshooter Fallacy",
+  "definition": "Drawing a target around a cluster after the fact, then treating the cluster as significant.",
+  "examples": [
+   "A cluster of illnesses near one plant; the plant must be to blame."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Cherry Picking",
+  "definition": "Selecting only the evidence that favours a claim and ignoring the rest.",
+  "examples": [
+   "Quoting three studies out of thirty for the same view."
+  ],
+  "aliases": [
+   "suppressed evidence"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Naturalistic Fallacy",
+  "definition": "Deriving what is good or right from what is natural, or defining good by a natural property.",
+  "examples": [
+   "It is natural, therefore it is right."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Nature",
+  "definition": "Arguing that something is good because it is natural, or bad because it is unnatural.",
+  "examples": [
+   "It is herbal, so it is safe."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Consequences",
+  "definition": "Judging a belief true or false by whether its consequences are pleasing.",
+  "examples": [
+   "That cannot be true, for it would be dreadful."
+  ],
+  "aliases": [
+   "argumentum ad consequentiam"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Sunk Cost Fallacy",
+  "definition": "Continuing a course because of what has already been invested, rather than future returns.",
+  "examples": [
+   "We have spent this much, so we must go on."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Bulverism",
+  "definition": "Assuming an opponent is wrong and then explaining their error by their motives or background.",
+  "examples": [
+   "You say that only because you are a man."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Continuum Fallacy",
+  "definition": "Rejecting a distinction because no sharp line separates the ends.",
+  "examples": [
+   "No single hair makes a man bald, so nobody is bald."
+  ],
+  "aliases": [
+   "sorites fallacy",
+   "line-drawing fallacy"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Ecological Fallacy",
+  "definition": "Inferring facts about individuals from statistics about the group they belong to.",
+  "examples": [
+   "This town is rich, so every resident is rich."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Single Cause Fallacy",
+  "definition": "Attributing an outcome to one cause when several contributed.",
+  "examples": [
+   "The crash was caused by one bad decision."
+  ],
+  "aliases": [
+   "causal oversimplification"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Fallacy of Four Terms",
+  "definition": "A syllogism using four terms rather than three, often through ambiguity, so the conclusion does not follow.",
+  "examples": [
+   "Nothing is better than heaven; a sandwich is better than nothing; so a sandwich is better than heaven."
+  ],
+  "aliases": [
+   "quaternio terminorum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Argument from Incredulity",
+  "definition": "Claiming something is false because one cannot imagine how it could be true.",
+  "examples": [
+   "I cannot see how it works, so it cannot."
+  ],
+  "aliases": [
+   "personal incredulity"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Absence as Evidence",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Ridicule",
+  "definition": "Dismissing a position by mocking it in place of answering it.",
+  "examples": [
+   "This idea is laughable, so it is wrong."
+  ],
+  "aliases": [
+   "reductio ad ridiculum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Proof by Assertion",
+  "definition": "Repeating a claim as though repetition were proof.",
+  "examples": [
+   "It is true; I say again, it is true."
+  ],
+  "aliases": [
+   "argumentum ad nauseam"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Sonic > Repetition",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Anecdotal Fallacy",
+  "definition": "Using a personal story or isolated case in place of systematic evidence.",
+  "examples": [
+   "My uncle smoked and lived to ninety, so smoking is safe."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Fallacy of Accident",
+  "definition": "Applying a general rule to a case where special circumstances make it unsuitable.",
+  "examples": [
+   "Medicine is for healing, so give it to anyone who asks, even a child."
+  ],
+  "aliases": [
+   "dicto simpliciter"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Reification",
+  "definition": "Treating an abstraction as if it were a concrete thing with agency.",
+  "examples": [
+   "Nature has decided to punish us."
+  ],
+  "aliases": [
+   "hypostatization"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": null,
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Slothful Induction",
+  "definition": "Refusing to accept a well-supported conclusion, insisting on coincidence.",
+  "examples": [
+   "Every test points to the drug, but it is only chance."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Whataboutism",
+  "definition": "Answering a charge by pointing to a different misdeed of the accuser.",
+  "examples": [
+   "Yes, but what about your own record?"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Tone Policing",
+  "definition": "Rejecting a claim because of the emotional manner in which it is stated.",
+  "examples": [
+   "I will not listen while you are shouting."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to the Stone",
+  "definition": "Dismissing a claim as absurd without offering any counter-argument.",
+  "examples": [
+   "That is ridiculous, and I need say no more."
+  ],
+  "aliases": [
+   "argumentum ad lapidem"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Speech Act > Dismissal",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Relative Privation",
+  "definition": "Dismissing a concern by pointing to a supposedly greater problem.",
+  "examples": [
+   "Why fuss about this when children are starving?"
+  ],
+  "aliases": [
+   "appeal to worse problems"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Is-Ought Fallacy",
+  "definition": "Deriving an ought-statement from purely factual premises.",
+  "examples": [
+   "People steal, so it is fine to steal."
+  ],
+  "aliases": [
+   "Hume's guillotine"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Steelmanning",
+  "definition": "Restating an opponent's position in its strongest form before answering it.",
+  "examples": [
+   "Before rebutting, I will state your case better than you did."
+  ],
+  "aliases": [
+   "steel man"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Concession",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Reductio ad Absurdum",
+  "definition": "Showing a claim false by deriving an absurd or contradictory result from assuming it.",
+  "examples": [
+   "Assume everyone lies; then that claim is itself a lie."
+  ],
+  "aliases": [
+   "proof by contradiction"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Principle of Charity",
+  "definition": "Interpreting an opponent's words in their most reasonable and coherent sense.",
+  "examples": [
+   "I take you to mean something sensible, so I will answer that."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Speech Act > Concession",
+  "function": "Connection > Shared Understanding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Modus Ponens",
+  "definition": "From 'if P then Q' and P, concluding Q; the valid pattern behind affirming the antecedent.",
+  "examples": [
+   "If it rains the road is wet; it rains; so the road is wet."
+  ],
+  "aliases": [
+   "affirming the antecedent"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Modus Tollens",
+  "definition": "From 'if P then Q' and not Q, concluding not P; the valid counterpart to denying the antecedent.",
+  "examples": [
+   "If it rained the road is wet; it is dry; so it did not rain."
+  ],
+  "aliases": [
+   "denying the consequent"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Constructive Dilemma",
+  "definition": "From two conditionals and a disjunction, concluding the disjunction of their consequents; the sound counterpart to a false dilemma.",
+  "examples": [
+   "Either we cut costs or raise fees; cutting harms staff; raising harms clients."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Inference to the Best Explanation",
+  "definition": "Accepting the hypothesis that best explains the evidence; the legitimate form of arguing from what fits.",
+  "examples": [
+   "The window is broken and the lock intact; a burglar came by the window."
+  ],
+  "aliases": [
+   "abduction"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Argument from Expert Opinion",
+  "definition": "Accepting a claim on the testimony of a genuine, relevant expert; the sound counterpart to appeal to authority.",
+  "examples": [
+   "The structural engineer says the bridge is safe."
+  ],
+  "aliases": [
+   "appeal to expert opinion"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Inventio",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "high"
+ },
+ {
+  "name": "Chiasmus",
+  "definition": "Reversing the order of grammatical structures or ideas in a second phrase (AB-BA). Unlike antimetabole, the same words need not be repeated.",
+  "examples": [
+   "\"Who dotes, yet doubts; suspects, yet strongly loves\" (dotes/doubts mirrored by suspects/loves) — Shakespeare, Othello 3.3"
+  ],
+  "aliases": [
+   "chiasm"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Memorability",
+  "confidence": "medium"
+ },
+ {
+  "name": "Conceit",
+  "definition": "An elaborate, surprising comparison between very unlike things, developed at length; typical of metaphysical poetry.",
+  "examples": [
+   "Likening two lovers to the twin legs of a drafting compass, joined and moving together."
+  ],
+  "aliases": [
+   "metaphysical conceit"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Resemblance",
+  "form": "Pairing > Comparison",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epitheton",
+  "definition": "Attaching a descriptive word or phrase to a name to characterise it, often as a fixed tag.",
+  "examples": [
+   "\"Swift-footed Achilles\" (a Homeric-style epithet)"
+  ],
+  "aliases": [
+   "epithet",
+   "appositum"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Ornamental Epithet",
+  "form": "Addition & Omission > Addition",
+  "function": "Aesthetic > Aesthetic Effect",
+  "confidence": "medium"
+ },
+ {
+  "name": "Epizeuxis",
+  "definition": "Repeating a word or phrase immediately, with nothing between, for emphasis or intensity.",
+  "examples": [
+   "\"O horror, horror, horror!\" (Shakespeare, Macbeth 2.3)"
+  ],
+  "aliases": [
+   "palilogia",
+   "cuckoo",
+   "dittology"
+  ],
+  "flipside_of": null,
+  "lists_naming": 4,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Extended Metaphor",
+  "definition": "A metaphor carried through several sentences or a whole passage, developing the comparison in more than one detail.",
+  "examples": [
+   "\"Our marriage is a ship: we have weathered storms, kept a steady hand at the helm, and never lost sight of harbour.\""
+  ],
+  "aliases": [
+   "sustained metaphor"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Extended Meaning",
+  "form": "Pairing > Comparison",
+  "function": "Clarity > Clarity",
+  "confidence": "low"
+ },
+ {
+  "name": "Hyperbaton",
+  "definition": "Departing from normal word order, often to stress the displaced word.",
+  "examples": [
+   "\"Fools, they have called us.\" (normal order: they have called us fools)"
+  ],
+  "aliases": [
+   "inversion"
+  ],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Reversal > Inversion",
+  "function": "Emphasis > Foregrounding",
+  "confidence": "high"
+ },
+ {
+  "name": "Parallelism",
+  "definition": "The arrangement of words, phrases, or clauses with similar grammatical structure and rhythm to create emphasis, balance, and memorable effect.",
+  "examples": [
+   "\"I came, I saw, I conquered\" (*veni, vidi, vici*; Julius Caesar, as reported by Plutarch)",
+   "\"Ask not what your country can do for you; ask what you can do for your country\" (John F. Kennedy, inaugural address, 1961)"
+  ],
+  "aliases": [
+   "parison",
+   "thought rhyme"
+  ],
+  "flipside_of": null,
+  "lists_naming": 3,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Polyptoton",
+  "definition": "The repetition of words derived from the same root or stem in close proximity, creating a wordplay effect that emphasizes the concept through morphological variation.",
+  "examples": [
+   "\"Love is not love / Which alters when it alteration finds\" (Shakespeare, Sonnet 116)",
+   "The strong man showed his strength."
+  ],
+  "aliases": [
+   "paregmenon",
+   "adnominatio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Repetition",
+  "definition": "The deliberate recurrence of words, sounds, phrases, or grammatical structures to create emphasis, rhythm, or emotional impact.",
+  "examples": [
+   "\"Never, never, never give up\" — threefold repetition for emphasis",
+   "\"The future, the future, the future...\" — repetition to create anticipation"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 2,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "high"
+ },
+ {
+  "name": "Verbal Irony",
+  "definition": "A figure of speech in which what is literally said means something different from what is implied, often expressing the opposite of what is intended.",
+  "examples": [
+   "\"Oh, that's just brilliant!\" said in response to a disaster — saying the opposite of what is meant",
+   "\"I just love waiting in traffic.\" — expressing dislike through ironic praise"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 1,
+  "category": "Extended Meaning",
+  "form": "Reversal > Reversal",
+  "function": "Disruption > Irony",
+  "confidence": "medium"
+ },
+ {
+  "name": "Gradatio",
+  "definition": "Building a series in which each step takes up the last word of the previous clause and rises in force.",
+  "examples": [
+   "Effort brings habit, habit brings skill, skill brings mastery."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Escalation",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Auxesis",
+  "definition": "Arranging words or claims in ascending order of force, or naming a thing by a grander term than its due.",
+  "examples": [
+   "She was a helper, then a leader, then a ruler, then a queen."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Dispositio",
+  "form": "Addition & Omission > Escalation",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Ploce",
+  "definition": "Repeating a word in the same clause with an added intensive sense, often of its 'true' meaning.",
+  "examples": [
+   "A promise is a promise, and I keep my promises."
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Emphasis",
+  "confidence": "medium"
+ },
+ {
+  "name": "Ad Hominem",
+  "definition": "Attacking the person rather than the argument",
+  "examples": [
+   "You can't trust his climate research because he owns an SUV"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Straw Man",
+  "definition": "Misrepresenting an argument to make it easier to attack",
+  "examples": [
+   "Environmentalists want us all to live in caves"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "False Dichotomy",
+  "definition": "Presenting only two options when more exist",
+  "examples": [
+   "You're either with us or against us"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Slippery Slope",
+  "definition": "Arguing that one step will inevitably lead to extreme consequences",
+  "examples": [
+   "If we allow same-sex marriage, people will want to marry animals"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Appeal to Authority",
+  "definition": "Citing authority rather than evidence",
+  "examples": [
+   "This must be true because a celebrity said it"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "medium"
+ },
+ {
+  "name": "Hasty Generalization",
+  "definition": "Drawing conclusions from insufficient evidence",
+  "examples": [
+   "I met two rude people from that city, so everyone there must be rude"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Post Hoc",
+  "definition": "Assuming causation from correlation",
+  "examples": [
+   "I wore my lucky socks and we won, so the socks caused the victory"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Circular Reasoning",
+  "definition": "Using the conclusion as a premise",
+  "examples": [
+   "The Bible is true because it says so in the Bible"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Appeal to Emotion",
+  "definition": "Manipulating emotions instead of using logic",
+  "examples": [
+   "Think of the children! (without relevant connection)"
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Shared Ground",
+  "definition": "State openly an axiom or premise the audience already accepts, and build from it. It is honest because the starting point is named and shared, not smuggled in as if proved.",
+  "examples": [
+   "\"We all hold that people are owed a fair hearing. So let us ask what a fair hearing requires here.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Begging the Question",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Connection > Shared Understanding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Flagged Pun",
+  "definition": "Play on a word's two senses on purpose and tell the audience you are doing so, so the double meaning becomes wit or emphasis rather than a hidden trick.",
+  "examples": [
+   "\"Our budget is balanced, in the accountant's sense; whether it is balanced in the human sense is my next point.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Equivocation",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Aesthetic > Wit & Humor",
+  "confidence": "high"
+ },
+ {
+  "name": "Sum Spotlight",
+  "definition": "Argue that a whole has a property when the property really does carry over from the parts, because of how they combine or because you have shown that it does.",
+  "examples": [
+   "\"Every beam in this bridge is rated for the load, and they are joined to share it, so the bridge will bear the trucks.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Fallacy of Composition",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Member Lens",
+  "definition": "Move from a group's established trait to its members only where the trait is truly distributive, and say that it is, so the audience can picture the individual.",
+  "examples": [
+   "\"This regiment is entirely volunteer, so each soldier in it chose to be here.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Fallacy of Division",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Walk-the-Talk Test",
+  "definition": "Point out a speaker's inconsistency as evidence about sincerity or the practicability of the advice, while still answering the argument itself.",
+  "examples": [
+   "\"You urge us to save, yet the record shows you borrow freely. Either the advice is harder than you say, or you do not believe it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Tu Quoque",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Provenance Probe",
+  "definition": "Trace a claim's origin when the origin genuinely bears on its reliability, such as a doctored source or a party with a stake in the outcome.",
+  "examples": [
+   "\"This study was written by the manufacturer's own marketing team. Weigh its findings accordingly.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Genetic Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Silence Signal",
+  "definition": "Treat the absence of evidence as meaningful where a thorough search would have found it, or where the burden of proof rightly lies with the claimant.",
+  "examples": [
+   "\"Investigators searched every room for a forced entry and found none. That silence counts against the break-in story.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Ignorance",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Absence as Evidence",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Crowd Compass",
+  "definition": "Cite widespread belief or practice as evidence where the crowd is well placed to know, or where the majority's choice is itself what matters.",
+  "examples": [
+   "\"Nine in ten local farmers plant after the first frost. They know this soil; that is reason enough to wait.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Bandwagon Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Long Test",
+  "definition": "Cite long survival of a practice as evidence that it has passed many trials, and shift the burden to whoever proposes change.",
+  "examples": [
+   "\"This liturgy has served believers for centuries through every kind of trouble; before dropping it, show what the replacement offers.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Tradition",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Mercy Plea",
+  "definition": "Invite compassion where mercy or fairness is truly the question, offering the human facts alongside the reasons.",
+  "examples": [
+   "\"Before you sentence him, consider that he acted to feed his children. Mercy is the very question before you.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Pity",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Stated Stakes",
+  "definition": "Openly name real consequences that follow from a choice, as a fair warning and not as a threat, so the audience can weigh them.",
+  "examples": [
+   "\"If the levee is not raised by spring, the town floods. That is not a threat; it is the forecast.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Force",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Fresh Edge",
+  "definition": "Commend something as new only where the newness is the point, meaning it fixes a known flaw or reflects recent evidence.",
+  "examples": [
+   "\"The new dosing schedule replaces one that failed patients in trials; it is better because of what we learned since.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Novelty",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Streak Watch",
+  "definition": "Point to a run of outcomes as a reason to check whether the process is really independent or rigged, not as a prediction of the next result.",
+  "examples": [
+   "\"Twenty heads in a row. Either we are astonishingly lucky or this coin is loaded; test it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Gambler's Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Standard Raiser",
+  "definition": "State plainly the defining ideals of a group and hold that a counterexample fails them, making the redefinition an open claim about the standard.",
+  "examples": [
+   "\"Call yourself a friend if you like, but by the loyalty we all mean by that word, he has not been one.\""
+  ],
+  "aliases": [],
+  "flipside_of": "No True Scotsman",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Premise Probe",
+  "definition": "Ask a question whose presupposition is well established or openly declared, so the question moves the discussion forward instead of trapping anyone.",
+  "examples": [
+   "\"Since the contract states delivery by May, when will the goods arrive?\""
+  ],
+  "aliases": [],
+  "flipside_of": "Loaded Question",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Coincidence Flag",
+  "definition": "Point to co-occurring things as a lead worth investigating, marking clearly that it is a lead and not yet a proof.",
+  "examples": [
+   "\"Tooth decay and sugar sales rise together across every region. That pattern is why we should test for a link.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Cum Hoc Ergo Propter Hoc",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Intuitive guess",
+  "definition": "Reason from an observed effect to its likeliest cause, offered openly as a hunch worth testing, never as proof.",
+  "examples": [
+   "\"The floor is wet, and a burst pipe would do that. My guess, and it is only a guess, is a burst pipe, so let us check the pipe first.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Affirming the Consequent",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Absent Cause Note",
+  "definition": "Observe that a known sufficient cause is missing and infer that the effect is less likely, with the caveat that other causes may exist.",
+  "examples": [
+   "\"No storm came through, so the power outage is less likely to be weather. Look for another cause.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Denying the Antecedent",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Conditional Schema",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Shared Trait Hint",
+  "definition": "Point out that two groups share a trait as a suggestive hint of kinship, not as a proof that one belongs to the other.",
+  "examples": [
+   "\"Owls and bats both hunt at night. That common habit hints at a shared need, though it does not make them relatives.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Undistributed Middle",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Middle Path",
+  "definition": "Recommend a compromise where the two positions truly bracket a workable answer and the middle serves both sets of legitimate concerns.",
+  "examples": [
+   "\"You want a ten-day deadline and they want thirty. Twenty gives you the speed you need and them the care they need.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Argument to Moderation",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Named Exception",
+  "definition": "Claim an exemption from a rule openly, giving the relevant difference that justifies it.",
+  "examples": [
+   "\"The rule bars pets, but a guide dog is not a pet; it is a working aid, and that difference is why the rule was never meant to cover her.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Special Pleading",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Raised Bar",
+  "definition": "Raise the standard of proof openly and in advance, or when new stakes justify it, and say why the earlier bar no longer suffices.",
+  "examples": [
+   "\"For a minor repair, one quote was enough. For a whole rebuild, the stakes are higher and I now need three.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Moving the Goalposts",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Source Warning",
+  "definition": "Warn the audience beforehand about a source's known bias or record, with the evidence for it, so they can weigh what follows.",
+  "examples": [
+   "\"Before you read this report, note that its author was paid by the company under review. Read it with that in mind.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Poisoning the Well",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Company Clue",
+  "definition": "Treat a person's or idea's associations as one piece of evidence about them, where the association is chosen and relevant.",
+  "examples": [
+   "\"He chose to sit on the board of that firm for ten years. It is fair to ask what he knew of its practices.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Guilt by Association",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Pattern Hypothesis",
+  "definition": "Notice a cluster in data after the fact and offer it as a hypothesis to be tested on fresh data, saying so.",
+  "examples": [
+   "\"Four cases sit on one street. It may be chance, so let us check the next hundred cases for the same pattern.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Texas Sharpshooter Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Best Case Showcase",
+  "definition": "Present the strongest examples of a claim while stating openly that they are selected, and pointing to where the full record can be seen.",
+  "examples": [
+   "\"Here are the three finest results of the trial, chosen to show what the treatment can do; the full data is in the appendix.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Cherry Picking",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Design Reading",
+  "definition": "Ground an ought in what a thing is for, where the natural function is part of what makes something good of its kind.",
+  "examples": [
+   "\"A knife's nature is to cut; a knife that cannot cut is a bad knife. So a good teacher is one who teaches well.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Naturalistic Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Nature's Precedent",
+  "definition": "Cite what occurs in nature as evidence that a thing is workable or safe, where the natural case is truly relevant to the question.",
+  "examples": [
+   "\"Birds already glide this way; that shows the wing shape can carry weight, and we can test the rest.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Nature",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Good consequences",
+  "definition": "Commend a course of action by the good it will bring, where the question is what to do and not what is true.",
+  "examples": [
+   "\"Set the theory aside for a moment: this plan keeps a thousand families warm through winter. That good is reason enough to adopt it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Consequences",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Investment Memory",
+  "definition": "Cite past investment as a reason for continuing when it still bears on future value, such as reusable assets, commitments, or trust already earned.",
+  "examples": [
+   "\"We have already laid the foundation, and it cannot be resold. Finishing costs less than starting over.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Sunk Cost Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Motive Diagnosis",
+  "definition": "Once the argument has been answered on its merits, offer a candid account of why an error is tempting.",
+  "examples": [
+   "\"The figures do not support the claim. It is easy to see why a landlord might wish they did, but the figures decide it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Bulverism",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Blurred Line Defence",
+  "definition": "Insist that a real distinction survives even though its boundary is vague, noting that dusk and dawn are real though no minute divides day from night.",
+  "examples": [
+   "\"No single hair makes a man bald, yet baldness is real. Vague boundaries do not erase the difference.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Continuum Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Group Profile",
+  "definition": "Use a group statistic to frame what to expect of a typical case, saying it is a base rate and not a verdict on an individual.",
+  "examples": [
+   "\"In this district most homes flood in heavy rain, so expect trouble; check your own house to be sure.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Ecological Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Prime Mover",
+  "definition": "Spotlight the one cause that mattered most or could most easily be changed, while acknowledging that others contributed.",
+  "examples": [
+   "\"Many things played a part, but the missing guard rail is the one we can fix tomorrow.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Single Cause Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Second Sense Bridge",
+  "definition": "Introduce a fourth term deliberately, clearly marked as a bridging step, so the audience sees the added link that carries the argument.",
+  "examples": [
+   "\"Bank means both shore and lender. For the river, we mean the first; for our loan, the second; and I will keep them apart.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Fallacy of Four Terms",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Semantic Play > Ambiguity",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Strain Test",
+  "definition": "Report that you cannot see how a claim could hold as a challenge to its defenders to fill the gap, not as proof it is false.",
+  "examples": [
+   "\"I cannot see how the sums balance. Show me the working, and I will gladly be corrected.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Argument from Incredulity",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Absence as Evidence",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Absurd Mirror",
+  "definition": "Show that a position leads to a comic or absurd result through fair, accurate exaggeration, so the audience sees its flaw.",
+  "examples": [
+   "\"If we apply that rule consistently, then nobody may ever cross the road, since roads are dangerous. Something is wrong with the rule.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Ridicule",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Refrain",
+  "definition": "Repeat a claim as a memorable refrain to fix it in the audience's mind, after the reasons have already been given.",
+  "examples": [
+   "\"We have shown why: Education is the answer. Education is the answer. Let that be what you remember.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Proof by Assertion",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Sonic > Repetition",
+  "function": "Emphasis > Memorability",
+  "confidence": "high"
+ },
+ {
+  "name": "Living Case",
+  "definition": "Use a single vivid story to illustrate and make real a point already supported by the wider evidence.",
+  "examples": [
+   "\"The statistics show rising rents. Consider Maria, who now spends two-thirds of her wage on a single room.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Anecdotal Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Speech Act > Recollection & Example",
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "high"
+ },
+ {
+  "name": "Exceptional Case",
+  "definition": "Apply a general rule flexibly, showing that the circumstances of this case fall within the reason the rule exists.",
+  "examples": [
+   "\"Speed limits protect people, but an ambulance rushing a patient serves that same purpose, so it may exceed them.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Fallacy of Accident",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Living Abstraction",
+  "definition": "Speak of an abstraction as if it were an agent, as an openly figurative way to make a complex process concrete.",
+  "examples": [
+   "\"The market punished the company for its carelessness.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Reification",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": null,
+  "function": "Clarity > Concrete Grounding",
+  "confidence": "medium"
+ },
+ {
+  "name": "Coincidence Limit",
+  "definition": "Decline to accept coincidence once the accumulated evidence is overwhelming, and explain why chance no longer suffices.",
+  "examples": [
+   "\"Twelve fires, each at a site he insured, each after hours. At some point coincidence has run out.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Slothful Induction",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Fair Comparison",
+  "definition": "Point to a similar case treated differently to show inconsistent standards, while still engaging the original charge.",
+  "examples": [
+   "\"Yes, we erred, and we will fix it. But you overlooked the same error in your own department last year, so let us apply one standard.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Whataboutism",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Register Check",
+  "definition": "Question the manner of a delivery when the manner itself is unfitting to the setting or undermines the message's chance of being heard.",
+  "examples": [
+   "\"Your point is sound, but shouting at the mourners will lose them. Let me help you say it so they can hear it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Tone Policing",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Plain Dismissal",
+  "definition": "Dismiss a claim as absurd where its falsity is plain to common sense, and briefly say why no argument is needed.",
+  "examples": [
+   "\"You claim the table is not there. I will not rebut that; put your hand on it.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to the Stone",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Speech Act > Dismissal",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Priority Frame",
+  "definition": "Argue that a concern should wait because a truly more urgent one demands finite resources now, and that it will be addressed later.",
+  "examples": [
+   "\"The parking survey matters, but until the school roof is repaired, that has to come first. Then we return to the survey.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Relative Privation",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Fact-Backed Duty",
+  "definition": "Move from facts to a duty by naming the shared value that connects them, so the ought is explicit and not smuggled.",
+  "examples": [
+   "\"We agree that children should not suffer needlessly. Vaccines prevent that suffering. So we should vaccinate.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Is-Ought Fallacy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Corruption",
+  "definition": "Expose a person's corrupt conduct or character where it bears directly on whether their word can be trusted, so that the audience weighs the claim accordingly.",
+  "examples": [
+   "\"The entire case rests on his testimony, and he took money to lie under oath before. That corruption is exactly why his word cannot carry this case.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Ad Hominem",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Attack on the Source",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Fair Sketch",
+  "definition": "Restate an opponent's view in simplified form, checked with them for accuracy, as a clear starting point to examine.",
+  "examples": [
+   "\"Let me put your view briefly. Correct me if I miss anything: you want lower taxes so that families keep more of their own money. Have I got it right?\""
+  ],
+  "aliases": [],
+  "flipside_of": "Straw Man",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Diversion",
+  "function": "Clarity > Clarity",
+  "confidence": "medium"
+ },
+ {
+  "name": "Real Fork",
+  "definition": "Present two options when the context truly limits the choice to two, and show why no third option exists.",
+  "examples": [
+   "\"The vote is yes or no; there is no third box on the ballot. So which will it be?\""
+  ],
+  "aliases": [],
+  "flipside_of": "False Dichotomy",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Option Framing",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Evidence Slide",
+  "definition": "Warn of a chain of consequences when each step is backed by evidence or precedent, and show the links.",
+  "examples": [
+   "\"The last two exemptions each brought a flood of further claims. Grant a third and the same chain will follow.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Slippery Slope",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Expert Voice",
+  "definition": "Cite a genuine expert speaking within their field, with the reasons available if pressed, as evidence the audience can weigh.",
+  "examples": [
+   "\"The city's chief structural engineer has certified the bridge as sound, and her calculations are public.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Authority",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to a Standard",
+  "function": "Persuasion > Authority/Power",
+  "confidence": "high"
+ },
+ {
+  "name": "Working Sample",
+  "definition": "Offer a small sample as a preliminary indication, labelled as tentative, to open an inquiry or prompt further checks.",
+  "examples": [
+   "\"Three of three clinics I visited had the same shortage. I cannot say it is national, but it is worth investigating.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Hasty Generalization",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Part–Whole Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Sequence Clue",
+  "definition": "Cite the order of events as a clue to cause when other explanations have been reasonably ruled out and the mechanism is plausible.",
+  "examples": [
+   "\"The rash began an hour after the new soap, and it stopped when he changed back. The soap is the likely cause.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Post Hoc",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Causal Inference",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Reverse Engineering",
+  "definition": "Begin openly from the conclusion you want and work backwards to the premises that would have to hold for it, presenting the result as a design to be built and not as a proof.",
+  "examples": [
+   "\"We want a community that trusts one another. What would that require? Honest speech. So let us build honest speech first.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Circular Reasoning",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Assumed Premise",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ },
+ {
+  "name": "Diverting Bridge",
+  "definition": "Move to a related but different point on purpose, announced as a change of subject, to defuse tension or reframe the discussion.",
+  "examples": [
+   "\"Before we return to blame, let me raise a separate matter that may help us both: how we prevent this next time.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Red Herring",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Diversion",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "low"
+ },
+ {
+  "name": "Appeal to Pathos",
+  "definition": "Deliberately move the audience's feelings where feeling is the fitting response to the facts, so that emotion carries the reasons instead of replacing them.",
+  "examples": [
+   "\"Sixty children lost their school. Feel the anger that is right to feel, because it measures how much this matters.\""
+  ],
+  "aliases": [],
+  "flipside_of": "Appeal to Emotion",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Argument Structure > Appeal to Pressure",
+  "function": "Persuasion > Emotional Appeal",
+  "confidence": "high"
+ },
+ {
+  "name": "Unspoken Link",
+  "definition": "State a conclusion while leaving out a premise the audience already shares, so the step looks missing but the audience supplies it and feels the point land.",
+  "examples": [
+   "\"It's raining, so the washing is coming in.\" (The unstated premise, that rain soaks washing, is shared.)"
+  ],
+  "aliases": [],
+  "flipside_of": "Non Sequitur",
+  "lists_naming": 0,
+  "category": "Fallacy Flipside",
+  "form": "Addition & Omission > Omission",
+  "function": "Persuasion > Logical Appeal",
+  "confidence": "medium"
+ }
+]

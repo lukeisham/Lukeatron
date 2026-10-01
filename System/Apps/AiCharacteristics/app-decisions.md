@@ -11,6 +11,7 @@ later agent does not "restore" the old behaviour.
 | 2026-09-29 | Promoted from `System/Widgets/Generator/AiCharacteristics/` to a standalone app, per Luke's direction in chat | — |
 | 2026-10-02 | Refactor approved per `System/Plans/New/aicharacteristics-criteria-judge.md`: old 8 detectors retired; Wikipedia article → criteria → Simple English explainer → JEV check. **JEV** = a very cheap LLM-based judge (Haiku) that outputs only yes/no plus a confidence per criterion. The Scrape button re-scrapes on click; otherwise the data is static | — |
 | 2026-10-02 | Three plan defaults approved: API key server-side only, outside the repo; verdict-only results with no span highlighting; leave the Generator shell and build a plain standalone page (this reverses the 2026-09-29 shell-cartridge design — do not restore it) | plan steps 3, 8, 10 |
+| 2026-10-02 | **Special exception** to the Personal Research guardrail "no Wikipedia as a load-bearing source": this app scrapes the Wikipedia article on AI writing characteristics and builds its criteria from it. Scoped to this app only — it does not carry to other projects | plan step 2 |
 
 ## Rule exceptions
 

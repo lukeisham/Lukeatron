@@ -18,6 +18,7 @@ later agent does not "restore" the old behaviour.
 | 2026-10-02 | Final counts confirmed (272 devices, 295 examples, 58 Flipside links, nodes 13/42/23); Flipside devices inherit their fallacy's popularity; seed pipeline closed | seed-pipeline Done |
 | 2026-10-02 | Each device row shows a monochrome AI-confidence badge (high filled, medium outlined, low dashed) after its name, on screen only — hidden in Print, absent from Copy | frontend.spec |
 | 2026-10-02 | `ai_confidence_rating` added to the PRD Data Model and UI (badge); `database.spec.md` AD-9 | PRD v0.20 |
+| 2026-10-02 | Frontend closed without the Copy / Print check in Chrome (Luke skipped it); AC-5 stays unverified | frontend.spec Done |
 
 ## Rule exceptions
 

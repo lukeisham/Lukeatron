@@ -32,7 +32,15 @@ class JudgeError(RuntimeError):
 
 
 class TextRejected(JudgeError):
-    """The pasted text cannot be checked (empty, or over the cap)."""
+    """The pasted text cannot be checked; `reason` is "empty" or "too_long"."""
+
+    def __init__(self, reason: str, message: str) -> None:
+        super().__init__(message)
+        self.reason = reason
+
+
+class NoCriteria(JudgeError):
+    """There is nothing to check against yet; a Scrape has to run first."""
 
 
 class VerdictError(ValueError):
@@ -50,7 +58,7 @@ def check_text(text: str, criteria: list[dict], key: str, send: Send = send_requ
     _require_checkable(text)
     live = [c for c in criteria if c.get("status") != "retired"]
     if not live:
-        raise JudgeError("there are no criteria to check against; run a Scrape first")
+        raise NoCriteria("there are no criteria to check against; run a Scrape first")
     user = _prompt(text, live)
     expected = [c["id"] for c in live]
     last_problem = "no attempt was made"
@@ -98,9 +106,9 @@ def _verdict(item: Any, position: int) -> Verdict:
 
 def _require_checkable(text: str) -> None:
     if not text.strip():
-        raise TextRejected("there is no text to check")
+        raise TextRejected("empty", "there is no text to check")
     if len(text.split()) > MAX_WORDS or len(text) > MAX_CHARACTERS:
-        raise TextRejected(f"the text is over the limit of {MAX_WORDS} words")
+        raise TextRejected("too_long", f"the text is over the limit of {MAX_WORDS} words")
 
 
 def _prompt(text: str, live: list[dict]) -> str:

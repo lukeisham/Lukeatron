@@ -6,7 +6,7 @@ import unittest
 
 import helpers  # noqa: F401
 from fakes import KEY, Scripted, haiku_reply, unreachable
-from criteria import JudgeError, TextRejected, Verdict, check_text
+from criteria import JudgeError, NoCriteria, TextRejected, Verdict, check_text
 from criteria.judge import MAX_WORDS, VerdictError, validate_verdicts
 
 TEXT = "We must delve into the rich tapestry of this topic."
@@ -54,9 +54,11 @@ class TestCheck(unittest.TestCase):
 
     def test_text_that_cannot_be_checked_is_refused_before_any_call(self):
         send = Scripted()
-        for bad in ("", "   \n", "word " * (MAX_WORDS + 1), "x" * 9000):
-            with self.subTest(length=len(bad)), self.assertRaises(TextRejected):
+        for bad, reason in (("", "empty"), ("   \n", "empty"), ("word " * (MAX_WORDS + 1), "too_long"),
+                            ("x" * 9000, "too_long")):
+            with self.subTest(length=len(bad)), self.assertRaises(TextRejected) as caught:
                 check_text(bad, CRITERIA, KEY, send)
+            self.assertEqual(caught.exception.reason, reason)
         self.assertEqual(send.requests, [])
 
     def test_text_at_the_word_cap_is_accepted(self):
@@ -66,7 +68,7 @@ class TestCheck(unittest.TestCase):
 
     def test_nothing_to_check_against_is_refused_before_any_call(self):
         send = Scripted()
-        with self.assertRaises(JudgeError):
+        with self.assertRaises(NoCriteria):
             check_text(TEXT, [criterion(1, "retired")], KEY, send)
         self.assertEqual(send.requests, [])
 

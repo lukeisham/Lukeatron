@@ -5,6 +5,7 @@ Every caller takes `send` as a parameter defaulting to `send_request`.
 
 from __future__ import annotations
 
+import time
 import urllib.error
 import urllib.request
 from collections.abc import Callable
@@ -30,3 +31,18 @@ def send_request(request: urllib.request.Request) -> bytes:
     if len(body) > MAX_RESPONSE_BYTES:
         raise TransportError(f"{request.host} sent more than {MAX_RESPONSE_BYTES} bytes")
     return body
+
+
+def with_deadline(send: Send, seconds: float, clock: Callable[[], float] = time.monotonic) -> Send:
+    """Refuse to start a request once `seconds` have passed since this call.
+
+    A request already under way still ends by its own timeout, so the total can overrun by one request.
+    """
+    started = clock()
+
+    def send_before_deadline(request: urllib.request.Request) -> bytes:
+        if clock() - started > seconds:
+            raise TransportError("ran out of time")
+        return send(request)
+
+    return send_before_deadline

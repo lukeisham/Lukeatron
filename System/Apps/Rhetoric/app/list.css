@@ -77,7 +77,7 @@
 }
 
 /* AI-confidence badge: monochrome (AD-8). High is filled, medium outlined, low dashed and faint,
-   so the three read apart without an accent colour or in black-and-white print. */
+   so the three read apart without an accent colour. On screen only: print.css hides it. */
 .confidence-badge {
   flex-shrink: 0;
   padding: 0 var(--space-3);

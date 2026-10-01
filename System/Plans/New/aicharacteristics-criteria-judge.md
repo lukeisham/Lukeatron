@@ -54,8 +54,8 @@ AiCharacteristics gains a **Scrape** button that turns the Wikipedia article on 
   - [x] Test — known-easy, known-hard and empty text, in `test_scrape_parts.py`.
 
 **D. JEV judge**
-- [ ] 8 — Write the judge: one batched Haiku call (`claude-haiku-4-5-20251001`) per check, prompt = pasted text + every non-retired `question`, reply forced to strict JSON `[{id, answer: yes|no, confidence: 0–1}]`; validator rejects anything else (missing id, bad value) and retries once, then fails closed. Text capped at 700 words server-side. [script]
-  - [ ] Test in Sandbox — validator on good, malformed, partial and over-long replies; stubbed LLM, no live call.
+- [x] 8 — Write the judge: one batched Haiku call (`claude-haiku-4-5-20251001`) per check, prompt = pasted text + every non-retired `question`, reply forced to strict JSON `[{id, answer: yes|no, confidence: 0–1}]`; validator rejects anything else (missing id, bad value) and retries once, then fails closed. Text capped at 700 words server-side. [script]
+  - [x] Test — `tests/py/test_judge.py` (9 cases, 40 in the suite): validator on good, malformed, partial, duplicate and out-of-range replies; one retry then fail closed; network failure not retried; over-cap text refused before any call; stubbed LLM, no live call.
 
 **E. Server routes (Home)**
 - [ ] 9 — Add `routes/aichar.py` to Home (same shape as `routes/larder.py`): `POST /api/aichar/scrape` and `POST /api/aichar/check`, each signed-in only, Origin-checked, errors mapped to Home's status codes, a hard time limit on Scrape (Home is threaded, so a long Scrape does not block other routes, but it must not hang forever), no stack traces to the client, pasted text never logged; register in `server.py`'s POST table and the self-check. The app is already served by Home at `/apps/AiCharacteristics/`, so the page and routes share an origin. Commit only the files this step touches (Home has unrelated uncommitted changes). [script]

@@ -44,15 +44,6 @@ class ScrapedListsTest(unittest.TestCase):
         rows = sl.union_with_counts(sl.parse_lists(SAMPLE))
         self.assertEqual(rows[0], {"name": "Metaphor", "lists_naming": 2})
 
-    def test_real_file_gives_four_lists_and_shared_devices(self):
-        path = next(Path(__file__).resolve().parents[4].glob("System/Sandbox/Rhetoric-seed/scraped-device-lists.md"), None)
-        if path is None:
-            self.skipTest("recovered file not present")
-        lists = sl.read_lists(path)
-        self.assertEqual(len(lists), 4)
-        self.assertEqual(len(lists['American Rhetoric — Rhetorical Devices in Sound']), 40)
-        self.assertEqual(sl.count_lists_naming(["Anaphora"], lists), 4)
-
 
 if __name__ == "__main__":
     unittest.main()

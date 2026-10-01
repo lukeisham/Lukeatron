@@ -12,6 +12,8 @@
   --color-rule-masthead: #e3d9c8;
   --color-rule-body: #d8d8d8;
   --color-marker: #9a9a9a;
+  --color-badge-fill: #1a1a1a;
+  --color-badge-fill-text: #ffffff;
 
   /* Type */
   --font-serif: Georgia, 'Iowan Old Style', serif;
@@ -26,6 +28,9 @@
   --font-size-example: 13px;
   --font-size-marker: 13px;
   --font-size-marker-small: 10px;
+  --font-size-badge: 10px;
+  --letter-spacing-badge: 0.05em;
+  --radius-badge: 8px;
   --line-height-body: 1.35;
   --letter-spacing-title: 0.04em;
   --letter-spacing-subrule: 0.3em;

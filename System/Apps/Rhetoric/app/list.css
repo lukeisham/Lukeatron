@@ -76,6 +76,27 @@
   font-size: var(--font-size-example);
 }
 
+/* AI-confidence badge: monochrome (AD-8). High is filled, medium outlined, low dashed and faint,
+   so the three read apart without an accent colour or in black-and-white print. */
+.confidence-badge {
+  flex-shrink: 0;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-ink);
+  border-radius: var(--radius-badge);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-badge);
+  text-transform: uppercase;
+}
+.confidence-badge[data-rating="high"] { background: var(--color-badge-fill); color: var(--color-badge-fill-text); }
+.confidence-badge[data-rating="low"] {
+  border-style: dashed;
+  border-color: var(--color-ink-soft);
+  color: var(--color-ink-soft);
+}
+
 .latin { font-style: italic; }
 .source { color: var(--color-ink-soft); }
 

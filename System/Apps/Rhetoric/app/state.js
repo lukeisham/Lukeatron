@@ -51,6 +51,7 @@ export function createState(payload) {
         name: record.name,
         definition: record.definition,
         popularity: record.popularity,
+        aiConfidenceRating: record.ai_confidence_rating,
         topicalRank: record.topical_rank,
         examples: record.examples,
       },

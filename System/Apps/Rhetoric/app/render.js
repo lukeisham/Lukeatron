@@ -32,6 +32,19 @@ function exampleText(doc, text) {
   return wrapper;
 }
 
+const RATING_TITLES = {
+  high: 'AI confidence: high — the AI is confident the definition, example and categorisation are accurate',
+  medium: 'AI confidence: medium — the AI is fairly confident; worth a check',
+  low: 'AI confidence: low — the AI is unsure; treat as a draft',
+};
+
+function confidenceBadge(doc, rating) {
+  const badge = make(doc, 'span', 'confidence-badge', `AI ${rating}`);
+  badge.dataset.rating = rating;
+  badge.title = RATING_TITLES[rating];
+  return badge;
+}
+
 function deviceRow(doc, state, device, mode) {
   const expanded = mode === 'device' || state.expanded.has(device.id);
   const item = make(doc, 'li', expanded ? 'device expanded' : 'device');
@@ -42,6 +55,7 @@ function deviceRow(doc, state, device, mode) {
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
   row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.name));
+  if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
   item.appendChild(row);
 
   if (device.definition) item.appendChild(make(doc, 'p', 'device-definition', device.definition));

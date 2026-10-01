@@ -17,11 +17,11 @@ export function payload() {
     },
     devices: {
       1: {
-        name: 'Metaphor', definition: 'a comparison without "like"', popularity: 90,
+        name: 'Metaphor', definition: 'a comparison without "like"', popularity: 90, ai_confidence_rating: 'high',
         topical_rank: null, examples: ['carpe *diem* is a "saying" (Horace)'],
       },
       2: {
-        name: 'Anaphora', definition: '<script>alert(1)</script>', popularity: null,
+        name: 'Anaphora', definition: '<script>alert(1)</script>', popularity: null, ai_confidence_rating: 'low',
         topical_rank: 1, examples: [],
       },
     },

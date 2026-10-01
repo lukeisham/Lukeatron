@@ -87,3 +87,10 @@ test('sort buttons mark exactly the active order pressed', () => {
   assert.deepEqual(pressed.map((b) => b.dataset.sort), ['form']);
   assert.equal(container.children.length, 6);
 });
+
+test('each device row carries an AI-confidence badge showing its rating', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'alphabetical');
+  const badges = findAll(draw(state), withClass('confidence-badge'));
+  assert.deepEqual(badges.map((b) => [b.textContent, b.dataset.rating]), [['AI low', 'low'], ['AI high', 'high']]);
+});

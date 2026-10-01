@@ -22,3 +22,4 @@ being asked with the rule ID and a reason. Code that matches a row here is inten
 | Rule ID | Where it applies | Reason | Granted |
 |---|---|---|---|
 | SR-5 | The Haiku API key used by the Scrape and Check routes | Stored as `System/Credentials/Home/anthropic-key`, read through Home's `CredStore`, not in a `.env`: it follows Home's existing git-ignored, owner-only secret pattern and, unlike a shell env var or `.env`, survives a launchd restart on both Macs with no new loader code. It is never in the repo or the browser | 2026-10-02 |
+| API-5 / PY-12 | Home's `POST /api/aichar/scrape` writes this app's `data/` folder (the route is in Home; Home's `app-decisions.md` holds the same row) | The Scrape button must refresh `criteria.json`; signed-in, origin-checked, atomic, one at a time | 2026-10-02 |

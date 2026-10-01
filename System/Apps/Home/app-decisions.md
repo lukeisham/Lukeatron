@@ -33,4 +33,4 @@ being asked with the rule ID and a reason. Code that matches a row here is inten
 
 | Rule ID | Where it applies | Reason | Granted |
 |---|---|---|---|
-| — | — | — | — |
+| API-5 / PY-12 | `routes/aichar.py` — `POST /api/aichar/scrape` writes inside `System/Apps/AiCharacteristics/data/` only (`criteria.json`, `criteria.previous.json`, `source/article.txt`) | AiCharacteristics' Scrape button must refresh the app's saved data, and Home is where the app is served. Signed-in session plus Origin check (the agent key never qualifies), atomic writes, nothing changed on any failure, one Scrape at a time. The second write route in Home, after `/api/inbox-note`. `/api/aichar/check` and `/api/aichar/criteria` only read | 2026-10-02 |

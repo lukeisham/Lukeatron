@@ -25,7 +25,7 @@ from core.credstore import CredStore  # noqa: E402
 from core.home import Home  # noqa: E402
 from core.settings import load_settings  # noqa: E402
 from core.web import BadRequest, Request, Response, error, redirect  # noqa: E402
-from routes import apps, auth, inbox_note, larder, open as open_routes, page, verse  # noqa: E402
+from routes import aichar, apps, auth, inbox_note, larder, open as open_routes, page, verse  # noqa: E402
 
 log = logging.getLogger("home")
 
@@ -42,11 +42,14 @@ PUBLIC_POSTS: dict[str, Callable[[Home, Request], Response]] = {
 # POSTs that need a signed-in person (not the agent key); each route checks Origin itself.
 SIGNED_IN_POSTS: dict[str, Callable[[Home, Request], Response]] = {
     "/api/inbox-note": inbox_note.save,
+    "/api/aichar/scrape": aichar.scrape,
+    "/api/aichar/check": aichar.check,
 }
 DATA_GETS: dict[str, Callable[[Home, Request], Response]] = {
     "/apps.json": apps.apps_json,
     "/llms.txt": apps.llms_txt,
     "/api/verse": verse.api_verse,
+    "/api/aichar/criteria": aichar.criteria_json,
     "/api/larder/recipes": larder.recipes,  # the agent key reaches this table, so the route re-checks the session
 }
 

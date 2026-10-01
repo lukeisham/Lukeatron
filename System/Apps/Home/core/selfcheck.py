@@ -44,10 +44,12 @@ def problems(apps_dir: Path, bsb_file: Path, credentials_dir: Path, inbox_dir: P
         probe.unlink()
     except OSError as exc:
         found.append(f"Cannot write to {inbox_dir} ({exc.strerror}). {fix}.")
-    from routes import inbox_note, larder  # here, not at the top: routes import core, not the other way round
+    from routes import aichar, inbox_note, larder  # here, not at the top: routes import core, not the other way round
 
     if not inbox_note.widget_loads():
         found.append(f"InboxNote is missing or broken at {inbox_note.WIDGET_DIR}.")
     if not larder.widget_loads():
         found.append(f"Larder is missing or broken at {larder.WIDGET_DIR}.")
+    if not aichar.package_loads():
+        found.append(f"AiCharacteristics is missing or broken at {aichar.PACKAGE_DIR}.")
     return found

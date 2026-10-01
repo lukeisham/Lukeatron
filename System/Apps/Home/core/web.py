@@ -14,8 +14,10 @@ ERROR_STATUS: dict[str, int] = {
     "forbidden": 403,
     "not_found": 404,
     "method_not_allowed": 405,
+    "conflict": 409,
     "too_large": 413,
     "server_error": 500,
+    "upstream_failed": 502,
     "unavailable": 503,
 }
 

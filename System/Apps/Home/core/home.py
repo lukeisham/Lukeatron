@@ -7,6 +7,7 @@ catalog.json is re-read on each request — it is small, and an edit shows witho
 from __future__ import annotations
 
 import time
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -38,6 +39,7 @@ class Home:
     fetch_verse: Callable[[], verse.Verse] = verse.fetch_niv
     now: Callable[[], float] = time.time
     today: Callable[[], date] = date.today
+    send: Callable[[urllib.request.Request], bytes] | None = None  # None = the real network; tests pass a fake
     challenges: ChallengeStore = field(default_factory=ChallengeStore)
     starter: launcher.Starter = field(init=False)
     secret: bytes = field(init=False)

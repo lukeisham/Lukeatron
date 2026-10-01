@@ -21,6 +21,12 @@ Reply with a JSON array only — no prose, no code fence. Each item is an object
   "question"    one yes/no question a reader could answer about a pasted passage of up to 700 words, with
                 no other context, to decide whether the passage shows this sign
   "source"      the article section the sign comes from
+Scope: include only signs that show in the words and punctuation of a pasted passage of plain prose —
+how the subject is framed, wording, grammar and sentence patterns, punctuation, emoji, and chat-style
+replies, disclaimers or placeholder text left in the text. Leave out anything that needs more than the
+passage: wiki or Markdown markup, headings and layout, tables, citations, links, categories, templates,
+edit summaries and history, and anything about comments or Wikipedia policy. Also leave out the sections
+that list signs that do not work, signs of human writing, and signs the article calls out of date.
 Rules: one criterion per distinct sign. Do not invent signs the article does not state. Do not ask who
 or what wrote the text; ask only whether the pattern is present. Keep an existing id whenever the sign
 is the same one, even if the article now words it differently.

@@ -24,6 +24,12 @@ class UpdatePopularityTest(unittest.TestCase):
         self.assertEqual(self.conn.execute("SELECT name, definition, popularity FROM devices ORDER BY name").fetchall(),
                          [("A", "d", 80), ("B", "d", 25)])
 
+    def test_flipside_inherits_its_fallacys_score(self):
+        self.conn.execute("INSERT INTO devices (name, definition, form_node_id, function_node_id, popularity, flipside_of) "
+                          "VALUES ('C', 'd', 1, 2, 0, 1)")
+        update_popularity.apply_scores(self.conn, {"A": 80, "B": 25, "C": 0})
+        self.assertEqual(self.conn.execute("SELECT popularity FROM devices WHERE name = 'C'").fetchone()[0], 80)
+
     def test_refuses_when_device_sets_differ(self):
         with self.assertRaises(ValueError):
             update_popularity.apply_scores(self.conn, {"A": 80})

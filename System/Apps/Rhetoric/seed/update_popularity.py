@@ -1,5 +1,5 @@
-"""Applies seed/popularity.json to the database: one transaction, `UPDATE devices SET popularity`
-and nothing else (classification-criteria, "Merging new popularity data"). Not load_devices.py.
+"""Applies seed/popularity.json to the database, then gives each Flipside device its fallacy's score:
+one transaction, `UPDATE devices SET popularity` and nothing else (classification-criteria, "Merging new popularity data"). Not load_devices.py.
 Refuses to run unless every device in the file exists exactly once in the database and every
 database device is in the file.
 
@@ -27,6 +27,11 @@ def apply_scores(conn: sqlite3.Connection, scores: dict[str, int]) -> int:
         for name, score in scores.items():
             changed += conn.execute("UPDATE devices SET popularity = ? WHERE name = ? AND popularity != ?",
                                     (score, name, score)).rowcount
+        # A Flipside device is named by no source, so it takes its fallacy's score (Luke, 2026-10-02).
+        changed += conn.execute(
+            "UPDATE devices SET popularity = (SELECT f.popularity FROM devices f WHERE f.id = devices.flipside_of) "
+            "WHERE flipside_of IS NOT NULL AND popularity != "
+            "(SELECT f.popularity FROM devices f WHERE f.id = devices.flipside_of)").rowcount
     return changed
 
 

@@ -43,7 +43,8 @@
     },
     "Rhetoric": {
       "context": "Teaching",
-      "blurb": "Rhetoric: reference and practice"
+      "blurb": "Rhetorical devices by category, form and function",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8794}
     },
     "ASCI_art": {
       "context": "Personal Research",

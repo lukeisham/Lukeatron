@@ -74,11 +74,11 @@ def write_devices(conn: sqlite3.Connection, devices: list[dict], ids: dict[str, 
     row_ids: dict[str, int] = {}
     for device in devices:
         row_ids[device["name"]] = conn.execute(
-            "INSERT INTO devices (name, definition, form_node_id, function_node_id, popularity) "
-            "VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO devices (name, definition, form_node_id, function_node_id, popularity, "
+            "ai_confidence_rating) VALUES (?, ?, ?, ?, ?, ?)",
             (device["name"], device["definition"], ids["form"][_placements(device, "form")[0]],
              ids["function"][_placements(device, "function")[0]],
-             device["lists_naming"] * POPULARITY_PER_LIST),
+             device["lists_naming"] * POPULARITY_PER_LIST, device["ai_confidence_rating"]),
         ).lastrowid
         for place in dict.fromkeys(_placements(device, "category")):
             conn.execute("INSERT INTO device_categories (device_id, node_id) VALUES (?, ?)",

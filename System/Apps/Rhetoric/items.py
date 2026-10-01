@@ -27,7 +27,7 @@ def load_items(db_path: Path) -> dict[str, Any]:
         ).fetchall()
         devices = conn.execute(
             "SELECT id, name, definition, form_node_id, function_node_id, "
-            "popularity, topical_rank FROM devices ORDER BY name, id"
+            "popularity, topical_rank, ai_confidence_rating FROM devices ORDER BY name, id"
         ).fetchall()
         tags = conn.execute(
             "SELECT device_id, node_id FROM device_categories ORDER BY device_id, node_id"
@@ -49,6 +49,7 @@ def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[s
             "definition": row[2],
             "popularity": row[5],
             "topical_rank": row[6],
+            "ai_confidence_rating": row[7],
             "examples": [],
         }
         for row in devices

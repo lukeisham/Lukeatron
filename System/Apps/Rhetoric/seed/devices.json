@@ -15,7 +15,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Adnomination",
@@ -33,7 +33,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Adynaton",
@@ -51,7 +51,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Escalation",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Allegory",
@@ -68,7 +68,7 @@
   "category": "Extended Meaning",
   "form": "Replacement > Substitution",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Alliteration",
@@ -86,7 +86,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic > Alliteration",
   "function": "Emphasis > Memorability",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Allusion",
@@ -103,7 +103,7 @@
   "category": "Association",
   "form": "Replacement > Metonymy",
   "function": "Connection > Shared Understanding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Anacoluthon",
@@ -120,7 +120,7 @@
   "category": "Elocutio",
   "form": "Sentence Shape > Broken Construction",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Anadiplosis",
@@ -137,7 +137,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Analogy",
@@ -154,7 +154,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Clarity > Clarity",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Anaphora",
@@ -172,7 +172,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Anastrophe",
@@ -189,7 +189,7 @@
   "category": "Elocutio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Anesis",
@@ -205,7 +205,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Antanaclasis",
@@ -222,7 +222,7 @@
   "category": "Elocutio",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Antanagoge",
@@ -239,7 +239,7 @@
   "category": "Inventio",
   "form": "Pairing > Juxtaposition",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Anthimeria",
@@ -257,7 +257,7 @@
   "category": "Invention",
   "form": "Replacement > Substitution",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Anthropomorphism",
@@ -273,7 +273,7 @@
   "category": "Resemblance",
   "form": "Replacement > Substitution",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Antimetabole",
@@ -289,7 +289,7 @@
   "category": "Elocutio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Memorability",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Antiphrasis",
@@ -306,7 +306,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Epistrophe",
@@ -325,7 +325,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Antithesis",
@@ -343,7 +343,7 @@
   "category": "Elocutio",
   "form": "Pairing > Comparison",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Antonomasia",
@@ -361,7 +361,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Aphorism",
@@ -381,7 +381,7 @@
   "category": "Memoria",
   "form": "Sentence Shape > Compact Saying",
   "function": "Emphasis > Memorability",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Aphorismus",
@@ -397,7 +397,7 @@
   "category": "Inventio",
   "form": "Speech Act > Question",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Apophasis",
@@ -415,7 +415,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Aporia",
@@ -433,7 +433,7 @@
   "category": "Inventio",
   "form": "Speech Act > Question",
   "function": "Connection > Intimacy",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Aposiopesis",
@@ -451,7 +451,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Omission",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Apostrophe",
@@ -468,7 +468,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Exclamation",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appositio",
@@ -485,7 +485,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Clarity",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Assonance",
@@ -502,7 +502,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic > Assonance",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Asterismos",
@@ -519,7 +519,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Foregrounding",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Asyndeton",
@@ -537,7 +537,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Omission",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Bdelygmia",
@@ -553,7 +553,7 @@
   "category": "Ornamental Epithet",
   "form": "Addition & Omission > Addition",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Cacophony",
@@ -569,7 +569,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic",
   "function": "Disruption",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Catachresis",
@@ -586,7 +586,7 @@
   "category": "Invention",
   "form": "Replacement > Substitution",
   "function": "Clarity > Clarity",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Circumlocution",
@@ -604,7 +604,7 @@
   "category": "Naming",
   "form": "Addition & Omission > Addition",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Climax",
@@ -620,7 +620,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Escalation",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Conduplicatio",
@@ -634,7 +634,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Congeries",
@@ -652,7 +652,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Consonance",
@@ -669,7 +669,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Cumulative Sentence",
@@ -686,7 +686,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Diacope",
@@ -703,7 +703,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Diction",
@@ -720,7 +720,7 @@
   "category": "Elocutio",
   "form": "Replacement > Substitution",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Distinctio",
@@ -737,7 +737,7 @@
   "category": "Inventio",
   "form": "Semantic Play > Ambiguity",
   "function": "Clarity > Clarity",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Double Entendre",
@@ -754,7 +754,7 @@
   "category": "Extended Meaning",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Dramatic Irony",
@@ -770,7 +770,7 @@
   "category": "Extended Meaning",
   "form": "Semantic Play > Ambiguity",
   "function": "Disruption > Irony",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Dysphemism",
@@ -786,7 +786,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Ellipsis",
@@ -803,7 +803,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Omission",
   "function": "Clarity > Conciseness",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Enthymeme",
@@ -819,7 +819,7 @@
   "category": "Inventio",
   "form": "Addition & Omission > Omission",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Enumeratio",
@@ -835,7 +835,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Clarity",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epanalepsis",
@@ -851,7 +851,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Epigram",
@@ -867,7 +867,7 @@
   "category": "Memoria",
   "form": "Sentence Shape > Compact Saying",
   "function": "Emphasis > Memorability",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Rhetorical Question",
@@ -887,7 +887,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Question",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Euphemism",
@@ -904,7 +904,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Evasion",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Euphony",
@@ -920,7 +920,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Eutrepismus",
@@ -937,7 +937,7 @@
   "category": "Dispositio",
   "form": "Sentence Shape > Numbered Points",
   "function": "Clarity > Clarity",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Exemplum",
@@ -953,7 +953,7 @@
   "category": "Inventio",
   "form": "Speech Act > Recollection & Example",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hyperbole",
@@ -969,7 +969,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hypophora",
@@ -986,7 +986,7 @@
   "category": "Inventio",
   "form": "Speech Act > Question",
   "function": "Emphasis > Foregrounding",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Hypotaxis",
@@ -1002,7 +1002,7 @@
   "category": "Dispositio",
   "form": "Sentence Shape > Subordination",
   "function": "Clarity > Clarity",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Irony",
@@ -1018,7 +1018,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Isocolon",
@@ -1036,7 +1036,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Juxtaposition",
@@ -1052,7 +1052,7 @@
   "category": "Dispositio",
   "form": "Pairing > Juxtaposition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Litotes",
@@ -1068,7 +1068,7 @@
   "category": "Elocutio",
   "form": "Reversal > Reversal",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Malapropism",
@@ -1087,7 +1087,7 @@
   "category": "Elocutio",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Understatement",
@@ -1107,7 +1107,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Metanoia",
@@ -1125,7 +1125,7 @@
   "category": "Elocutio",
   "form": "Reversal > Reversal",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Metaphor",
@@ -1140,7 +1140,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Clarity > Clarity",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Metonymy",
@@ -1158,7 +1158,7 @@
   "category": "Association",
   "form": "Replacement > Metonymy",
   "function": "Clarity > Conciseness",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Non Sequitur",
@@ -1174,7 +1174,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Onomatopoeia",
@@ -1192,7 +1192,7 @@
   "category": "Invention",
   "form": "Sonic",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Oxymoron",
@@ -1209,7 +1209,7 @@
   "category": "Elocutio",
   "form": "Pairing > Juxtaposition",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Paradox",
@@ -1224,7 +1224,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Parataxis",
@@ -1238,7 +1238,7 @@
   "category": "Dispositio",
   "form": "Pairing > Juxtaposition",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Parenthesis",
@@ -1255,7 +1255,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Connection > Intimacy",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Pathetic Fallacy",
@@ -1270,7 +1270,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Personification",
@@ -1288,7 +1288,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Pleonasm",
@@ -1306,7 +1306,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Polysyndeton",
@@ -1320,7 +1320,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Pun",
@@ -1337,7 +1337,7 @@
   "category": "Elocutio",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Red Herring",
@@ -1353,7 +1353,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Scesis Onomaton",
@@ -1369,7 +1369,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Sibilance",
@@ -1383,7 +1383,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Simile",
@@ -1398,7 +1398,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Clarity > Clarity",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Syllogism",
@@ -1412,7 +1412,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Symploce",
@@ -1429,7 +1429,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Synecdoche",
@@ -1444,7 +1444,7 @@
   "category": "Naming",
   "form": "Replacement > Synecdoche",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Zeugma",
@@ -1461,7 +1461,7 @@
   "category": "Elocutio",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hendiadys",
@@ -1475,7 +1475,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Paradiastole",
@@ -1489,7 +1489,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Metalepsis",
@@ -1505,7 +1505,7 @@
   "category": "Association",
   "form": "Replacement > Metonymy",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Tmesis",
@@ -1519,7 +1519,7 @@
   "category": "Invention",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Tricolon",
@@ -1535,7 +1535,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Memorability",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Charientismus",
@@ -1549,7 +1549,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Dismissal",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Anacoenosis",
@@ -1565,7 +1565,7 @@
   "category": "Inventio",
   "form": "Speech Act > Question",
   "function": "Connection > Shared Understanding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Sermocinatio",
@@ -1581,7 +1581,7 @@
   "category": "Inventio",
   "form": "Replacement > Substitution",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Epitrope",
@@ -1595,7 +1595,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hysteron Proteron",
@@ -1609,7 +1609,7 @@
   "category": "Dispositio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epanodos",
@@ -1623,7 +1623,7 @@
   "category": "Dispositio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Prosonomasia",
@@ -1637,7 +1637,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Paromologia",
@@ -1651,7 +1651,7 @@
   "category": "Inventio",
   "form": "Speech Act > Concession",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Apodioxis",
@@ -1665,7 +1665,7 @@
   "category": "Inventio",
   "form": "Speech Act > Dismissal",
   "function": "Persuasion > Authority/Power",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Ethopoeia",
@@ -1679,7 +1679,7 @@
   "category": "Inventio",
   "form": "Replacement > Substitution",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Enargeia",
@@ -1695,7 +1695,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Ekphrasis",
@@ -1711,7 +1711,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Prosopographia",
@@ -1725,7 +1725,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Anamnesis",
@@ -1739,7 +1739,7 @@
   "category": "Inventio",
   "form": "Speech Act > Recollection & Example",
   "function": "Persuasion > Authority/Power",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epexegesis",
@@ -1753,7 +1753,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Clarity",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Adianoeta",
@@ -1767,7 +1767,7 @@
   "category": "Extended Meaning",
   "form": "Semantic Play > Ambiguity",
   "function": "Disruption > Irony",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Aetiologia",
@@ -1781,7 +1781,7 @@
   "category": "Inventio",
   "form": "Addition & Omission > Addition",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Pysma",
@@ -1795,7 +1795,7 @@
   "category": "Inventio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Asteismus",
@@ -1809,7 +1809,7 @@
   "category": "Elocutio",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Mycterismus",
@@ -1823,7 +1823,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epiplexis",
@@ -1837,7 +1837,7 @@
   "category": "Inventio",
   "form": "Speech Act > Question",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epimone",
@@ -1851,7 +1851,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Homoioteleuton",
@@ -1867,7 +1867,7 @@
   "category": "Elocutio",
   "form": "Sonic > Assonance",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Homoioptoton",
@@ -1881,7 +1881,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Paromoiosis",
@@ -1895,7 +1895,7 @@
   "category": "Elocutio",
   "form": "Sonic > Alliteration",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Pathopoeia",
@@ -1909,7 +1909,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Apoplanesis",
@@ -1923,7 +1923,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Diversion",
   "function": "Evasion",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Brachylogia",
@@ -1937,7 +1937,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Omission",
   "function": "Clarity > Conciseness",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Hypallage",
@@ -1953,7 +1953,7 @@
   "category": "Elocutio",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Metabasis",
@@ -1967,7 +1967,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Addition",
   "function": "Clarity > Clarity",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Exergasia",
@@ -1983,7 +1983,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Synonymia",
@@ -1997,7 +1997,7 @@
   "category": "Elocutio",
   "form": "Addition & Omission > Addition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Aganactesis",
@@ -2011,7 +2011,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Exclamation",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epiphonema",
@@ -2025,7 +2025,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Exclamation",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Ecphonesis",
@@ -2041,7 +2041,7 @@
   "category": "Elocutio",
   "form": "Speech Act > Exclamation",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Tapinosis",
@@ -2055,7 +2055,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Amphibologia",
@@ -2071,7 +2071,7 @@
   "category": "Extended Meaning",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Synchoresis",
@@ -2085,7 +2085,7 @@
   "category": "Inventio",
   "form": "Speech Act > Concession",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Antirrhesis",
@@ -2099,7 +2099,7 @@
   "category": "Inventio",
   "form": "Speech Act > Dismissal",
   "function": "Persuasion > Authority/Power",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hypozeuxis",
@@ -2113,7 +2113,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Aesthetic > Elegance",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Paraprosdokian",
@@ -2127,7 +2127,7 @@
   "category": "Elocutio",
   "form": "Reversal > Reversal",
   "function": "Disruption > Surprise",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Merism",
@@ -2141,7 +2141,7 @@
   "category": "Naming",
   "form": "Replacement > Synecdoche",
   "function": "Clarity > Conciseness",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Bathos",
@@ -2157,7 +2157,7 @@
   "category": "Elocutio",
   "form": "Reversal > Reversal",
   "function": "Disruption > Surprise",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Eponym",
@@ -2171,7 +2171,7 @@
   "category": "Naming",
   "form": "Replacement > Metonymy",
   "function": "Clarity > Conciseness",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Kenning",
@@ -2185,7 +2185,7 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Begging the Question",
@@ -2201,7 +2201,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Equivocation",
@@ -2215,7 +2215,7 @@
   "category": "Fallacy",
   "form": "Semantic Play > Ambiguity",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Fallacy of Composition",
@@ -2229,7 +2229,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Fallacy of Division",
@@ -2243,7 +2243,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Tu Quoque",
@@ -2259,7 +2259,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Genetic Fallacy",
@@ -2273,7 +2273,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Ignorance",
@@ -2289,7 +2289,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Absence as Evidence",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Bandwagon Fallacy",
@@ -2306,7 +2306,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Authority/Power",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Tradition",
@@ -2322,7 +2322,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Authority/Power",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Appeal to Pity",
@@ -2338,7 +2338,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Appeal to Force",
@@ -2354,7 +2354,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Authority/Power",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Appeal to Novelty",
@@ -2370,7 +2370,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Gambler's Fallacy",
@@ -2386,7 +2386,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "No True Scotsman",
@@ -2400,7 +2400,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Loaded Question",
@@ -2417,7 +2417,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Cum Hoc Ergo Propter Hoc",
@@ -2433,7 +2433,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Affirming the Consequent",
@@ -2447,7 +2447,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Denying the Antecedent",
@@ -2461,7 +2461,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Undistributed Middle",
@@ -2475,7 +2475,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Argument to Moderation",
@@ -2492,7 +2492,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Special Pleading",
@@ -2506,7 +2506,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Moving the Goalposts",
@@ -2520,7 +2520,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Poisoning the Well",
@@ -2534,7 +2534,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Guilt by Association",
@@ -2548,7 +2548,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Texas Sharpshooter Fallacy",
@@ -2562,7 +2562,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Cherry Picking",
@@ -2578,7 +2578,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Naturalistic Fallacy",
@@ -2592,7 +2592,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Nature",
@@ -2606,7 +2606,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Consequences",
@@ -2622,7 +2622,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Sunk Cost Fallacy",
@@ -2636,7 +2636,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Bulverism",
@@ -2650,7 +2650,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Continuum Fallacy",
@@ -2667,7 +2667,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Ecological Fallacy",
@@ -2681,7 +2681,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Single Cause Fallacy",
@@ -2697,7 +2697,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Fallacy of Four Terms",
@@ -2713,7 +2713,7 @@
   "category": "Fallacy",
   "form": "Semantic Play > Ambiguity",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Argument from Incredulity",
@@ -2729,7 +2729,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Absence as Evidence",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Ridicule",
@@ -2745,7 +2745,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Proof by Assertion",
@@ -2761,7 +2761,7 @@
   "category": "Fallacy",
   "form": "Sonic > Repetition",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Anecdotal Fallacy",
@@ -2775,7 +2775,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Fallacy of Accident",
@@ -2791,7 +2791,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Reification",
@@ -2805,9 +2805,9 @@
   "flipside_of": null,
   "lists_naming": 0,
   "category": "Fallacy",
-  "form": null,
+  "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Slothful Induction",
@@ -2821,7 +2821,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Whataboutism",
@@ -2835,7 +2835,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Tone Policing",
@@ -2849,7 +2849,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to the Stone",
@@ -2865,7 +2865,7 @@
   "category": "Fallacy",
   "form": "Speech Act > Dismissal",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Relative Privation",
@@ -2881,7 +2881,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Is-Ought Fallacy",
@@ -2897,7 +2897,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Steelmanning",
@@ -2913,7 +2913,7 @@
   "category": "Inventio",
   "form": "Speech Act > Concession",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Reductio ad Absurdum",
@@ -2929,7 +2929,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Principle of Charity",
@@ -2943,7 +2943,7 @@
   "category": "Inventio",
   "form": "Speech Act > Concession",
   "function": "Connection > Shared Understanding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Modus Ponens",
@@ -2959,7 +2959,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Modus Tollens",
@@ -2975,7 +2975,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Constructive Dilemma",
@@ -2989,7 +2989,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Inference to the Best Explanation",
@@ -3005,7 +3005,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Argument from Expert Opinion",
@@ -3021,7 +3021,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Authority/Power",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Chiasmus",
@@ -3037,7 +3037,7 @@
   "category": "Elocutio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Memorability",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Conceit",
@@ -3053,7 +3053,7 @@
   "category": "Resemblance",
   "form": "Pairing > Comparison",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epitheton",
@@ -3070,7 +3070,7 @@
   "category": "Ornamental Epithet",
   "form": "Addition & Omission > Addition",
   "function": "Aesthetic > Aesthetic Effect",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Epizeuxis",
@@ -3088,7 +3088,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Extended Metaphor",
@@ -3104,7 +3104,7 @@
   "category": "Extended Meaning",
   "form": "Pairing > Comparison",
   "function": "Clarity > Clarity",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Hyperbaton",
@@ -3120,7 +3120,7 @@
   "category": "Elocutio",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Parallelism",
@@ -3138,7 +3138,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Polyptoton",
@@ -3156,7 +3156,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Repetition",
@@ -3171,7 +3171,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Verbal Irony",
@@ -3186,7 +3186,7 @@
   "category": "Extended Meaning",
   "form": "Reversal > Reversal",
   "function": "Disruption > Irony",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Gradatio",
@@ -3200,7 +3200,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Escalation",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Auxesis",
@@ -3214,7 +3214,7 @@
   "category": "Dispositio",
   "form": "Addition & Omission > Escalation",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Ploce",
@@ -3228,7 +3228,7 @@
   "category": "Elocutio",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Emphasis",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Ad Hominem",
@@ -3242,7 +3242,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Straw Man",
@@ -3256,7 +3256,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "False Dichotomy",
@@ -3270,7 +3270,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Slippery Slope",
@@ -3284,7 +3284,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Appeal to Authority",
@@ -3298,7 +3298,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Authority/Power",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Hasty Generalization",
@@ -3312,7 +3312,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Post Hoc",
@@ -3326,7 +3326,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Circular Reasoning",
@@ -3340,7 +3340,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Appeal to Emotion",
@@ -3354,7 +3354,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Shared Ground",
@@ -3368,7 +3368,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Connection > Shared Understanding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Flagged Pun",
@@ -3382,7 +3382,7 @@
   "category": "Fallacy Flipside",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Sum Spotlight",
@@ -3396,7 +3396,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Member Lens",
@@ -3410,7 +3410,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Walk-the-Talk Test",
@@ -3424,7 +3424,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Provenance Probe",
@@ -3438,7 +3438,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Silence Signal",
@@ -3452,7 +3452,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Absence as Evidence",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Crowd Compass",
@@ -3466,7 +3466,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Long Test",
@@ -3480,7 +3480,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Mercy Plea",
@@ -3494,7 +3494,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Stated Stakes",
@@ -3508,7 +3508,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Fresh Edge",
@@ -3522,7 +3522,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Streak Watch",
@@ -3536,7 +3536,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Standard Raiser",
@@ -3550,7 +3550,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Premise Probe",
@@ -3564,7 +3564,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Coincidence Flag",
@@ -3578,7 +3578,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Intuitive guess",
@@ -3592,7 +3592,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Absent Cause Note",
@@ -3606,7 +3606,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Shared Trait Hint",
@@ -3620,7 +3620,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Middle Path",
@@ -3634,7 +3634,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Named Exception",
@@ -3648,7 +3648,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Raised Bar",
@@ -3662,7 +3662,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Source Warning",
@@ -3676,7 +3676,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Company Clue",
@@ -3690,7 +3690,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Pattern Hypothesis",
@@ -3704,7 +3704,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Best Case Showcase",
@@ -3718,7 +3718,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Design Reading",
@@ -3732,7 +3732,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Nature's Precedent",
@@ -3746,7 +3746,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Good consequences",
@@ -3760,7 +3760,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Investment Memory",
@@ -3774,7 +3774,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Motive Diagnosis",
@@ -3788,7 +3788,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Blurred Line Defence",
@@ -3802,7 +3802,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Group Profile",
@@ -3816,7 +3816,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Prime Mover",
@@ -3830,7 +3830,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Second Sense Bridge",
@@ -3844,7 +3844,7 @@
   "category": "Fallacy Flipside",
   "form": "Semantic Play > Ambiguity",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Strain Test",
@@ -3858,7 +3858,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Absence as Evidence",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Absurd Mirror",
@@ -3872,7 +3872,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Refrain",
@@ -3886,7 +3886,7 @@
   "category": "Fallacy Flipside",
   "form": "Sonic > Repetition",
   "function": "Emphasis > Memorability",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Living Case",
@@ -3900,7 +3900,7 @@
   "category": "Fallacy Flipside",
   "form": "Speech Act > Recollection & Example",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Exceptional Case",
@@ -3914,7 +3914,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Living Abstraction",
@@ -3926,9 +3926,9 @@
   "flipside_of": "Reification",
   "lists_naming": 0,
   "category": "Fallacy Flipside",
-  "form": null,
+  "form": "Replacement > Substitution",
   "function": "Clarity > Concrete Grounding",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Coincidence Limit",
@@ -3942,7 +3942,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Fair Comparison",
@@ -3956,7 +3956,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Register Check",
@@ -3970,7 +3970,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Plain Dismissal",
@@ -3984,7 +3984,7 @@
   "category": "Fallacy Flipside",
   "form": "Speech Act > Dismissal",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Priority Frame",
@@ -3998,7 +3998,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Fact-Backed Duty",
@@ -4012,7 +4012,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Corruption",
@@ -4026,7 +4026,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Attack on the Source",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Fair Sketch",
@@ -4040,7 +4040,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Diversion",
   "function": "Clarity > Clarity",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Real Fork",
@@ -4054,7 +4054,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Option Framing",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Evidence Slide",
@@ -4068,7 +4068,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Expert Voice",
@@ -4082,7 +4082,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to a Standard",
   "function": "Persuasion > Authority/Power",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Working Sample",
@@ -4096,7 +4096,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Sequence Clue",
@@ -4110,7 +4110,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Causal Inference",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Reverse Engineering",
@@ -4124,7 +4124,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Diverting Bridge",
@@ -4138,7 +4138,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Diversion",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "low"
+  "ai_confidence_rating": "low"
  },
  {
   "name": "Appeal to Pathos",
@@ -4152,7 +4152,7 @@
   "category": "Fallacy Flipside",
   "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
-  "confidence": "high"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Unspoken Link",
@@ -4166,6 +4166,6 @@
   "category": "Fallacy Flipside",
   "form": "Addition & Omission > Omission",
   "function": "Persuasion > Logical Appeal",
-  "confidence": "medium"
+  "ai_confidence_rating": "medium"
  }
 ]

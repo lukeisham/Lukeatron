@@ -69,6 +69,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(anaphora["examples"], ["carpe *diem*"])
         self.assertEqual(anaphora["popularity"], 90)
         self.assertIsNone(anaphora["topical_rank"])
+        self.assertEqual(anaphora["ai_confidence_rating"], "low")  # the schema default for an unrated device
         self.assertNotIn("medium", str(payload).lower())
 
     def test_device_with_several_category_tags_appears_under_each(self):

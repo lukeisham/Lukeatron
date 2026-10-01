@@ -1,0 +1,2530 @@
+{
+ "sources": {
+  "silva": "Silva Rhetoricae (BYU)",
+  "wikipedia": "Wikipedia (glossary + rhetorical device; candidate-finding only)",
+  "owl": "Purdue OWL (rhetorical strategies, literary terms)",
+  "sep": "Stanford Encyclopedia of Philosophy (Aristotle's Rhetoric, Fallacies)",
+  "uky": "Univ. of Kentucky, Glossary of Rhetorical Terms (classroom substitute)",
+  "lfo": "LogicalFallacies.org (substitute for Your Logical Fallacies)",
+  "iep": "Internet Encyclopedia of Philosophy, Fallacies",
+  "owl_fallacies": "Purdue OWL, Logical Fallacies"
+ },
+ "failed": {},
+ "unreachable_approved": {
+  "Encyclopaedia Britannica": "HTTP 403 to automated requests",
+  "The Norton Field Guide index": "no index page found",
+  "Read Write Think (NCTE)": "site retired (404)",
+  "AP Language list (College Board / Fiveable)": "page not found (404)",
+  "ThoughtCo glossary": "HTTP 402 paywall",
+  "Your Logical Fallacies": "site did not respond"
+ },
+ "max_count": 8,
+ "devices": [
+  {
+   "name": "Accismus",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Adnomination",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Adynaton",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Allegory",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Alliteration",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 8,
+   "popularity": 100
+  },
+  {
+   "name": "Allusion",
+   "scraped_lists": 3,
+   "web_sources": [
+    "wikipedia",
+    "owl",
+    "sep"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Anacoluthon",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "uky"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Anadiplosis",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Analogy",
+   "scraped_lists": 3,
+   "web_sources": [
+    "wikipedia",
+    "sep",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Anaphora",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Anastrophe",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Anesis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Antanaclasis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Antanagoge",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Anthimeria",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Anthropomorphism",
+   "scraped_lists": 2,
+   "web_sources": [],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Antimetabole",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Antiphrasis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Epistrophe",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Antithesis",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Antonomasia",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Aphorism",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Aphorismus",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Apophasis",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Aporia",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Aposiopesis",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Apostrophe",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Appositio",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Assonance",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Asterismos",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Asyndeton",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Bdelygmia",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Cacophony",
+   "scraped_lists": 3,
+   "web_sources": [
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Catachresis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Circumlocution",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Climax",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Conduplicatio",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Congeries",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Consonance",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Cumulative Sentence",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Diacope",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Diction",
+   "scraped_lists": 2,
+   "web_sources": [
+    "wikipedia",
+    "owl",
+    "sep"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Distinctio",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Double Entendre",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia",
+    "sep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Dramatic Irony",
+   "scraped_lists": 2,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Dysphemism",
+   "scraped_lists": 2,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Ellipsis",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Enthymeme",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Enumeratio",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "sep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Epanalepsis",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Epigram",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Rhetorical Question",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Euphemism",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Euphony",
+   "scraped_lists": 2,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Eutrepismus",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Exemplum",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Hyperbole",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Hypophora",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Hypotaxis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Irony",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Isocolon",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Juxtaposition",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Litotes",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Malapropism",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Understatement",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Metanoia",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Metaphor",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 8,
+   "popularity": 100
+  },
+  {
+   "name": "Metonymy",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Non Sequitur",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia",
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Onomatopoeia",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Oxymoron",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Paradox",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Parataxis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Parenthesis",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Pathetic Fallacy",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Personification",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "uky"
+   ],
+   "count": 8,
+   "popularity": 100
+  },
+  {
+   "name": "Pleonasm",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Polysyndeton",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Pun",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Red Herring",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia",
+    "owl",
+    "sep",
+    "lfo",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Scesis Onomaton",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Sibilance",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Simile",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 8,
+   "popularity": 100
+  },
+  {
+   "name": "Syllogism",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia",
+    "sep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Symploce",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Synecdoche",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 8,
+   "popularity": 100
+  },
+  {
+   "name": "Zeugma",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Hendiadys",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Paradiastole",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Metalepsis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Tmesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Tricolon",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Charientismus",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Anacoenosis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Sermocinatio",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Epitrope",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Hysteron Proteron",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Epanodos",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Prosonomasia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Paromologia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Apodioxis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Ethopoeia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Enargeia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Ekphrasis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Prosopographia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Anamnesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Epexegesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Adianoeta",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Aetiologia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Pysma",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Asteismus",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Mycterismus",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Epiplexis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Epimone",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Homoioteleuton",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Homoioptoton",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Paromoiosis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Pathopoeia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Apoplanesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Brachylogia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Hypallage",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Metabasis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Exergasia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Synonymia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Aganactesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Epiphonema",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Ecphonesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Tapinosis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Amphibologia",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "sep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Synchoresis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Antirrhesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Hypozeuxis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Paraprosdokian",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia",
+    "uky"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Merism",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Bathos",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Eponym",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Kenning",
+   "scraped_lists": 1,
+   "web_sources": [],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Begging the Question",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Equivocation",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Fallacy of Composition",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Fallacy of Division",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Tu Quoque",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Genetic Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "owl",
+    "lfo",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Appeal to Ignorance",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Bandwagon Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Appeal to Tradition",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Appeal to Pity",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Appeal to Force",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Appeal to Novelty",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Gambler's Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "No True Scotsman",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Loaded Question",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Cum Hoc Ergo Propter Hoc",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Affirming the Consequent",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Denying the Antecedent",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Undistributed Middle",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Argument to Moderation",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Special Pleading",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Moving the Goalposts",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Poisoning the Well",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Guilt by Association",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Texas Sharpshooter Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Cherry Picking",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Naturalistic Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Appeal to Nature",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Appeal to Consequences",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Sunk Cost Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Bulverism",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Continuum Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Ecological Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Single Cause Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Fallacy of Four Terms",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Argument from Incredulity",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Appeal to Ridicule",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Proof by Assertion",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Anecdotal Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Fallacy of Accident",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Reification",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Slothful Induction",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Whataboutism",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Tone Policing",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Appeal to the Stone",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Relative Privation",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Is-Ought Fallacy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Steelmanning",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Reductio ad Absurdum",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Principle of Charity",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Modus Ponens",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Modus Tollens",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Constructive Dilemma",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Inference to the Best Explanation",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Argument from Expert Opinion",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Chiasmus",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Conceit",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Epitheton",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Epizeuxis",
+   "scraped_lists": 4,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Extended Metaphor",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Hyperbaton",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "uky"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Parallelism",
+   "scraped_lists": 3,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Polyptoton",
+   "scraped_lists": 1,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Repetition",
+   "scraped_lists": 2,
+   "web_sources": [
+    "silva",
+    "wikipedia",
+    "owl",
+    "sep",
+    "uky"
+   ],
+   "count": 7,
+   "popularity": 95
+  },
+  {
+   "name": "Verbal Irony",
+   "scraped_lists": 1,
+   "web_sources": [
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Gradatio",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Auxesis",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva",
+    "wikipedia"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Ploce",
+   "scraped_lists": 0,
+   "web_sources": [
+    "silva"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Ad Hominem",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia",
+    "owl",
+    "sep",
+    "lfo",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 6,
+   "popularity": 89
+  },
+  {
+   "name": "Straw Man",
+   "scraped_lists": 0,
+   "web_sources": [
+    "wikipedia",
+    "sep",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "False Dichotomy",
+   "scraped_lists": 0,
+   "web_sources": [
+    "iep"
+   ],
+   "count": 1,
+   "popularity": 32
+  },
+  {
+   "name": "Slippery Slope",
+   "scraped_lists": 0,
+   "web_sources": [
+    "owl",
+    "sep",
+    "lfo",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 5,
+   "popularity": 82
+  },
+  {
+   "name": "Appeal to Authority",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Hasty Generalization",
+   "scraped_lists": 0,
+   "web_sources": [
+    "owl",
+    "sep",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Post Hoc",
+   "scraped_lists": 0,
+   "web_sources": [
+    "owl",
+    "sep",
+    "iep",
+    "owl_fallacies"
+   ],
+   "count": 4,
+   "popularity": 73
+  },
+  {
+   "name": "Circular Reasoning",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "lfo",
+    "iep"
+   ],
+   "count": 3,
+   "popularity": 63
+  },
+  {
+   "name": "Appeal to Emotion",
+   "scraped_lists": 0,
+   "web_sources": [
+    "lfo",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Shared Ground",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Flagged Pun",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Sum Spotlight",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Member Lens",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Walk-the-Talk Test",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Provenance Probe",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Silence Signal",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Crowd Compass",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Long Test",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Mercy Plea",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Stated Stakes",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Fresh Edge",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Streak Watch",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Standard Raiser",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Premise Probe",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Coincidence Flag",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Intuitive guess",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Absent Cause Note",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Shared Trait Hint",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Middle Path",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Named Exception",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Raised Bar",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Source Warning",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Company Clue",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Pattern Hypothesis",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Best Case Showcase",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Design Reading",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Nature's Precedent",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Good consequences",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Investment Memory",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Motive Diagnosis",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Blurred Line Defence",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Group Profile",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Prime Mover",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Second Sense Bridge",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Strain Test",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Absurd Mirror",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Refrain",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Living Case",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Exceptional Case",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Living Abstraction",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Coincidence Limit",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Fair Comparison",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Register Check",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Plain Dismissal",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Priority Frame",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Fact-Backed Duty",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Corruption",
+   "scraped_lists": 0,
+   "web_sources": [
+    "sep",
+    "iep"
+   ],
+   "count": 2,
+   "popularity": 50
+  },
+  {
+   "name": "Fair Sketch",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Real Fork",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Evidence Slide",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Expert Voice",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Working Sample",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Sequence Clue",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Reverse Engineering",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Diverting Bridge",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Appeal to Pathos",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  },
+  {
+   "name": "Unspoken Link",
+   "scraped_lists": 0,
+   "web_sources": [],
+   "count": 0,
+   "popularity": 0
+  }
+ ]
+}

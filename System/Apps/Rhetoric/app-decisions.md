@@ -14,6 +14,7 @@ later agent does not "restore" the old behaviour.
 | 2026-09-30 | PRD approved in full, incl. several Category tags per device, required popularity, Data Model, no-group search with a hint on open | v0.19 |
 | 2026-09-30 | Classification criteria approved (seed-pipeline FR-5) — Category, Form, Function, escalation rules; Popularity to be scored by web frequency (count of sources, log-scaled to 0–100); 15-source list and merge approach approved | `_build/classification-criteria.md` |
 | 2026-09-30 | Reversal: a device may have several Category tags (`device_categories`); Form and Function stay one each; `popularity` required | database.spec AD-8, PRD Data Model |
+| 2026-10-02 | Popularity write approved: 192 of 272 scores updated from `seed/popularity.json` (8 of 15 sources read; LogicalFallacies.org and U. Kentucky glossary substituted); new `ai_confidence_rating` column (high/medium/low) on every device | seed-pipeline; database schema |
 
 ## Rule exceptions
 

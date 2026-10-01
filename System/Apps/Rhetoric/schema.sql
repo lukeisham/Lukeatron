@@ -6,6 +6,9 @@
 -- Cross-hierarchy invariants (a node's parent and a device's links sit in the correct
 -- hierarchy; every device has at least one Category tag) are checked by the seed pipeline's
 -- verification step, not by triggers: it is the only writer.
+-- `ai_confidence_rating` (high / medium / low) is the AI's confidence in the accuracy of the
+-- device's definition, example and categorisation together; it defaults to 'low' so an unrated
+-- device never reads as trusted.
 -- `popularity` (0-100) is required. `topical_rank` is Luke's own ordering, set by hand after the
 -- build, so it is NULL until then. `definition` is required; a device's examples (0 or more)
 -- live in `examples`.
@@ -28,6 +31,7 @@ CREATE TABLE IF NOT EXISTS devices (
     form_node_id      INTEGER NOT NULL REFERENCES nodes(id),
     function_node_id  INTEGER NOT NULL REFERENCES nodes(id),
     popularity        INTEGER NOT NULL CHECK (popularity BETWEEN 0 AND 100),
+    ai_confidence_rating TEXT NOT NULL DEFAULT 'low' CHECK (ai_confidence_rating IN ('high', 'medium', 'low')),
     topical_rank      INTEGER,
     flipside_of       INTEGER REFERENCES devices(id)
 );

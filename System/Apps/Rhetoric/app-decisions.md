@@ -19,6 +19,7 @@ later agent does not "restore" the old behaviour.
 | 2026-10-02 | Each device row shows a monochrome AI-confidence badge (high filled, medium outlined, low dashed) after its name, on screen only — hidden in Print, absent from Copy | frontend.spec |
 | 2026-10-02 | `ai_confidence_rating` added to the PRD Data Model and UI (badge); `database.spec.md` AD-9 | PRD v0.20 |
 | 2026-10-02 | Frontend closed without the Copy / Print check in Chrome (Luke skipped it); AC-5 stays unverified | frontend.spec Done |
+| 2026-10-02 | Build accepted; build docs retired (`_build/` deleted, README written). `classification-criteria.md` kept, moved to `seed/` | !AppDevelopment Phase 4 |
 
 ## Rule exceptions
 

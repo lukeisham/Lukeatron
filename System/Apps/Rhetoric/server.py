@@ -1,5 +1,5 @@
 """Thin HTTP routing for Rhetoric: static files from app/ and one read-only JSON endpoint.
-See _build/specs/server.spec.md. Data assembly lives in items.py; this module only parses the
+Data assembly lives in items.py; this module only parses the
 request, calls it, and shapes the response (API-1)."""
 
 from __future__ import annotations

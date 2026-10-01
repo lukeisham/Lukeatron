@@ -1,4 +1,4 @@
-"""Popularity research pass (classification-criteria "Popularity — web frequency"). Fetches the
+"""Popularity research pass (seed/classification-criteria.md, "Popularity — web frequency"). Fetches the
 approved reference sources, counts for every device in seed/devices.json how many distinct sources
 mention its name or any alias (the four scraped lists are already counted in `lists_naming`), and
 writes seed/popularity.json. It changes nothing else: no database write, no edit to devices.json.

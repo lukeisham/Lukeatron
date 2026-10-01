@@ -1,5 +1,5 @@
 """Applies seed/popularity.json to the database, then gives each Flipside device its fallacy's score:
-one transaction, `UPDATE devices SET popularity` and nothing else (classification-criteria, "Merging new popularity data"). Not load_devices.py.
+one transaction, `UPDATE devices SET popularity` and nothing else (seed/classification-criteria.md, "Merging new popularity data"). Not load_devices.py.
 Refuses to run unless every device in the file exists exactly once in the database and every
 database device is in the file.
 

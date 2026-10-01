@@ -75,6 +75,15 @@
       "cwd": "System/Apps/Home",
       "port": 8781,
       "url": "http://localhost:8781"
+    },
+    {
+      "name": "rhetoric",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Rhetoric",
+      "port": 8794
     }
   ]
 }

@@ -6,6 +6,40 @@ Promoted from `System/Widgets/Generator/AiCharacteristics/` to a standalone Luke
 stylistic and content characteristics, and an explainer panel expands on request. Shipped widget:
 `AiCharacteristics_generator.html`, **174,717 bytes**.
 
+## Navigation
+
+```
+AiCharacteristics/
+├── AiCharacteristics_generator.html      the shipped, built widget — open this directly
+├── AI-writing-characteristics-reference.md
+├── AiCharacteristics_miniwiki_source.md  MiniWiki glossary source
+├── cartridge/
+│   └── build/
+│       ├── config.yaml
+│       ├── content.json
+│       ├── engine.js
+│       ├── explainer.js
+│       └── aicharacteristics.miniwiki.json
+├── tests/
+│   ├── fixtures/
+│   │   ├── SOURCES.md
+│   │   ├── ai-sample.md
+│   │   └── human-sample.md
+│   └── js/
+│       ├── test-engine.mjs
+│       └── test-explainer.mjs
+├── app-decisions.md
+├── wishlist.md
+└── README.md
+```
+
+## Cross-app behaviour
+
+| From | To | What crosses | What breaks if it changes |
+|---|---|---|---|
+| `System/Widgets/Generator/_shell/` | this app's `cartridge/build/` | `assemble.py` reads `config.yaml` + `content.json` + `engine.js` + `explainer.js` and bakes them into `AiCharacteristics_generator.html` | A shell contract change breaks the build until this cartridge is updated to match — the shell stayed behind in `Widgets/Generator/` when this app was promoted out |
+| `System/Widgets/Generator/_modules/MiniWiki/` | this app's build | `miniwiki.bundle.js` must exist before assembly (`miniwiki.enabled: true` in `config.yaml`) | Build fails with a missing-bundle error until `bundle_miniwiki.py` is run first |
+
 ## What it does
 
 The user pastes text into the shell's standard analyse-mode input area (cap
@@ -117,3 +151,8 @@ text, off-range/needSpace guard path).
   build time; there is no "refresh" action for this cartridge (Tier B in
   this shell is a present-mode content-pool feature, not applicable to an
   analyse-mode detector set).
+
+## Decisions and exceptions
+
+See [app-decisions.md](app-decisions.md) for approvals and any granted rule exceptions. Not
+copied here.

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rhetoric">
+  <rect x="2" y="2" width="60" height="60" rx="11" fill="#f6efe2" stroke="#6b1f2a" stroke-width="3"/>
+  <rect x="7" y="7" width="50" height="50" rx="7" fill="none" stroke="#e3d9c8" stroke-width="1.2"/>
+  <path fill="#6b1f2a" fill-rule="evenodd" d="
+    M14 13 H36 C46.5 13 52 18.4 52 25.6 C52 32.2 47.2 36.4 40.6 37.2 L50.2 45.6 C52 47.2 54.2 47.6 56.2 46.6 L57.4 49 C54.6 51.2 50.2 51.2 47.2 48.6 L35.2 38.4 H28 V46.4 H34 V49 H14 V46.4 H20 V15.6 H14 Z
+    M28 19 H35.5 C40.5 19 44 21.5 44 25.8 C44 30 40.5 34.4 35.5 34.4 H28 Z"/>
+  <path fill="none" stroke="#6b1f2a" stroke-width="1.4" stroke-linecap="round" d="M12 55 Q32 58 52 55"/>
+</svg>

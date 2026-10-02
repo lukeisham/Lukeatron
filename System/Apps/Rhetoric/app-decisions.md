@@ -20,7 +20,7 @@ later agent does not "restore" the old behaviour.
 | 2026-10-02 | `ai_confidence_rating` added to the PRD Data Model and UI (badge); `database.spec.md` AD-9 | PRD v0.20 |
 | 2026-10-02 | Frontend closed without the Copy / Print check in Chrome (Luke skipped it); AC-5 stays unverified | frontend.spec Done |
 | 2026-10-02 | Build accepted; build docs retired (`_build/` deleted, README written). `classification-criteria.md` kept, moved to `seed/` | !AppDevelopment Phase 4 |
-| 2026-10-02 | Front-end additions (Luke): AI-confidence badge is a toolbar toggle (on by default); devices indent under their types (the indent rule was being overridden, so nothing indented); **Reveal** toggle, on by default — tree views show groups and types only, each heading has a reveal button (▸ n / ▾ n) for its devices, search and an isolated heading show everything, off lists every device; a remembered **Open on** setting picks the group the app loads with (default: search only). The toggles other than Open on are not remembered between visits | front end |
+| 2026-10-02 | Front-end additions (Luke): AI-confidence badge is a toolbar toggle (on by default); devices indent under their types (the indent rule was being overridden, so nothing indented); **Reveal** toggle, on by default — tree views show groups and types only, each heading has a reveal button (▸ n / ▾ n) for its devices, search and an isolated heading show everything, off lists every device; a remembered **Open on** setting picks the group the app loads with (default: search only). Show definitions, Show examples, Show AI confidence and Reveal are remembered between visits, like Open on (Luke, 2026-10-02); Fuzzy match is not | front end |
 
 ## Rule exceptions
 

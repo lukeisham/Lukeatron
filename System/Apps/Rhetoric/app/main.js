@@ -41,6 +41,28 @@ function saveDefaultSort(value) {
   }
 }
 
+// The four display toggles are remembered together, as one JSON object of booleans.
+const TOGGLES_KEY = 'rhetoric.toggles';
+const TOGGLE_FIELDS = ['showDefinitions', 'showExamples', 'showConfidence', 'reveal'];
+
+function loadToggles() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TOGGLES_KEY) ?? '{}');
+    return Object.fromEntries(TOGGLE_FIELDS.filter((field) => typeof saved?.[field] === 'boolean').map((field) => [field, saved[field]]));
+  } catch (error) {
+    console.warn('toggles: storage unavailable or unreadable', error);
+    return {};
+  }
+}
+
+function saveToggles() {
+  try {
+    localStorage.setItem(TOGGLES_KEY, JSON.stringify(Object.fromEntries(TOGGLE_FIELDS.map((field) => [field, state[field]]))));
+  } catch (error) {
+    console.warn('toggles: could not save', error);
+  }
+}
+
 function refresh() {
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
   renderList(document, els.list, state, currentView(state));
@@ -115,13 +137,13 @@ function bindControls() {
     setSortOrder(state, button.dataset.sort === state.sortOrder ? EVERYTHING : button.dataset.sort);
     refresh();
   });
-  els.showConfidence.addEventListener('change', () => { state.showConfidence = els.showConfidence.checked; applyToggles(); });
-  els.reveal.addEventListener('change', () => { state.reveal = els.reveal.checked; refresh(); });
+  els.showConfidence.addEventListener('change', () => { state.showConfidence = els.showConfidence.checked; applyToggles(); saveToggles(); });
+  els.reveal.addEventListener('change', () => { state.reveal = els.reveal.checked; refresh(); saveToggles(); });
   els.defaultSort.addEventListener('change', () => saveDefaultSort(els.defaultSort.value));
   els.search.addEventListener('input', () => { state.query = els.search.value; refresh(); });
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
-  els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); });
-  els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); });
+  els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(); });
+  els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(); });
   els.home.addEventListener('click', () => { setActiveView(state, FULL_VIEW); refresh(); });
   els.print.addEventListener('click', () => printCurrentView(window));
   els.copy.addEventListener('click', onCopy);
@@ -136,6 +158,11 @@ async function start() {
     renderStatus(document, els.list, 'The devices could not be loaded. Is the server running?');
     return;
   }
+  Object.assign(state, loadToggles());
+  els.showDefinitions.checked = state.showDefinitions;
+  els.showExamples.checked = state.showExamples;
+  els.showConfidence.checked = state.showConfidence;
+  els.reveal.checked = state.reveal;
   const opening = savedDefaultSort();
   els.defaultSort.value = opening;
   if (opening !== NO_DEFAULT) setSortOrder(state, opening);

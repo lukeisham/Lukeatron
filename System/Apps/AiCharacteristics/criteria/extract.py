@@ -6,12 +6,14 @@ The article is untrusted text: the prompt tells Haiku to treat it as material, n
 from __future__ import annotations
 
 import json
+import re
 
 from criteria.article import Article
 from criteria.haiku import HaikuError, ask_json
 from criteria.transport import Send, send_request
 
 EXTRACT_MAX_TOKENS = 8000
+WIKI_MENTION = re.compile(r"\bwiki(?:pedia|text)?\b", re.IGNORECASE)
 
 SYSTEM_PROMPT = """You turn an article about the signs of AI-written text into a list of criteria.
 Reply with a JSON array only — no prose, no code fence. Each item is an object with these keys:
@@ -24,9 +26,11 @@ Reply with a JSON array only — no prose, no code fence. Each item is an object
 Scope: include only signs that show in the words and punctuation of a pasted passage of plain prose —
 how the subject is framed, wording, grammar and sentence patterns, punctuation, emoji, and chat-style
 replies, disclaimers or placeholder text left in the text. Leave out anything that needs more than the
-passage: wiki or Markdown markup, headings and layout, tables, citations, links, categories, templates,
-edit summaries and history, and anything about comments or Wikipedia policy. Also leave out the sections
-that list signs that do not work, signs of human writing, and signs the article calls out of date.
+passage: wiki or Markdown markup, headings and layout (bold, lists, tables, heading styles), citations,
+links, categories, templates, edit summaries and history. Always leave out any sign that is about
+Wikipedia itself — its policies, notability, editing, drafts, lists, lead sections or comments — and never
+mention Wikipedia or wikis in a title, description or question. Also leave out the sections that list signs
+that do not work, signs of human writing, and signs the article calls out of date.
 Rules: one criterion per distinct sign. Do not invent signs the article does not state. Do not ask who
 or what wrote the text; ask only whether the pattern is present. Keep an existing id whenever the sign
 is the same one, even if the article now words it differently.
@@ -47,4 +51,12 @@ def extract_criteria(article: Article, existing: list[dict], key: str, send: Sen
         raise ExtractError(str(error)) from error
     if not isinstance(proposed, list):
         raise ExtractError("Haiku did not return a list of criteria")
-    return proposed
+    return [item for item in proposed if not _mentions_wikipedia(item)]
+
+
+def _mentions_wikipedia(item: object) -> bool:
+    """A backstop for the prompt's rule: a criterion that names Wikipedia is about the site, not the text."""
+    if not isinstance(item, dict):
+        return False
+    return any(isinstance(item.get(field), str) and WIKI_MENTION.search(item[field])
+               for field in ("title", "description", "question"))

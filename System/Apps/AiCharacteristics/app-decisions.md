@@ -14,6 +14,7 @@ later agent does not "restore" the old behaviour.
 | 2026-10-02 | **Special exception** to the Personal Research guardrail "no Wikipedia as a load-bearing source": this app scrapes the Wikipedia article on AI writing characteristics and builds its criteria from it. Scoped to this app only — it does not carry to other projects | plan step 2 |
 | 2026-10-02 | The page carries **no** authorship disclaimer, and no caveat line under the results. This reverses the old app's "AI characteristics observed — not an authorship verdict" stance; do not restore it. The Scrape button appears only on the "The criteria, explained" tab | mockup v2 |
 | 2026-10-02 | The **Retired criteria** category is locked in: a criterion that leaves the article is kept under "No longer in the article" on the criteria tab, is not used for checking, and is never deleted. Do not remove the category | mockup v2 feedback |
+| 2026-10-02 | **Criteria scope:** only signs visible in the words and punctuation of a pasted text — content framing, wording and grammar, punctuation and emoji (em dashes, emoji, curly quotes), and chat-style leftovers. **Always excluded:** layout (headings, bold, lists, tables) and anything related to Wikipedia itself (notability, policies, editing, drafts, markup, citations). About 16 criteria from the current article | Luke, 2026-10-02 |
 
 ## Rule exceptions
 

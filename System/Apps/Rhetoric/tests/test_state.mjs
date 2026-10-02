@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  COMPARATORS, createState, deviceView, setActiveView, setSortOrder, sortedDevices, subtreeView, toggleExpanded,
+  COMPARATORS, createState, deviceView, setActiveView, setSortOrder, sortedDevices, subtreeView, toggleExpanded, toggleRevealed,
 } from '../app/state.js';
 import { currentView, viewToText } from '../app/view.js';
-import { payload } from './fixture.mjs';
+import { payload, plainState } from './fixture.mjs';
 
 const names = (items) => items.map((item) => item.device.name);
 
@@ -27,7 +27,7 @@ test('popularity: highest first, unscored after, alphabetically', () => {
 });
 
 test('flat sorts render devices only, no heading rows', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, 'alphabetical');
   const view = currentView(state);
   assert.equal(view.mode, 'flat');
@@ -35,7 +35,7 @@ test('flat sorts render devices only, no heading rows', () => {
 });
 
 test('tree sort renders that hierarchy with its own headings and device leaves', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, 'form');
   const view = currentView(state);
   assert.equal(view.mode, 'tree');
@@ -45,7 +45,7 @@ test('tree sort renders that hierarchy with its own headings and device leaves',
 });
 
 test('a subtree view shows only that node; switching to another hierarchy drops it', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   setActiveView(state, subtreeView('category', 2));
   assert.equal(currentView(state).items[0].name, 'Category Type');
@@ -54,7 +54,7 @@ test('a subtree view shows only that node; switching to another hierarchy drops 
 });
 
 test('a device view survives a sort change and shows that device alone', () => {
-  const state = createState(payload());
+  const state = plainState();
   setActiveView(state, deviceView(1));
   setSortOrder(state, 'popularity');
   assert.equal(state.activeView, 'device:1');
@@ -62,7 +62,7 @@ test('a device view survives a sort change and shows that device alone', () => {
 });
 
 test('search narrows a tree and prunes headings left empty; no query keeps empty headings', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   state.query = 'metaph';
   const view = currentView(state);
@@ -72,7 +72,7 @@ test('search narrows a tree and prunes headings left empty; no query keeps empty
 });
 
 test('the same device record is resolved from every tree', () => {
-  const state = createState(payload());
+  const state = plainState();
   const seen = [];
   for (const sort of ['category', 'form', 'function']) {
     setSortOrder(state, sort);
@@ -82,13 +82,13 @@ test('the same device record is resolved from every tree', () => {
 });
 
 test('toggleExpanded flips and reports the new state', () => {
-  const state = createState(payload());
+  const state = plainState();
   assert.equal(toggleExpanded(state, 1), true);
   assert.equal(toggleExpanded(state, 1), false);
 });
 
 test('copy text follows the toggles, but an expanded device shows both', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, 'alphabetical');
   state.showDefinitions = false;
   state.showExamples = false;
@@ -101,7 +101,7 @@ test('copy text follows the toggles, but an expanded device shows both', () => {
 });
 
 test('copy of a tree view carries headings with definitions, indented', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   state.showExamples = false;
   state.showDefinitions = false;
@@ -113,7 +113,7 @@ test('copy of a tree view carries headings with definitions, indented', () => {
 });
 
 test('everything search lists a device once per way it is filed, under each group', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, null);
   state.query = 'metaph';
   const view = currentView(state);
@@ -127,7 +127,7 @@ test('everything search lists a device once per way it is filed, under each grou
 });
 
 test('everything search keeps exact as the default and fuzzy behind the checkbox', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, null);
   state.query = 'metaphr';
   assert.deepEqual(currentView(state).items, []);
@@ -136,9 +136,61 @@ test('everything search keeps exact as the default and fuzzy behind the checkbox
 });
 
 test('no group selected and no query shows a hint, not the whole database', () => {
-  const state = createState(payload());
+  const state = plainState();
   assert.equal(state.sortOrder, null);
   const view = currentView(state);
   assert.deepEqual(view.items, []);
   assert.match(view.hint, /Type to search/);
+});
+
+// ---- Reveal mode --------------------------------------------------------------
+
+test('reveal mode (the default) shows groups and types only, each with a reveal button', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  const view = currentView(state);
+  const root = view.items[0];
+  const type = root.children[0];
+  assert.equal(type.children.length, 0);
+  assert.equal(type.revealable, true);
+  assert.equal(type.deviceCount, 2);
+  assert.equal(root.deviceCount, 2);
+  assert.equal(viewToText(state, view).includes('Metaphor'), false);
+});
+
+test('revealing a heading shows the devices beneath it; hiding it again takes them away', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  const typeId = currentView(state).items[0].children[0].id;
+  assert.equal(toggleRevealed(state, typeId), true);
+  assert.deepEqual(names(currentView(state).items[0].children[0].children), ['Metaphor', 'Anaphora']);
+  assert.equal(toggleRevealed(state, typeId), false);
+  assert.equal(currentView(state).items[0].children[0].children.length, 0);
+});
+
+test('revealing a root reveals every device under its types', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  toggleRevealed(state, currentView(state).items[0].id);
+  assert.equal(currentView(state).items[0].children[0].children.length, 2);
+});
+
+test('reveal off lists every device with no reveal buttons', () => {
+  const state = createState(payload());
+  state.reveal = false;
+  setSortOrder(state, 'form');
+  const type = currentView(state).items[0].children[0];
+  assert.equal(type.children.length, 2);
+  assert.equal(type.revealable, false);
+});
+
+test('searching lists its matches in full, and an isolated heading shows all beneath it', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  state.query = 'meta';
+  assert.deepEqual(names(currentView(state).items[0].children[0].children), ['Metaphor']);
+  state.query = '';
+  const typeId = currentView(state).items[0].children[0].id;
+  setActiveView(state, subtreeView('form', typeId));
+  assert.equal(currentView(state).items[0].children.length, 2);
 });

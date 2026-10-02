@@ -1,3 +1,5 @@
+import { createState } from '../app/state.js';
+
 // Shared hand-built /api/items payload for the front-end tests: two devices in three trees,
 // one ranked and one not, one with a Latin example and one with markup-shaped text.
 export function payload() {
@@ -26,4 +28,11 @@ export function payload() {
       },
     },
   };
+}
+
+// The state most tests want: every device listed. Reveal mode (the app's default) has its own tests.
+export function plainState() {
+  const state = createState(payload());
+  state.reveal = false;
+  return state;
 }

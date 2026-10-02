@@ -7,7 +7,8 @@
   .ornament,
   .workspace-bar,
   .masthead-subrule,
-  .confidence-badge { display: none; }
+  .confidence-badge,
+  .reveal-toggle { display: none; }
 
   .masthead { padding: 0 0 var(--space-5); }
   .workspace { max-width: none; padding: 0; }

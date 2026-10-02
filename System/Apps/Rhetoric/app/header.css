@@ -90,6 +90,14 @@ body {
   white-space: nowrap;
 }
 
+.toolbar-select {
+  padding: 0 var(--space-2);
+  border: var(--border-hairline) solid var(--color-rule-masthead);
+  background: none;
+  color: var(--color-ink-soft);
+  font: inherit;
+}
+
 .sort-list {
   display: flex;
   justify-content: center;

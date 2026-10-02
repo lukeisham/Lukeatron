@@ -19,27 +19,42 @@ const GROUPS = [
 
 const deviceItem = (device) => ({ kind: 'device', device });
 
-/** A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped. */
-function filterNode(state, hierarchy, node, keep, pruneEmpty) {
+function countDevices(node) {
+  return node.children.reduce((sum, child) => sum + (child.kind === 'device' ? 1 : countDevices(child)), 0);
+}
+
+/**
+ * A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
+ * `reveal.on` hides a heading's devices until it, or a heading above it, is in `reveal.opened`
+ * (or `open` is already true); such a heading carries `revealable` and `revealed` for its button.
+ */
+function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !reveal.on) {
+  const opened = open || reveal.opened.has(node.id);
   const children = [];
   for (const child of node.children) {
     if (child.kind === 'device') {
       const device = state.devices.get(child.id);
       if (!device) console.warn(`view: tree ${hierarchy} references unknown device ${child.id}`);
-      else if (keep(device)) children.push(deviceItem(device));
+      else if (opened && keep(device)) children.push(deviceItem(device));
     } else {
-      const kept = filterNode(state, hierarchy, child, keep, pruneEmpty);
+      const kept = filterNode(state, hierarchy, child, keep, pruneEmpty, reveal, opened);
       if (kept) children.push(kept);
     }
   }
   if (pruneEmpty && children.length === 0) return null;
-  return { kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children };
+  const deviceCount = countDevices(node);
+  return {
+    kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children,
+    deviceCount, revealable: reveal.on && deviceCount > 0, revealed: opened,
+  };
 }
 
 export function currentView(state) {
   const searching = state.query.trim() !== '';
   const matches = (device) => matchesName(device.name, state.query, state.fuzzy);
   const view = parseView(state.activeView);
+  // Search lists its matches in full; an isolated heading shows everything beneath it.
+  const reveal = { on: state.reveal && !searching, opened: state.revealed };
 
   if (view.kind === 'device') {
     const device = state.devices.get(view.id);
@@ -52,7 +67,7 @@ export function currentView(state) {
     const items = GROUPS.map(({ hierarchy, name, definition }) => ({
       kind: 'node', group: true, hierarchy, name, definition,
       children: state.trees[hierarchy]
-        .map((root) => filterNode(state, hierarchy, root, matches, searching))
+        .map((root) => filterNode(state, hierarchy, root, matches, searching, reveal))
         .filter(Boolean),
     })).filter((group) => group.children.length > 0);
     return { mode: 'tree', items };
@@ -60,11 +75,12 @@ export function currentView(state) {
 
   if (TREE_SORTS.has(state.sortOrder)) {
     const hierarchy = state.sortOrder;
-    const roots = view.kind === 'subtree'
+    const isolated = view.kind === 'subtree';
+    const roots = isolated
       ? [state.nodesById[hierarchy].get(view.id)].filter(Boolean)
       : state.trees[hierarchy];
     const items = roots
-      .map((root) => filterNode(state, hierarchy, root, matches, searching))
+      .map((root) => filterNode(state, hierarchy, root, matches, searching, isolated ? { ...reveal, on: false } : reveal))
       .filter(Boolean);
     return { mode: 'tree', items };
   }

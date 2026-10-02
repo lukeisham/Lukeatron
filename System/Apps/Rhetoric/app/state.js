@@ -72,6 +72,9 @@ export function createState(payload) {
     fuzzy: false,
     showDefinitions: true,
     showExamples: true,
+    showConfidence: true,
+    reveal: true, // groups and types only, with a reveal button on each; off lists every device
+    revealed: new Set(), // node ids whose devices Luke has revealed
     expanded: new Set(),
   };
 }
@@ -85,6 +88,16 @@ export function setSortOrder(state, sortOrder) {
 
 export function setActiveView(state, view) {
   state.activeView = view;
+}
+
+/** @returns {boolean} whether the node's devices are now revealed */
+export function toggleRevealed(state, nodeId) {
+  if (state.revealed.has(nodeId)) {
+    state.revealed.delete(nodeId);
+    return false;
+  }
+  state.revealed.add(nodeId);
+  return true;
 }
 
 /** @returns {boolean} whether the device is now expanded */

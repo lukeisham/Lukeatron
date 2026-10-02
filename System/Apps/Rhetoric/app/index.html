@@ -26,6 +26,19 @@
     <div class="options-row">
       <label class="toolbar-check"><input id="show-definitions" type="checkbox" checked> Show definitions</label>
       <label class="toolbar-check"><input id="show-examples" type="checkbox" checked> Show examples</label>
+      <label class="toolbar-check"><input id="show-confidence" type="checkbox" checked> Show AI confidence</label>
+      <label class="toolbar-check" title="On: only groups and types show, each with a button that reveals its devices. Off: every device is listed."><input id="reveal" type="checkbox" checked> Reveal</label>
+      <label class="toolbar-check">Open on
+        <select id="default-sort" class="toolbar-select">
+          <option value="none">Search only</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="form">Form</option>
+          <option value="function">Function</option>
+          <option value="category">Category</option>
+          <option value="popularity">Popularity</option>
+          <option value="topical">Topical</option>
+        </select>
+      </label>
       <button id="print" class="toolbar-link" type="button">Print</button>
       <button id="copy" class="toolbar-link" type="button">Copy</button>
       <span id="copy-status" class="toolbar-status" role="status"></span>

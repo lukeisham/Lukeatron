@@ -5,6 +5,7 @@ import { copyCurrentView, printCurrentView } from './actions.js';
 import { renderList, renderSortButtons, renderStatus } from './render.js';
 import {
   EVERYTHING, FULL_VIEW, SORTS, createState, deviceView, setActiveView, setSortOrder, subtreeView, toggleExpanded,
+  toggleRevealed,
 } from './state.js';
 import { currentView } from './view.js';
 
@@ -12,11 +13,33 @@ const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
   showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
+  showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
   print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
 
 const COPY_STATUS_MS = 2000;
+const DEFAULT_SORT_KEY = 'rhetoric.defaultSort';
+const NO_DEFAULT = 'none'; // open on the search-only screen
 let state = null;
+
+// Which group the app opens on is remembered in this browser; storage can be blocked, so every access is guarded.
+function savedDefaultSort() {
+  try {
+    const saved = localStorage.getItem(DEFAULT_SORT_KEY);
+    return SORTS.some((sort) => sort.key === saved) ? saved : NO_DEFAULT;
+  } catch (error) {
+    console.warn('default group: storage unavailable', error);
+    return NO_DEFAULT;
+  }
+}
+
+function saveDefaultSort(value) {
+  try {
+    localStorage.setItem(DEFAULT_SORT_KEY, value);
+  } catch (error) {
+    console.warn('default group: could not save', error);
+  }
+}
 
 function refresh() {
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
@@ -27,6 +50,7 @@ function refresh() {
 function applyToggles() {
   document.body.classList.toggle('hide-definitions', !state.showDefinitions);
   document.body.classList.toggle('hide-examples', !state.showExamples);
+  document.body.classList.toggle('hide-confidence', !state.showConfidence);
 }
 
 function hasTextSelection() {
@@ -35,6 +59,11 @@ function hasTextSelection() {
 
 function onListClick(event) {
   if (hasTextSelection()) return; // a drag-select to copy text must not toggle the row
+  const revealButton = event.target.closest('.reveal-toggle');
+  if (revealButton) { // reveals or hides this heading's devices without isolating it
+    toggleRevealed(state, Number(revealButton.closest('[data-node-id]').dataset.nodeId));
+    return refresh();
+  }
   const headingRow = event.target.closest('.heading-row');
   if (headingRow) {
     const node = headingRow.closest('[data-node-id], [data-group]');
@@ -86,6 +115,9 @@ function bindControls() {
     setSortOrder(state, button.dataset.sort === state.sortOrder ? EVERYTHING : button.dataset.sort);
     refresh();
   });
+  els.showConfidence.addEventListener('change', () => { state.showConfidence = els.showConfidence.checked; applyToggles(); });
+  els.reveal.addEventListener('change', () => { state.reveal = els.reveal.checked; refresh(); });
+  els.defaultSort.addEventListener('change', () => saveDefaultSort(els.defaultSort.value));
   els.search.addEventListener('input', () => { state.query = els.search.value; refresh(); });
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); });
@@ -104,6 +136,9 @@ async function start() {
     renderStatus(document, els.list, 'The devices could not be loaded. Is the server running?');
     return;
   }
+  const opening = savedDefaultSort();
+  els.defaultSort.value = opening;
+  if (opening !== NO_DEFAULT) setSortOrder(state, opening);
   bindControls();
   applyToggles();
   refresh();

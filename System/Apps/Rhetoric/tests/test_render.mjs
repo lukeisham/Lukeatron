@@ -5,7 +5,7 @@ import { renderList, renderSortButtons } from '../app/render.js';
 import { SORTS } from '../app/state.js';
 import { currentView } from '../app/view.js';
 import { fakeDoc, findAll, withClass } from './fake-dom.mjs';
-import { payload } from './fixture.mjs';
+import { payload, plainState } from './fixture.mjs';
 
 function draw(state) {
   const container = fakeDoc.createElement('div');
@@ -14,7 +14,7 @@ function draw(state) {
 }
 
 test('tree view: headings carry their node id and hierarchy, devices sit beneath', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   const container = draw(state);
   const [root] = findAll(container, withClass('node-root'));
@@ -24,7 +24,7 @@ test('tree view: headings carry their node id and hierarchy, devices sit beneath
 });
 
 test('flat view: devices only, no headings', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, 'alphabetical');
   const container = draw(state);
   assert.equal(findAll(container, withClass('node')).length, 0);
@@ -32,7 +32,7 @@ test('flat view: devices only, no headings', () => {
 });
 
 test('device text is a text node, never markup: a script tag renders as literal text', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   const container = draw(state);
   const definitions = findAll(container, withClass('device-definition')).map((n) => n.textContent);
@@ -41,7 +41,7 @@ test('device text is a text node, never markup: a script tag renders as literal 
 });
 
 test('examples: Latin is an italic em, quotes and bracketed source stay literal, outline-square marker', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   const container = draw(state);
   const [latin] = findAll(container, withClass('latin'));
@@ -52,7 +52,7 @@ test('examples: Latin is an italic em, quotes and bracketed source stay literal,
 });
 
 test('the same device renders identically from two different trees', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   const rowText = () => findAll(draw(state), (n) => n.dataset.deviceId === '1')[0].textContent;
   const fromCategory = rowText();
@@ -61,7 +61,7 @@ test('the same device renders identically from two different trees', () => {
 });
 
 test('expanded state and the isolated view are reflected in the rows', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.sortOrder = 'category';
   toggleExpanded(state, 2);
   const open = findAll(draw(state), (n) => n.dataset.deviceId === '2')[0];
@@ -75,7 +75,7 @@ test('expanded state and the isolated view are reflected in the rows', () => {
 });
 
 test('no match shows a message instead of an empty list', () => {
-  const state = createState(payload());
+  const state = plainState();
   state.query = 'qqqq';
   assert.equal(draw(state).textContent, 'No devices match.');
 });
@@ -89,8 +89,28 @@ test('sort buttons mark exactly the active order pressed', () => {
 });
 
 test('each device row carries an AI-confidence badge showing its rating', () => {
-  const state = createState(payload());
+  const state = plainState();
   setSortOrder(state, 'alphabetical');
   const badges = findAll(draw(state), withClass('confidence-badge'));
   assert.deepEqual(badges.map((b) => [b.textContent, b.dataset.rating]), [['AI low', 'low'], ['AI high', 'high']]);
+});
+
+test('a revealable heading gets a reveal button that says how many devices it holds and whether they show', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  const buttons = findAll(draw(state), withClass('reveal-toggle'));
+  assert.deepEqual(buttons.map((b) => b.textContent), ['▸ 2', '▸ 2']);
+  assert.equal(buttons[0].attributes['aria-expanded'], 'false');
+  assert.match(buttons[0].attributes['aria-label'], /^Reveal 2 devices in Form/);
+  assert.equal(findAll(draw(state), withClass('device')).length, 0);
+});
+
+test('no reveal buttons when reveal is off, in flat sorts or while searching', () => {
+  const state = createState(payload());
+  state.reveal = false;
+  setSortOrder(state, 'form');
+  assert.equal(findAll(draw(state), withClass('reveal-toggle')).length, 0);
+  state.reveal = true;
+  setSortOrder(state, 'alphabetical');
+  assert.equal(findAll(draw(state), withClass('reveal-toggle')).length, 0);
 });

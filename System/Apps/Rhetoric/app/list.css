@@ -57,7 +57,7 @@
 .node-definition::before { content: "— "; }
 
 /* Indent grows one step per level up to --indent-max-depth, then stops (the tree stays nested). */
-.node-children {
+.list .node-children {
   padding-left: calc((min(var(--depth), var(--indent-max-depth)) - min(var(--depth) - 1, var(--indent-max-depth))) * var(--indent-step));
   padding-bottom: var(--space-2);
 }
@@ -97,11 +97,30 @@
   color: var(--color-ink-soft);
 }
 
+/* A heading's reveal button: shows or hides the devices beneath it (the heading click itself isolates). */
+.reveal-toggle {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-rule-body);
+  border-radius: var(--radius-badge);
+  background: none;
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  cursor: pointer;
+}
+.reveal-toggle:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
 .latin { font-style: italic; }
 .source { color: var(--color-ink-soft); }
 
 body.hide-definitions .device:not(.expanded) .device-definition,
 body.hide-examples .device:not(.expanded) .examples { display: none; }
+body.hide-confidence .confidence-badge { display: none; }
 
 .heading-row:focus-visible,
 .device-row:focus-visible,

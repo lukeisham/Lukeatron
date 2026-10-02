@@ -72,6 +72,14 @@ function deviceRow(doc, state, device, mode) {
   return item;
 }
 
+function revealButton(doc, node) {
+  const button = make(doc, 'button', 'reveal-toggle', `${node.revealed ? '▾' : '▸'} ${node.deviceCount}`);
+  button.setAttribute('type', 'button');
+  button.setAttribute('aria-expanded', String(node.revealed));
+  button.setAttribute('aria-label', `${node.revealed ? 'Hide' : 'Reveal'} ${node.deviceCount} devices in ${node.name}`);
+  return button;
+}
+
 function nodeRow(doc, state, node, mode, depth) {
   const item = make(doc, 'li', depth === 0 ? 'node node-root' : 'node');
   if (node.group) item.dataset.group = node.hierarchy;
@@ -86,6 +94,7 @@ function nodeRow(doc, state, node, mode, depth) {
     make(doc, 'span', 'node-name', node.name),
     make(doc, 'span', 'node-definition', node.definition),
   );
+  if (node.revealable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
 
   if (node.children.length > 0) {

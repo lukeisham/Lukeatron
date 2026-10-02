@@ -28,11 +28,11 @@
       "runtimeArgs": [
         "-m",
         "http.server",
-        "8794",
+        "8795",
         "--directory",
         "System"
       ],
-      "port": 8794
+      "port": 8795
     },
     {
       "name": "storytelling",

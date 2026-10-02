@@ -5,7 +5,7 @@ Paste up to 700 words and see which signs of AI-written text a cheap judge model
 ## Launch / restart
 - Open it from Home's command bar: **AiCharacteristics**.
 - One-time setup: the Haiku key goes in `System/Credentials/Home/anthropic-key` (one line, nothing else). Without it Scrape and Check say "No Haiku key is set up."
-- Home must be restarted after the routes change: `launchctl kickstart -k gui/$(id -u)/com.lukeatron.home`
+- Home must be restarted to pick up changed routes: stop the Python process listening on port 8780, then double-click `System/Apps/Home/Start Home.command`.
 - Tests: `cd tests/py && python3 -m unittest`, and from this folder `node --test tests/js/*.mjs`.
 
 ## Navigation

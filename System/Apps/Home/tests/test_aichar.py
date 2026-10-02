@@ -1,5 +1,6 @@
-"""AiCharacteristics' routes in Home: the gate (TEST-7), the Scrape and Check replies, and what they write.
-Always a temp apps tree from make_home and a scripted network — never the real data, key or internet (TEST-4).
+"""AiCharacteristics' routes in Home: the gate (TEST-7), what each button asks the skills to do, and what comes
+back. Always a temp apps tree from make_home and a fake `Home.claude` — never a real Claude run, the real data or
+the internet (TEST-4).
 
 Mirrors: routes/aichar.py, server.py dispatch
 """
@@ -14,30 +15,31 @@ from core import selfcheck
 from routes import aichar
 
 SCRAPE, CHECK, CRITERIA = "/api/aichar/scrape", "/api/aichar/check", "/api/aichar/criteria"
-KEY = "test-key-not-real"
 PASTED = "PASTED-TEXT-MARKER the quick brown fox"
-EASY = "Some writers use big words. They pick the same few words again and again."
-WIKI = json.dumps({"query": {"pages": [{"title": "Wikipedia:Signs of AI writing", "extract": "Synthetic article text.",
-                                         "revisions": [{"revid": 42}]}]}}).encode()
-PROPOSED = [{"id": None, "title": "Focal words", "description": "Overuse of words like delve.",
-             "question": "Does the text overuse words like delve?", "source": "Vocabulary"}]
+SAVED = {"scraped_at": "2026-10-02T10:00:00", "article_title": "T", "article_revision": "1", "criteria": [
+    {"id": "c-001", "title": "Focal words", "description": "d", "question": "Overuse of delve?", "source": "s",
+     "plain": "p", "status": "kept", "locked": False},
+    {"id": "c-002", "title": "Old", "description": "d", "question": "Old sign?", "source": "s",
+     "plain": "p", "status": "retired", "locked": False}]}
+SUMMARY = {"total": 1, "new": ["c-001"], "changed": [], "retired": [], "flagged": [], "unchanged": False,
+           "revision": "42", "report": "Built 1 criterion."}
+VERDICTS = [{"id": "c-001", "answer": "yes", "confidence": 0.8}]
 
 
-def haiku(payload) -> bytes:
-    text = payload if isinstance(payload, str) else json.dumps(payload)
-    return json.dumps({"stop_reason": "end_turn", "content": [{"type": "text", "text": text}]}).encode()
+class FakeClaude:
+    """Stands in for `claude -p`: answers in order, records every call, optionally runs a side effect."""
 
+    def __init__(self, *replies, effect=None):
+        self.replies, self.calls, self.effect = list(replies), [], effect
 
-class Network:
-    def __init__(self, *replies):
-        self.replies, self.requests = list(replies), []
-
-    def __call__(self, request):
-        self.requests.append(request)
+    def __call__(self, prompt, stdin, tools, seconds, turns):
+        self.calls.append({"prompt": prompt, "stdin": stdin, "tools": tools, "seconds": seconds})
+        if self.effect:
+            self.effect()
         reply = self.replies.pop(0)
         if isinstance(reply, Exception):
             raise reply
-        return reply
+        return reply if isinstance(reply, str) else json.dumps(reply)
 
 
 class AicharTest(GateTest):
@@ -45,151 +47,170 @@ class AicharTest(GateTest):
         super().setUp()
         self.data = self.home.apps_dir / "AiCharacteristics" / "data"
 
-    def use(self, *replies, key=KEY):
-        self.network = Network(*replies)
-        self.home.send = self.network
-        if key:
-            for key_file in ("deepseek-key", "anthropic-key"):
-                (self.home.creds.directory / key_file).write_text(key + "\n")
+    def use(self, *replies, **kw):
+        self.claude = FakeClaude(*replies, **kw)
+        self.home.claude = self.claude
+
+    def save_criteria(self):
+        self.data.mkdir(parents=True, exist_ok=True)
+        (self.data / "criteria.json").write_text(json.dumps(SAVED))
 
     def post(self, path, body=None, **kw):
         return server.dispatch(self.home, req(path, "POST", body={} if body is None else body, **kw))
 
-    def scrape_once(self):
-        self.use(WIKI, haiku(PROPOSED), haiku({"c-001": EASY}))
-        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
-
 
 class TestGate(AicharTest):
     def test_gate_blocks_every_other_caller_on_both_post_routes(self):
-        self.use(WIKI)
-        cases = {
-            "no session": ({}, 401),
-            "agent key only": ({"key": self.home.agent_key}, 401),
-            "foreign origin": ({"cookie": self.cookie, "origin": "http://evil.example"}, 403),
-            "no origin": ({"cookie": self.cookie, "origin": None}, 403),
-        }
+        self.save_criteria()
+        self.use()
         for path in (SCRAPE, CHECK):
-            for label, (kw, status) in cases.items():
-                with self.subTest(path=path, case=label):
-                    self.assertEqual(self.post(path, {"text": "hello"}, **kw).status, status)
-        self.assertEqual(self.network.requests, [])
-        self.assertFalse(self.data.exists())
+            with self.subTest(path):
+                self.assertEqual(self.post(path, {"text": PASTED}).status, 401)
+                self.assertEqual(self.post(path, {"text": PASTED}, cookie=self.cookie, origin="https://evil.example").status, 403)
+        self.assertEqual(self.claude.calls, [])
 
     def test_criteria_route_needs_a_session_or_the_agent_key(self):
         self.assertEqual(self.get(CRITERIA).status, 401)
         self.assertEqual(self.get(CRITERIA, cookie=self.cookie).status, 200)
-        self.assertEqual(self.get(CRITERIA, key=self.home.agent_key).status, 200)
 
     def test_get_is_not_allowed_on_the_post_routes_and_post_not_on_criteria(self):
-        self.assertEqual(self.get(SCRAPE, cookie=self.cookie).status, 404)
+        for path in (SCRAPE, CHECK):
+            self.assertEqual(self.get(path, cookie=self.cookie).status, 404)
         self.assertEqual(self.post(CRITERIA, cookie=self.cookie).status, 404)
-
-
-class TestScrape(AicharTest):
-    def test_scrape_writes_the_data_folder_and_replies_with_a_summary(self):
-        self.use(WIKI, haiku(PROPOSED), haiku({"c-001": EASY}))
-        response = self.post(SCRAPE, cookie=self.cookie)
-        self.assertEqual(response.status, 200)
-        summary = json.loads(response.body)["summary"]
-        self.assertEqual((summary["new"], summary["total"], summary["article_revision"]), (["c-001"], 1, "42"))
-        self.assertEqual(sorted(p.name for p in self.data.iterdir()), ["criteria.json", "source"])
-        served = json.loads(self.get(CRITERIA, cookie=self.cookie).body)
-        self.assertEqual(served["criteria"][0]["plain"], EASY)
-
-    def test_no_key_is_refused_before_any_network_call(self):
-        self.use(WIKI, key=None)
-        response = self.post(SCRAPE, cookie=self.cookie)
-        self.assertEqual(response.status, 503)
-        self.assertEqual(json.loads(response.body)["message"], "no DeepSeek key is set up")
-        self.assertEqual((self.network.requests, self.data.exists()), ([], False))
-
-    def test_scrape_needs_the_deepseek_key_and_ignores_the_haiku_one(self):
-        self.use(WIKI, key=None)
-        (self.home.creds.directory / "anthropic-key").write_text(KEY + "\n")
-        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 503)
-        self.assertEqual(self.network.requests, [])
-
-    def test_scrape_calls_deepseek_and_never_sends_the_key_anywhere_else(self):
-        self.use(WIKI, haiku(PROPOSED), haiku({"c-001": EASY}))
-        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
-        self.assertEqual([r.host for r in self.network.requests], ["en.wikipedia.org", "api.deepseek.com", "api.deepseek.com"])
-        self.assertIsNone(self.network.requests[0].get_header("X-api-key"))
-
-    def test_failed_scrape_is_a_502_with_a_clean_message_and_writes_nothing(self):
-        from criteria.transport import TransportError
-        self.use(TransportError("could not reach en.wikipedia.org"))
-        response = self.post(SCRAPE, cookie=self.cookie)
-        self.assertEqual(response.status, 502)
-        self.assertIn("could not fetch the article", json.loads(response.body)["message"])
-        self.assertNotIn(KEY.encode(), response.body)
-        self.assertFalse(self.data.exists())
-
-    def test_second_scrape_while_one_runs_is_a_409(self):
-        self.use(WIKI)
-        self.assertTrue(aichar._scrape_running.acquire(blocking=False))
-        try:
-            self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 409)
-        finally:
-            aichar._scrape_running.release()
-        self.assertEqual(self.network.requests, [])
-
-    def test_the_lock_is_released_after_a_failure(self):
-        from criteria.transport import TransportError
-        self.use(TransportError("down"), WIKI, haiku(PROPOSED), haiku({"c-001": EASY}))
-        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 502)
-        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
 
     def test_criteria_route_before_any_scrape_is_empty_not_an_error(self):
         body = json.loads(self.get(CRITERIA, cookie=self.cookie).body)
         self.assertEqual((body["criteria"], body["scraped_at"]), ([], None))
 
 
+class TestScrape(AicharTest):
+    def test_scrape_runs_the_skill_with_only_the_data_folder_writable_and_returns_the_summary(self):
+        self.use(SUMMARY)
+        response = self.post(SCRAPE, cookie=self.cookie)
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(response.body)["summary"]["new"], ["c-001"])
+        call = self.claude.calls[0]
+        self.assertIn("!ScrapeAiCharacteristics/skill.md", call["prompt"])
+        self.assertEqual(call["stdin"], "")
+        self.assertIn(aichar.DATA_RULE, call["tools"])
+        self.assertFalse([t for t in call["tools"] if t.startswith(("Edit", "WebFetch")) or t == "Write"])
+
+    def test_a_json_code_fence_around_the_summary_is_tolerated(self):
+        self.use("```json\n" + json.dumps(SUMMARY) + "\n```")
+        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
+
+    def test_a_skill_error_or_a_failed_run_is_a_502_with_a_clean_message(self):
+        for reply, message in (({"error": "Wikipedia has no such page."}, "Wikipedia has no such page."),
+                               (aichar.ClaudeFailed("Claude Code is not signed in on this Mac"), "not signed in")):
+            self.use(reply)
+            with self.subTest(message), self.assertLogs("home", level="WARNING"):
+                response = self.post(SCRAPE, cookie=self.cookie)
+            self.assertEqual(response.status, 502)
+            self.assertIn(message, json.loads(response.body)["message"])
+
+    def test_a_reply_in_the_wrong_shape_is_a_502_not_a_blank_page(self):
+        for reply in ("all done!", {"total": "many"}, {"total": 1, "new": "c-001", "changed": [], "retired": [], "flagged": []}):
+            self.use(reply)
+            with self.subTest(str(reply)[:20]), self.assertLogs("home", level="WARNING"):
+                self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 502)
+
+    def test_second_scrape_while_one_runs_is_a_409_and_the_lock_is_released_after_a_failure(self):
+        inner = {}
+
+        def second():
+            inner["status"] = self.post(SCRAPE, cookie=self.cookie).status
+
+        self.use(SUMMARY, effect=second)
+        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
+        self.assertEqual(inner["status"], 409)
+        self.use(aichar.ClaudeFailed("x"))
+        with self.assertLogs("home", level="WARNING"):
+            self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 502)
+        self.use(SUMMARY)
+        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
+
+
 class TestCheck(AicharTest):
-    def test_check_returns_a_verdict_per_live_criterion_and_writes_nothing(self):
-        self.scrape_once()
-        before = sorted(str(p) for p in self.data.rglob("*"))
-        self.use(haiku([{"id": "c-001", "answer": "yes", "confidence": 0.8}]))
+    def test_check_sends_the_text_on_stdin_only_with_read_as_the_one_tool_and_returns_verdicts(self):
+        self.save_criteria()
+        self.use(VERDICTS)
         response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
         self.assertEqual(response.status, 200)
-        self.assertEqual(json.loads(response.body)["verdicts"], [{"id": "c-001", "answer": "yes", "confidence": 0.8}])
-        self.assertEqual(sorted(str(p) for p in self.data.rglob("*")), before)
+        self.assertEqual(json.loads(response.body)["verdicts"], VERDICTS)
+        call = self.claude.calls[0]
+        self.assertEqual((call["stdin"], call["tools"]), (PASTED, ("Read",)))
+        self.assertNotIn("PASTED-TEXT-MARKER", call["prompt"])
+        self.assertIn("!CheckAiCharacteristics/skill.md", call["prompt"])
 
-    def test_bad_text_is_refused_before_any_network_call(self):
-        self.scrape_once()
-        self.use(haiku([]))
-        cases = {"not a string": (5, 400), "empty": ("   ", 400), "too long": ("word " * 701, 413)}
-        for label, (text, status) in cases.items():
-            with self.subTest(label):
-                self.assertEqual(self.post(CHECK, {"text": text}, cookie=self.cookie).status, status)
-        self.assertEqual(self.post(CHECK, [1, 2], cookie=self.cookie).status, 400)
-        self.assertEqual(self.network.requests, [])
+    def test_check_writes_nothing(self):
+        self.save_criteria()
+        before = (self.data / "criteria.json").read_text()
+        self.use(VERDICTS)
+        self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
+        self.assertEqual((self.data / "criteria.json").read_text(), before)
+        self.assertEqual(sorted(p.name for p in self.data.iterdir()), ["criteria.json"])
+
+    def test_bad_text_is_refused_before_any_run(self):
+        self.save_criteria()
+        self.use()
+        for body, status in (({"text": ""}, 400), ({"text": "   "}, 400), ({"text": "word " * 701}, 413),
+                             ({"text": 5}, 400), ({}, 400)):
+            with self.subTest(str(body)[:20]):
+                self.assertEqual(self.post(CHECK, body, cookie=self.cookie).status, status)
+        self.assertEqual(self.claude.calls, [])
 
     def test_check_before_any_scrape_says_to_scrape_first(self):
-        self.use(haiku([]))
+        self.use()
         response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
         self.assertEqual(response.status, 503)
         self.assertIn("Scrape", json.loads(response.body)["message"])
-        self.assertEqual(self.network.requests, [])
+        self.assertEqual(self.claude.calls, [])
 
-    def test_no_key_is_a_503_that_names_the_haiku_key_and_check_calls_anthropic(self):
-        self.scrape_once()
-        (self.home.creds.directory / "anthropic-key").unlink()
-        response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
-        self.assertEqual((response.status, json.loads(response.body)["message"]), (503, "no Haiku key is set up"))
-        self.use(haiku([{"id": "c-001", "answer": "yes", "confidence": 0.8}]))
-        self.assertEqual(self.post(CHECK, {"text": PASTED}, cookie=self.cookie).status, 200)
-        self.assertEqual(self.network.requests[0].host, "api.anthropic.com")
+    def test_unusable_replies_are_a_502_and_the_pasted_text_is_never_logged(self):
+        self.save_criteria()
+        for reply in ("yes to everything", [{"id": "c-001", "answer": "maybe", "confidence": 1}], [],
+                      aichar.ClaudeFailed("it took longer than 180 seconds, so it was stopped")):
+            self.use(reply)
+            with self.subTest(str(reply)[:20]), self.assertLogs("home", level="WARNING") as logged:
+                response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
+            self.assertEqual(response.status, 502)
+            self.assertNotIn("PASTED-TEXT-MARKER", "\n".join(logged.output))
+            self.assertNotIn(b"PASTED-TEXT-MARKER", response.body)
 
-    def test_unusable_judge_replies_are_a_502_and_the_pasted_text_is_never_logged(self):
-        self.scrape_once()
-        self.use(haiku("yes to everything"), haiku("still not json"))
-        with self.assertLogs("home", level="WARNING") as logged:
-            response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
-        self.assertEqual(response.status, 502)
-        self.assertNotIn("PASTED-TEXT-MARKER", "\n".join(logged.output))
-        self.assertNotIn(KEY, "\n".join(logged.output))
-        self.assertNotIn(KEY.encode(), response.body)
+
+class TestRunClaude(unittest.TestCase):
+    """The real runner, with `subprocess.run` stubbed: how it builds the command and reads the reply."""
+
+    def run_with(self, stdout, **kw):
+        done = mock.Mock(stdout=stdout, returncode=0)
+        with mock.patch.object(aichar, "_claude_binary", return_value="/bin/claude"), \
+                mock.patch.object(aichar.subprocess, "run", return_value=done, **kw) as run:
+            return aichar.run_claude("do it", "TEXT", ("Read",), 5, 3), run
+
+    def test_command_and_stdin(self):
+        result, run = self.run_with(json.dumps({"is_error": False, "result": "fine"}))
+        self.assertEqual(result, "fine")
+        command = run.call_args.args[0]
+        self.assertEqual(command[:3], ["/bin/claude", "-p", "do it"])
+        self.assertIn("dontAsk", command)
+        self.assertEqual((run.call_args.kwargs["input"], run.call_args.kwargs["timeout"]), ("TEXT", 5))
+        self.assertNotIn("TEXT", command)
+
+    def test_failures_become_clean_messages(self):
+        for stdout, text in ((json.dumps({"is_error": True, "result": "Failed to authenticate: OAuth session expired"}), "not signed in"),
+                             (json.dumps({"is_error": True, "result": "boom"}), "stopped before"),
+                             ("<html>", "cannot read")):
+            with self.subTest(text), self.assertRaises(aichar.ClaudeFailed) as caught:
+                self.run_with(stdout)
+            self.assertIn(text, str(caught.exception))
+
+    def test_timeout_and_missing_binary(self):
+        with mock.patch.object(aichar, "_claude_binary", return_value="/bin/claude"), \
+                mock.patch.object(aichar.subprocess, "run", side_effect=aichar.subprocess.TimeoutExpired("c", 5)):
+            with self.assertRaises(aichar.ClaudeFailed):
+                aichar.run_claude("p", "", (), 5, 1)
+        with mock.patch.object(aichar, "_claude_binary", return_value=None), self.assertRaises(aichar.ClaudeFailed):
+            aichar.run_claude("p", "", (), 5, 1)
 
 
 class TestPageFiles(AicharTest):

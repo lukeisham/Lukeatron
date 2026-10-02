@@ -40,6 +40,7 @@ class Home:
     now: Callable[[], float] = time.time
     today: Callable[[], date] = date.today
     send: Callable[[urllib.request.Request], bytes] | None = None  # None = the real network; tests pass a fake
+    claude: Callable[..., str] | None = None  # None = the real `claude -p`; tests pass a fake (routes/aichar.py)
     challenges: ChallengeStore = field(default_factory=ChallengeStore)
     starter: launcher.Starter = field(init=False)
     secret: bytes = field(init=False)

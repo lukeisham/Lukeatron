@@ -12,6 +12,7 @@ later agent does not "restore" the old behaviour.
 | 2026-09-29 | Mockup direction: function-2 "Command", with Inbox and News placeholder slots under the bar | PRD v0.3 |
 | 2026-09-29 | Command-bar behaviour: full list on click, narrows as you type (name matches first), scrolls, click to open, click away closes and clears | PRD v0.5 |
 | 2026-09-29 | Design closed; specs approved — mockups retired to `Trash/Home-mockups-2026-09-29/` | PRD v0.5, all specs at prd_version 0.5 |
+| 2026-09-29 | **Reversal:** the Inbox slot may write. InboxNote widget fills it, adding four hooks to Home (slot hand-off, `/widgets/InboxNote/` files, signed-in `POST /api/inbox-note` writing only to `Inbox/`, self-check for `Inbox/` write access). Replaces the v1 boundary "slots write nothing" | InboxNote PRD v0.3 |
 | 2026-09-29 | Change accepted during the build: apps open in a **new tab**; Home stays open behind them (reverses PRD v0.5's same-tab redirect — do not restore it) | page spec FR-3 |
 
 ## Key decisions
@@ -33,4 +34,4 @@ being asked with the rule ID and a reason. Code that matches a row here is inten
 
 | Rule ID | Where it applies | Reason | Granted |
 |---|---|---|---|
-| API-5 / PY-12 | `routes/aichar.py` — `POST /api/aichar/scrape` writes inside `System/Apps/AiCharacteristics/data/` only (`criteria.json`, `criteria.previous.json`, `source/article.txt`) | AiCharacteristics' Scrape button must refresh the app's saved data, and Home is where the app is served. Signed-in session plus Origin check (the agent key never qualifies), atomic writes, nothing changed on any failure, one Scrape at a time. The second write route in Home, after `/api/inbox-note`. `/api/aichar/check` and `/api/aichar/criteria` only read | 2026-10-02 |
+| API-5 / PY-12 | `routes/aichar.py` — `POST /api/aichar/scrape` writes inside `System/Apps/AiCharacteristics/data/` only (`criteria.json`, `criteria.previous.json`, `source/article.json`) | AiCharacteristics' Scrape button must refresh the app's saved data, and Home is where the app is served. Signed-in session plus Origin check (the agent key never qualifies), atomic writes, nothing changed on any failure, one Scrape at a time. The second write route in Home, after `/api/inbox-note`. `/api/aichar/check` and `/api/aichar/criteria` only read | 2026-10-02 |

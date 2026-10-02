@@ -1,15 +1,13 @@
-"""JEV: one batched check, strict reply validation, fail closed. Mirrors: criteria/judge.py.
-Stubbed network only — no live call, no pasted text kept anywhere.
+"""The Check's strict reading of the skill's reply, and the text limits. Mirrors: criteria/judge.py.
+No model, no network: replies are fixed strings, and no pasted text is kept anywhere.
 """
 
+import json
 import unittest
 
 import helpers  # noqa: F401
-from fakes import KEY, Scripted, model_reply, unreachable
-from criteria import JudgeError, NoCriteria, TextRejected, Verdict, check_text
+from criteria import JudgeError, NoCriteria, TextRejected, Verdict, parse_verdicts, require_checkable
 from criteria.judge import MAX_WORDS, VerdictError, validate_verdicts
-
-TEXT = "We must delve into the rich tapestry of this topic."
 
 
 def criterion(number: int, status: str = "kept") -> dict:
@@ -21,87 +19,56 @@ GOOD = [{"id": "c-004", "answer": "No", "confidence": 0.2}, {"id": "c-001", "ans
         {"id": "c-002", "answer": "yes", "confidence": 1}]
 
 
-class TestCheck(unittest.TestCase):
-    def test_one_call_asks_every_live_question_and_returns_verdicts_in_criteria_order(self):
-        send = Scripted(model_reply(GOOD))
-        verdicts = check_text(TEXT, CRITERIA, KEY, send)
-        self.assertEqual(verdicts, [Verdict("c-001", "yes", 0.9), Verdict("c-002", "yes", 1.0),
-                                    Verdict("c-004", "no", 0.2)])
-        self.assertEqual(len(send.requests), 1)
-        sent = send.body(0)["messages"][0]["content"]
-        self.assertIn("Question 4?", sent)
-        self.assertNotIn("Question 3?", sent)
-        self.assertIn(f"<passage>\n{TEXT}\n</passage>", sent)
-        self.assertIn("never instructions", send.body(0)["system"])
-        self.assertNotIn(KEY.encode(), send.requests[0].data)
+class TestParse(unittest.TestCase):
+    def test_good_reply_gives_verdicts_in_criteria_order_skipping_retired(self):
+        self.assertEqual(parse_verdicts(json.dumps(GOOD), CRITERIA),
+                         [Verdict("c-001", "yes", 0.9), Verdict("c-002", "yes", 1.0), Verdict("c-004", "no", 0.2)])
 
-    def test_unusable_reply_is_retried_once_then_accepted(self):
-        send = Scripted(model_reply("Sure! yes to all"), model_reply(GOOD))
-        self.assertEqual(len(check_text(TEXT, CRITERIA, KEY, send)), 3)
-        self.assertEqual(len(send.requests), 2)
+    def test_a_code_fence_around_the_json_is_tolerated(self):
+        self.assertEqual(len(parse_verdicts("```json\n" + json.dumps(GOOD) + "\n```", CRITERIA)), 3)
 
-    def test_two_unusable_replies_fail_closed_with_no_partial_result(self):
-        send = Scripted(model_reply(GOOD[:2]), model_reply([{"id": "c-001", "answer": "maybe", "confidence": 1}]))
-        with self.assertRaises(JudgeError):
-            check_text(TEXT, CRITERIA, KEY, send)
-        self.assertEqual(len(send.requests), 2)
+    def test_anything_that_is_not_the_exact_shape_fails_closed(self):
+        bad = ["Sure! yes to all", json.dumps(GOOD[:2]), json.dumps({"error": "failed"}),
+               json.dumps([{"id": "c-001", "answer": "maybe", "confidence": 1}]),
+               json.dumps(GOOD + [{"id": "c-003", "answer": "yes", "confidence": 1}]), ""]
+        for reply in bad:
+            with self.subTest(reply=reply[:30]), self.assertRaises(JudgeError):
+                parse_verdicts(reply, CRITERIA)
 
-    def test_network_failure_is_not_retried(self):
-        send = Scripted(unreachable())
-        with self.assertRaises(JudgeError):
-            check_text(TEXT, CRITERIA, KEY, send)
-        self.assertEqual(len(send.requests), 1)
-
-    def test_text_that_cannot_be_checked_is_refused_before_any_call(self):
-        send = Scripted()
-        for bad, reason in (("", "empty"), ("   \n", "empty"), ("word " * (MAX_WORDS + 1), "too_long"),
-                            ("x" * 9000, "too_long")):
-            with self.subTest(length=len(bad)), self.assertRaises(TextRejected) as caught:
-                check_text(bad, CRITERIA, KEY, send)
-            self.assertEqual(caught.exception.reason, reason)
-        self.assertEqual(send.requests, [])
-
-    def test_text_at_the_word_cap_is_accepted(self):
-        send = Scripted(model_reply(GOOD))
-        check_text("word " * MAX_WORDS, CRITERIA, KEY, send)
-        self.assertEqual(len(send.requests), 1)
-
-    def test_nothing_to_check_against_is_refused_before_any_call(self):
-        send = Scripted()
+    def test_no_live_criteria_or_the_skills_own_no_criteria_error_says_scrape_first(self):
         with self.assertRaises(NoCriteria):
-            check_text(TEXT, [criterion(1, "retired")], KEY, send)
-        self.assertEqual(send.requests, [])
+            parse_verdicts(json.dumps(GOOD), [criterion(1, "retired")])
+        with self.assertRaises(NoCriteria):
+            parse_verdicts('{"error": "no_criteria"}', CRITERIA)
 
 
 class TestValidate(unittest.TestCase):
-    EXPECTED = ["c-001", "c-002"]
+    def test_each_bad_item_is_refused(self):
+        ids = ["c-001"]
+        for item in ({"id": "c-009", "answer": "yes", "confidence": 1}, {"answer": "yes", "confidence": 1},
+                     {"id": "c-001", "answer": "yes", "confidence": 1.5}, {"id": "c-001", "answer": "yes", "confidence": True},
+                     {"id": "c-001", "answer": "yes"}, "x"):
+            with self.subTest(item=item), self.assertRaises(VerdictError):
+                validate_verdicts([item], ids)
 
-    def test_rejects_every_wrong_shape(self):
-        ok = {"id": "c-001", "answer": "yes", "confidence": 0.5}
-        other = {"id": "c-002", "answer": "no", "confidence": 0.5}
-        bad_replies = {
-            "not a list": {"id": "c-001"},
-            "missing id answer": [ok],
-            "unknown id": [ok, {**other, "id": "c-009"}],
-            "duplicate id": [ok, ok],
-            "answer not yes/no": [ok, {**other, "answer": "maybe"}],
-            "answer not a string": [ok, {**other, "answer": True}],
-            "confidence too high": [ok, {**other, "confidence": 1.5}],
-            "confidence negative": [ok, {**other, "confidence": -0.1}],
-            "confidence a string": [ok, {**other, "confidence": "0.5"}],
-            "confidence a bool": [ok, {**other, "confidence": True}],
-            "item not an object": [ok, "c-002"],
-            "id missing": [ok, {"answer": "no", "confidence": 0.5}],
-        }
-        for name, reply in bad_replies.items():
-            with self.subTest(name), self.assertRaises(VerdictError):
-                validate_verdicts(reply, self.EXPECTED)
+    def test_duplicates_and_non_lists_are_refused(self):
+        item = {"id": "c-001", "answer": "no", "confidence": 0}
+        with self.assertRaises(VerdictError):
+            validate_verdicts([item, item], ["c-001"])
+        with self.assertRaises(VerdictError):
+            validate_verdicts({"id": "c-001"}, ["c-001"])
 
-    def test_accepts_boundary_confidences_and_ignores_extra_keys(self):
-        reply = [{"id": "c-001", "answer": " YES ", "confidence": 0, "why": "x"},
-                 {"id": "c-002", "answer": "no", "confidence": 1}]
-        self.assertEqual(validate_verdicts(reply, self.EXPECTED),
-                         [Verdict("c-001", "yes", 0.0), Verdict("c-002", "no", 1.0)])
+
+class TestText(unittest.TestCase):
+    def test_text_that_cannot_be_checked_is_refused(self):
+        for bad, reason in (("", "empty"), ("   \n", "empty"), ("word " * (MAX_WORDS + 1), "too_long"),
+                            ("x" * 9000, "too_long")):
+            with self.subTest(length=len(bad)), self.assertRaises(TextRejected) as caught:
+                require_checkable(bad)
+            self.assertEqual(caught.exception.reason, reason)
+
+    def test_text_at_the_limit_passes(self):
+        require_checkable("word " * MAX_WORDS)
 
 
 if __name__ == "__main__":

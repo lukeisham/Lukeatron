@@ -10,7 +10,7 @@
 #   Parser + Generator StyleGuides, ProjectDashboard tokens.css, CurriculumPreparation registry,
 #   !Dashboard, !IdeaWiki, !SkillDocs, !teach, !BookCover, and both System/Tools/ viewers.
 #   Standing exemptions: !GenerateWiki (defers to wiki-page.css) and !SvgImage (illustration, not UI).
-last_updated: 2026-09-29
+last_updated: 2026-10-02
 # 2026-09-29 — !AppDevelopment v2.1.0, a Luke-directed refactor of the PRD/README/decisions shape:
 #   (1) the style guide moved into the PRD as a `## UI` section (Phase 1 design intent — HouseStyle
 #   verdict, the one rule, first-pass palette/type/spacing — tested against Phase 2's mockups). No
@@ -165,8 +165,13 @@ skills:
   - name: "!ScrapeAiCharacteristics"
     path: "System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/skill.md"
     domain: "PersonalResearch"
-    intent: "Refresh the AiCharacteristics app's criteria from the Wikipedia article on signs of AI writing — DeepSeek extracts only signs visible in a text's words and punctuation (no layout, nothing about Wikipedia), merges them by stable id, explains new or changed ones in Simple English, saves data/criteria.json atomically. Run by the app's Scrape button (via Home) or by run.py. Never edits a locked criterion; retires, never deletes."
+    intent: "Refresh the AiCharacteristics app's criteria from the one Wikipedia article 'Wikipedia:Signs of AI writing' — a structured agent skill (no script, no API key): read the article, keep only signs visible in a text's words and punctuation (no layout, nothing about Wikipedia), compare with the saved list changing as little as possible, explain new or changed ones in Simple English, save data/criteria.json. Never edits a locked criterion; retires, never deletes."
     triggers: ["scrape the ai characteristics", "refresh the ai characteristics", "update the ai writing criteria", "refresh the criteria from wikipedia", "scrape signs of ai writing", "update aicharacteristics criteria"]
+  - name: "!CheckAiCharacteristics"
+    path: "System/Skillbank/PersonalResearch/!CheckAiCharacteristics/skill.md"
+    domain: "PersonalResearch"
+    intent: "Check a pasted passage (up to 700 words) against the AiCharacteristics criteria: one literal yes/no + confidence per live criterion, JSON only, writes nothing. Run by the app's Check button (via Home) or on request."
+    triggers: ["check this against the ai characteristics", "check this text for ai writing signs", "run the ai characteristics check", "which signs of ai writing are in this", "check content against the criteria"]
   - name: "!SvgImage"
     path: "System/Skillbank/GeneralPurposeSkills/!SvgImage/skill.md"
     domain: "GeneralPurpose"

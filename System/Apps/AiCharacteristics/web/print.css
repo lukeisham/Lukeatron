@@ -1,0 +1,9 @@
+/* Print: a plain degradation of the screen design. Shadows, washes and controls drop; the tables and rules stay. */
+
+@page { size: A4; margin: 18mm; }
+body { color: var(--print-ink); background: #fff; }
+.tabs, button, .card-row button { display: none; }
+.card { box-shadow: none; border: 1px solid var(--print-rule); }
+.page { max-width: var(--print-measure); }
+.result-row.seen td:first-child { box-shadow: none; font-weight: 600; }
+.why { display: block; }

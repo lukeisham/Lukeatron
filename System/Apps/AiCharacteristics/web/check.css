@@ -1,0 +1,32 @@
+/* The Check text tab: the paste card and the results table. */
+
+.check-body { display: grid; gap: var(--s-3); }
+.card { background: var(--bg-raised); border-radius: var(--radius); box-shadow: var(--shade-raised), var(--shade-edge); padding: var(--s-3); display: grid; gap: var(--s-2); }
+.field-label { font-size: var(--t-small); color: var(--ink-2); }
+.field { width: 100%; min-height: 9rem; resize: vertical; font: inherit; font-size: var(--t-body); color: var(--ink); background: var(--bg-raised);
+         border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: var(--s-2) var(--s-3); }
+.card-row { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); font-size: var(--t-small); color: var(--ink-2); }
+.over-limit { color: var(--danger); font-weight: 600; }
+
+.results { display: grid; gap: var(--s-2); }
+.summary { font-size: var(--t-small); color: var(--ink-2); }
+.summary b { color: var(--ink); }
+.results-table { width: 100%; border-collapse: collapse; font-size: var(--t-small); }
+.results-table th { text-align: left; font-weight: 500; color: var(--ink-2); padding: var(--s-1) var(--s-2); border-bottom: 1px solid var(--line); }
+.results-table td { padding: var(--s-2); border-bottom: 1px solid var(--line-faint); vertical-align: top; }
+.result-row.seen td:first-child { box-shadow: inset 2px 0 0 var(--acc); }
+.answer { font-weight: 600; white-space: nowrap; }
+.answer.no { color: var(--ink-3); font-weight: 400; }
+.bar { display: inline-block; width: 4rem; height: var(--s-2); background: var(--bg-sunk); border-radius: var(--radius-sm); vertical-align: middle; margin-right: var(--s-2); overflow: hidden; }
+.bar-fill { display: block; height: 100%; background: var(--acc); }
+.bar.no .bar-fill { background: var(--ink-3); }
+.result-summary { cursor: pointer; display: flex; border-radius: var(--radius-sm); }
+.result-summary::-webkit-details-marker { display: none; }
+.result-summary::before { content: "›"; flex: none; width: var(--s-3); color: var(--ink-3); transition: transform var(--m-base) var(--ease-out); }
+.result-details[open] > .result-summary::before { transform: rotate(90deg); }
+.why { font-family: var(--font-prose); color: var(--ink-2); max-width: var(--measure); padding: var(--s-1) 0 var(--s-1) var(--s-3); }
+
+@media (max-width: 40rem) {
+  .bar { width: 2.5rem; }
+  .results-table th, .results-table td { padding-inline: var(--s-1); }
+}

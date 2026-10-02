@@ -1,7 +1,7 @@
 """Merge a Scrape's proposed criteria into the saved list.
 
 criteria.json contract (written by the Scrape pipeline; read by the page and the judge):
-    {"scraped_at": "<ISO 8601>", "article_revision": "<id>", "criteria": [Criterion, ...]}
+    {"scraped_at": "<ISO 8601>", "article_title": "<page title>", "article_revision": "<id>", "criteria": [...]}
 
 Criterion:
     id           permanent "c-NNN" — never reused, never changed

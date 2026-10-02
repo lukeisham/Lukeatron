@@ -174,6 +174,49 @@ class TestCheck(AicharTest):
         self.assertNotIn(KEY.encode(), response.body)
 
 
+class TestPageFiles(AicharTest):
+    """A file-launch app whose page sits in a sub-folder is served with its own .html/.css/.js, and only those."""
+
+    def setUp(self):
+        super().setUp()
+        catalog = json.loads(self.home.catalog_file.read_text())
+        catalog["apps"]["Nested"] = {"context": "Teaching", "blurb": "A page in a sub-folder",
+                                     "launch": {"kind": "file", "path": "web/index.html"}}
+        self.home.catalog_file.write_text(json.dumps(catalog))
+        app = self.home.apps_dir / "Nested"
+        (app / "web" / "sub").mkdir(parents=True)
+        (app / "README.md").write_text("# readme\n")
+        for name, text in {"web/index.html": "<!doctype html>", "web/page.css": "body{}", "web/main.js": "export {}",
+                           "web/sub/inner.js": "export {}", "web/notes.txt": "no", "web/data.json": "{}",
+                           "secret.js": "no", "secret.css": "no"}.items():
+            (app / name).write_text(text)
+
+    def test_files_beside_the_launch_file_are_served_with_the_right_type(self):
+        for name, content_type in {"index.html": "text/html", "page.css": "text/css", "main.js": "text/javascript",
+                                   "sub/inner.js": "text/javascript"}.items():
+            with self.subTest(name):
+                response = self.get(f"/apps/Nested/web/{name}", cookie=self.cookie)
+                self.assertEqual(response.status, 200)
+                self.assertTrue(response.content_type.startswith(content_type))
+
+    def test_everything_else_is_not_found(self):
+        for path in ("/apps/Nested/web/notes.txt", "/apps/Nested/web/data.json", "/apps/Nested/web/missing.js",
+                     "/apps/Nested/secret.js", "/apps/Nested/secret.css", "/apps/Nested/web/../secret.js",
+                     "/apps/Nested/web/%2e%2e/secret.js", "/apps/Nested/web/", "/apps/Nested/README.md"):
+            with self.subTest(path):
+                self.assertEqual(self.get(path, cookie=self.cookie).status, 404)
+
+    def test_files_need_a_session(self):
+        self.assertEqual(self.get("/apps/Nested/web/main.js").status, 401)
+
+    def test_an_app_launched_from_its_own_root_still_serves_only_the_launch_file(self):
+        (self.home.apps_dir / "Riddle" / "extra.js").write_text("no")
+        (self.home.apps_dir / "Riddle" / "extra.css").write_text("no")
+        self.assertEqual(self.get("/apps/Riddle/Riddle.html", cookie=self.cookie).status, 200)
+        for name in ("extra.js", "extra.css"):
+            self.assertEqual(self.get(f"/apps/Riddle/{name}", cookie=self.cookie).status, 404)
+
+
 class TestSelfcheck(AicharTest):
     def test_the_package_loads_and_a_missing_one_is_reported(self):
         args = (self.home.apps_dir, self.home.bsb_file, self.home.creds.directory, self.home.inbox_dir, self.home.recipes_dir)

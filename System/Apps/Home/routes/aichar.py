@@ -72,7 +72,7 @@ def _gate(home: Home, request: Request) -> Response | None:
 def criteria_json(home: Home, request: Request) -> Response:
     path = _data_dir(home) / "criteria.json"
     if not path.is_file():
-        return json_response({"scraped_at": None, "article_revision": None, "criteria": []})
+        return json_response({"scraped_at": None, "article_title": None, "article_revision": None, "criteria": []})
     try:
         return json_response(json.loads(path.read_text(encoding="utf-8")))
     except (OSError, ValueError):

@@ -39,7 +39,7 @@
     "AiCharacteristics": {
       "context": "Teaching",
       "blurb": "Paste text; flag AI-associated writing traits",
-      "launch": {"kind": "file", "path": "AiCharacteristics_generator.html"}
+      "launch": {"kind": "file", "path": "web/index.html"}
     },
     "Rhetoric": {
       "context": "Teaching",

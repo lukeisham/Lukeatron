@@ -55,6 +55,7 @@ class TestScrape(unittest.TestCase):
         summary, send = self.scrape(*first_run_replies())
         document = self.saved()
         self.assertEqual((document["article_revision"], document["scraped_at"]), ("1234567", "2026-10-02T09:00:00+00:00"))
+        self.assertEqual(document["article_title"], "Wikipedia:Signs of AI writing")
         self.assertEqual([c["id"] for c in document["criteria"]], ["c-001", "c-002", "c-003"])
         self.assertEqual({c["plain"] for c in document["criteria"]}, {EASY})
         self.assertEqual(summary.new, ["c-001", "c-002", "c-003"])

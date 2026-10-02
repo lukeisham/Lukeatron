@@ -1,0 +1,33 @@
+/* The page frame: reset, type, tabs, buttons, status lines. Tokens come from Home's /static/tokens.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body, h1, h2, h3, p, ul, table, form { margin: 0; padding: 0; }
+body { font: var(--t-body)/var(--lh-body) var(--font-prose); }
+ul { list-style: none; }
+html [hidden] { display: none; }
+
+.page { max-width: 60rem; margin: 0 auto; padding: var(--s-4) var(--s-3) var(--s-6); display: grid; gap: var(--s-4); }
+.page-title { font-size: var(--t-h2); line-height: var(--lh-tight); padding-bottom: var(--s-3); border-bottom: 1px solid var(--line); }
+.panel { display: grid; gap: var(--s-3); font-family: var(--font-ui); line-height: var(--lh-ui); }
+.meta { font-size: var(--t-small); color: var(--ink-2); }
+.empty { color: var(--ink-2); padding: var(--s-4) 0; }
+
+button { font: inherit; font-family: var(--font-ui); font-size: var(--t-small); cursor: pointer; color: var(--ink);
+         background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+         padding: var(--s-2) var(--s-3); transition: background var(--m-fast) var(--ease-out); }
+button:hover { background: var(--bg-sunk); }
+button:disabled { cursor: default; color: var(--ink-3); background: var(--bg-sunk); border-color: var(--line); }
+button[aria-busy="true"] { cursor: progress; }
+.primary { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+.primary:hover { background: var(--acc); filter: brightness(1.08); }
+.primary:disabled { background: var(--bg-sunk); border-color: var(--line); color: var(--ink-3); filter: none; }
+:is(button, textarea, summary):focus-visible { outline: none; box-shadow: var(--focus-ring); border-color: var(--focus); }
+
+.tabs { display: flex; gap: var(--s-4); border-bottom: 1px solid var(--line); font-family: var(--font-ui); font-size: var(--t-small); }
+.tab { background: none; border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: var(--s-2) 0; color: var(--ink-2); }
+.tab:hover { background: none; color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 600; }
+
+.status { font-size: var(--t-small); color: var(--ink-2); min-height: calc(var(--t-small) * var(--lh-ui)); }
+.status.failed { color: var(--danger); }

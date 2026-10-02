@@ -59,8 +59,8 @@ def run_scrape(data_dir: Path, key: str, send: Send = send_request,
         raise ScrapeFailed(str(error)) from error
 
     criteria = [{**c, "plain": explained.texts.get(c["id"]) or c["plain"]} for c in merged.criteria]
-    document = {"scraped_at": clock().isoformat(timespec="seconds"), "article_revision": article.revision,
-                "criteria": criteria}
+    document = {"scraped_at": clock().isoformat(timespec="seconds"), "article_title": article.title,
+                "article_revision": article.revision, "criteria": criteria}
     _save(data_dir, document, article.text)
     return ScrapeSummary(article.revision, len(criteria), merged.new, merged.changed, merged.retired,
                          explained.flagged)

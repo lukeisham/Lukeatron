@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI characteristics</title>
+<link rel="stylesheet" href="/static/tokens.css">
+<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="check.css">
+<link rel="stylesheet" href="criteria.css">
+<link rel="stylesheet" href="print.css" media="print">
+<script type="module" src="main.js"></script>
+</head>
+<body>
+<main class="page">
+  <h1 class="page-title">AI characteristics</h1>
+
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button class="tab" role="tab" type="button" id="tab-check" aria-controls="panel-check" aria-selected="true" data-tab="check">Check text</button>
+    <button class="tab" role="tab" type="button" id="tab-criteria" aria-controls="panel-criteria" aria-selected="false" tabindex="-1" data-tab="criteria">The criteria, explained</button>
+  </div>
+
+  <section class="panel" role="tabpanel" id="panel-check" aria-labelledby="tab-check" data-panel="check">
+    <p class="empty" data-role="check-empty" hidden>There are no criteria to check against yet. Open <b>The criteria, explained</b> and press <b>Scrape</b> to build them.</p>
+    <div class="check-body" data-role="check-body" hidden>
+      <form class="card" data-role="check-form">
+        <label class="field-label" for="check-text">Paste up to 700 words · checked against <span data-role="check-count">0</span> criteria</label>
+        <textarea class="field" id="check-text" name="text" rows="8" aria-describedby="check-status"></textarea>
+        <div class="card-row">
+          <span data-role="word-count">0 / 700 words</span>
+          <button class="primary" type="submit" data-role="check-button" disabled>Check text</button>
+        </div>
+      </form>
+      <p class="status" id="check-status" role="status" data-role="check-status"></p>
+      <div class="results" data-role="results" hidden>
+        <p class="summary" data-role="summary"></p>
+        <table class="results-table">
+          <thead><tr><th scope="col">Criterion</th><th scope="col">Seen?</th><th scope="col">Judge's confidence</th></tr></thead>
+          <tbody data-role="results-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" role="tabpanel" id="panel-criteria" aria-labelledby="tab-criteria" data-panel="criteria" hidden>
+    <div class="scrape-bar">
+      <p class="meta" data-role="source-line">Loading…</p>
+      <button type="button" data-role="scrape-button">Scrape</button>
+    </div>
+    <p class="status" role="status" data-role="scrape-status"></p>
+    <p class="empty" data-role="criteria-empty" hidden>No criteria yet. Press <b>Scrape</b> to build them from the Wikipedia article. It takes about a minute.</p>
+    <ul class="criteria-list" data-role="criteria-list"></ul>
+    <section class="retired" data-role="retired-block" hidden>
+      <h2 class="retired-heading">No longer in the article <span class="tag">Retired</span></h2>
+      <p class="meta">Kept for the record. These are not used when you check a text.</p>
+      <p class="meta" data-role="retired-empty">Nothing has been retired.</p>
+      <ul class="criteria-list" data-role="retired-list"></ul>
+    </section>
+  </section>
+</main>
+</body>
+</html>

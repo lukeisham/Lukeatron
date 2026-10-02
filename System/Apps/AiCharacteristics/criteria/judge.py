@@ -1,6 +1,6 @@
-"""JEV: check one pasted text against every live criterion with a single cheap Haiku call.
+"""JEV: check one pasted text against every live criterion with a single cheap model call.
 
-Haiku answers only yes/no and a confidence per criterion. Anything else is refused, retried once,
+The judge answers only yes/no and a confidence per criterion. Anything else is refused, retried once,
 then fails closed — a half-trusted verdict is worse than none. The pasted text is untrusted: the
 prompt fences it off, and it is never logged or stored here.
 """
@@ -11,12 +11,13 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
-from criteria.haiku import HaikuError, ask_json
+from criteria.llm import HAIKU, LlmError, Provider, ask_json
 from criteria.transport import Send, TransportError, send_request
 
 MAX_WORDS = 700
 MAX_CHARACTERS = 8000
 JUDGE_MAX_TOKENS = 2000
+JUDGE_PROVIDER = HAIKU  # pasted text goes to this provider on every Check
 ATTEMPTS = 2
 
 SYSTEM_PROMPT = """You are a strict, literal judge. You are given a passage and a JSON array of yes/no
@@ -44,7 +45,7 @@ class NoCriteria(JudgeError):
 
 
 class VerdictError(ValueError):
-    """Haiku's reply did not have the required shape."""
+    """The judge's reply did not have the required shape."""
 
 
 @dataclass(frozen=True)
@@ -54,7 +55,8 @@ class Verdict:
     confidence: float
 
 
-def check_text(text: str, criteria: list[dict], key: str, send: Send = send_request) -> list[Verdict]:
+def check_text(text: str, criteria: list[dict], key: str, send: Send = send_request,
+               provider: Provider = JUDGE_PROVIDER) -> list[Verdict]:
     _require_checkable(text)
     live = [c for c in criteria if c.get("status") != "retired"]
     if not live:
@@ -64,9 +66,9 @@ def check_text(text: str, criteria: list[dict], key: str, send: Send = send_requ
     last_problem = "no attempt was made"
     for _ in range(ATTEMPTS):
         try:
-            reply = ask_json(SYSTEM_PROMPT, user, key, max_tokens=JUDGE_MAX_TOKENS, send=send)
+            reply = ask_json(SYSTEM_PROMPT, user, key, provider=provider, max_tokens=JUDGE_MAX_TOKENS, send=send)
             return validate_verdicts(reply, expected)
-        except HaikuError as error:
+        except LlmError as error:
             if isinstance(error.__cause__, TransportError):
                 raise JudgeError(str(error)) from error
             last_problem = str(error)

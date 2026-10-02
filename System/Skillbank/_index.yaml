@@ -162,6 +162,11 @@ skills:
     domain: "PersonalResearch"
     intent: "Content harvester for the Generator widget suite (System/Widgets/Generator/) — the Tier-B, agent-side half of a system whose four widgets are offline Tier A with their content pool baked in at build time. Grows the pools between builds: Riddle (public-domain riddles), FolkTale (public-domain tales, 400-word cap enforced by the build), Psychometric (ORIGINAL items across five categories — formats researched and cited, never commercial items copied), and AiCharacteristics (freshness check of the taxonomy rather than volume growth). De-duplicates on normalised text before appending, requires source + licence provenance on every item, appends only in each cartridge's exact labelled-bold-field dialect, then rebuilds via the shared assembler and runs that cartridge's test suite before reporting real before/after counts. Stops rather than shipping a broken widget."
     triggers: ["add more riddles", "find more folk tales", "grow the psychometric pool", "top up the generator content", "check the ai characteristics taxonomy", "harvest content for the generator", "generate content for the widget", "add generator content"]
+  - name: "!ScrapeAiCharacteristics"
+    path: "System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/skill.md"
+    domain: "PersonalResearch"
+    intent: "Refresh the AiCharacteristics app's criteria from the Wikipedia article on signs of AI writing — DeepSeek extracts only signs visible in a text's words and punctuation (no layout, nothing about Wikipedia), merges them by stable id, explains new or changed ones in Simple English, saves data/criteria.json atomically. Run by the app's Scrape button (via Home) or by run.py. Never edits a locked criterion; retires, never deletes."
+    triggers: ["scrape the ai characteristics", "refresh the ai characteristics", "update the ai writing criteria", "refresh the criteria from wikipedia", "scrape signs of ai writing", "update aicharacteristics criteria"]
   - name: "!SvgImage"
     path: "System/Skillbank/GeneralPurposeSkills/!SvgImage/skill.md"
     domain: "GeneralPurpose"

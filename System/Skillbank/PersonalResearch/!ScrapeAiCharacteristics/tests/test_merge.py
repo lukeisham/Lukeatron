@@ -1,4 +1,4 @@
-"""Merging a Scrape into the saved criteria list. Mirrors: criteria/merge.py.
+"""Merging a Scrape into the saved criteria list. Mirrors: aichar_scrape/merge.py.
 Fixture data only — pure functions, no files, no network.
 """
 
@@ -6,8 +6,8 @@ import copy
 import unittest
 
 import helpers  # noqa: F401
-from criteria import MergeError, merge_criteria
-from criteria.merge import CONTENT_FIELDS
+from aichar_scrape import MergeError
+from aichar_scrape.merge import CONTENT_FIELDS, merge_criteria
 
 
 def proposed(title: str, **overrides: str) -> dict:

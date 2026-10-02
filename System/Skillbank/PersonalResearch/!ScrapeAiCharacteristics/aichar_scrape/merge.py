@@ -1,18 +1,7 @@
 """Merge a Scrape's proposed criteria into the saved list.
 
-criteria.json contract (written by the Scrape pipeline; read by the page and the judge):
-    {"scraped_at": "<ISO 8601>", "article_title": "<page title>", "article_revision": "<id>", "criteria": [...]}
-
-Criterion:
-    id           permanent "c-NNN" — never reused, never changed
-    title, description, question, source
-                 taken from the article; replaced by a Scrape unless the criterion is locked.
-                 `question` is the yes/no question the judge is asked.
-    plain        the Simple English explainer text, filled in by the explainer step
-    status       what the latest Scrape did to it: new | changed | kept | retired
-    locked       true = Luke's own edit; a Scrape neither rewrites nor retires it
-
-Pure functions: no files, no network (PY-3). Retired criteria are kept so ids stay stable.
+The criteria.json contract is the docstring of `criteria/store.py` in the AiCharacteristics app. Pure functions:
+no files, no network (PY-3). Retired criteria are kept so ids stay stable.
 """
 
 from __future__ import annotations

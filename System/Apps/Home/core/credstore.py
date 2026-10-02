@@ -17,7 +17,6 @@ from core.webauthn import Credential
 PASSKEYS = "passkeys.json"
 SESSION_SECRET = "session-secret"
 AGENT_KEY = "agent-key"
-ANTHROPIC_KEY = "anthropic-key"
 
 
 def _write_private(path: Path, text: str) -> None:
@@ -49,9 +48,9 @@ class CredStore:
     def agent_key(self) -> str:
         return _read_or_create_hex(self.directory / AGENT_KEY)
 
-    def anthropic_key(self) -> str:
-        """The Haiku key Luke puts here by hand; empty when absent. Read each call, so adding it needs no restart."""
-        path = self.directory / ANTHROPIC_KEY
+    def api_key(self, file_name: str) -> str:
+        """A model provider's key, which Luke puts here by hand; empty when absent. Read each call, so adding it needs no restart."""
+        path = self.directory / file_name
         return path.read_text(encoding="utf-8").strip() if path.exists() else ""
 
     def passkeys(self) -> list[Credential]:

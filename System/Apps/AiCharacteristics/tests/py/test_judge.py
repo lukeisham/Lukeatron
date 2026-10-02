@@ -5,7 +5,7 @@ Stubbed network only — no live call, no pasted text kept anywhere.
 import unittest
 
 import helpers  # noqa: F401
-from fakes import KEY, Scripted, haiku_reply, unreachable
+from fakes import KEY, Scripted, model_reply, unreachable
 from criteria import JudgeError, NoCriteria, TextRejected, Verdict, check_text
 from criteria.judge import MAX_WORDS, VerdictError, validate_verdicts
 
@@ -23,7 +23,7 @@ GOOD = [{"id": "c-004", "answer": "No", "confidence": 0.2}, {"id": "c-001", "ans
 
 class TestCheck(unittest.TestCase):
     def test_one_call_asks_every_live_question_and_returns_verdicts_in_criteria_order(self):
-        send = Scripted(haiku_reply(GOOD))
+        send = Scripted(model_reply(GOOD))
         verdicts = check_text(TEXT, CRITERIA, KEY, send)
         self.assertEqual(verdicts, [Verdict("c-001", "yes", 0.9), Verdict("c-002", "yes", 1.0),
                                     Verdict("c-004", "no", 0.2)])
@@ -36,12 +36,12 @@ class TestCheck(unittest.TestCase):
         self.assertNotIn(KEY.encode(), send.requests[0].data)
 
     def test_unusable_reply_is_retried_once_then_accepted(self):
-        send = Scripted(haiku_reply("Sure! yes to all"), haiku_reply(GOOD))
+        send = Scripted(model_reply("Sure! yes to all"), model_reply(GOOD))
         self.assertEqual(len(check_text(TEXT, CRITERIA, KEY, send)), 3)
         self.assertEqual(len(send.requests), 2)
 
     def test_two_unusable_replies_fail_closed_with_no_partial_result(self):
-        send = Scripted(haiku_reply(GOOD[:2]), haiku_reply([{"id": "c-001", "answer": "maybe", "confidence": 1}]))
+        send = Scripted(model_reply(GOOD[:2]), model_reply([{"id": "c-001", "answer": "maybe", "confidence": 1}]))
         with self.assertRaises(JudgeError):
             check_text(TEXT, CRITERIA, KEY, send)
         self.assertEqual(len(send.requests), 2)
@@ -62,7 +62,7 @@ class TestCheck(unittest.TestCase):
         self.assertEqual(send.requests, [])
 
     def test_text_at_the_word_cap_is_accepted(self):
-        send = Scripted(haiku_reply(GOOD))
+        send = Scripted(model_reply(GOOD))
         check_text("word " * MAX_WORDS, CRITERIA, KEY, send)
         self.assertEqual(len(send.requests), 1)
 

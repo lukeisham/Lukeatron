@@ -49,7 +49,8 @@ class AicharTest(GateTest):
         self.network = Network(*replies)
         self.home.send = self.network
         if key:
-            (self.home.creds.directory / "anthropic-key").write_text(key + "\n")
+            for key_file in ("deepseek-key", "anthropic-key"):
+                (self.home.creds.directory / key_file).write_text(key + "\n")
 
     def post(self, path, body=None, **kw):
         return server.dispatch(self.home, req(path, "POST", body={} if body is None else body, **kw))
@@ -100,7 +101,20 @@ class TestScrape(AicharTest):
         self.use(WIKI, key=None)
         response = self.post(SCRAPE, cookie=self.cookie)
         self.assertEqual(response.status, 503)
+        self.assertEqual(json.loads(response.body)["message"], "no DeepSeek key is set up")
         self.assertEqual((self.network.requests, self.data.exists()), ([], False))
+
+    def test_scrape_needs_the_deepseek_key_and_ignores_the_haiku_one(self):
+        self.use(WIKI, key=None)
+        (self.home.creds.directory / "anthropic-key").write_text(KEY + "\n")
+        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 503)
+        self.assertEqual(self.network.requests, [])
+
+    def test_scrape_calls_deepseek_and_never_sends_the_key_anywhere_else(self):
+        self.use(WIKI, haiku(PROPOSED), haiku({"c-001": EASY}))
+        self.assertEqual(self.post(SCRAPE, cookie=self.cookie).status, 200)
+        self.assertEqual([r.host for r in self.network.requests], ["en.wikipedia.org", "api.deepseek.com", "api.deepseek.com"])
+        self.assertIsNone(self.network.requests[0].get_header("X-api-key"))
 
     def test_failed_scrape_is_a_502_with_a_clean_message_and_writes_nothing(self):
         from criteria.transport import TransportError
@@ -158,10 +172,14 @@ class TestCheck(AicharTest):
         self.assertIn("Scrape", json.loads(response.body)["message"])
         self.assertEqual(self.network.requests, [])
 
-    def test_no_key_is_a_503(self):
+    def test_no_key_is_a_503_that_names_the_haiku_key_and_check_calls_anthropic(self):
         self.scrape_once()
         (self.home.creds.directory / "anthropic-key").unlink()
-        self.assertEqual(self.post(CHECK, {"text": PASTED}, cookie=self.cookie).status, 503)
+        response = self.post(CHECK, {"text": PASTED}, cookie=self.cookie)
+        self.assertEqual((response.status, json.loads(response.body)["message"]), (503, "no Haiku key is set up"))
+        self.use(haiku([{"id": "c-001", "answer": "yes", "confidence": 0.8}]))
+        self.assertEqual(self.post(CHECK, {"text": PASTED}, cookie=self.cookie).status, 200)
+        self.assertEqual(self.network.requests[0].host, "api.anthropic.com")
 
     def test_unusable_judge_replies_are_a_502_and_the_pasted_text_is_never_logged(self):
         self.scrape_once()

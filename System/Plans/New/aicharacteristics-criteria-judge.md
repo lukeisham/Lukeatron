@@ -35,6 +35,9 @@ AiCharacteristics gains a **Scrape** button that turns the Wikipedia article on 
 - **Scripts:** scrape pipeline, merge script (deterministic ID-matched merge), reading-level check, judge-reply validator — all in the app folder with their tests
 - **Temp-skills:** none
 
+## Revision — 2026-10-02 (Luke: "the scrape will be a special skill in skillbank", DeepSeek key for the Scrape)
+The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristics` (`System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/`: `skill.md`, `run.py`, `aichar_scrape/`, `tests/`; catalogued in `_index.yaml`). It calls DeepSeek (`deepseek-flash`, thinking off) through DeepSeek's Anthropic-compatible endpoint, so the one request shape serves both providers. The app keeps `criteria/{store,llm,transport,judge}.py`; Check still calls Haiku. The button remains: Home's route imports the skill's code. Steps 6-9 below describe the first build; where they say "Haiku" for the Scrape, read DeepSeek. Tests now: skill 33, app Python 16, JS 14, Home 94. **Step 14 now needs:** `System/Credentials/Home/deepseek-key` (and an answer on extending the SR-5 exception to that file), the `anthropic-key` for Check, and Luke pressing Scrape.
+
 ## Steps
 
 **A. Safe ground**

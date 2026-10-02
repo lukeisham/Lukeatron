@@ -1,12 +1,13 @@
-"""Fetching, calling Haiku, and the Simple English check. Mirrors: criteria/article.py, haiku.py, readability.py."""
+"""Fetching the article and the Simple English check. Mirrors: aichar_scrape/article.py, readability.py."""
 
 import unittest
 
-import helpers  # noqa: F401
-from fakes import KEY, Scripted, haiku_reply, unreachable, wiki_reply
-from criteria import readability
-from criteria.article import ArticleError, fetch_article
-from criteria.haiku import MODEL, HaikuError, ask, parse_json_reply
+import helpers
+from fakes import Scripted, unreachable
+from aichar_scrape import readability
+from aichar_scrape.article import ArticleError, fetch_article
+
+wiki_reply = helpers.wiki_reply
 
 EASY = "Some writers use big words. They pick the same few words again and again. Look for that."
 HARD = ("Notwithstanding considerable methodological heterogeneity, contemporary investigations demonstrate "
@@ -31,30 +32,6 @@ class TestArticle(unittest.TestCase):
         for reply in bad_replies:
             with self.subTest(reply=reply), self.assertRaises(ArticleError):
                 fetch_article(Scripted(reply))
-
-
-class TestHaiku(unittest.TestCase):
-    def test_ask_sends_the_key_in_the_header_only_and_returns_the_text(self):
-        send = Scripted(haiku_reply("hello"))
-        self.assertEqual(ask("be brief", "hi", KEY, send=send), "hello")
-        request = send.requests[0]
-        self.assertEqual(request.get_header("X-api-key"), KEY)
-        self.assertNotIn(KEY.encode(), request.data)
-        body = send.body(0)
-        self.assertEqual((body["model"], body["system"], body["messages"][0]["content"]), (MODEL, "be brief", "hi"))
-
-    def test_cut_short_empty_non_json_and_failed_calls_are_refused(self):
-        cut = b'{"stop_reason": "max_tokens", "content": [{"type": "text", "text": "{"}]}'
-        empty = b'{"stop_reason": "end_turn", "content": []}'
-        for reply in (cut, empty, b"not json", b'{"nothing": 1}', unreachable()):
-            with self.subTest(reply=reply), self.assertRaises(HaikuError):
-                ask("s", "u", KEY, send=Scripted(reply))
-
-    def test_json_reply_may_be_fenced_but_must_be_valid(self):
-        self.assertEqual(parse_json_reply('```json\n{"a": 1}\n```'), {"a": 1})
-        self.assertEqual(parse_json_reply('[1, 2]'), [1, 2])
-        with self.assertRaises(HaikuError):
-            parse_json_reply("Sure! Here you go: {")
 
 
 class TestReadability(unittest.TestCase):

@@ -5,15 +5,10 @@ import urllib.request
 
 from criteria.transport import TransportError
 
-FIXTURES = __import__("pathlib").Path(__file__).resolve().parent / "fixtures"
 KEY = "test-key-not-real"
 
 
-def wiki_reply() -> bytes:
-    return (FIXTURES / "article-response.json").read_bytes()
-
-
-def haiku_reply(payload) -> bytes:
+def model_reply(payload) -> bytes:
     text = payload if isinstance(payload, str) else json.dumps(payload)
     return json.dumps({"stop_reason": "end_turn", "content": [{"type": "text", "text": text}]}).encode()
 

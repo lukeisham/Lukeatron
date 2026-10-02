@@ -1,4 +1,4 @@
-"""The whole Scrape on a temp data folder, with a scripted network. Mirrors: criteria/scrape.py.
+"""The whole Scrape on a temp data folder, with a scripted network. Mirrors: aichar_scrape/pipeline.py.
 Fixture data only; a failed run must leave every saved file byte-for-byte as it was.
 """
 
@@ -8,9 +8,11 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-import helpers  # noqa: F401
-from fakes import KEY, Scripted, haiku_reply, unreachable, wiki_reply
-from criteria import ScrapeFailed, run_scrape
+import helpers
+from fakes import KEY, Scripted, model_reply, unreachable
+from aichar_scrape import ScrapeFailed, run_scrape
+
+wiki_reply = helpers.wiki_reply
 
 EASY = "Some writers use big words. They pick the same few words again and again."
 HARD = ("Notwithstanding considerable methodological heterogeneity, contemporary investigations demonstrate "
@@ -30,7 +32,7 @@ FIXED_CLOCK = lambda: datetime(2026, 10, 2, 9, 0, tzinfo=timezone.utc)  # noqa: 
 
 
 def first_run_replies():
-    return [wiki_reply(), haiku_reply(PROPOSED), haiku_reply(PLAIN)]
+    return [wiki_reply(), model_reply(PROPOSED), model_reply(PLAIN)]
 
 
 class TestScrape(unittest.TestCase):
@@ -62,7 +64,14 @@ class TestScrape(unittest.TestCase):
         self.assertEqual((summary.total, summary.explainer_flags), (3, []))
         self.assertIn("delve", (self.data / "source" / "article.txt").read_text())
         self.assertFalse((self.data / "criteria.previous.json").exists())
-        self.assertEqual(send.hosts, ["en.wikipedia.org", "api.anthropic.com", "api.anthropic.com"])
+        self.assertEqual(send.hosts, ["en.wikipedia.org", "api.deepseek.com", "api.deepseek.com"])
+
+    def test_scrape_uses_deepseek_with_its_own_key_name_in_the_missing_key_message(self):
+        send = Scripted()
+        with self.assertRaises(ScrapeFailed) as caught:
+            run_scrape(self.data, "  ", send, FIXED_CLOCK)
+        self.assertIn("DeepSeek", str(caught.exception))
+        self.assertEqual(send.requests, [])
 
     def test_key_is_never_written_to_any_saved_file(self):
         self.scrape(*first_run_replies())
@@ -72,7 +81,7 @@ class TestScrape(unittest.TestCase):
         self.scrape(*first_run_replies())
         first = self.saved()
         resend = [{**p, "id": f"c-{i:03d}"} for i, p in enumerate(PROPOSED, start=1)]
-        summary, send = self.scrape(wiki_reply(), haiku_reply(resend))
+        summary, send = self.scrape(wiki_reply(), model_reply(resend))
         second = self.saved()
         self.assertEqual((summary.new, summary.changed, summary.retired), ([], [], []))
         self.assertEqual([{k: v for k, v in c.items() if k != "status"} for c in second["criteria"]],
@@ -85,22 +94,22 @@ class TestScrape(unittest.TestCase):
         self.scrape(*first_run_replies())
         reworded = [{**p, "id": f"c-{i:03d}"} for i, p in enumerate(PROPOSED, start=1)]
         reworded[1]["description"] = "Points are grouped in sets of three."
-        summary, send = self.scrape(wiki_reply(), haiku_reply(reworded), haiku_reply({"c-002": "Look for lists of three."}))
+        summary, send = self.scrape(wiki_reply(), model_reply(reworded), model_reply({"c-002": "Look for lists of three."}))
         self.assertEqual(summary.changed, ["c-002"])
         self.assertEqual(json.loads(send.requests[2].data)["messages"][0]["content"].count('"id"'), 1)
         self.assertEqual(self.saved()["criteria"][1]["plain"], "Look for lists of three.")
 
     def test_over_hard_explainer_is_retried_once_with_reasons_then_accepted(self):
-        _, send = self.scrape(wiki_reply(), haiku_reply(PROPOSED), haiku_reply({**PLAIN, "c-002": HARD}),
-                              haiku_reply({"c-002": EASY}))
+        _, send = self.scrape(wiki_reply(), model_reply(PROPOSED), model_reply({**PLAIN, "c-002": HARD}),
+                              model_reply({"c-002": EASY}))
         retry = json.loads(json.loads(send.requests[3].data)["messages"][0]["content"])
         self.assertEqual([item["id"] for item in retry], ["c-002"])
         self.assertTrue(retry[0]["too_hard"]["problems"])
         self.assertEqual(self.saved()["criteria"][1]["plain"], EASY)
 
     def test_explainer_that_stays_too_hard_is_kept_but_flagged(self):
-        summary, _ = self.scrape(wiki_reply(), haiku_reply(PROPOSED), haiku_reply({**PLAIN, "c-002": HARD}),
-                                 haiku_reply({"c-002": HARD}))
+        summary, _ = self.scrape(wiki_reply(), model_reply(PROPOSED), model_reply({**PLAIN, "c-002": HARD}),
+                                 model_reply({"c-002": HARD}))
         self.assertEqual(summary.explainer_flags, ["c-002"])
         self.assertEqual(self.saved()["criteria"][1]["plain"], HARD)
 
@@ -109,12 +118,12 @@ class TestScrape(unittest.TestCase):
         before = self.snapshot_files()
         failing_runs = {
             "network down": [unreachable()],
-            "extract not json": [wiki_reply(), haiku_reply("Sure, here are the criteria:")],
-            "extract empty": [wiki_reply(), haiku_reply([])],
-            "extract malformed item": [wiki_reply(), haiku_reply([{"title": "No question"}])],
-            "explainer wrong shape": [wiki_reply(), haiku_reply(PROPOSED + [{**PROPOSED[0], "title": "Extra sign"}]),
-                                      haiku_reply(["not", "an", "object"])],
-            "haiku unreachable": [wiki_reply(), unreachable()],
+            "extract not json": [wiki_reply(), model_reply("Sure, here are the criteria:")],
+            "extract empty": [wiki_reply(), model_reply([])],
+            "extract malformed item": [wiki_reply(), model_reply([{"title": "No question"}])],
+            "explainer wrong shape": [wiki_reply(), model_reply(PROPOSED + [{**PROPOSED[0], "title": "Extra sign"}]),
+                                      model_reply(["not", "an", "object"])],
+            "model unreachable": [wiki_reply(), unreachable()],
         }
         for name, replies in failing_runs.items():
             with self.subTest(name), self.assertRaises(ScrapeFailed):

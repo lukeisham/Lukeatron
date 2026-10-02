@@ -1,33 +1,23 @@
 # AiCharacteristics
 
-Promoted from `System/Widgets/Generator/AiCharacteristics/` to a standalone Lukeatron app on
-2026-09-29. It is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in
-**`analyse` mode**: paste up to a page of text, the engine tokenizes and flags AI-associated
-stylistic and content characteristics, and an explainer panel expands on request. Shipped widget:
-`AiCharacteristics_generator.html`, **174,717 bytes**.
+Paste up to 700 words and see which signs of AI-written text a cheap judge model says are present. The signs ("criteria") are built from the Wikipedia article on signs of AI writing, kept to what shows in a text's words and punctuation, and each is explained in Simple English. Data stays as it is until you press **Scrape** on "The criteria, explained", which re-reads the article and updates the criteria.
+
+## Launch / restart
+- Open it from Home's command bar: **AiCharacteristics**.
+- One-time setup: the Haiku key goes in `System/Credentials/Home/anthropic-key` (one line, nothing else). Without it Scrape and Check say "No Haiku key is set up."
+- Home must be restarted after the routes change: `launchctl kickstart -k gui/$(id -u)/com.lukeatron.home`
+- Tests: `cd tests/py && python3 -m unittest`, and from this folder `node --test tests/js/*.mjs`.
 
 ## Navigation
-
 ```
 AiCharacteristics/
-├── AiCharacteristics_generator.html      the shipped, built widget — open this directly
-├── AI-writing-characteristics-reference.md
-├── AiCharacteristics_miniwiki_source.md  MiniWiki glossary source
-├── cartridge/
-│   └── build/
-│       ├── config.yaml
-│       ├── content.json
-│       ├── engine.js
-│       ├── explainer.js
-│       └── aicharacteristics.miniwiki.json
+├── web/              the page (HTML, CSS, ES modules)
+├── criteria/         the Python package Home's routes call
+├── data/             criteria.json, criteria.previous.json, source/ — written by Scrape; absent until the first one
 ├── tests/
-│   ├── fixtures/
-│   │   ├── SOURCES.md
-│   │   ├── ai-sample.md
-│   │   └── human-sample.md
+│   ├── py/
 │   └── js/
-│       ├── test-engine.mjs
-│       └── test-explainer.mjs
+├── AI-writing-characteristics-reference.md
 ├── app-decisions.md
 ├── wishlist.md
 └── README.md
@@ -37,122 +27,14 @@ AiCharacteristics/
 
 | From | To | What crosses | What breaks if it changes |
 |---|---|---|---|
-| `System/Widgets/Generator/_shell/` | this app's `cartridge/build/` | `assemble.py` reads `config.yaml` + `content.json` + `engine.js` + `explainer.js` and bakes them into `AiCharacteristics_generator.html` | A shell contract change breaks the build until this cartridge is updated to match — the shell stayed behind in `Widgets/Generator/` when this app was promoted out |
-| `System/Widgets/Generator/_modules/MiniWiki/` | this app's build | `miniwiki.bundle.js` must exist before assembly (`miniwiki.enabled: true` in `config.yaml`) | Build fails with a missing-bundle error until `bundle_miniwiki.py` is run first |
+| Home `catalog.json` | `web/index.html` | `launch: {kind: file, path: web/index.html}` | Home serves a file-launch app's launch file, plus `.html`/`.css`/`.js` beside it only when that file is in a sub-folder (`routes/open.py` `serve_file`). Move the page out of a sub-folder and its CSS and modules stop loading |
+| `web/` | Home `/static/tokens.css` | The house token layer is linked, never copied or inlined | Home renaming or moving `tokens.css` leaves the page unstyled; `!HouseStyle` register row 15 (UNCLASSIFIED — no chassis) governs the page |
+| `web/api.js` | Home `routes/aichar.py` | `GET /api/aichar/criteria`, `POST /api/aichar/scrape`, `POST /api/aichar/check`; same origin, session cookie; the two POSTs also check `Origin` and refuse the agent key | `api.js` is the only file calling `fetch`. Reply shapes (`summary`, `verdicts`, `{error, message}`) are read by `logic.js` and the views |
+| Home `routes/aichar.py` | `criteria/` | Imports the package from this folder (`criteria.run_scrape`, `check_text`, `load_criteria`) and passes `send` (network seam) and the key | Home's start-up self-check fails if the package does not import. `with_deadline` bounds Scrape (150 s) and Check (90 s) |
+| `criteria/scrape.py` | `data/` | Writes `criteria.json` last and atomically, after `criteria.previous.json` and `source/article.txt`; any failure leaves every file untouched | The contract is the docstring of `criteria/merge.py`; `web/` and `criteria/judge.py` read it. This is the one write route in Home besides InboxNote (rule exception in `app-decisions.md`) |
+| `criteria/` | Wikipedia API, Anthropic API | `article.py` reads one page as plain text; `haiku.py` is the only Anthropic caller, key read by Home's `CredStore.anthropic_key()` per call | Pasted text goes to the Anthropic API on every Check and is never logged or stored. Extraction scope (words and punctuation only; no layout, nothing about Wikipedia) is enforced in `extract.py`'s prompt and by a code filter |
 
-## What it does
-
-The user pastes text into the shell's standard analyse-mode input area (cap
-700 words, `parser.cap` in `cartridge/build/config.yaml`). `ENGINE.parse()`
-runs eight detectors over the text — six span-level ("LOCAL": a regex/pattern
-match at a specific location, rendered as a highlight) and two
-document-level ("STATISTICAL": a whole-document measure with no single
-highlighted span) — and the shell's standard focus-level/icon-bar/explainer
-UI renders the result exactly as any analyse-mode cartridge would. Two
-focus levels: `overview` and `detail` (`parser.levels`).
-
-**The honesty stance.** This is deliberately **not** an authorship
-detector. `CONTENT["0.1"]` — the first entry the explainer shows, sourced
-from Adhikari et al.'s *"Counter Turing Test CT²: AI-Generated Text
-Detection Is Not as Easy as You May Think"* (arXiv:2310.05030, 2023) — is a
-caveat that every finding's `explain` text also carries: the widget reports
-**"AI characteristics observed"**, never a verdict on who or what wrote the
-text, and never a probability framed as "chance this is AI." Formal human
-prose (academic writing especially) regularly shows the same surface
-patterns, and current models are trained, deliberately or incidentally, to
-defeat most of them. Every finding is a weak, contestable signal, not a
-finding of fact — `ENGINE.parse()`'s summary classification is literally
-labelled `"AI characteristics observed — not an authorship verdict"`
-(`engine.js`).
-
-## The eight detectors
-
-| id | Detector | Category | Confidence tier |
-|---|---|---|---|
-| 1.1 | Focal word excess | Lexical Markers | HIGH |
-| 2.1 | Low burstiness (uniform sentence length) | Syntactic Rhythm & Structure | HIGH |
-| 3.2 | High token-level repetition | Statistical Distributions | MEDIUM |
-| 4.2 | Discourse marker clustering | Discourse Scaffolding | HIGH |
-| 5.3 | False balance / artificial neutrality | Content-Level Signals | MEDIUM |
-| 6.1 | Absence of varied punctuation | Punctuation & Formatting | MEDIUM |
-| 7.1 | Excessive entity-name repetition | Coherence & Reference | MEDIUM |
-| 8.1 | Specific numeric precision with unverifiable source | Numerical & Naming Patterns | LOW |
-
-**Known limitation — 7.1 is a heuristic, not true NER.** "Excessive
-entity-name repetition" is approximated by tracking capitalised,
-non-sentence-initial words repeated three or more times with few
-intervening pronouns (`engine.js`, detector 7.1's own comment: "approximated
-without true NER"). It has no actual named-entity model behind it, so it
-can over-fire on ordinary prose that legitimately repeats a proper noun —
-travel writing that names the same city or landmark in every paragraph is
-the textbook false positive. Its confidence tier was deliberately set to
-**MEDIUM, not HIGH** (`confidenceTier` in `content.json`'s `"7.1"` entry,
-`confidence: 0.6` in `engine.js`) to reflect that lower reliability; treat
-any 7.1 flag with more scepticism than the six HIGH/MEDIUM detectors backed
-by a direct textual measurement.
-
-## Content and provenance
-
-`cartridge/build/content.json` — 9 entries (the 8 detectors above plus the
-`"0.1"` honesty caveat). `builtFrom` in `config.yaml`:
-`ai-characteristics.md (_research/seed) + content.json`. The same glossary
-text also ships as the cartridge's MiniWiki catalogue
-(`AiCharacteristics_miniwiki_source.md`, `miniwiki.enabled: true`), citing
-the same arXiv source for the caveat entry.
-
-Test fixtures (`tests/fixtures/`, see `SOURCES.md`):
-- `ai-sample.md` — synthetic, hand-written for this cartridge to exercise
-  all 8 categories at once; **not** a real model transcript.
-- `human-sample.md` — Herman Melville, *Moby-Dick*, opening lines of
-  Chapter 1 ("Loomings"), public domain (1851; Melville d. 1891), verbatim.
-
-## Interaction controls
-
-Standard analyse-mode shell controls only: input area, Parse/Explain,
-overview/detail focus toggle, icon bar, hover pop-ups, export bar
-(PDF/PDF-bare/Markdown/plain-text). No lexicon (`lexicon.enabled: false`),
-no spell-check (`spelling.enabled: false`), no sweep selector. MiniWiki
-button opens the glossary catalogue in a new tab.
-
-## Build recipe
-
-Run from the `_Lukeatron` root — the shell and its modules stayed behind in
-`System/Widgets/Generator/` when this app was promoted out of it:
-
-```bash
-python3 System/Widgets/Generator/_shell/build/assemble.py System/Apps/AiCharacteristics/cartridge System/Apps/AiCharacteristics/AiCharacteristics_generator.html
-```
-
-Requires `System/Widgets/Generator/_modules/MiniWiki/dist/miniwiki.bundle.js` to exist first (build
-via `python3 System/Widgets/Generator/_modules/MiniWiki/build/bundle_miniwiki.py`) —
-`miniwiki.enabled: true` in `config.yaml`.
-
-## Tests
-
-`tests/js/` — node:test, run from `Generator/`:
-
-```bash
-node --test AiCharacteristics/tests/js/*.mjs
-```
-
-**7/7 passing** (`test-engine.mjs`: imports/contract, all-8-flagged happy
-path on the AI fixture, over-cap + human-fixture guard path;
-`test-explainer.mjs`: nine-export contract, rules/tables/toMarkdown honesty
-text, off-range/needSpace guard path).
-
-## Known limitations
-
-- The 7.1 entity-repetition heuristic over-fires on legitimate repeated
-  proper nouns (see above) — this is a design trade-off, not a bug to fix
-  by removing the detector; MEDIUM confidence is the mitigation.
-- All eight detectors are regex/statistical, not model-based — they measure
-  surface features only and share every weakness the CT² caveat names.
-- No Tier B (`tierB.enabled: false`) — the pool of detectors is fixed at
-  build time; there is no "refresh" action for this cartridge (Tier B in
-  this shell is a present-mode content-pool feature, not applicable to an
-  analyse-mode detector set).
+The page is deliberately not a Generator-shell cartridge any more; nothing in `System/Widgets/Generator/` builds or reads it.
 
 ## Decisions and exceptions
-
-See [app-decisions.md](app-decisions.md) for approvals and any granted rule exceptions. Not
-copied here.
+See `app-decisions.md` for what Luke has approved, any decision he explicitly flagged, and any granted Vibe-Coding rule exceptions. Not copied here.

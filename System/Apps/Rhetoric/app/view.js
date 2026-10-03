@@ -51,7 +51,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !re
 
 export function currentView(state) {
   const searching = state.query.trim() !== '';
-  const matches = (device) => matchesName(device.name, state.query, state.fuzzy);
+  const matches = (device) => matchesName(device.label, state.query, state.fuzzy);
   const view = parseView(state.activeView);
   // Search lists its matches in full; an isolated heading shows everything beneath it.
   const reveal = { on: state.reveal && !searching, opened: state.revealed };
@@ -110,7 +110,7 @@ export function viewToText(state, view) {
     }
     const { device } = item;
     const shown = showsDetail(state, device, view.mode);
-    lines.push(`${pad}• ${device.name}`);
+    lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
     if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
   };

@@ -72,6 +72,22 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(anaphora["ai_confidence_rating"], "low")  # the schema default for an unrated device
         self.assertNotIn("medium", str(payload).lower())
 
+    def test_flipside_carries_its_fallacy_id_and_sorts_under_the_fallacy_name(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        metaphor = db.execute("SELECT id FROM devices WHERE name = 'Metaphor'").fetchone()[0]
+        db.execute("INSERT INTO devices (name, definition, form_node_id, function_node_id, popularity, flipside_of) "
+                   "SELECT 'Aardvark Flip', 'd', form_node_id, function_node_id, 5, ? FROM devices WHERE id = ?",
+                   (metaphor, metaphor))
+        db.commit()
+        db.close()
+        payload = items.load_items(self.db_path)
+        flip = next(d for d in payload["devices"].values() if d["name"] == "Aardvark Flip")
+        self.assertEqual(flip["flipside_of"], metaphor)
+        self.assertIsNone(payload["devices"][str(metaphor)]["flipside_of"])
+        form_names = [payload["devices"][str(leaf["id"])]["name"] for leaf in leaves(payload["trees"]["form"])]
+        self.assertEqual(form_names, ["Anaphora", "Metaphor", "Aardvark Flip"])  # "Metaphor/Aardvark Flip" follows Metaphor
+
     def test_device_with_several_category_tags_appears_under_each(self):
         build_db(self.db_path, multi_category=True)
         payload = items.load_items(self.db_path)

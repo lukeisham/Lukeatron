@@ -23,7 +23,7 @@ test('topical: ranked devices first in rank order, unranked after, alphabeticall
 test('popularity: highest first, unscored after, alphabetically', () => {
   const state = threeDeviceState();
   assert.deepEqual(sortedDevices(state, 'popularity').map((d) => d.name), ['Metaphor', 'Zeugma', 'Anaphora', 'Chiasmus']);
-  assert.ok(COMPARATORS.alphabetical({ name: 'a' }, { name: 'B' }) < 0);
+  assert.ok(COMPARATORS.alphabetical({ label: 'a' }, { label: 'B' }) < 0);
 });
 
 test('flat sorts render devices only, no heading rows', () => {

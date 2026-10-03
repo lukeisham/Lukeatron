@@ -7,6 +7,7 @@ import {
   EVERYTHING, FULL_VIEW, SORTS, createState, deviceView, setActiveView, setSortOrder, subtreeView, toggleExpanded,
   toggleRevealed,
 } from './state.js';
+import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
 import { currentView } from './view.js';
 
 const $ = (id) => document.getElementById(id);
@@ -14,54 +15,22 @@ const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
   showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
+  displayButton: $('display-button'), displayPanel: $('display-panel'),
   print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
 
 const COPY_STATUS_MS = 2000;
-const DEFAULT_SORT_KEY = 'rhetoric.defaultSort';
-const NO_DEFAULT = 'none'; // open on the search-only screen
 let state = null;
 
-// Which group the app opens on is remembered in this browser; storage can be blocked, so every access is guarded.
-function savedDefaultSort() {
+// Even reading `window.localStorage` can throw when site data is blocked; null makes every settings call fall back to defaults.
+const storage = (() => {
   try {
-    const saved = localStorage.getItem(DEFAULT_SORT_KEY);
-    return SORTS.some((sort) => sort.key === saved) ? saved : NO_DEFAULT;
+    return window.localStorage;
   } catch (error) {
-    console.warn('default group: storage unavailable', error);
-    return NO_DEFAULT;
+    console.warn('settings: storage unavailable', error);
+    return null;
   }
-}
-
-function saveDefaultSort(value) {
-  try {
-    localStorage.setItem(DEFAULT_SORT_KEY, value);
-  } catch (error) {
-    console.warn('default group: could not save', error);
-  }
-}
-
-// The four display toggles are remembered together, as one JSON object of booleans.
-const TOGGLES_KEY = 'rhetoric.toggles';
-const TOGGLE_FIELDS = ['showDefinitions', 'showExamples', 'showConfidence', 'reveal'];
-
-function loadToggles() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(TOGGLES_KEY) ?? '{}');
-    return Object.fromEntries(TOGGLE_FIELDS.filter((field) => typeof saved?.[field] === 'boolean').map((field) => [field, saved[field]]));
-  } catch (error) {
-    console.warn('toggles: storage unavailable or unreadable', error);
-    return {};
-  }
-}
-
-function saveToggles() {
-  try {
-    localStorage.setItem(TOGGLES_KEY, JSON.stringify(Object.fromEntries(TOGGLE_FIELDS.map((field) => [field, state[field]]))));
-  } catch (error) {
-    console.warn('toggles: could not save', error);
-  }
-}
+})();
 
 function refresh() {
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
@@ -126,7 +95,26 @@ async function onCopy() {
   setTimeout(() => { els.copyStatus.textContent = ''; }, COPY_STATUS_MS);
 }
 
+function setMenuOpen(open) {
+  els.displayPanel.hidden = !open;
+  els.displayButton.setAttribute('aria-expanded', String(open));
+}
+
+// The Display menu closes on a click elsewhere or Escape (focus returns to its button).
+function bindMenu() {
+  els.displayButton.addEventListener('click', () => setMenuOpen(els.displayPanel.hidden));
+  document.addEventListener('click', (event) => {
+    if (!els.displayPanel.hidden && !event.target.closest('.menu')) setMenuOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || els.displayPanel.hidden) return;
+    setMenuOpen(false);
+    els.displayButton.focus();
+  });
+}
+
 function bindControls() {
+  bindMenu();
   els.list.addEventListener('click', onListClick);
   els.list.addEventListener('dblclick', onListDoubleClick);
   els.list.addEventListener('keydown', onListKeydown);
@@ -137,13 +125,13 @@ function bindControls() {
     setSortOrder(state, button.dataset.sort === state.sortOrder ? EVERYTHING : button.dataset.sort);
     refresh();
   });
-  els.showConfidence.addEventListener('change', () => { state.showConfidence = els.showConfidence.checked; applyToggles(); saveToggles(); });
-  els.reveal.addEventListener('change', () => { state.reveal = els.reveal.checked; refresh(); saveToggles(); });
-  els.defaultSort.addEventListener('change', () => saveDefaultSort(els.defaultSort.value));
+  els.showConfidence.addEventListener('change', () => { state.showConfidence = els.showConfidence.checked; applyToggles(); saveToggles(storage, state); });
+  els.reveal.addEventListener('change', () => { state.reveal = els.reveal.checked; refresh(); saveToggles(storage, state); });
+  els.defaultSort.addEventListener('change', () => saveDefaultSort(storage, els.defaultSort.value));
   els.search.addEventListener('input', () => { state.query = els.search.value; refresh(); });
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
-  els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(); });
-  els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(); });
+  els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
+  els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
   els.home.addEventListener('click', () => { setActiveView(state, FULL_VIEW); refresh(); });
   els.print.addEventListener('click', () => printCurrentView(window));
   els.copy.addEventListener('click', onCopy);
@@ -158,12 +146,12 @@ async function start() {
     renderStatus(document, els.list, 'The devices could not be loaded. Is the server running?');
     return;
   }
-  Object.assign(state, loadToggles());
+  Object.assign(state, loadToggles(storage));
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;
   els.showConfidence.checked = state.showConfidence;
   els.reveal.checked = state.reveal;
-  const opening = savedDefaultSort();
+  const opening = loadDefaultSort(storage, SORTS);
   els.defaultSort.value = opening;
   if (opening !== NO_DEFAULT) setSortOrder(state, opening);
   bindControls();

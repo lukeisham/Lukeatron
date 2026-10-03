@@ -52,11 +52,17 @@ export function createState(payload) {
         definition: record.definition,
         popularity: record.popularity,
         aiConfidenceRating: record.ai_confidence_rating,
+        flipsideOf: record.flipside_of ?? null,
         topicalRank: record.topical_rank,
         examples: record.examples,
       },
     ]),
   );
+  for (const device of devices.values()) {
+    const fallacy = device.flipsideOf == null ? null : devices.get(device.flipsideOf);
+    if (device.flipsideOf != null && !fallacy) console.warn(`state: flipside ${device.id} points at unknown fallacy ${device.flipsideOf}`);
+    device.label = fallacy ? `${fallacy.name}/${device.name}` : device.name;
+  }
   const nodesById = {};
   for (const [hierarchy, roots] of Object.entries(payload.trees)) {
     nodesById[hierarchy] = new Map();
@@ -73,7 +79,7 @@ export function createState(payload) {
     showDefinitions: true,
     showExamples: true,
     showConfidence: true,
-    reveal: true, // groups and types only, with a reveal button on each; off lists every device
+    reveal: true, // the "Indent" menu option: groups and types only, with a reveal button on each; off lists every device
     revealed: new Set(), // node ids whose devices Luke has revealed
     expanded: new Set(),
   };
@@ -112,7 +118,8 @@ export function toggleExpanded(state, deviceId) {
 
 // ---- Flat-sort comparators --------------------------------------------------
 
-const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+// Sorts by the shown label, so a Flipside files under its fallacy's name.
+const byName = (a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' });
 
 /** Orders by `key` in `direction`; a device with no value sorts after every valued one, then by name. */
 function rankedThenAlphabetical(key, direction) {

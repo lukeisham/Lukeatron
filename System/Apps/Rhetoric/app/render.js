@@ -54,7 +54,7 @@ function deviceRow(doc, state, device, mode) {
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
-  row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.name));
+  row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.label));
   if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
   item.appendChild(row);
 

@@ -1,0 +1,69 @@
+/* ==========================================================================
+   topical.css — Topical editing: the Add Type form, a Type's Rename/Delete,
+   the remove-from-Type cross, and drag-and-drop feedback. Monochrome like the
+   list body (no accent). Tokens: --color-ink-soft, --color-marker,
+   --color-rule-body, --color-drop-wash, --opacity-dragging, --space-*,
+   --border-hairline, --font-ui, --font-size-badge, --motion-fast.
+   ========================================================================== */
+.type-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-left: auto;
+  font-family: var(--font-ui);
+}
+.type-form[hidden] { display: none; }
+
+.type-field input {
+  width: 180px;
+  padding: var(--space-2) var(--space-1);
+  border: none;
+  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  outline: none;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--font-size-toolbar);
+}
+.type-field input:focus { border-bottom-color: var(--color-ink-soft); }
+
+/* A Type heading's tools sit before the reveal button; the first of them takes the free space. */
+.type-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+.type-actions + .reveal-toggle { margin-left: 0; }
+
+.type-action,
+.placement-remove {
+  padding: 0 var(--space-3);
+  border: none;
+  background: none;
+  color: var(--color-marker);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.type-action:hover,
+.placement-remove:hover { color: var(--color-ink); text-decoration: underline; }
+.type-action:focus-visible,
+.placement-remove:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.placement-remove { margin-left: auto; font-size: var(--font-size-body); }
+
+/* A draggable device row: grab cursor, faded while it is in flight. */
+.device[draggable="true"] .device-row { cursor: grab; }
+.device.dragging { opacity: var(--opacity-dragging); }
+
+/* The Type under the pointer while dragging: a dashed frame and a faint wash on the whole block. */
+.node.drop-target {
+  background: var(--color-drop-wash);
+  outline: var(--border-hairline) dashed var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}

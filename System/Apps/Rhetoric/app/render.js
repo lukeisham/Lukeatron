@@ -45,10 +45,20 @@ function confidenceBadge(doc, rating) {
   return badge;
 }
 
-function deviceRow(doc, state, device, mode) {
+function removeButton(doc, device, typeName) {
+  const button = make(doc, 'button', 'placement-remove', '×');
+  button.setAttribute('type', 'button');
+  button.setAttribute('aria-label', `Remove ${device.label} from ${typeName}`);
+  button.title = `Remove from ${typeName}`;
+  return button;
+}
+
+function deviceRow(doc, state, entry, mode) {
+  const { device } = entry;
   const expanded = mode === 'device' || state.expanded.has(device.id);
   const item = make(doc, 'li', expanded ? 'device expanded' : 'device');
   item.dataset.deviceId = String(device.id);
+  if (entry.draggable) item.setAttribute('draggable', 'true');
 
   const row = make(doc, 'div', 'device-row');
   row.setAttribute('role', 'button');
@@ -56,6 +66,7 @@ function deviceRow(doc, state, device, mode) {
   row.setAttribute('aria-expanded', String(expanded));
   row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.label));
   if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
+  if (entry.removeFrom != null) row.appendChild(removeButton(doc, device, entry.removeFrom.name));
   item.appendChild(row);
 
   if (device.definition) item.appendChild(make(doc, 'p', 'device-definition', device.definition));
@@ -80,20 +91,30 @@ function revealButton(doc, node) {
   return button;
 }
 
+function typeActions(doc, node) {
+  const actions = make(doc, 'span', 'type-actions');
+  for (const [className, label] of [['type-rename', 'Rename'], ['type-delete', 'Delete']]) {
+    const button = make(doc, 'button', `type-action ${className}`, label);
+    button.setAttribute('type', 'button');
+    button.setAttribute('aria-label', `${label} ${node.name}`);
+    actions.appendChild(button);
+  }
+  return actions;
+}
+
 function nodeRow(doc, state, node, mode, depth) {
   const item = make(doc, 'li', depth === 0 ? 'node node-root' : 'node');
   if (node.group) item.dataset.group = node.hierarchy;
   else item.dataset.nodeId = String(node.id);
   item.dataset.hierarchy = node.hierarchy;
+  if (node.editable) item.dataset.droppable = 'true';
 
   const row = make(doc, 'div', 'heading-row');
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
-  row.append(
-    marker(doc, '•'),
-    make(doc, 'span', 'node-name', node.name),
-    make(doc, 'span', 'node-definition', node.definition),
-  );
+  row.append(marker(doc, '•'), make(doc, 'span', 'node-name', node.name));
+  if (node.definition) row.appendChild(make(doc, 'span', 'node-definition', node.definition));
+  if (node.editable) row.appendChild(typeActions(doc, node));
   if (node.revealable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
 
@@ -109,7 +130,7 @@ function nodeRow(doc, state, node, mode, depth) {
 function itemFor(doc, state, item, mode, depth) {
   return item.kind === 'node'
     ? nodeRow(doc, state, item, mode, depth)
-    : deviceRow(doc, state, item.device, mode);
+    : deviceRow(doc, state, item, mode);
 }
 
 function message(doc, text) {
@@ -128,6 +149,11 @@ export function renderList(doc, container, state, view) {
 
 export function renderStatus(doc, container, text) {
   container.replaceChildren(message(doc, text));
+}
+
+/** The quiet "· 272 devices" beside the subtitle: the whole collection, not the current view. */
+export function renderCount(container, total) {
+  container.textContent = `· ${total} device${total === 1 ? '' : 's'}`;
 }
 
 export function renderSortButtons(doc, container, sorts, activeKey) {

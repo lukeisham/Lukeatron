@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createState, setActiveView, setSortOrder, toggleExpanded } from '../app/state.js';
-import { renderList, renderSortButtons } from '../app/render.js';
+import { renderCount, renderList, renderSortButtons } from '../app/render.js';
 import { SORTS } from '../app/state.js';
 import { currentView } from '../app/view.js';
 import { fakeDoc, findAll, withClass } from './fake-dom.mjs';
@@ -113,4 +113,12 @@ test('no reveal buttons when reveal is off, in flat sorts or while searching', (
   state.reveal = true;
   setSortOrder(state, 'alphabetical');
   assert.equal(findAll(draw(state), withClass('reveal-toggle')).length, 0);
+});
+
+test('the device count states the whole collection, singular for one', () => {
+  const span = fakeDoc.createElement('span');
+  renderCount(span, 272);
+  assert.equal(span.textContent, '· 272 devices');
+  renderCount(span, 1);
+  assert.equal(span.textContent, '· 1 device');
 });

@@ -8,12 +8,13 @@
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="header.css">
 <link rel="stylesheet" href="list.css">
+<link rel="stylesheet" href="topical.css">
 <link rel="stylesheet" href="print.css">
 </head>
 <body>
 <header class="masthead">
   <h1 class="masthead-title">Rhetoric</h1>
-  <p class="masthead-subrule">A Forum of Devices</p>
+  <p class="masthead-subrule">A Forum of Devices <span id="device-count" class="masthead-count"></span></p>
   <div class="toolbar">
     <div class="search-row">
       <label class="search-field">
@@ -48,6 +49,7 @@
       <button id="print" class="btn" type="button">Print</button>
       <button id="copy" class="btn" type="button">Copy</button>
       <span id="copy-status" class="toolbar-status" role="status"></span>
+      <a class="toolbar-link" href="about.html">About the scores</a>
     </div>
   </div>
   <p class="ornament" aria-hidden="true">── ❧ ──</p>
@@ -55,6 +57,12 @@
 <main class="workspace">
   <div class="workspace-bar">
     <button id="home" class="home-link" type="button" hidden>← Home</button>
+    <form id="type-form" class="type-form" autocomplete="off" hidden>
+      <label class="type-field"><span class="visually-hidden">New Type name</span>
+        <input id="type-name" type="text" maxlength="80" placeholder="New Type…"></label>
+      <button class="btn" type="submit">Add Type</button>
+      <span id="type-status" class="toolbar-status" role="status"></span>
+    </form>
   </div>
   <div id="list" class="list" aria-live="polite"></div>
 </main>

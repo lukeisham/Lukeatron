@@ -16,6 +16,7 @@
   --color-badge-fill-text: #ffffff;
   --color-button-border: #cdbfa6;
   --color-accent-wash: #f6eeee;
+  --color-drop-wash: #f2f2f2;
   --color-focus: #a8843c;
   --focus-ring: 0 0 0 3px rgba(168, 132, 60, 0.32);
   --shade-raised: 0 1px 2px rgba(26, 26, 26, 0.06), 0 2px 6px rgba(26, 26, 26, 0.05);
@@ -66,6 +67,7 @@
   --border-strong: 2px;
   --sort-weight-active: 600;
   --outline-offset: 2px;
+  --opacity-dragging: 0.45;
 
   /* Motion: the house's two feedback durations; nothing else animates. */
   --motion-fast: 90ms;

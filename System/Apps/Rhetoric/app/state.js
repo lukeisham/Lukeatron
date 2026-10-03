@@ -12,7 +12,16 @@ export const SORTS = [
   { key: 'topical', label: 'Topical' },
 ];
 
-export const TREE_SORTS = new Set(['form', 'function', 'category']);
+export const TREE_SORTS = new Set(['form', 'function', 'category', 'topical']);
+
+/** The one hierarchy Luke edits: its Types are his own labels (items.py/topical.py build the tree). */
+export const TOPICAL = 'topical';
+
+/** Mirrors topical.UNSORTED_ID: the derived heading holding every device not yet under a Type. */
+export const UNSORTED_ID = 0;
+
+/** Type ids overlap other hierarchies' node ids, so a revealed heading is keyed by hierarchy too. */
+export const revealKey = (hierarchy, nodeId) => `${hierarchy}:${nodeId}`;
 
 /** `sortOrder` is null when no group is selected: search then covers all three trees at once, so one device can appear once per way it is filed. */
 export const EVERYTHING = null;
@@ -53,7 +62,6 @@ export function createState(payload) {
         popularity: record.popularity,
         aiConfidenceRating: record.ai_confidence_rating,
         flipsideOf: record.flipside_of ?? null,
-        topicalRank: record.topical_rank,
         examples: record.examples,
       },
     ]),
@@ -80,7 +88,7 @@ export function createState(payload) {
     showExamples: true,
     showConfidence: true,
     reveal: true, // the "Indent" menu option: groups and types only, with a reveal button on each; off lists every device
-    revealed: new Set(), // node ids whose devices Luke has revealed
+    revealed: new Set([revealKey(TOPICAL, UNSORTED_ID)]), // revealKeys whose devices Luke has revealed; Unsorted starts open so there is something to drag
     expanded: new Set(),
   };
 }
@@ -92,17 +100,29 @@ export function setSortOrder(state, sortOrder) {
   if (view.kind === 'subtree' && view.hierarchy !== sortOrder) state.activeView = FULL_VIEW;
 }
 
+/** Swaps in the Topical tree the server returned after a change; a view isolating a deleted Type falls back to the full list. */
+export function setTopicalTree(state, roots) {
+  state.trees[TOPICAL] = roots;
+  state.nodesById[TOPICAL] = new Map();
+  indexNodes(roots, state.nodesById[TOPICAL]);
+  const view = parseView(state.activeView);
+  if (view.kind === 'subtree' && view.hierarchy === TOPICAL && !state.nodesById[TOPICAL].has(view.id)) {
+    state.activeView = FULL_VIEW;
+  }
+}
+
 export function setActiveView(state, view) {
   state.activeView = view;
 }
 
 /** @returns {boolean} whether the node's devices are now revealed */
-export function toggleRevealed(state, nodeId) {
-  if (state.revealed.has(nodeId)) {
-    state.revealed.delete(nodeId);
+export function toggleRevealed(state, hierarchy, nodeId) {
+  const key = revealKey(hierarchy, nodeId);
+  if (state.revealed.has(key)) {
+    state.revealed.delete(key);
     return false;
   }
-  state.revealed.add(nodeId);
+  state.revealed.add(key);
   return true;
 }
 
@@ -134,7 +154,6 @@ function rankedThenAlphabetical(key, direction) {
 export const COMPARATORS = {
   alphabetical: byName,
   popularity: rankedThenAlphabetical('popularity', -1),
-  topical: rankedThenAlphabetical('topicalRank', 1),
 };
 
 export function sortedDevices(state, sortOrder) {

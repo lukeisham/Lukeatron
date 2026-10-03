@@ -12,7 +12,12 @@
   line-height: var(--line-height-body);
 }
 
-.workspace-bar { min-height: var(--space-8); }
+.workspace-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: var(--space-8);
+}
 
 .home-link {
   padding: 0;

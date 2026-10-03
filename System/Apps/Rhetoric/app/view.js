@@ -8,7 +8,7 @@
 
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
-import { EVERYTHING, TREE_SORTS, parseView, sortedDevices } from './state.js';
+import { EVERYTHING, TOPICAL, TREE_SORTS, UNSORTED_ID, parseView, revealKey, sortedDevices } from './state.js';
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
 const GROUPS = [
@@ -17,7 +17,8 @@ const GROUPS = [
   { hierarchy: 'function', name: 'Function', definition: 'what devices do' },
 ];
 
-const deviceItem = (device) => ({ kind: 'device', device });
+// `draggable` and `removeFrom` (the `{ id, name }` of the Type the row can be taken out of) are set only in the Topical tree.
+const deviceItem = (device, { draggable = false, removeFrom = null } = {}) => ({ kind: 'device', device, draggable, removeFrom });
 
 function countDevices(node) {
   return node.children.reduce((sum, child) => sum + (child.kind === 'device' ? 1 : countDevices(child)), 0);
@@ -27,15 +28,18 @@ function countDevices(node) {
  * A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
  * `reveal.on` hides a heading's devices until it, or a heading above it, is in `reveal.opened`
  * (or `open` is already true); such a heading carries `revealable` and `revealed` for its button.
+ * In Topical, a real Type is `editable` (renamed, deleted, dropped onto) and its devices can be removed from it.
  */
 function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !reveal.on) {
-  const opened = open || reveal.opened.has(node.id);
+  const opened = open || reveal.opened.has(revealKey(hierarchy, node.id));
+  const editable = hierarchy === TOPICAL && node.id !== UNSORTED_ID;
+  const placement = { draggable: hierarchy === TOPICAL, removeFrom: editable ? { id: node.id, name: node.name } : null };
   const children = [];
   for (const child of node.children) {
     if (child.kind === 'device') {
       const device = state.devices.get(child.id);
       if (!device) console.warn(`view: tree ${hierarchy} references unknown device ${child.id}`);
-      else if (opened && keep(device)) children.push(deviceItem(device));
+      else if (opened && keep(device)) children.push(deviceItem(device, placement));
     } else {
       const kept = filterNode(state, hierarchy, child, keep, pruneEmpty, reveal, opened);
       if (kept) children.push(kept);
@@ -45,7 +49,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !re
   const deviceCount = countDevices(node);
   return {
     kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children,
-    deviceCount, revealable: reveal.on && deviceCount > 0, revealed: opened,
+    deviceCount, revealable: reveal.on && deviceCount > 0, revealed: opened, editable,
   };
 }
 
@@ -79,8 +83,10 @@ export function currentView(state) {
     const roots = isolated
       ? [state.nodesById[hierarchy].get(view.id)].filter(Boolean)
       : state.trees[hierarchy];
+    // Topical keeps empty Types while searching: they are where a found device gets dropped.
+    const pruneEmpty = searching && hierarchy !== TOPICAL;
     const items = roots
-      .map((root) => filterNode(state, hierarchy, root, matches, searching, isolated ? { ...reveal, on: false } : reveal))
+      .map((root) => filterNode(state, hierarchy, root, matches, pruneEmpty, isolated ? { ...reveal, on: false } : reveal))
       .filter(Boolean);
     return { mode: 'tree', items };
   }

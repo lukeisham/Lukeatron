@@ -1,11 +1,12 @@
 /** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
 
-import { fetchItems } from './api.js';
+import { addPlacement, createType, deleteType, fetchItems, removePlacement, renameType } from './api.js';
+import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
-import { renderList, renderSortButtons, renderStatus } from './render.js';
+import { renderCount, renderList, renderSortButtons, renderStatus } from './render.js';
 import {
-  EVERYTHING, FULL_VIEW, SORTS, createState, deviceView, setActiveView, setSortOrder, subtreeView, toggleExpanded,
-  toggleRevealed,
+  EVERYTHING, FULL_VIEW, SORTS, TOPICAL, createState, deviceView, revealKey, setActiveView, setSortOrder,
+  setTopicalTree, subtreeView, toggleExpanded, toggleRevealed,
 } from './state.js';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
 import { currentView } from './view.js';
@@ -16,10 +17,11 @@ const els = {
   showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
-  print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
+  typeForm: $('type-form'), typeName: $('type-name'), typeStatus: $('type-status'),
+  deviceCount: $('device-count'), print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
 
-const COPY_STATUS_MS = 2000;
+const STATUS_MS = 2000;
 let state = null;
 
 // Even reading `window.localStorage` can throw when site data is blocked; null makes every settings call fall back to defaults.
@@ -36,6 +38,52 @@ function refresh() {
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
   renderList(document, els.list, state, currentView(state));
   els.home.hidden = state.activeView === FULL_VIEW;
+  els.typeForm.hidden = state.sortOrder !== TOPICAL;
+}
+
+function flashStatus(element, text) {
+  element.textContent = text;
+  setTimeout(() => { element.textContent = ''; }, STATUS_MS);
+}
+
+/**
+ * Sends one Topical change and redraws from the tree the server answers with, so the screen
+ * only ever shows what was saved. A failure leaves the screen as it was and says why.
+ * @returns {Promise<boolean>} whether the change was saved
+ */
+async function saveTopical(change) {
+  try {
+    setTopicalTree(state, await change());
+  } catch (error) {
+    console.error('Could not save the Topical change', error);
+    flashStatus(els.typeStatus, error.status === 409 ? 'A Type with that name already exists' : 'Could not save — is the server running?');
+    return false;
+  }
+  refresh();
+  return true;
+}
+
+function topicalNode(element) {
+  const typeElement = element.closest('[data-node-id]');
+  return state.nodesById[TOPICAL].get(Number(typeElement.dataset.nodeId));
+}
+
+function renameFromRow(button) {
+  const type = topicalNode(button);
+  const name = window.prompt('Rename this Type', type.name)?.trim();
+  if (name && name !== type.name) saveTopical(() => renameType(type.id, name));
+}
+
+function deleteFromRow(button) {
+  const type = topicalNode(button);
+  if (window.confirm(`Delete the Type "${type.name}"? Its devices stay in the library and in any other Type.`)) {
+    saveTopical(() => deleteType(type.id));
+  }
+}
+
+function dropOnType(typeId, deviceId) {
+  state.revealed.add(revealKey(TOPICAL, typeId)); // so the device is seen landing
+  saveTopical(() => addPlacement(typeId, deviceId));
 }
 
 function applyToggles() {
@@ -52,9 +100,17 @@ function onListClick(event) {
   if (hasTextSelection()) return; // a drag-select to copy text must not toggle the row
   const revealButton = event.target.closest('.reveal-toggle');
   if (revealButton) { // reveals or hides this heading's devices without isolating it
-    toggleRevealed(state, Number(revealButton.closest('[data-node-id]').dataset.nodeId));
+    const heading = revealButton.closest('[data-node-id]');
+    toggleRevealed(state, heading.dataset.hierarchy, Number(heading.dataset.nodeId));
     return refresh();
   }
+  const removeButton = event.target.closest('.placement-remove');
+  if (removeButton) {
+    const deviceId = Number(removeButton.closest('[data-device-id]').dataset.deviceId);
+    return void saveTopical(() => removePlacement(topicalNode(removeButton).id, deviceId));
+  }
+  if (event.target.closest('.type-rename')) return renameFromRow(event.target);
+  if (event.target.closest('.type-delete')) return deleteFromRow(event.target);
   const headingRow = event.target.closest('.heading-row');
   if (headingRow) {
     const node = headingRow.closest('[data-node-id], [data-group]');
@@ -91,8 +147,7 @@ function onListKeydown(event) {
 
 async function onCopy() {
   const ok = await copyCurrentView(state, navigator.clipboard);
-  els.copyStatus.textContent = ok ? 'Copied' : 'Copy failed';
-  setTimeout(() => { els.copyStatus.textContent = ''; }, COPY_STATUS_MS);
+  flashStatus(els.copyStatus, ok ? 'Copied' : 'Copy failed');
 }
 
 function setMenuOpen(open) {
@@ -118,6 +173,12 @@ function bindControls() {
   els.list.addEventListener('click', onListClick);
   els.list.addEventListener('dblclick', onListDoubleClick);
   els.list.addEventListener('keydown', onListKeydown);
+  bindDragAndDrop(els.list, dropOnType);
+  els.typeForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const name = els.typeName.value.trim();
+    if (name && await saveTopical(() => createType(name))) els.typeName.value = '';
+  });
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');
     if (!button) return;
@@ -146,6 +207,7 @@ async function start() {
     renderStatus(document, els.list, 'The devices could not be loaded. Is the server running?');
     return;
   }
+  renderCount(els.deviceCount, state.devices.size);
   Object.assign(state, loadToggles(storage));
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;

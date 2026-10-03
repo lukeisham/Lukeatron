@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About the scores — Rhetoric</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="header.css">
+<link rel="stylesheet" href="about.css">
+<link rel="stylesheet" href="print.css">
+</head>
+<body>
+<header class="masthead">
+  <h1 class="masthead-title">Rhetoric</h1>
+  <p class="masthead-subrule">About the scores</p>
+  <p class="ornament" aria-hidden="true">── ❧ ──</p>
+</header>
+<main class="about">
+  <p class="workspace-bar"><a class="back-link" href="./">← Back to the devices</a></p>
+
+  <section>
+    <h2>Two scores, two questions</h2>
+    <dl class="questions">
+      <dt>Popularity</dt>
+      <dd>How many reference sources list this device?</dd>
+      <dt>AI confidence</dt>
+      <dd>How sure is the AI that this entry is right?</dd>
+    </dl>
+    <p>Both are guides, not grades. Neither one tells you how good a device is.</p>
+  </section>
+
+  <section>
+    <h2>Popularity, from 0 to 100</h2>
+    <p>The more sources that name a device, the higher its score.</p>
+    <ol>
+      <li>Take the sources listed below: four lists of devices and eight reference pages.</li>
+      <li>For each device, count the sources that name it. Its name or any other name it goes by will do. A source counts once, however often it repeats the name.</li>
+      <li>Turn that count into a score. The device named by the most sources gets 100. A device named by none gets 0.</li>
+    </ol>
+    <p>The scale is not a straight line. Most devices appear in only one or two sources, and a straight line would squash them all near zero. So the first few sources count for more than the last few.</p>
+    <table class="scale">
+      <caption>Count to score, when the top device is named by 8 sources</caption>
+      <thead><tr><th scope="col">Sources naming it</th><th scope="col">Score</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td></tr>
+        <tr><td>1</td><td>32</td></tr>
+        <tr><td>2</td><td>50</td></tr>
+        <tr><td>4</td><td>73</td></tr>
+        <tr><td>6</td><td>89</td></tr>
+        <tr><td>8</td><td>100</td></tr>
+      </tbody>
+    </table>
+    <p>A Flipside is a name made up for this app, so no source uses it. It takes the score of the fallacy it answers.</p>
+    <h3>What the score does not tell you</h3>
+    <ul>
+      <li>It shows how widely a device is listed. It does not show how often people use it, or how useful it is.</li>
+      <li>Six more sources were chosen but could not be read: some block automatic visits, one is behind a paywall, and some are gone. They are not counted.</li>
+      <li>The three fallacy sources count only for fallacies.</li>
+      <li>Wikipedia counts as one source here, to find which devices are named. It is never used to check a definition.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>AI confidence: high, medium or low</h2>
+    <p>The rating says how sure the AI is that a device&rsquo;s definition, example and place in the three lists are all right, taken together. It is set once, when the data is prepared, and does not change as you browse.</p>
+    <p>Each device is given three yes-or-no tests.</p>
+    <table class="tests">
+      <thead><tr><th scope="col">Test</th><th scope="col">It passes when&hellip;</th></tr></thead>
+      <tbody>
+        <tr>
+          <th scope="row">1. Definition</th>
+          <td>The device has one settled meaning, and either two or more of the sources below name it, or a published book or paper (one that is not already one of the sources) gives the same meaning. Commercial and hobby sites do not count.</td>
+        </tr>
+        <tr>
+          <th scope="row">2. Example</th>
+          <td>It has an example, and someone who did not know the device&rsquo;s name could still spot it from that example. For a fallacy, the example must plainly make the mistake.</td>
+        </tr>
+        <tr>
+          <th scope="row">3. Placement</th>
+          <td>Its place in the Form, Function and Category lists follows the written rules for those lists directly, without a hard choice between close headings.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Then count the passes.</p>
+    <table class="scale">
+      <thead><tr><th scope="col">Passes</th><th scope="col">Rating</th><th scope="col">What it means</th></tr></thead>
+      <tbody>
+        <tr><td>3</td><td>High</td><td>Safe to teach from as it stands</td></tr>
+        <tr><td>2</td><td>Medium</td><td>Worth a check before you rely on it</td></tr>
+        <tr><td>0 or 1</td><td>Low</td><td>A draft; check it before use</td></tr>
+      </tbody>
+    </table>
+    <p>Two extra rules apply. A device that fails Test 1 can never be High, because nothing outside the AI backs its definition. A Flipside is rated on its own and can reach Medium at most, because its label appears in no source.</p>
+    <h3>What the rating does not tell you</h3>
+    <ul>
+      <li>It is the AI&rsquo;s own judgement, not a measured fact.</li>
+      <li>Nobody has yet checked the example and placement tests (Tests 2 and 3).</li>
+      <li>Many definitions passed Test 1 because Silva Rhetoricae cites an older book for them. The AI did not read those books, so the check is second-hand.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <h3>Counted for popularity</h3>
+    <p class="sources-note">Lists of devices</p>
+    <ul class="sources">
+      <li><a href="https://www.americanrhetoric.com/rhetoricaldevicesinsound.htm">American Rhetoric: Rhetorical Devices in Sound</a></li>
+      <li><a href="https://reedsy.com/blog/literary-devices/">Reedsy: Literary Devices</a></li>
+      <li><a href="https://reedsy.com/blog/rhetorical-devices/">Reedsy: Rhetorical Devices</a></li>
+      <li><a href="https://www.litcharts.com/literary-devices-and-terms">LitCharts: Literary Devices and Terms</a></li>
+    </ul>
+    <p class="sources-note">Reference pages</p>
+    <ul class="sources">
+      <li><a href="https://rhetoric.byu.edu/Figures/flowers.htm">Silva Rhetoricae (Brigham Young University): figures of speech</a></li>
+      <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Glossary_of_rhetorical_terms">Glossary of rhetorical terms</a> and <a href="https://en.wikipedia.org/wiki/Rhetorical_device">Rhetorical device</a></li>
+      <li>Purdue OWL: <a href="https://owl.purdue.edu/owl/general_writing/academic_writing/establishing_arguments/rhetorical_strategies.html">Rhetorical strategies</a> and <a href="https://owl.purdue.edu/owl/subject_specific_writing/writing_in_literature/literary_terms/index.html">Literary terms</a></li>
+      <li>Stanford Encyclopedia of Philosophy: <a href="https://plato.stanford.edu/entries/aristotle-rhetoric/">Aristotle&rsquo;s Rhetoric</a> and <a href="https://plato.stanford.edu/entries/fallacies/">Fallacies</a></li>
+      <li><a href="https://mcl.as.uky.edu/cla-glossary-rhetorical-terms">University of Kentucky: Glossary of Rhetorical Terms</a></li>
+    </ul>
+    <p class="sources-note">Fallacies only</p>
+    <ul class="sources">
+      <li><a href="https://www.logicalfallacies.org/">LogicalFallacies.org</a></li>
+      <li><a href="https://iep.utm.edu/fallacy/">Internet Encyclopedia of Philosophy: Fallacies</a></li>
+      <li><a href="https://owl.purdue.edu/owl/general_writing/academic_writing/logic_in_argumentative_writing/fallacies.html">Purdue OWL: Logical Fallacies</a></li>
+    </ul>
+    <h3>Used for AI confidence</h3>
+    <p>The same sources, except Wikipedia, plus published works that name a device in the same sense. Among them are the <cite>Rhetorica ad Herennium</cite>, Quintilian&rsquo;s <cite>Institutio Oratoria</cite>, Henry Peacham&rsquo;s <cite>The Garden of Eloquence</cite> (1577), and some modern papers, such as Arkes and Blumer (1985) on the sunk cost fallacy. Most of the older works were found through <a href="https://rhetoric.byu.edu/">Silva Rhetoricae</a>.</p>
+  </section>
+</main>
+</body>
+</html>

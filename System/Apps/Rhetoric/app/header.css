@@ -42,6 +42,12 @@ body {
   letter-spacing: var(--letter-spacing-subrule);
 }
 
+.masthead-count {
+  color: var(--color-ink-soft);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .toolbar { font-family: var(--font-ui); }
 
 .search-row,
@@ -200,6 +206,15 @@ body {
 }
 
 .toolbar-status { color: var(--color-ink-soft); min-width: var(--space-9); text-align: left; }
+
+.toolbar-link {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-toolbar-small);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.toolbar-link:hover { color: var(--color-accent); }
 
 .ornament {
   margin: 0 0 var(--space-3);

@@ -1,6 +1,6 @@
 """Reads rhetoric.db and assembles the `/api/items` payload: nested trees (the three seeded
-hierarchies, Topical, and the two grammatical groups) whose device leaves are references, plus
-one flat `devices` map. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL (server.spec AD-3)."""
+hierarchies, Topical, and Grammar) whose device leaves are references, one flat `devices` map, and
+the flat list of real `quotes` the Index group lists. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL (server.spec AD-3)."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import grammar
+import quotes
 import topical
 
 HIERARCHIES = ("category", "form", "function")
@@ -49,18 +50,15 @@ def load_items(db_path: Path) -> dict[str, Any]:
         explained = grammar.explanations(conn)
         label_rows = grammar.label_rows(conn)
         label_links = grammar.label_links(conn)
+        quote_list = quotes.quotes(conn)
 
     device_map = _device_map(devices, examples, explained)
     links = _links(devices, tags)
     trees = {h: _build_tree(h, nodes, links[h]) for h in HIERARCHIES}
     trees["topical"] = topical_roots
-    grammatical = set(explained)
-    function_links = [link for link in links["function"] if link[0] in grammatical]
-    trees["grammar_function"] = grammar.with_ungrammatical(
-        grammar.without_empty(_build_tree("function", nodes, function_links)), ordered_ids, grammatical)
-    trees["grammar_label"] = grammar.with_ungrammatical(
-        grammar.without_empty(_build_tree(grammar.LABEL_HIERARCHY, label_rows, label_links)), ordered_ids, grammatical)
-    return {"trees": trees, "devices": device_map}
+    trees[grammar.HIERARCHY] = grammar.with_ungrammatical(
+        grammar.without_empty(_build_tree(grammar.HIERARCHY, label_rows, label_links)), ordered_ids, set(explained))
+    return {"trees": trees, "devices": device_map, "quotes": quote_list}
 
 
 def load_topical(db_path: Path) -> list[dict[str, Any]]:

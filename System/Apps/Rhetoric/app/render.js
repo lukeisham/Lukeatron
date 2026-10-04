@@ -8,7 +8,7 @@
  */
 
 import { parseInline } from './markup.js';
-import { GRAMMAR_SLOTS, GRAMMATICAL_SORTS } from './state.js';
+import { GRAMMAR, GRAMMAR_SLOTS } from './state.js';
 
 function make(doc, tag, className, text) {
   const node = doc.createElement(tag);
@@ -88,7 +88,7 @@ function deviceRow(doc, state, entry, mode) {
 
   if (device.definition) item.appendChild(make(doc, 'p', 'device-definition', device.definition));
 
-  if (device.explanation && GRAMMATICAL_SORTS.has(state.sortOrder)) item.appendChild(explanationBlock(doc, device.explanation));
+  if (device.explanation && state.sortOrder === GRAMMAR) item.appendChild(explanationBlock(doc, device.explanation));
 
   if (device.examples.length > 0) {
     const examples = make(doc, 'ul', 'examples');
@@ -232,6 +232,59 @@ export function renderCompareBar(doc, parts, view) {
   count.textContent = view.current ? `${index + 1} of ${view.pairs.length}` : '';
 }
 
+/**
+ * One index line. Both forms are always in the DOM and the body class `index-full-on` (index.css) picks
+ * one, so the Full display toggle never re-renders: a single line (first line, source, year), or the
+ * whole quote, its source line and a link to its device.
+ */
+function indexEntryItem(doc, entry) {
+  const { quote, device } = entry;
+  const item = make(doc, 'li', 'index-entry');
+  const line = make(doc, 'div', 'index-compact');
+  const leader = make(doc, 'span', 'index-leader');
+  leader.setAttribute('aria-hidden', 'true');
+  line.append(make(doc, 'span', 'index-first', entry.firstLine), leader, make(doc, 'span', 'index-source', entry.sourceShort));
+  if (entry.year) line.appendChild(make(doc, 'span', 'index-year', entry.year));
+
+  const full = make(doc, 'div', 'index-full');
+  const words = make(doc, 'p', 'index-quote');
+  words.appendChild(exampleText(doc, quote.text));
+  const credit = make(doc, 'p', 'index-credit');
+  credit.appendChild(exampleText(doc, quote.source));
+  full.append(words, credit);
+  const link = make(doc, 'button', 'index-device-link', `→ ${device.label}`);
+  link.setAttribute('type', 'button');
+  link.dataset.deviceId = String(device.id);
+  link.setAttribute('aria-label', `Show the device ${device.label}`);
+  full.appendChild(link);
+  item.append(line, full);
+  return item;
+}
+
+function renderIndex(doc, container, groups) {
+  const list = make(doc, 'ul', 'index-groups');
+  for (const { heading, entries } of groups) {
+    const group = make(doc, 'li', 'index-group');
+    const entryList = make(doc, 'ul', 'index-entries');
+    entries.forEach((entry) => entryList.appendChild(indexEntryItem(doc, entry)));
+    group.append(make(doc, 'h3', 'index-heading', heading), entryList);
+    list.appendChild(group);
+  }
+  container.replaceChildren(list);
+}
+
+/** Fills the index bar's order buttons (one per `orders` entry, as the sort buttons are drawn), the active one pressed. */
+export function renderIndexOrders(doc, container, orders, activeKey) {
+  container.replaceChildren(...orders.map(({ key, label, hint }) => {
+    const button = make(doc, 'button', 'btn', label);
+    button.setAttribute('type', 'button');
+    button.setAttribute('aria-pressed', String(key === activeKey));
+    button.title = hint;
+    button.dataset.indexOrder = key;
+    return button;
+  }));
+}
+
 export function renderList(doc, container, state, view) {
   if (view.items.length === 0) {
     container.replaceChildren(message(doc, view.hint ?? 'No devices match.'));
@@ -241,6 +294,7 @@ export function renderList(doc, container, state, view) {
     container.replaceChildren(compareTable(doc, view.current));
     return;
   }
+  if (view.mode === 'index') return renderIndex(doc, container, view.items);
   const list = make(doc, 'ul', 'list-root');
   view.items.forEach((item) => list.appendChild(itemFor(doc, state, item, view.mode, 0)));
   container.replaceChildren(list);

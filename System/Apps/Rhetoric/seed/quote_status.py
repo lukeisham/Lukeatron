@@ -1,9 +1,6 @@
 """Which devices still lack a real quote? Read-only; writes nothing.
 
-A real quote is an example that has a credit (attribution other than 'Unattributed') OR whose closing
-parenthesis cites a work: an italic title, a date or locator (any digit) or 'trans.'. The second test
-catches real quotes with anonymous authors (the Rhetorica ad Herennium). A constructed example's
-parenthesis only explains it ("(hang: cooperate / execute)") and carries none of these.
+What counts as a real quote is decided by quotes.py (a credit, or a closing parenthesis citing a work).
 
 Run: python3 -m seed.quote_status                        (list devices with no real quote)
      python3 -m seed.quote_status --draw 5 --seed 20261006   (a repeatable random draw of 5 of them)
@@ -13,33 +10,11 @@ from __future__ import annotations
 
 import argparse
 import random
-import re
 import sqlite3
 import sys
 
+from quotes import is_real_quote
 from seed.db import DB_PATH
-
-CITES_A_WORK = re.compile(r"\*[^*]+\*|\d|trans\.")
-
-
-def closing_parenthesis(body: str) -> str:
-    """The text inside the last top-level parenthesis if the example ends with one, else ''."""
-    text = body.rstrip()
-    if not text.endswith(")"):
-        return ""
-    depth = 0
-    for i in range(len(text) - 1, -1, -1):
-        if text[i] == ")":
-            depth += 1
-        elif text[i] == "(":
-            depth -= 1
-            if depth == 0:
-                return text[i + 1:-1]
-    return ""
-
-
-def is_real_quote(attribution: str, body: str) -> bool:
-    return attribution != "Unattributed" or bool(CITES_A_WORK.search(closing_parenthesis(body)))
 
 
 def devices_without_quote(conn: sqlite3.Connection) -> list[str]:

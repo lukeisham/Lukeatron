@@ -55,7 +55,7 @@ class AboutPageTest(unittest.TestCase):
         quotes = ABOUT.split('<section id="quotes">')[1].split("</section>")[0]
         for phrase in ("exactly one example that the AI wrote itself", "never credited to anyone", "set in italics"):
             self.assertIn(phrase, examples)
-        for phrase in ("No quote is ever invented", "checked against the work itself", "How a quote is credited"):
+        for phrase in ("No quote is ever invented", "checked against the work itself", "How a quote is credited and dated"):
             self.assertIn(phrase, quotes)
 
     def test_methodology_cites_both_articles(self):

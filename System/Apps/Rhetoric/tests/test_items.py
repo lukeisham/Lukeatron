@@ -64,7 +64,7 @@ class ItemsTest(unittest.TestCase):
     def test_happy_path_references_each_device_once_per_tree(self):
         build_db(self.db_path)
         payload = items.load_items(self.db_path)
-        self.assertEqual(set(payload["trees"]), {"category", "form", "function", "topical", "grammar_function", "grammar_label"})
+        self.assertEqual(set(payload["trees"]), {"category", "form", "function", "topical", "grammar"})
         self.assertEqual(len(payload["devices"]), 2)
         for hierarchy in ("category", "form", "function", "topical"):
             tree = payload["trees"][hierarchy]
@@ -78,14 +78,24 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(anaphora["ai_confidence_rating"], "low")  # the schema default for an unrated device
         self.assertNotIn("medium", str(payload).lower())
 
-    def test_grammar_groups_are_empty_until_a_device_has_an_explanation(self):
+    def test_payload_lists_real_quotes_only_with_their_source_and_date(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        db.execute("INSERT INTO examples (device_id, body, attribution, quote_date) "
+                   "VALUES (2, '\"Ask not\" (Kennedy, 20 January 1961)', 'John F. Kennedy', '1961-01-20')")
+        db.commit()
+        db.close()
+        quotes = items.load_items(self.db_path)["quotes"]
+        self.assertEqual(quotes, [{"id": 2, "device_id": 2, "text": '"Ask not"', "source": "Kennedy, 20 January 1961",
+                                   "author": "John F. Kennedy", "date": "1961-01-20"}])  # the constructed 'carpe diem' is not a quote
+
+    def test_grammar_group_is_empty_until_a_device_has_an_explanation(self):
         build_db(self.db_path)
         payload = items.load_items(self.db_path)
-        self.assertEqual(payload["trees"]["grammar_function"], [])
-        self.assertEqual(payload["trees"]["grammar_label"], [])
+        self.assertEqual(payload["trees"]["grammar"], [])
         self.assertIsNone(payload["devices"]["1"]["explanation"])
 
-    def test_grammar_groups_hold_only_explained_devices_with_the_rest_under_no_grammatical_term(self):
+    def test_grammar_group_holds_only_explained_devices_with_the_rest_under_no_grammatical_term(self):
         build_db(self.db_path)
         db = sqlite3.connect(self.db_path)
         clause = db.execute("INSERT INTO grammar_labels (name, definition) VALUES ('Clause', 'd')").lastrowid
@@ -98,12 +108,7 @@ class ItemsTest(unittest.TestCase):
         db.close()
         trees = items.load_items(self.db_path)["trees"]
 
-        by_function = trees["grammar_function"]
-        self.assertEqual([n["name"] for n in by_function], ["Function", grammar_no_term()])
-        self.assertEqual([l["id"] for l in leaves([by_function[0]])], [2])
-        self.assertEqual([l["id"] for l in leaves([by_function[1]])], [1])
-
-        by_label = trees["grammar_label"]
+        by_label = trees["grammar"]
         self.assertEqual([n["name"] for n in by_label], ["Clause", grammar_no_term()])
         self.assertEqual(by_label[0]["children"][0]["name"], "Relative clause")
         self.assertEqual(by_label[0]["children"][0]["children"], [{"kind": "device", "id": 2}])

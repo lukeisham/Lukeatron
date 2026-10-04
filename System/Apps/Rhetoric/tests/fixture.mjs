@@ -21,12 +21,8 @@ export function payload() {
         { kind: 'node', id: 7, name: 'Irony', definition: '', children: [leaf(1)] },
         { kind: 'node', id: 0, name: 'Unsorted', definition: 'not yet placed under a Type', children: [leaf(2)] },
       ],
-      // Grammar: Anaphora is the one grammar-bearing device, filed under one label and one function; Metaphor sits under "No grammatical term" (id 0).
-      grammar_function: [
-        { kind: 'node', id: 5, name: 'Function Root', definition: 'Function root definition', children: [leaf(2)] },
-        { kind: 'node', id: 0, name: 'No grammatical term', definition: 'devices that turn on no grammatical term', children: [leaf(1)] },
-      ],
-      grammar_label: [
+      // Grammar: Anaphora is the one grammar-bearing device, filed under one label; Metaphor sits under "No grammatical term" (id 0).
+      grammar: [
         {
           kind: 'node', id: 1, name: 'Clause', definition: 'a group of words with a subject and a verb',
           children: [{ kind: 'node', id: 2, name: 'Independent clause', definition: 'can stand alone', children: [leaf(2)] }],
@@ -34,6 +30,13 @@ export function payload() {
         { kind: 'node', id: 0, name: 'No grammatical term', definition: 'devices that turn on no grammatical term', children: [leaf(1)] },
       ],
     },
+    // Real quotes for the Index group: two of Metaphor's, two of Anaphora's; one has no author and two have no known date.
+    quotes: [
+      { id: 1, device_id: 1, text: '"All the *world\'s* a stage"', source: 'Shakespeare, *As You Like It*, 2.7', author: 'William Shakespeare', date: null },
+      { id: 2, device_id: 2, text: '"We shall fight on the beaches"', source: 'Churchill, House of Commons speech, 4 June 1940', author: 'Winston Churchill', date: '1940-06-04' },
+      { id: 3, device_id: 1, text: '"Beneath the rule of men entirely great / The pen is mightier than the sword."', source: 'Bulwer-Lytton, *Richelieu*, 2.2, 1839', author: 'Edward Bulwer-Lytton', date: '1839' },
+      { id: 4, device_id: 2, text: '"Am I to praise a man who..."', source: '*Rhetorica ad Herennium*, book 4, §28', author: null, date: null },
+    ],
     devices: {
       1: {
         name: 'Metaphor', definition: 'a comparison without "like"', popularity: 90, ai_confidence_rating: 'high',

@@ -60,6 +60,14 @@ class SchemaTest(unittest.TestCase):
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("INSERT INTO examples (device_id, body, attribution) VALUES (?, 'x', NULL)", (device,))
 
+    def test_quote_date_is_optional_and_must_be_a_year_or_a_full_date(self):
+        _, device = self.seed_valid()
+        for date in (None, "1863", "1863-11-19"):
+            self.db.execute("INSERT INTO examples (device_id, body, quote_date) VALUES (?, 'x', ?)", (device, date))
+        for bad in ("c. 1600", "1863-11", "19 November 1863"):
+            with self.assertRaises(sqlite3.IntegrityError, msg=bad):
+                self.db.execute("INSERT INTO examples (device_id, body, quote_date) VALUES (?, 'x', ?)", (device, bad))
+
     def test_happy_path_reads_chain_back(self):
         (category, form, function), device = self.seed_valid()
         self.db.execute("INSERT INTO examples (device_id, body) VALUES (?, 'carpe *diem*')",

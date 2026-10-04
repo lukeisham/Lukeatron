@@ -8,7 +8,8 @@
 
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
-import { COMPARE, EVERYTHING, GRAMMAR_SLOTS, GRAMMATICAL_SORTS, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, revealKey, sortedDevices } from './state.js';
+import { formatDate, groupEntries, indexEntry } from './quoteindex.js';
+import { COMPARE, EVERYTHING, GRAMMAR, GRAMMAR_SLOTS, INDEX, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, revealKey, sortedDevices } from './state.js';
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
 const GROUPS = [
@@ -62,6 +63,21 @@ function compareView(state, matches) {
   return { mode: 'compare', pairs, current, items: current ? [current] : [], hint: 'No fallacy matches.' };
 }
 
+/** Every real quote that matches the search (on its words, its source or its device's name), grouped in the chosen order. */
+function indexView(state) {
+  const entries = [];
+  for (const quote of state.quotes) {
+    const device = state.devices.get(quote.deviceId);
+    if (!device) {
+      console.warn(`view: quote ${quote.id} points at unknown device ${quote.deviceId}`);
+      continue;
+    }
+    const searched = `${stripInline(quote.text)} ${stripInline(quote.source)} ${device.label}`;
+    if (matchesName(searched, state.query, state.fuzzy)) entries.push(indexEntry(quote, device));
+  }
+  return { mode: 'index', items: groupEntries(entries, state.indexOrder), hint: 'No quotes match.' };
+}
+
 export function currentView(state) {
   const searching = state.query.trim() !== '';
   const matches = (device) => matchesName(device.label, state.query, state.fuzzy);
@@ -75,6 +91,7 @@ export function currentView(state) {
   }
 
   if (state.sortOrder === COMPARE) return compareView(state, matches);
+  if (state.sortOrder === INDEX) return indexView(state);
 
   if (state.sortOrder === EVERYTHING) {
     if (!searching) return { mode: 'tree', items: [], hint: 'Type to search every device, or choose a group above.' };
@@ -106,14 +123,33 @@ export function currentView(state) {
   return { mode: 'flat', items };
 }
 
-/** Whether a device shows its definition/examples/explanation: the global toggle, or the row was clicked open. Explanations belong to the two grammatical groups only. */
+/** Whether a device shows its definition/examples/explanation: the global toggle, or the row was clicked open. Explanations belong to the Grammar group only. */
 export function showsDetail(state, device, mode) {
   const opened = mode === 'device' || state.expanded.has(device.id);
   return {
     definition: opened || state.showDefinitions,
     examples: opened || state.showExamples,
-    explanation: GRAMMATICAL_SORTS.has(state.sortOrder) && device.explanation != null && (opened || state.showExplanations),
+    explanation: state.sortOrder === GRAMMAR && device.explanation != null && (opened || state.showExplanations),
   };
+}
+
+/** The Index as text: a line per group heading, then each quote's first line, source and year, or with Full display the whole quote, its source line and its device. */
+function indexToText(state, groups) {
+  const lines = [];
+  for (const { heading, entries } of groups) {
+    if (lines.length > 0) lines.push('');
+    lines.push(heading);
+    for (const { quote, device, firstLine, sourceShort, year } of entries) {
+      if (!state.indexFull) {
+        lines.push(`  ${firstLine} — ${[sourceShort, year].filter(Boolean).join(', ')}`);
+        continue;
+      }
+      lines.push(`  ${stripInline(quote.text)}`, `  — ${stripInline(quote.source)}`);
+      if (quote.date && !quote.source.includes(quote.date.slice(0, 4))) lines.push(`  ${formatDate(quote.date)}`);
+      lines.push(`  → ${device.label}`);
+    }
+  }
+  return lines.join('\n');
 }
 
 /** The Compare pair as text, honouring the table's three switches: a heading per side, then its definition and examples. */
@@ -132,6 +168,7 @@ function compareToText(state, current) {
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
 export function viewToText(state, view) {
   if (view.mode === 'compare') return compareToText(state, view.current);
+  if (view.mode === 'index') return indexToText(state, view.items);
   const lines = [];
   const write = (item, depth) => {
     const pad = '  '.repeat(depth);

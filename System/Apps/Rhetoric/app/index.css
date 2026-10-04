@@ -1,0 +1,97 @@
+/* ==========================================================================
+   index.css — the Index group: its options bar and the list of real quotes, grouped under
+   headings. Each entry is one line (first line, dotted leader, source, year) until Full display,
+   when it becomes the whole quote, its source line and a link to its device. Monochrome like the
+   list body. `body.index-full-on` picks the form, so the toggle never re-renders.
+   Tokens: --color-ink*, --color-marker, --color-rule-body, --font-ui, --font-size-*, --space-*, --border-hairline.
+   ========================================================================== */
+.index-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  font-family: var(--font-ui);
+}
+.index-bar[hidden] { display: none; }
+.index-orders { display: inline-flex; gap: var(--space-3); }
+
+.index-groups { margin-top: var(--space-5); }
+
+.index-heading {
+  margin: var(--space-6) 0 var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: var(--border-hairline) solid var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-definition);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-sort);
+}
+
+.index-entry { padding: var(--space-1) 0; }
+
+.index-compact {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.index-first {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+.index-leader {
+  flex: 1 1 var(--space-6);
+  min-width: var(--space-6);
+  border-bottom: var(--border-hairline) dotted var(--color-marker);
+  transform: translateY(calc(-1 * var(--space-2)));
+}
+.index-source,
+.index-year { flex-shrink: 0; color: var(--color-ink-soft); font-size: var(--font-size-definition); }
+.index-source { max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.index-year { min-width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; }
+
+.index-full { display: none; padding: 0 0 var(--space-3) var(--space-6); }
+.index-quote { margin: 0; font-size: var(--font-size-example); }
+.index-credit {
+  margin: var(--space-1) 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+.index-credit::before { content: "— "; }
+.index-device-link {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--font-size-definition);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  cursor: pointer;
+}
+.index-device-link:hover { color: var(--color-accent); }
+.index-device-link:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+body.index-full-on .index-compact { display: none; }
+body.index-full-on .index-full { display: block; }
+
+@media (max-width: 600px) {
+  .index-compact { flex-wrap: wrap; }
+  .index-entry { padding: var(--space-2) 0; }
+  .index-source { max-width: none; white-space: normal; }
+  .index-leader { display: none; }
+  .index-first { flex-basis: 100%; }
+  .index-year { min-width: 0; text-align: left; }
+}
+
+@media print {
+  .index-entry { break-inside: avoid; }
+  .index-device-link { text-decoration: none; }
+}

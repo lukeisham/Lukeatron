@@ -1,6 +1,5 @@
-"""Grammar data for the two grammatical groups (Grammatical Function, Grammatical Label): reads
-the grammar tables and shapes the pieces items.py wires into trees. Read-only; seed/load_grammar.py
-is the only writer. Routing holds no SQL (API-1), so server.py never reaches this module directly.
+"""Grammar data for the Grammar group: reads the grammar tables and shapes the pieces items.py
+wires into trees. Read-only; seed/load_grammar.py is the only writer. Routing holds no SQL (API-1), so server.py never reaches this module directly.
 
 Each grammar-bearing device has two GRAMMAR SLOTS (see schema.sql): "function" holds the grammar
 labels used to achieve the device's function, "form" the labels that represent the device, each
@@ -13,13 +12,13 @@ import sqlite3
 from collections import defaultdict
 from typing import Any
 
-# The derived heading holding every device with no grammatical term, last in both groups;
+# The derived heading holding every device with no grammatical term, last in the group;
 # app/state.js mirrors this id. Real label and node ids start at 1, so 0 cannot collide.
 NO_GRAMMAR_ID = 0
 NO_GRAMMAR_NAME = "No grammatical term"
 NO_GRAMMAR_DEFINITION = "devices that turn on no grammatical term"
 
-LABEL_HIERARCHY = "grammar_label"
+HIERARCHY = "grammar"  # the Grammar group files devices under the grammar-label tree
 
 
 def explanations(conn: sqlite3.Connection) -> dict[int, dict[str, Any]]:
@@ -50,7 +49,7 @@ def label_rows(conn: sqlite3.Connection) -> list[tuple]:
     """Label rows shaped like `nodes` rows (id, hierarchy, parent_id, name, definition), so
     items._build_tree wires them exactly as it wires a seeded hierarchy."""
     return [
-        (label_id, LABEL_HIERARCHY, parent_id, name, definition)
+        (label_id, HIERARCHY, parent_id, name, definition)
         for label_id, parent_id, name, definition in conn.execute(
             "SELECT id, parent_id, name, definition FROM grammar_labels ORDER BY id"
         )
@@ -64,7 +63,7 @@ def label_links(conn: sqlite3.Connection) -> list[tuple[int, int]]:
 
 
 def without_empty(roots: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """The Function tree keeps every node; the grammatical copy keeps only those that still hold a device."""
+    """The label tree keeps every label; the Grammar group keeps only those that still hold a device."""
     kept = []
     for node in roots:
         children: list[dict[str, Any]] = []

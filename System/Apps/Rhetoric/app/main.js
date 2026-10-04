@@ -3,9 +3,10 @@
 import { addPlacement, createType, deleteType, fetchItems, moveType, removePlacement, renameType } from './api.js';
 import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
-import { renderCompareBar, renderCount, renderList, renderSortButtons, renderStatus } from './render.js';
+import { INDEX_ORDERS } from './quoteindex.js';
+import { renderCompareBar, renderCount, renderIndexOrders, renderList, renderSortButtons, renderStatus } from './render.js';
 import {
-  COMPARE, EVERYTHING, FULL_VIEW, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setSortOrder,
+  COMPARE, EVERYTHING, FULL_VIEW, INDEX, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setIndexOrder, setSortOrder,
   setTopicalTree, subtreeView, toggleExpanded, toggleRevealed,
 } from './state.js';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
@@ -18,6 +19,7 @@ const els = {
   showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showExplanations: $('show-explanations'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
+  indexBar: $('index-bar'), indexOrders: $('index-orders'), indexFull: $('index-full'),
   compare: $('compare'), compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
   tableNames: $('table-names'), tableDefinitions: $('table-definitions'), tableExamples: $('table-examples'),
   typeForm: $('type-form'), typeName: $('type-name'), typeStatus: $('type-status'),
@@ -44,6 +46,8 @@ function refresh() {
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
   els.compareBar.hidden = state.sortOrder !== COMPARE;
+  els.indexBar.hidden = state.sortOrder !== INDEX;
+  if (state.sortOrder === INDEX) renderIndexOrders(document, els.indexOrders, INDEX_ORDERS, state.indexOrder);
   els.compare.setAttribute('aria-pressed', String(state.sortOrder === COMPARE));
   if (view.mode === 'compare') renderCompareBar(document, { pick: els.comparePick, prev: els.comparePrev, next: els.compareNext, count: els.compareCount }, view);
 }
@@ -121,6 +125,8 @@ function applyToggles() {
   document.body.classList.toggle('hide-table-names', !state.tableNames);
   document.body.classList.toggle('hide-table-definitions', !state.tableDefinitions);
   document.body.classList.toggle('hide-table-examples', !state.tableExamples);
+  document.body.classList.toggle('index-full-on', state.indexFull);
+  els.indexFull.setAttribute('aria-pressed', String(state.indexFull));
 }
 
 function hasTextSelection() {
@@ -129,6 +135,11 @@ function hasTextSelection() {
 
 function onListClick(event) {
   if (hasTextSelection()) return; // a drag-select to copy text must not toggle the row
+  const deviceLink = event.target.closest('.index-device-link');
+  if (deviceLink) { // a quote's device opens on its own, with the Home link to come back to the index
+    setActiveView(state, deviceView(deviceLink.dataset.deviceId));
+    return refresh();
+  }
   const revealButton = event.target.closest('.reveal-toggle');
   if (revealButton) { // reveals or hides this heading's devices without isolating it
     const heading = revealButton.closest('[data-node-id]');
@@ -227,6 +238,13 @@ function bindControls() {
   els.showExplanations.addEventListener('change', () => { state.showExplanations = els.showExplanations.checked; applyToggles(); saveToggles(storage, state); });
   // Like the group buttons, pressing Compare again leaves it for the everything-search state.
   els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
+  els.indexOrders.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-index-order]');
+    if (!button) return;
+    setIndexOrder(state, button.dataset.indexOrder);
+    refresh();
+  });
+  els.indexFull.addEventListener('click', () => { state.indexFull = !state.indexFull; applyToggles(); saveToggles(storage, state); });
   els.comparePick.addEventListener('change', () => { setComparePair(state, Number(els.comparePick.value)); refresh(); });
   els.comparePrev.addEventListener('click', () => stepCompare(-1));
   els.compareNext.addEventListener('click', () => stepCompare(1));

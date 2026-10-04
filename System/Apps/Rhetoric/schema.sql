@@ -66,11 +66,16 @@ CREATE TABLE IF NOT EXISTS device_categories (
 -- words are credited to ("Julius Caesar"); the work and passage stay in `body`. 'Unattributed'
 -- means no credit is recorded, not that the example is known to be invented. An existing
 -- database gains the column through seed/add_example_attribution.py, not through this file.
+-- `quote_date` is when a real quote's words were first said or published, as 'YYYY' or
+-- 'YYYY-MM-DD'; NULL when not known (always NULL for a constructed example). The Index group sorts
+-- by it and lists the NULLs last. An existing database gains it through seed/add_quote_date.py.
 CREATE TABLE IF NOT EXISTS examples (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id    INTEGER NOT NULL REFERENCES devices(id),
     body         TEXT NOT NULL,
-    attribution  TEXT NOT NULL DEFAULT 'Unattributed'
+    attribution  TEXT NOT NULL DEFAULT 'Unattributed',
+    quote_date   TEXT CHECK (quote_date IS NULL OR quote_date GLOB '[0-9][0-9][0-9][0-9]'
+                             OR quote_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]')
 );
 
 -- A Topical Type label. Type names are unique ignoring case; `position` is the display order

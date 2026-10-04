@@ -10,8 +10,8 @@ export const SORTS = [
   { key: 'category', label: 'Category' },
   { key: 'popularity', label: 'Popularity' },
   { key: 'topical', label: 'Topical' },
-  { key: 'grammar_function', label: 'Grammatical Function' },
-  { key: 'grammar_label', label: 'Grammatical Label' },
+  { key: 'grammar', label: 'Grammar' },
+  { key: 'index', label: 'Index' },
 ];
 
 /** The group that shows one fallacy beside its Flipside in a table; it is neither a tree nor a flat list, and has its own button beside About instead of a place in `SORTS`. */
@@ -20,8 +20,11 @@ export const COMPARE = 'compare';
 /** Every group the app can open on: the sort buttons plus Compare (the "Open on" menu in index.html lists the same keys). */
 export const OPENING_CHOICES = [...SORTS, { key: COMPARE, label: 'Compare' }];
 
-/** The two groups that show each device's grammar explanation; `GRAMMATICAL_SORTS` also keeps them out of the no-group search. */
-export const GRAMMATICAL_SORTS = new Set(['grammar_function', 'grammar_label']);
+/** The group that files devices under grammar labels and shows each device's grammar explanation; it is also kept out of the no-group search. */
+export const GRAMMAR = 'grammar';
+
+/** The group that lists every real quote, ordered by `indexOrder` (see quoteindex.js); it is not a tree and not a device list. */
+export const INDEX = 'index';
 
 /**
  * A grammar-bearing device's two grammar slots (schema.sql, GRAMMAR SLOTS). Each holds labels and an example:
@@ -32,7 +35,7 @@ export const GRAMMAR_SLOTS = [
   { key: 'form', title: 'Grammar form' },
 ];
 
-export const TREE_SORTS = new Set(['form', 'function', 'category', 'topical', ...GRAMMATICAL_SORTS]);
+export const TREE_SORTS = new Set(['form', 'function', 'category', 'topical', GRAMMAR]);
 
 /** The one hierarchy Luke edits: its Types are his own labels (items.py/topical.py build the tree). */
 export const TOPICAL = 'topical';
@@ -97,9 +100,18 @@ export function createState(payload) {
     nodesById[hierarchy] = new Map();
     indexNodes(roots, nodesById[hierarchy]);
   }
+  const quotes = (payload.quotes ?? []).map((quote) => ({
+    id: quote.id,
+    deviceId: quote.device_id,
+    text: quote.text, // the quoted words, with *italic* markup
+    source: quote.source, // the closing parenthesis: who said it, where and when
+    author: quote.author ?? null,
+    date: quote.date ?? null, // 'YYYY', 'YYYY-MM-DD' or null when not known
+  }));
   return {
     trees: payload.trees,
     devices,
+    quotes,
     nodesById,
     sortOrder: EVERYTHING,
     activeView: FULL_VIEW,
@@ -112,6 +124,8 @@ export function createState(payload) {
     tableNames: true, // the Compare table's own switches: its Name, Definition and Examples rows
     tableDefinitions: true,
     tableExamples: true,
+    indexOrder: 'first_line', // the Index group's order: a key of INDEX_ORDERS in quoteindex.js
+    indexFull: false, // Index: full quotes with a link to the device, instead of one line each
     comparePairId: null, // the Flipside's id of the pair shown in Compare; null shows the first pair
     reveal: true, // the "Indent" menu option: groups and types only, with a reveal button on each; off lists every device
     revealed: new Set([revealKey(TOPICAL, UNSORTED_ID)]), // revealKeys whose devices Luke has revealed; Unsorted starts open so there is something to drag
@@ -143,6 +157,10 @@ export function flipsidePairs(state) {
     .filter((device) => device.flipsideOf != null && state.devices.has(device.flipsideOf))
     .map((flipside) => ({ fallacy: state.devices.get(flipside.flipsideOf), flipside }))
     .sort((a, b) => a.fallacy.name.localeCompare(b.fallacy.name, undefined, { sensitivity: 'base' }));
+}
+
+export function setIndexOrder(state, order) {
+  state.indexOrder = order;
 }
 
 export function setComparePair(state, flipsideId) {

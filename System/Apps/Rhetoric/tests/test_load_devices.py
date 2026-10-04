@@ -30,6 +30,13 @@ class LoadDevicesTest(unittest.TestCase):
         self.conn = make_db()
         self.ids = {t: load_devices.node_ids(self.conn, t) for t in load_devices.TREES}
 
+    def test_an_example_date_is_written_and_a_missing_one_stays_null(self):
+        dated = device("Dated", examples=[{"text": "x", "attribution": "Lincoln", "date": "1863-11-19"}, {"text": "y", "attribution": "Cicero"}])
+        ready, _ = load_devices.split_devices([dated], self.ids)
+        with self.conn:
+            load_devices.write_devices(self.conn, ready, self.ids)
+        self.assertEqual(self.conn.execute("SELECT quote_date FROM examples ORDER BY id").fetchall(), [("1863-11-19",), (None,)])
+
     def test_writes_devices_examples_popularity_and_flipside_link(self):
         devices = [device("Straw Man"), device("Fair Sketch", category="Fallacy Flipside",
                                                flipside_of="Straw Man", lists_naming=0)]

@@ -3,6 +3,7 @@ import sqlite3
 import unittest
 from pathlib import Path
 
+from quotes import is_real_quote
 from seed import quote_status
 
 SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
@@ -10,20 +11,20 @@ SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
 
 class IsRealQuoteTest(unittest.TestCase):
     def test_a_credit_makes_a_real_quote(self):
-        self.assertTrue(quote_status.is_real_quote("Cicero", "plain text"))
+        self.assertTrue(is_real_quote("Cicero", "plain text"))
 
     def test_an_anonymous_work_is_recognised_by_its_citation(self):
         body = '"Hominem laudem?" (*Rhetorica ad Herennium*, book 4, §28: "Am I to praise?", English by Claude (AI))'
-        self.assertTrue(quote_status.is_real_quote("Unattributed", body))
-        self.assertTrue(quote_status.is_real_quote("Unattributed", '"x" (Matthew 6:11, KJV)'))
-        self.assertTrue(quote_status.is_real_quote("Unattributed", '"x" (Cicero, trans. Yonge)'))
+        self.assertTrue(is_real_quote("Unattributed", body))
+        self.assertTrue(is_real_quote("Unattributed", '"x" (Matthew 6:11, KJV)'))
+        self.assertTrue(is_real_quote("Unattributed", '"x" (Cicero, trans. Yonge)'))
 
     def test_a_constructed_example_is_not_a_real_quote(self):
         for body in ('"If we don\'t hang together, we\'ll all hang separately." (hang: cooperate / execute)',
                      '"Well begun is half done." (traditional saying)',
                      "He walked quite slowly to the store",
                      "Think of the children! (without relevant connection)"):
-            self.assertFalse(quote_status.is_real_quote("Unattributed", body), body)
+            self.assertFalse(is_real_quote("Unattributed", body), body)
 
 
 class DevicesWithoutQuoteTest(unittest.TestCase):

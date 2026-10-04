@@ -10,9 +10,27 @@ export const SORTS = [
   { key: 'category', label: 'Category' },
   { key: 'popularity', label: 'Popularity' },
   { key: 'topical', label: 'Topical' },
+  { key: 'grammar_function', label: 'Grammatical Function' },
+  { key: 'grammar_label', label: 'Grammatical Label' },
+  { key: 'compare', label: 'Compare' },
 ];
 
-export const TREE_SORTS = new Set(['form', 'function', 'category', 'topical']);
+/** The group that shows one fallacy beside its Flipside in a table; it is neither a tree nor a flat list. */
+export const COMPARE = 'compare';
+
+/** The two groups that show each device's grammar explanation; `GRAMMATICAL_SORTS` also keeps them out of the no-group search. */
+export const GRAMMATICAL_SORTS = new Set(['grammar_function', 'grammar_label']);
+
+/**
+ * A grammar-bearing device's two grammar slots (schema.sql, GRAMMAR SLOTS). Each holds labels and an example:
+ * `function` = the grammar labels used to achieve the device's function; `form` = the labels that represent the device.
+ */
+export const GRAMMAR_SLOTS = [
+  { key: 'function', title: 'Grammar function' },
+  { key: 'form', title: 'Grammar form' },
+];
+
+export const TREE_SORTS = new Set(['form', 'function', 'category', 'topical', ...GRAMMATICAL_SORTS]);
 
 /** The one hierarchy Luke edits: its Types are his own labels (items.py/topical.py build the tree). */
 export const TOPICAL = 'topical';
@@ -62,6 +80,7 @@ export function createState(payload) {
         popularity: record.popularity,
         aiConfidenceRating: record.ai_confidence_rating,
         flipsideOf: record.flipside_of ?? null,
+        explanation: record.explanation ?? null,
         examples: record.examples,
       },
     ]),
@@ -87,6 +106,11 @@ export function createState(payload) {
     showDefinitions: true,
     showExamples: true,
     showConfidence: true,
+    showExplanations: true,
+    tableNames: true, // the Compare table's own switches: its Name, Definition and Examples rows
+    tableDefinitions: true,
+    tableExamples: true,
+    comparePairId: null, // the Flipside's id of the pair shown in Compare; null shows the first pair
     reveal: true, // the "Indent" menu option: groups and types only, with a reveal button on each; off lists every device
     revealed: new Set([revealKey(TOPICAL, UNSORTED_ID)]), // revealKeys whose devices Luke has revealed; Unsorted starts open so there is something to drag
     expanded: new Set(),
@@ -109,6 +133,18 @@ export function setTopicalTree(state, roots) {
   if (view.kind === 'subtree' && view.hierarchy === TOPICAL && !state.nodesById[TOPICAL].has(view.id)) {
     state.activeView = FULL_VIEW;
   }
+}
+
+/** Every Flipside beside the fallacy it answers, in the fallacy's alphabetical order; a Flipside whose fallacy is missing is left out. */
+export function flipsidePairs(state) {
+  return [...state.devices.values()]
+    .filter((device) => device.flipsideOf != null && state.devices.has(device.flipsideOf))
+    .map((flipside) => ({ fallacy: state.devices.get(flipside.flipsideOf), flipside }))
+    .sort((a, b) => a.fallacy.name.localeCompare(b.fallacy.name, undefined, { sensitivity: 'base' }));
+}
+
+export function setComparePair(state, flipsideId) {
+  state.comparePairId = flipsideId;
 }
 
 export function setActiveView(state, view) {

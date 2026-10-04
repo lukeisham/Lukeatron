@@ -15,11 +15,6 @@ function threeDeviceState() {
   return createState(data);
 }
 
-test('topical: ranked devices first in rank order, unranked after, alphabetically', () => {
-  const state = threeDeviceState();
-  assert.deepEqual(sortedDevices(state, 'topical').map((d) => d.name), ['Anaphora', 'Chiasmus', 'Metaphor', 'Zeugma']);
-});
-
 test('popularity: highest first, unscored after, alphabetically', () => {
   const state = threeDeviceState();
   assert.deepEqual(sortedDevices(state, 'popularity').map((d) => d.name), ['Metaphor', 'Zeugma', 'Anaphora', 'Chiasmus']);
@@ -162,16 +157,16 @@ test('revealing a heading shows the devices beneath it; hiding it again takes th
   const state = createState(payload());
   setSortOrder(state, 'form');
   const typeId = currentView(state).items[0].children[0].id;
-  assert.equal(toggleRevealed(state, typeId), true);
+  assert.equal(toggleRevealed(state, 'form', typeId), true);
   assert.deepEqual(names(currentView(state).items[0].children[0].children), ['Metaphor', 'Anaphora']);
-  assert.equal(toggleRevealed(state, typeId), false);
+  assert.equal(toggleRevealed(state, 'form', typeId), false);
   assert.equal(currentView(state).items[0].children[0].children.length, 0);
 });
 
 test('revealing a root reveals every device under its types', () => {
   const state = createState(payload());
   setSortOrder(state, 'form');
-  toggleRevealed(state, currentView(state).items[0].id);
+  toggleRevealed(state, 'form', currentView(state).items[0].id);
   assert.equal(currentView(state).items[0].children[0].children.length, 2);
 });
 

@@ -1,8 +1,8 @@
 /* ==========================================================================
    topical.css — Topical editing: the Add Type form, a Type's Rename/Delete,
-   the remove-from-Type cross, and drag-and-drop feedback. Monochrome like the
+   the remove-from-Type cross, and drag-and-drop and reorder feedback. Monochrome like the
    list body (no accent). Tokens: --color-ink-soft, --color-marker,
-   --color-rule-body, --color-drop-wash, --opacity-dragging, --space-*,
+   --color-rule-body, --color-ink, --color-drop-wash, --opacity-dragging, --space-*,
    --border-hairline, --font-ui, --font-size-badge, --motion-fast.
    ========================================================================== */
 .type-form {
@@ -57,13 +57,18 @@
 
 .placement-remove { margin-left: auto; font-size: var(--font-size-body); }
 
-/* A draggable device row: grab cursor, faded while it is in flight. */
-.device[draggable="true"] .device-row { cursor: grab; }
-.device.dragging { opacity: var(--opacity-dragging); }
+/* Draggable rows (a device, or a Type's heading): grab cursor, faded while in flight. */
+.device[draggable="true"] .device-row,
+.heading-row[draggable="true"] { cursor: grab; }
+.dragging { opacity: var(--opacity-dragging); }
 
-/* The Type under the pointer while dragging: a dashed frame and a faint wash on the whole block. */
+/* A device dropped on a Type goes in at the end: a dashed frame and a faint wash on the whole block. */
 .node.drop-target {
   background: var(--color-drop-wash);
   outline: var(--border-hairline) dashed var(--color-ink-soft);
   outline-offset: var(--outline-offset);
 }
+
+/* Reordering: a heavy rule on the edge the dragged Type or device will land against. */
+.drop-before { box-shadow: 0 calc(-1 * var(--border-strong)) 0 var(--color-ink); }
+.drop-after { box-shadow: 0 var(--border-strong) 0 var(--color-ink); }

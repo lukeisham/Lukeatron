@@ -85,7 +85,7 @@ test('sort buttons mark exactly the active order pressed', () => {
   renderSortButtons(fakeDoc, container, SORTS, 'form');
   const pressed = container.children.filter((b) => b.attributes['aria-pressed'] === 'true');
   assert.deepEqual(pressed.map((b) => b.dataset.sort), ['form']);
-  assert.equal(container.children.length, 6);
+  assert.equal(container.children.length, SORTS.length);
 });
 
 test('each device row carries an AI-confidence badge showing its rating', () => {

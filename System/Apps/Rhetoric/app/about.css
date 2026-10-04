@@ -49,9 +49,21 @@
   outline-offset: var(--outline-offset);
 }
 
-.questions { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 var(--space-5); }
-.questions dt { font-weight: 700; }
-.questions dd { margin: 0; }
+.questions, .facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 var(--space-5); }
+.questions dt, .facts dt { font-weight: 700; }
+.questions dd, .facts dd { margin: 0; }
+.method { margin: 0 0 var(--space-5); }
+.method dt { font-weight: 700; margin-top: var(--space-4); }
+.method dd { margin: var(--space-1) 0 0; }
+.method ul { margin: var(--space-2) 0; }
+
+/* The short intro under the back link: a lead line, three jump links, then the version and technical facts. */
+.intro { margin-top: var(--space-5); padding-bottom: var(--space-5); border-bottom: var(--border-hairline) solid var(--color-rule-body); }
+.contents ol { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-7); margin: 0 0 var(--space-5); padding: 0; list-style: none; counter-reset: jump; }
+.contents li { margin: 0; counter-increment: jump; }
+.contents li::before { content: counter(jump) ". "; color: var(--color-ink-soft); }
+.facts { margin-bottom: 0; font-size: var(--font-size-example); }
+.about code { font-family: var(--font-ui); font-size: 0.92em; }
 
 /* Tables read as ruled lists: hairlines only, header row in the soft ink. */
 table {
@@ -101,6 +113,8 @@ thead th {
 @media (max-width: 600px) {
   .about { padding-inline: var(--space-6); }
   .tests th[scope="row"] { width: auto; white-space: normal; }
+  .facts { grid-template-columns: 1fr; gap: 0; }
+  .facts dd { margin-bottom: var(--space-3); }
 }
 
 @media print {

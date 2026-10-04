@@ -53,6 +53,13 @@ class SchemaTest(unittest.TestCase):
                    for row in self.db.execute(f"PRAGMA table_info({table})")]
         self.assertFalse([c for c in columns if "medium" in c.lower()])
 
+    def test_example_attribution_defaults_to_unattributed_and_is_never_null(self):
+        _, device = self.seed_valid()
+        self.db.execute("INSERT INTO examples (device_id, body) VALUES (?, 'carpe *diem*')", (device,))
+        self.assertEqual(self.db.execute("SELECT attribution FROM examples").fetchone(), ("Unattributed",))
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.db.execute("INSERT INTO examples (device_id, body, attribution) VALUES (?, 'x', NULL)", (device,))
+
     def test_happy_path_reads_chain_back(self):
         (category, form, function), device = self.seed_valid()
         self.db.execute("INSERT INTO examples (device_id, body) VALUES (?, 'carpe *diem*')",

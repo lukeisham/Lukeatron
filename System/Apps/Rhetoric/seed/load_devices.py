@@ -83,8 +83,9 @@ def write_devices(conn: sqlite3.Connection, devices: list[dict], ids: dict[str, 
         for place in dict.fromkeys(_placements(device, "category")):
             conn.execute("INSERT INTO device_categories (device_id, node_id) VALUES (?, ?)",
                          (row_ids[device["name"]], ids["category"][place]))
-        for body in device["examples"]:
-            conn.execute("INSERT INTO examples (device_id, body) VALUES (?, ?)", (row_ids[device["name"]], body))
+        for example in device["examples"]:
+            conn.execute("INSERT INTO examples (device_id, body, attribution) VALUES (?, ?, ?)",
+                         (row_ids[device["name"]], example["text"], example["attribution"]))
     for device in devices:
         if device["flipside_of"]:
             conn.execute("UPDATE devices SET flipside_of = ? WHERE id = ?",

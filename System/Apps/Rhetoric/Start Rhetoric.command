@@ -2,7 +2,7 @@
 # Double-click launcher for Rhetoric.
 #
 # Serves the Rhetoric device library and opens it in Chrome. Closing this Terminal window
-# (or Ctrl-C) stops the server. Read-only: nothing is ever written.
+# (or Ctrl-C) stops the server. The only thing it ever writes is Luke's Topical Types and placements in rhetoric.db.
 # The port is fixed at 8794; a collision fails loudly rather than rebinding.
 
 cd "$(dirname "$0")" || exit 1

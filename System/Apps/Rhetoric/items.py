@@ -1,6 +1,6 @@
-"""Reads rhetoric.db and assembles the `/api/items` payload: three nested trees whose device
-leaves are references, plus one flat `devices` map. Called only by server.py (API-1: routing
-holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL (server.spec AD-3)."""
+"""Reads rhetoric.db and assembles the `/api/items` payload: nested trees (the three seeded
+hierarchies, Topical, and the two grammatical groups) whose device leaves are references, plus
+one flat `devices` map. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL (server.spec AD-3)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,16 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import grammar
+import topical
+
 HIERARCHIES = ("category", "form", "function")
+
+# Devices are listed by the label they are shown under, so a Flipside files under its fallacy.
+_DEVICE_ORDER = (
+    "ORDER BY COALESCE((SELECT f.name || '/' FROM devices f WHERE f.id = devices.flipside_of), '') || name, id"
+)
+
 
 def connect_readonly(db_path: Path) -> sqlite3.Connection:
     """Read-only connection (PY-8). Raises sqlite3.OperationalError if the file is missing —
@@ -27,8 +36,7 @@ def load_items(db_path: Path) -> dict[str, Any]:
         ).fetchall()
         devices = conn.execute(
             "SELECT id, name, definition, form_node_id, function_node_id, "
-            "popularity, topical_rank, ai_confidence_rating, flipside_of FROM devices "
-            "ORDER BY COALESCE((SELECT f.name || '/' FROM devices f WHERE f.id = devices.flipside_of), '') || name, id"
+            "popularity, topical_rank, ai_confidence_rating, flipside_of FROM devices " + _DEVICE_ORDER
         ).fetchall()
         tags = conn.execute(
             "SELECT device_id, node_id FROM device_categories ORDER BY device_id, node_id"
@@ -36,14 +44,39 @@ def load_items(db_path: Path) -> dict[str, Any]:
         examples = conn.execute(
             "SELECT device_id, body FROM examples ORDER BY id"
         ).fetchall()
+        ordered_ids = [row[0] for row in devices]
+        topical_roots = topical.topical_tree(conn, ordered_ids)
+        explained = grammar.explanations(conn)
+        label_rows = grammar.label_rows(conn)
+        label_links = grammar.label_links(conn)
 
-    device_map = _device_map(devices, examples)
+    device_map = _device_map(devices, examples, explained)
     links = _links(devices, tags)
     trees = {h: _build_tree(h, nodes, links[h]) for h in HIERARCHIES}
+    trees["topical"] = topical_roots
+    grammatical = set(explained)
+    function_links = [link for link in links["function"] if link[0] in grammatical]
+    trees["grammar_function"] = grammar.with_ungrammatical(
+        grammar.without_empty(_build_tree("function", nodes, function_links)), ordered_ids, grammatical)
+    trees["grammar_label"] = grammar.with_ungrammatical(
+        grammar.without_empty(_build_tree(grammar.LABEL_HIERARCHY, label_rows, label_links)), ordered_ids, grammatical)
     return {"trees": trees, "devices": device_map}
 
 
-def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[str, Any]]:
+def load_topical(db_path: Path) -> list[dict[str, Any]]:
+    """Just the Topical tree, for the response to a Topical change."""
+    with closing(connect_readonly(db_path)) as conn:
+        return _topical_roots(conn)
+
+
+def _topical_roots(conn: sqlite3.Connection) -> list[dict[str, Any]]:
+    ordered_ids = [row[0] for row in conn.execute("SELECT id FROM devices " + _DEVICE_ORDER)]
+    return topical.topical_tree(conn, ordered_ids)
+
+
+def _device_map(
+    devices: list[tuple], examples: list[tuple], explanations: dict[int, dict[str, Any]]
+) -> dict[str, dict[str, Any]]:
     by_id: dict[str, dict[str, Any]] = {
         str(row[0]): {
             "name": row[1],
@@ -52,6 +85,7 @@ def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[s
             "topical_rank": row[6],
             "ai_confidence_rating": row[7],
             "flipside_of": row[8],
+            "explanation": explanations.get(row[0]),
             "examples": [],
         }
         for row in devices

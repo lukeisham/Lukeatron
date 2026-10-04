@@ -8,6 +8,7 @@
  */
 
 import { parseInline } from './markup.js';
+import { GRAMMAR_SLOTS, GRAMMATICAL_SORTS } from './state.js';
 
 function make(doc, tag, className, text) {
   const node = doc.createElement(tag);
@@ -53,6 +54,22 @@ function removeButton(doc, device, typeName) {
   return button;
 }
 
+/** A precise summary, then each filled grammar slot (Grammar function, Grammar form): its labels, and an example with its key parts italic and each term's definition in brackets. */
+function explanationBlock(doc, explanation) {
+  const block = make(doc, 'div', 'device-explanation');
+  block.appendChild(make(doc, 'p', 'explanation-summary', explanation.summary));
+  for (const { key, title } of GRAMMAR_SLOTS) {
+    const slot = explanation[key];
+    if (!slot) continue;
+    const heading = make(doc, 'p', 'explanation-slot');
+    heading.append(make(doc, 'span', 'explanation-slot-name', title), make(doc, 'span', 'explanation-labels', slot.labels.join(', ')));
+    const example = make(doc, 'p', 'explanation-example');
+    example.appendChild(exampleText(doc, slot.example));
+    block.append(heading, example);
+  }
+  return block;
+}
+
 function deviceRow(doc, state, entry, mode) {
   const { device } = entry;
   const expanded = mode === 'device' || state.expanded.has(device.id);
@@ -70,6 +87,8 @@ function deviceRow(doc, state, entry, mode) {
   item.appendChild(row);
 
   if (device.definition) item.appendChild(make(doc, 'p', 'device-definition', device.definition));
+
+  if (device.explanation && GRAMMATICAL_SORTS.has(state.sortOrder)) item.appendChild(explanationBlock(doc, device.explanation));
 
   if (device.examples.length > 0) {
     const examples = make(doc, 'ul', 'examples');
@@ -114,7 +133,11 @@ function nodeRow(doc, state, node, mode, depth) {
   row.setAttribute('tabindex', '0');
   row.append(marker(doc, '•'), make(doc, 'span', 'node-name', node.name));
   if (node.definition) row.appendChild(make(doc, 'span', 'node-definition', node.definition));
-  if (node.editable) row.appendChild(typeActions(doc, node));
+  if (node.editable) {
+    row.setAttribute('draggable', 'true'); // the handle for reordering Types
+    row.title = 'Drag to reorder';
+    row.appendChild(typeActions(doc, node));
+  }
   if (node.revealable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
 
@@ -137,9 +160,85 @@ function message(doc, text) {
   return make(doc, 'p', 'list-message', text);
 }
 
+/** One row of the Compare table: a row heading, then the fallacy's cell and the Flipside's cell. */
+function compareRow(doc, className, title, cellFor, pair) {
+  const row = make(doc, 'tr', `compare-row ${className}`);
+  const heading = make(doc, 'th', 'compare-row-title', title);
+  heading.setAttribute('scope', 'row');
+  const fallacyCell = cellFor(pair.fallacy);
+  const flipsideCell = cellFor(pair.flipside);
+  fallacyCell.dataset.side = 'Fallacy'; // read by compare.css to label the cells once they stack on a narrow screen
+  flipsideCell.dataset.side = 'Flipside';
+  row.append(heading, fallacyCell, flipsideCell);
+  return row;
+}
+
+const nameCell = (doc) => (device) => {
+  const cell = make(doc, 'td', 'compare-cell');
+  cell.appendChild(make(doc, 'span', 'device-name', device.name));
+  if (RATING_TITLES[device.aiConfidenceRating]) cell.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
+  return cell;
+};
+
+const definitionCell = (doc) => (device) => make(doc, 'td', 'compare-cell', device.definition);
+
+const examplesCell = (doc) => (device) => {
+  const cell = make(doc, 'td', 'compare-cell');
+  const list = make(doc, 'ul', 'compare-examples');
+  for (const example of device.examples) {
+    const item = make(doc, 'li', 'compare-example');
+    item.append(marker(doc, '□', 'marker-example'), exampleText(doc, example));
+    list.appendChild(item);
+  }
+  cell.appendChild(list);
+  return cell;
+};
+
+/** The Compare table for one pair. All three rows are always in the DOM; body classes (compare.css) hide them per the table's switches. */
+function compareTable(doc, pair) {
+  const table = make(doc, 'table', 'compare-table');
+  const head = make(doc, 'tr', 'compare-head');
+  head.appendChild(make(doc, 'td', 'compare-corner'));
+  for (const title of ['Fallacy', 'Flipside']) {
+    const column = make(doc, 'th', 'compare-column-title', title);
+    column.setAttribute('scope', 'col');
+    head.appendChild(column);
+  }
+  const header = make(doc, 'thead');
+  header.appendChild(head);
+  const body = make(doc, 'tbody');
+  body.append(
+    compareRow(doc, 'compare-names', 'Name', nameCell(doc), pair),
+    compareRow(doc, 'compare-definitions', 'Definition', definitionCell(doc), pair),
+    compareRow(doc, 'compare-examples-row', 'Examples', examplesCell(doc), pair),
+  );
+  table.append(header, body);
+  return table;
+}
+
+/** Fills the pair picker and its Prev/Next buttons from a Compare view; the elements stay in the page so the picker keeps focus. */
+export function renderCompareBar(doc, parts, view) {
+  const { pick, prev, next, count } = parts;
+  const index = view.pairs.findIndex((pair) => pair === view.current);
+  pick.replaceChildren(...view.pairs.map((pair) => {
+    const option = make(doc, 'option', '', pair.fallacy.name);
+    option.value = String(pair.flipside.id);
+    option.selected = pair === view.current;
+    return option;
+  }));
+  pick.disabled = view.pairs.length === 0;
+  prev.disabled = index <= 0;
+  next.disabled = index < 0 || index >= view.pairs.length - 1;
+  count.textContent = view.current ? `${index + 1} of ${view.pairs.length}` : '';
+}
+
 export function renderList(doc, container, state, view) {
   if (view.items.length === 0) {
     container.replaceChildren(message(doc, view.hint ?? 'No devices match.'));
+    return;
+  }
+  if (view.mode === 'compare') {
+    container.replaceChildren(compareTable(doc, view.current));
     return;
   }
   const list = make(doc, 'ul', 'list-root');

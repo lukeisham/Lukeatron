@@ -1,0 +1,84 @@
+/* ==========================================================================
+   compare.css — the Compare group: the pair picker bar, and a table of one fallacy beside
+   its Flipside (Name, Definition and Examples rows). Monochrome like the list body.
+   The three switches hide a row by body class, so ticking one never re-renders.
+   Tokens: --color-ink*, --color-rule-body, --font-ui, --font-size-*, --space-*, --border-hairline.
+   ========================================================================== */
+.compare-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-5);
+  font-family: var(--font-ui);
+}
+.compare-bar[hidden] { display: none; }
+
+.compare-switches {
+  display: flex;
+  gap: var(--space-5);
+  margin-left: auto;
+}
+
+.compare-table {
+  width: 100%;
+  margin-top: var(--space-5);
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.compare-corner { width: 14%; }
+
+.compare-column-title,
+.compare-row-title {
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-toolbar-small);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-sort);
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.compare-column-title { padding: 0 var(--space-5) var(--space-3) 0; border-bottom: var(--border-hairline) solid var(--color-ink); }
+
+.compare-row-title,
+.compare-cell {
+  padding: var(--space-4) var(--space-5) var(--space-4) 0;
+  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  vertical-align: top;
+}
+
+.compare-cell { font-size: var(--font-size-definition); }
+.compare-names .compare-cell { font-size: var(--font-size-body); }
+.compare-names .confidence-badge { margin-left: var(--space-3); }
+
+.compare-examples { margin: 0; padding: 0; list-style: none; }
+.compare-example {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding-bottom: var(--space-3);
+  font-size: var(--font-size-example);
+}
+
+body.hide-table-names .compare-names,
+body.hide-table-definitions .compare-definitions,
+body.hide-table-examples .compare-examples-row { display: none; }
+
+/* Narrow screens: each side stacks under the other, the row heading above its two cells. */
+@media (max-width: 600px) {
+  .compare-table,
+  .compare-table tbody,
+  .compare-row,
+  .compare-row-title,
+  .compare-cell { display: block; width: auto; }
+  .compare-head { display: none; }
+  .compare-cell { border-bottom: none; padding: 0 0 var(--space-3); }
+  .compare-cell::before { content: attr(data-side) ": "; color: var(--color-ink-soft); font-family: var(--font-ui); font-size: var(--font-size-toolbar-small); }
+  .compare-row-title { padding-top: var(--space-4); border-bottom: none; }
+  .compare-row { border-bottom: var(--border-hairline) solid var(--color-rule-body); }
+}
+
+@media print {
+  .compare-row { break-inside: avoid; }
+}

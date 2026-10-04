@@ -8,9 +8,12 @@ function fakeStorage(initial = {}) {
   return { getItem: (key) => data[key] ?? null, setItem: (key, value) => { data[key] = value; }, data };
 }
 
-const allOff = { showDefinitions: false, showExamples: false, showConfidence: false, reveal: false };
+const allOff = {
+  showDefinitions: false, showExamples: false, showConfidence: false, showExplanations: false, reveal: false,
+  tableNames: false, tableDefinitions: false, tableExamples: false,
+};
 
-test('the four display toggles survive a save and a reload', () => {
+test('the display and table toggles survive a save and a reload', () => {
   const storage = fakeStorage();
   saveToggles(storage, allOff);
   assert.deepEqual(loadToggles(storage), allOff);

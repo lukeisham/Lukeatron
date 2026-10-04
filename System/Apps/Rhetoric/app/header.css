@@ -166,6 +166,7 @@ body {
   background: var(--color-accent-wash);
   color: var(--color-accent);
 }
+.btn-link { text-decoration: none; }
 .btn-caret { font-size: var(--font-size-badge); }
 
 /* The Display menu: a pull-down list of checkable options, growing from its button. */
@@ -207,14 +208,15 @@ body {
 
 .toolbar-status { color: var(--color-ink-soft); min-width: var(--space-9); text-align: left; }
 
-.toolbar-link {
-  color: var(--color-ink-soft);
-  font-size: var(--font-size-toolbar-small);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
-  transition: color var(--motion-fast) var(--ease-out);
+/* The Copied / Copy failed message takes no room in the row, so the buttons stay centred; the text
+   overflows to the right of About. */
+.options-row .toolbar-status {
+  width: 0;
+  min-width: 0;
+  margin-left: calc(-1 * var(--space-6));
+  text-indent: var(--space-4);
+  white-space: nowrap;
 }
-.toolbar-link:hover { color: var(--color-accent); }
 
 .ornament {
   margin: 0 0 var(--space-3);

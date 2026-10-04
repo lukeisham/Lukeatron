@@ -21,5 +21,8 @@ const topicalChange = async (method, path, body) => (await request(method, `/api
 export const createType = (name) => topicalChange('POST', '', { name });
 export const renameType = (typeId, name) => topicalChange('PUT', `/${typeId}`, { name });
 export const deleteType = (typeId) => topicalChange('DELETE', `/${typeId}`);
-export const addPlacement = (typeId, deviceId) => topicalChange('PUT', `/${typeId}/devices/${deviceId}`);
+export const moveType = (typeId, index) => topicalChange('PUT', `/${typeId}/position`, { index });
+// With an index the device goes to that spot among the Type's devices (a move if it is already there); without, last.
+export const addPlacement = (typeId, deviceId, index) =>
+  topicalChange('PUT', `/${typeId}/devices/${deviceId}`, index === undefined ? undefined : { index });
 export const removePlacement = (typeId, deviceId) => topicalChange('DELETE', `/${typeId}/devices/${deviceId}`);

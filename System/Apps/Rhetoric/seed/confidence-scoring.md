@@ -79,7 +79,6 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | :--- | :--- | :--- | :--- |
 | Adnomination | medium | medium | T1: two rival senses (root-repetition vs name-pun) |
 | Anastrophe | high | medium | T1: sense overlaps hyperbaton; sources disagree on the line |
-| Anthropomorphism | low | medium | T2: example is personification, which the definition says is distinct |
 | Apophasis | low | medium | T1: two classical senses (paralipsis vs rejecting reasons) |
 | Asterismos | high | medium | T1: named in 1 source(s) |
 | Catachresis | low | medium | T1: two senses (gap-filling vs strained figure) |
@@ -91,7 +90,6 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Epigram | medium | medium | T1: named in 1 source(s) |
 | Hypotaxis | medium | medium | T1: named in 0 source(s) |
 | Non Sequitur | medium | medium | T3: Conditional Schema is not specific to a non sequitur |
-| Parataxis | low | low | T1: named in 1 source(s); T3: Form conflicts with Hypotaxis (Sentence Shape) |
 | Scesis Onomaton | medium | medium | T1: term originally meant something else |
 | Sibilance | medium | medium | T1: named in 1 source(s) |
 | Syllogism | medium | medium | T3: a categorical syllogism is not if-then (Conditional Schema) |
@@ -160,7 +158,7 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Standard Raiser | medium | medium | T1: Flipside label is coined, not in any source |
 | Premise Probe | medium | medium | T1: Flipside label is coined, not in any source |
 | Coincidence Flag | low | medium | T1: Flipside label is coined, not in any source |
-| Intuitive guess | high | medium | T1: Flipside label is coined, not in any source |
+| Intuitive Guess | high | medium | T1: Flipside label is coined, not in any source |
 | Absent Cause Note | high | medium | T1: Flipside label is coined, not in any source |
 | Shared Trait Hint | medium | low | T1: Flipside label is coined, not in any source; T3: Part–Whole Inference differs from its fallacy without a clear shape change |
 | Middle Path | medium | medium | T1: Flipside label is coined, not in any source |
@@ -172,7 +170,7 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Best Case Showcase | low | medium | T1: Flipside label is coined, not in any source |
 | Design Reading | high | medium | T1: Flipside label is coined, not in any source |
 | Nature's Precedent | medium | medium | T1: Flipside label is coined, not in any source |
-| Good consequences | high | medium | T1: Flipside label is coined, not in any source |
+| Good Consequences | high | medium | T1: Flipside label is coined, not in any source |
 | Investment Memory | high | medium | T1: Flipside label is coined, not in any source |
 | Motive Diagnosis | high | medium | T1: Flipside label is coined, not in any source |
 | Blurred Line Defence | high | medium | T1: Flipside label is coined, not in any source |
@@ -183,7 +181,7 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Absurd Mirror | medium | medium | T1: Flipside label is coined, not in any source |
 | Refrain | high | medium | T1: Flipside label is coined, not in any source |
 | Living Case | high | medium | T1: Flipside label is coined, not in any source |
-| Exceptional Case | high | medium | T1: Flipside label is coined, not in any source |
+| Fitting Case | high | medium | T1: Flipside label is coined, not in any source |
 | Living Abstraction | medium | medium | T1: Flipside label is coined, not in any source |
 | Coincidence Limit | high | medium | T1: Flipside label is coined, not in any source |
 | Fair Comparison | high | medium | T1: Flipside label is coined, not in any source |
@@ -202,5 +200,11 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Diverting Bridge | low | medium | T1: Flipside label is coined, not in any source |
 | Appeal to Pathos | high | medium | T1: Flipside label is coined, not in any source |
 | Unspoken Link | medium | medium | T1: Flipside label is coined, not in any source |
+
+## Rated `high` by Luke's decision, not by the three tests
+
+| Device | Was | Basis |
+| :--- | :--- | :--- |
+| Parataxis | low | Luke's decision, 2026-10-03. Source: Luke's note on Parataxis and Asyndeton, which cites Richard Lanham and standard rhetoric handbooks (no title, page or section given; not read by the AI). It still fails Test 1 on source count (1 source) and Test 3 (Form sits near Hypotaxis, Sentence Shape). Definition and example were revised the same day. |
 
 Devices not listed passed all three tests and are `high`.

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="header.css">
 <link rel="stylesheet" href="list.css">
 <link rel="stylesheet" href="topical.css">
+<link rel="stylesheet" href="compare.css">
 <link rel="stylesheet" href="print.css">
 </head>
 <body>
@@ -31,6 +32,7 @@
         <div id="display-panel" class="menu-panel" role="group" aria-label="Display options" hidden>
           <label class="menu-item"><input id="show-definitions" type="checkbox" checked> Show definitions</label>
           <label class="menu-item"><input id="show-examples" type="checkbox" checked> Show examples</label>
+          <label class="menu-item" title="In the two Grammatical groups: each device's grammar explanation."><input id="show-explanations" type="checkbox" checked> Show explanations</label>
           <label class="menu-item"><input id="show-confidence" type="checkbox" checked> Show AI confidence</label>
           <label class="menu-item" title="On: only groups and types show, each with a button that reveals its devices. Off: every device is listed."><input id="reveal" type="checkbox" checked> Indent</label>
         </div>
@@ -44,12 +46,15 @@
           <option value="category">Category</option>
           <option value="popularity">Popularity</option>
           <option value="topical">Topical</option>
+          <option value="grammar_function">Grammatical Function</option>
+          <option value="grammar_label">Grammatical Label</option>
+          <option value="compare">Compare</option>
         </select>
       </label>
       <button id="print" class="btn" type="button">Print</button>
       <button id="copy" class="btn" type="button">Copy</button>
+      <a class="btn btn-link" href="about.html">About</a>
       <span id="copy-status" class="toolbar-status" role="status"></span>
-      <a class="toolbar-link" href="about.html">About the scores</a>
     </div>
   </div>
   <p class="ornament" aria-hidden="true">── ❧ ──</p>
@@ -63,6 +68,17 @@
       <button class="btn" type="submit">Add Type</button>
       <span id="type-status" class="toolbar-status" role="status"></span>
     </form>
+  </div>
+  <div id="compare-bar" class="compare-bar" role="group" aria-label="Compare a fallacy with its Flipside" hidden>
+    <label class="compare-field"><span class="visually-hidden">Fallacy</span><select id="compare-pick" class="toolbar-select"></select></label>
+    <button id="compare-prev" class="btn" type="button">◂ Prev</button>
+    <button id="compare-next" class="btn" type="button">Next ▸</button>
+    <span id="compare-count" class="toolbar-status" role="status"></span>
+    <span class="compare-switches">
+      <label class="toolbar-check"><input id="table-names" type="checkbox" checked> Names</label>
+      <label class="toolbar-check"><input id="table-definitions" type="checkbox" checked> Definitions</label>
+      <label class="toolbar-check"><input id="table-examples" type="checkbox" checked> Examples</label>
+    </span>
   </div>
   <div id="list" class="list" aria-live="polite"></div>
 </main>

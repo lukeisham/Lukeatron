@@ -1,22 +1,25 @@
 /** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
 
-import { addPlacement, createType, deleteType, fetchItems, removePlacement, renameType } from './api.js';
+import { addPlacement, createType, deleteType, fetchItems, moveType, removePlacement, renameType } from './api.js';
 import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
-import { renderCount, renderList, renderSortButtons, renderStatus } from './render.js';
+import { renderCompareBar, renderCount, renderList, renderSortButtons, renderStatus } from './render.js';
 import {
-  EVERYTHING, FULL_VIEW, SORTS, TOPICAL, createState, deviceView, revealKey, setActiveView, setSortOrder,
+  COMPARE, EVERYTHING, FULL_VIEW, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setSortOrder,
   setTopicalTree, subtreeView, toggleExpanded, toggleRevealed,
 } from './state.js';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
+import { insertionIndex } from './order.js';
 import { currentView } from './view.js';
 
 const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
-  showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
+  showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showExplanations: $('show-explanations'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
+  compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
+  tableNames: $('table-names'), tableDefinitions: $('table-definitions'), tableExamples: $('table-examples'),
   typeForm: $('type-form'), typeName: $('type-name'), typeStatus: $('type-status'),
   deviceCount: $('device-count'), print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
@@ -36,9 +39,20 @@ const storage = (() => {
 
 function refresh() {
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
-  renderList(document, els.list, state, currentView(state));
+  const view = currentView(state);
+  renderList(document, els.list, state, view);
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
+  els.compareBar.hidden = state.sortOrder !== COMPARE;
+  if (view.mode === 'compare') renderCompareBar(document, { pick: els.comparePick, prev: els.comparePrev, next: els.compareNext, count: els.compareCount }, view);
+}
+
+/** Moves the Compare pair by `step` places through the pairs the search leaves. */
+function stepCompare(step) {
+  const view = currentView(state);
+  const target = view.pairs[view.pairs.indexOf(view.current) + step];
+  if (target) setComparePair(state, target.flipside.id);
+  refresh();
 }
 
 function flashStatus(element, text) {
@@ -81,15 +95,31 @@ function deleteFromRow(button) {
   }
 }
 
-function dropOnType(typeId, deviceId) {
-  state.revealed.add(revealKey(TOPICAL, typeId)); // so the device is seen landing
-  saveTopical(() => addPlacement(typeId, deviceId));
+const idsOf = (nodes) => nodes.map((node) => node.id);
+
+/** Ids from the saved tree, not the screen, so a search that hides rows cannot skew where a drop lands. */
+function savedTypeIds() {
+  return idsOf(state.trees[TOPICAL].filter((node) => node.id !== UNSORTED_ID));
+}
+
+function onTopicalDrop({ kind, id, overType, overDevice, side }) {
+  if (kind === 'type') {
+    return void saveTopical(() => moveType(id, insertionIndex(savedTypeIds(), id, overType, side)));
+  }
+  state.revealed.add(revealKey(TOPICAL, overType)); // so the device is seen landing
+  if (overDevice === null) return void saveTopical(() => addPlacement(overType, id));
+  const placedIds = idsOf(state.nodesById[TOPICAL].get(overType).children);
+  saveTopical(() => addPlacement(overType, id, insertionIndex(placedIds, id, overDevice, side)));
 }
 
 function applyToggles() {
   document.body.classList.toggle('hide-definitions', !state.showDefinitions);
   document.body.classList.toggle('hide-examples', !state.showExamples);
+  document.body.classList.toggle('hide-explanations', !state.showExplanations);
   document.body.classList.toggle('hide-confidence', !state.showConfidence);
+  document.body.classList.toggle('hide-table-names', !state.tableNames);
+  document.body.classList.toggle('hide-table-definitions', !state.tableDefinitions);
+  document.body.classList.toggle('hide-table-examples', !state.tableExamples);
 }
 
 function hasTextSelection() {
@@ -173,7 +203,7 @@ function bindControls() {
   els.list.addEventListener('click', onListClick);
   els.list.addEventListener('dblclick', onListDoubleClick);
   els.list.addEventListener('keydown', onListKeydown);
-  bindDragAndDrop(els.list, dropOnType);
+  bindDragAndDrop(els.list, onTopicalDrop);
   els.typeForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const name = els.typeName.value.trim();
@@ -193,6 +223,13 @@ function bindControls() {
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
   els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
+  els.showExplanations.addEventListener('change', () => { state.showExplanations = els.showExplanations.checked; applyToggles(); saveToggles(storage, state); });
+  els.comparePick.addEventListener('change', () => { setComparePair(state, Number(els.comparePick.value)); refresh(); });
+  els.comparePrev.addEventListener('click', () => stepCompare(-1));
+  els.compareNext.addEventListener('click', () => stepCompare(1));
+  for (const field of ['tableNames', 'tableDefinitions', 'tableExamples']) {
+    els[field].addEventListener('change', () => { state[field] = els[field].checked; applyToggles(); saveToggles(storage, state); });
+  }
   els.home.addEventListener('click', () => { setActiveView(state, FULL_VIEW); refresh(); });
   els.print.addEventListener('click', () => printCurrentView(window));
   els.copy.addEventListener('click', onCopy);
@@ -211,7 +248,11 @@ async function start() {
   Object.assign(state, loadToggles(storage));
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;
+  els.showExplanations.checked = state.showExplanations;
   els.showConfidence.checked = state.showConfidence;
+  els.tableNames.checked = state.tableNames;
+  els.tableDefinitions.checked = state.tableDefinitions;
+  els.tableExamples.checked = state.tableExamples;
   els.reveal.checked = state.reveal;
   const opening = loadDefaultSort(storage, SORTS);
   els.defaultSort.value = opening;

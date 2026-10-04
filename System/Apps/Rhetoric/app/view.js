@@ -8,7 +8,7 @@
 
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
-import { EVERYTHING, TOPICAL, TREE_SORTS, UNSORTED_ID, parseView, revealKey, sortedDevices } from './state.js';
+import { COMPARE, EVERYTHING, GRAMMAR_SLOTS, GRAMMATICAL_SORTS, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, revealKey, sortedDevices } from './state.js';
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
 const GROUPS = [
@@ -18,6 +18,8 @@ const GROUPS = [
 ];
 
 // `draggable` and `removeFrom` (the `{ id, name }` of the Type the row can be taken out of) are set only in the Topical tree.
+const EMPTY_GROUP_HINT = 'Nothing is filed in this group yet.';
+
 const deviceItem = (device, { draggable = false, removeFrom = null } = {}) => ({ kind: 'device', device, draggable, removeFrom });
 
 function countDevices(node) {
@@ -53,6 +55,13 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !re
   };
 }
 
+/** The pairs a search leaves, and the one shown: the chosen pair if it survives the search, else the first. A pair matches on either name (a Flipside's label carries both). */
+function compareView(state, matches) {
+  const pairs = flipsidePairs(state).filter(({ flipside }) => matches(flipside));
+  const current = pairs.find(({ flipside }) => flipside.id === state.comparePairId) ?? pairs[0] ?? null;
+  return { mode: 'compare', pairs, current, items: current ? [current] : [], hint: 'No fallacy matches.' };
+}
+
 export function currentView(state) {
   const searching = state.query.trim() !== '';
   const matches = (device) => matchesName(device.label, state.query, state.fuzzy);
@@ -64,6 +73,8 @@ export function currentView(state) {
     const device = state.devices.get(view.id);
     return { mode: 'device', items: device && matches(device) ? [deviceItem(device)] : [] };
   }
+
+  if (state.sortOrder === COMPARE) return compareView(state, matches);
 
   if (state.sortOrder === EVERYTHING) {
     if (!searching) return { mode: 'tree', items: [], hint: 'Type to search every device, or choose a group above.' };
@@ -88,24 +99,39 @@ export function currentView(state) {
     const items = roots
       .map((root) => filterNode(state, hierarchy, root, matches, pruneEmpty, isolated ? { ...reveal, on: false } : reveal))
       .filter(Boolean);
-    return { mode: 'tree', items };
+    return { mode: 'tree', items, hint: roots.length === 0 ? EMPTY_GROUP_HINT : undefined };
   }
 
   const items = sortedDevices(state, state.sortOrder).filter(matches).map(deviceItem);
   return { mode: 'flat', items };
 }
 
-/** Whether a device shows its definition/examples: the global toggle, or the row was clicked open. */
+/** Whether a device shows its definition/examples/explanation: the global toggle, or the row was clicked open. Explanations belong to the two grammatical groups only. */
 export function showsDetail(state, device, mode) {
   const opened = mode === 'device' || state.expanded.has(device.id);
   return {
     definition: opened || state.showDefinitions,
     examples: opened || state.showExamples,
+    explanation: GRAMMATICAL_SORTS.has(state.sortOrder) && device.explanation != null && (opened || state.showExplanations),
   };
+}
+
+/** The Compare pair as text, honouring the table's three switches: a heading per side, then its definition and examples. */
+function compareToText(state, current) {
+  if (!current) return '';
+  const lines = [];
+  for (const [role, device] of [['Fallacy', current.fallacy], ['Flipside', current.flipside]]) {
+    if (lines.length > 0) lines.push('');
+    lines.push(state.tableNames ? `• ${role}: ${device.name}` : `• ${role}`);
+    if (state.tableDefinitions && device.definition) lines.push(`  ${device.definition}`);
+    if (state.tableExamples) device.examples.forEach((example) => lines.push(`  □ ${stripInline(example)}`));
+  }
+  return lines.join('\n');
 }
 
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
 export function viewToText(state, view) {
+  if (view.mode === 'compare') return compareToText(state, view.current);
   const lines = [];
   const write = (item, depth) => {
     const pad = '  '.repeat(depth);
@@ -118,6 +144,13 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, device, view.mode);
     lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
+    if (shown.explanation) {
+      lines.push(`${pad}  ${device.explanation.summary}`);
+      for (const { key, title } of GRAMMAR_SLOTS) {
+        const slot = device.explanation[key];
+        if (slot) lines.push(`${pad}  ${title}: ${slot.labels.join(', ')}`, `${pad}  ${stripInline(slot.example)}`);
+      }
+    }
     if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
   };
   view.items.forEach((item) => write(item, 0));

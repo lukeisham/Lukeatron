@@ -20,7 +20,7 @@ def make_db() -> sqlite3.Connection:
 
 
 def device(name, **over):
-    base = {"name": name, "definition": "d", "examples": ["e *ergo*"], "aliases": [], "flipside_of": None,
+    base = {"name": name, "definition": "d", "examples": [{"text": "e *ergo*", "attribution": "Cicero"}], "aliases": [], "flipside_of": None,
             "lists_naming": 2, "ai_confidence_rating": "medium", "category": "Fallacy", "form": "Argument Structure", "function": "Persuasion"}
     return {**base, **over}
 
@@ -42,6 +42,7 @@ class LoadDevicesTest(unittest.TestCase):
                                  "WHERE d.name = 'Fair Sketch'").fetchone()
         self.assertEqual(link, ("Straw Man",))
         self.assertEqual(self.conn.execute("SELECT COUNT(*) FROM examples").fetchone()[0], 2)
+        self.assertEqual(self.conn.execute("SELECT DISTINCT attribution FROM examples").fetchall(), [("Cicero",)])
         self.assertEqual(self.conn.execute("SELECT ai_confidence_rating FROM devices WHERE name = 'Straw Man'").fetchone()[0], "medium")
         self.assertEqual(load_devices.wrong_hierarchy_links(self.conn), 0)
 

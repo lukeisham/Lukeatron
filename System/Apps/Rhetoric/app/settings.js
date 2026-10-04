@@ -4,7 +4,7 @@
  * (localStorage in the page, a fake in tests).
  */
 
-export const TOGGLE_FIELDS = ['showDefinitions', 'showExamples', 'showConfidence', 'reveal'];
+export const TOGGLE_FIELDS = ['showDefinitions', 'showExamples', 'showConfidence', 'showExplanations', 'reveal', 'tableNames', 'tableDefinitions', 'tableExamples'];
 export const NO_DEFAULT = 'none'; // open on the search-only screen
 
 const TOGGLES_KEY = 'rhetoric.toggles';

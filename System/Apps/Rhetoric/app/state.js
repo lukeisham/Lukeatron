@@ -12,11 +12,13 @@ export const SORTS = [
   { key: 'topical', label: 'Topical' },
   { key: 'grammar_function', label: 'Grammatical Function' },
   { key: 'grammar_label', label: 'Grammatical Label' },
-  { key: 'compare', label: 'Compare' },
 ];
 
-/** The group that shows one fallacy beside its Flipside in a table; it is neither a tree nor a flat list. */
+/** The group that shows one fallacy beside its Flipside in a table; it is neither a tree nor a flat list, and has its own button beside About instead of a place in `SORTS`. */
 export const COMPARE = 'compare';
+
+/** Every group the app can open on: the sort buttons plus Compare (the "Open on" menu in index.html lists the same keys). */
+export const OPENING_CHOICES = [...SORTS, { key: COMPARE, label: 'Compare' }];
 
 /** The two groups that show each device's grammar explanation; `GRAMMATICAL_SORTS` also keeps them out of the no-group search. */
 export const GRAMMATICAL_SORTS = new Set(['grammar_function', 'grammar_label']);

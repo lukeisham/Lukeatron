@@ -18,7 +18,12 @@
   font-size: var(--font-size-definition);
 }
 
-.about section { margin-top: var(--space-10); }
+/* Headings are numbered by counters, so adding or moving a section renumbers itself: 1., then 1.1, 1.2. */
+.about { counter-reset: part; }
+.about section { margin-top: var(--space-10); counter-increment: part; counter-reset: sub; }
+.about h2::before { content: counter(part) ". "; }
+.about h3 { counter-increment: sub; }
+.about h3::before { content: counter(part) "." counter(sub) "\00a0"; color: var(--color-ink-soft); font-weight: 400; }
 
 .about h2 {
   margin: 0 0 var(--space-4);
@@ -49,13 +54,10 @@
   outline-offset: var(--outline-offset);
 }
 
-.questions, .facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 var(--space-5); }
-.questions dt, .facts dt { font-weight: 700; }
-.questions dd, .facts dd { margin: 0; }
-.method { margin: 0 0 var(--space-5); }
-.method dt { font-weight: 700; margin-top: var(--space-4); }
-.method dd { margin: var(--space-1) 0 0; }
-.method ul { margin: var(--space-2) 0; }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 var(--space-5); }
+.facts dt { font-weight: 700; }
+.facts dd { margin: 0; }
+.formula { font-family: var(--font-ui); font-size: var(--font-size-example); }
 
 /* The short intro under the back link: a lead line, three jump links, then the version and technical facts. */
 .intro { margin-top: var(--space-5); padding-bottom: var(--space-5); border-bottom: var(--border-hairline) solid var(--color-rule-body); }

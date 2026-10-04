@@ -47,7 +47,7 @@ class AboutPageTest(unittest.TestCase):
         section = ABOUT.split('<section id="descriptions">')[1].split("</section>")[0]
         for result in ("Agrees", "Narrower", "Broader", "Different sense"):
             self.assertIn(f'<th scope="row">{result}</th>', section)
-        for phrase in ("written by the AI", "Wikipedia is used only to find", "Flipside", "never cites a source that was not read"):
+        for phrase in ("written by the AI", "Wikipedia-only description fails Test 1", "Flipside", "never cites a source that was not read"):
             self.assertIn(phrase, section)
 
     def test_examples_and_quotes_sections_say_how_the_two_differ(self):

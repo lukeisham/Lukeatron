@@ -20,7 +20,7 @@
   <p class="workspace-bar"><a class="back-link" href="./">← Back to the devices</a></p>
 
   <div class="intro">
-    <p>Rhetoric is an offline reference to rhetorical devices and fallacies, kept for teaching preparation. This page explains how each device&rsquo;s popularity is worked out, what the AI confidence labels mean, how the descriptions and the two kinds of example are made, and the thinking behind the lists.</p>
+    <p>Rhetoric is an offline reference to rhetorical devices and fallacies, kept for teaching preparation. This page documents how each score, label and text field is produced.</p>
     <nav class="contents" aria-label="On this page">
       <ol>
         <li><a href="#popularity">Popularity</a></li>
@@ -33,39 +33,36 @@
     </nav>
     <dl class="facts">
       <dt>Version</dt>
-      <dd>1.4</dd>
+      <dd>1.7</dd>
       <dt>Runs on</dt>
-      <dd>Your own computer only. A small Python 3 server (standard library, no extra packages) answers at 127.0.0.1, port 8794.</dd>
+      <dd>Local only: a Python 3 standard-library server at 127.0.0.1, port 8794.</dd>
       <dt>Data</dt>
-      <dd>One SQLite file, <code>rhetoric.db</code>, opened read-only for browsing. The only thing the app lets you change is your Topical Types and where devices sit under them.</dd>
+      <dd>SQLite file <code>rhetoric.db</code>, read-only for browsing. The only writable data is Topical Types and their placements.</dd>
       <dt>Screen</dt>
-      <dd>Plain HTML, CSS and JavaScript, with no framework and no build step. Sorting, searching and filtering all happen in the browser.</dd>
+      <dd>Plain HTML, CSS and JavaScript; no framework, no build step. Sorting, search and filtering run in the browser.</dd>
     </dl>
   </div>
 
-  <section>
-    <h2>Two scores, two questions</h2>
-    <dl class="questions">
-      <dt>Popularity</dt>
-      <dd>How often is this device named in printed books?</dd>
-      <dt>AI confidence</dt>
-      <dd>How sure is the AI that this entry is right?</dd>
-    </dl>
-  </section>
-
   <section id="popularity">
-    <h2>Popularity, from 0 to 100</h2>
-    <p>Popularity says how often a device&rsquo;s name turns up in printed English books. The more books use the name, the higher the score.</p>
+    <h2>Popularity</h2>
+    <p>A 0&ndash;100 score for how often a device&rsquo;s name appears in printed English books (Google Books Ngram, 1980&ndash;2019). Higher means more frequent.</p>
+
+    <h3>Method</h3>
     <ol>
-      <li>Look up the device&rsquo;s name, and every other name it goes by, in Google Books Ngram. The count is the share of all words printed each year from 1980 to 2019, averaged. Capital letters are ignored. The biggest count among its names is used.</li>
-      <li>Some names have a much commoner everyday meaning, such as &ldquo;climax&rdquo;, &ldquo;irony&rdquo;, &ldquo;apostrophe&rdquo; (the punctuation mark) and &ldquo;red herring&rdquo;. For these, only uses that look like the device are counted, such as &ldquo;use of irony&rdquo; or &ldquo;red herring fallacy&rdquo;. That count is then scaled up to match the others.</li>
-      <li>Other names that are ordinary words, such as &ldquo;reference&rdquo; for Allusion or &ldquo;saying&rdquo; for Aphorism, are not looked up at all.</li>
-      <li>Terms used mostly in formal logic, philosophy or statistics, such as Modus Ponens, count for a quarter. The books that use them are seldom about rhetoric.</li>
+      <li>Query the device&rsquo;s name and each alias separately, case-insensitive. Each query returns the yearly share of all printed words; the shares are averaged without smoothing. The device keeps its largest count. Counts are never summed, so no book is counted twice.</li>
+      <li>Names with a commoner everyday sense (&ldquo;climax&rdquo;, &ldquo;irony&rdquo;, &ldquo;apostrophe&rdquo;, &ldquo;red herring&rdquo;) are also queried inside device phrases: &ldquo;use of&nbsp;&hellip;&rdquo; and &ldquo;rhetorical&nbsp;&hellip;&rdquo; for devices; &ldquo;&hellip;&nbsp;fallacy&rdquo;, &ldquo;&hellip;&nbsp;argument&rdquo; and &ldquo;fallacy of&nbsp;&hellip;&rdquo; for fallacies. The phrase count is multiplied by about 95 (the typical bare-name-to-phrase ratio for unambiguous devices) and capped at the bare-name count. If the phrases fall below Ngram&rsquo;s threshold, the device gets about one seventh of its bare-name count. Names whose everyday meaning is the device itself (metaphor, hyperbole, euphemism) are used unchanged.</li>
+      <li>Aliases that are ordinary words (&ldquo;reference&rdquo;, &ldquo;saying&rdquo;, &ldquo;contrast&rdquo;) or belong to another field (&ldquo;meiosis&rdquo;, &ldquo;parison&rdquo;, &ldquo;communicatio&rdquo;) are not queried. The main name always is.</li>
+      <li>Terms used mainly in formal logic, philosophy or statistics are multiplied by 0.25: Modus Ponens, Modus Tollens, Constructive Dilemma, Reductio ad Absurdum, Syllogism, Inference to the Best Explanation, Principle of Charity, Argument from Expert Opinion, Naturalistic Fallacy, Is-Ought Fallacy and Ecological Fallacy.</li>
+      <li>Ngram queries are limited to five tokens and count a hyphen as a token. A hyphenated name is queried whole, and also as the part after its last hyphen when that part is two words or more (&ldquo;Is-Ought Fallacy&rdquo; also as &ldquo;ought fallacy&rdquo;). Names too long to query are skipped. Brackets and commas are stripped first.</li>
     </ol>
-    <p>The score is not a straight line. A few devices are printed thousands of times more often than most, and a straight line would squash nearly everything near zero. So the first few mentions count for more than the last few.</p>
+
+    <h3>Score</h3>
+    <p>With <i>m</i> the final count in mentions per billion words and <i>M</i> the top device&rsquo;s count (Metaphor, about 6,300):</p>
+    <p class="formula">score = round(100&nbsp;&times;&nbsp;ln(1&nbsp;+&nbsp;<i>m</i>)&nbsp;&divide;&nbsp;ln(1&nbsp;+&nbsp;<i>M</i>))</p>
+    <p>The log scale keeps the few very frequent devices from compressing everything else toward zero.</p>
     <table class="scale">
-      <caption>Mentions to popularity. The top device, Metaphor, has about 6,300 in every billion words.</caption>
-      <thead><tr><th scope="col">Mentions in every billion words</th><th scope="col">Popularity</th></tr></thead>
+      <caption>Mentions to popularity</caption>
+      <thead><tr><th scope="col">Mentions per billion words</th><th scope="col">Popularity</th></tr></thead>
       <tbody>
         <tr><td>0</td><td>0</td></tr>
         <tr><td>1</td><td>8</td></tr>
@@ -75,80 +72,60 @@
         <tr><td>6,300</td><td>100</td></tr>
       </tbody>
     </table>
-    <p>Ngram leaves out any word or phrase found in fewer than 40 books, so many old classical names score 0 or close to it. That means they are rare in print, not that they are unimportant.</p>
-    <p>A Flipside is a name made up for this app, so no book uses it. It takes the score of the fallacy it answers.</p>
 
-    <h3>How the search works</h3>
-    <dl class="method">
-      <dt>What is counted</dt>
-      <dd>Google Books Ngram, English books, the years 1980 to 2019. For each year Ngram gives the share of all printed words that the name makes up. The yearly shares are averaged, with no smoothing between years. Capital letters are ignored, so &ldquo;irony&rdquo;, &ldquo;Irony&rdquo; and &ldquo;IRONY&rdquo; are added together.</dd>
-
-      <dt>Every name, searched separately</dt>
-      <dd>A device&rsquo;s name and each of its other names are searched one at a time, never joined into one search. The device keeps its single biggest count. Counts are not added together, so a book that uses two of its names is not counted twice. Notes in brackets and commas are removed from a name before it is searched.</dd>
-
-      <dt>Length and hyphens</dt>
-      <dd>Ngram searches phrases of up to five words, and it counts a hyphen as a word of its own, so &ldquo;is-ought&rdquo; is three. A hyphenated name is searched whole if it fits. It is also searched as the part after its last hyphen, when that part is two words or more: &ldquo;Is-Ought Fallacy&rdquo; is also searched as &ldquo;ought fallacy&rdquo;, and &ldquo;line-drawing fallacy&rdquo; as &ldquo;drawing fallacy&rdquo;. The bigger count is kept. A name too long to search at all is left out.</dd>
-
-      <dt>Other names that are left out</dt>
-      <dd>Some other names are not searched, because their count would mostly measure something else. Some are everyday words, such as &ldquo;reference&rdquo; (Allusion), &ldquo;saying&rdquo; (Aphorism) and &ldquo;contrast&rdquo; (Juxtaposition). Some mainly belong to another field, such as &ldquo;meiosis&rdquo; (cell division) and &ldquo;parison&rdquo; (glassmaking), or are Latin words common in theology and law, such as &ldquo;communicatio&rdquo;. A device&rsquo;s main name is always searched.</dd>
-
-      <dt>Names with another meaning</dt>
-      <dd>For some devices, the main name is mostly used in another sense. Examples are &ldquo;climax&rdquo;, &ldquo;apostrophe&rdquo; (the punctuation mark), &ldquo;anaphora&rdquo; (in linguistics), &ldquo;ellipsis&rdquo; and &ldquo;red herring&rdquo;. Any name used more than once in every million words is treated the same way. For these devices the name is also searched inside short phrases that point to the device:
-        <ul>
-          <li>devices: &ldquo;use of&nbsp;&hellip;&rdquo; and &ldquo;rhetorical&nbsp;&hellip;&rdquo;</li>
-          <li>fallacies: &ldquo;&hellip;&nbsp;fallacy&rdquo;, &ldquo;&hellip;&nbsp;argument&rdquo; and &ldquo;fallacy of&nbsp;&hellip;&rdquo;</li>
-        </ul>
-        These phrases are much rarer than the bare name. So their count is multiplied by about 95, the usual gap between the bare-name count and the phrase count for devices with no other meaning. The result is never allowed above the bare-name count. If even the phrases are too rare for Ngram to count, the device gets about a seventh of its bare-name count rather than nothing. Names whose everyday meaning is the device itself, such as metaphor, hyperbole and euphemism, are counted as they are.</dd>
-
-      <dt>Specialist fields</dt>
-      <dd>Some devices are named mainly in books on formal logic, philosophy or statistics rather than on rhetoric or everyday argument. Their count is multiplied by a quarter. They are Modus Ponens, Modus Tollens, Constructive Dilemma, Reductio ad Absurdum, Syllogism, Inference to the Best Explanation, Principle of Charity, Argument from Expert Opinion, Naturalistic Fallacy, Is-Ought Fallacy and Ecological Fallacy.</dd>
-
-      <dt>From count to score</dt>
-      <dd>The final count is put in mentions per billion words (<i>m</i>). The score is 100&nbsp;&times;&nbsp;ln(1&nbsp;+&nbsp;<i>m</i>)&nbsp;&divide;&nbsp;ln(1&nbsp;+&nbsp;<i>M</i>), rounded, where <i>M</i> is the top device&rsquo;s count. The table above shows what this gives.</dd>
-
-      <dt>Very rare names</dt>
-      <dd>A name found in fewer than 40 books counts as 0. Below about half a mention in every billion words, the differences are too small to mean much. Those devices score between 0 and 5, and their order among themselves should not be read closely.</dd>
-    </dl>
+    <h3>Limits</h3>
+    <ul>
+      <li>Ngram omits phrases found in fewer than 40 books, so many classical names score 0. That means rare in print, not unimportant.</li>
+      <li>Below about 0.5 mentions per billion words, differences are noise: those devices score 0&ndash;5 and their relative order means little.</li>
+      <li>A Flipside is a name coined for this app, so no book uses it; it inherits its fallacy&rsquo;s score.</li>
+      <li>Only counts are stored; no book text is copied.</li>
+    </ul>
 
     <h3>Source</h3>
     <ul class="sources">
-      <li><a href="https://books.google.com/ngrams" target="_blank" rel="noopener noreferrer">Google Books Ngram Viewer</a>: how often a word or phrase appears in Google&rsquo;s scanned English books, year by year.</li>
+      <li><a href="https://books.google.com/ngrams" target="_blank" rel="noopener noreferrer">Google Books Ngram Viewer</a>: year-by-year frequency of words and phrases in Google&rsquo;s scanned English books.</li>
     </ul>
-    <p>Only the counts are kept. Nothing is copied from the books.</p>
   </section>
 
   <section id="confidence">
-    <h2>AI confidence labels: high, medium or low</h2>
-    <p>Each device carries a label that says how sure the AI is that the device&rsquo;s description, its example and its place in the three lists are all correct, taken together. The label is stored with the device and does not change as you browse.</p>
-    <p>A device is given three yes-or-no tests.</p>
+    <h2>AI confidence labels</h2>
+    <p>A stored label (high, medium or low): the AI&rsquo;s confidence that a device&rsquo;s description, example and placement are jointly correct. It is set when the data is built and is never recomputed in the browser.</p>
+
+    <h3>Tests</h3>
     <table class="tests">
-      <thead><tr><th scope="col">Test</th><th scope="col">It passes when&hellip;</th></tr></thead>
+      <thead><tr><th scope="col">Test</th><th scope="col">Passes when&hellip;</th></tr></thead>
       <tbody>
         <tr>
           <th scope="row">1. Description</th>
-          <td>The device has one settled meaning, and either two or more of the reference sources listed under &ldquo;Sources&rdquo; below name it, or a published book or paper (one that is not already one of those sources) gives the same meaning. Commercial and hobby sites do not count.</td>
+          <td>The device has one settled meaning, and either two or more of the reference sources under &ldquo;Sources&rdquo; name it, or a published work outside that list gives the same sense. Commercial and hobby sites do not count. A description resting on Wikipedia alone fails, even if listed sources name the device.</td>
         </tr>
         <tr>
           <th scope="row">2. Example</th>
-          <td>It has an example, and someone who did not know the device&rsquo;s name could still spot it from that example. For a fallacy, the example must plainly make the mistake.</td>
+          <td>An example exists that identifies the device without its name. A fallacy&rsquo;s example must visibly commit the error.</td>
         </tr>
         <tr>
           <th scope="row">3. Placement</th>
-          <td>Its place in the Form, Function and Category lists follows the written rules for those lists directly, without a hard choice between close headings.</td>
+          <td>Its Form, Function and Category placements follow the written criteria directly, with no judgement call between close headings.</td>
         </tr>
       </tbody>
     </table>
-    <p>The number of passes sets the label.</p>
+
+    <h3>Labels</h3>
     <table class="scale">
-      <thead><tr><th scope="col">Passes</th><th scope="col">Label</th><th scope="col">What it means</th></tr></thead>
+      <thead><tr><th scope="col">Passes</th><th scope="col">Label</th><th scope="col">Reading</th></tr></thead>
       <tbody>
         <tr><td>3</td><td>High</td><td>Safe to teach from as it stands</td></tr>
-        <tr><td>2</td><td>Medium</td><td>Worth a check before you rely on it</td></tr>
-        <tr><td>0 or 1</td><td>Low</td><td>A draft; check it before use</td></tr>
+        <tr><td>2</td><td>Medium</td><td>Check before relying on it</td></tr>
+        <tr><td>0 or 1</td><td>Low</td><td>Draft; check before use</td></tr>
       </tbody>
     </table>
-    <p>Two extra rules apply. A device that fails Test 1 can never be High, because nothing outside the AI backs its description. A Flipside is rated on its own and can reach Medium at most, because its name appears in no source.</p>
-    <p>Tests 2 and 3 are the AI&rsquo;s own judgement. The label tells you where to look more closely; it does not replace your own reading.</p>
+    <ul>
+      <li>Failing Test 1 caps a device below High: nothing outside the AI backs its description.</li>
+      <li>A description sourced only from Wikipedia fails Test 1, so its label drops: Medium at most.</li>
+      <li>A Flipside is rated on its own and caps at Medium: its name appears in no source.</li>
+      <li>Tests 2 and 3 are the AI&rsquo;s own judgement. The label says where to look closely; it does not replace reading.</li>
+    </ul>
+
     <h3>Sources</h3>
     <p class="sources-note">Lists of devices</p>
     <ul class="sources">
@@ -170,100 +147,129 @@
       <li><a href="https://iep.utm.edu/fallacy/" target="_blank" rel="noopener noreferrer">Internet Encyclopedia of Philosophy: Fallacies</a></li>
       <li><a href="https://owl.purdue.edu/owl/general_writing/academic_writing/logic_in_argumentative_writing/fallacies.html" target="_blank" rel="noopener noreferrer">Purdue OWL: Logical Fallacies</a></li>
     </ul>
-    <p>These reference sources are read for Test 1. Together with published works that name a device in the same sense, they decide whether its description is backed from outside the AI. Among those works are the <cite>Rhetorica ad Herennium</cite>, Quintilian&rsquo;s <cite>Institutio Oratoria</cite>, Henry Peacham&rsquo;s <cite>The Garden of Eloquence</cite> (1577), and some modern papers, such as Arkes and Blumer (1985) on the sunk cost fallacy. Most of the older works are found through <a href="https://rhetoric.byu.edu/" target="_blank" rel="noopener noreferrer">Silva Rhetoricae</a>.</p>
+    <p>Published works that name a device in the same sense also satisfy Test 1: the <cite>Rhetorica ad Herennium</cite>, Quintilian&rsquo;s <cite>Institutio Oratoria</cite>, Peacham&rsquo;s <cite>The Garden of Eloquence</cite> (1577), and modern papers such as Arkes and Blumer (1985) on the sunk cost fallacy. Most older works are located through <a href="https://rhetoric.byu.edu/" target="_blank" rel="noopener noreferrer">Silva Rhetoricae</a>.</p>
   </section>
 
   <section id="descriptions">
-    <h2>Descriptions: written by the AI, checked against published ones</h2>
-    <p>Every description in this app (shown in the display options as the definition) is written by the AI, not copied from a book. Because of that, each one is compared with what published sources say, wherever a source can be found.</p>
+    <h2>Descriptions</h2>
+    <p>Every description is written by the AI, not copied, and written against the sources: it checks them when writing a description, wherever a source exists. The display options call it the definition.</p>
 
-    <h3>How a description is written</h3>
-    <p>A description is one or two plain sentences. It says what the device is and what it does to the person reading or listening. It names the defining move and does not lean on an example. A Flipside is written differently: it describes the same move as its fallacy, then says what makes this use fair, and it is phrased as an instruction to the speaker, such as &ldquo;Cite a genuine expert&hellip;&rdquo;.</p>
+    <h3>Form</h3>
+    <p>One or two sentences: what the device is and what it does to the reader or listener. It states the defining move, not an example. A Flipside describes the same move as its fallacy, then what makes this use fair, as an instruction to the speaker (&ldquo;Cite a genuine expert&hellip;&rdquo;).</p>
 
-    <h3>How it is checked</h3>
+    <h3>Verification</h3>
+    <p>Sources are tried in this order, stopping at the first that defines the device:</p>
     <ol>
-      <li>Find what the sources say. Look first in handbooks, ancient texts and scholarly papers, such as the <cite>Rhetorica ad Herennium</cite>, Quintilian and Peacham. Then look in the reference pages listed under &ldquo;Sources&rdquo; above; for fallacies these include the Internet Encyclopedia of Philosophy and LogicalFallacies.org. Wikipedia is used only to find books and papers, never as the check itself. Commercial and hobby sites do not count.</li>
-      <li>Read the source itself: the entry or the passage. A search summary, an AI summary or memory is not a check.</li>
-      <li>Put the two descriptions side by side and give the result one of four names.</li>
+      <li><strong>The confidence sources</strong> listed below (the ones behind Test 1 in &sect;2), plus published works that name the device in the same sense (<cite>Rhetorica ad Herennium</cite>, Quintilian, Peacham). Commercial and hobby sites do not count.</li>
+      <li><strong>Wikipedia</strong>, only if none of those defines it. A Wikipedia-only description fails Test 1, because Wikipedia never counts as a source there, so the device&rsquo;s confidence label is lowered (Medium at most).</li>
+      <li><strong>Luke</strong>, if neither defines it. The AI says which sources it tried and asks; it does not write a description unaided.</li>
     </ol>
+    <p>Whichever source is used, the AI reads the entry or passage itself. A search summary, AI summary or memory is not a check. The two definitions are then compared and given one result:</p>
     <table class="tests">
-      <thead><tr><th scope="col">Result</th><th scope="col">It means&hellip;</th></tr></thead>
+      <thead><tr><th scope="col">Result</th><th scope="col">Meaning</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Agrees</th><td>The same meaning, with nothing claimed that the source does not claim.</td></tr>
-        <tr><th scope="row">Narrower</th><td>Leaves out part of what the source covers.</td></tr>
-        <tr><th scope="row">Broader</th><td>Claims more than the source does.</td></tr>
+        <tr><th scope="row">Agrees</th><td>Same sense; nothing claimed beyond the source.</td></tr>
+        <tr><th scope="row">Narrower</th><td>Omits part of the source&rsquo;s sense.</td></tr>
+        <tr><th scope="row">Broader</th><td>Claims more than the source.</td></tr>
         <tr><th scope="row">Different sense</th><td>The source means something else by the same name.</td></tr>
       </tbody>
     </table>
-    <p>Only &ldquo;agrees&rdquo; counts as checked. A description that is narrower, broader or a different sense is rewritten with the smallest change that brings it back into line. A description that agrees is left alone, even if it could be worded better. After a rewrite, the device&rsquo;s examples and its place in the lists are checked again, and its AI confidence label is set again.</p>
+    <p>Only &ldquo;agrees&rdquo; counts as checked. Any other result is fixed with the smallest edit that restores agreement; an agreeing description is left alone. After an edit, the device&rsquo;s examples and placements are rechecked and its label is re-scored.</p>
 
-    <h3>When sources disagree, or say nothing</h3>
-    <p>Some names have rival meanings. The description then gives the main meaning first and names the other in one closing sentence. If the sources cannot be reconciled, the device fails Test 1.</p>
-    <p>Some devices appear in no source at all. That is always true of a Flipside, because its name is made up for this app, so its description cannot be compared with any published one. It is checked against its fallacy&rsquo;s checked description instead: take away only the fault, and what is left must still be the same move. For any other device with no source, the description counts as unchecked. The app never cites a source that was not read.</p>
+    <h3>Disputed or unsourced</h3>
+    <ul>
+      <li><strong>Rival senses.</strong> The main sense comes first, the other in one closing sentence. If the sources cannot be reconciled, the device fails Test 1.</li>
+      <li><strong>Flipsides.</strong> The coined name appears in no source, so the description is checked against its fallacy&rsquo;s verified one: remove only the fault, and what remains must still be the same move.</li>
+      <li><strong>Other unsourced devices.</strong> Luke is asked (see above); until he answers, the description counts as unchecked. The app never cites a source that was not read.</li>
+    </ul>
 
-    <h3>What &ldquo;checked&rdquo; means here</h3>
-    <p>The sources themselves disagree about how to define some fallacies, so &ldquo;agrees&rdquo; means &ldquo;matches the sources that were read&rdquo;, not that the question is settled. The app does not mark each description as checked or unchecked. The AI confidence label is the signal it shows: a device whose description has no outside backing cannot be High.</p>
+    <h3>What &ldquo;checked&rdquo; means</h3>
+    <p>&ldquo;Agrees&rdquo; means it matches the sources read; where sources themselves disagree, the question is not settled. The app stores no per-description flag. The AI confidence label is the visible signal.</p>
+
+    <h3>Sources</h3>
+    <p>The same sources as Test 1 in &sect;2.</p>
+    <p class="sources-note">Lists of devices</p>
+    <ul class="sources">
+      <li><a href="https://www.americanrhetoric.com/rhetoricaldevicesinsound.htm" target="_blank" rel="noopener noreferrer">American Rhetoric: Rhetorical Devices in Sound</a></li>
+      <li><a href="https://reedsy.com/blog/literary-devices/" target="_blank" rel="noopener noreferrer">Reedsy: Literary Devices</a></li>
+      <li><a href="https://reedsy.com/blog/rhetorical-devices/" target="_blank" rel="noopener noreferrer">Reedsy: Rhetorical Devices</a></li>
+      <li><a href="https://www.litcharts.com/literary-devices-and-terms" target="_blank" rel="noopener noreferrer">LitCharts: Literary Devices and Terms</a></li>
+    </ul>
+    <p class="sources-note">Reference pages</p>
+    <ul class="sources">
+      <li><a href="https://rhetoric.byu.edu/Figures/flowers.htm" target="_blank" rel="noopener noreferrer">Silva Rhetoricae (Brigham Young University): figures of speech</a></li>
+      <li>Purdue OWL: <a href="https://owl.purdue.edu/owl/general_writing/academic_writing/establishing_arguments/rhetorical_strategies.html" target="_blank" rel="noopener noreferrer">Rhetorical strategies</a> and <a href="https://owl.purdue.edu/owl/subject_specific_writing/writing_in_literature/literary_terms/index.html" target="_blank" rel="noopener noreferrer">Literary terms</a></li>
+      <li>Stanford Encyclopedia of Philosophy: <a href="https://plato.stanford.edu/entries/aristotle-rhetoric/" target="_blank" rel="noopener noreferrer">Aristotle&rsquo;s Rhetoric</a> and <a href="https://plato.stanford.edu/entries/fallacies/" target="_blank" rel="noopener noreferrer">Fallacies</a></li>
+      <li><a href="https://mcl.as.uky.edu/cla-glossary-rhetorical-terms" target="_blank" rel="noopener noreferrer">University of Kentucky: Glossary of Rhetorical Terms</a></li>
+    </ul>
+    <p class="sources-note">Fallacies only</p>
+    <ul class="sources">
+      <li><a href="https://www.logicalfallacies.org/" target="_blank" rel="noopener noreferrer">LogicalFallacies.org</a></li>
+      <li><a href="https://iep.utm.edu/fallacy/" target="_blank" rel="noopener noreferrer">Internet Encyclopedia of Philosophy: Fallacies</a></li>
+      <li><a href="https://owl.purdue.edu/owl/general_writing/academic_writing/logic_in_argumentative_writing/fallacies.html" target="_blank" rel="noopener noreferrer">Purdue OWL: Logical Fallacies</a></li>
+    </ul>
   </section>
 
   <section id="examples">
-    <h2>AI examples: one written sentence for each device</h2>
-    <p>Every device has exactly one example that the AI wrote itself. It sits beside the device&rsquo;s real quote (see the next section) and is never replaced by one. Its job is to show the description at work in a single plain sentence.</p>
+    <h2>AI examples</h2>
+    <p>Every device has exactly one example that the AI wrote itself, shown beside its real quote (&sect;5) and never replaced by it. It illustrates the description in a single plain sentence.</p>
 
-    <h3>What an AI example does</h3>
+    <h3>Requirements</h3>
     <ul>
-      <li><strong>Shows the whole description.</strong> Every part of the description is visible in the example, doing the job the description names. Someone who did not know the device&rsquo;s name could still pick it out.</li>
-      <li><strong>Shows that device and no other.</strong> If the sentence happens to contain another device, the wording is changed so that it does not.</li>
-      <li><strong>Marks the part the device depends on.</strong> If the device turns on a particular word, syllable, letter, sound, word ending, word order or punctuation mark, exactly that part is set in italics and nothing else. A device that depends on no one part, such as a fallacy whose whole argument is the mistake, has no italics.</li>
-      <li><strong>Makes the mistake, or avoids it.</strong> A fallacy&rsquo;s example commits the error as an argument and does not merely describe it. A Flipside&rsquo;s example makes the same move without the fault, with the evidence or reasoning in view.</li>
-      <li><strong>Stands alone and stays short.</strong> It works without surrounding text, in the fewest words that still do the job. At most one short closing note in brackets may name the moving parts or say which sense is meant; it never names the device itself.</li>
+      <li><strong>Complete and exclusive.</strong> Every part of the description is visible, and no other device is. Someone who did not know the name could identify it.</li>
+      <li><strong>Marked.</strong> The part the device depends on (letter, syllable, word, ending, word order, punctuation) is set in italics, and only that part. A device that depends on no one part has none.</li>
+      <li><strong>Fallacies and Flipsides.</strong> A fallacy&rsquo;s example commits the error as an argument. A Flipside&rsquo;s makes the same move without the fault, with its evidence in view.</li>
+      <li><strong>Self-contained.</strong> Shortest wording that works; at most one short bracketed note, which never names the device.</li>
+      <li><strong>Not a quotation.</strong> It is never credited to anyone: no author, work or date, so it cannot pass as a real quote.</li>
+      <li><strong>Clean and English.</strong> No swear words or sexual content. A device that depends on another language gets no AI example, only a real quote with a translation.</li>
     </ul>
 
-    <h3>What an AI example is not</h3>
-    <p>It is not passed off as a quotation. It names no author, no book and no date, and it is never credited to anyone. That is how you can tell it apart from a real quote at a glance. It is also written in clean language, with no swear words and no sexual content, and in English only. A device that depends on another language, such as Latin word endings, has no AI example, because only a real quote with a translation can show it properly.</p>
-
-    <h3>How it is checked</h3>
-    <p>The description and the example are put side by side, and each part of the description is ticked off against the example. Letters and word endings that are set in italics are counted, and a repeated word is read aloud in the sentence. If any part is missing or extra, the example is rewritten. When a description changes, its AI example is checked against the new wording.</p>
+    <h3>Check</h3>
+    <p>Each part of the description is ticked off against the example. Italicised letters and endings are counted; repeated words are read aloud in the sentence. A missing or extra part means a rewrite, and a changed description means rechecking its example.</p>
   </section>
 
   <section id="quotes">
-    <h2>Real quotes: words someone actually wrote or said</h2>
-    <p>Where one can be found, a device also carries one real quote: words that a named person, or a long-standing common saying, really used. A real quote shows the device in use in the wild, which an AI example cannot. A device with no real quote yet shows only its AI example. No quote is ever invented to fill the gap.</p>
+    <h2>Real quotes</h2>
+    <p>Where one exists, a device carries one real quote: words a named person, or a long-standing common saying, actually used. It shows the device in use. A device without one shows only its AI example. No quote is ever invented.</p>
 
-    <h3>What a quote must do</h3>
+    <h3>Selection</h3>
     <ul>
-      <li><strong>Match the device cleanly.</strong> The quote must contain every part of the description and be built on the device, not just mention it or use it in passing. Someone who did not know the device&rsquo;s name could identify it from the quote alone, without needing a note about the author or the occasion.</li>
-      <li><strong>Be the clearest instance.</strong> Among several candidates, the most standard, handbook-style one is preferred over a more famous but looser one. Between two that match equally well, the shorter wins. Lead-in and trailing sentences are cut, and separate parts are joined with an ellipsis.</li>
-      <li><strong>Behave like the device.</strong> A fallacy&rsquo;s quote makes the mistake as an argument. A Flipside&rsquo;s quote shows the fair use, with its evidence or reasoning visible.</li>
-      <li><strong>Use clean language.</strong> A quote with swear words or sexual content is not used, even if it is the best match, and it is not edited, because an altered quote is no longer a real one. Other offensive material, such as hostile views or propaganda, is allowed where it is the best verified match.</li>
+      <li><strong>Clean match.</strong> Every part of the description is present, the device is what the quote is built on, and the device can be identified from the quote alone.</li>
+      <li><strong>Best instance.</strong> The handbook-standard instance beats a more famous but looser one. Take the shortest passage that still works, joining separate parts with an ellipsis.</li>
+      <li><strong>Behaviour.</strong> A fallacy&rsquo;s quote commits the error as an argument. A Flipside&rsquo;s shows the fair use with its evidence visible.</li>
+      <li><strong>Clean language.</strong> A quote with swear words or sexual content is not used and is not edited, since an altered quote is no longer a real one. Other offensive material, such as hostile views or propaganda, is allowed where it is the best verified match.</li>
     </ul>
 
-    <h3>How a quote is checked</h3>
-    <p>Before it is added, the wording, the speaker and the place it comes from (chapter, scene or date) are checked against the work itself: the full text, an official transcript, or a reputable edition or scan. A search summary, a quotation website or memory is not a check. A song is checked against its official lyrics. A folk saying, riddle or other common saying with no single author must appear in at least two independent collections of sayings, and the earliest form found is given. If an author turns up, that person is credited instead.</p>
+    <h3>Verification</h3>
+    <p>The wording, speaker and locator (chapter, scene or date) are checked against the work itself: full text, official transcript, or a reputable edition or scan. A search summary, quotation site or memory is not a check. A song is checked against its official lyrics. A common saying with no single author must appear in at least two independent collections, with its earliest form given; if an author turns up, that person is credited.</p>
 
     <h3>How a quote is credited</h3>
-    <p>The person the words belong to is named as the author. For a fictional character&rsquo;s words, the author or writer is credited and the character is named in the quote. For a song, the songwriter is credited. A common saying with no known author is marked unattributed, and its earliest source is given. The work and the passage appear in a closing note in brackets, with titles in italics. Wording such as &ldquo;attributed to&rdquo; is never used.</p>
+    <p>The author is named. A fictional character&rsquo;s words are credited to the writer, with the character named in the quote; a song to its songwriter; a saying with no known author is marked unattributed, with its earliest source. The work and passage go in a closing bracket, titles in italics. &ldquo;Attributed to&rdquo; is never used.</p>
 
     <h3>Translations</h3>
-    <p>A quote in another language is shown with an English translation by a named translator whose wording has been read. If no such translation can be used, and the device really exists in that language, the AI may translate it, and the closing note says so. Spelling that has been modernised is noted.</p>
+    <p>A foreign-language quote carries an English translation by a named translator whose wording has been read. If none is usable and the device really exists in that language, the AI may translate, and the closing note says so. Modernised spelling is noted.</p>
 
-    <h3>When the fit is only loose</h3>
-    <p>If a quote falls short on any point above, it is a stand-in. It is kept only after a proper search of several works and kinds of source turned up nothing better, and it is replaced as soon as a cleaner one is found.</p>
+    <h3>Loose fits</h3>
+    <p>A quote that falls short on any point above is a stand-in. It is kept only after a search across several works and kinds of source, and is replaced when a cleaner one turns up.</p>
   </section>
 
   <section id="methodology">
     <h2>Methodology</h2>
-    <p>Two published articles shape how this app treats a rhetorical device. They come from different fields, one from the teaching of writing and one from computing, but they agree on the main point: a device is best understood by what it does and where it is used, not only by what it is called.</p>
+    <p>Two published articles, one from writing pedagogy and one from computational linguistics, shape the model: a device is understood by what it does and where it is used, not only by its name.</p>
 
     <h3>Fallacies depend on the audience</h3>
-    <p>Anne-Marie Womack (2015) looked at thirteen rhetoric textbooks and found that most treat a fallacy as a plain mistake in logic, judged without asking who is listening. She argues this teaches students to hunt for errors and to throw out any claim that is not certain. Her alternative is to treat a fallacy as a rhetorical failure: the same move can persuade one audience and fail with another. Naming a fallacy is then an argument of its own, and it needs reasons.</p>
-    <p>Her teaching method is a Venn diagram that sets each fallacy beside the sound strategy it resembles, such as false analogy beside strong analogy, or manipulative emotion beside fair appeal to feeling. Students first say who the audience is and what that audience already knows and believes, and only then decide whether the move works. In this app, that thinking appears as the Flipside: each fallacy is paired with its fair counterpart.</p>
+    <p>Womack (2015) surveyed thirteen rhetoric textbooks and found most treat a fallacy as a context-free logic error, which trains students to hunt for errors and reject any uncertain claim. She treats it instead as a rhetorical failure: the same move persuades one audience and fails with another, so naming a fallacy is itself an argument that needs reasons. Her method sets each fallacy beside the sound strategy it resembles (false analogy beside strong analogy) and has students identify the audience&rsquo;s knowledge and beliefs first. In this app that is the Flipside: each fallacy paired with its fair counterpart.</p>
 
     <h3>Figures pair a pattern with a purpose</h3>
-    <p>Randy Allen Harris, Chrysanne Di Marco, Sebastian Ruan and Cliff O&rsquo;Reilly (2018) work from the other end. They treat a rhetorical figure as a pattern in the wording, such as a phrase repeated in reverse order, that reliably carries a certain kind of meaning. Because the pattern can be seen on the surface of the text, a computer can find it, and finding it points to the meaning, which makes figures useful for mining the arguments in large bodies of text. In this app, that is the split between Form, which is what a device looks like, and Function, which is what it does.</p>
-    <p>The authors note that figures often overlap: one sentence can hold several at once, and together they tend to reinforce one meaning. They also note that the traditional names are inconsistent, with one label used for different patterns and several labels for one pattern. Their answer is an XML mark-up scheme: tag the defining parts of each figure in a text, so that overlaps are kept intact and so that people, and then software, can learn which patterns go with which purposes.</p>
+    <p>Harris, Di Marco, Ruan and O&rsquo;Reilly (2018) define a figure as a surface pattern in the wording, such as a phrase repeated in reverse order, that reliably carries a kind of meaning. Because the pattern is visible in the text, software can detect it and infer the meaning, which supports mining arguments from large corpora. They note that figures overlap within one sentence and that traditional names are inconsistent (one label for several patterns, several labels for one). Their remedy is an XML annotation scheme that tags the defining parts of each figure, preserving overlaps. In this app that is the split between Form (the pattern) and Function (the purpose).</p>
 
-    <h3>What this means for the app</h3>
-    <p>Neither article asks for a single, final list. So the app keeps three separate lists, Category, Form and Function. Each device sits once in Form and once in Function, and in one or more Categories. Every device also shows an AI confidence label, so that a weak description or a hard choice between headings is visible and not hidden. And every device pairs an AI example, which shows its description exactly, with a real quote, which shows it in use. These are design choices made for this app. The articles support them but do not prescribe them.</p>
+    <h3>Consequences for the app</h3>
+    <ul>
+      <li>Three independent lists (Category, Form, Function), not one final taxonomy. Each device sits once in Form, once in Function, and in one or more Categories.</li>
+      <li>An AI confidence label on every device, so weak descriptions and hard placements stay visible.</li>
+      <li>An AI example (the description shown exactly) paired with a real quote (the device in use).</li>
+    </ul>
+    <p>These are design choices for this app. The articles support them but do not prescribe them.</p>
 
     <h3>Sources</h3>
     <ul class="sources">

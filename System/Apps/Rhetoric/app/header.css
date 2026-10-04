@@ -161,7 +161,8 @@ body {
   box-shadow: none;
   transform: translateY(var(--border-hairline));
 }
-.btn[aria-expanded="true"] {
+.btn[aria-expanded="true"],
+.btn[aria-pressed="true"] {
   border-color: var(--color-accent);
   background: var(--color-accent-wash);
   color: var(--color-accent);

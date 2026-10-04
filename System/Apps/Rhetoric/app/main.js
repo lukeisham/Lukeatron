@@ -5,7 +5,7 @@ import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
 import { renderCompareBar, renderCount, renderList, renderSortButtons, renderStatus } from './render.js';
 import {
-  COMPARE, EVERYTHING, FULL_VIEW, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setSortOrder,
+  COMPARE, EVERYTHING, FULL_VIEW, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setSortOrder,
   setTopicalTree, subtreeView, toggleExpanded, toggleRevealed,
 } from './state.js';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
@@ -18,7 +18,7 @@ const els = {
   showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showExplanations: $('show-explanations'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
-  compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
+  compare: $('compare'), compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
   tableNames: $('table-names'), tableDefinitions: $('table-definitions'), tableExamples: $('table-examples'),
   typeForm: $('type-form'), typeName: $('type-name'), typeStatus: $('type-status'),
   deviceCount: $('device-count'), print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
@@ -44,6 +44,7 @@ function refresh() {
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
   els.compareBar.hidden = state.sortOrder !== COMPARE;
+  els.compare.setAttribute('aria-pressed', String(state.sortOrder === COMPARE));
   if (view.mode === 'compare') renderCompareBar(document, { pick: els.comparePick, prev: els.comparePrev, next: els.compareNext, count: els.compareCount }, view);
 }
 
@@ -224,6 +225,8 @@ function bindControls() {
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
   els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
   els.showExplanations.addEventListener('change', () => { state.showExplanations = els.showExplanations.checked; applyToggles(); saveToggles(storage, state); });
+  // Like the group buttons, pressing Compare again leaves it for the everything-search state.
+  els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
   els.comparePick.addEventListener('change', () => { setComparePair(state, Number(els.comparePick.value)); refresh(); });
   els.comparePrev.addEventListener('click', () => stepCompare(-1));
   els.compareNext.addEventListener('click', () => stepCompare(1));
@@ -254,7 +257,7 @@ async function start() {
   els.tableDefinitions.checked = state.tableDefinitions;
   els.tableExamples.checked = state.tableExamples;
   els.reveal.checked = state.reveal;
-  const opening = loadDefaultSort(storage, SORTS);
+  const opening = loadDefaultSort(storage, OPENING_CHOICES);
   els.defaultSort.value = opening;
   if (opening !== NO_DEFAULT) setSortOrder(state, opening);
   bindControls();

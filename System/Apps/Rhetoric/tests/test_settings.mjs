@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from '../app/settings.js';
-import { SORTS } from '../app/state.js';
+import { OPENING_CHOICES, SORTS } from '../app/state.js';
 
 function fakeStorage(initial = {}) {
   const data = { ...initial };
@@ -33,7 +33,7 @@ test('blocked storage never throws', () => {
     saveToggles(blocked, allOff);
     saveDefaultSort(blocked, 'form');
     assert.deepEqual(loadToggles(blocked), {});
-    assert.equal(loadDefaultSort(blocked, SORTS), NO_DEFAULT);
+    assert.equal(loadDefaultSort(blocked, OPENING_CHOICES), NO_DEFAULT);
     assert.deepEqual(loadToggles(null), {});
   } finally {
     console.warn = warn;
@@ -43,7 +43,14 @@ test('blocked storage never throws', () => {
 test('the opening group is remembered only if it is a real group', () => {
   const storage = fakeStorage();
   saveDefaultSort(storage, 'function');
-  assert.equal(loadDefaultSort(storage, SORTS), 'function');
+  assert.equal(loadDefaultSort(storage, OPENING_CHOICES), 'function');
   saveDefaultSort(storage, 'bogus');
-  assert.equal(loadDefaultSort(storage, SORTS), NO_DEFAULT);
+  assert.equal(loadDefaultSort(storage, OPENING_CHOICES), NO_DEFAULT);
+});
+
+test('Compare can be the opening group although it is not a sort button', () => {
+  const storage = fakeStorage();
+  saveDefaultSort(storage, 'compare');
+  assert.equal(loadDefaultSort(storage, OPENING_CHOICES), 'compare');
+  assert.equal(OPENING_CHOICES.length, SORTS.length + 1);
 });

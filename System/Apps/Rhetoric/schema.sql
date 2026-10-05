@@ -67,15 +67,18 @@ CREATE TABLE IF NOT EXISTS device_categories (
 -- means no credit is recorded, not that the example is known to be invented. An existing
 -- database gains the column through seed/add_example_attribution.py, not through this file.
 -- `quote_date` is when a real quote's words were first said or published, as 'YYYY' or
--- 'YYYY-MM-DD'; NULL when not known (always NULL for a constructed example). The Index group sorts
--- by it and lists the NULLs last. An existing database gains it through seed/add_quote_date.py.
+-- 'YYYY-MM-DD' (AD, a year under 1000 padded to four digits: '0060'), or '-YYYY' for a year BC
+-- ('-0935' is 935 BC; there is no year 0); NULL when not known (always NULL for a constructed
+-- example). The Index group sorts by it and lists the NULLs last. An existing database gains it,
+-- and the BC form, through seed/add_quote_date.py.
 CREATE TABLE IF NOT EXISTS examples (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id    INTEGER NOT NULL REFERENCES devices(id),
     body         TEXT NOT NULL,
     attribution  TEXT NOT NULL DEFAULT 'Unattributed',
     quote_date   TEXT CHECK (quote_date IS NULL OR quote_date GLOB '[0-9][0-9][0-9][0-9]'
-                             OR quote_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]')
+                             OR quote_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'
+                             OR quote_date GLOB '-[0-9][0-9][0-9][0-9]')
 );
 
 -- A Topical Type label. Type names are unique ignoring case; `position` is the display order
@@ -94,6 +97,45 @@ CREATE TABLE IF NOT EXISTS topical_placements (
     position   INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (type_id, device_id)
 );
+
+-- REVIEW TAG. One row per device: Claude's private review ledger. It is never read by items.py,
+-- server.py or the app (they select named columns), never copied to devices.json, and never shown
+-- to Luke in the interface; only the agent reads it, straight from the database.
+--   definition_reviewed  1 once the device's definition has been read against the README
+--                        "Definitions" rules (and the sources they name); 0 until then.
+--   ai_example_reviewed  1 once the device's AI-written (constructed) example has been checked
+--                        against the README "Constructed examples" rules; 0 until then.
+--   quote_changes        how many times a credited quote has been written for the device: every
+--                        insert of, or edit to, a credited example adds 1 (a deletion adds 0), so
+--                        1 is the original quote and more than 1 means it has been replaced or edited.
+-- A device's row is created by trigger when the device is added; seed/add_device_review.py
+-- back-fills a database that already has devices. Like the Topical tables, a rebuild from scratch
+-- discards it (back it up first).
+CREATE TABLE IF NOT EXISTS device_review (
+    device_id            INTEGER PRIMARY KEY REFERENCES devices(id),
+    definition_reviewed  INTEGER NOT NULL DEFAULT 0 CHECK (definition_reviewed IN (0, 1)),
+    ai_example_reviewed  INTEGER NOT NULL DEFAULT 0 CHECK (ai_example_reviewed IN (0, 1)),
+    quote_changes        INTEGER NOT NULL DEFAULT 0 CHECK (quote_changes >= 0)
+);
+
+CREATE TRIGGER IF NOT EXISTS trg_device_review_new_device AFTER INSERT ON devices
+BEGIN
+    INSERT OR IGNORE INTO device_review (device_id) VALUES (NEW.id);
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_device_review_quote_added AFTER INSERT ON examples
+WHEN NEW.attribution <> 'Unattributed'
+BEGIN
+    INSERT OR IGNORE INTO device_review (device_id) VALUES (NEW.device_id);
+    UPDATE device_review SET quote_changes = quote_changes + 1 WHERE device_id = NEW.device_id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_device_review_quote_edited AFTER UPDATE OF body, attribution ON examples
+WHEN NEW.attribution <> 'Unattributed' AND (NEW.body IS NOT OLD.body OR NEW.attribution IS NOT OLD.attribution)
+BEGIN
+    INSERT OR IGNORE INTO device_review (device_id) VALUES (NEW.device_id);
+    UPDATE device_review SET quote_changes = quote_changes + 1 WHERE device_id = NEW.device_id;
+END;
 
 CREATE TABLE IF NOT EXISTS grammar_labels (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,

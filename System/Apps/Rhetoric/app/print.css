@@ -1,11 +1,15 @@
 /* ==========================================================================
    print.css — prints exactly what is on screen: the current view only, without
-   the toolbar or the Home link. Tokens: --space-*, --color-ink.
+   the toolbar, the Home link, the Index and Compare control bars, the jump links,
+   or the AI-confidence badges. Tokens: --space-*, --color-ink.
    ========================================================================== */
 @media print {
   .toolbar,
   .ornament,
   .workspace-bar,
+  .index-bar,
+  .compare-bar,
+  .contents,
   .masthead-subrule,
   .confidence-badge,
   .reveal-toggle,

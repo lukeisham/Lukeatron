@@ -30,7 +30,8 @@
    },
    {
     "text": "\"What's done cannot be undone.\" (Lady Macbeth, in Shakespeare, *Macbeth*, 5.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [
@@ -56,6 +57,11 @@
    {
     "text": "\"No words could describe how grateful I am.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"And I will luve thee still, my dear, / Till a' the seas gang dry.\" (Burns, \"A Red, Red Rose\")",
+    "attribution": "Robert Burns",
+    "date": "1794"
    }
   ],
   "aliases": [
@@ -99,12 +105,13 @@
   "definition": "Repetition of the same initial sound (usually a consonant) in nearby words, giving rhythm and emphasis.",
   "examples": [
    {
-    "text": "\"Peter's proud pursuit of petty power\"",
+    "text": "\"*P*eter's *p*roud *p*ursuit of *p*etty *p*ower\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"The fair breeze blew, the white foam flew, / The furrow followed free\" (Coleridge, *The Rime of the Ancient Mariner*, Part II)",
-    "attribution": "Samuel Taylor Coleridge"
+    "attribution": "Samuel Taylor Coleridge",
+    "date": "1798"
    }
   ],
   "aliases": [
@@ -124,12 +131,13 @@
   "definition": "A brief, indirect reference to a person, event, text or idea that the audience is expected to recognise, borrowing its weight without explaining it.",
   "examples": [
    {
-    "text": "Calling a costly, doomed effort \"his Waterloo\"",
+    "text": "Calling a costly, doomed effort \"*his Waterloo*\"",
     "attribution": "Unattributed"
    },
    {
-    "text": "\"No! I am not Prince Hamlet, nor was meant to be; / Am an attendant lord, one that will do…\" (Eliot, \"The Love Song of J. Alfred Prufrock\")",
-    "attribution": "T. S. Eliot"
+    "text": "\"Five score years ago, a great American, in whose symbolic shadow we stand today, signed the Emancipation Proclamation.\" (Martin Luther King Jr., \"I Have a Dream,\" 28 August 1963)",
+    "attribution": "Martin Luther King Jr.",
+    "date": "1963-08-28"
    }
   ],
   "aliases": [
@@ -170,6 +178,11 @@
    {
     "text": "\"Fear leads to anger; anger leads to hate; hate leads to suffering.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I will lift up mine eyes unto the hills, from whence cometh my help. My help cometh from the LORD…\" (Psalm 121:1–2, King James Version)",
+    "attribution": "Unattributed",
+    "date": "-0700"
    }
   ],
   "aliases": [
@@ -188,13 +201,13 @@
   "definition": "An argument or explanation that draws a parallel between two things on the ground of shared features, in order to clarify or support a claim about the less familiar one.",
   "examples": [
    {
-    "text": "\"A firewall is to a network what a locked door is to a house.\"",
+    "text": "\"A *firewall* is to a network what a *locked door* is to a house.\"",
     "attribution": "Unattributed"
    },
    {
-    "text": "\"Why may we not say that all automata (engines that move themselves by springs and wheels as doth a watch) have an artificial life? For what is the heart, but a spring; and the nerves, but so many strings; and the joints, but so many wheels, giving motion to the whole body, such as was intended by the Artificer?\" (Hobbes, *Leviathan*, Introduction, 1651; spelling modernised)",
-    "attribution": "Thomas Hobbes",
-    "date": "1651"
+    "text": "\"Just as electricity transformed almost everything 100 years ago, today I actually have a hard time thinking of an industry that I don't think AI will transform in the next several years.\" (Andrew Ng's electricity analogy for AI, Stanford GSB, 2017)",
+    "attribution": "Andrew Ng",
+    "date": "2017"
    }
   ],
   "aliases": [
@@ -216,6 +229,10 @@
     "text": "\"We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets…\" (Churchill, House of Commons speech, 4 June 1940)",
     "attribution": "Winston Churchill",
     "date": "1940-06-04"
+   },
+   {
+    "text": "*Without* sleep, *without* food, *without* hope, they walked on.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -279,7 +296,8 @@
    },
    {
     "text": "\"Put out the light, and then put out the light\" (Shakespeare, *Othello*, 5.2; Othello means first to snuff the candle, then to kill Desdemona)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1604"
    }
   ],
   "aliases": [
@@ -339,12 +357,13 @@
   "definition": "Attributing human form, feelings or behaviour to non-human beings, objects or forces. Related to but distinct from personification, which is the rhetorical figure of speaking of things as persons.",
   "examples": [
    {
-    "text": "\"The angry sea flung itself at the cliffs.\"",
+    "text": "The fox *put on his spectacles* and *lectured* the hens on honesty.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"The Mole had been working very hard all the morning, spring-cleaning his little home. First with brooms, then with dusters; then on ladders and steps and chairs, with a brush and a pail of whitewash; till he had dust in his throat and eyes, and splashes of whitewash all over his black fur, and an aching back and weary arms.\" (Grahame, *The Wind in the Willows*, ch. 1)",
-    "attribution": "Kenneth Grahame"
+    "attribution": "Kenneth Grahame",
+    "date": "1908"
    }
   ],
   "aliases": [
@@ -355,7 +374,7 @@
   "category": "Resemblance",
   "form": "Replacement > Substitution",
   "function": "Clarity > Concrete Grounding",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Antimetabole",
@@ -382,7 +401,7 @@
   "definition": "Using a word to mean its opposite, usually ironically, so the plain contradiction signals the real meaning.",
   "examples": [
    {
-    "text": "Calling a very tall man \"Shorty\"",
+    "text": "Calling a very tall man \"*Shorty*\"",
     "attribution": "Unattributed"
    }
   ],
@@ -403,7 +422,12 @@
   "examples": [
    {
     "text": "\"If you had known the virtue of the ring, / Or half her worthiness that gave the ring, / Or your own honour to contain the ring\" (Shakespeare, *The Merchant of Venice*, 5.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1598"
+   },
+   {
+    "text": "When I was young I wanted *freedom*; when I married I wanted *freedom*; now I am old, and I still want *freedom*.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -427,6 +451,10 @@
     "text": "\"That's one small step for man, one giant leap for mankind.\" (Armstrong, Apollo 11 moon landing, 20 July 1969)",
     "attribution": "Neil Armstrong",
     "date": "1969-07-20"
+   },
+   {
+    "text": "He was *quick* to promise and *slow* to deliver.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -475,7 +503,8 @@
    },
    {
     "text": "\"To err is human, to forgive, divine.\" (Pope, *An Essay on Criticism*, Part II)",
-    "attribution": "Alexander Pope"
+    "attribution": "Alexander Pope",
+    "date": "1711"
    }
   ],
   "aliases": [
@@ -516,7 +545,7 @@
   "definition": "Raising a point by claiming not to raise it ('not to mention…'); often used interchangeably with paralipsis. In Silva's classical sense it is a different figure, rejecting several reasons in favour of one.",
   "examples": [
    {
-    "text": "\"I won't bring up his record of broken promises.\"",
+    "text": "\"I *won't bring up* his record of broken promises.\"",
     "attribution": "Unattributed"
    }
   ],
@@ -537,12 +566,13 @@
   "definition": "Expressing real or pretended doubt about how to proceed or what to say, sometimes asking the audience what to do.",
   "examples": [
    {
-    "text": "\"Where do I even begin? With the cost, or the delay, or the lies?\"",
+    "text": "\"*Where do I even begin?* With the cost, or the delay, or the lies?\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Yet what I shall choose I wot not. For I am in a strait betwixt two\" (Philippians 1:22–23, KJV)",
-    "attribution": "Paul"
+    "attribution": "Paul",
+    "date": "0062"
    }
   ],
   "aliases": [
@@ -564,6 +594,11 @@
    {
     "text": "\"If you ever do that again, I'll — well, you'll see.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I will have such revenges on you both / That all the world shall,—I will do such things,— / What they are yet, I know not; but they shall be / The terrors of the earth.\" (Lear, in Shakespeare, *King Lear*, 2.4)",
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [
@@ -584,7 +619,12 @@
   "examples": [
    {
     "text": "\"O mighty Caesar! dost thou lie so low?\" (Shakespeare, *Julius Caesar*, 3.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
+   },
+   {
+    "text": "Friends, the vote is lost. *O Justice*, where have you fled?",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -605,6 +645,11 @@
    {
     "text": "\"Paris, the city of light, drew crowds all summer.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"The Lord, in requital, / Wielder of Glory, with world-honor blessed him.\" (*Beowulf*, trans. Hall, section I; *The Lord* and *Wielder of Glory* name the same God)",
+    "attribution": "Unattributed",
+    "date": "1000"
    }
   ],
   "aliases": [
@@ -628,7 +673,8 @@
    },
    {
     "text": "\"Hear the mellow wedding-bells, / Golden bells! / What a world of happiness their harmony foretells!\" (Poe, \"The Bells\", stanza II)",
-    "attribution": "Edgar Allan Poe"
+    "attribution": "Edgar Allan Poe",
+    "date": "1849"
    }
   ],
   "aliases": [
@@ -671,7 +717,12 @@
   "examples": [
    {
     "text": "\"*Veni, vidi, vici.*\" (\"I came, I saw, I conquered\"; Julius Caesar)",
-    "attribution": "Julius Caesar"
+    "attribution": "Julius Caesar",
+    "date": "-0047"
+   },
+   {
+    "text": "He opened the door, crossed the room, lifted the lid, froze.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -729,12 +780,13 @@
   "definition": "Using a word in a way that departs from its proper sense, either from necessity (no proper term exists) or as a strained, deliberately jarring figure.",
   "examples": [
    {
-    "text": "\"The foot of the mountain\" / \"a table's leg\" (dead-metaphor gap-filling)",
+    "text": "\"The *foot* of the mountain\" / \"a table's *leg*\" (dead-metaphor gap-filling)",
     "attribution": "Unattributed"
    },
    {
     "text": "\"I will speak daggers to her, but use none\" (Hamlet, of his coming interview with his mother, in Shakespeare, *Hamlet*, 3.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1600"
    }
   ],
   "aliases": [
@@ -753,12 +805,13 @@
   "definition": "Talking around a thing with many words rather than naming it directly, for politeness, evasion, emphasis or style.",
   "examples": [
    {
-    "text": "\"the place where one goes to wash one's hands\" for restroom",
+    "text": "\"*the place where one goes to wash one's hands*\" for restroom",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Under the impression that your peregrinations in this metropolis have not as yet been extensive, and that you might have some difficulty in penetrating the arcana of the Modern Babylon in the direction of the City Road … in short, that you might lose yourself — I shall be happy to call this evening, and install you in the knowledge of the nearest way.\" (Mr. Micawber to the boy David, in Dickens, *David Copperfield*, ch. 11)",
-    "attribution": "Charles Dickens"
+    "attribution": "Charles Dickens",
+    "date": "1850"
    }
   ],
   "aliases": [
@@ -778,12 +831,13 @@
   "definition": "Arranging words, clauses or ideas in ascending order of importance; the rhetorical figure (gradatio), distinct from the plot climax.",
   "examples": [
    {
-    "text": "\"He ran, he sprinted, he flew across the line.\"",
+    "text": "\"He *ran*, he *sprinted*, he *flew* across the line.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"…tribulation worketh patience; And patience, experience; and experience, hope\" (Romans 5:3–4, KJV)",
-    "attribution": "Paul"
+    "attribution": "Paul",
+    "date": "0057"
    }
   ],
   "aliases": [
@@ -818,12 +872,13 @@
   "definition": "Piling up words or phrases of different meaning but similar emotional force, to amplify feeling.",
   "examples": [
    {
-    "text": "\"A liar, a cheat, a thief, a coward, a disgrace.\"",
+    "text": "\"A *liar*, a *cheat*, a *thief*, a *coward*, a *disgrace*.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Oh! But he was a tight-fisted hand at the grind-stone, Scrooge! a squeezing, wrenching, grasping, scraping, clutching, covetous, old sinner!\" (Dickens, *A Christmas Carol*, Stave One)",
-    "attribution": "Charles Dickens"
+    "attribution": "Charles Dickens",
+    "date": "1843"
    }
   ],
   "aliases": [
@@ -843,7 +898,7 @@
   "definition": "Repeating consonant sounds, especially final ones, in nearby words with differing vowels; a term mostly from modern poetics.",
   "examples": [
    {
-    "text": "\"the lonely, tall, ill-tempered hill\"",
+    "text": "\"the *l*one*l*y, ta*ll*, i*ll*-tempered hi*ll*\"",
     "attribution": "Unattributed"
    }
   ],
@@ -888,7 +943,8 @@
    },
    {
     "text": "\"Blow, winds, and crack your cheeks! Rage! blow!\" (Lear, in Shakespeare, *King Lear*, 3.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [
@@ -906,8 +962,13 @@
   "definition": "The choice and arrangement of words in speech or writing, including how formal, concrete or emotionally loaded they are, and the effect this has on the audience.",
   "examples": [
    {
-    "text": "Calling a plan \"cheap\" rather than \"affordable\" or \"thrifty\" makes the same claim sound like a criticism.",
+    "text": "Calling a plan \"*cheap*\" rather than \"affordable\" or \"thrifty\" makes the same claim sound like a criticism.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"What passing-bells for these who die as cattle? / Only the monstrous anger of the guns.\" (Owen, \"Anthem for Doomed Youth\", lines 1–2)",
+    "attribution": "Wilfred Owen",
+    "date": "1920"
    }
   ],
   "aliases": [
@@ -926,7 +987,7 @@
   "definition": "Pausing to say which sense of a term is meant, usually by marking it off from other senses, so the argument cannot trade on an ambiguity.",
   "examples": [
    {
-    "text": "\"By 'freedom' I do not mean licence; I mean the liberty of citizens living under law.\"",
+    "text": "\"By '*freedom*' I do not mean licence; I mean the liberty of citizens living under law.\"",
     "attribution": "Unattributed"
    },
    {
@@ -944,7 +1005,7 @@
   "category": "Inventio",
   "form": "Semantic Play > Ambiguity",
   "function": "Clarity > Clarity",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Double Entendre",
@@ -964,7 +1025,7 @@
   "category": "Extended Meaning",
   "form": "Semantic Play > Ambiguity",
   "function": "Aesthetic > Wit & Humor",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Dramatic Irony",
@@ -1014,7 +1075,8 @@
    },
    {
     "text": "\"Some glory in their birth, some in their skill, / Some in their wealth, some in their body's force\" (Shakespeare, Sonnet 91; \"glory\" is left out after each \"some\")",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1609"
    }
   ],
   "aliases": [
@@ -1052,8 +1114,13 @@
   "definition": "Breaking a subject into its parts, causes or effects and listing them one after another.",
   "examples": [
    {
-    "text": "\"The storm took our roof, our fence, our orchard and our power.\"",
+    "text": "\"The storm took our *roof*, our *fence*, our *orchard* and our *power*.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"who reestablished Eridu and purified the worship of E-apsu; … who enriched Ur; … who again laid the foundations of Sippara; … the warrior who guarded Larsa and renewed E-babbar, with Shamash as his helper; the lord who granted new life to Uruk\" (Hammurabi, in the prologue to his laws, trans. L. W. King)",
+    "attribution": "Hammurabi",
+    "date": "-1753"
    }
   ],
   "aliases": [
@@ -1072,7 +1139,8 @@
   "examples": [
    {
     "text": "\"Once more unto the breach, dear friends, once more\" (Shakespeare, *Henry V*, 3.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [
@@ -1091,7 +1159,12 @@
   "examples": [
    {
     "text": "\"I can resist everything except temptation.\" (Wilde, *Lady Windermere's Fan*, act 1)",
-    "attribution": "Oscar Wilde"
+    "attribution": "Oscar Wilde",
+    "date": "1892"
+   },
+   {
+    "text": "Praise is cheap, which is why so few can afford to spend it.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -1109,16 +1182,13 @@
   "definition": "A question asked not to elicit an answer but to make a point, persuade, or provoke thought, with the answer often implied or obvious to the audience.",
   "examples": [
    {
-    "text": "\"Isn't it obvious?\" — implying the answer is yes without genuinely seeking response",
+    "text": "\"Isn't it obvious?\"",
     "attribution": "Unattributed"
    },
    {
-    "text": "\"Do you think I'm stupid?\" — not seeking clarification, but expressing offense",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"Hath not a Jew eyes?… If you prick us, do we not bleed? If you tickle us, do we not laugh? If you poison us, do we not die? And if you wrong us, shall we not revenge?\" (Shylock, in Shakespeare, *The Merchant of Venice*, 3.1)",
-    "attribution": "William Shakespeare"
+    "text": "\"Are you not entertained? Are you not entertained? Is this not why you are here?\" (Maximus, in *Gladiator*, 2000)",
+    "attribution": "Maximus",
+    "date": "2000"
    }
   ],
   "aliases": [
@@ -1139,7 +1209,7 @@
   "definition": "Using a mild or indirect expression in place of one that sounds harsh, blunt or taboo.",
   "examples": [
    {
-    "text": "Saying a colleague was \"let go\" instead of \"fired\".",
+    "text": "Saying a colleague was \"*let go*\" instead of \"fired\".",
     "attribution": "Unattributed"
    },
    {
@@ -1165,7 +1235,12 @@
   "examples": [
    {
     "text": "\"The moan of doves in immemorial elms, / And murmuring of innumerable bees.\" (Tennyson, *The Princess*, part 7)",
-    "attribution": "Alfred, Lord Tennyson"
+    "attribution": "Alfred, Lord Tennyson",
+    "date": "1847"
+   },
+   {
+    "text": "The mellow evening hummed along the lulling shore.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -1176,7 +1251,7 @@
   "category": "Pronuntiatio",
   "form": "Sonic",
   "function": "Aesthetic > Aesthetic Effect",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Eutrepismus",
@@ -1208,12 +1283,13 @@
   "definition": "Citing a brief story, historical case or specific instance to illustrate or support a point.",
   "examples": [
    {
-    "text": "\"Consider Kodak: a giant that ignored a new technology and vanished.\"",
+    "text": "\"Consider *Kodak*: a giant that ignored a new technology and vanished.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Have ye not read what David did, when he was an hungred, and they that were with him; How he entered into the house of God, and did eat the shewbread, which was not lawful for him to eat, neither for them which were with him, but only for the priests?\" (Jesus, answering the Pharisees about his disciples plucking grain on the sabbath, Matthew 12:3–4, KJV)",
-    "attribution": "Matthew"
+    "attribution": "Matthew",
+    "date": "0060"
    }
   ],
   "aliases": [
@@ -1231,12 +1307,13 @@
   "definition": "Deliberate exaggeration for emphasis, humour or effect, not meant to be taken literally.",
   "examples": [
    {
-    "text": "\"I'm so hungry I could eat a horse.\"",
+    "text": "\"I'm so hungry I could *eat a horse*.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Will all great Neptune's ocean wash this blood / Clean from my hand? No, this my hand will rather / The multitudinous seas incarnadine, / Making the green one red\" (Shakespeare, *Macbeth*, 2.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [
@@ -1259,7 +1336,8 @@
    },
    {
     "text": "\"What is honour? A word. What is in that word, 'honour'? What is that 'honour'? Air.\" (Falstaff, in Shakespeare, *1 Henry IV*, 5.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1597"
    }
   ],
   "aliases": [
@@ -1278,7 +1356,7 @@
   "definition": "Building a sentence from clauses linked by subordination, so their logical relation to one another is made explicit.",
   "examples": [
    {
-    "text": "\"Because the river had flooded, and since the bridge was closed, we turned back.\"",
+    "text": "\"*Because* the river had flooded, and *since* the bridge was closed, we turned back.\"",
     "attribution": "Unattributed"
    }
   ],
@@ -1302,7 +1380,8 @@
    },
    {
     "text": "\"He was my friend, faithful and just to me; / But Brutus says he was ambitious, / And Brutus is an honourable man.\" (Antony, in Shakespeare, *Julius Caesar*, 3.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [
@@ -1345,12 +1424,13 @@
   "definition": "Placing two things side by side, usually in contrast, so the comparison itself makes the point.",
   "examples": [
    {
-    "text": "\"Marble halls beside a row of tents.\"",
+    "text": "\"*Marble halls* beside a row of *tents*.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"The apparition of these faces in the crowd; / Petals on a wet, black bough\" (Pound, \"In a Station of the Metro\")",
-    "attribution": "Ezra Pound"
+    "attribution": "Ezra Pound",
+    "date": "1913"
    }
   ],
   "aliases": [
@@ -1361,19 +1441,20 @@
   "category": "Dispositio",
   "form": "Pairing > Juxtaposition",
   "function": "Emphasis > Emphasis",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Litotes",
   "definition": "Affirming something by denying its opposite, usually as understatement.",
   "examples": [
    {
-    "text": "\"She's no fool.\"",
+    "text": "\"She's *no fool*.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"I am a man which am a Jew of Tarsus, a city in Cilicia, a citizen of no mean city\" (Paul to the Roman captain, Acts 21:39, KJV)",
-    "attribution": "Acts"
+    "attribution": "Acts",
+    "date": "0062"
    }
   ],
   "aliases": [
@@ -1391,12 +1472,13 @@
   "definition": "A mistaken use of a word in place of a similar-sounding one, often creating an unintentionally humorous or absurd effect that reveals character or ignorance.",
   "examples": [
    {
-    "text": "\"Texas has a lot of electrical votes\" (malapropism of \"electoral votes\") — a classic example of confused word substitution",
+    "text": "He is a *pillow* of the community (for *pillar*).",
     "attribution": "Unattributed"
    },
    {
-    "text": "\"I have no delusions to that fact\" (instead of \"allusions\") — a mistake that changes meaning entirely",
-    "attribution": "Unattributed"
+    "text": "\"He is the very pine-apple of politeness!\" (Mrs. Malaprop, in Sheridan, *The Rivals*, 3.3, 1775; \"pine-apple\" for \"pinnacle\")",
+    "attribution": "Richard Brinsley Sheridan",
+    "date": "1775"
    }
   ],
   "aliases": [
@@ -1416,11 +1498,7 @@
   "definition": "A figure of speech that deliberately represents something as less important, significant, or severe than it actually is, often for ironic or humorous effect.",
   "examples": [
    {
-    "text": "\"It's just a scratch,\" said of a badly dented car.",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"It's a bit chilly,\" said during a blizzard.",
+    "text": "\"It's *just a scratch*,\" said of a badly dented car.",
     "attribution": "Unattributed"
    },
    {
@@ -1468,12 +1546,13 @@
   "definition": "A figure of speech that describes one thing as if it were another, making an implicit comparison between two unlike things to transfer qualities from one to the other.",
   "examples": [
    {
-    "text": "Time is money.",
+    "text": "Time is *money*.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"All the world's a stage\" (Shakespeare, *As You Like It*, 2.7)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [],
@@ -1489,11 +1568,7 @@
   "definition": "A rhetorical device in which the name of one thing is substituted for another thing closely associated with it, such as using 'the crown' to mean 'the king'.",
   "examples": [
    {
-    "text": "\"The White House announced new policy\" — using the building to refer to the President and administration",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"Hollywood has forgotten its roots\" — using the place to refer to the film industry",
+    "text": "\"The *White House* announced new policy\"",
     "attribution": "Unattributed"
    },
    {
@@ -1518,12 +1593,13 @@
   "definition": "A logical fallacy in which a conclusion does not follow from the premises; a statement or reasoning that lacks logical connection to what precedes it.",
   "examples": [
    {
-    "text": "\"He is a vegetarian, therefore he must be healthy.\" — the conclusion doesn't necessarily follow from the premise",
+    "text": "She likes jazz, so she will make a fine accountant.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"If you didn't sign it, that only makes the matter worse. You *must* have meant some mischief, or else you'd have signed your name like an honest man. … That *proves* his guilt.\" (the King and the Queen of Hearts, in Carroll, *Alice's Adventures in Wonderland*, ch. 12)",
-    "attribution": "Lewis Carroll"
+    "attribution": "Lewis Carroll",
+    "date": "1865"
    }
   ],
   "aliases": [
@@ -1550,7 +1626,8 @@
    },
    {
     "text": "\"Myriads of rivulets hurrying through the lawn, / The moan of doves in immemorial elms, / And murmuring of innumerable bees.\" (Tennyson, *The Princess*, VII)",
-    "attribution": "Alfred, Lord Tennyson"
+    "attribution": "Alfred, Lord Tennyson",
+    "date": "1847"
    }
   ],
   "aliases": [
@@ -1569,16 +1646,13 @@
   "definition": "A figure of speech combining two contradictory or opposite terms in close proximity to create a paradoxical meaning or dramatic effect.",
   "examples": [
    {
-    "text": "\"bittersweet\" — a combination of opposite emotional states",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"deafening silence\" — combining contradiction for dramatic impact",
+    "text": "\"*deafening silence*\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Good night, good night! parting is such sweet sorrow, / That I shall say good night till it be morrow\" (Shakespeare, *Romeo and Juliet*, 2.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1595"
    }
   ],
   "aliases": [
@@ -1600,12 +1674,9 @@
     "attribution": "Unattributed"
    },
    {
-    "text": "\"This statement is false.\" — the classic logical paradox",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"One short sleep past, we wake eternally, / And death shall be no more; Death, thou shalt die.\" (Donne, Holy Sonnet X, \"Death, be not proud\"; spelling modernised)",
-    "attribution": "John Donne"
+    "text": "\"Ever tried. Ever failed. No matter. Try again. Fail again. Fail better.\" (Samuel Beckett, *Worstward Ho*, 1983)",
+    "attribution": "Samuel Beckett",
+    "date": "1983"
    }
   ],
   "aliases": [],
@@ -1622,7 +1693,12 @@
   "examples": [
    {
     "text": "\"*Veni, vidi, vici.*\" (\"I came, I saw, I conquered\"; Julius Caesar)",
-    "attribution": "Julius Caesar"
+    "attribution": "Julius Caesar",
+    "date": "-0047"
+   },
+   {
+    "text": "*The rain stopped*, *the wind dropped*, *we went home*.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [],
@@ -1638,12 +1714,13 @@
   "definition": "An aside or interpolated remark inserted into a sentence, often set off by parentheses, dashes, or commas, that interrupts the main clause without being grammatically essential.",
   "examples": [
    {
-    "text": "\"He walked — quite slowly, I might add — to the store.\"",
+    "text": "\"He walked — *quite slowly, I might add* — to the store.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Some years ago—never mind how long precisely—having little or no money in my purse…\" (Melville, *Moby-Dick*, ch. 1)",
-    "attribution": "Herman Melville"
+    "attribution": "Herman Melville",
+    "date": "1851"
    }
   ],
   "aliases": [
@@ -1659,19 +1736,16 @@
  },
  {
   "name": "Pathetic Fallacy",
-  "definition": "The attribution of human emotions or qualities to non-human things, especially natural phenomena, to create emotional resonance or pathetic (emotional) effect.",
+  "definition": "Giving nature human feelings, especially weather that seems to share a mood. Ruskin, who coined the term, meant strong emotion distorting what a person sees (grief makes the foam 'cruel').",
   "examples": [
    {
-    "text": "\"The angry storm\" — attributing anger to weather",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"The weeping willow\" — attributing tears to a tree",
+    "text": "\"The *angry* storm\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"They rowed her in across the rolling foam — / The cruel, crawling foam.\" (Kingsley, from *Alton Locke*, as quoted by Ruskin in *Modern Painters* III, ch. 12, 1856)",
-    "attribution": "Charles Kingsley"
+    "attribution": "Charles Kingsley",
+    "date": "1850"
    }
   ],
   "aliases": [],
@@ -1687,16 +1761,13 @@
   "definition": "A figure of speech that gives human qualities, emotions, or agency to non-human things, objects, or abstract concepts.",
   "examples": [
    {
-    "text": "\"Death came for him\" — giving the abstract concept of death human agency",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"The sun smiled down on us\" — attributing human expression to a celestial object",
+    "text": "\"The sun *smiled* down on us\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Because I could not stop for Death— / He kindly stopped for me—\" (Dickinson, \"Because I could not stop for Death\")",
-    "attribution": "Emily Dickinson"
+    "attribution": "Emily Dickinson",
+    "date": "1863"
    }
   ],
   "aliases": [
@@ -1715,16 +1786,13 @@
   "definition": "The use of more words than necessary to express an idea, either for emphasis, redundancy, or stylistic effect.",
   "examples": [
    {
-    "text": "\"I saw it with my own eyes\" — 'own' is redundant when 'my' already implies possession",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"free gift\" — 'free' is redundant since gifts are inherently free",
+    "text": "\"I saw it with my *own* eyes\" (*own* only adds emphasis)",
     "attribution": "Unattributed"
    },
    {
     "text": "\"And he confessed, and denied not; but confessed, I am not the Christ.\" (John the Baptist, John 1:20, KJV; listed as a pleonasm in Bullinger, *Figures of Speech Used in the Bible*, 1898)",
-    "attribution": "John"
+    "attribution": "John",
+    "date": "0090"
    }
   ],
   "aliases": [
@@ -1760,12 +1828,13 @@
   "definition": "A play on words that exploits multiple meanings or the similar sounds of different words to create a humorous or witty effect.",
   "examples": [
    {
-    "text": "\"I used to be a banker, but I lost interest\" — 'lost interest' puns on financial and emotional meanings",
+    "text": "\"I used to be a banker, but I lost *interest*\" (*interest* means both money earned and enthusiasm)",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Ask for me tomorrow, and you shall find me a grave man.\" (Mercutio, in Shakespeare, *Romeo and Juliet*, 3.1; *grave* means both serious and a burial place)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1595"
    }
   ],
   "aliases": [
@@ -1784,12 +1853,13 @@
   "definition": "A fallacy or rhetorical tactic that introduces an irrelevant issue or false clue to distract attention from the main argument or central point.",
   "examples": [
    {
-    "text": "In a debate about climate policy: \"But what about the cost of solar panels?\" — diverting from the core environmental argument",
+    "text": "You ask why the budget is late; but look how well our football team played last night.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Chewbacca is a Wookie from the planet Kashyyyk, but Chewbacca lives on the planet Endor. Now think about that. That does not make sense!… What does this have to do with this case? Nothing… If Chewbacca lives on Endor, you must acquit!\" (the lawyer Johnnie Cochran's parody closing argument, *South Park*, \"Chef Aid\", season 2, episode 14)",
-    "attribution": "Trey Parker and Matt Stone"
+    "attribution": "Trey Parker and Matt Stone",
+    "date": "1998"
    }
   ],
   "aliases": [
@@ -1831,8 +1901,13 @@
   "definition": "The repetition of the 's' sound or other sibilant consonants ('z', 'sh', 'ch') in nearby words to create a flowing, whispered, or hissing auditory effect.",
   "examples": [
    {
-    "text": "The snake slid silently through the sand.",
+    "text": "The *s*nake *s*lid *s*ilently through the *s*and.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"And the silken sad uncertain rustling of each purple curtain\" (Poe, \"The Raven\")",
+    "attribution": "Edgar Allan Poe",
+    "date": "1845"
    }
   ],
   "aliases": [],
@@ -1848,16 +1923,13 @@
   "definition": "A figure of speech that explicitly compares two unlike things using 'like' or 'as,' transferring qualities from one to the other while maintaining the distinction between them.",
   "examples": [
    {
-    "text": "\"He was as brave as a lion\" — explicit comparison using 'as'",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"Her smile was like sunshine\" — comparison using 'like'",
+    "text": "\"He was *as* brave *as* a lion\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"O my luve's like a red, red rose, / That's newly sprung in June\" (Burns, \"A Red, Red Rose\")",
-    "attribution": "Robert Burns"
+    "attribution": "Robert Burns",
+    "date": "1794"
    }
   ],
   "aliases": [],
@@ -1873,12 +1945,13 @@
   "definition": "A logical argument consisting of a major premise, a minor premise, and a conclusion, used in rhetoric to demonstrate valid reasoning or persuade through logical structure.",
   "examples": [
    {
-    "text": "All humans are mortal. Socrates is human. Therefore, Socrates is mortal. — a classic valid syllogism",
+    "text": "All *humans* are mortal. Socrates is *human*. Therefore, Socrates is mortal.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"The syllogism he had learnt from Kiesewetter's Logic: 'Caius is a man, men are mortal, therefore Caius is mortal,' had always seemed to him correct as applied to Caius, but certainly not as applied to himself.\" (Tolstoy, *The Death of Ivan Ilych*, ch. 6, trans. Louise and Aylmer Maude)",
-    "attribution": "Leo Tolstoy"
+    "attribution": "Leo Tolstoy",
+    "date": "1886"
    }
   ],
   "aliases": [],
@@ -1915,16 +1988,13 @@
   "definition": "A figure in which a part stands for the whole or the whole for a part, as 'boots' for soldiers.",
   "examples": [
    {
-    "text": "\"We need more hands on deck\" (hands = workers).",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"Boots on the ground\" for soldiers.",
+    "text": "\"We need more *hands* on deck\" (hands = workers).",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Give us this day our daily bread.\" (Matthew 6:11, KJV; *bread* stands for all food)",
-    "attribution": "Jesus"
+    "attribution": "Jesus",
+    "date": "0060"
    }
   ],
   "aliases": [],
@@ -1940,16 +2010,13 @@
   "definition": "A figure in which one word (usually a verb or adjective) governs two or more other words; when it must be read in a different sense for each, it is often called syllepsis, giving a witty or jarring effect.",
   "examples": [
    {
-    "text": "She lost her keys and her patience.",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "He broke his vow and her heart.",
+    "text": "She *lost* her keys and her patience.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Miss Bolo rose from the table considerably agitated, and went straight home, in a flood of tears and a sedan-chair.\" (Dickens, *The Pickwick Papers*, ch. 35)",
-    "attribution": "Charles Dickens"
+    "attribution": "Charles Dickens",
+    "date": "1836"
    }
   ],
   "aliases": [
@@ -1967,12 +2034,13 @@
   "definition": "Expressing one complex idea by joining two nouns (or words) with 'and' where one would normally modify the other.",
   "examples": [
    {
-    "text": "We suffered through sound and fury when we meant furious noise.",
+    "text": "The soup came *nice and hot* (= pleasantly hot).",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Of the hope and resurrection of the dead I am called in question.\" (Paul to the council, Acts 23:6, KJV; listed as a hendiadys in Bullinger, *Figures of Speech Used in the Bible*, 1898)",
-    "attribution": "Acts"
+    "attribution": "Acts",
+    "date": "0062"
    }
   ],
   "aliases": [],
@@ -2005,7 +2073,7 @@
   "definition": "A chain of metonymy in which a word stands for another by way of an intermediate, unstated substitution.",
   "examples": [
    {
-    "text": "Reading the 'long dark nights' of the north as a reference to winter's whole hardship.",
+    "text": "Would that *the oaks of the old shipyard had never been felled*, and the long voyage never begun.",
     "attribution": "Unattributed"
    }
   ],
@@ -2038,10 +2106,10 @@
  },
  {
   "name": "Tricolon",
-  "definition": "A series of three parallel words, phrases or clauses, usually of increasing length.",
+  "definition": "A series of three parallel words, phrases or clauses of similar length; when each grows longer, a tricolon crescens.",
   "examples": [
    {
-    "text": "We came, we tasted, we were converted.",
+    "text": "*We came*, *we tasted*, *we were converted*.",
     "attribution": "Unattributed"
    }
   ],
@@ -2065,7 +2133,8 @@
    },
    {
     "text": "\"It is not meet to take the children's bread, and to cast it to dogs.\" \"Truth, Lord: yet the dogs eat of the crumbs which fall from their masters' table.\" (Jesus and the Canaanite woman, Matthew 15:26–27, KJV)",
-    "attribution": "Matthew"
+    "attribution": "Matthew",
+    "date": "0060"
    }
   ],
   "aliases": [],
@@ -2192,7 +2261,8 @@
    },
    {
     "text": "\"I grant them literature, I grant them a knowledge of many arts, I do not deny the charm of their speech, the keenness of their intellects, the richness of their diction … but truth and honour in giving testimony that nation has never cherished\" (Cicero, of the Greek witnesses, *Pro Flacco* 9, trans. L. E. Lord, 1937)",
-    "attribution": "Cicero"
+    "attribution": "Cicero",
+    "date": "-0059"
    }
   ],
   "aliases": [],
@@ -2213,7 +2283,8 @@
    },
    {
     "text": "Peter: \"Be it far from thee, Lord: this shall not be unto thee.\" Jesus: \"Get thee behind me, Satan: thou art an offence unto me: for thou savourest not the things that be of God, but those that be of men.\" (Matthew 16:22–23, KJV)",
-    "attribution": "Matthew"
+    "attribution": "Matthew",
+    "date": "0060"
    }
   ],
   "aliases": [],
@@ -2265,12 +2336,13 @@
   "definition": "A detailed verbal description of a work of art or visual object.",
   "examples": [
    {
-    "text": "The shield showed two cities, one at feast, the other at siege.",
+    "text": "The painting shows a harbour at dawn: a fishing boat heeled over at the quay, its nets spilling silver across the planks, a boy asleep against a coil of rope, and beyond the mole a line of grey light where the sea meets the sky.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"He wrought also two cities, fair to see and busy with the hum of men. In the one were weddings and wedding-feasts, and they were going about the city with brides whom they were escorting by torchlight from their chambers. … About the other city there lay encamped two hosts in gleaming armour, and they were divided whether to sack it, or to spare it and accept the half of what it contained.\" (Homer, the shield of Achilles, *Iliad* 18, trans. Samuel Butler)",
-    "attribution": "Homer"
+    "attribution": "Homer",
+    "date": "-0750"
    }
   ],
   "aliases": [
@@ -2305,7 +2377,7 @@
   "definition": "Calling to mind past events or past authorities to support the present case.",
   "examples": [
    {
-    "text": "Remember the winter of '09, when we last ignored the warning.",
+    "text": "*Remember the winter of '09*, when we last ignored the warning.",
     "attribution": "Unattributed"
    }
   ],
@@ -2344,7 +2416,8 @@
    },
    {
     "text": "\"You mistake me, my dear. I have a high respect for your nerves. They are my old friends. I have heard you mention them with consideration these twenty years at least.\" (Mr. Bennet to Mrs. Bennet, in Austen, *Pride and Prejudice*, ch. 1)",
-    "attribution": "Jane Austen"
+    "attribution": "Jane Austen",
+    "date": "1813"
    }
   ],
   "aliases": [],
@@ -2399,7 +2472,8 @@
    },
    {
     "text": "HAMLET: \"I think it be thine indeed, for thou liest in't.\" CLOWN: \"You lie out on't, sir, and therefore 'tis not yours.\" (Shakespeare, *Hamlet*, 5.1; *lie* means both to rest in the grave and to tell a falsehood)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1600"
    }
   ],
   "aliases": [],
@@ -2420,7 +2494,8 @@
    },
    {
     "text": "\"No doubt but ye are the people, and wisdom shall die with you.\" (Job to his friends, Job 12:2, KJV)",
-    "attribution": "Job"
+    "attribution": "Job",
+    "date": "-0950"
    }
   ],
   "aliases": [],
@@ -2494,7 +2569,8 @@
    },
    {
     "text": "\"*Hominem laudem egentem virtutis, abundantem felicitatis?*\" (*Rhetorica ad Herennium*, book 4, §28: \"Am I to praise a man lacking in virtue, abounding in good fortune?\", English by Claude (AI); *hominem*, *egentem* and *abundantem* are all accusative)",
-    "attribution": "Unattributed"
+    "attribution": "Unattributed",
+    "date": "-0080"
    }
   ],
   "aliases": [],
@@ -2515,7 +2591,8 @@
    },
    {
     "text": "\"Fair is foul, and foul is fair\" (the Witches, in Shakespeare, *Macbeth*, 1.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [],
@@ -2553,7 +2630,8 @@
    },
    {
     "text": "CHIEF JUSTICE: \"Sir John, I sent for you before your expedition to Shrewsbury.\" FALSTAFF: \"An 't please your lordship, I hear his Majesty is returned with some discomfort from Wales.\" CHIEF JUSTICE: \"I talk not of his Majesty. You would not come when I sent for you.\" (Shakespeare, *2 Henry IV*, 1.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1598"
    }
   ],
   "aliases": [],
@@ -2668,7 +2746,8 @@
    },
    {
     "text": "\"O tempora, o mores!… Shame on the age and on its principles! The senate is aware of these things; the consul sees them; and yet this man lives. Lives!\" (Cicero, *First Oration against Catiline*, 1.2, trans. Yonge)",
-    "attribution": "Cicero"
+    "attribution": "Cicero",
+    "date": "-0063"
    }
   ],
   "aliases": [],
@@ -2778,7 +2857,8 @@
    },
    {
     "text": "\"Art thou also of Galilee? Search, and look: for out of Galilee ariseth no prophet.\" (the Pharisees, in John 7:52, KJV)",
-    "attribution": "John"
+    "attribution": "John",
+    "date": "0090"
    }
   ],
   "aliases": [],
@@ -2845,12 +2925,13 @@
   "definition": "A sudden descent from the elevated to the trivial, sometimes unintended.",
   "examples": [
    {
-    "text": "He fought for freedom, honour, and a good parking spot.",
+    "text": "He fought for freedom, honour, and *a good parking spot*.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"Here thou, great Anna! whom three realms obey, / Dost sometimes counsel take — and sometimes tea.\" (Pope, *The Rape of the Lock*, Canto 3)",
-    "attribution": "Alexander Pope"
+    "attribution": "Alexander Pope",
+    "date": "1712"
    }
   ],
   "aliases": [
@@ -2861,7 +2942,7 @@
   "category": "Elocutio",
   "form": "Reversal > Reversal",
   "function": "Disruption > Surprise",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Eponym",
@@ -2873,7 +2954,8 @@
    },
    {
     "text": "\"He begged it to be at once understood, that his own observations had been merely intended to bear a Pickwickian construction.\" (Mr. Pickwick, in Dickens, *The Pickwick Papers*, ch. 1)",
-    "attribution": "Charles Dickens"
+    "attribution": "Charles Dickens",
+    "date": "1836"
    }
   ],
   "aliases": [],
@@ -2889,8 +2971,13 @@
   "definition": "A compound poetic name for a thing that uses metaphor.",
   "examples": [
    {
-    "text": "Whale-road for the sea.",
+    "text": "*Whale-road* for the sea.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"The wind o'er the waters the wave-floater nowise / Kept from its journey; the sea-goer traveled, / The foamy-necked floated forth o'er the currents\" (*Beowulf*, trans. Hall, section XXVIII; *wave-floater*, *sea-goer* and *foamy-necked* each name the ship)",
+    "attribution": "Unattributed",
+    "date": "1000"
    }
   ],
   "aliases": [],
@@ -2899,14 +2986,14 @@
   "category": "Naming",
   "form": "Replacement > Substitution",
   "function": "Aesthetic > Aesthetic Effect",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Begging the Question",
   "definition": "Assuming as a premise the very claim the argument is meant to prove.",
   "examples": [
    {
-    "text": "Honest people do not steal; he stole, so he is not honest.",
+    "text": "Sleeping pills make you sleepy because they have a power to induce sleep.",
     "attribution": "Unattributed"
    }
   ],
@@ -2918,19 +3005,20 @@
   "category": "Fallacy",
   "form": "Argument Structure > Assumed Premise",
   "function": "Persuasion > Logical Appeal",
-  "ai_confidence_rating": "medium"
+  "ai_confidence_rating": "high"
  },
  {
   "name": "Equivocation",
   "definition": "Using one word in two different senses within a single argument so that the conclusion seems to follow.",
   "examples": [
    {
-    "text": "A feather is light; what is light cannot be dark; so a feather cannot be dark.",
+    "text": "A feather is *light*; what is *light* cannot be dark; so a feather cannot be dark.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"You then, learning what you did not know, were unlearned when you were learning? … Then the unlearned learn, and not the wise, Cleinias, as you imagine. … when the grammar-master dictated anything to you, were they the wise boys or the unlearned who learned the dictation? The wise, replied Cleinias. Then after all the wise are the learners and not the unlearned\" (the sophists Euthydemus and Dionysodorus questioning the boy Cleinias, in Plato, *Euthydemus* 275d–276c, trans. Jowett)",
-    "attribution": "Plato"
+    "attribution": "Plato",
+    "date": "-0380"
    }
   ],
   "aliases": [],
@@ -2943,7 +3031,7 @@
  },
  {
   "name": "Fallacy of Composition",
-  "definition": "Inferring that a whole has a property because each of its parts has it.",
+  "definition": "Inferring that a whole has a property because some or all of its parts have it.",
   "examples": [
    {
     "text": "Every player is excellent, so the team must be excellent.",
@@ -2990,7 +3078,7 @@
   "definition": "Dismissing an argument because its speaker fails to practise what they say.",
   "examples": [
    {
-    "text": "You tell me to stop smoking, yet you smoke.",
+    "text": "You say I should stop smoking, but you smoke yourself, so I will ignore your advice.",
     "attribution": "Unattributed"
    }
   ],
@@ -3084,12 +3172,13 @@
   "definition": "Seeking agreement by arousing sympathy instead of offering reasons.",
   "examples": [
    {
-    "text": "I must pass this course, I have had such a hard year.",
+    "text": "You should pass my essay, because I have had such a hard year.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"If you have tears, prepare to shed them now.\" (Antony, in Shakespeare, *Julius Caesar*, 3.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [
@@ -3107,7 +3196,7 @@
   "definition": "Urging acceptance of a claim by threatening harm for disagreeing.",
   "examples": [
    {
-    "text": "Agree with the boss, or look for another job.",
+    "text": "The merger is a sound plan, and anyone who says otherwise will be looking for a new job.",
     "attribution": "Unattributed"
    }
   ],
@@ -3254,7 +3343,7 @@
   "definition": "A syllogism whose middle term is not distributed in either premise, so nothing follows.",
   "examples": [
    {
-    "text": "All dogs are mammals; all cats are mammals; so all dogs are cats.",
+    "text": "All dogs are *mammals*; all cats are *mammals*; so all dogs are cats.",
     "attribution": "Unattributed"
    }
   ],
@@ -3293,12 +3382,13 @@
   "definition": "Applying a rule to others but exempting one's own case without good reason.",
   "examples": [
    {
-    "text": "Rules bind everyone, but my case is different.",
+    "text": "Everyone must queue, but I am in a hurry, so I will go to the front.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"All animals are equal but some animals are more equal than others.\" (the single Commandment left on the barn wall once the pigs have rewritten the rest, in Orwell, *Animal Farm*, ch. 10)",
-    "attribution": "George Orwell"
+    "attribution": "George Orwell",
+    "date": "1945"
    }
   ],
   "aliases": [],
@@ -3311,10 +3401,10 @@
  },
  {
   "name": "Moving the Goalposts",
-  "definition": "Changing the standard of proof after it has been met.",
+  "definition": "Changing the criterion for success, such as the standard of proof, after the other side has met the original one.",
   "examples": [
    {
-    "text": "You showed the data; now show me the mechanism too.",
+    "text": "You asked for one study, and here it is; but one study is not enough, so show me ten.",
     "attribution": "Unattributed"
    }
   ],
@@ -3345,7 +3435,7 @@
  },
  {
   "name": "Guilt by Association",
-  "definition": "Rejecting a claim because of who else holds or shares it.",
+  "definition": "Discrediting a person or a claim because of the group or people it is associated with.",
   "examples": [
    {
     "text": "Bad people like that idea, so it is bad.",
@@ -3353,7 +3443,8 @@
    },
    {
     "text": "\"This man receiveth sinners, and eateth with them.\" (the Pharisees and scribes, of Jesus, Luke 15:2, KJV)",
-    "attribution": "Luke"
+    "attribution": "Luke",
+    "date": "0060"
    }
   ],
   "aliases": [],
@@ -3390,7 +3481,7 @@
   "definition": "Selecting only the evidence that favours a claim and ignoring the rest.",
   "examples": [
    {
-    "text": "Quoting three studies out of thirty for the same view.",
+    "text": "These three studies show the supplement works, so it does. (Twenty-seven others found no effect.)",
     "attribution": "Unattributed"
    }
   ],
@@ -3406,11 +3497,16 @@
  },
  {
   "name": "Naturalistic Fallacy",
-  "definition": "Deriving what is good or right from what is natural, or defining good by a natural property.",
+  "definition": "Treating \"good\" as the same as a natural property such as pleasure, so that it seems pointless to ask whether that property is good. Some writers also use the term for arguing from \"is\" to \"ought\".",
   "examples": [
    {
-    "text": "It is natural, therefore it is right.",
+    "text": "To be good is just to give pleasure, so whatever pleases is good, and it is pointless to ask whether pleasure is good.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"…the sole evidence it is possible to produce that anything is desirable, is that people do actually desire it.\" (Mill, *Utilitarianism*, ch. 4, 1863)",
+    "attribution": "John Stuart Mill",
+    "date": "1863"
    }
   ],
   "aliases": [],
@@ -3440,7 +3536,7 @@
  },
  {
   "name": "Appeal to Consequences",
-  "definition": "Judging a belief true or false by whether its consequences are pleasing.",
+  "definition": "Judging a belief false because accepting it would have unwelcome consequences, or true because they would be welcome.",
   "examples": [
    {
     "text": "That cannot be true, for it would be dreadful.",
@@ -3464,6 +3560,11 @@
    {
     "text": "We have spent this much, so we must go on.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"We owe them something. We will finish the task that they gave their lives for.\" (Bush, address to the Veterans of Foreign Wars convention, Salt Lake City, 22 August 2005, White House transcript)",
+    "attribution": "George W. Bush",
+    "date": "2005-08-22"
    }
   ],
   "aliases": [],
@@ -3479,7 +3580,7 @@
   "definition": "Assuming an opponent is wrong and then explaining their error by their motives or background.",
   "examples": [
    {
-    "text": "You say that only because you are a man.",
+    "text": "You say the new tax is unfair only because you are rich, which is why you are wrong about it.",
     "attribution": "Unattributed"
    }
   ],
@@ -3501,7 +3602,8 @@
    },
    {
     "text": "\"'The bard who makes his century up has stood / The test: we call him sterling, old, and good.' / Well, here's a poet now, whose dying day / Fell one month later, or a twelvemonth, say: / Whom does he count with? … / Thanks for the kind permission! I go on, / And pull out years, like horse-hairs, one by one\" (Horace, *Epistles* 2.1, trans. Conington, on judging a poet by his age)",
-    "attribution": "Horace"
+    "attribution": "Horace",
+    "date": "-0020"
    }
   ],
   "aliases": [
@@ -3520,7 +3622,7 @@
   "definition": "Inferring facts about individuals from statistics about the group they belong to.",
   "examples": [
    {
-    "text": "This town is rich, so every resident is rich.",
+    "text": "Countries that eat more chocolate win more Nobel prizes, so a person who eats chocolate is likelier to win one.",
     "attribution": "Unattributed"
    }
   ],
@@ -3530,7 +3632,7 @@
   "category": "Fallacy",
   "form": "Argument Structure > Part–Whole Inference",
   "function": "Persuasion > Logical Appeal",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Single Cause Fallacy",
@@ -3561,7 +3663,7 @@
   "definition": "A syllogism using four terms rather than three, often through ambiguity, so the conclusion does not follow.",
   "examples": [
    {
-    "text": "Nothing is better than heaven; a sandwich is better than nothing; so a sandwich is better than heaven.",
+    "text": "*Nothing* is better than heaven; a sandwich is better than *nothing*; so a sandwich is better than heaven.",
     "attribution": "Unattributed"
    }
   ],
@@ -3599,7 +3701,7 @@
   "definition": "Dismissing a position by mocking it in place of answering it.",
   "examples": [
    {
-    "text": "This idea is laughable, so it is wrong.",
+    "text": "Ha! A four-day working week? What a joke. A silly idea like that cannot work.",
     "attribution": "Unattributed"
    },
    {
@@ -3669,7 +3771,7 @@
   "definition": "Applying a general rule to a case where special circumstances make it unsuitable.",
   "examples": [
    {
-    "text": "Medicine is for healing, so give it to anyone who asks, even a child.",
+    "text": "Freedom of speech is a right, so he may shout 'Fire!' in a packed theatre when there is no fire.",
     "attribution": "Unattributed"
    }
   ],
@@ -3712,7 +3814,8 @@
    },
    {
     "text": "\"Why do you doubt your senses?\" \"Because,\" said Scrooge, \"a little thing affects them. A slight disorder of the stomach makes them cheats. You may be an undigested bit of beef, a blot of mustard, a crumb of cheese, a fragment of an underdone potato. There's more of gravy than of grave about you, whatever you are!\" (Scrooge, to the ghost of Marley, in Dickens, *A Christmas Carol*, stave 1)",
-    "attribution": "Charles Dickens"
+    "attribution": "Charles Dickens",
+    "date": "1843"
    }
   ],
   "aliases": [],
@@ -3725,10 +3828,10 @@
  },
  {
   "name": "Whataboutism",
-  "definition": "Answering a charge by pointing to a different misdeed of the accuser.",
+  "definition": "Answering an accusation with a counter-accusation, usually about the accuser or another party, instead of defending against it.",
   "examples": [
    {
-    "text": "Yes, but what about your own record?",
+    "text": "You say our factory pollutes the river? Well, what about your own factory's record?",
     "attribution": "Unattributed"
    }
   ],
@@ -3750,7 +3853,8 @@
    },
    {
     "text": "\"Your feelings are all quite right, dear, and interesting, and I love you for them; but, then, dear, we mustn't suffer our feelings to run away with our judgment\" (Senator Bird to his wife, who has just argued against the Fugitive Slave Law, in Stowe, *Uncle Tom's Cabin*, ch. 9)",
-    "attribution": "Harriet Beecher Stowe"
+    "attribution": "Harriet Beecher Stowe",
+    "date": "1852"
    }
   ],
   "aliases": [],
@@ -3766,7 +3870,7 @@
   "definition": "Dismissing a claim as absurd without offering any counter-argument.",
   "examples": [
    {
-    "text": "That is ridiculous, and I need say no more.",
+    "text": "Your claim that plants can communicate is absurd, and I need say no more.",
     "attribution": "Unattributed"
    },
    {
@@ -3833,7 +3937,8 @@
    },
    {
     "text": "\"First, why, if species have descended from other species by fine gradations, do we not everywhere see innumerable transitional forms? Why is not all nature in confusion, instead of the species being, as we see them, well defined?\" (Darwin, *On the Origin of Species*, ch. 6, the first of four objections to his own theory)",
-    "attribution": "Charles Darwin"
+    "attribution": "Charles Darwin",
+    "date": "1859"
    }
   ],
   "aliases": [
@@ -3863,7 +3968,7 @@
   "category": "Inventio",
   "form": "Argument Structure > Conditional Schema",
   "function": "Persuasion > Logical Appeal",
-  "ai_confidence_rating": "high"
+  "ai_confidence_rating": "medium"
  },
  {
   "name": "Principle of Charity",
@@ -3981,7 +4086,12 @@
   "examples": [
    {
     "text": "\"Who dotes, yet doubts; suspects, yet strongly loves\" (Shakespeare, *Othello*, 3.3)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1604"
+   },
+   {
+    "text": "He was *rich* in *friends*, in *money* *poor*.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -3999,12 +4109,13 @@
   "definition": "An elaborate, surprising comparison between very unlike things, developed at length; typical of metaphysical poetry.",
   "examples": [
    {
-    "text": "Likening two lovers to the twin legs of a drafting compass, joined and moving together.",
+    "text": "Love is a *debt*: each kiss a *payment*, each quarrel a *penalty*, and at the foot of the *ledger* we are both found to owe each other everything.",
     "attribution": "Unattributed"
    },
    {
     "text": "\"If they be two, they are two so / As stiffe twin compasses are two, / Thy soule the fixt foot, makes no show / To move, but doth, if the'other doe. / And though it in the center sit, / Yet when the other far doth rome, / It leanes, and hearkens after it, / And growes erect, as that comes home.\" (Donne, \"A Valediction: forbidding mourning\", in Grierson's 1912 text, original spelling)",
-    "attribution": "John Donne"
+    "attribution": "John Donne",
+    "date": "1633"
    }
   ],
   "aliases": [
@@ -4027,7 +4138,8 @@
    },
    {
     "text": "\"Then swift-footed Achilles answered him and spake\" (Homer, *Iliad*, book 11, trans. Lang, Leaf and Myers)",
-    "attribution": "Homer"
+    "attribution": "Homer",
+    "date": "-0750"
    }
   ],
   "aliases": [
@@ -4047,7 +4159,8 @@
   "examples": [
    {
     "text": "\"O horror, horror, horror!\" (Shakespeare, *Macbeth*, 2.3)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [
@@ -4067,12 +4180,13 @@
   "definition": "A metaphor carried through several sentences or a whole passage, developing the comparison in more than one detail.",
   "examples": [
    {
-    "text": "\"Our marriage is a ship: we have weathered storms, kept a steady hand at the helm, and never lost sight of harbour.\"",
+    "text": "\"Our marriage is a *ship*: we have *weathered storms*, kept a steady hand at the *helm*, and never lost sight of *harbour*.\"",
     "attribution": "Unattributed"
    },
    {
     "text": "\"All the world's a stage, / And all the men and women merely players; / They have their exits and their entrances, / And one man in his time plays many parts, / His acts being seven ages.\" (Jaques, in Shakespeare, *As You Like It*, 2.7)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [
@@ -4090,7 +4204,7 @@
   "definition": "Departing from normal word order, often to stress the displaced word.",
   "examples": [
    {
-    "text": "\"Fools, they have called us.\" (normal order: they have called us fools)",
+    "text": "\"*Fools*, they have called us.\" (normal order: they have called us fools)",
     "attribution": "Unattributed"
    }
   ],
@@ -4110,7 +4224,12 @@
   "examples": [
    {
     "text": "\"A time to be born, and a time to die; a time to plant, and a time to pluck up that which is planted; a time to kill, and a time to heal; a time to break down, and a time to build up\" (Ecclesiastes 3:2–3, KJV)",
-    "attribution": "The Preacher"
+    "attribution": "The Preacher",
+    "date": "-0935"
+   },
+   {
+    "text": "The recipe says to *chop the onions*, *peel the carrots* and *slice the leeks*.",
+    "attribution": "Unattributed"
    }
   ],
   "aliases": [
@@ -4130,7 +4249,8 @@
   "examples": [
    {
     "text": "\"Love is not love / Which alters when it alteration finds\" (Shakespeare, Sonnet 116)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1609"
    },
    {
     "text": "The strong man showed his strength.",
@@ -4153,11 +4273,7 @@
   "definition": "The deliberate recurrence of words, sounds, phrases, or grammatical structures to create emphasis, rhythm, or emotional impact.",
   "examples": [
    {
-    "text": "\"Never, never, never give up\" — threefold repetition for emphasis",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"The future, the future, the future...\" — repetition to create anticipation",
+    "text": "\"*Never*, *never*, *never* give up\"",
     "attribution": "Unattributed"
    },
    {
@@ -4179,11 +4295,7 @@
   "definition": "A figure of speech in which what is literally said means something different from what is implied, often expressing the opposite of what is intended.",
   "examples": [
    {
-    "text": "\"Oh, that's just brilliant!\" said in response to a disaster — saying the opposite of what is meant",
-    "attribution": "Unattributed"
-   },
-   {
-    "text": "\"I just love waiting in traffic.\" — expressing dislike through ironic praise",
+    "text": "\"Oh, that's just *brilliant*!\" said in response to a disaster",
     "attribution": "Unattributed"
    }
   ],
@@ -4219,6 +4331,11 @@
    {
     "text": "She was a helper, then a leader, then a ruler, then a queen.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"the mighty son of Sin-muballit; the royal scion of Eternity; the mighty monarch, the sun of Babylon, whose rays shed light over the land of Sumer and Akkad; the king, obeyed by the four quarters of the world\" (Hammurabi, in the prologue to his laws, trans. L. W. King)",
+    "attribution": "Hammurabi",
+    "date": "-1753"
    }
   ],
   "aliases": [],
@@ -4234,7 +4351,7 @@
   "definition": "Repeating a word in the same clause with an added intensive sense, often of its 'true' meaning.",
   "examples": [
    {
-    "text": "A promise is a promise, and I keep my promises.",
+    "text": "A *promise* is a *promise*, and I keep my promises.",
     "attribution": "Unattributed"
    }
   ],
@@ -4251,7 +4368,7 @@
   "definition": "Attacking the person rather than the argument",
   "examples": [
    {
-    "text": "You can't trust his climate research because he owns an SUV",
+    "text": "His proof of the theorem must be wrong, because he is a vain and lazy man.",
     "attribution": "Unattributed"
    },
    {
@@ -4273,7 +4390,7 @@
   "definition": "Misrepresenting an argument to make it easier to attack",
   "examples": [
    {
-    "text": "Environmentalists want us all to live in caves",
+    "text": "Anna: \"We should trim the military budget.\" Ben: \"Anna wants to leave us defenceless, and that would be reckless.\"",
     "attribution": "Unattributed"
    }
   ],
@@ -4290,7 +4407,7 @@
   "definition": "Presenting only two options when more exist",
   "examples": [
    {
-    "text": "You're either with us or against us",
+    "text": "Either we halve the budget or the country goes bankrupt, and nobody wants bankruptcy, so we must halve the budget.",
     "attribution": "Unattributed"
    },
    {
@@ -4312,7 +4429,7 @@
   "definition": "Arguing that one step will inevitably lead to extreme consequences",
   "examples": [
    {
-    "text": "If we allow same-sex marriage, people will want to marry animals",
+    "text": "If we allow one late assignment, soon nobody will hand anything in on time and the whole school will collapse.",
     "attribution": "Unattributed"
    },
    {
@@ -4331,10 +4448,10 @@
  },
  {
   "name": "Appeal to Authority",
-  "definition": "Citing authority rather than evidence",
+  "definition": "Citing an authority who is not genuine on the subject, or leaning on any authority in place of evidence.",
   "examples": [
    {
-    "text": "This must be true because a celebrity said it",
+    "text": "A film star says this diet cures cancer, so it must be true.",
     "attribution": "Unattributed"
    }
   ],
@@ -4348,7 +4465,7 @@
  },
  {
   "name": "Hasty Generalization",
-  "definition": "Drawing conclusions from insufficient evidence",
+  "definition": "Drawing a general conclusion from too few or unrepresentative cases.",
   "examples": [
    {
     "text": "I met two rude people from that city, so everyone there must be rude",
@@ -4365,7 +4482,7 @@
  },
  {
   "name": "Post Hoc",
-  "definition": "Assuming causation from correlation",
+  "definition": "Assuming that because one event followed another, the first caused the second.",
   "examples": [
    {
     "text": "I wore my lucky socks and we won, so the socks caused the victory",
@@ -4373,7 +4490,8 @@
    },
    {
     "text": "\"Thus Demades said that the policy of Demosthenes was the cause of all the mischief, 'for after it the war occurred'.\" (Aristotle, *Rhetoric*, 2.24, trans. Rhys Roberts)",
-    "attribution": "Aristotle"
+    "attribution": "Aristotle",
+    "date": "-0330"
    }
   ],
   "aliases": [],
@@ -4406,7 +4524,7 @@
   "definition": "Manipulating emotions instead of using logic",
   "examples": [
    {
-    "text": "Think of the children! (without relevant connection)",
+    "text": "This policy must be right: just picture the sobbing children if we vote it down.",
     "attribution": "Unattributed"
    }
   ],
@@ -4450,7 +4568,8 @@
    },
    {
     "text": "\"Old Gaunt, indeed; and gaunt in being old … Gaunt am I for the grave, gaunt as a grave, / Whose hollow womb inherits nought but bones. … No, misery makes sport to mock itself: / Since thou dost seek to kill my name in me, / I mock my name, great king, to flatter thee.\" (John of Gaunt to Richard II, in Shakespeare, *Richard II*, 2.1)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1595"
    }
   ],
   "aliases": [],
@@ -4500,7 +4619,7 @@
   "definition": "Point out a speaker's inconsistency as evidence about sincerity or the practicability of the advice, while still answering the argument itself.",
   "examples": [
    {
-    "text": "\"You urge us to save, yet the record shows you borrow freely. Either the advice is harder than you say, or you do not believe it.\"",
+    "text": "\"Your sums on saving are sound; but you urge us to save while the record shows you borrow freely, so either the advice is harder than you say or you do not believe it.\"",
     "attribution": "Unattributed"
    }
   ],
@@ -4536,6 +4655,11 @@
    {
     "text": "\"Investigators searched every room for a forced entry and found none. That silence counts against the break-in story.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"To the curious incident of the dog in the night-time.\" \"The dog did nothing in the night-time.\" \"That was the curious incident,\" remarked Sherlock Holmes. … \"…though some one had been in and had fetched out a horse, he had not barked enough to arouse the two lads in the loft. Obviously the midnight visitor was some one whom the dog knew well.\" (Holmes and Inspector Gregory, in Doyle, \"Silver Blaze\", 1892)",
+    "attribution": "Arthur Conan Doyle",
+    "date": "1892"
    }
   ],
   "aliases": [],
@@ -4570,6 +4694,11 @@
    {
     "text": "\"This liturgy has served believers for centuries through every kind of trouble; before dropping it, show what the replacement offers.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"…a fence or gate erected across a road. The more modern type of reformer goes gaily up to it and says, 'I don't see the use of this; let us clear it away.' To which the more intelligent type of reformer will do well to answer: 'If you don't see the use of it, I certainly won't let you clear it away. Go away and think. Then, when you can come back and tell me that you do see the use of it, I may allow you to destroy it.'\" (Chesterton, \"The Drift from Domesticity\", in *The Thing*, 1929)",
+    "attribution": "G. K. Chesterton",
+    "date": "1929"
    }
   ],
   "aliases": [],
@@ -4587,6 +4716,11 @@
    {
     "text": "\"Before you sentence him, consider that he acted to feed his children. Mercy is the very question before you.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I am pleading for life, understanding, charity and kindness, and the infinite mercy that forgives all. I am pleading that we overcome cruelty with kindness and hatred with love.\" (Darrow, plea for Leopold and Loeb, Chicago, 22–25 August 1924)",
+    "attribution": "Clarence Darrow",
+    "date": "1924"
    }
   ],
   "aliases": [],
@@ -4604,6 +4738,11 @@
    {
     "text": "\"If the levee is not raised by spring, the town floods. That is not a threat; it is the forecast.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"If we can stand up to him all Europe may be free, and the life of the world may move forward into broad, sunlit uplands; but if we fail then the whole world, including the United States, and all that we have known and cared for, will sink into the abyss of a new dark age made more sinister, and perhaps more prolonged, by the lights of a perverted science.\" (Churchill, House of Commons, 18 June 1940, Hansard)",
+    "attribution": "Winston Churchill",
+    "date": "1940-06-18"
    }
   ],
   "aliases": [],
@@ -4621,6 +4760,11 @@
    {
     "text": "\"The new dosing schedule replaces one that failed patients in trials; it is better because of what we learned since.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"The country needs and, unless I mistake its temper, the country demands bold, persistent experimentation. It is common sense to take a method and try it: If it fails, admit it frankly and try another. But above all, try something.\" (Franklin D. Roosevelt, address at Oglethorpe University, Atlanta, 22 May 1932)",
+    "attribution": "Franklin D. Roosevelt",
+    "date": "1932-05-22"
    }
   ],
   "aliases": [],
@@ -4655,6 +4799,11 @@
    {
     "text": "\"Call yourself a friend if you like, but by the loyalty we all mean by that word, he has not been one.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I would agree with St. Augustine that 'an unjust law is no law at all.' … A just law is a man made code that squares with the moral law or the law of God. An unjust law is a code that is out of harmony with the moral law. … All segregation statutes are unjust because segregation distorts the soul and damages the personality.\" (King, \"Letter from Birmingham Jail\", 16 April 1963)",
+    "attribution": "Martin Luther King Jr.",
+    "date": "1963-04-16"
    }
   ],
   "aliases": [],
@@ -4779,6 +4928,11 @@
    {
     "text": "\"The rule bars pets, but a guide dog is not a pet; it is a working aid, and that difference is why the rule was never meant to cover her.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"What man shall there be among you, that shall have one sheep, and if it fall into a pit on the sabbath day, will he not lay hold on it, and lift it out? How much then is a man better than a sheep? Wherefore it is lawful to do well on the sabbath days.\" (Jesus, asked whether it is lawful to heal on the sabbath, Matthew 12:11–12, KJV)",
+    "attribution": "Matthew",
+    "date": "0060"
    }
   ],
   "aliases": [],
@@ -4796,6 +4950,11 @@
    {
     "text": "\"For a minor repair, one quote was enough. For a whole rebuild, the stakes are higher and I now need three.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"…the probability of the error or of the falsehood of the witness becomes as much greater as the fact attested is more extraordinary.\" (Laplace, *A Philosophical Essay on Probabilities*, on testimony, trans. Truscott and Emory, 1902)",
+    "attribution": "Pierre-Simon Laplace",
+    "date": "1902"
    }
   ],
   "aliases": [],
@@ -4833,7 +4992,8 @@
    },
    {
     "text": "\"I do not need a trial; I know that he will be just the same as the one he chose for his companion. A man is known by the company he keeps.\" (the buyer, returning an ass that left the other asses to join the laziest, and the fable's moral, in Aesop, \"The Ass and His Purchaser\", trans. G. F. Townsend)",
-    "attribution": "Aesop"
+    "attribution": "Aesop",
+    "date": "-0550"
    }
   ],
   "aliases": [],
@@ -4885,6 +5045,11 @@
    {
     "text": "\"A knife's nature is to cut, so a knife that cannot cut is a bad knife; a teacher's nature is to teach, so a teacher who cannot teach is a bad teacher.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"For just as for a flute-player, a sculptor, or an artist, and, in general, for all things that have a function or activity, the good and the 'well' is thought to reside in the function, so would it seem to be for man, if he has a function.\" (Aristotle, *Nicomachean Ethics*, book 1, ch. 7, trans. W. D. Ross)",
+    "attribution": "Aristotle",
+    "date": "-0350"
    }
   ],
   "aliases": [],
@@ -4902,6 +5067,11 @@
    {
     "text": "\"Birds already glide this way; that shows the wing shape can carry weight, and we can test the rest.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"They spread their wings to the wind, and sail by the hour, with no perceptible exertion beyond that required to balance and steer themselves. What sustains them is not definitely known, though it is almost certain that it is a rising current of air. But whether it be a rising current or something else, it is as well able to support a flying machine as a bird, if man once learns the art of utilizing it.\" (Wilbur Wright, on soaring birds, \"Some Aeronautical Experiments\", address to the Western Society of Engineers, 1901)",
+    "attribution": "Wilbur Wright",
+    "date": "1901"
    }
   ],
   "aliases": [],
@@ -4939,7 +5109,8 @@
    },
    {
     "text": "\"I am in blood / Stepp'd in so far that, should I wade no more, / Returning were as tedious as go o'er.\" (Macbeth, in Shakespeare, *Macbeth*, 3.4)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1606"
    }
   ],
   "aliases": [],
@@ -5094,7 +5265,8 @@
    },
    {
     "text": "\"And I also have given you cleanness of teeth in all your cities, and want of bread in all your places: yet have ye not returned unto me, saith the LORD. … I have smitten you with blasting and mildew: … the palmerworm devoured them: yet have ye not returned unto me, saith the LORD.\" (Amos 4:6, 9, KJV)",
-    "attribution": "Amos"
+    "attribution": "Amos",
+    "date": "-0760"
    }
   ],
   "aliases": [],
@@ -5151,6 +5323,11 @@
    {
     "text": "\"The market, so to speak, *punished* the company for its carelessness: customers simply stopped buying.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"…you should imagine market quotations as coming from a remarkably accommodating fellow named Mr. Market who is your partner in a private business. … the poor fellow has incurable emotional problems.\" (Buffett, letter to Berkshire Hathaway shareholders for 1987, 29 February 1988, passing on Benjamin Graham's image of the market)",
+    "attribution": "Warren Buffett",
+    "date": "1988-02-29"
    }
   ],
   "aliases": [],
@@ -5190,6 +5367,11 @@
    {
     "text": "\"Yes, we erred, and we will fix it. But you overlooked the same error in your own department last year, so let us apply one standard.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"In your statement you assert that our actions, even though peaceful, must be condemned because they precipitate violence. But is this a logical assertion? Isn't this like condemning a robbed man because his possession of money precipitated the evil act of robbery?\" (King, \"Letter from Birmingham Jail\", 16 April 1963)",
+    "attribution": "Martin Luther King Jr.",
+    "date": "1963-04-16"
    }
   ],
   "aliases": [],
@@ -5210,7 +5392,8 @@
    },
    {
     "text": "\"Cassius, be content. Speak your griefs softly: I do know you well. Before the eyes of both our armies here, / Which should perceive nothing but love from us, / Let us not wrangle. Bid them move away; / Then in my tent, Cassius, enlarge your griefs, / And I will give you audience.\" (Brutus, in Shakespeare, *Julius Caesar*, 4.2)",
-    "attribution": "William Shakespeare"
+    "attribution": "William Shakespeare",
+    "date": "1599"
    }
   ],
   "aliases": [],
@@ -5267,6 +5450,11 @@
    {
     "text": "\"We agree that children should not suffer needlessly. Vaccines prevent that suffering. So we should vaccinate.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I begin with the assumption that suffering and death from lack of food, shelter, and medical care are bad. … My next point is this: if it is in our power to prevent something bad from happening, without thereby sacrificing anything of comparable moral importance, we ought, morally, to do it.\" (Singer, \"Famine, Affluence, and Morality\", *Philosophy & Public Affairs*, 1972)",
+    "attribution": "Peter Singer",
+    "date": "1972"
    }
   ],
   "aliases": [],
@@ -5362,6 +5550,11 @@
    {
     "text": "\"The city's chief structural engineer has certified the bridge as sound, and her calculations are public.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Some recent work by E. Fermi and L. Szilard, which has been communicated to me in manuscript, leads me to expect that the element uranium may be turned into a new and important source of energy in the immediate future.\" (Einstein, letter to President Roosevelt, 2 August 1939)",
+    "attribution": "Albert Einstein",
+    "date": "1939-08-02"
    }
   ],
   "aliases": [],
@@ -5462,6 +5655,11 @@
    {
     "text": "\"Sixty children lost their school. Feel the anger that is right to feel, because it measures how much this matters.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Since I've been President, this is the fourth time we have come together to comfort a grieving community torn apart by a mass shooting. … We can't tolerate this anymore. These tragedies must end. And to end them, we must change.\" (Obama, remarks at the Sandy Hook interfaith prayer vigil, Newtown, 16 December 2012, White House transcript)",
+    "attribution": "Barack Obama",
+    "date": "2012-12-16"
    }
   ],
   "aliases": [],
@@ -5488,5 +5686,55 @@
   "form": "Addition & Omission > Omission",
   "function": "Persuasion > Logical Appeal",
   "ai_confidence_rating": "medium"
+ },
+ {
+  "name": "Casuistic Form",
+  "definition": "Stating a law as a conditional: an \"if\" clause lays out the case and a \"then\" clause fixes the remedy or penalty, so the rule reads as complete and settled.",
+  "examples": [
+   {
+    "text": "\"*If* a tenant damages the flat, *then* he shall pay for the repair.\"",
+    "attribution": "Unattributed"
+   },
+   {
+    "text": "\"If any one is committing a robbery and is caught, then he shall be put to death.\" (Hammurabi, law 22 of his code, trans. L. W. King)",
+    "attribution": "Hammurabi",
+    "date": "-1753"
+   }
+  ],
+  "aliases": [
+   "casuistic law"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Sentence Shape > Subordination",
+  "function": "Persuasion > Authority/Power",
+  "ai_confidence_rating": "low"
+ },
+ {
+  "name": "Blessing and Curse",
+  "definition": "Pronouncing a blessing on the good and a curse on the wicked, setting promised favour beside threatened harm to press the audience.",
+  "examples": [
+   {
+    "text": "\"*Blessed* be whoever keeps this well clean, and *cursed* be whoever fouls it.\"",
+    "attribution": "Unattributed"
+   },
+   {
+    "text": "\"If a succeeding ruler considers my words, which I have written in this my inscription, if he do not annul my law, nor corrupt my words, nor change my monument, then may Shamash lengthen that king's reign, as he has that of me, the king of righteousness… If this ruler do not esteem my words… may the great God (Anu), the Father of the gods, who has ordered my rule, withdraw from him the glory of royalty, break his scepter, curse his destiny.\" (Hammurabi, in the epilogue to his laws, trans. L. W. King)",
+    "attribution": "Hammurabi",
+    "date": "-1753"
+   }
+  ],
+  "aliases": [
+   "eulogia",
+   "benedictio",
+   "execracio"
+  ],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Speech Act > Exclamation",
+  "function": "Persuasion > Emotional Appeal",
+  "ai_confidence_rating": "low"
  }
 ]

@@ -40,7 +40,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 700;
 }
 .index-leader {
   flex: 1 1 var(--space-6);

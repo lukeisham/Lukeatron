@@ -17,7 +17,17 @@
   <p class="ornament" aria-hidden="true">── ❧ ──</p>
 </header>
 <main class="about">
-  <p class="workspace-bar"><a class="back-link" href="./">← Back to the devices</a></p>
+  <div class="workspace-bar">
+    <a class="back-link" href="./">← Back to the devices</a>
+    <span class="about-actions">
+      <label class="toolbar-check">Print or copy
+        <select id="about-part" class="toolbar-select"><option value="">Whole page</option></select>
+      </label>
+      <button id="about-print" class="btn" type="button">Print</button>
+      <button id="about-copy" class="btn" type="button">Copy</button>
+      <span id="about-status" class="toolbar-status" role="status"></span>
+    </span>
+  </div>
 
   <div class="intro">
     <p>Rhetoric is an offline reference to rhetorical devices and fallacies, kept for teaching preparation. This page documents how each score, label and text field is produced.</p>
@@ -33,7 +43,7 @@
     </nav>
     <dl class="facts">
       <dt>Version</dt>
-      <dd>1.8</dd>
+      <dd>1.9</dd>
       <dt>Runs on</dt>
       <dd>Local only: a Python 3 standard-library server at 127.0.0.1, port 8794.</dd>
       <dt>Data</dt>
@@ -244,8 +254,8 @@
     <p>The wording, speaker and locator (chapter, scene or date) are checked against the work itself: full text, official transcript, or a reputable edition or scan. A search summary, quotation site or memory is not a check. A song is checked against its official lyrics. A common saying with no single author must appear in at least two independent collections, with its earliest form given; if an author turns up, that person is credited.</p>
 
     <h3>How a quote is credited and dated</h3>
-    <p>The author is named. A fictional character&rsquo;s words are credited to the writer, with the character named in the quote; a song to its songwriter; a saying with no known author is marked unattributed, with its earliest source. The work and passage go in a closing bracket, titles in italics. &ldquo;Attributed to&rdquo; is never used.</p>
-    <p>When it can be found quickly, the date the words were first said or published is recorded too (a full date for a speech or dated article, a year for a book or poem); the Index sorts by it. It is never guessed or searched for at length: an unknown date is left blank and the quote is listed as &ldquo;Date unknown&rdquo;. The date is the original&rsquo;s, not a translation&rsquo;s or edition&rsquo;s.</p>
+    <p>The author is named. A fictional character&rsquo;s words in a book, play or poem are credited to the writer, with the character named in the quote; a film character&rsquo;s words are credited to the character; a song to its songwriter; a saying with no known author is marked unattributed, with its earliest source. The work and passage go in a closing bracket, titles in italics. &ldquo;Attributed to&rdquo; is never used.</p>
+    <p>When it can be found quickly, the date the words were first said or published is recorded too (a full date for a speech or dated article, a year for a book or poem; AD 60 or 935 BC for the ancient world); the Index sorts by it. It is never guessed or searched for at length, with one exception: the books of the Bible, Shakespeare&rsquo;s plays and a few other ancient or medieval works are dated by the year scholars (or, for the others, Wikipedia) most often give for when they were written, and that year is an estimate. An unknown date is left blank and the quote is listed as &ldquo;Date unknown&rdquo;. The date is the original&rsquo;s, not a translation&rsquo;s or edition&rsquo;s.</p>
 
     <h3>Translations</h3>
     <p>A foreign-language quote carries an English translation by a named translator whose wording has been read. If none is usable and the device really exists in that language, the AI may translate, and the closing note says so. Modernised spelling is noted.</p>
@@ -279,5 +289,6 @@
     </ul>
   </section>
 </main>
+<script type="module" src="about.js"></script>
 </body>
 </html>

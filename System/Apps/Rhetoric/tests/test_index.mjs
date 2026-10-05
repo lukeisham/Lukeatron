@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { INDEX, createState, setIndexOrder, setSortOrder } from '../app/state.js';
 import { renderIndexOrders, renderList } from '../app/render.js';
-import { INDEX_ORDERS, creditedName, firstLine, formatDate, sourceHeading, sourceShort } from '../app/quoteindex.js';
+import { INDEX_ORDERS, creditedName, firstLine, formatDate, groupEntries, indexEntry, sourceHeading, sourceShort, yearLabel, yearNumber } from '../app/quoteindex.js';
 import { currentView, viewToText } from '../app/view.js';
 import { fakeDoc, findAll, withClass } from './fake-dom.mjs';
 import { payload } from './fixture.mjs';
@@ -65,6 +65,10 @@ test('a single name, a body and an unattributed quote file under the name as wri
   assert.equal(sourceHeading({ source: 'x', author: 'The Preacher' }), 'Preacher');
   assert.equal(sourceHeading({ source: 'an unnamed reviewer, *The Quarterly Review*', author: null }), 'An unnamed reviewer');
   assert.equal(sourceShort({ source: '*Rhetorica ad Herennium*, book 4', author: null }), 'Rhetorica ad Herennium');
+  // an italic after a semicolon is a gloss or a note, not the work quoted
+  assert.equal(sourceShort({ source: 'Matthew 6:11, KJV; *bread* stands for all food', author: 'Jesus' }), 'Jesus');
+  assert.equal(sourceShort({ source: 'Paul to the council, Acts 23:6, KJV; listed as a hendiadys in Bullinger, *Figures of Speech Used in the Bible*, 1898', author: 'Acts' }), 'Acts');
+  assert.equal(sourceShort({ source: 'Shakespeare, *Othello*, 5.2; Othello means first to snuff the candle', author: 'William Shakespeare' }), 'Shakespeare, Othello');
 });
 
 test('date: oldest first under a heading per decade, then "Date unknown", A to Z', () => {
@@ -77,6 +81,23 @@ test('a full date reads in words and a year alone stays a year', () => {
   assert.equal(formatDate('1940-06-04'), '4 June 1940');
   assert.equal(formatDate('1839'), '1839');
   assert.equal(formatDate(null), '');
+});
+
+test('a year before 1000 reads with AD and a year BC with BC', () => {
+  assert.equal(formatDate('0060'), 'AD 60');
+  assert.equal(formatDate('-0935'), '935 BC');
+  assert.equal(yearNumber('-0935'), -935);
+  assert.equal(yearNumber('0060'), 60);
+  assert.equal(yearLabel(1606), '1606');
+});
+
+test('date: a year BC sorts before every AD year, and decades read AD, BC or plain', () => {
+  const entries = [['"Third"', '1606'], ['"Second"', '0060'], ['"First"', '-0935'], ['"Also first"', '-0760'], ['"Fourth"', '-0935']]
+    .map(([text, date]) => indexEntry({ text, source: 'x', author: null, date }, { name: 'D' }));
+  const groups = groupEntries(entries, 'date');
+  assert.deepEqual(groups.map((g) => g.heading), ['930s BC', '760s BC', 'AD 60s', '1600s']);
+  assert.deepEqual(groups[0].entries.map((e) => e.year), ['935 BC', '935 BC']);
+  assert.deepEqual(groups.slice(1).map((g) => g.entries[0].year), ['760 BC', 'AD 60', '1606']);
 });
 
 test('an entry carries its first line, short source, year and device', () => {

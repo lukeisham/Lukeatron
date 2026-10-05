@@ -46,11 +46,10 @@ Most works are cited for the same sense by Silva Rhetoricae (already counted as 
 | Synchoresis | Peacham (1577); Bullinger |
 | Hypozeuxis | Isidore 1.36.4; Peacham (1577) |
 | Gradatio | Rhetorica ad Herennium 4.25.34 ("gradatio") |
-| Pathetic Fallacy | Ruskin, "Of the Pathetic Fallacy", Modern Painters vol. 3 (1856) |
+| Pathetic Fallacy | Ruskin, "Of the Pathetic Fallacy", Modern Painters vol. 3, ch. 12, secs. 1-8 (1856) (read 2026-10-05 in the Gutenberg text; the description was rewritten to match his sense) |
 | Bathos | Pope, Peri Bathous, or the Art of Sinking in Poetry (1727) |
 | Kenning | Snorri Sturluson, Skáldskaparmál (Prose Edda) |
 | Gambler's Fallacy | Tversky & Kahneman (1971), "Belief in the law of small numbers", Psychological Bulletin 76 |
-| Ecological Fallacy | Robinson (1950), "Ecological correlations and the behavior of individuals", American Sociological Review 15 |
 | Bulverism | C. S. Lewis, "Bulverism" (1941, collected in God in the Dock) |
 | Is-Ought Fallacy | Hume, A Treatise of Human Nature 3.1.1 (1739-40) |
 | Reductio ad Absurdum | Aristotle, Prior Analytics (demonstration through the impossible) |
@@ -69,6 +68,7 @@ Most works are cited for the same sense by Silva Rhetoricae (already counted as 
 | Auxesis | two senses in Silva and in our own definition |
 | Ploce | Silva calls it a general term with several senses |
 | Merism | Silva's merismus is dividing a whole into parts, not our sense |
+| Blessing and Curse | Silva defines *eulogia* (a blessing) and *ara* (a curse) as two figures; it lists no work for *eulogia*, and the paired device is named in no source |
 | Ekphrasis | Silva: any vivid description; our definition is the narrower art-description sense |
 
 The other devices that fail Test 1 below were not found in Silva and no published work could be confirmed for them.
@@ -77,7 +77,10 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 
 | Device | Old | New | Failed tests |
 | :--- | :--- | :--- | :--- |
+| Casuistic Form | new | low | T1: wording rests on Wikipedia alone (no tier-1 source names it). T3: Category (Elocutio v Dispositio), Form (Subordination v Conditional Schema) and Function (Authority/Power v Clarity) each needed a judgement call. Added 2026-10-05 |
+| Blessing and Curse | new | low | T1: the pairing is named in no source; Silva has the halves as separate figures (*eulogia*, *ara*) and lists no work for *eulogia*. T3: Category (Elocutio v Pronuntiatio) and Function (Emotional Appeal v Authority/Power) needed a judgement call. Added 2026-10-05 |
 | Adnomination | medium | medium | T1: two rival senses (root-repetition vs name-pun) |
+| Ecological Fallacy | high | medium | T1: wording rests on Wikipedia alone (re-scored 2026-10-05; Robinson 1950 was cited second-hand and its text could not be opened, so it no longer counts) |
 | Anastrophe | high | medium | T1: sense overlaps hyperbaton; sources disagree on the line |
 | Apophasis | low | medium | T1: two classical senses (paralipsis vs rejecting reasons) |
 | Asterismos | high | medium | T1: named in 1 source(s) |
@@ -108,7 +111,6 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Paraprosdokian | high | medium | T1: named in 1 source(s) |
 | Merism | medium | medium | T1: named in 0 source(s) |
 | Eponym | medium | low | T1: named in 0 source(s); T3: Function (Conciseness) does not fit a word-origin term |
-| Begging the Question | medium | medium | T2: example is not circular (it is a valid-looking argument) |
 | Appeal to Tradition | low | medium | T1: named in 1 source(s) |
 | Appeal to Pity | high | medium | T1: named in 1 source(s) |
 | Appeal to Force | high | medium | T1: named in 1 source(s) |
@@ -201,10 +203,50 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | Appeal to Pathos | high | medium | T1: Flipside label is coined, not in any source |
 | Unspoken Link | medium | medium | T1: Flipside label is coined, not in any source |
 
+## Descriptions whose wording rests on Wikipedia alone (checked 2026-10-05)
+
+No tier-1 source (IEP, SEP, Purdue OWL, LogicalFallacies.org, the University of Kentucky glossary) has an entry for these fallacies, so the wording was checked against Wikipedia (Definitions, step 2, tier 2). Each fails Test 1 and is at most `medium`. All were already `medium` except Ecological Fallacy, which was lowered from `high` (see the table above).
+
+| Device | Wikipedia article read |
+| :--- | :--- |
+| Appeal to the Stone | Appeal to the stone (intro) and List of fallacies |
+| Ecological Fallacy | Ecological fallacy (intro) |
+| Moving the Goalposts | Moving the goalposts (intro) and List of fallacies |
+| Relative Privation | List of fallacies, "Fallacy of relative privation" |
+| Single Cause Fallacy | Fallacy of the single cause (intro); the IEP's nearest entry, Oversimplification, is broader (checked 2026-10-05) |
+| Slothful Induction | Slothful induction (intro) |
+| Tone Policing | Tone policing (intro) |
+| Whataboutism | Whataboutism (intro) |
+
+
+## Rhetorical devices whose wording rests on Wikipedia alone (checked 2026-10-05)
+
+No tier-1 source (Silva Rhetoricae, Purdue OWL, the University of Kentucky glossary, the SEP) defines these devices. The wording agrees with Wikipedia's, which never counts for Test 1 (Definitions, step 2, tier 2). Lowered from `high` to `medium` by Luke's decision, 2026-10-05.
+
+| Device | Wikipedia article read | Why no tier-1 source counts |
+| :--- | :--- | :--- |
+| Double Entendre | Double entendre (intro) | Silva's *amphibologia* is grammatical ambiguity, a different figure |
+| Juxtaposition | Juxtaposition (intro) | Silva and the Kentucky glossary use the word only inside the definitions of antithesis and oxymoron |
+| Anthropomorphism | Anthropomorphism (intro) | Silva's *anthropopatheia* is human traits ascribed to God, a narrower sibling |
+| Casuistic Form | Code of Hammurabi (the laws "expressed in casuistic format: conditional sentences with the case detailed in the protasis ... and the remedy ... in the apodosis"); Covenant Code (Alt, 1934, casuistic against apodictic law). Wikipedia has no article on casuistic law (added 2026-10-05, rated `low`, not `high` as the table's note says of the others) | No rhetoric source (Silva, Purdue OWL, Kentucky glossary) names it; it is a legal-studies term |
+
+## Lowered from `high` to `medium` by Luke's decision, 2026-10-05, for a Test 1 source that could not be read or found
+
+| Device | Reason |
+| :--- | :--- |
+| Euphony | No tier-1 source defines it (Silva has no entry); the wording agrees with Wikipedia's "Euphony and cacophony" section of Phonaesthetics, which never counts |
+| Bathos | Passed Test 1 through Pope, *Peri Bathous* (1727), which the AI could not open (Wikisource held only a stub; no Gutenberg copy); the wording agrees with Wikipedia |
+| Kenning | Passed Test 1 through Snorri Sturluson, *Skaldskaparmal*, which the AI could not open; the wording agrees with Wikipedia |
+| Distinctio | No readable source: Silva lists it but the entry page is a dead link, and Wikipedia has no article; the meaning is still to be confirmed with Luke (Definitions, step 6) |
+| Reductio ad Absurdum | Passed Test 1 only through Aristotle, *Prior Analytics* (demonstration through the impossible), which the AI could not open; Wikipedia's wording agrees |
+
+Restore `high` for Bathos, Kenning or Reductio ad Absurdum once the cited work has been read and agrees.
+
 ## Rated `high` by Luke's decision, not by the three tests
 
 | Device | Was | Basis |
 | :--- | :--- | :--- |
 | Parataxis | low | Luke's decision, 2026-10-03. Source: Luke's note on Parataxis and Asyndeton, which cites Richard Lanham and standard rhetoric handbooks (no title, page or section given; not read by the AI). It still fails Test 1 on source count (1 source) and Test 3 (Form sits near Hypotaxis, Sentence Shape). Definition and example were revised the same day. |
+| Aphorism | high | Luke's decision, 2026-10-05, though no tier-1 source names or defines it (the source count comes from its aliases and Silva's sibling term *gnome*). |
 
 Devices not listed passed all three tests and are `high`.

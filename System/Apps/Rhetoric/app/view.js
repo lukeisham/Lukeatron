@@ -8,7 +8,7 @@
 
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
-import { formatDate, groupEntries, indexEntry } from './quoteindex.js';
+import { formatDate, groupEntries, indexEntry, yearNumber } from './quoteindex.js';
 import { COMPARE, EVERYTHING, GRAMMAR, GRAMMAR_SLOTS, INDEX, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, revealKey, sortedDevices } from './state.js';
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
@@ -145,7 +145,7 @@ function indexToText(state, groups) {
         continue;
       }
       lines.push(`  ${stripInline(quote.text)}`, `  — ${stripInline(quote.source)}`);
-      if (quote.date && !quote.source.includes(quote.date.slice(0, 4))) lines.push(`  ${formatDate(quote.date)}`);
+      if (quote.date && !quote.source.includes(String(Math.abs(yearNumber(quote.date))))) lines.push(`  ${formatDate(quote.date)}`);
       lines.push(`  → ${device.label}`);
     }
   }

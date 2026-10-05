@@ -43,7 +43,7 @@ def load_items(db_path: Path) -> dict[str, Any]:
             "SELECT device_id, node_id FROM device_categories ORDER BY device_id, node_id"
         ).fetchall()
         examples = conn.execute(
-            "SELECT device_id, body FROM examples ORDER BY id"
+            "SELECT device_id, body, attribution FROM examples ORDER BY id"
         ).fetchall()
         ordered_ids = [row[0] for row in devices]
         topical_roots = topical.topical_tree(conn, ordered_ids)
@@ -88,7 +88,9 @@ def _device_map(
         }
         for row in devices
     }
-    for device_id, body in examples:
+    # A device shows its name, description, AI example, then real quote (Luke's standing display
+    # order): the AI example goes first whatever the row ids, ties keep id order (sort is stable).
+    for device_id, body, attribution in sorted(examples, key=lambda row: quotes.is_real_quote(row[2], row[1])):
         by_id[str(device_id)]["examples"].append(body)
     return by_id
 

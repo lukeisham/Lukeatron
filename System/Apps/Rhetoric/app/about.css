@@ -11,7 +11,8 @@
   line-height: 1.55;
 }
 
-.workspace-bar { margin: 0; min-height: var(--space-8); }
+.workspace-bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3) var(--space-6); margin: 0; min-height: var(--space-8); }
+.about-actions { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-4); }
 
 .back-link {
   color: var(--color-ink-soft);
@@ -119,7 +120,10 @@ thead th {
   .facts dd { margin-bottom: var(--space-3); }
 }
 
+/* Print with one section chosen: the others vanish, and about.js sets the counter so the heading keeps its number. */
 @media print {
+  .about.part-only .intro,
+  .about.part-only section:not(.is-part) { display: none; }
   .about a { text-decoration: none; }
   .about section { break-inside: avoid; }
 }

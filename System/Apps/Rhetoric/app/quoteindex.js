@@ -58,19 +58,38 @@ export function sourceHeading(quote) {
   return `${words.at(-1)}, ${given}${author.slice(first.length)}`;
 }
 
-/** The short source on an index line: the author's surname (or the credited name), plus the work's italic title when the source line gives one: "Shakespeare, As You Like It". */
+/** The short source on an index line: the author's surname (or the credited name), plus the work's italic title when the source line gives one: "Shakespeare, As You Like It". Only the first clause (before a ";") is read for the title: what follows is a gloss or a note, such as "*bread* stands for all food" or a book that merely lists the quote. */
 export function sourceShort(quote) {
   const name = quote.author ? sourceHeading(quote).split(',')[0] : creditedName(quote.source);
-  const title = /\*([^*]+)\*/.exec(quote.source)?.[1];
+  const title = /\*([^*]+)\*/.exec(quote.source.split(';')[0])?.[1];
   const short = title && !name.includes(title) ? `${name}, ${title}` : name;
   return short.length <= SOURCE_SHORT_MAX ? short : `${short.slice(0, SOURCE_SHORT_MAX - 1).trimEnd()}…`;
 }
 
-/** '1940-06-04' reads "4 June 1940"; '1678' reads "1678". */
+/** A stored date's year as a signed number: '1678' is 1678, '0060' is 60, '-0935' (935 BC) is -935. */
+export function yearNumber(date) {
+  return date.startsWith('-') ? -Number(date.slice(1, 5)) : Number(date.slice(0, 4));
+}
+
+/** A year as it reads: 1678 is "1678", 60 is "AD 60", -935 is "935 BC". */
+export function yearLabel(year) {
+  if (year < 0) return `${-year} BC`;
+  return year < 1000 ? `AD ${year}` : String(year);
+}
+
+/** '1940-06-04' reads "4 June 1940"; '1678' reads "1678"; '0060' reads "AD 60"; '-0935' reads "935 BC". */
 export function formatDate(date) {
   if (!date) return '';
-  const [year, month, day] = date.split('-');
-  return month ? `${Number(day)} ${MONTHS[Number(month) - 1]} ${year}` : year;
+  const label = yearLabel(yearNumber(date));
+  const [, month, day] = date.split('-');
+  return month && !date.startsWith('-') ? `${Number(day)} ${MONTHS[Number(month) - 1]} ${label}` : label;
+}
+
+/** The decade heading for a year: 1830 is "1830s", 50 is "AD 50s", -935 is "930s BC". */
+function decadeHeading(year) {
+  if (year < 0) return `${Math.floor(-year / 10) * 10}s BC`;
+  const decade = Math.floor(year / 10) * 10;
+  return year < 1000 ? `AD ${decade}s` : `${decade}s`;
 }
 
 /** One index line for a quote and the device it illustrates. */
@@ -80,7 +99,7 @@ export function indexEntry(quote, device) {
     device,
     firstLine: firstLine(quote.text),
     sourceShort: sourceShort(quote),
-    year: quote.date ? quote.date.slice(0, 4) : '',
+    year: quote.date ? yearLabel(yearNumber(quote.date)) : '',
     dateLabel: formatDate(quote.date),
   };
 }
@@ -107,7 +126,7 @@ function grouped(entries, headingOf) {
  * `entries` as groups `{ heading, entries }` in the chosen order:
  * first_line: A to Z by opening words, a heading per letter;
  * source: A to Z by author (surname first), then by opening words;
- * date: oldest first in a heading per decade, then the quotes with no known date, A to Z by opening words.
+ * date: oldest first (a year BC before any AD year) in a heading per decade, then the quotes with no known date, A to Z by opening words.
  */
 export function groupEntries(entries, order) {
   if (order === 'source') {
@@ -116,10 +135,11 @@ export function groupEntries(entries, order) {
   }
   if (order === 'date') {
     const dated = entries.filter((entry) => entry.quote.date)
-      .sort((a, b) => (a.quote.date < b.quote.date ? -1 : a.quote.date > b.quote.date ? 1 : 0) || byFirstLine(a, b));
+      .sort((a, b) => yearNumber(a.quote.date) - yearNumber(b.quote.date)
+        || (a.quote.date < b.quote.date ? -1 : a.quote.date > b.quote.date ? 1 : 0) || byFirstLine(a, b));
     const undated = entries.filter((entry) => !entry.quote.date).sort(byFirstLine);
     return [
-      ...grouped(dated, (entry) => `${Math.floor(Number(entry.year) / 10) * 10}s`),
+      ...grouped(dated, (entry) => decadeHeading(yearNumber(entry.quote.date))),
       ...(undated.length > 0 ? [{ heading: UNKNOWN_DATE_HEADING, entries: undated }] : []),
     ];
   }

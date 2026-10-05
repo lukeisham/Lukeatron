@@ -89,6 +89,17 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(quotes, [{"id": 2, "device_id": 2, "text": '"Ask not"', "source": "Kennedy, 20 January 1961",
                                    "author": "John F. Kennedy", "date": "1961-01-20"}])  # the constructed 'carpe diem' is not a quote
 
+    def test_a_device_lists_its_ai_example_before_its_real_quote(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        db.execute("DELETE FROM examples")
+        db.execute("INSERT INTO examples (device_id, body, attribution) VALUES (2, '\"Ask not\" (Kennedy, 1961)', 'John F. Kennedy')")
+        db.execute("INSERT INTO examples (device_id, body) VALUES (2, 'carpe *diem*')")  # higher id, still listed first
+        db.commit()
+        db.close()
+        self.assertEqual(items.load_items(self.db_path)["devices"]["2"]["examples"],
+                         ["carpe *diem*", '"Ask not" (Kennedy, 1961)'])
+
     def test_grammar_group_is_empty_until_a_device_has_an_explanation(self):
         build_db(self.db_path)
         payload = items.load_items(self.db_path)

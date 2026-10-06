@@ -32,6 +32,7 @@ const els = {
   typeForm: $('type-form'), typeName: $('type-name'), typeDefinition: $('type-definition'), typeParent: $('type-parent'), typeParentList: $('type-parent-list'), typeStatus: $('type-status'),
   grammarBar: $('grammar-bar'), labelForm: $('label-form'), labelName: $('label-name'), labelDefinition: $('label-definition'), labelParent: $('label-parent'), labelParentList: $('label-parent-list'),
   deviceForm: $('label-device-form'), devicePick: $('device-pick'), devicePickList: $('device-pick-list'), deviceLabel: $('device-label'), grammarStatus: $('grammar-status'),
+  typeDeviceForm: $('type-device-form'), typeDevicePick: $('type-device-pick'), typeDevicePickList: $('type-device-pick-list'), typeDeviceLabel: $('type-device-label'),
   tableDialog: $('table-dialog'), tableForm: $('table-form'), tableTitle: $('table-dialog-title'), tableCaption: $('table-caption'), tableCols: $('table-cols'),
   tableRows: $('table-rows'), tableColHeads: $('table-col-heads'), tableRowHeads: $('table-row-heads'), tableGrid: $('table-grid'), tableStatus: $('table-status'),
   tableDelete: $('table-delete'), tableCancel: $('table-cancel'),
@@ -40,7 +41,6 @@ const els = {
 
 const STATUS_MS = 2000;
 let state = null;
-let devicePicker = null;
 let typeParentPicker = null;
 let labelParentPicker = null;
 let tableEditor = null;
@@ -64,8 +64,10 @@ function refresh() {
   renderList(document, els.list, state, view);
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
+  els.typeDeviceForm.hidden = state.sortOrder !== TOPICAL;
   els.grammarBar.hidden = state.sortOrder !== GRAMMAR;
-  if (state.sortOrder === GRAMMAR) fillLabelPickers();
+  if (state.sortOrder === TOPICAL) fillDeviceTargets(TOPICAL);
+  if (state.sortOrder === GRAMMAR) fillDeviceTargets(GRAMMAR);
   els.compareBar.hidden = state.sortOrder !== COMPARE;
   els.indexBar.hidden = state.sortOrder !== INDEX;
   if (state.sortOrder === INDEX) renderIndexOrders(document, els.indexOrders, INDEX_ORDERS, state.indexOrder);
@@ -243,15 +245,27 @@ function readParent(picker, status, noun) {
   return { parentId };
 }
 
-/** Refills the two label pickers from the saved tree, keeping what Luke had chosen. */
-function fillLabelPickers() {
-  const labels = treeLabels(state, GRAMMAR);
+/**
+ * The Add device form of each editable group (the same form in Topical and Grammar): a type-ahead box over every
+ * device, a menu of every Type or label to put it under, and the status line its messages go to. The pickers are
+ * made in `bindControls`.
+ */
+const DEVICE_FORMS = {
+  [TOPICAL]: { form: () => els.typeDeviceForm, input: () => els.typeDevicePick, list: () => els.typeDevicePickList, target: () => els.typeDeviceLabel, status: () => els.typeStatus, empty: 'Add a Type first', add: addPlacement, picker: null },
+  [GRAMMAR]: { form: () => els.deviceForm, input: () => els.devicePick, list: () => els.devicePickList, target: () => els.deviceLabel, status: () => els.grammarStatus, empty: 'Add a label first', add: addLabelPlacement, picker: null },
+};
+
+/** Refills a group's "add the device to" menu from the saved tree, keeping what Luke had chosen. */
+function fillDeviceTargets(hierarchy) {
+  const { target, empty } = DEVICE_FORMS[hierarchy];
+  const select = target();
+  const labels = treeLabels(state, hierarchy);
   const indent = (label) => `${'\u2003'.repeat(label.depth - 1)}${stripInline(label.name)}`;
-  const labelChoice = els.deviceLabel.value;
-  els.deviceLabel.replaceChildren(
-    ...(labels.length === 0 ? [optionFor('', 'Add a label first', true)] : labels.map((label) => optionFor(label.id, indent(label), labelChoice === String(label.id)))),
+  const choice = select.value;
+  select.replaceChildren(
+    ...(labels.length === 0 ? [optionFor('', empty, true)] : labels.map((label) => optionFor(label.id, indent(label), choice === String(label.id)))),
   );
-  els.deviceLabel.disabled = labels.length === 0;
+  select.disabled = labels.length === 0;
 }
 
 async function onAddLabel(event) {
@@ -270,28 +284,32 @@ async function onAddLabel(event) {
   }
 }
 
-async function onAddDeviceToLabel(event) {
-  event.preventDefault();
-  const labelId = Number(els.deviceLabel.value);
-  const deviceId = devicePicker.chosen();
-  if (!labelId) return flashStatus(els.grammarStatus, 'Add a label first');
-  if (deviceId === null) return flashStatus(els.grammarStatus, 'Choose a device from the list');
-  const label = state.nodesById[GRAMMAR].get(labelId);
-  if (label.children.some((child) => child.kind === 'device' && child.id === deviceId)) {
-    return flashStatus(els.grammarStatus, `Already under "${stripInline(label.name)}"`);
-  }
-  openWithAncestors(state, GRAMMAR, labelId); // so the device is seen landing
-  if (await saveChange(GRAMMAR, () => addLabelPlacement(labelId, deviceId))) {
-    devicePicker.clear();
-    els.devicePick.focus(); // the label stays chosen, so the next device goes to the same label, or pick another
-  }
+function onAddDeviceSubmit(hierarchy) {
+  return async (event) => {
+    event.preventDefault();
+    const { target, status, empty, add, picker, input } = DEVICE_FORMS[hierarchy];
+    const labelId = Number(target().value);
+    const deviceId = picker.chosen();
+    if (!labelId) return flashStatus(status(), empty);
+    if (deviceId === null) return flashStatus(status(), 'Choose a device from the list');
+    const label = state.nodesById[hierarchy].get(labelId);
+    if (label.children.some((child) => child.kind === 'device' && child.id === deviceId)) {
+      return flashStatus(status(), `Already under "${stripInline(label.name)}"`);
+    }
+    openWithAncestors(state, hierarchy, labelId); // so the device is seen landing
+    if (await saveChange(hierarchy, () => add(labelId, deviceId))) {
+      picker.clear();
+      input().focus(); // the Type or label stays chosen, so the next device goes to the same one, or pick another
+    }
+  };
 }
 
-/** A label's Add device button: points the device form at that label and moves to the device box. */
+/** A Type's or label's Add device button: points that group's device form at it and moves to the device box. */
 function aimDeviceFormAt(button) {
-  const { node } = nodeOf(button);
-  els.deviceLabel.value = String(node.id);
-  els.devicePick.focus();
+  const { hierarchy, node } = nodeOf(button);
+  const { target, input } = DEVICE_FORMS[hierarchy];
+  target().value = String(node.id);
+  input().focus();
 }
 
 function applyToggles() {
@@ -434,14 +452,17 @@ function bindControls() {
     }
   });
   els.labelForm.addEventListener('submit', onAddLabel);
-  els.deviceForm.addEventListener('submit', onAddDeviceToLabel);
+  els.deviceForm.addEventListener('submit', onAddDeviceSubmit(GRAMMAR));
+  els.typeDeviceForm.addEventListener('submit', onAddDeviceSubmit(TOPICAL));
   tableEditor = bindTableEditor(document, {
     dialog: els.tableDialog, form: els.tableForm, title: els.tableTitle, caption: els.tableCaption, cols: els.tableCols, rows: els.tableRows,
     colHeads: els.tableColHeads, rowHeads: els.tableRowHeads, grid: els.tableGrid, status: els.tableStatus, remove: els.tableDelete, cancel: els.tableCancel,
   });
   typeParentPicker = bindParentPicker(els.typeParent, els.typeParentList, TOPICAL, 'Type');
   labelParentPicker = bindParentPicker(els.labelParent, els.labelParentList, GRAMMAR, 'label');
-  devicePicker = bindDevicePicker({ input: els.devicePick, list: els.devicePickList, getDevices: () => state.devices.values(), isFuzzy: () => state.fuzzy });
+  for (const form of Object.values(DEVICE_FORMS)) {
+    form.picker = bindDevicePicker({ input: form.input(), list: form.list(), getDevices: () => state.devices.values(), isFuzzy: () => state.fuzzy });
+  }
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');
     if (!button) return;

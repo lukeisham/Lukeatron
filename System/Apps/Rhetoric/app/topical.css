@@ -13,6 +13,11 @@
   font-family: var(--font-ui);
 }
 .type-form[hidden] { display: none; }
+.type-form .btn { white-space: nowrap; }
+/* The Add Type form with the Add device form stacked beneath it, on the same left edge, at the right of the bar. */
+.type-forms { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-left: auto; }
+.type-forms .type-form { margin-left: 0; }
+.device-form .toolbar-select { max-width: 200px; padding: var(--space-2); font-size: var(--font-size-toolbar); }
 
 .type-field input {
   width: 180px;

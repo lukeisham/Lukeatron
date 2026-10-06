@@ -7,9 +7,9 @@
    ========================================================================== */
 .grammar-bar {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-4) var(--space-7);
+  flex-direction: column; /* the Add label form, the Add device form beneath it, then the status line */
+  align-items: flex-start;
+  gap: var(--space-4);
   font-family: var(--font-ui);
 }
 .grammar-bar[hidden] { display: none; }

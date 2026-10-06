@@ -66,6 +66,7 @@
 <main class="workspace">
   <div class="workspace-bar">
     <button id="home" class="home-link" type="button" hidden>← Home</button>
+    <div class="type-forms">
     <form id="type-form" class="type-form" autocomplete="off" hidden>
       <label class="type-field"><span class="visually-hidden">New Type name</span>
         <input id="type-name" type="text" maxlength="80" placeholder="New Type…" required></label>
@@ -79,6 +80,16 @@
       <button class="btn" type="submit">Add Type</button>
       <span id="type-status" class="toolbar-status" role="status"></span>
     </form>
+    <form id="type-device-form" class="type-form device-form" autocomplete="off" hidden>
+      <span class="picker">
+        <label class="type-field"><span class="visually-hidden">Device to add</span>
+          <input id="type-device-pick" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="type-device-pick-list" placeholder="Find a device…"></label>
+        <ul id="type-device-pick-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
+      <label><span class="visually-hidden">Add the device to</span><select id="type-device-label" class="toolbar-select"></select></label>
+      <button class="btn" type="submit">Add device</button>
+    </form>
+    </div>
   </div>
   <div id="grammar-bar" class="grammar-bar" role="group" aria-label="Add grammar labels and devices" hidden>
     <form id="label-form" class="grammar-form" autocomplete="off">

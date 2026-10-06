@@ -8,7 +8,6 @@
  */
 
 import { parseInline, stripInline } from './markup.js';
-import { GRAMMAR } from './state.js';
 import { isHeadingCell, longestWord } from './tablegrid.js';
 
 function make(doc, tag, className, text) {
@@ -102,13 +101,12 @@ function revealButton(doc, node) {
   return button;
 }
 
-const TYPE_BUTTONS = [['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
-// A grammar label adds devices, and its Edit changes the explanation as well as the name.
-const LABEL_BUTTONS = [['label-add', 'Add device'], ['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
+// A Type or label adds devices and tables, and its Edit changes the explanation as well as the name.
+const TYPE_BUTTONS = [['label-add', 'Add device'], ['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
 
 function typeActions(doc, node) {
   const actions = make(doc, 'span', 'type-actions');
-  for (const [className, label] of node.hierarchy === GRAMMAR ? LABEL_BUTTONS : TYPE_BUTTONS) {
+  for (const [className, label] of TYPE_BUTTONS) {
     const button = make(doc, 'button', `type-action ${className}`, label);
     button.setAttribute('type', 'button');
     button.setAttribute('aria-label', `${label} ${stripInline(node.name)}`);

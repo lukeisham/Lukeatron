@@ -7,12 +7,9 @@
 !/.Claude/
 !/.gitignore
 
-# Rhetoric is the exception to all of this (Luke, 2026-10-06): nothing of it is ignored.
-# Its dated backups in Archive/ are tracked (the rest of Archive/ stays local), and so are its
-# Python caches (re-allowed at the foot of this file, after the rules that ignore them) and database.
-!/Archive/
-/Archive/*
-!/Archive/Rhetoric-*/
+# Rhetoric keeps its database and Python caches tracked (Luke, 2026-10-06; the caches are re-allowed at the foot of
+# this file, after the rules that ignore them). Its dated backups in Archive/ are NOT: they were removed from GitHub
+# on 2026-10-06, so all of Archive/ stays local like the rest of the personal data above.
 
 # Within System/: exclude scratch, and the entire Credentials/ directory
 # (all credential material stays local-only; nothing under it is ever pushed)
@@ -37,10 +34,23 @@ __pycache__/
 # Home: the day's verse cache and per-app launch logs
 /System/Apps/Home/cache/
 
-# Storytelling: reference/ and dist/ are committed (Luke, 2026-10-06), except the poster itself. The original
-# poster image is archived in Archive/, and reference/work/lib/bottom.png is a byte-identical copy of it, so that
-# one file stays local until the poster's licence (PRD open question OQ-X1) is settled — this repo is public.
-/System/Apps/Storytelling/reference/work/lib/bottom.png
+# App construction files stay local (Luke, 2026-10-06; only an app's wishlist.md is part of the finished app):
+# build folders, specs, mockups and spikes, wherever they sit. A finished app deletes its _build/.
+_build/
+_Builds/
+_Mockups/
+_Spikes/
+_scratch_build/
+Specs/
+
+# Storytelling: its build tooling (share/) and output (dist/) are committed. Its construction work stays local:
+# everything in reference/work/ except added-elements.json, and everything in verify/ except verify-checks.js (its
+# tests read those two). The original poster is archived in Archive/ and stays local until the poster's licence
+# (PRD open question OQ-X1) is settled — this repo is public.
+/System/Apps/Storytelling/reference/work/*
+!/System/Apps/Storytelling/reference/work/added-elements.json
+/System/Apps/Storytelling/verify/*
+!/System/Apps/Storytelling/verify/verify-checks.js
 /System/Apps/Storytelling/reference/periodic-table-of-storytelling.png
 
 # Rhetoric's Python caches: re-allowed here because a later rule beats an earlier one (see the Rhetoric note above)

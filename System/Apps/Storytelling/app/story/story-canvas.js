@@ -29,6 +29,7 @@ import { ELEMENTS, ROGUE, MAX_LABEL } from "../data/elements.js";
 import { setPrintTarget, copyText } from "../shared/output.js";
 import { layout, pointOnCurve } from "./story-layout.js";
 import { storyText } from "./story-text.js";
+import { setTip } from "../shared/tooltip.js";
 import {
   MAX_BEADS,
   MAX_RIBBONS,
@@ -190,8 +191,7 @@ function fillBeadNode(node, bead, step, editingHalf, handlers) {
   node.replaceChildren(...parts);
   const title = beadTitle(bead);
   node.setAttribute("aria-label", `Step ${step}: ${title.name}`);
-  if (bead.note) node.setAttribute("title", bead.note);
-  else node.removeAttribute("title");
+  setTip(node, bead.note);
   return dock;
 }
 
@@ -428,7 +428,7 @@ export function mountStoryCanvas(host, options = {}) {
       item.appendChild(canvasButton("st-story__open", story.name));
       if (story.agent) {
         const chip = canvasNode("span", "st-story__ai", "AI");
-        chip.setAttribute("title", "Saved by an agent");
+        setTip(chip, "Saved by an agent");
         item.appendChild(chip);
       }
       item.appendChild(canvasButton("st-story__delete", "Delete", { "aria-label": `Delete ${story.name}` }));

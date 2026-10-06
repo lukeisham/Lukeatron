@@ -1,22 +1,23 @@
 /** The element detail panel (viewport-detail spec FR-V5, FR-V9, FR-V11). Opens on `storytelling:open`; Print and Copy live only here. */
 import { EVT_OPEN } from "../shared/events.js";
 import { setPrintTarget, copyText } from "../shared/output.js";
+import { setTip } from "../shared/tooltip.js";
 import { ELEMENTS, GROUPS, ROGUE } from "../data/elements.js";
 import { ROGUE_DETAIL_TEXT } from "../data/furniture.js";
 
 const POPULARITY_UNIT = "kilowicks";
 const POPULARITY_NOTE = "thousands of links to its page in the TV Tropes wiki";
-const NOT_ON_CHART = "Not on the original chart";
-export const ADDED_CREDIT = "Added for this app — not on the original chart";
 const PRINT_TONE = "colour";
 const DASH = "—";
 
 const detailSymbolOf = (element) => element.symbol ?? element.id;
 
-/** The credit line: the addition notice for an added element, otherwise its source URL (may be undefined). */
+/** The credit line: the element's source URL (TV Tropes, or Wikipedia for an added element); may be undefined. */
 export function creditOf(element) {
-  return element.added ? ADDED_CREDIT : element.sourceUrl;
+  return element.sourceUrl;
 }
+
+const sourceLinkOf = (element) => (isWebUrl(element.sourceUrl) ? element.sourceUrl : null);
 
 /**
  * The text Copy puts on the clipboard (FR-V5): `<symbol> — <name>`, description, `Example: …`,
@@ -35,13 +36,12 @@ export function elementCopyText(element, note) {
   return lines.join("\n");
 }
 
-/** "<n> kilowicks", the added-element sentence, or null when popularity has no meaning (rogue). */
+/** "<n> kilowicks", or null when there is no number: rogue, or an added element with no TV Tropes page. */
 export function popularityText(element) {
   if (element.rogue) return null;
-  if (element.added) return NOT_ON_CHART;
   const value = element.popText ?? element.popularity;
   if (value === undefined || value === null) {
-    console.warn(`detail-panel: poster element "${element.id}" has no popularity`);
+    if (!element.added) console.warn(`detail-panel: poster element "${element.id}" has no popularity`);
     return null;
   }
   return `${value} ${POPULARITY_UNIT}`;
@@ -83,8 +83,10 @@ function buildParts(doc) {
   parts.tandem = makeNode(doc, "p", "st-detail__tandem");
   parts.popularity = makeNode(doc, "p", "st-detail__popularity");
   parts.popularityValue = makeNode(doc, "span", "st-detail__popularity-value");
-  parts.popularityNote = makeNode(doc, "span", "st-detail__popularity-note", POPULARITY_NOTE);
-  parts.popularity.append(parts.popularityValue, parts.popularityNote);
+  // The one-line explanation is a hover-over on the number (focusable so keyboard users get it too).
+  setTip(parts.popularityValue, POPULARITY_NOTE);
+  parts.popularityValue.setAttribute("tabindex", "0");
+  parts.popularity.append(parts.popularityValue);
 
   parts.description = makeNode(doc, "p", "st-detail__description");
   const example = makeLabelledLine(doc, "st-detail__example", "Example");
@@ -120,16 +122,17 @@ const isWebUrl = (url) => typeof url === "string" && /^https?:\/\//i.test(url);
 
 function fillCredit(parts, element) {
   const credit = creditOf(element);
-  const asLink = !element.added && isWebUrl(credit);
-  setShown(parts.credit, Boolean(credit));
-  setShown(parts.creditLabel, asLink);
-  setShown(parts.creditLink, asLink);
-  setShown(parts.creditText, Boolean(credit) && !asLink);
-  if (asLink) {
-    parts.creditLink.setAttribute("href", credit);
-    parts.creditLink.textContent = credit;
-  } else {
-    parts.creditText.textContent = credit ?? "";
+  const link = sourceLinkOf(element);
+  setShown(parts.credit, Boolean(credit) || Boolean(link));
+  setShown(parts.creditLabel, link !== null);
+  setShown(parts.creditLink, link !== null);
+  // A web URL shows as a link; any other credit text shows as plain text.
+  const notice = link === null ? credit : null;
+  setShown(parts.creditText, Boolean(notice));
+  parts.creditText.textContent = notice ?? "";
+  if (link) {
+    parts.creditLink.setAttribute("href", link);
+    parts.creditLink.textContent = link;
   }
 }
 
@@ -138,8 +141,6 @@ function fillPopularity(parts, element) {
   setShown(parts.popularity, text !== null);
   if (text === null) return;
   parts.popularityValue.textContent = text;
-  // The one-line explanation belongs with a number only; the added-element sentence is already plain.
-  setShown(parts.popularityNote, !element.added);
 }
 
 function fillLine(line, valueNode, text) {

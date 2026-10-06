@@ -7,6 +7,8 @@
  */
 import { EVT_OPEN_LIBRARY } from "../shared/events.js";
 import { LIBRARY } from "../data/library.js";
+import { ELEMENTS } from "../data/elements.js";
+import { setTip } from "../shared/tooltip.js";
 import { getStoryState, openStory } from "./story-model.js";
 
 const CLS = "st-library-panel";
@@ -30,6 +32,32 @@ export function examplesLeadFirst(entry) {
   return [entry.lead, ...entry.examples.filter((name) => name !== entry.lead)];
 }
 
+const ELEMENT_NAMES = new Map(ELEMENTS.map((el) => [el.id, el.name]));
+
+/** A bead's element name, with its tandem partner when it has one; the id itself if the element is unknown. */
+function beadName(bead, names) {
+  const nameOf = (id) => names.get(id) ?? id;
+  return bead.with ? `${nameOf(bead.elementId)} + ${nameOf(bead.with)}` : nameOf(bead.elementId);
+}
+
+/** The one line under a card: how many elements the map has and where it starts and ends. */
+export function summaryOf(entry, names = ELEMENT_NAMES) {
+  const beads = entry.beads;
+  if (beads.length === 0) return "";
+  const first = beadName(beads[0], names);
+  if (beads.length === 1) return `One element: ${first}.`;
+  return `${beads.length} elements, from ${first} to ${beadName(beads[beads.length - 1], names)}.`;
+}
+
+/** The hover-over text: the credit, then each element in the map with its one-line explanation. */
+export function hoverTextOf(entry, names = ELEMENT_NAMES) {
+  const steps = entry.beads.map((bead, index) => {
+    const line = `${index + 1}. ${beadName(bead, names)}`;
+    return bead.note ? `${line} — ${bead.note}` : line;
+  });
+  return [entry.credit, "", ...steps].join("\n");
+}
+
 const librarySignatureOf = (state) => JSON.stringify([state.beads, state.ribbons]);
 
 /**
@@ -45,6 +73,7 @@ export function mountLibraryPanel(host, options = {}) {
   const doc = options.doc ?? globalThis.document;
   const eventTarget = options.eventTarget ?? doc;
   const library = options.library ?? LIBRARY;
+  const names = options.names ?? ELEMENT_NAMES;
   const openShape = options.open ?? openStory;
   const getState = options.getState ?? getStoryState;
   let cleanSignature = null;
@@ -88,8 +117,10 @@ export function mountLibraryPanel(host, options = {}) {
       element(doc, "span", `${CLS}__type`, entry.title),
       element(doc, "span", `${CLS}__lead`, entry.lead),
       element(doc, "span", `${CLS}__examples`, others.length ? `, ${others.join(", ")}` : ""),
+      element(doc, "span", `${CLS}__summary`, summaryOf(entry, names)),
       element(doc, "span", `${CLS}__credit`, entry.credit),
     );
+    setTip(choose, hoverTextOf(entry, names));
     choose.addEventListener("click", () => openOrAsk(entry));
     item.appendChild(choose);
     list.appendChild(item);

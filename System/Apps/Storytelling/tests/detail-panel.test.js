@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { EVT_OPEN } from "../app/shared/events.js";
-import { elementCopyText, mountDetailPanel, popularityText, ADDED_CREDIT } from "../app/detail/detail-panel.js";
+import { elementCopyText, mountDetailPanel, popularityText } from "../app/detail/detail-panel.js";
 import { createFakeDocument } from "./helpers/fake-dom-detail.js";
 
 const POSTER = {
@@ -12,8 +12,9 @@ const POSTER = {
 const ADDED = {
   id: "Pro", name: "Prologue", group: "structure", added: true,
   description: "An opening scene.", example: "Inception opens with a dream.",
-  sourceUrl: "https://tvtropes.org/pmwiki/pmwiki.php/Main/Prologue",
+  sourceUrl: "https://en.wikipedia.org/wiki/Prologue",
 };
+const ADDED_TV = { ...ADDED, id: "Imr", name: "In Medias Res", popularity: 2.63, popText: "2.6", sourceUrl: "https://tvtropes.org/pmwiki/pmwiki.php/Main/InMediasRes" };
 const FIVE_MAN_HERO = { id: "5maH", symbol: "H", name: "The Hero", popularity: 12, popText: "12", group: "heroes", description: "d", example: "e", sourceUrl: "https://example.org/h" };
 const ROGUE = { id: "Rg", name: "Rogue element", group: "rogue", rogue: true };
 const GROUPS = { structure: "Structure", heroes: "Heroes", rogue: "Rogue element" };
@@ -23,7 +24,7 @@ function setup(extra = {}) {
   const doc = createFakeDocument();
   const host = doc.createElement("aside");
   const calls = { print: [], copy: [] };
-  const table = new Map([POSTER, ADDED, FIVE_MAN_HERO].map((e) => [e.id, e]));
+  const table = new Map([POSTER, ADDED, ADDED_TV, FIVE_MAN_HERO].map((e) => [e.id, e]));
   const panel = mountDetailPanel(host, {
     doc, lookup: (id) => table.get(id), groups: GROUPS, rogue: ROGUE, rogueText: ROGUE_TEXT,
     print: (...args) => calls.print.push(args),
@@ -48,7 +49,7 @@ test("starts hidden and opens on the open event, filling every field for a poste
   assert.ok(tile.classes.has("tile-structure"));
   assert.equal(text(host, "st-detail__name"), "Conflict");
   assert.equal(text(host, "st-detail__popularity-value"), ".04 kilowicks");
-  assert.equal(text(host, "st-detail__popularity-note"), "thousands of links to its page in the TV Tropes wiki");
+  assert.equal(host.find("st-detail__popularity-value").getAttribute("data-tip"), "thousands of links to its page in the TV Tropes wiki");
   assert.equal(text(host, "st-detail__group"), "Structure");
   assert.equal(text(host, "st-detail__description"), "Opposition of forces.");
   assert.equal(text(host, "st-detail__example"), "ExampleLuke fights the Empire.");
@@ -67,15 +68,33 @@ test("the tile uses el.symbol when present and never sets an inline colour", () 
   assert.equal(host.find("st-detail__tile").getAttribute("style"), null);
 });
 
-test("an added element shows the addition credit and no popularity number", () => {
+test("an added element with no TV Tropes page: Wikipedia link, no number, no added notice", () => {
   const { host, open } = setup();
   open({ elementId: "Pro" });
-  assert.equal(text(host, "st-detail__popularity-value"), "Not on the original chart");
-  assert.equal(shown(host, "st-detail__popularity-note"), false);
+  assert.equal(shown(host, "st-detail__popularity"), false);
   assert.ok(!host.textContent.includes("kilowicks"));
-  assert.equal(shown(host, "st-detail__credit-link"), false);
-  assert.equal(text(host, "st-detail__credit-text"), ADDED_CREDIT);
-  assert.ok(host.find("st-detail__tile").classes.has("is-added"));
+  assert.equal(shown(host, "st-detail__credit-link"), true);
+  assert.equal(host.find("st-detail__credit-link").getAttribute("href"), ADDED.sourceUrl);
+  assert.equal(shown(host, "st-detail__credit-text"), false);
+  assert.ok(!host.textContent.includes("Added for this app"));
+});
+
+test("an added element with a TV Tropes page shows its number, with the explanation as a hover-over", () => {
+  const { host, open } = setup();
+  open({ elementId: "Imr" });
+  const value = host.find("st-detail__popularity-value");
+  assert.equal(shown(host, "st-detail__popularity"), true);
+  assert.equal(value.textContent, "2.6 kilowicks");
+  assert.equal(value.getAttribute("data-tip"), "thousands of links to its page in the TV Tropes wiki");
+  assert.equal(host.find("st-detail__credit-link").getAttribute("href"), ADDED_TV.sourceUrl);
+  assert.equal(shown(host, "st-detail__credit-text"), false);
+});
+
+test("the popularity explanation is a hover-over, not visible text", () => {
+  const { host, open } = setup();
+  open({ elementId: "C" });
+  assert.ok(!host.textContent.includes("thousands of links"));
+  assert.equal(host.find("st-detail__popularity-value").getAttribute("data-tip"), "thousands of links to its page in the TV Tropes wiki");
 });
 
 test("a bead note is shown under the example and copied", () => {
@@ -147,10 +166,10 @@ test("a failed copy says so", async () => {
   assert.match(text(host, "st-detail__status"), /Could not copy/);
 });
 
-test("elementCopyText: added credit, symbol override, optional parts omitted", () => {
+test("elementCopyText: source link, symbol override, optional parts omitted", () => {
   assert.equal(
     elementCopyText(ADDED),
-    `Pro — Prologue\nAn opening scene.\nExample: Inception opens with a dream.\n${ADDED_CREDIT}`,
+    `Pro — Prologue\nAn opening scene.\nExample: Inception opens with a dream.\n${ADDED.sourceUrl}`,
   );
   assert.equal(elementCopyText(FIVE_MAN_HERO).split("\n")[0], "H — The Hero");
   assert.equal(elementCopyText({ id: "X", name: "Bare" }), "X — Bare");
@@ -159,7 +178,8 @@ test("elementCopyText: added credit, symbol override, optional parts omitted", (
 test("popularityText: as printed, added, rogue", () => {
   assert.equal(popularityText(POSTER), ".04 kilowicks");
   assert.equal(popularityText({ ...POSTER, popText: undefined, popularity: 2 }), "2 kilowicks");
-  assert.equal(popularityText(ADDED), "Not on the original chart");
+  assert.equal(popularityText(ADDED), null);
+  assert.equal(popularityText(ADDED_TV), "2.6 kilowicks");
   assert.equal(popularityText(ROGUE), null);
 });
 
@@ -225,7 +245,7 @@ test("with real data and default wiring: a poster element, an added one and the 
   assert.equal(panel.open({ elementId: "C" }), true);
   assert.match(text(host, "st-detail__popularity-value"), /kilowicks$/);
   assert.equal(panel.open({ elementId: "Pro" }), true);
-  assert.equal(text(host, "st-detail__credit-text"), ADDED_CREDIT);
+  assert.equal(shown(host, "st-detail__credit-text"), false);
   assert.equal(panel.open({ elementId: "Rg" }), true);
   assert.match(text(host, "st-detail__description"), /^A rogue element stands in/);
 });

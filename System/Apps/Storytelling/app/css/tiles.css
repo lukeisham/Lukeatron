@@ -33,6 +33,12 @@
 .tile { cursor: pointer; touch-action: none; transform-box: fill-box; transform-origin: center; outline: none; }
 .tile-rect, .chip-rect { fill: var(--tile-fill, var(--g-rogue)); stroke: var(--color-edge); stroke-width: var(--tile-edge-width); }
 .chip-rect { stroke-width: 0.5; }
+/* Tile edges are a fixed whole number of device pixels, at every zoom. Cells are 62.1 wide, so at most zoom levels an edge falls
+   between pixels; with a stroke that scales with the poster (say 1.4 px) the browser rounds it to 1 px on some edges and 2 px on
+   others, and neighbours draw the shared edge twice. A non-scaling stroke of a whole width, snapped to pixels, comes out the same
+   everywhere (diagram-svg.js also snaps the tile edges so neighbours round alike). The dotted Rogue card keeps smooth,
+   scaling rendering so its round dots stay round. */
+.tile:not(.tile-rogue) .tile-rect { shape-rendering: crispEdges; vector-effect: non-scaling-stroke; }
 .tile text { pointer-events: none; }
 .sym { fill: var(--color-ink); font-weight: 800; }
 .nm { fill: var(--color-ink); font-weight: 400; }
@@ -48,9 +54,6 @@ svg[data-pop="off"] .pop, svg[data-pop="off"] .pop-key { display: none; }
 .tile.is-selected .tile-rect { stroke: var(--tile-edge-dark); stroke-width: 2; }
 .tile.is-picked .tile-rect { stroke: var(--color-ink); stroke-dasharray: 3 2; }
 
-/* ---- Added tiles: dashed ink outline in every state (FR-S13); selection and in-story layer on top ---- */
-.tile.is-added .tile-rect { stroke: var(--color-ink); stroke-width: 1.4; stroke-dasharray: 4 2.5; }
-.tile.is-added.is-selected .tile-rect { stroke-width: 2; }
 
 /* ---- In-story mark (FR-S12): 3px ink outline and a step badge; static, never yellow ---- */
 .tile.is-in-story .tile-rect { stroke: var(--color-ink); stroke-width: 3; }
@@ -68,7 +71,7 @@ svg[data-pop="off"] .pop, svg[data-pop="off"] .pop-key { display: none; }
 /* ---- Furniture: title, headings, key, subtrope boxes, connectors, outline panel, credits ---- */
 .title-run { fill: var(--color-ink); font-family: var(--font-title); font-weight: 900; }
 .title-run.tone-muted { fill: var(--color-ink-soft); font-weight: 400; }
-.col-heading, .char-mod-text, .subtrope-item, .credit-line, .key-label, .key-note, .key-sample-nm, .outline-heading, .chip-label, .tvtropes-lead { fill: var(--color-ink); }
+.col-heading, .char-mod-text, .subtrope-item, .key-label, .key-note, .key-sample-nm, .outline-heading, .chip-label, .tvtropes-lead { fill: var(--color-ink); }
 .key-sample-sym, .subtrope-title, .tvtropes-lead { font-weight: 700; }
 .key-sample-sym { fill: var(--color-ink); font-weight: 800; }
 .key-note, .key-badge-text { fill: var(--color-ink-soft); }

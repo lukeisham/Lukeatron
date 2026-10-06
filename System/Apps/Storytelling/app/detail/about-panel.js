@@ -7,7 +7,7 @@ const ABOUT_BUTTON_SELECTOR = '[data-action="about"]';
 
 /**
  * Mount the About panel: it builds its contents inside the host element and shows or hides the host itself. It holds exactly what FR-X7 lists: the app name and
- * version, then the statements from `data/furniture.js` (`licenceNotes` there are deliberately not shown).
+ * version, then the statements from `data/furniture.js`, then the poster's attribution `credits` (`licenceNotes` there are deliberately not shown).
  * @param {HTMLElement} host the host element supplied by index.html
  * @param {{ doc?: Document, about?: Object, version?: string }} [options] test overrides
  * @returns {{ isOpen: () => boolean }}
@@ -45,6 +45,18 @@ export function mountAboutPanel(host, { doc = document, about = ABOUT, version =
   }
 
   panel.append(statementsSection);
+
+  if (about.credits?.length) {
+    const creditsSection = doc.createElement("section");
+    creditsSection.className = "st-about__credits";
+    for (const line of about.credits) {
+      const creditEl = doc.createElement("p");
+      creditEl.className = "st-about__credit";
+      creditEl.textContent = line;
+      creditsSection.append(creditEl);
+    }
+    panel.append(creditsSection);
+  }
 
   const closeBtn = doc.createElement("button");
   closeBtn.className = "st-about__close";

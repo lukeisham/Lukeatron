@@ -31,9 +31,10 @@
 .st-toolbar__menu { position: absolute; top: 100%; left: 0; z-index: 40; display: flex; flex-direction: column; gap: var(--space-xs); min-width: 100%; margin-top: var(--space-xs); padding: var(--space-xs); border: 1px solid var(--color-edge); border-radius: var(--radius-md); background: var(--g-rogue); box-shadow: var(--shadow-raised); }
 .st-toolbar__menu-item { text-align: left; white-space: nowrap; }
 
-/* ---- Detail panel: a 300px side panel from 900px, a sheet over the diagram below ---- */
+/* ---- Detail panel: a 300px side panel from 900px, a sheet over the diagram below ----
+   Side panel: max-height 100% keeps it inside the diagram row (it scrolls), so it never covers the story bar's own Copy/Print. */
 .st-detail { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; max-height: 60vh; overflow: auto; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-@media (min-width: 900px) { .st-detail { position: sticky; top: var(--space-md); left: auto; right: auto; bottom: auto; z-index: auto; align-self: start; width: 300px; max-height: calc(100vh - 2 * var(--space-md)); border-radius: var(--radius-lg); } }
+@media (min-width: 900px) { .st-detail { position: sticky; top: var(--space-md); left: auto; right: auto; bottom: auto; z-index: auto; align-self: start; width: 300px; max-height: 100%; border-radius: var(--radius-lg); } }
 .st-detail__header { display: flex; align-items: flex-start; gap: var(--space-sm); margin-bottom: var(--space-sm); }
 .st-detail__titles { flex: 1 1 auto; min-width: 0; }
 .st-detail__name { margin: 0; font: 900 20px/1.15 var(--font-title); overflow-wrap: anywhere; }
@@ -47,11 +48,11 @@
 .st-detail__tile.tile-metatropes { --st-tile-bg: var(--g-metatropes); } .st-detail__tile.tile-production { --st-tile-bg: var(--g-production); }
 .st-detail__tile.tile-fandom { --st-tile-bg: var(--g-fandom); } .st-detail__tile.tile-highlight { --st-tile-bg: var(--g-highlight); }
 .st-detail__tile.tile-rogue { --st-tile-bg: var(--g-rogue); border: 1.4px dotted var(--color-ink-soft); color: var(--color-ink-soft); }
-.st-detail__tile.is-added { border: 1.4px dashed var(--color-ink); }
 .st-detail__tandem, .st-detail__popularity, .st-detail__description, .st-detail__example, .st-detail__story, .st-detail__credit, .st-detail__status { margin: 0 0 var(--space-sm); }
 .st-detail__tandem { font-style: italic; color: var(--color-ink-soft); }
-.st-detail__popularity-value { font-weight: 700; }
-.st-detail__popularity-note { display: block; font-size: 12px; color: var(--color-ink-soft); }
+.st-tooltip { position: fixed; z-index: 100; box-sizing: border-box; max-width: min(24rem, calc(100vw - 16px)); padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-ink); border-radius: var(--radius-md); background: var(--g-rogue); color: var(--color-ink); font: 12px/1.45 var(--font-ui); white-space: pre-line; box-shadow: var(--shadow-floating); pointer-events: none; }
+.st-tooltip[hidden] { display: none; }
+.st-detail__popularity-value { font-weight: 700; cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; }
 .st-detail__label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-soft); }
 .st-detail__credit { font-size: 12px; color: var(--color-ink-soft); overflow-wrap: anywhere; }
 .st-detail__credit-link { color: var(--color-ink); text-decoration: underline; }
@@ -74,4 +75,6 @@
 .st-about__name { margin: 0; font: 900 24px/1.15 var(--font-title); }
 .st-about__version { margin: 2px 0 0; font-size: 12px; color: var(--color-ink-soft); }
 .st-about__statement { margin: 0 0 var(--space-sm); }
+.st-about__credits { margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--color-edge); font-size: 12px; color: var(--color-ink-soft); }
+.st-about__credit { margin: 0 0 2px; }
 .st-about__close { margin-top: var(--space-sm); }

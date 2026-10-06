@@ -147,7 +147,7 @@ test("guard: Escape while closed does nothing and steals no focus", () => {
   assert.equal(doc.activeElement, somewhere);
 });
 
-test("real wording (FR-X7): app name and version, then exactly the four statements, licenceNotes not shown", () => {
+test("real wording (FR-X7): app name and version, then exactly the three statements, licenceNotes not shown", () => {
   const doc = createFakeDocument();
   const host = doc.createElement("aside");
   mountAboutPanel(host, { doc });
@@ -160,10 +160,19 @@ test("real wording (FR-X7): app name and version, then exactly the four statemen
     [
       "Poster chart: The Periodic Table of Storytelling by ComputerSherpa, via TV Tropes — this app re-draws it, re-arranges it and adds 36 elements",
       "Descriptions and examples adapted from TV Tropes (tvtropes.org), licensed CC BY-NC-SA 3.0 — for personal, non-commercial sharing; not affiliated with TV Tropes",
-      "Elements marked with a dashed outline were added for this app",
       "Everything stays on your device — nothing is sent anywhere; stories are saved in this browser only",
     ],
   );
+});
+
+test("the poster's attribution lines show in the About panel, after the statements", () => {
+  const doc = createFakeDocument();
+  const host = doc.createElement("aside");
+  mountAboutPanel(host, { doc });
+  const lines = host.find("st-about__credits").children.map((paragraph) => paragraph.textContent);
+  assert.equal(lines.length, 4);
+  assert.equal(lines[0], "Chart by ComputerSherpa");
+  assert.equal(lines[3], "Permalink for this chart: goo.gl/yvSM4");
 });
 
 test("the poster title is set in <em> as furniture.js asks, using text nodes only", () => {

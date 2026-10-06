@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { buildDiagramSvg, drawDiagram, estimateSvgTextWidth, fitTileName } from "../app/diagram/diagram-svg.js";
 import { ELEMENTS, GROUPS, ROGUE } from "../app/data/elements.js";
 import { LAYOUT, tileRect, viewBoxFor } from "../app/data/layout.js";
-import { CONNECTORS, ROGUE_CAPTION, ADDED_ELEMENT_CREDIT, OUTLINE_EXAMPLES, KEY_CALLOUT } from "../app/data/furniture.js";
+import { CONNECTORS, ROGUE_CAPTION, KEY_CALLOUT } from "../app/data/furniture.js";
 import { makeFakeSvgDocument } from "./helpers/fake-svg-dom.js";
 
 const doc = makeFakeSvgDocument();
@@ -12,6 +12,13 @@ const original = buildDiagramSvg(doc, "original");
 
 const elementTiles = (svg) => svg.querySelectorAll("g.tile").filter((g) => g.getAttribute("data-element-id") !== "Rg");
 const tileById = (svg, id) => svg.querySelector(`g.tile[data-element-id="${id}"]`);
+/** Drawn tile edges are snapped to an eighth of a unit (see snappedRect), so compare to layout within an eighth (each edge moves at most a sixteenth, so a width up to an eighth). */
+const EDGE_TOLERANCE = 1 / 8 + 1e-9;
+const assertNear = (actual, expected, message) => {
+  assert.equal(actual.length, expected.length, message);
+  actual.forEach((value, index) => assert.ok(Math.abs(value - expected[index]) <= EDGE_TOLERANCE, `${message}: ${actual} vs ${expected}`));
+};
+const asList = (r) => [r.x, r.y, r.w, r.h];
 const rectOf = (tile) => {
   const rect = tile.querySelector("rect.tile-rect");
   return { x: Number(rect.getAttribute("x")), y: Number(rect.getAttribute("y")), w: Number(rect.getAttribute("width")), h: Number(rect.getAttribute("height")) };
@@ -51,7 +58,7 @@ test("217 element tiles in revised, 181 in original, unique ids, rects equal til
       const expected = tileRect(element, name);
       const tile = tileById(svg, element.id);
       if (expected === null) assert.equal(tile, null, `${element.id} must not be drawn in ${name}`);
-      else assert.deepEqual(rectOf(tile), expected, `${element.id} rect in ${name}`);
+      else assertNear(asList(rectOf(tile)), asList(expected), `${element.id} rect in ${name}`);
     }
   }
 });
@@ -86,11 +93,11 @@ test("colour is never inline on a tile (SVG-5, FR-D9)", () => {
 test("the Five Man Band sub-tiles are placed by tileRect and H shows its symbol (AC-D5)", () => {
   const hero = tileById(revised, "5maH");
   assert.equal(hero.querySelector("text.sym").textContent, "H");
-  assert.deepEqual(rectOf(hero), tileRect(ELEMENTS.find((e) => e.id === "5maH"), "revised"));
+  assertNear(asList(rectOf(hero)), asList(tileRect(ELEMENTS.find((e) => e.id === "5maH"), "revised")), "5maH");
   assert.notEqual(tileById(revised, "H"), null, "the grid Hero H is a separate tile");
 });
 
-test("popularity text is on all 181 poster tiles as printed, absent on added and rogue (AC-D7)", () => {
+test("popularity text is on all 181 poster tiles as printed, on added tiles that have a TV Tropes number, absent on the rest and on rogue (AC-D7)", () => {
   const posterTiles = elementTiles(revised).filter((t) => !t.classes.includes("is-added"));
   assert.equal(posterTiles.length, 181);
   for (const tile of posterTiles) {
@@ -99,7 +106,12 @@ test("popularity text is on all 181 poster tiles as printed, absent on added and
     assert.equal(pops.length, 1);
     assert.equal(pops[0].textContent, element.popText);
   }
-  for (const tile of elementTiles(revised).filter((t) => t.classes.includes("is-added"))) assert.equal(tile.querySelectorAll("text.pop").length, 0);
+  for (const tile of elementTiles(revised).filter((t) => t.classes.includes("is-added"))) {
+    const element = ELEMENTS.find((e) => e.id === tile.getAttribute("data-element-id"));
+    const pops = tile.querySelectorAll("text.pop");
+    assert.equal(pops.length, element.popText === undefined ? 0 : 1, element.id);
+    if (pops.length) assert.equal(pops[0].textContent, element.popText);
+  }
   assert.equal(tileById(revised, "Rg").querySelectorAll("text.pop").length, 0);
   assert.equal(elementTiles(original).every((t) => t.querySelectorAll("text.pop").length === 1), true);
 });
@@ -117,7 +129,7 @@ test("the Ae key's popularity row and its badge carry pop-key; the other rows do
 test("exactly 36 tiles are is-added in revised, none in original (AC-D6, FR-D12)", () => {
   const added = elementTiles(revised).filter((t) => t.classes.includes("is-added"));
   assert.equal(added.length, 36);
-  for (const tile of added) assert.equal(tile.querySelector("title").textContent, ADDED_ELEMENT_CREDIT);
+  for (const tile of added) assert.equal(tile.querySelector("title"), null, "no hover text on an added tile");
   assert.equal(original.querySelectorAll(".is-added").length, 0);
 });
 
@@ -178,24 +190,9 @@ test("furniture: title, headings anchored to revised blocks, label, subtrope box
   assert.equal(furniture.querySelectorAll("text.char-mod-text").map((n) => n.textContent).join("|"), "Character|Modifiers");
   assert.equal(furniture.querySelectorAll("g.subtrope-box").length, 2);
   assert.equal(furniture.querySelectorAll("text.subtrope-item").length, 22 + 15);
-  assert.equal(furniture.querySelectorAll("text.credit-line").length, 4);
-  assert.equal(furniture.querySelector("text.tvtropes-site").textContent, "tvtropes.org");
-});
-
-test("outline panel: plain-text titles, five franchises, chips coloured by their own group", () => {
-  const panel = revised.querySelector("g.outline-panel");
-  assert.deepEqual(panel.querySelectorAll("text.franchise-title").map((n) => n.textContent), OUTLINE_EXAMPLES.franchises.map((f) => f.title));
-  for (const franchise of OUTLINE_EXAMPLES.franchises) {
-    const group = panel.querySelector(`g.franchise[data-franchise="${franchise.id}"]`);
-    const chips = group.querySelectorAll("g.chip");
-    assert.equal(chips.length, franchise.chips.length);
-    chips.forEach((chip, index) => {
-      assert.ok(chip.classes.includes(`chip-${franchise.chips[index].group}`));
-      assert.ok(Object.hasOwn(GROUPS, franchise.chips[index].group));
-      assert.equal(chip.hasAttribute("data-element-id"), false);
-    });
-    assert.equal(group.querySelectorAll("path.chip-link").length, franchise.links.length);
-  }
+  assert.equal(furniture.querySelector("g.poster-credits"), null);
+  assert.equal(furniture.querySelector("g.outline-panel"), null);
+  assert.equal(furniture.querySelector("g.tvtropes-credit"), null);
 });
 
 test("original furniture sits at poster coordinates (no translate anywhere)", () => {
@@ -212,10 +209,10 @@ test("revised connectors are re-anchored to the current tile corners (mirrored)"
   const byId = (id) => revised.querySelector(`line.connector[data-connector-id="${id}"]`);
   const cal = rectOf(tileById(revised, "Cal"));
   const top = byId("cal-to-call-box-top");
-  assert.deepEqual([Number(top.getAttribute("x1")), Number(top.getAttribute("y1"))], [cal.x + cal.w, cal.y]);
+  assertNear([Number(top.getAttribute("x1")), Number(top.getAttribute("y1"))], [cal.x + cal.w, cal.y], "Cal corner");
   const band = byId("5ma-to-band-right");
   const chick = rectOf(tileById(revised, "Ch"));
-  assert.deepEqual([Number(band.getAttribute("x2")), Number(band.getAttribute("y2"))], [chick.x, chick.y]);
+  assertNear([Number(band.getAttribute("x2")), Number(band.getAttribute("y2"))], [chick.x, chick.y], "Ch corner");
   assert.equal(revised.querySelectorAll("line.connector").length, 6);
   for (const line of revised.querySelectorAll("line.connector")) {
     for (const name of ["x1", "y1", "x2", "y2"]) assert.ok(Number.isFinite(Number(line.getAttribute(name))));
@@ -233,7 +230,6 @@ test("revised furniture never overlaps a tile", () => {
   const boxes = [
     ...revised.querySelectorAll("g.subtrope-box").map((g) => ({ g, r: g.querySelector("rect.subtrope-rect") })),
     { g: revised.querySelector("g.key-callout"), r: revised.querySelector("rect.key-box") },
-    { g: revised.querySelector("g.outline-panel"), r: revised.querySelector("rect.outline-frame") },
   ];
   for (const { g, r } of boxes) {
     const [dx, dy] = translateOf(g);
@@ -274,4 +270,32 @@ test("injectable data: a small element set draws only those tiles", () => {
   assert.deepEqual(elementTiles(svg).map((t) => t.getAttribute("data-element-id")), sample.map((e) => e.id));
   assert.ok(warnings.some((message) => message.includes("cal-to-call-box-top")), "connectors to absent tiles warn instead of failing silently");
   assert.equal(svg.querySelectorAll("line.connector").length, 0);
+});
+
+test("subtrope boxes contain all their text, in both layouts", () => {
+  for (const svg of [original, revised]) {
+    for (const group of svg.querySelectorAll("g.subtrope-box")) {
+      const rect = group.querySelector("rect.subtrope-rect");
+      const r = { x: Number(rect.getAttribute("x")), y: Number(rect.getAttribute("y")), w: Number(rect.getAttribute("width")), h: Number(rect.getAttribute("height")) };
+      for (const node of group.querySelectorAll("text")) {
+        const size = Number(node.getAttribute("font-size"));
+        const right = Number(node.getAttribute("x")) + estimateSvgTextWidth(node.textContent, size);
+        assert.ok(right <= r.x + r.w, `${node.textContent} runs past its box`);
+        assert.ok(Number(node.getAttribute("y")) <= r.y + r.h, `${node.textContent} falls below its box`);
+      }
+    }
+  }
+});
+
+test("shared tile edges are bit-identical, so a browser rounds both the same way", () => {
+  const rects = revised.querySelectorAll("g.tile").filter((t) => t.getAttribute("data-element-id") !== "Rg").map((t) => rectOf(t));
+  let shared = 0;
+  for (const a of rects) {
+    for (const b of rects) {
+      const overlapY = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+      const gap = b.x - (a.x + a.w);
+      if (overlapY > 0.5 && Math.abs(gap) < 0.01) { shared += 1; assert.equal(a.x + a.w, b.x); }
+    }
+  }
+  assert.ok(shared > 150, `only ${shared} shared vertical edges found`);
 });

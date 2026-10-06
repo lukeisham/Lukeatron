@@ -34,12 +34,8 @@
  *                         the "Ae" key: sample tile + three rows; `badge` and `popularity` are popKey
  * SUBTROPE_BOXES          [ callToAdventure, fourthWall ] — { id, title, box, columns/items, connector tile }
  * CONNECTORS              [{ id, kind, from, to, points, dash, width }] — six dashed lines
- * OUTLINE_EXAMPLES        { frame, heading, franchises: [{ id, title, titleBox, chips, links }] }
- * POSTER_CREDITS          { centreX, baseline, lineHeight, fontSize, lines } — "Chart by ComputerSherpa…"
- * TVTROPES_CREDIT         { text, lead, site, x, baseline, fontSize, underline } — plain text, no wordmark
  * ROGUE_CAPTION           "Rogue — when nothing fits"          (FR-D14)
  * ROGUE_DETAIL_TEXT       fixed explanatory text for the Rogue card's detail panel (viewport FR-V11)
- * ADDED_ELEMENT_CREDIT    "Added for this app — not on the original chart"   (FR-D12)
  * ABOUT                   { appName, versionLabel, statements, licenceNotes } (distribution FR-X7, OQ-X1, OQ-X3)
  */
 
@@ -306,160 +302,6 @@ export const CONNECTORS = freezeFurnitureData([
   },
 ]);
 
-/**
- * The outline-examples panel. Each franchise is a plain-text `title` (no logo, OQ-D1) centred in
- * `titleBox` (where the logo sat), with element `chips` and the `links` between them.
- *
- * Chip: `{ id, group, x, y, width, height }` — `id` is an element id (the "H" in Mass Effect is
- * the grid Hero, not the Five Man Band sub-tile 5maH). `group` is the colour the poster PRINTED
- * on the chip, which is not always the element's tile group: 5ma is yellow on the table but blue
- * in the panel, Hil is grey on the table but tan in the panel, Fai is the paler villain tile but
- * a normal villain chip. Chips run in reading order (rows top to bottom, left to right). Abutting
- * chips (DraNeoFai, OmEld, DetAv) touch and have no link between them; where two same-colour chips
- * touch (Om|Eld) the split is estimated.
- *
- * Link: `{ a, b, kind, width, d }` — `a`/`b` are chip ids, `d` is SVG path data in poster pixels
- * (a link may draw several strokes). `kind`: "line" | "double" | "loop". The Avatar loop joins 5ma
- * and Neo (arcs above and below); its tail leads on to Hft, recorded as a second link 5ma to Hft.
- */
-export const OUTLINE_EXAMPLES = freezeFurnitureData({
-  frame: { x: 104, y: 1247, width: 1094, height: 243, strokeWidth: 3 },
-  heading: {
-    text: "These blocks allow for the construction of simple story outlines:",
-    x: 142,
-    baseline: 1283.4,
-    fontSize: 15,
-    textLength: 474,
-  },
-  franchises: [
-    {
-      id: "star-wars",
-      title: "Star Wars",
-      titleBox: { x: 139.6, y: 1303, width: 109, height: 66 },
-      chips: [
-        { id: "Dra", group: "villains", x: 198, y: 1388, width: 23, height: 15.6 },
-        { id: "Neo", group: "heroes", x: 221, y: 1388, width: 24, height: 15.6 },
-        { id: "Fai", group: "villains", x: 245, y: 1388, width: 23.8, height: 15.6 },
-        { id: "5ma", group: "heroes", x: 134, y: 1423, width: 31.6, height: 15.5 },
-        { id: "C", group: "structure", x: 183, y: 1423, width: 11.8, height: 15.5 },
-        { id: "Emp", group: "villains", x: 213, y: 1423, width: 31.8, height: 15.5 },
-      ],
-      links: [
-        { a: "Neo", b: "Emp", kind: "line", width: 1.5, d: "M228.8,1405 L228.8,1423" },
-        { a: "5ma", b: "C", kind: "line", width: 1.5, d: "M166,1431.8 L180.6,1431.8" },
-        { a: "C", b: "Emp", kind: "line", width: 1.5, d: "M197,1431.8 L212,1431.8" },
-      ],
-    },
-    {
-      id: "kim-possible",
-      title: "Kim Possible",
-      titleBox: { x: 299.7, y: 1317.8, width: 149, height: 38 },
-      chips: [
-        { id: "Kz", group: "archetypes", x: 359, y: 1389, width: 17.8, height: 15.8 },
-        { id: "Tfc", group: "setting", x: 386.3, y: 1407.3, width: 21.7, height: 15.4 },
-        { id: "Ag", group: "heroes", x: 359, y: 1420, width: 17.8, height: 15.8 },
-      ],
-      links: [
-        { a: "Kz", b: "Ag", kind: "double", width: 1, d: "M366.8,1404.8 L366.8,1420 M369.8,1404.8 L369.8,1420" },
-        { a: "Kz", b: "Tfc", kind: "line", width: 1, d: "M377.2,1400 L387,1408.8" },
-        { a: "Ag", b: "Tfc", kind: "line", width: 1, d: "M377.2,1428.5 L386.8,1420" },
-      ],
-    },
-    {
-      id: "dilbert",
-      title: "Dilbert",
-      titleBox: { x: 499.8, y: 1303, width: 173, height: 65 },
-      chips: [
-        { id: "Sta", group: "charmod", x: 558, y: 1397, width: 19, height: 14.8 },
-        { id: "Sq", group: "setting", x: 602, y: 1397, width: 16.8, height: 14.8 },
-        { id: "Hil", group: "setting", x: 580, y: 1423.5, width: 17, height: 15 },
-      ],
-      links: [
-        { a: "Sta", b: "Sq", kind: "line", width: 1, d: "M581,1404.5 L599.8,1404.5" },
-        { a: "Sta", b: "Hil", kind: "line", width: 1, d: "M573.2,1413.5 L582,1422.5" },
-        { a: "Sq", b: "Hil", kind: "line", width: 1, d: "M603.8,1414 L595.2,1422.5" },
-      ],
-    },
-    {
-      id: "mass-effect",
-      title: "Mass Effect",
-      titleBox: { x: 726, y: 1303, width: 223, height: 62 },
-      chips: [
-        { id: "H", group: "heroes", x: 773, y: 1400, width: 15, height: 15.5 },
-        { id: "Stw", group: "setting", x: 808.8, y: 1400, width: 27, height: 15.5 },
-        { id: "Om", group: "villains", x: 858, y: 1400, width: 16.5, height: 15.5 },
-        { id: "Eld", group: "villains", x: 874.5, y: 1400, width: 23, height: 15.5 },
-        { id: "Jt", group: "metatropes", x: 816.5, y: 1439.6, width: 13.3, height: 15 },
-      ],
-      links: [
-        { a: "H", b: "Stw", kind: "line", width: 1.25, d: "M790.4,1407.5 L805.6,1407.5" },
-        { a: "Stw", b: "Om", kind: "line", width: 1.25, d: "M839,1407.5 L854,1407.5" },
-        { a: "Stw", b: "Jt", kind: "line", width: 1.75, d: "M823.9,1418 L823.9,1434" },
-      ],
-    },
-    {
-      id: "avatar",
-      title: "Avatar: The Last Airbender",
-      titleBox: { x: 1003.4, y: 1300, width: 172, height: 62 },
-      chips: [
-        { id: "5ma", group: "heroes", x: 1010, y: 1400, width: 30.7, height: 15.4 },
-        { id: "Neo", group: "heroes", x: 1050, y: 1400, width: 28.6, height: 15.4 },
-        { id: "Stw", group: "setting", x: 1090, y: 1400, width: 25.4, height: 15.4 },
-        { id: "Emp", group: "villains", x: 1126, y: 1400, width: 30.7, height: 15.4 },
-        { id: "Rq", group: "setting", x: 1121, y: 1426.4, width: 18.7, height: 15.3 },
-        { id: "Hft", group: "charmod", x: 1050.3, y: 1435, width: 22.6, height: 15.4 },
-        { id: "Det", group: "heroes", x: 1081, y: 1446.7, width: 23.7, height: 15.2 },
-        { id: "Av", group: "villains", x: 1104.7, y: 1446.7, width: 17, height: 15.2 },
-      ],
-      links: [
-        {
-          a: "5ma",
-          b: "Neo",
-          kind: "loop",
-          width: 1,
-          d: "M1031.1,1398.6 C1031.1,1388.5 1055.4,1388.5 1055.4,1398.6 M1031.1,1415.6 C1031.1,1428 1055.4,1428 1055.4,1415.6",
-        },
-        { a: "5ma", b: "Hft", kind: "line", width: 1, d: "M1044.7,1422.4 L1050.7,1440.7" },
-        { a: "Neo", b: "Stw", kind: "line", width: 1.5, d: "M1078.9,1408.6 L1089.7,1408.6" },
-        { a: "Stw", b: "Emp", kind: "line", width: 1.5, d: "M1115.7,1408.6 L1125.7,1408.6" },
-        { a: "Emp", b: "Rq", kind: "line", width: 1, d: "M1139.7,1416.4 L1133.6,1427.4" },
-        { a: "Rq", b: "Av", kind: "line", width: 1, d: "M1127.6,1442.9 L1121.7,1454.3" },
-        { a: "Hft", b: "Det", kind: "line", width: 1, d: "M1072.6,1442.9 L1081.1,1454.6" },
-      ],
-    },
-  ],
-});
-
-/** The four small credit lines under the Call to Adventure box, centred on x = 806. */
-export const POSTER_CREDITS = freezeFurnitureData({
-  centreX: 806,
-  baseline: 442.5,
-  lineHeight: 16,
-  fontSize: 11.5,
-  lines: [
-    "Chart by ComputerSherpa",
-    "Special thanks to Elle, Micah, and the rest of the Tropers for inspiration",
-    "Thanks to Madrugada, Jack Alsworth, and KirksOtherSon for corrections",
-    "Permalink for this chart: goo.gl/yvSM4",
-  ],
-});
-
-/**
- * The poster's footer line. The wordmark and lampshade logo are dropped (OQ-D1); the site name is
- * plain text. `text` is the whole line; `lead` and `site` are its two runs (`site` starts at
- * `siteX`, with the poster's underline drawn beneath it).
- */
-export const TVTROPES_CREDIT = freezeFurnitureData({
-  text: "ALL THESE TROPES AND TWENTY THOUSAND MORE ARE DETAILED ON tvtropes.org",
-  lead: "ALL THESE TROPES AND TWENTY THOUSAND MORE ARE DETAILED ON",
-  site: "tvtropes.org",
-  x: 70,
-  baseline: 1571,
-  fontSize: 30,
-  siteX: 951,
-  underline: { x1: 951, x2: 1235, y: 1582 },
-});
-
 /** Caption drawn under the Rogue card in the revised layout (FR-D14). */
 export const ROGUE_CAPTION = "Rogue — when nothing fits";
 
@@ -468,10 +310,9 @@ export const ROGUE_DETAIL_TEXT =
   "A rogue element stands in when no element on the table fits exactly. Give each one its own name.";
 
 /** Credit line for a tile with `added: true` (FR-D12). */
-export const ADDED_ELEMENT_CREDIT = "Added for this app — not on the original chart";
 
 /**
- * About panel wording (distribution FR-X7). `statements` are the four quoted lines of FR-X7,
+ * About panel wording (distribution FR-X7). `credits` are the poster's own attribution lines, moved here from the diagram. `statements` are the four quoted lines of FR-X7,
  * shown under the app name and version; `italic` is the substring to set in italics.
  * `licenceNotes` carry the OQ-X1 and OQ-X3 defaults: FR-X7 says the panel holds "exactly" the
  * statements, so the About author decides whether to show these two extra lines.
@@ -490,8 +331,13 @@ export const ABOUT = freezeFurnitureData({
       id: "tvtropes",
       text: "Descriptions and examples adapted from TV Tropes (tvtropes.org), licensed CC BY-NC-SA 3.0 — for personal, non-commercial sharing; not affiliated with TV Tropes",
     },
-    { id: "added", text: "Elements marked with a dashed outline were added for this app" },
     { id: "privacy", text: "Everything stays on your device — nothing is sent anywhere; stories are saved in this browser only" },
+  ],
+  credits: [
+    "Chart by ComputerSherpa",
+    "Special thanks to Elle, Micah, and the rest of the Tropers for inspiration",
+    "Thanks to Madrugada, Jack Alsworth, and KirksOtherSon for corrections",
+    "Permalink for this chart: goo.gl/yvSM4",
   ],
   licenceNotes: [
     {

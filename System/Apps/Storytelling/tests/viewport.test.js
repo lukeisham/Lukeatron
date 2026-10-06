@@ -323,7 +323,7 @@ describe("toolbar", () => {
 
   test("builds every control in order", () => {
     const actions = toolbarHost.querySelectorAll(".st-toolbar__button").map((b) => b.getAttribute("data-action"));
-    assert.deepEqual(actions, ["zoom-in", "zoom-out", "reset", "popularity", "print-table", "lists", "about"]);
+    assert.deepEqual(actions, ["zoom-in", "zoom-out", "reset", "popularity", "print-table", "lists", "about", "story-toggle"]);
     assert.equal(button("popularity").getAttribute("aria-pressed"), "true");
     assert.equal(toolbarHost.getAttribute("role"), "toolbar");
   });

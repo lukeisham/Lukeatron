@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { mountLibraryPanel, examplesLeadFirst } from "../app/story/library-panel.js";
+import { mountLibraryPanel, examplesLeadFirst, summaryOf, hoverTextOf } from "../app/story/library-panel.js";
 import { createStoryStore } from "../app/story/story-model.js";
 import { LIBRARY } from "../app/data/library.js";
 import { EVT_OPEN_LIBRARY } from "../app/shared/events.js";
@@ -40,6 +40,24 @@ test("mounts hidden and lists the twelve entries with type, lead-first examples 
     ", The Hobbit, Avatar: The Last Airbender, The Wizard of Oz",
   );
   assert.equal(first.querySelector(".st-library-panel__credit").textContent, LIBRARY[0].credit);
+});
+
+test("each card has a one-line summary under it and a hover-over with the credit and every step's note", () => {
+  const { host } = setup();
+  const first = host.querySelectorAll("button.st-library-panel__entry")[0];
+  assert.equal(first.querySelector(".st-library-panel__summary").textContent, "9 elements, from Call To Adventure to The Dénouement.");
+  const hover = first.getAttribute("data-tip");
+  assert.ok(hover.startsWith(LIBRARY[0].credit + "\n\n1. Call To Adventure — Luke first refuses"));
+  assert.ok(hover.includes("6. The Dragon + The Chosen One — Darth Vader serves the Emperor"));
+  assert.equal(hover.split("\n").length, 2 + LIBRARY[0].beads.length);
+  for (const button of host.querySelectorAll("button.st-library-panel__entry")) assert.ok(button.getAttribute("data-tip"));
+});
+
+test("summaryOf and hoverTextOf: unknown element falls back to its id; one-bead and note-less entries", () => {
+  const names = new Map([["A", "Alpha"]]);
+  assert.equal(summaryOf({ beads: [{ elementId: "A" }] }, names), "One element: Alpha.");
+  assert.equal(summaryOf({ beads: [{ elementId: "A" }, { elementId: "Zed" }] }, names), "2 elements, from Alpha to Zed.");
+  assert.equal(hoverTextOf({ credit: "c", beads: [{ elementId: "A" }] }, names), "c\n\n1. Alpha");
 });
 
 test("examplesLeadFirst moves the lead to the front", () => {

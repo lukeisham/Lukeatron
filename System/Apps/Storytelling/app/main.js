@@ -16,6 +16,7 @@ import { mountDetailPanel } from "./detail/detail-panel.js";
 import { mountAboutPanel } from "./detail/about-panel.js";
 import { mountListPanel } from "./lists/list-panel.js";
 import { mountAgentApi } from "./agent/agent-api.js";
+import { mountTooltips } from "./shared/tooltip.js";
 
 const LAYOUT_NAME = "revised";
 
@@ -53,6 +54,7 @@ function libraryOptionsFor(canvas) {
 
 /** Builds the whole page. Exported so a test page can call it; the module also runs it on load. */
 export function startStorytelling() {
+  mountSafely("tooltip", () => mountTooltips(document));
   const diagramHost = regionById("diagram-host");
   if (diagramHost) mountSafely("diagram-svg", () => drawDiagram(diagramHost, LAYOUT_NAME));
 

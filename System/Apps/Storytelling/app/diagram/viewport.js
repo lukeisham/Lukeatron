@@ -554,6 +554,8 @@ export function mountToolbar(host, { getSvg, printTable = setPrintTarget, storag
   const popularity = makeToolbarButton("popularity", "Popularity");
   const lists = makeToolbarButton("lists", "Lists");
   const about = makeToolbarButton("about", "About");
+  const storyToggle = makeToolbarButton("story-toggle", "Story tray", "Show or hide the story placement area");
+  storyToggle.setAttribute("aria-pressed", "true");
 
   const printWrap = document.createElement("div");
   printWrap.className = "st-toolbar__menu-wrap";
@@ -594,6 +596,10 @@ export function mountToolbar(host, { getSvg, printTable = setPrintTarget, storag
     printButton.setAttribute("aria-expanded", opening ? "true" : "false");
   }
 
+  storyToggle.addEventListener("click", () => {
+    const hidden = document.body.classList.toggle("st-story-hidden");
+    storyToggle.setAttribute("aria-pressed", hidden ? "false" : "true");
+  });
   zoomIn.addEventListener("click", () => zoomStep(getSvg(), 1));
   zoomOut.addEventListener("click", () => zoomStep(getSvg(), -1));
   reset.addEventListener("click", () => resetView(getSvg()));
@@ -612,7 +618,7 @@ export function mountToolbar(host, { getSvg, printTable = setPrintTarget, storag
   document.addEventListener("click", onOutsideClick);
   const unsubscribe = subscribePopularity(syncPopularity);
 
-  host.append(zoomIn, zoomOut, reset, popularity, printWrap, lists, about);
+  host.append(zoomIn, zoomOut, reset, popularity, printWrap, lists, about, storyToggle);
   syncPopularity();
 
   return {

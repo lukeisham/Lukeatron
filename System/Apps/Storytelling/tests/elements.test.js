@@ -21,19 +21,24 @@ test("ids are unique", () => {
 
 test("every element has the fields its kind requires", () => {
   for (const el of ELEMENTS) {
-    for (const field of ["id", "name", "group", "category", "description", "example", "sourceUrl"]) {
+    for (const field of ["id", "name", "group", "category", "description", "example"]) {
       assert.ok(isNonEmptyString(el[field]), `${el.id}: ${field} missing or empty`);
     }
   }
   for (const el of posterElements) {
+    assert.ok(isNonEmptyString(el.sourceUrl), `${el.id}: sourceUrl missing or empty`);
     assert.equal(typeof el.popularity, "number", `${el.id}: popularity`);
     assert.ok(isNonEmptyString(el.popText), `${el.id}: popText`);
     assert.equal(Number(el.popText), el.popularity, `${el.id}: popText disagrees with popularity`);
     assert.equal("order" in el, false, `${el.id}: poster element has order`);
   }
   for (const el of addedElements) {
-    assert.equal("popularity" in el, false, `${el.id}: added element has popularity`);
-    assert.equal("popText" in el, false, `${el.id}: added element has popText`);
+    // A number only when the card has a TV Tropes page; Wikipedia-sourced and unsourced cards carry none.
+    const onTvTropes = typeof el.sourceUrl === "string" && el.sourceUrl.startsWith("https://tvtropes.org/");
+    assert.equal("popularity" in el, onTvTropes, `${el.id}: popularity iff TV Tropes source`);
+    assert.equal("popText" in el, onTvTropes, `${el.id}: popText iff TV Tropes source`);
+    if (onTvTropes) assert.equal(Number(el.popText), el.popularity, `${el.id}: popText disagrees with popularity`);
+    else if (el.sourceUrl !== undefined) assert.match(el.sourceUrl, /^https:\/\/en\.wikipedia\.org\/wiki\//, `${el.id}: fallback source`);
     assert.equal(typeof el.order, "number", `${el.id}: order`);
   }
 });
@@ -100,8 +105,12 @@ test("word limits: description <= 25, example <= 20", () => {
   }
 });
 
-test("sourceUrl begins https://tvtropes.org/", () => {
-  for (const el of ELEMENTS) assert.ok(el.sourceUrl.startsWith("https://tvtropes.org/"), el.id);
+test("sourceUrl: poster elements are TV Tropes; added ones TV Tropes, Wikipedia, or none", () => {
+  for (const el of posterElements) assert.ok(el.sourceUrl.startsWith("https://tvtropes.org/"), el.id);
+  for (const el of addedElements) {
+    if (el.sourceUrl !== undefined) assert.match(el.sourceUrl, /^https:\/\/(tvtropes\.org|en\.wikipedia\.org)\//, el.id);
+  }
+  assert.equal(addedElements.filter((el) => el.sourceUrl === undefined).map((el) => el.id).join(), "Rts");
 });
 
 test("poster elements come first within a category, then added ones by order", () => {

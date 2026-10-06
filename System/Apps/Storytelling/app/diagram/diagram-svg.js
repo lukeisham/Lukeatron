@@ -14,17 +14,13 @@
 import { ELEMENTS, GROUPS, ROGUE } from "../data/elements.js";
 import { LAYOUT } from "../data/layout.js";
 import {
-  ADDED_ELEMENT_CREDIT,
   CHARACTER_MODIFIERS_LABEL,
   COLUMN_HEADINGS,
   CONNECTORS,
   KEY_CALLOUT,
-  OUTLINE_EXAMPLES,
-  POSTER_CREDITS,
   POSTER_TITLE,
   ROGUE_CAPTION,
   SUBTROPE_BOXES,
-  TVTROPES_CREDIT,
 } from "../data/furniture.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -35,18 +31,14 @@ const DEFAULT_DIAGRAM_DATA = Object.freeze({
   ROGUE,
   layout: LAYOUT,
   furniture: Object.freeze({
-    ADDED_ELEMENT_CREDIT,
-    CHARACTER_MODIFIERS_LABEL,
+      CHARACTER_MODIFIERS_LABEL,
     COLUMN_HEADINGS,
     CONNECTORS,
     KEY_CALLOUT,
-    OUTLINE_EXAMPLES,
-    POSTER_CREDITS,
-    POSTER_TITLE,
+        POSTER_TITLE,
     ROGUE_CAPTION,
     SUBTROPE_BOXES,
-    TVTROPES_CREDIT,
-  }),
+    }),
 });
 
 /** Cell size fallback when an injected layout has no `geometry`. */
@@ -74,11 +66,8 @@ const NAME_FIRST_BASELINE = Object.freeze({ 1: 57, 2: 55, 3: 52 });
 // ---- where the revised layout moves furniture (see the file header) --------------------------
 const REVISED_TITLE_LEFT = 29;
 const REVISED_KEY_LEFT = 300;
-const REVISED_CREDITS_CENTRE = 600;
 const REVISED_CALL_BOX_GAP = 5;
 const REVISED_FOURTH_WALL_BOX = Object.freeze({ x: 29, y: 1210 });
-const REVISED_PANEL_TOP = 1306;
-const REVISED_FOOTER_DROP = 24;
 const GENRE_HEADING = Object.freeze({ id: "genre", block: "genre", baseline: 188, lineHeight: 14.4, fontSize: 12, lines: ["Genre"] });
 const MIRRORED_CORNER = Object.freeze({ tl: "tr", tr: "tl", bl: "br", br: "bl" });
 
@@ -200,8 +189,22 @@ function appendTileName(doc, tile, name, rect) {
   tile.append(label);
 }
 
-function appendTileFace(doc, tile, { symbol, name, rect, popText }) {
-  tile.append(makeSvgNode(doc, "rect", "tile-rect", { x: rect.x, y: rect.y, width: rect.w, height: rect.h }));
+/**
+ * Neighbouring tiles share an edge, but `x + w` of one and `x` of the next differ by float noise (about 1e-13), and a
+ * browser that snaps edges to pixels can round the two differently, drawing a 2px line. Snapping every edge to an
+ * eighth of a unit (exact in binary) makes each shared edge bit-identical, so both tiles round it the same way.
+ */
+const EDGE_STEP = 8;
+const snapEdge = (value) => Math.round(value * EDGE_STEP) / EDGE_STEP;
+
+export function snappedRect(rect) {
+  const left = snapEdge(rect.x);
+  const top = snapEdge(rect.y);
+  return { x: left, y: top, width: snapEdge(rect.x + rect.w) - left, height: snapEdge(rect.y + rect.h) - top };
+}
+
+function appendTileFace(doc, tile, { symbol, name, rect, popText, snap = false }) {
+  tile.append(makeSvgNode(doc, "rect", "tile-rect", snap ? snappedRect(rect) : { x: rect.x, y: rect.y, width: rect.w, height: rect.h }));
   const centre = rect.x + rect.w / 2;
   tile.append(makeSvgText(doc, "sym", {
     x: centre,
@@ -221,7 +224,7 @@ function appendTileFace(doc, tile, { symbol, name, rect, popText }) {
   tile.append(makeSvgText(doc, "step-badge", { x: rect.x + POP_INSET, y: rect.y + POP_BASELINE + 1, "font-size": BADGE_SIZE }, ""));
 }
 
-function buildTile(doc, element, rect, addedCredit) {
+function buildTile(doc, element, rect) {
   const classes = ["tile", `tile-${element.group}`];
   if (element.added === true) classes.push("is-added");
   const tile = makeSvgNode(doc, "g", classes.join(" "), {
@@ -230,16 +233,12 @@ function buildTile(doc, element, rect, addedCredit) {
     role: "button",
     "aria-label": element.name,
   });
-  if (element.added === true) {
-    const title = makeSvgNode(doc, "title");
-    title.textContent = addedCredit;
-    tile.append(title);
-  }
   appendTileFace(doc, tile, {
     symbol: symbolOf(element),
     name: element.name,
     rect,
-    popText: element.added === true ? undefined : element.popText,
+    popText: element.popText,
+    snap: true,
   });
   return tile;
 }
@@ -357,86 +356,51 @@ function buildKey(doc, key, dx) {
   return group;
 }
 
+const SUBTROPE_COLUMN_GAP = 14;
+const SUBTROPE_BOLD_FACTOR = 1.1;
+/** The width estimate runs up to ~5% under a real system face (measured in the browser), so the fit adds this. */
+const SUBTROPE_WIDTH_SLACK = 1.06;
+
+const subtropeTextWidth = (text, fontSize) => estimateSvgTextWidth(text, fontSize) * SUBTROPE_WIDTH_SLACK;
+
+/**
+ * A subtrope box sized to its text: the poster's rectangle is the floor, and the box grows on the
+ * right and bottom until the widest line (the bold title included) and the last row sit inside it
+ * with the same padding the left edge has. Multi-column boxes re-space their columns so a long
+ * item cannot run into the next column. The drawing and the connectors both read this.
+ * @returns {{ x: number, y: number, width: number, height: number, columns: {x: number, items: string[]}[] }}
+ */
+function fitSubtropeBox(box) {
+  const pad = box.textX - box.box.x;
+  const columns = [];
+  let cursor = box.textX;
+  for (const source of box.columns ?? [{ x: box.textX, items: box.items }]) {
+    const x = box.columns ? Math.max(source.x, cursor) : source.x;
+    const width = Math.max(...source.items.map((item) => subtropeTextWidth(item, box.fontSize)));
+    columns.push({ x, items: source.items });
+    cursor = x + width + SUBTROPE_COLUMN_GAP;
+  }
+  const lastColumn = columns[columns.length - 1];
+  const widestLast = Math.max(...lastColumn.items.map((item) => subtropeTextWidth(item, box.fontSize)));
+  const titleRight = box.textX + subtropeTextWidth(box.title, box.fontSize) * SUBTROPE_BOLD_FACTOR;
+  const right = Math.max(box.box.x + box.box.width, lastColumn.x + widestLast + pad, titleRight + pad);
+  const rows = Math.max(...columns.map((column) => column.items.length));
+  const bottom = Math.max(box.box.y + box.box.height, box.firstBaseline + (rows - 1) * box.lineHeight + pad);
+  return { x: box.box.x, y: box.box.y, width: right - box.box.x, height: bottom - box.box.y, columns };
+}
+
 function buildSubtropeBox(doc, box, placement) {
   const group = withPlacement(makeSvgNode(doc, "g", "subtrope-box", { "data-box-id": box.id }), placement.dx, placement.dy);
-  group.append(makeSvgNode(doc, "rect", "subtrope-rect", { x: box.box.x, y: box.box.y, width: box.box.width, height: box.box.height }));
+  const fitted = fitSubtropeBox(box);
+  group.append(makeSvgNode(doc, "rect", "subtrope-rect", { x: fitted.x, y: fitted.y, width: fitted.width, height: fitted.height }));
   group.append(makeSvgText(doc, "subtrope-title", { x: box.textX, y: box.titleBaseline, "font-size": box.fontSize }, box.title));
-  const columns = box.columns ?? [{ x: box.textX, items: box.items }];
-  for (const column of columns) {
+  for (const column of fitted.columns) {
     column.items.forEach((item, index) => {
       group.append(makeSvgText(doc, "subtrope-item", {
         x: column.x, y: box.firstBaseline + index * box.lineHeight, "font-size": box.fontSize,
       }, item));
     });
   }
-  return group;
-}
-
-function buildCredits(doc, credits, dx) {
-  const group = withPlacement(makeSvgNode(doc, "g", "poster-credits"), dx, 0);
-  credits.lines.forEach((line, index) => {
-    group.append(makeSvgText(doc, "credit-line", {
-      x: credits.centreX, y: credits.baseline + index * credits.lineHeight, "text-anchor": "middle", "font-size": credits.fontSize,
-    }, line));
-  });
-  return group;
-}
-
-function fitFontSize(text, maxWidth, maxSize, minSize) {
-  const perUnit = estimateSvgTextWidth(text, 1);
-  return Math.max(minSize, Math.min(maxSize, Math.floor((maxWidth / perUnit) * 10) / 10));
-}
-
-function buildChip(doc, chip) {
-  const group = makeSvgNode(doc, "g", `chip chip-${chip.group}`, { "data-chip-id": chip.id });
-  group.append(makeSvgNode(doc, "rect", "chip-rect", { x: chip.x, y: chip.y, width: chip.width, height: chip.height }));
-  const size = fitFontSize(chip.id, chip.width - 2, Math.min(10.5, chip.height * 0.72), 6);
-  group.append(makeSvgText(doc, "chip-label", {
-    x: chip.x + chip.width / 2, y: chip.y + chip.height / 2 + size * 0.35, "text-anchor": "middle", "font-size": size,
-  }, chip.id));
-  return group;
-}
-
-function buildFranchise(doc, franchise) {
-  const group = makeSvgNode(doc, "g", "franchise", { "data-franchise": franchise.id });
-  const box = franchise.titleBox;
-  const size = fitFontSize(franchise.title, box.width * 0.94, 30, 9);
-  group.append(makeSvgText(doc, "franchise-title", {
-    x: box.x + box.width / 2, y: box.y + box.height / 2 + size * 0.35, "text-anchor": "middle", "font-size": size,
-  }, franchise.title));
-  for (const link of franchise.links) {
-    group.append(makeSvgNode(doc, "path", `chip-link chip-link-${link.kind}`, { d: link.d, "stroke-width": link.width, fill: "none" }));
-  }
-  for (const chip of franchise.chips) group.append(buildChip(doc, chip));
-  return group;
-}
-
-function buildOutlinePanel(doc, panel, placement) {
-  const group = withPlacement(makeSvgNode(doc, "g", "outline-panel"), placement.dx, placement.dy);
-  const frame = panel.frame;
-  group.append(makeSvgNode(doc, "rect", "outline-frame", {
-    x: frame.x, y: frame.y, width: frame.width, height: frame.height, "stroke-width": frame.strokeWidth,
-  }));
-  group.append(makeSvgText(doc, "outline-heading", {
-    x: panel.heading.x, y: panel.heading.baseline, "font-size": panel.heading.fontSize, ...textLengthAttributes(panel.heading),
-  }, panel.heading.text));
-  for (const franchise of panel.franchises) group.append(buildFranchise(doc, franchise));
-  return group;
-}
-
-function buildTvtropesCredit(doc, credit, placement) {
-  const group = withPlacement(makeSvgNode(doc, "g", "tvtropes-credit"), placement.dx, placement.dy);
-  const leadWidth = credit.siteX - credit.x - 8;
-  group.append(makeSvgText(doc, "tvtropes-lead", {
-    x: credit.x, y: credit.baseline, "font-size": credit.fontSize, textLength: leadWidth, lengthAdjust: "spacingAndGlyphs",
-  }, credit.lead));
-  group.append(makeSvgText(doc, "tvtropes-site", {
-    x: credit.siteX, y: credit.baseline, "font-size": credit.fontSize,
-    textLength: credit.underline.x2 - credit.underline.x1, lengthAdjust: "spacingAndGlyphs",
-  }, credit.site));
-  group.append(makeSvgNode(doc, "line", "tvtropes-underline", {
-    x1: credit.underline.x1, x2: credit.underline.x2, y1: credit.underline.y, y2: credit.underline.y,
-  }));
   return group;
 }
 
@@ -447,26 +411,21 @@ function buildTvtropesCredit(doc, credit, placement) {
  * puts the item in space the revised table leaves empty (checked against the tile rectangles).
  */
 function revisedFurniturePlacement(furniture, layout) {
-  const viewBox = layout.viewBoxFor("revised");
   const genre = layout.blockSpan("genre", "revised");
   const callBox = furniture.SUBTROPE_BOXES.find((box) => box.id === "call-to-adventure-box");
   const wallBox = furniture.SUBTROPE_BOXES.find((box) => box.id === "fourth-wall-box");
-  const frame = furniture.OUTLINE_EXAMPLES.frame;
   return {
     titleDx: REVISED_TITLE_LEFT - furniture.POSTER_TITLE.box.x,
     keyDx: REVISED_KEY_LEFT - furniture.KEY_CALLOUT.box.x,
-    creditsDx: REVISED_CREDITS_CENTRE - furniture.POSTER_CREDITS.centreX,
     subtrope: {
-      [callBox.id]: { dx: genre.x - REVISED_CALL_BOX_GAP - callBox.box.width - callBox.box.x, dy: 0 },
+      [callBox.id]: { dx: genre.x - REVISED_CALL_BOX_GAP - fitSubtropeBox(callBox).width - callBox.box.x, dy: 0 },
       [wallBox.id]: { dx: REVISED_FOURTH_WALL_BOX.x - wallBox.box.x, dy: REVISED_FOURTH_WALL_BOX.y - wallBox.box.y },
     },
-    panel: { dx: (viewBox.w - frame.width) / 2 - frame.x, dy: REVISED_PANEL_TOP - frame.y },
-    footer: { dx: (viewBox.w - 1303) / 2, dy: REVISED_FOOTER_DROP },
   };
 }
 
 const ORIGINAL_FURNITURE_PLACEMENT = Object.freeze({
-  titleDx: 0, keyDx: 0, creditsDx: 0, subtrope: Object.freeze({}), panel: Object.freeze({ dx: 0, dy: 0 }), footer: Object.freeze({ dx: 0, dy: 0 }),
+  titleDx: 0, keyDx: 0, subtrope: Object.freeze({}),
 });
 
 function subtropePlacement(placement, boxId) {
@@ -486,7 +445,8 @@ function endRect(end, context) {
   const box = context.furniture.SUBTROPE_BOXES.find((candidate) => candidate.id === end.furnitureId);
   if (!box) return null;
   const { dx, dy } = subtropePlacement(context.placement, box.id);
-  return { x: box.box.x + dx, y: box.box.y + dy, w: box.box.width, h: box.box.height };
+  const fitted = fitSubtropeBox(box);
+  return { x: fitted.x + dx, y: fitted.y + dy, w: fitted.width, h: fitted.height };
 }
 
 /** Revised connectors keep the poster's tangent shape, so every end's left/right corner flips with the mirrored table. */
@@ -524,9 +484,6 @@ function buildFurnitureLayer(doc, layoutName, data, placement) {
   for (const box of furniture.SUBTROPE_BOXES) layer.append(buildSubtropeBox(doc, box, subtropePlacement(placement, box.id)));
   layer.append(buildCharModLabel(doc, furniture.CHARACTER_MODIFIERS_LABEL, layoutName, layout));
   layer.append(buildKey(doc, furniture.KEY_CALLOUT, placement.keyDx));
-  layer.append(buildCredits(doc, furniture.POSTER_CREDITS, placement.creditsDx));
-  layer.append(buildOutlinePanel(doc, furniture.OUTLINE_EXAMPLES, placement.panel));
-  layer.append(buildTvtropesCredit(doc, furniture.TVTROPES_CREDIT, placement.footer));
   return layer;
 }
 
@@ -539,7 +496,7 @@ function buildTilesLayer(doc, layoutName, data) {
     if (rect === null) continue;
     if (groups[element.group] === undefined) console.warn(`diagram-svg: tile ${element.id} has unknown group "${element.group}"`);
     tileRects.set(element.id, rect);
-    layer.append(buildTile(doc, element, rect, furniture.ADDED_ELEMENT_CREDIT));
+    layer.append(buildTile(doc, element, rect));
   }
   if (layoutName === "revised") {
     const geometry = layout.geometry ?? FALLBACK_GEOMETRY;

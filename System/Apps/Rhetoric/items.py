@@ -47,17 +47,14 @@ def load_items(db_path: Path) -> dict[str, Any]:
         ).fetchall()
         ordered_ids = [row[0] for row in devices]
         topical_roots = topical.topical_tree(conn, ordered_ids)
-        explained = grammar.explanations(conn)
-        label_rows = grammar.label_rows(conn)
-        label_links = grammar.label_links(conn)
+        grammar_roots = grammar.grammar_tree(conn)
         quote_list = quotes.quotes(conn)
 
-    device_map = _device_map(devices, examples, explained)
+    device_map = _device_map(devices, examples)
     links = _links(devices, tags)
     trees = {h: _build_tree(h, nodes, links[h]) for h in HIERARCHIES}
     trees["topical"] = topical_roots
-    trees[grammar.HIERARCHY] = grammar.with_ungrammatical(
-        grammar.without_empty(_build_tree(grammar.HIERARCHY, label_rows, label_links)), ordered_ids, set(explained))
+    trees[grammar.HIERARCHY] = grammar_roots
     return {"trees": trees, "devices": device_map, "quotes": quote_list}
 
 
@@ -67,14 +64,18 @@ def load_topical(db_path: Path) -> list[dict[str, Any]]:
         return _topical_roots(conn)
 
 
+def load_grammar(db_path: Path) -> list[dict[str, Any]]:
+    """Just the Grammar tree, for the response to a Grammar change."""
+    with closing(connect_readonly(db_path)) as conn:
+        return grammar.grammar_tree(conn)
+
+
 def _topical_roots(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     ordered_ids = [row[0] for row in conn.execute("SELECT id FROM devices " + _DEVICE_ORDER)]
     return topical.topical_tree(conn, ordered_ids)
 
 
-def _device_map(
-    devices: list[tuple], examples: list[tuple], explanations: dict[int, dict[str, Any]]
-) -> dict[str, dict[str, Any]]:
+def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[str, Any]]:
     by_id: dict[str, dict[str, Any]] = {
         str(row[0]): {
             "name": row[1],
@@ -83,7 +84,6 @@ def _device_map(
             "topical_rank": row[6],
             "ai_confidence_rating": row[7],
             "flipside_of": row[8],
-            "explanation": explanations.get(row[0]),
             "examples": [],
         }
         for row in devices

@@ -9,7 +9,7 @@
 import { matchesName } from './search.js';
 import { stripInline } from './markup.js';
 import { formatDate, groupEntries, indexEntry, yearNumber } from './quoteindex.js';
-import { COMPARE, EVERYTHING, GRAMMAR, GRAMMAR_SLOTS, INDEX, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, revealKey, sortedDevices } from './state.js';
+import { COMPARE, EDITABLE_TREES, EVERYTHING, GRAMMAR, INDEX, TOPICAL, TREE_SORTS, UNSORTED_ID, flipsidePairs, parseView, openKey, sortedDevices } from './state.js';
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
 const GROUPS = [
@@ -18,8 +18,9 @@ const GROUPS = [
   { hierarchy: 'function', name: 'Function', definition: 'what devices do' },
 ];
 
-// `draggable` and `removeFrom` (the `{ id, name }` of the Type the row can be taken out of) are set only in the Topical tree.
+// `draggable` and `removeFrom` (the `{ id, name }` of the Type or label the row can be taken out of) are set only in the editable trees.
 const EMPTY_GROUP_HINT = 'Nothing is filed in this group yet.';
+const EMPTY_GRAMMAR_HINT = 'No labels yet. Add one above, then add devices to it.';
 
 const deviceItem = (device, { draggable = false, removeFrom = null } = {}) => ({ kind: 'device', device, draggable, removeFrom });
 
@@ -29,22 +30,23 @@ function countDevices(node) {
 
 /**
  * A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
- * `reveal.on` hides a heading's devices until it, or a heading above it, is in `reveal.opened`
- * (or `open` is already true); such a heading carries `revealable` and `revealed` for its button.
- * In Topical, a real Type is `editable` (renamed, deleted, dropped onto) and its devices can be removed from it.
+ * `reveal.on` makes a heading show its sub-labels and its own devices only while it is in `reveal.opened`;
+ * a closed heading shows nothing beneath it. A heading with anything beneath it carries `foldable` and `open` for its button and dot.
+ * In Topical a real Type, and in Grammar every label, is `editable` (renamed or edited, deleted, dropped onto) and its devices can be removed from it;
+ * `parentId` is the label above (null at the top), which lets a drag tell siblings from other labels.
  */
-function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !reveal.on) {
-  const opened = open || reveal.opened.has(revealKey(hierarchy, node.id));
-  const editable = hierarchy === TOPICAL && node.id !== UNSORTED_ID;
-  const placement = { draggable: hierarchy === TOPICAL, removeFrom: editable ? { id: node.id, name: node.name } : null };
+function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId = null) {
+  const open = !reveal.on || reveal.opened.has(openKey(hierarchy, node.id));
+  const editable = EDITABLE_TREES.has(hierarchy) && !(hierarchy === TOPICAL && node.id === UNSORTED_ID);
+  const placement = { draggable: EDITABLE_TREES.has(hierarchy), removeFrom: editable ? { id: node.id, name: node.name } : null };
   const children = [];
-  for (const child of node.children) {
+  for (const child of open ? node.children : []) {
     if (child.kind === 'device') {
       const device = state.devices.get(child.id);
       if (!device) console.warn(`view: tree ${hierarchy} references unknown device ${child.id}`);
-      else if (opened && keep(device)) children.push(deviceItem(device, placement));
+      else if (keep(device)) children.push(deviceItem(device, placement));
     } else {
-      const kept = filterNode(state, hierarchy, child, keep, pruneEmpty, reveal, opened);
+      const kept = filterNode(state, hierarchy, child, keep, pruneEmpty, reveal, node.id);
       if (kept) children.push(kept);
     }
   }
@@ -52,7 +54,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, open = !re
   const deviceCount = countDevices(node);
   return {
     kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children,
-    deviceCount, revealable: reveal.on && deviceCount > 0, revealed: opened, editable,
+    deviceCount, foldable: reveal.on && node.children.length > 0, open, editable, parentId,
   };
 }
 
@@ -82,8 +84,8 @@ export function currentView(state) {
   const searching = state.query.trim() !== '';
   const matches = (device) => matchesName(device.label, state.query, state.fuzzy);
   const view = parseView(state.activeView);
-  // Search lists its matches in full; an isolated heading shows everything beneath it.
-  const reveal = { on: state.reveal && !searching, opened: state.revealed };
+  // Search lists its matches in full, so it ignores what is open and closed; an isolated heading shows everything beneath it.
+  const reveal = { on: state.reveal && !searching, opened: state.opened };
 
   if (view.kind === 'device') {
     const device = state.devices.get(view.id);
@@ -111,25 +113,24 @@ export function currentView(state) {
     const roots = isolated
       ? [state.nodesById[hierarchy].get(view.id)].filter(Boolean)
       : state.trees[hierarchy];
-    // Topical keeps empty Types while searching: they are where a found device gets dropped.
-    const pruneEmpty = searching && hierarchy !== TOPICAL;
+    // The editable groups keep empty Types and labels while searching: they are where a found device gets dropped.
+    const pruneEmpty = searching && !EDITABLE_TREES.has(hierarchy);
     const items = roots
       .map((root) => filterNode(state, hierarchy, root, matches, pruneEmpty, isolated ? { ...reveal, on: false } : reveal))
       .filter(Boolean);
-    return { mode: 'tree', items, hint: roots.length === 0 ? EMPTY_GROUP_HINT : undefined };
+    return { mode: 'tree', items, hint: roots.length === 0 ? (hierarchy === GRAMMAR ? EMPTY_GRAMMAR_HINT : EMPTY_GROUP_HINT) : undefined };
   }
 
   const items = sortedDevices(state, state.sortOrder).filter(matches).map(deviceItem);
   return { mode: 'flat', items };
 }
 
-/** Whether a device shows its definition/examples/explanation: the global toggle, or the row was clicked open. Explanations belong to the Grammar group only. */
+/** Whether a device shows its definition and examples: the global toggle, or the row was clicked open. */
 export function showsDetail(state, device, mode) {
   const opened = mode === 'device' || state.expanded.has(device.id);
   return {
     definition: opened || state.showDefinitions,
     examples: opened || state.showExamples,
-    explanation: state.sortOrder === GRAMMAR && device.explanation != null && (opened || state.showExplanations),
   };
 }
 
@@ -173,7 +174,7 @@ export function viewToText(state, view) {
   const write = (item, depth) => {
     const pad = '  '.repeat(depth);
     if (item.kind === 'node') {
-      lines.push(`${pad}• ${item.name} — ${item.definition}`);
+      lines.push(`${pad}• ${stripInline(item.name)} — ${stripInline(item.definition)}`);
       item.children.forEach((child) => write(child, depth + 1));
       return;
     }
@@ -181,13 +182,6 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, device, view.mode);
     lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
-    if (shown.explanation) {
-      lines.push(`${pad}  ${device.explanation.summary}`);
-      for (const { key, title } of GRAMMAR_SLOTS) {
-        const slot = device.explanation[key];
-        if (slot) lines.push(`${pad}  ${title}: ${slot.labels.join(', ')}`, `${pad}  ${stripInline(slot.example)}`);
-      }
-    }
     if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
   };
   view.items.forEach((item) => write(item, 0));

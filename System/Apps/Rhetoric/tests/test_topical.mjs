@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  FULL_VIEW, UNSORTED_ID, createState, revealKey, setActiveView, setSortOrder, setTopicalTree, subtreeView, toggleRevealed,
+  FULL_VIEW, UNSORTED_ID, createState, openKey, setActiveView, setSortOrder, setEditableTree, subtreeView, toggleOpened, treeLabels,
 } from '../app/state.js';
 import { currentView, viewToText } from '../app/view.js';
 import { renderList } from '../app/render.js';
@@ -25,7 +25,7 @@ const typeOf = (view, name) => view.items.find((node) => node.name === name);
 
 // ---- View ------------------------------------------------------------------------------------
 
-test('topical is a tree: a real Type is editable, Unsorted is not, and Unsorted starts revealed', () => {
+test('topical is a tree: a real Type is editable, Unsorted is not, and Unsorted starts open', () => {
   const view = currentView(topicalState());
   assert.equal(view.mode, 'tree');
   const [irony, unsorted] = view.items;
@@ -37,7 +37,7 @@ test('topical is a tree: a real Type is editable, Unsorted is not, and Unsorted 
 
 test('devices in the Topical tree are draggable; only those under a real Type can be removed from it', () => {
   const state = topicalState();
-  toggleRevealed(state, 'topical', 7);
+  toggleOpened(state, 'topical', 7);
   const [irony, unsorted] = currentView(state).items;
   assert.deepEqual([irony.children[0].draggable, irony.children[0].removeFrom], [true, { id: 7, name: 'Irony' }]);
   assert.deepEqual([unsorted.children[0].draggable, unsorted.children[0].removeFrom], [true, null]);
@@ -46,12 +46,13 @@ test('devices in the Topical tree are draggable; only those under a real Type ca
   assert.equal(currentView(state).items[0].children[0].children[0].draggable, false);
 });
 
-test('revealing a Type does not reveal the category node that shares its id', () => {
+test('opening a Type does not open the category node that shares its id', () => {
   const state = topicalState();
-  toggleRevealed(state, 'topical', 1);
-  assert.equal(state.revealed.has(revealKey('category', 1)), false);
+  const before = state.opened.has(openKey('category', 1));
+  toggleOpened(state, 'topical', 1);
+  assert.equal(state.opened.has(openKey('category', 1)), before);
   setSortOrder(state, 'category');
-  assert.equal(currentView(state).items[0].revealed, false);
+  assert.equal(currentView(state).items[0].open, before);
 });
 
 test('searching keeps empty Types as drop targets and shows every match', () => {
@@ -63,10 +64,10 @@ test('searching keeps empty Types as drop targets and shows every match', () => 
   assert.equal(typeOf(view, 'Unsorted').children.length, 1);
 });
 
-test('setTopicalTree swaps the tree and drops an isolated view of a Type that no longer exists', () => {
+test('setEditableTree swaps the tree and drops an isolated view of a Type that no longer exists', () => {
   const state = topicalState();
   setActiveView(state, subtreeView('topical', 7));
-  setTopicalTree(state, [{ kind: 'node', id: UNSORTED_ID, name: 'Unsorted', definition: '', children: [{ kind: 'device', id: 1 }] }]);
+  setEditableTree(state, 'topical', [{ kind: 'node', id: UNSORTED_ID, name: 'Unsorted', definition: '', children: [{ kind: 'device', id: 1 }] }]);
   assert.equal(state.activeView, FULL_VIEW);
   assert.deepEqual(currentView(state).items.map((n) => n.name), ['Unsorted']);
   assert.equal(state.nodesById.topical.has(7), false);
@@ -74,7 +75,7 @@ test('setTopicalTree swaps the tree and drops an isolated view of a Type that no
 
 test('Copy writes the Topical Types and the devices revealed under them', () => {
   const state = topicalState();
-  toggleRevealed(state, 'topical', 7);
+  toggleOpened(state, 'topical', 7);
   const lines = viewToText(state, currentView(state)).split('\n');
   assert.ok(lines.some((line) => line.startsWith('• Irony')));
   assert.ok(lines.includes('  • Metaphor'));
@@ -97,7 +98,7 @@ test('a Type with no definition draws no definition text', () => {
 
 test('Topical device rows are draggable; rows under a Type have a remove cross, rows under Unsorted do not', () => {
   const state = topicalState();
-  toggleRevealed(state, 'topical', 7);
+  toggleOpened(state, 'topical', 7);
   const container = draw(state);
   const devices = findAll(container, withClass('device'));
   assert.deepEqual(devices.map((n) => n.attributes.draggable), ['true', 'true']);
@@ -139,6 +140,7 @@ function element(dataset = {}) {
   const classes = new Set();
   return {
     dataset, classes,
+    closest: () => ({ dataset: { hierarchy: 'topical' } }), // the group a device row sits in
     classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) },
     getBoundingClientRect: () => ({ top: 0, height: 100 }),
   };
@@ -179,12 +181,12 @@ function bound() {
 test('a device dropped on a Type heading is reported with no device or side', () => {
   const { list, drops } = bound();
   const row = element({ deviceId: '2' });
-  const typeEl = element({ nodeId: '7' });
+  const typeEl = element({ nodeId: '7', hierarchy: 'topical' });
   startDrag(list, { closest: (s) => (s.includes('data-device-id') ? row : null), classList: row.classList });
   assert.ok(over(list, pointerAt({ type: typeEl }), 10));
   assert.ok(typeEl.classes.has('drop-target'));
   drop(list, pointerAt({ type: typeEl }), 10);
-  assert.deepEqual(drops, [{ kind: 'device', id: 2, overType: 7, overDevice: null, side: null }]);
+  assert.deepEqual(drops, [{ kind: 'device', hierarchy: 'topical', id: 2, overType: 7, overDevice: null, side: null }]);
   assert.equal(typeEl.classes.has('drop-target'), false);
 });
 
@@ -192,7 +194,7 @@ test('a device dropped on another device row in a Type is reported before or aft
   const { list, drops } = bound();
   const row = element({ deviceId: '2' });
   startDrag(list, { closest: (s) => (s.includes('data-device-id') ? row : null), classList: row.classList });
-  const typeEl = element({ nodeId: '7' });
+  const typeEl = element({ nodeId: '7', hierarchy: 'topical' });
   const target = element({ deviceId: '1' });
   const at = () => pointerAt({ type: typeEl, row: target });
   over(list, at(), 20);
@@ -208,7 +210,7 @@ test('dropping a device on itself is not a drop target', () => {
   const { list, drops } = bound();
   const row = element({ deviceId: '2' });
   startDrag(list, { closest: (s) => (s.includes('data-device-id') ? row : null), classList: row.classList });
-  const target = pointerAt({ type: element({ nodeId: '7' }), row });
+  const target = pointerAt({ type: element({ nodeId: '7', hierarchy: 'topical' }), row });
   assert.equal(over(list, target, 10), false);
   drop(list, target, 10);
   assert.deepEqual(drops, []);
@@ -216,21 +218,21 @@ test('dropping a device on itself is not a drop target', () => {
 
 test('a Type dragged by its heading is reported against another Type, never against a device or itself', () => {
   const { list, drops } = bound();
-  const own = element({ nodeId: '7' });
+  const own = element({ nodeId: '7', hierarchy: 'topical' });
   const handle = { ...element(), closest: () => own };
   startDrag(list, { closest: (s) => (s.includes('heading-row') ? handle : null), classList: handle.classList });
   assert.ok(handle.classes.has('dragging'));
   assert.equal(over(list, pointerAt({ type: own }), 10), false);
-  const other = element({ nodeId: '9' });
+  const other = element({ nodeId: '9', hierarchy: 'topical' });
   assert.ok(over(list, pointerAt({ type: other, row: element({ deviceId: '1' }) }), 90));
   assert.ok(other.classes.has('drop-after'));
   drop(list, pointerAt({ type: other }), 90);
-  assert.deepEqual(drops, [{ kind: 'type', id: 7, overType: 9, overDevice: null, side: 'after' }]);
+  assert.deepEqual(drops, [{ kind: 'type', hierarchy: 'topical', id: 7, overType: 9, overDevice: null, side: 'after' }]);
 });
 
 test('a drag that did not start in the list (selected text) lands nowhere', () => {
   const { list, drops } = bound();
-  const target = pointerAt({ type: element({ nodeId: '7' }) });
+  const target = pointerAt({ type: element({ nodeId: '7', hierarchy: 'topical' }) });
   assert.equal(over(list, target, 10), false);
   drop(list, target, 10);
   assert.deepEqual(drops, []);
@@ -240,11 +242,39 @@ test('dragend clears the highlight and forgets the drag', () => {
   const { list, drops } = bound();
   const row = element({ deviceId: '2' });
   startDrag(list, { closest: (s) => (s.includes('data-device-id') ? row : null), classList: row.classList });
-  const typeEl = element({ nodeId: '7' });
+  const typeEl = element({ nodeId: '7', hierarchy: 'topical' });
   over(list, pointerAt({ type: typeEl }), 10);
   list.handlers.dragend({ target: { classList: row.classList } });
   assert.equal(typeEl.classes.has('drop-target'), false);
   assert.equal(row.classes.has('dragging'), false);
   assert.equal(over(list, pointerAt({ type: typeEl }), 10), false);
   assert.deepEqual(drops, []);
+});
+
+// ---- Nested Types (four levels) ------------------------------------------------------------------
+
+const nestedTypes = () => [
+  { kind: 'node', id: 1, name: 'Place', definition: '', children: [
+    { kind: 'node', id: 2, name: 'Sound', definition: '', children: [
+      { kind: 'node', id: 3, name: 'Rhythm', definition: '', children: [
+        { kind: 'node', id: 4, name: 'Meter', definition: '', children: [{ kind: 'device', id: 1 }] }] }] }] },
+];
+
+test('treeLabels lists Types with level and path, and leaves out the derived Unsorted heading', () => {
+  const state = topicalState();
+  setEditableTree(state, 'topical', [...nestedTypes(), { kind: 'node', id: UNSORTED_ID, name: 'Unsorted', definition: '', children: [] }]);
+  assert.deepEqual(treeLabels(state, 'topical').map((l) => [l.id, l.depth, l.path]), [
+    [1, 1, 'Place'], [2, 2, 'Place > Sound'], [3, 3, 'Place > Sound > Rhythm'], [4, 4, 'Place > Sound > Rhythm > Meter'],
+  ]);
+});
+
+test('a fourth-level Type draws, indents and carries its parent id for dragging', () => {
+  const state = topicalState();
+  setEditableTree(state, 'topical', nestedTypes());
+  for (const id of [1, 2, 3, 4]) state.opened.add(openKey('topical', id));
+  const container = draw(state);
+  const meter = findAll(container, (n) => n.dataset?.nodeId === '4')[0];
+  assert.equal(meter.dataset.parentId, '3');
+  assert.equal(meter.dataset.droppable, 'true');
+  assert.match(viewToText(state, currentView(state)), /Meter/);
 });

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="header.css">
 <link rel="stylesheet" href="list.css">
 <link rel="stylesheet" href="topical.css">
+<link rel="stylesheet" href="grammar.css">
 <link rel="stylesheet" href="compare.css">
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="print.css">
@@ -33,9 +34,9 @@
         <div id="display-panel" class="menu-panel" role="group" aria-label="Display options" hidden>
           <label class="menu-item"><input id="show-definitions" type="checkbox" checked> Show definitions</label>
           <label class="menu-item"><input id="show-examples" type="checkbox" checked> Show examples</label>
-          <label class="menu-item" title="In the Grammar group: each device's grammar explanation."><input id="show-explanations" type="checkbox" checked> Show explanations</label>
           <label class="menu-item"><input id="show-confidence" type="checkbox" checked> Show AI confidence</label>
-          <label class="menu-item" title="On: only groups and types show, each with a button that reveals its devices. Off: every device is listed."><input id="reveal" type="checkbox" checked> Indent</label>
+          <label class="menu-item" title="On: add, edit, delete and drag Types and labels and the devices under them. Off: read only; clicking and the options above still work."><input id="edit-mode" type="checkbox" checked> Edit mode</label>
+          <label class="menu-item" title="On: a click on a label or Type opens it (its sub-labels and devices show) or closes it. Off: every sub-label and device is listed."><input id="reveal" type="checkbox" checked> Indent</label>
         </div>
       </div>
       <label class="toolbar-check">Open on
@@ -67,9 +68,30 @@
     <form id="type-form" class="type-form" autocomplete="off" hidden>
       <label class="type-field"><span class="visually-hidden">New Type name</span>
         <input id="type-name" type="text" maxlength="80" placeholder="New Type…"></label>
+      <label><span class="visually-hidden">Add the Type under</span><select id="type-parent" class="toolbar-select"></select></label>
       <button class="btn" type="submit">Add Type</button>
       <span id="type-status" class="toolbar-status" role="status"></span>
     </form>
+  </div>
+  <div id="grammar-bar" class="grammar-bar" role="group" aria-label="Add grammar labels and devices" hidden>
+    <form id="label-form" class="grammar-form" autocomplete="off">
+      <label class="type-field"><span class="visually-hidden">New label name</span>
+        <input id="label-name" type="text" maxlength="80" placeholder="New label…" required></label>
+      <label class="type-field label-explanation"><span class="visually-hidden">What the label means</span>
+        <input id="label-definition" type="text" maxlength="300" placeholder="What it means…" required></label>
+      <label><span class="visually-hidden">Add the label under</span><select id="label-parent" class="toolbar-select"></select></label>
+      <button class="btn" type="submit">Add label</button>
+    </form>
+    <form id="label-device-form" class="grammar-form" autocomplete="off">
+      <span class="picker">
+        <label class="type-field"><span class="visually-hidden">Device to add</span>
+          <input id="device-pick" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="device-pick-list" placeholder="Find a device…"></label>
+        <ul id="device-pick-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
+      <label><span class="visually-hidden">Add the device to</span><select id="device-label" class="toolbar-select"></select></label>
+      <button class="btn" type="submit">Add device</button>
+    </form>
+    <span id="grammar-status" class="toolbar-status" role="status"></span>
   </div>
   <div id="index-bar" class="index-bar" role="group" aria-label="Index options" hidden>
     <span id="index-orders" class="index-orders"></span>

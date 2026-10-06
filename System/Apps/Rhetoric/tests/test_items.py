@@ -8,7 +8,6 @@ from pathlib import Path
 
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-import grammar  # noqa: E402
 import items  # noqa: E402
 
 SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
@@ -47,10 +46,6 @@ def leaves(nodes: list) -> list:
         for c in n["children"]:
             out += [c] if c["kind"] == "device" else leaves([c])
     return out
-
-
-def grammar_no_term() -> str:
-    return grammar.NO_GRAMMAR_NAME
 
 
 class ItemsTest(unittest.TestCase):
@@ -100,60 +95,31 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(items.load_items(self.db_path)["devices"]["2"]["examples"],
                          ["carpe *diem*", '"Ask not" (Kennedy, 1961)'])
 
-    def test_grammar_group_is_empty_until_a_device_has_an_explanation(self):
+    def test_grammar_group_is_empty_until_a_label_is_added(self):
         build_db(self.db_path)
         payload = items.load_items(self.db_path)
         self.assertEqual(payload["trees"]["grammar"], [])
-        self.assertIsNone(payload["devices"]["1"]["explanation"])
+        self.assertNotIn("explanation", payload["devices"]["1"])
 
-    def test_grammar_group_holds_only_explained_devices_with_the_rest_under_no_grammatical_term(self):
+    def test_grammar_group_keeps_every_label_with_its_devices_in_luke_s_order(self):
         build_db(self.db_path)
         db = sqlite3.connect(self.db_path)
-        clause = db.execute("INSERT INTO grammar_labels (name, definition) VALUES ('Clause', 'd')").lastrowid
+        clause = db.execute("INSERT INTO grammar_labels (name, definition, position) VALUES ('Clause', 'a group of words', 0)").lastrowid
+        db.execute("INSERT INTO grammar_labels (name, definition, position) VALUES ('Phrase', 'p', 1)")
         relative = db.execute("INSERT INTO grammar_labels (parent_id, name, definition) VALUES (?, 'Relative clause', 'd')",
                               (clause,)).lastrowid
-        db.execute("INSERT INTO grammar_explanations (device_id, summary, function_example) VALUES (2, 'Repeats.', '*Anaphora* [x]')")
-        db.execute("INSERT INTO device_labels (device_id, slot, label_id) VALUES (2, 'function', ?)", (relative,))
-        db.execute("INSERT INTO device_labels (device_id, slot, label_id) VALUES (2, 'form', ?)", (relative,))  # one leaf, though in both slots
+        db.execute("INSERT INTO grammar_placements (label_id, device_id, position) VALUES (?, 2, 0)", (relative,))
+        db.execute("INSERT INTO grammar_placements (label_id, device_id, position) VALUES (?, 2, 0)", (clause,))  # a device at a second level too
+        db.execute("INSERT INTO grammar_placements (label_id, device_id, position) VALUES (?, 1, 1)", (clause,))
         db.commit()
         db.close()
-        trees = items.load_items(self.db_path)["trees"]
+        tree = items.load_items(self.db_path)["trees"]["grammar"]
 
-        by_label = trees["grammar"]
-        self.assertEqual([n["name"] for n in by_label], ["Clause", grammar_no_term()])
-        self.assertEqual(by_label[0]["children"][0]["name"], "Relative clause")
-        self.assertEqual(by_label[0]["children"][0]["children"], [{"kind": "device", "id": 2}])
-        self.assertEqual(by_label[1]["id"], 0)
-
-    def test_explanation_travels_with_its_device(self):
-        build_db(self.db_path)
-        db = sqlite3.connect(self.db_path)
-        clause = db.execute("INSERT INTO grammar_labels (name, definition) VALUES ('Clause', 'd')").lastrowid
-        conjunction = db.execute("INSERT INTO grammar_labels (name, definition) VALUES ('Conjunction', 'd')").lastrowid
-        db.execute("INSERT INTO grammar_explanations (device_id, summary, function_example, form_example) "
-                   "VALUES (2, 'Repeats.', '*A* [x]', '*B* [y]')")
-        db.executemany("INSERT INTO device_labels (device_id, slot, label_id) VALUES (2, ?, ?)",
-                       [("function", clause), ("form", clause), ("form", conjunction)])
-        db.commit()
-        db.close()
-        device = items.load_items(self.db_path)["devices"]["2"]
-        self.assertEqual(device["explanation"], {
-            "summary": "Repeats.",
-            "function": {"labels": ["Clause"], "example": "*A* [x]"},
-            "form": {"labels": ["Clause", "Conjunction"], "example": "*B* [y]"},
-        })
-
-    def test_an_empty_grammar_slot_travels_as_null(self):
-        build_db(self.db_path)
-        db = sqlite3.connect(self.db_path)
-        clause = db.execute("INSERT INTO grammar_labels (name, definition) VALUES ('Clause', 'd')").lastrowid
-        db.execute("INSERT INTO grammar_explanations (device_id, summary, form_example) VALUES (2, 'Repeats.', '*B* [y]')")
-        db.execute("INSERT INTO device_labels (device_id, slot, label_id) VALUES (2, 'form', ?)", (clause,))
-        db.commit()
-        db.close()
-        explanation = items.load_items(self.db_path)["devices"]["2"]["explanation"]
-        self.assertIsNone(explanation["function"])
-        self.assertEqual(explanation["form"], {"labels": ["Clause"], "example": "*B* [y]"})
+        self.assertEqual([n["name"] for n in tree], ["Clause", "Phrase"])  # empty labels stay, nothing is added
+        self.assertEqual(tree[0]["definition"], "a group of words")
+        self.assertEqual([c["kind"] for c in tree[0]["children"]], ["node", "device", "device"])  # sub-labels first
+        self.assertEqual([c["id"] for c in tree[0]["children"][1:]], [2, 1])
+        self.assertEqual(tree[0]["children"][0]["children"], [{"kind": "device", "id": 2}])
 
     def test_flipside_carries_its_fallacy_id_and_sorts_under_the_fallacy_name(self):
         build_db(self.db_path)

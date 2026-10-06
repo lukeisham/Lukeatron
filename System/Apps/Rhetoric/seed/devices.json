@@ -1786,7 +1786,7 @@
   "definition": "The use of more words than necessary to express an idea, either for emphasis, redundancy, or stylistic effect.",
   "examples": [
    {
-    "text": "\"I saw it with my *own* eyes\" (*own* only adds emphasis)",
+    "text": "\"I saw it with my *own* eyes\" (the word \"own\" only adds emphasis)",
     "attribution": "Unattributed"
    },
    {
@@ -1828,7 +1828,7 @@
   "definition": "A play on words that exploits multiple meanings or the similar sounds of different words to create a humorous or witty effect.",
   "examples": [
    {
-    "text": "\"I used to be a banker, but I lost *interest*\" (*interest* means both money earned and enthusiasm)",
+    "text": "\"I used to be a banker, but I lost *interest*\" (the word \"interest\" means both money earned and enthusiasm)",
     "attribution": "Unattributed"
    },
    {
@@ -5734,6 +5734,50 @@
   "lists_naming": 0,
   "category": "Elocutio",
   "form": "Speech Act > Exclamation",
+  "function": "Persuasion > Emotional Appeal",
+  "ai_confidence_rating": "low"
+ },
+ {
+  "name": "Tautology",
+  "definition": "Saying something is something, so the statement is true by its form rather than by new information.",
+  "examples": [
+   {
+    "text": "\"*Boys* will be *boys*.\"",
+    "attribution": "Unattributed"
+   },
+   {
+    "text": "\"A weasel is wild. Who knows what he thinks?\" (Annie Dillard, *Teaching a Stone to Talk*, 1982)",
+    "attribution": "Annie Dillard",
+    "date": "1982"
+   }
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Elocutio",
+  "form": "Addition & Omission > Addition",
+  "function": "Emphasis > Emphasis",
+  "ai_confidence_rating": "low"
+ },
+ {
+  "name": "Appeal to Nostalgia",
+  "definition": "Stirring a sentimental longing for an idealised past, so that the audience favours what is old or judges the present worse, instead of weighing reasons.",
+  "examples": [
+   {
+    "text": "\"Where are the snows of yesteryear?\"",
+    "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Youth were never more sawcie … the ancient are scorned, the honourable are contemned, the magistrate is not dreaded.\" (Thomas Barnes, minister of St Margaret's, New Fish Street, London, *The Wise-Mans Forecast against the Evill Time*, 1624; spelling modernised except \"sawcie\", the period spelling of \"saucy\", meaning impudent)",
+    "attribution": "Thomas Barnes",
+    "date": "1624"
+   }
+  ],
+  "aliases": [],
+  "flipside_of": null,
+  "lists_naming": 0,
+  "category": "Fallacy",
+  "form": "Argument Structure > Appeal to Pressure",
   "function": "Persuasion > Emotional Appeal",
   "ai_confidence_rating": "low"
  }

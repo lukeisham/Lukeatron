@@ -70,6 +70,7 @@ Most works are cited for the same sense by Silva Rhetoricae (already counted as 
 | Merism | Silva's merismus is dividing a whole into parts, not our sense |
 | Blessing and Curse | Silva defines *eulogia* (a blessing) and *ara* (a curse) as two figures; it lists no work for *eulogia*, and the paired device is named in no source |
 | Ekphrasis | Silva: any vivid description; our definition is the narrower art-description sense |
+| Tautology | Silva's *tautologia* is repeating the same idea in different words (close to Pleonasm); Luke's sense is the logical one, a statement true by its form, which Silva does not give |
 
 The other devices that fail Test 1 below were not found in Silva and no published work could be confirmed for them.
 
@@ -79,6 +80,8 @@ The other devices that fail Test 1 below were not found in Silva and no publishe
 | :--- | :--- | :--- | :--- |
 | Casuistic Form | new | low | T1: wording rests on Wikipedia alone (no tier-1 source names it). T3: Category (Elocutio v Dispositio), Form (Subordination v Conditional Schema) and Function (Authority/Power v Clarity) each needed a judgement call. Added 2026-10-05 |
 | Blessing and Curse | new | low | T1: the pairing is named in no source; Silva has the halves as separate figures (*eulogia*, *ara*) and lists no work for *eulogia*. T3: Category (Elocutio v Pronuntiatio) and Function (Emotional Appeal v Authority/Power) needed a judgement call. Added 2026-10-05 |
+| Tautology | new | low | T1: two rival senses (Silva's repetition of an idea vs Luke's true-by-form); the definition is Luke's own wording and no source was read for it. T3: Form (Addition v Repetition, Argument Structure) and Function (Emphasis v Logical Appeal) needed a judgement call. Added 2026-10-05 |
+| Appeal to Nostalgia | new | low | T1: named in no source (IEP mentions nostalgia only in passing, as a different fallacy; no tier-1 or Wikipedia entry defines it); the definition is written at Luke's direction. T3: Form (Appeal to Pressure v Appeal to a Standard) needed a judgement call. Added 2026-10-06 |
 | Adnomination | medium | medium | T1: two rival senses (root-repetition vs name-pun) |
 | Ecological Fallacy | high | medium | T1: wording rests on Wikipedia alone (re-scored 2026-10-05; Robinson 1950 was cited second-hand and its text could not be opened, so it no longer counts) |
 | Anastrophe | high | medium | T1: sense overlaps hyperbaton; sources disagree on the line |

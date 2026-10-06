@@ -1,13 +1,18 @@
 /** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
 
-import { addPlacement, createType, deleteType, fetchItems, moveType, removePlacement, renameType } from './api.js';
+import {
+  addLabelPlacement, addPlacement, createLabel, createType, deleteLabel, deleteType, editLabel, fetchItems, moveLabel, moveType, removeLabelPlacement,
+  removePlacement, renameType,
+} from './api.js';
 import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
 import { INDEX_ORDERS } from './quoteindex.js';
 import { renderCompareBar, renderCount, renderIndexOrders, renderList, renderSortButtons, renderStatus } from './render.js';
+import { stripInline } from './markup.js';
+import { bindDevicePicker } from './picker.js';
 import {
-  COMPARE, EVERYTHING, FULL_VIEW, INDEX, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, revealKey, setActiveView, setComparePair, setIndexOrder, setSortOrder,
-  setTopicalTree, subtreeView, toggleExpanded, toggleRevealed,
+  COMPARE, EVERYTHING, FULL_VIEW, GRAMMAR, INDEX, MAX_LABEL_DEPTH, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, openWithAncestors,
+  setActiveView, setComparePair, setEditableTree, setIndexOrder, setSortOrder, subtreeView, toggleExpanded, toggleOpened, treeLabels,
 } from './state.js';
 import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
 import { insertionIndex } from './order.js';
@@ -16,18 +21,21 @@ import { currentView } from './view.js';
 const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
-  showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showExplanations: $('show-explanations'),
-  showConfidence: $('show-confidence'), reveal: $('reveal'), defaultSort: $('default-sort'),
+  showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
+  showConfidence: $('show-confidence'), reveal: $('reveal'), editMode: $('edit-mode'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
   indexBar: $('index-bar'), indexOrders: $('index-orders'), indexFull: $('index-full'),
   compare: $('compare'), compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
   tableNames: $('table-names'), tableDefinitions: $('table-definitions'), tableExamples: $('table-examples'),
-  typeForm: $('type-form'), typeName: $('type-name'), typeStatus: $('type-status'),
+  typeForm: $('type-form'), typeName: $('type-name'), typeParent: $('type-parent'), typeStatus: $('type-status'),
+  grammarBar: $('grammar-bar'), labelForm: $('label-form'), labelName: $('label-name'), labelDefinition: $('label-definition'), labelParent: $('label-parent'),
+  deviceForm: $('label-device-form'), devicePick: $('device-pick'), devicePickList: $('device-pick-list'), deviceLabel: $('device-label'), grammarStatus: $('grammar-status'),
   deviceCount: $('device-count'), print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
 
 const STATUS_MS = 2000;
 let state = null;
+let devicePicker = null;
 
 // Even reading `window.localStorage` can throw when site data is blocked; null makes every settings call fall back to defaults.
 const storage = (() => {
@@ -45,6 +53,9 @@ function refresh() {
   renderList(document, els.list, state, view);
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
+  els.grammarBar.hidden = state.sortOrder !== GRAMMAR;
+  if (state.sortOrder === TOPICAL) fillParentPicker(els.typeParent, TOPICAL, 'Type');
+  if (state.sortOrder === GRAMMAR) fillLabelPickers();
   els.compareBar.hidden = state.sortOrder !== COMPARE;
   els.indexBar.hidden = state.sortOrder !== INDEX;
   if (state.sortOrder === INDEX) renderIndexOrders(document, els.indexOrders, INDEX_ORDERS, state.indexOrder);
@@ -65,66 +76,182 @@ function flashStatus(element, text) {
   setTimeout(() => { element.textContent = ''; }, STATUS_MS);
 }
 
+// What differs between the two editable groups: where a failure is reported and what a name clash means.
+const EDITING = {
+  [TOPICAL]: { status: () => els.typeStatus, clash: 'A Type with that name already exists' },
+  [GRAMMAR]: { status: () => els.grammarStatus, clash: 'A label with that name already exists here' },
+};
+
 /**
- * Sends one Topical change and redraws from the tree the server answers with, so the screen
- * only ever shows what was saved. A failure leaves the screen as it was and says why.
+ * Sends one change to an editable group (Topical or Grammar) and redraws from the tree the server answers
+ * with, so the screen only ever shows what was saved. A failure leaves the screen as it was and says why.
+ * @param {string} hierarchy TOPICAL or GRAMMAR
+ * @param {string} [clash] what a 409 means for this change, when it is not a name clash
  * @returns {Promise<boolean>} whether the change was saved
  */
-async function saveTopical(change) {
+async function saveChange(hierarchy, change, clash) {
+  const editing = EDITING[hierarchy];
   try {
-    setTopicalTree(state, await change());
+    setEditableTree(state, hierarchy, await change());
   } catch (error) {
-    console.error('Could not save the Topical change', error);
-    flashStatus(els.typeStatus, error.status === 409 ? 'A Type with that name already exists' : 'Could not save — is the server running?');
+    console.error(`Could not save the ${hierarchy} change`, error);
+    flashStatus(editing.status(), error.status === 409 ? (clash ?? editing.clash) : 'Could not save — is the server running?');
     return false;
   }
   refresh();
   return true;
 }
 
-function topicalNode(element) {
-  const typeElement = element.closest('[data-node-id]');
-  return state.nodesById[TOPICAL].get(Number(typeElement.dataset.nodeId));
+/** The Type or label a button or row sits in: its group and its node in the saved tree. */
+function nodeOf(element) {
+  const heading = element.closest('[data-node-id]');
+  return { hierarchy: heading.dataset.hierarchy, node: state.nodesById[heading.dataset.hierarchy].get(Number(heading.dataset.nodeId)) };
 }
 
 function renameFromRow(button) {
-  const type = topicalNode(button);
-  const name = window.prompt('Rename this Type', type.name)?.trim();
-  if (name && name !== type.name) saveTopical(() => renameType(type.id, name));
+  const { hierarchy, node } = nodeOf(button);
+  if (hierarchy === GRAMMAR) return editLabelFromRow(node);
+  const name = window.prompt('Rename this Type', node.name)?.trim();
+  if (name && name !== node.name) saveChange(TOPICAL, () => renameType(node.id, name));
+}
+
+/** Two prompts, name then explanation; cancelling either leaves the label as it was. */
+function editLabelFromRow(label) {
+  const name = window.prompt('Name of this label', label.name)?.trim();
+  if (!name) return;
+  const definition = window.prompt(`What "${stripInline(name)}" means`, label.definition)?.trim();
+  if (definition && (name !== label.name || definition !== label.definition)) saveChange(GRAMMAR, () => editLabel(label.id, name, definition));
 }
 
 function deleteFromRow(button) {
-  const type = topicalNode(button);
-  if (window.confirm(`Delete the Type "${type.name}"? Its devices stay in the library and in any other Type.`)) {
-    saveTopical(() => deleteType(type.id));
+  const { hierarchy, node } = nodeOf(button);
+  if (hierarchy === GRAMMAR) {
+    if (window.confirm(`Delete the label "${stripInline(node.name)}"? Its devices stay in the library and under any other label.`)) {
+      saveChange(GRAMMAR, () => deleteLabel(node.id), 'Delete its sub-labels first');
+    }
+    return;
+  }
+  if (window.confirm(`Delete the Type "${stripInline(node.name)}"? Its devices stay in the library and in any other Type.`)) {
+    saveChange(TOPICAL, () => deleteType(node.id), 'Delete its sub-Types first');
   }
 }
 
 const idsOf = (nodes) => nodes.map((node) => node.id);
 
-/** Ids from the saved tree, not the screen, so a search that hides rows cannot skew where a drop lands. */
-function savedTypeIds() {
-  return idsOf(state.trees[TOPICAL].filter((node) => node.id !== UNSORTED_ID));
+/** Ids of the Types or labels sharing `parentId` (null: the top level), from the saved tree, not the screen, so a search that hides rows cannot skew where a drop lands. Topical's derived Unsorted is not one. */
+function savedSiblingIds(hierarchy, parentId) {
+  const parent = parentId == null ? null : state.nodesById[hierarchy].get(parentId);
+  return idsOf((parent ? parent.children : state.trees[hierarchy]).filter((child) => child.kind === 'node' && !(hierarchy === TOPICAL && child.id === UNSORTED_ID)));
 }
 
-function onTopicalDrop({ kind, id, overType, overDevice, side }) {
+const PLACING = {
+  [TOPICAL]: { add: addPlacement, remove: removePlacement, move: moveType },
+  [GRAMMAR]: { add: addLabelPlacement, remove: removeLabelPlacement, move: moveLabel },
+};
+
+function onEditableDrop({ kind, hierarchy, id, overType, overDevice, side }) {
+  const placing = PLACING[hierarchy];
   if (kind === 'type') {
-    return void saveTopical(() => moveType(id, insertionIndex(savedTypeIds(), id, overType, side)));
+    const parentId = parentOf(hierarchy, overType);
+    return void saveChange(hierarchy, () => placing.move(id, insertionIndex(savedSiblingIds(hierarchy, parentId), id, overType, side)));
   }
-  state.revealed.add(revealKey(TOPICAL, overType)); // so the device is seen landing
-  if (overDevice === null) return void saveTopical(() => addPlacement(overType, id));
-  const placedIds = idsOf(state.nodesById[TOPICAL].get(overType).children);
-  saveTopical(() => addPlacement(overType, id, insertionIndex(placedIds, id, overDevice, side)));
+  openWithAncestors(state, hierarchy, overType); // so the device is seen landing
+  if (overDevice === null) return void saveChange(hierarchy, () => placing.add(overType, id));
+  const placedIds = state.nodesById[hierarchy].get(overType).children.filter((child) => child.kind === 'device').map((child) => child.id);
+  saveChange(hierarchy, () => placing.add(overType, id, insertionIndex(placedIds, id, overDevice, side)));
+}
+
+/** The Type or label above this one in the saved tree, or null at the top. */
+function parentOf(hierarchy, labelId) {
+  const find = (nodes, parentId) => {
+    for (const node of nodes.filter((child) => child.kind === 'node')) {
+      if (node.id === labelId) return { parentId };
+      const found = find(node.children, node.id);
+      if (found) return found;
+    }
+    return null;
+  };
+  return find(state.trees[hierarchy], null)?.parentId ?? null;
+}
+
+// ---- Grammar forms: add a label, add a device ----
+
+function optionFor(value, text, selected) {
+  const option = document.createElement('option');
+  option.value = String(value);
+  option.textContent = text;
+  option.selected = selected;
+  return option;
+}
+
+/** Refills an "Add under" menu from the saved tree of `hierarchy`: the top level, or any label or Type with room for another level; keeps what Luke had chosen. */
+function fillParentPicker(select, hierarchy, noun) {
+  const parentChoice = select.value;
+  select.replaceChildren(
+    optionFor('', 'At the top level', parentChoice === ''),
+    ...treeLabels(state, hierarchy).filter((label) => label.depth < MAX_LABEL_DEPTH).map((label) => optionFor(label.id, `Under ${stripInline(label.path)}`, parentChoice === String(label.id))),
+  );
+  select.title = `Where the new ${noun} goes: at the top, or under one, up to ${MAX_LABEL_DEPTH} levels deep`;
+}
+
+/** Refills the two label pickers from the saved tree, keeping what Luke had chosen. */
+function fillLabelPickers() {
+  const labels = treeLabels(state, GRAMMAR);
+  const indent = (label) => `${'\u2003'.repeat(label.depth - 1)}${stripInline(label.name)}`;
+  fillParentPicker(els.labelParent, GRAMMAR, 'label');
+  const labelChoice = els.deviceLabel.value;
+  els.deviceLabel.replaceChildren(
+    ...(labels.length === 0 ? [optionFor('', 'Add a label first', true)] : labels.map((label) => optionFor(label.id, indent(label), labelChoice === String(label.id)))),
+  );
+  els.deviceLabel.disabled = labels.length === 0;
+}
+
+async function onAddLabel(event) {
+  event.preventDefault();
+  const name = els.labelName.value.trim();
+  const definition = els.labelDefinition.value.trim();
+  if (!name || !definition) return;
+  const parentId = els.labelParent.value === '' ? null : Number(els.labelParent.value);
+  if (parentId !== null) openWithAncestors(state, GRAMMAR, parentId); // so the new sub-label is seen
+  if (await saveChange(GRAMMAR, () => createLabel(name, definition, parentId))) {
+    els.labelName.value = '';
+    els.labelDefinition.value = '';
+    els.labelName.focus();
+  }
+}
+
+async function onAddDeviceToLabel(event) {
+  event.preventDefault();
+  const labelId = Number(els.deviceLabel.value);
+  const deviceId = devicePicker.chosen();
+  if (!labelId) return flashStatus(els.grammarStatus, 'Add a label first');
+  if (deviceId === null) return flashStatus(els.grammarStatus, 'Choose a device from the list');
+  const label = state.nodesById[GRAMMAR].get(labelId);
+  if (label.children.some((child) => child.kind === 'device' && child.id === deviceId)) {
+    return flashStatus(els.grammarStatus, `Already under "${stripInline(label.name)}"`);
+  }
+  openWithAncestors(state, GRAMMAR, labelId); // so the device is seen landing
+  if (await saveChange(GRAMMAR, () => addLabelPlacement(labelId, deviceId))) {
+    devicePicker.clear();
+    els.devicePick.focus(); // the label stays chosen, so the next device goes to the same label, or pick another
+  }
+}
+
+/** A label's Add device button: points the device form at that label and moves to the device box. */
+function aimDeviceFormAt(button) {
+  const { node } = nodeOf(button);
+  els.deviceLabel.value = String(node.id);
+  els.devicePick.focus();
 }
 
 function applyToggles() {
   document.body.classList.toggle('hide-definitions', !state.showDefinitions);
   document.body.classList.toggle('hide-examples', !state.showExamples);
-  document.body.classList.toggle('hide-explanations', !state.showExplanations);
   document.body.classList.toggle('hide-confidence', !state.showConfidence);
   document.body.classList.toggle('hide-table-names', !state.tableNames);
   document.body.classList.toggle('hide-table-definitions', !state.tableDefinitions);
   document.body.classList.toggle('hide-table-examples', !state.tableExamples);
+  document.body.classList.toggle('read-only', !state.editMode);
   document.body.classList.toggle('index-full-on', state.indexFull);
   els.indexFull.setAttribute('aria-pressed', String(state.indexFull));
 }
@@ -132,6 +259,9 @@ function applyToggles() {
 function hasTextSelection() {
   return (window.getSelection()?.toString() ?? '') !== '';
 }
+
+const DOUBLE_CLICK_MS = 250;
+let openTimer = null;
 
 function onListClick(event) {
   if (hasTextSelection()) return; // a drag-select to copy text must not toggle the row
@@ -141,16 +271,17 @@ function onListClick(event) {
     return refresh();
   }
   const revealButton = event.target.closest('.reveal-toggle');
-  if (revealButton) { // reveals or hides this heading's devices without isolating it
-    const heading = revealButton.closest('[data-node-id]');
-    toggleRevealed(state, heading.dataset.hierarchy, Number(heading.dataset.nodeId));
-    return refresh();
+  if (revealButton) { // the same as a click on the heading, without the wait
+    clearTimeout(openTimer);
+    return toggleHeading(revealButton.closest('[data-node-id]'));
   }
   const removeButton = event.target.closest('.placement-remove');
   if (removeButton) {
     const deviceId = Number(removeButton.closest('[data-device-id]').dataset.deviceId);
-    return void saveTopical(() => removePlacement(topicalNode(removeButton).id, deviceId));
+    const { hierarchy, node } = nodeOf(removeButton);
+    return void saveChange(hierarchy, () => PLACING[hierarchy].remove(node.id, deviceId));
   }
+  if (event.target.closest('.label-add')) return aimDeviceFormAt(event.target);
   if (event.target.closest('.type-rename')) return renameFromRow(event.target);
   if (event.target.closest('.type-delete')) return deleteFromRow(event.target);
   const headingRow = event.target.closest('.heading-row');
@@ -160,8 +291,11 @@ function onListClick(event) {
       setSortOrder(state, node.dataset.group);
       return refresh();
     }
-    setActiveView(state, subtreeView(node.dataset.hierarchy, node.dataset.nodeId));
-    return refresh();
+    if (!headingRow.querySelector('.reveal-toggle')) return; // nothing beneath it to show, or Indent is off, or a search or an isolated view lists everything
+    if (event.detail === 0) return toggleHeading(node); // the keyboard has no double click to wait for
+    clearTimeout(openTimer); // a mouse click waits a moment, so the double click that isolates the heading does not first open or close it
+    openTimer = setTimeout(() => toggleHeading(node), DOUBLE_CLICK_MS);
+    return;
   }
   const row = event.target.closest('.device-row');
   if (!row) return;
@@ -171,19 +305,34 @@ function onListClick(event) {
   row.setAttribute('aria-expanded', String(expanded));
 }
 
-function onListDoubleClick(event) {
-  const item = event.target.closest('[data-device-id]');
-  if (!item) return;
-  setActiveView(state, deviceView(item.dataset.deviceId));
+/** A click on a label or Type opens it (its sub-labels and devices show) or closes it (nothing beneath it shows). */
+function toggleHeading(heading) {
+  toggleOpened(state, heading.dataset.hierarchy, Number(heading.dataset.nodeId));
   refresh();
 }
 
-// Enter opens like a click; Shift+Enter isolates like a double click, so the keyboard reaches both.
+/** Shows `view` on its own; if it is already the whole screen, goes back to the full view. */
+function isolateOrReturn(view) {
+  setActiveView(state, state.activeView === view ? FULL_VIEW : view);
+  refresh();
+}
+
+/** A double click on a label, Type or device shows just that one on screen; a double click on it again returns to the full view. */
+function onListDoubleClick(event) {
+  clearTimeout(openTimer); // the double click replaces the opening or closing its first click began
+  if (event.target.closest('button')) return;
+  const item = event.target.closest('[data-device-id]');
+  if (item) return isolateOrReturn(deviceView(item.dataset.deviceId));
+  const heading = event.target.closest('.heading-row')?.closest('[data-node-id]');
+  if (heading) isolateOrReturn(subtreeView(heading.dataset.hierarchy, heading.dataset.nodeId));
+}
+
+// Enter acts like a click; Shift+Enter acts like a double click (a label or device shows alone, or goes back to the full view), so the keyboard reaches both.
 function onListKeydown(event) {
   if (event.key !== 'Enter' && event.key !== ' ') return;
   if (!event.target.matches('.heading-row, .device-row')) return;
   event.preventDefault();
-  if (event.shiftKey && event.target.matches('.device-row')) return onListDoubleClick(event);
+  if (event.shiftKey) return onListDoubleClick(event);
   onListClick(event);
 }
 
@@ -215,12 +364,18 @@ function bindControls() {
   els.list.addEventListener('click', onListClick);
   els.list.addEventListener('dblclick', onListDoubleClick);
   els.list.addEventListener('keydown', onListKeydown);
-  bindDragAndDrop(els.list, onTopicalDrop);
+  bindDragAndDrop(els.list, onEditableDrop);
   els.typeForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const name = els.typeName.value.trim();
-    if (name && await saveTopical(() => createType(name))) els.typeName.value = '';
+    if (!name) return;
+    const parentId = els.typeParent.value === '' ? null : Number(els.typeParent.value);
+    if (parentId !== null) openWithAncestors(state, TOPICAL, parentId); // so the new sub-Type is seen
+    if (await saveChange(TOPICAL, () => createType(name, parentId))) els.typeName.value = '';
   });
+  els.labelForm.addEventListener('submit', onAddLabel);
+  els.deviceForm.addEventListener('submit', onAddDeviceToLabel);
+  devicePicker = bindDevicePicker({ input: els.devicePick, list: els.devicePickList, getDevices: () => state.devices.values(), isFuzzy: () => state.fuzzy });
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');
     if (!button) return;
@@ -233,9 +388,9 @@ function bindControls() {
   els.defaultSort.addEventListener('change', () => saveDefaultSort(storage, els.defaultSort.value));
   els.search.addEventListener('input', () => { state.query = els.search.value; refresh(); });
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
+  els.editMode.addEventListener('change', () => { state.editMode = els.editMode.checked; applyToggles(); saveToggles(storage, state); });
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
   els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
-  els.showExplanations.addEventListener('change', () => { state.showExplanations = els.showExplanations.checked; applyToggles(); saveToggles(storage, state); });
   // Like the group buttons, pressing Compare again leaves it for the everything-search state.
   els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
   els.indexOrders.addEventListener('click', (event) => {
@@ -269,12 +424,12 @@ async function start() {
   Object.assign(state, loadToggles(storage));
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;
-  els.showExplanations.checked = state.showExplanations;
   els.showConfidence.checked = state.showConfidence;
   els.tableNames.checked = state.tableNames;
   els.tableDefinitions.checked = state.tableDefinitions;
   els.tableExamples.checked = state.tableExamples;
   els.reveal.checked = state.reveal;
+  els.editMode.checked = state.editMode;
   const opening = loadDefaultSort(storage, OPENING_CHOICES);
   els.defaultSort.value = opening;
   if (opening !== NO_DEFAULT) setSortOrder(state, opening);

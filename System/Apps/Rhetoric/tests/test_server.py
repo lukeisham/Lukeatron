@@ -90,6 +90,15 @@ class ServerTest(unittest.TestCase):
         with sqlite3.connect(self.db_path) as conn:
             return [row[0] for row in conn.execute("SELECT name FROM topical_types ORDER BY id")]
 
+    def test_a_topical_type_can_be_created_under_a_parent_to_four_levels(self):
+        fetch(self.topical_url(), "POST", {"name": "L1"})
+        for parent, name in ((1, "L2"), (2, "L3"), (3, "L4")):
+            self.assertEqual(fetch(self.topical_url(), "POST", {"name": name, "parent_id": parent})[0], 200)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L5", "parent_id": 4})[0], 400)  # a fifth level
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "X", "parent_id": 99})[0], 404)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L2", "parent_id": 1})[0], 409)  # sibling clash
+        self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 409)  # it still has a sub-Type
+
     def test_permitted_topical_writes_pass_and_return_the_fresh_tree(self):
         status, body = fetch(self.topical_url(), "POST", {"name": "  Irony "})
         self.assertEqual(status, 200)
@@ -147,6 +156,45 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(fetch(self.topical_url("/99"), "DELETE")[0], 404)
         self.assertEqual(fetch(self.topical_url("/1/devices/99"), "PUT")[0], 404)
         self.assertEqual(fetch(self.topical_url("/abc"), "DELETE")[0], 404)
+
+    # ---- The Grammar write routes share the gate and the answer shape. ----
+
+    def grammar_url(self, suffix: str = "") -> str:
+        return self.base + "/api/grammar/labels" + suffix
+
+    def test_grammar_writes_pass_and_return_the_fresh_tree(self):
+        status, body = fetch(self.grammar_url(), "POST", {"name": " Clause ", "definition": "a group of words"})
+        self.assertEqual(status, 200)
+        self.assertEqual([(n["name"], n["definition"]) for n in json.loads(body)["grammar"]], [("Clause", "a group of words")])
+        fetch(self.grammar_url(), "POST", {"name": "Relative", "definition": "d", "parent_id": 1})
+        self.assertEqual(fetch(self.grammar_url("/1/devices/2"), "PUT")[0], 200)
+        _, body = fetch(self.grammar_url("/2/devices/2"), "PUT", {"index": 0})
+        clause = json.loads(body)["grammar"][0]
+        self.assertEqual([c["kind"] for c in clause["children"]], ["node", "device"])
+        self.assertEqual(clause["children"][0]["children"], [{"kind": "device", "id": 2}])
+        self.assertEqual(fetch(self.grammar_url("/1"), "PUT", {"name": "Clauses", "definition": "d"})[0], 200)
+        self.assertEqual(fetch(self.grammar_url("/1/position"), "PUT", {"index": 0})[0], 200)
+        self.assertEqual(fetch(self.grammar_url("/2/devices/2"), "DELETE")[0], 200)
+        self.assertEqual(fetch(self.grammar_url("/2"), "DELETE")[0], 200)
+        self.assertEqual(fetch(self.grammar_url("/1"), "DELETE")[0], 200)
+
+    def test_grammar_refusals_and_bad_bodies(self):
+        fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
+        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "clause", "definition": "d"})[0], 409)
+        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "X", "definition": "d", "parent_id": 99})[0], 404)
+        self.assertEqual(fetch(self.grammar_url("/99"), "DELETE")[0], 404)
+        for body in ({"name": "X"}, {"name": "X", "definition": ""}, {"name": "X", "definition": "x" * 301},
+                     {"name": "X", "definition": "d", "parent_id": "1"}, {"name": "X", "definition": "d", "parent_id": 0},
+                     {"definition": "d"}):
+            status, raw = fetch(self.grammar_url(), "POST", body)
+            self.assertEqual((status, json.loads(raw)), (400, {"error": "bad_request"}), body)
+        self.assertEqual(fetch(self.grammar_url("/1"), "PUT", {"name": "X"})[0], 400)
+
+    def test_a_grammar_write_from_another_origin_is_forbidden_and_other_grammar_paths_404(self):
+        for headers in ({"Origin": "https://evil.example"}, {"Host": "evil.example"}):
+            self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "X", "definition": "d"}, headers)[0], 403, headers)
+        self.assertEqual(fetch(self.base + "/api/grammar/other", "POST", {"name": "X"})[0], 404)
+        self.assertEqual(fetch(self.base + "/api/items")[0], 200)
 
     def test_path_outside_app_dir_forbidden_and_unknown_404(self):
         self.assertEqual(fetch(self.base + "/%2e%2e/schema.sql")[0], 403)

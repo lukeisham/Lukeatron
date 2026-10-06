@@ -49,6 +49,11 @@ test('the short source and the heading are filed by the author, whoever the sour
   assert.equal(sourceHeading({ source: 'x', author: 'Richard Doll and A. Bradford Hill' }), 'Doll, Richard and A. Bradford Hill');
   assert.equal(sourceHeading({ source: 'x', author: 'Alfred, Lord Tennyson' }), 'Tennyson, Alfred, Lord');
   assert.equal(sourceHeading({ source: 'x', author: 'T. S. Eliot' }), 'Eliot, T. S.');
+  // a generational suffix stays with the name, so King files under King, not under "Jr."
+  assert.equal(sourceHeading({ source: 'x', author: 'Martin Luther King Jr.' }), 'King, Martin Luther, Jr.');
+  assert.equal(sourceHeading({ source: 'x', author: 'Martin Luther King, Jr.' }), 'King, Martin Luther, Jr.');
+  assert.equal(sourceHeading({ source: 'x', author: 'Sammy Davis III' }), 'Davis, Sammy, III');
+  assert.equal(sourceShort({ source: 'King, "Letter from Birmingham Jail", 16 April 1963', author: 'Martin Luther King Jr.' }), 'Martin Luther King Jr.');
 });
 
 test('a long short source is cut with an ellipsis so the first line keeps its room', () => {

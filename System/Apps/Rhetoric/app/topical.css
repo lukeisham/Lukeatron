@@ -27,6 +27,14 @@
 }
 .type-field input:focus { border-bottom-color: var(--color-ink-soft); }
 
+/* Read-only mode (Display > Edit mode off): the add forms, the row tools and the grab cursor go; reading and clicking are untouched. */
+body.read-only .type-form,
+body.read-only .grammar-bar,
+body.read-only .type-actions,
+body.read-only .placement-remove { display: none; }
+body.read-only .device[draggable="true"] .device-row,
+body.read-only .heading-row[draggable="true"] { cursor: pointer; }
+
 /* A Type heading's tools sit before the reveal button; the first of them takes the free space. */
 .type-actions {
   display: inline-flex;

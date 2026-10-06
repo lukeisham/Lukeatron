@@ -1,6 +1,6 @@
 /* ==========================================================================
    print.css — prints exactly what is on screen: the current view only, without
-   the toolbar, the Home link, the Index and Compare control bars, the jump links,
+   the toolbar, the Home link, the Index, Compare and Grammar control bars, the jump links,
    or the AI-confidence badges. Tokens: --space-*, --color-ink.
    ========================================================================== */
 @media print {
@@ -9,6 +9,7 @@
   .workspace-bar,
   .index-bar,
   .compare-bar,
+  .grammar-bar,
   .contents,
   .masthead-subrule,
   .confidence-badge,

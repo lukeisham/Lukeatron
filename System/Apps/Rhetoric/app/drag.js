@@ -3,10 +3,14 @@
  * rebinding. render.js marks what can move (`draggable`: device rows and a real Type's heading
  * row) and what can receive (`data-droppable`: real Types); nothing else in the list reacts.
  *
+ * It serves both editable groups (Topical's Types, Grammar's labels): a drop is reported with the group it
+ * happened in (`hierarchy`), and a Type or label can only be dropped on a sibling (same `data-parent-id`,
+ * which only Grammar labels carry), never across groups.
+ *
  * What a drop means is reported, not decided here (main.js decides, with the data):
- *   a device on a Type heading or its empty space  -> { overDevice: null, side: null }  (put it last)
- *   a device on another device row in that Type    -> { overDevice, side }              (put it there)
- *   a Type on another Type                         -> { overDevice: null, side }        (reorder)
+ *   a device on a Type or label heading or its empty space -> { overDevice: null, side: null }  (put it last)
+ *   a device on another device row in that Type or label   -> { overDevice, side }              (put it there)
+ *   a Type or label on a sibling                           -> { overDevice: null, side }        (reorder)
  * `side` is 'before' or 'after' the row under the pointer, by which half of it the pointer is in.
  */
 
@@ -19,7 +23,7 @@ function sideOf(event, element) {
   return event.clientY < box.top + box.height / 2 ? 'before' : 'after';
 }
 
-/** @param {(drop: {kind: 'device' | 'type', id: number, overType: number, overDevice: number | null, side: string | null}) => void} onDrop */
+/** @param {(drop: {kind: 'device' | 'type', hierarchy: string, id: number, overType: number, overDevice: number | null, side: string | null}) => void} onDrop */
 export function bindDragAndDrop(list, onDrop) {
   let dragged = null; // what is in flight; null for anything that did not start in the list (e.g. selected text)
   let hovered = null; // { element, className }
@@ -40,9 +44,10 @@ export function bindDragAndDrop(list, onDrop) {
   function landing(event) {
     const type = event.target.closest?.('[data-droppable]');
     if (!type || !dragged) return null;
+    if (type.dataset.hierarchy !== dragged.hierarchy) return null;
     const overType = Number(type.dataset.nodeId);
     if (dragged.kind === 'type') {
-      if (dragged.id === overType) return null;
+      if (dragged.id === overType || type.dataset.parentId !== dragged.parentId) return null;
       const side = sideOf(event, type);
       return { element: type, className: SIDE_CLASS[side], overType, overDevice: null, side };
     }
@@ -55,12 +60,14 @@ export function bindDragAndDrop(list, onDrop) {
   }
 
   list.addEventListener('dragstart', (event) => {
+    if (list.ownerDocument?.body?.classList.contains('read-only')) return event.preventDefault(); // read-only mode: nothing moves
     const device = event.target.closest?.('[data-device-id][draggable="true"]');
     const handle = device ? null : event.target.closest?.('.heading-row[draggable="true"]');
     if (!device && !handle) return;
+    const heading = handle?.closest('[data-node-id]');
     dragged = device
-      ? { kind: 'device', id: Number(device.dataset.deviceId) }
-      : { kind: 'type', id: Number(handle.closest('[data-node-id]').dataset.nodeId) };
+      ? { kind: 'device', hierarchy: device.closest('[data-hierarchy]').dataset.hierarchy, id: Number(device.dataset.deviceId) }
+      : { kind: 'type', hierarchy: heading.dataset.hierarchy, parentId: heading.dataset.parentId, id: Number(heading.dataset.nodeId) };
     event.dataTransfer.setData('text/plain', String(dragged.id)); // Firefox starts no drag without data
     event.dataTransfer.effectAllowed = dragged.kind === 'device' ? 'copy' : 'move';
     (device ?? handle).classList.add(DRAGGING_CLASS);
@@ -86,7 +93,7 @@ export function bindDragAndDrop(list, onDrop) {
 
   list.addEventListener('drop', (event) => {
     const target = landing(event);
-    const drop = target && { ...dragged, overType: target.overType, overDevice: target.overDevice, side: target.side };
+    const drop = target && { kind: dragged.kind, hierarchy: dragged.hierarchy, id: dragged.id, overType: target.overType, overDevice: target.overDevice, side: target.side };
     clearHover();
     if (!drop) return;
     event.preventDefault();

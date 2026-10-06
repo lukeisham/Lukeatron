@@ -17,23 +17,16 @@
 -- `topical_types` / `topical_placements` hold Luke's own Topical arrangement. Unlike every other
 -- table they are written by server.py (granted exception, app-decisions.md); the seed pipeline
 -- never touches them, so rebuilding the database from scratch discards them.
--- `grammar_labels` is the grammatical-term tree (up to three levels deep), written only by
--- seed/load_grammar.py. It is its own table, not a fourth `nodes` hierarchy, because that table's
--- CHECK cannot be widened in place. The tree and the rules for a label are in seed/grammar-label-schema.md.
---
--- GRAMMAR SLOTS. Every grammar-bearing device carries two grammar slots, each with its own labels
--- and its own example. They answer two different questions about the device:
---   Grammar function  what grammar DOES the work: the grammar labels a writer uses to achieve this
---                     device's function (how it produces its effect on the reader).
---   Grammar form      what grammar SHOWS the device: the grammar labels that represent it, that is,
---                     its grammatical shape on the page.
--- A slot may hold several labels (one `device_labels` row each, tagged `slot`). Each slot's example
--- is a short quotation that carries *italic* key parts, with each term's definition in [brackets].
--- A slot with labels must have an example and the reverse; a slot may be left empty (no labels, NULL
--- example) when the device has nothing to say there. A device is grammar-bearing when it has a
--- `grammar_explanations` row, and at least one slot must be filled.
+-- `grammar_labels` / `grammar_placements` hold Luke's own Grammar arrangement: grammatical-term
+-- labels in a tree up to four levels deep (each with an explanation, `definition`), and the devices
+-- filed under them (a device may sit under any number of labels, at any level). Like the Topical
+-- tables they are written by server.py (granted exception, app-decisions.md); the seed pipeline never
+-- touches them, so rebuilding the database from scratch discards them. `position` orders a label among
+-- its siblings, and a placement's `position` orders a device within its label.
 -- Build a fresh database, or add the topical and grammar tables to an existing one: sqlite3 rhetoric.db < schema.sql
--- (an older database whose grammar tables lack the slots is brought up to date by seed/add_grammar_slots.py).
+-- (an older database whose topical_types lacks `parent_id` is rebuilt by seed/add_topical_nesting.py).
+-- (an older database whose grammar_labels lacks `position`, or that still has the retired two-slot tables,
+-- is brought up to date by seed/add_grammar_placements.py).
 
 CREATE TABLE IF NOT EXISTS nodes (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -81,13 +74,16 @@ CREATE TABLE IF NOT EXISTS examples (
                              OR quote_date GLOB '-[0-9][0-9][0-9][0-9]')
 );
 
--- A Topical Type label. Type names are unique ignoring case; `position` is the display order
--- (ties fall back to id; gaps are fine, topical.py renumbers on a move).
+-- A Topical Type label, in a tree up to four levels deep (`parent_id` is NULL for a top-level Type).
+-- A Type's name is unique among its siblings, ignoring case, by the index below. `position` is the
+-- display order among siblings (ties fall back to id; gaps are fine, topical.py renumbers on a move).
 CREATE TABLE IF NOT EXISTS topical_types (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    name      TEXT NOT NULL UNIQUE COLLATE NOCASE,
+    parent_id INTEGER REFERENCES topical_types(id),
+    name      TEXT NOT NULL,
     position  INTEGER NOT NULL DEFAULT 0
 );
+CREATE UNIQUE INDEX IF NOT EXISTS idx_topical_types_sibling_name ON topical_types(COALESCE(parent_id, 0), name COLLATE NOCASE);
 
 -- A device may sit under several Types; deleting a Type deletes its placements, never the device.
 -- `position` orders the devices within one Type.
@@ -141,25 +137,16 @@ CREATE TABLE IF NOT EXISTS grammar_labels (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id   INTEGER REFERENCES grammar_labels(id),
     name        TEXT NOT NULL,
-    definition  TEXT NOT NULL
+    definition  TEXT NOT NULL,
+    position    INTEGER NOT NULL DEFAULT 0
 );
 
--- The labels in a device's two grammar slots: `slot` says which one ('function' or 'form').
--- The same label may sit in both slots of one device.
-CREATE TABLE IF NOT EXISTS device_labels (
-    device_id  INTEGER NOT NULL REFERENCES devices(id),
-    slot       TEXT NOT NULL CHECK (slot IN ('function', 'form')),
-    label_id   INTEGER NOT NULL REFERENCES grammar_labels(id),
-    PRIMARY KEY (device_id, slot, label_id)
-);
-
--- One row per grammar-bearing device: a one-sentence `summary`, then the Grammar function example
--- and the Grammar form example (NULL when that slot is empty). See GRAMMAR SLOTS above.
-CREATE TABLE IF NOT EXISTS grammar_explanations (
-    device_id         INTEGER PRIMARY KEY REFERENCES devices(id),
-    summary           TEXT NOT NULL,
-    function_example  TEXT,
-    form_example      TEXT
+-- A device filed under a label; deleting the label (or the device) removes its placements.
+CREATE TABLE IF NOT EXISTS grammar_placements (
+    label_id   INTEGER NOT NULL REFERENCES grammar_labels(id) ON DELETE CASCADE,
+    device_id  INTEGER NOT NULL REFERENCES devices(id) ON DELETE CASCADE,
+    position   INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (label_id, device_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_nodes_parent_id          ON nodes(parent_id);
@@ -173,7 +160,8 @@ CREATE INDEX IF NOT EXISTS idx_devices_topical_rank     ON devices(topical_rank)
 CREATE INDEX IF NOT EXISTS idx_devices_flipside_of      ON devices(flipside_of);
 CREATE INDEX IF NOT EXISTS idx_examples_device_id       ON examples(device_id);
 CREATE INDEX IF NOT EXISTS idx_topical_placements_device ON topical_placements(device_id);
-CREATE INDEX IF NOT EXISTS idx_topical_types_position ON topical_types(position);
+CREATE INDEX IF NOT EXISTS idx_topical_types_parent ON topical_types(parent_id, position);
 CREATE INDEX IF NOT EXISTS idx_topical_placements_order ON topical_placements(type_id, position);
 CREATE INDEX IF NOT EXISTS idx_grammar_labels_parent    ON grammar_labels(parent_id);
-CREATE INDEX IF NOT EXISTS idx_device_labels_label      ON device_labels(label_id);
+CREATE INDEX IF NOT EXISTS idx_grammar_placements_device ON grammar_placements(device_id);
+CREATE INDEX IF NOT EXISTS idx_grammar_placements_order  ON grammar_placements(label_id, position);

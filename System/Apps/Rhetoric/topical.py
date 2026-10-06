@@ -1,7 +1,10 @@
 """Topical Types — Luke's own labels for the Topical grouping, created and filled from the app.
-The only module outside the seed pipeline that writes rhetoric.db, and it writes only the two
+The only module outside the seed pipeline that writes rhetoric.db (with grammar.py), and it writes only the two
 topical_* tables (a granted exception, app-decisions.md). server.py routes to it; items.py reads
-the tree through `topical_tree`. Routing holds no SQL (API-1)."""
+the tree through `topical_tree`. Routing holds no SQL (API-1).
+
+Types nest at most four levels deep (a top-level Type, then three more below it), as Grammar's labels do.
+A device may be filed under any number of Types, at any level."""
 
 from __future__ import annotations
 
@@ -15,6 +18,7 @@ from typing import Any
 UNSORTED_ID = 0
 UNSORTED_NAME = "Unsorted"
 UNSORTED_DEFINITION = "not yet placed under a Type"
+MAX_DEPTH = 4  # levels of Types; mirrors MAX_LABEL_DEPTH in app/state.js and grammar.MAX_DEPTH
 
 
 class TopicalError(Exception):
@@ -33,18 +37,24 @@ def connect_writable(db_path: Path) -> sqlite3.Connection:
 
 
 def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> list[dict[str, Any]]:
-    """Roots in the same shape as the other trees: one node per Type in Luke's order, each with its
-    devices in Luke's order, then a derived Unsorted node (devices in `ordered_device_ids` order)
-    when any device is unplaced."""
-    types = conn.execute("SELECT id, name FROM topical_types ORDER BY position, id").fetchall()
-    placed: dict[int, list[int]] = {type_id: [] for type_id, _ in types}
+    """Roots in the same shape as the other trees: one node per top-level Type in Luke's order, each with its
+    sub-Types (in Luke's order) first, then its devices (in Luke's order), then a derived Unsorted node
+    (devices in `ordered_device_ids` order) when any device is unplaced under any Type."""
+    built: dict[int, dict[str, Any]] = {}
+    parents: list[tuple[int, int | None]] = []
+    for type_id, parent_id, name in conn.execute("SELECT id, parent_id, name FROM topical_types ORDER BY position, id"):
+        built[type_id] = _node(type_id, name, "", [])
+        parents.append((type_id, parent_id))
+    roots = []
+    for type_id, parent_id in parents:
+        (built[parent_id]["children"] if parent_id in built else roots).append(built[type_id])
+    placed_anywhere: set[int] = set()
     for type_id, device_id in conn.execute(
         "SELECT type_id, device_id FROM topical_placements ORDER BY type_id, position, device_id"
     ):
-        placed[type_id].append(device_id)
+        built[type_id]["children"].append({"kind": "device", "id": device_id})
+        placed_anywhere.add(device_id)
 
-    roots = [_node(type_id, name, "", placed[type_id]) for type_id, name in types]
-    placed_anywhere = {device_id for devices in placed.values() for device_id in devices}
     unsorted = [d for d in ordered_device_ids if d not in placed_anywhere]
     if unsorted:
         roots.append(_node(UNSORTED_ID, UNSORTED_NAME, UNSORTED_DEFINITION, unsorted))
@@ -58,41 +68,68 @@ def _node(node_id: int, name: str, definition: str, device_ids: list[int]) -> di
     }
 
 
-def create_type(db_path: Path, name: str) -> None:
-    """The new Type goes last."""
+def _depth(conn: sqlite3.Connection, type_id: int | None) -> int:
+    """Levels from the top down to and including this Type; 0 for no Type (the top of the tree)."""
+    depth = 0
+    while type_id is not None:
+        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
+        if row is None:
+            raise TopicalError("not_found")
+        depth += 1
+        type_id = row[0]
+    return depth
+
+
+def _taken(conn: sqlite3.Connection, parent_id: int | None, name: str, except_id: int | None = None) -> bool:
+    """Whether a sibling already has this name (case-blind)."""
+    return conn.execute(
+        "SELECT 1 FROM topical_types WHERE parent_id IS ? AND lower(name) = lower(?) AND id IS NOT ?",
+        (parent_id, name, except_id),
+    ).fetchone() is not None
+
+
+def create_type(db_path: Path, name: str, parent_id: int | None = None) -> None:
+    """The new Type goes last among its siblings, under `parent_id` or at the top."""
     with closing(connect_writable(db_path)) as conn, conn:
-        try:
-            conn.execute(
-                "INSERT INTO topical_types (name, position) "
-                "VALUES (?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types))",
-                (name,),
-            )
-        except sqlite3.IntegrityError as exc:
-            raise TopicalError("conflict") from exc
+        if _depth(conn, parent_id) >= MAX_DEPTH:
+            raise TopicalError("bad_request")  # a fifth level is refused
+        if _taken(conn, parent_id, name):
+            raise TopicalError("conflict")
+        conn.execute(
+            "INSERT INTO topical_types (parent_id, name, position) VALUES "
+            "(?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types WHERE parent_id IS ?))",
+            (parent_id, name, parent_id),
+        )
 
 
 def rename_type(db_path: Path, type_id: int, name: str) -> None:
     with closing(connect_writable(db_path)) as conn, conn:
-        try:
-            renamed = conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id)).rowcount
-        except sqlite3.IntegrityError as exc:
-            raise TopicalError("conflict") from exc
-        if renamed == 0:
+        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
+        if row is None:
             raise TopicalError("not_found")
+        if _taken(conn, row[0], name, except_id=type_id):
+            raise TopicalError("conflict")
+        conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
 
 
 def delete_type(db_path: Path, type_id: int) -> None:
+    """Refused while the Type has sub-Types (they would be lost with it); its device placements go with it."""
     with closing(connect_writable(db_path)) as conn, conn:
-        if conn.execute("DELETE FROM topical_types WHERE id = ?", (type_id,)).rowcount == 0:
+        if conn.execute("SELECT 1 FROM topical_types WHERE id = ?", (type_id,)).fetchone() is None:
             raise TopicalError("not_found")
+        if conn.execute("SELECT 1 FROM topical_types WHERE parent_id = ?", (type_id,)).fetchone() is not None:
+            raise TopicalError("conflict")
+        conn.execute("DELETE FROM topical_types WHERE id = ?", (type_id,))
 
 
 def move_type(db_path: Path, type_id: int, index: int) -> None:
-    """Puts the Type at `index` among the Types (0 = first); an index past the end means last."""
+    """Puts the Type at `index` among its siblings (0 = first); an index past the end means last."""
     with closing(connect_writable(db_path)) as conn, conn:
-        ordered = [row[0] for row in conn.execute("SELECT id FROM topical_types ORDER BY position, id")]
-        if type_id not in ordered:
+        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
+        if row is None:
             raise TopicalError("not_found")
+        ordered = [r[0] for r in conn.execute(
+            "SELECT id FROM topical_types WHERE parent_id IS ? ORDER BY position, id", (row[0],))]
         ordered.remove(type_id)
         ordered.insert(index, type_id)
         conn.executemany("UPDATE topical_types SET position = ? WHERE id = ?",

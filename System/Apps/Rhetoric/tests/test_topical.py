@@ -102,6 +102,63 @@ class TopicalTest(unittest.TestCase):
         self.assertEqual(self.tree()[0]["name"], "New")
         self.assertEqual(device_ids(self.tree()[0]), [1])
 
+    def test_types_nest_four_levels_and_a_fifth_is_refused(self):
+        topical.create_type(self.db_path, "Place")
+        topical.create_type(self.db_path, "Sound", 1)
+        topical.create_type(self.db_path, "Rhythm", 2)
+        topical.create_type(self.db_path, "Meter", 3)
+        node = self.tree()[0]
+        for expected in ("Sound", "Rhythm", "Meter"):
+            [node] = [c for c in node["children"] if c["kind"] == "node"]
+            self.assertEqual(node["name"], expected)
+        with self.assertRaises(topical.TopicalError) as refused:
+            topical.create_type(self.db_path, "Too deep", 4)
+        self.assertEqual(refused.exception.code, "bad_request")
+        with self.assertRaises(topical.TopicalError) as unknown:
+            topical.create_type(self.db_path, "Orphan", 99)
+        self.assertEqual(unknown.exception.code, "not_found")
+
+    def test_a_sub_type_lists_before_its_devices_and_a_device_under_it_is_not_unsorted(self):
+        topical.create_type(self.db_path, "Place")
+        topical.add_placement(self.db_path, 1, 1)
+        topical.create_type(self.db_path, "Sub", 1)
+        topical.add_placement(self.db_path, 2, 2)
+        [place] = self.tree()  # both devices are placed, so there is no Unsorted
+        self.assertEqual([(c["kind"], c["id"]) for c in place["children"]], [("node", 2), ("device", 1)])
+        self.assertEqual(device_ids(place["children"][0]), [2])
+
+    def test_a_sibling_name_is_unique_case_blind_but_free_under_another_parent(self):
+        topical.create_type(self.db_path, "A")
+        topical.create_type(self.db_path, "B")
+        topical.create_type(self.db_path, "Same", 1)
+        with self.assertRaises(topical.TopicalError) as clash:
+            topical.create_type(self.db_path, "SAME", 1)
+        self.assertEqual(clash.exception.code, "conflict")
+        topical.create_type(self.db_path, "Same", 2)  # another parent: a different sibling set
+        with self.assertRaises(topical.TopicalError):
+            topical.rename_type(self.db_path, 2, "a")  # B onto A at the top level
+        topical.rename_type(self.db_path, 3, "SAME")  # its own name is not a clash
+
+    def test_moving_a_type_reorders_its_siblings_only(self):
+        for name in ("A", "B"):
+            topical.create_type(self.db_path, name)
+        for name in ("x", "y", "z"):
+            topical.create_type(self.db_path, name, 1)
+        topical.move_type(self.db_path, 5, 0)  # z first among A's sub-Types
+        [a, b, _] = self.tree()
+        self.assertEqual([c["name"] for c in a["children"]], ["z", "x", "y"])
+        self.assertEqual([n["name"] for n in (a, b)], ["A", "B"])
+
+    def test_a_type_with_sub_types_cannot_be_deleted_until_they_go(self):
+        topical.create_type(self.db_path, "A")
+        topical.create_type(self.db_path, "Sub", 1)
+        with self.assertRaises(topical.TopicalError) as refused:
+            topical.delete_type(self.db_path, 1)
+        self.assertEqual(refused.exception.code, "conflict")
+        topical.delete_type(self.db_path, 2)
+        topical.delete_type(self.db_path, 1)
+        self.assertEqual([n["name"] for n in self.tree()], ["Unsorted"])
+
     def test_refusals_carry_registry_codes(self):
         topical.create_type(self.db_path, "Irony")
         topical.create_type(self.db_path, "Other")

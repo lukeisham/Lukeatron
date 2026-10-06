@@ -1,7 +1,8 @@
 """Thin HTTP routing for Rhetoric: static files from app/, one read-only JSON endpoint, and the
-Topical Type write routes. Data assembly lives in items.py and every write in topical.py; this
-module only parses the request, calls them, and shapes the response (API-1). Writes are limited to
-/api/topical/... (a granted exception to PY-12/API-5, app-decisions.md); every other write verb is refused."""
+Topical Type and Grammar label write routes. Data assembly lives in items.py and every write in
+topical.py or grammar.py; this module only parses the request, calls them, and shapes the response
+(API-1). Writes are limited to /api/topical/... and /api/grammar/... (granted exceptions to
+PY-12/API-5, app-decisions.md); every other write verb is refused."""
 
 from __future__ import annotations
 
@@ -16,6 +17,7 @@ from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 from typing import Any, Callable
 
+import grammar
 import items
 import topical
 
@@ -40,19 +42,39 @@ _MIME_FALLBACK = "application/octet-stream"
 
 MAX_BODY_BYTES = 1024
 MAX_TYPE_NAME_LENGTH = 80
+MAX_DEFINITION_LENGTH = 300
 MAX_INDEX = 100_000
+MAX_ID = 999_999_999
 
-# Every write route: (method, path pattern, data function, body reader). The data function gets
-# the path's ids, then whatever the body reader returns; a reader returns None for a bad body (400).
-# All patterns are dynamic and anchored, so none can shadow another (API-7); ids are capped so a
-# huge number cannot overflow SQLite.
-TOPICAL_ROUTES: list[tuple[str, re.Pattern[str], Callable[..., None], Callable[[BaseHTTPRequestHandler], list[Any] | None]]] = [
-    ("POST", re.compile(r"^/api/topical/types$"), topical.create_type, lambda h: _body_field(h, "name", _as_name)),
-    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.rename_type, lambda h: _body_field(h, "name", _as_name)),
+# Every write route: (method, path pattern, data function, body reader). The
+# data function gets the path's ids, then whatever the body reader returns; a reader returns None for a
+# bad body (400). A change answers with its group's fresh tree (WRITE_FAMILIES). All patterns
+# are dynamic and anchored, so none can shadow another (API-7); ids are capped so a huge number cannot
+# overflow SQLite.
+Route = tuple[str, re.Pattern[str], Callable[..., None], Callable[[BaseHTTPRequestHandler], list[Any] | None]]
+TOPICAL_ROUTES: list[Route] = [
+    ("POST", re.compile(r"^/api/topical/types$"), topical.create_type,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False)])),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.rename_type, lambda h: _body_fields(h, [("name", _as_name, True)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.delete_type, lambda h: []),
-    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type, lambda h: _body_field(h, "index", _as_index)),
-    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.add_placement, lambda h: _body_field(h, "index", _as_index, required=False)),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type, lambda h: _body_fields(h, [("index", _as_index, True)])),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.remove_placement, lambda h: []),
+]
+GRAMMAR_ROUTES: list[Route] = [
+    ("POST", re.compile(r"^/api/grammar/labels$"), grammar.create_label,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True), ("parent_id", _as_id, False)])),
+    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.edit_label,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True)])),
+    ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.delete_label, lambda h: []),
+    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/position$"), grammar.move_label, lambda h: _body_fields(h, [("index", _as_index, True)])),
+    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
+    ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.remove_placement, lambda h: []),
+]
+# Each write family: its URL prefix, its routes, the loader for the tree a change answers with, and the answer's key.
+WRITE_FAMILIES = [
+    ("/api/topical/", TOPICAL_ROUTES, items.load_topical, "topical"),
+    ("/api/grammar/", GRAMMAR_ROUTES, items.load_grammar, "grammar"),
 ]
 
 
@@ -103,37 +125,62 @@ def _as_name(value: Any) -> str | None:
     return value.strip()
 
 
+def _as_definition(value: Any) -> str | None:
+    if not isinstance(value, str) or not 0 < len(value.strip()) <= MAX_DEFINITION_LENGTH:
+        return None
+    return value.strip()
+
+
 def _as_index(value: Any) -> int | None:
     if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= MAX_INDEX:
         return None
     return value
 
 
-def _body_field(
-    handler: BaseHTTPRequestHandler, field: str, convert: Callable[[Any], Any], required: bool = True
+def _as_id(value: Any) -> int | None:
+    if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= MAX_ID:
+        return None
+    return value
+
+
+def _body_fields(
+    handler: BaseHTTPRequestHandler, fields: list[tuple[str, Callable[[Any], Any], bool]]
 ) -> list[Any] | None:
-    """`[converted value of the JSON body's `field`]`, or None when the body is not a small JSON
-    object whose field passes `convert` (API-4). With `required` off, an empty body gives `[None]`."""
+    """The converted value of each `(field, convert, required)` in the JSON body, in order, or None when the
+    body is not a small JSON object whose fields pass (API-4). An optional field that is missing or null gives
+    None in its place; one that is present but fails `convert` is a bad body. With every field optional, an
+    empty body is fine."""
     try:
         length = int(handler.headers.get("Content-Length") or 0)
     except ValueError:
         return None
-    if length == 0 and not required:
-        return [None]
+    if length == 0 and not any(required for _, _, required in fields):
+        return [None] * len(fields)
     try:
         if handler.headers.get_content_type() != "application/json" or not 0 < length <= MAX_BODY_BYTES:
             return None
         body = json.loads(handler.rfile.read(length))
     except (ValueError, UnicodeDecodeError):
         return None
-    value = convert(body.get(field)) if isinstance(body, dict) else None
-    return None if value is None else [value]
+    if not isinstance(body, dict):
+        return None
+    values = []
+    for field, convert, required in fields:
+        raw = body.get(field)
+        if raw is None and not required:
+            values.append(None)
+            continue
+        value = convert(raw)
+        if value is None:
+            return None
+        values.append(value)
+    return values
 
 
-def _apply_topical_change(handler: BaseHTTPRequestHandler, path: str) -> None:
-    """Runs the one change the route names; the response is the fresh Topical tree."""
+def _apply_change(handler: BaseHTTPRequestHandler, path: str, routes: list[Route], load: Callable[..., Any], key: str) -> None:
+    """Runs the one change the route names; the response is the fresh tree for that group."""
     db_path = handler.server.db_path  # type: ignore[attr-defined]
-    for method, pattern, change, read_body in TOPICAL_ROUTES:
+    for method, pattern, change, read_body in routes:
         match = pattern.match(path)
         if method != handler.command or not match:
             continue
@@ -141,19 +188,20 @@ def _apply_topical_change(handler: BaseHTTPRequestHandler, path: str) -> None:
         if body_arguments is None:
             return send_error(handler, "bad_request")
         change(db_path, *(int(group) for group in match.groups()), *body_arguments)
-        return send_json(handler, 200, {"topical": items.load_topical(db_path)})
+        return send_json(handler, 200, {key: load(db_path)})
     send_error(handler, "not_found")
 
 
-def _handle_topical_write(handler: BaseHTTPRequestHandler) -> None:
+def _handle_write(handler: BaseHTTPRequestHandler) -> None:
     path = urllib.parse.urlsplit(handler.path).path
-    if not path.startswith("/api/topical/"):
-        return send_error(handler, "method_not_allowed")  # every write outside Topical stays refused
+    family = next((f for f in WRITE_FAMILIES if path.startswith(f[0])), None)
+    if family is None:
+        return send_error(handler, "method_not_allowed")  # every write outside Topical and Grammar stays refused
     if not _is_local_request(handler):
         return send_error(handler, "forbidden")
     try:
-        _apply_topical_change(handler, path)
-    except topical.TopicalError as exc:
+        _apply_change(handler, path, *family[1:])
+    except (topical.TopicalError, grammar.GrammarError) as exc:
         send_error(handler, exc.code)
     except sqlite3.OperationalError as exc:  # missing/locked/unwritable database
         _log_failure(handler, exc)
@@ -205,7 +253,7 @@ class Handler(BaseHTTPRequestHandler):
     def _refuse_write(self) -> None:
         send_error(self, "method_not_allowed")
 
-    do_POST = do_PUT = do_DELETE = _handle_topical_write  # noqa: N815
+    do_POST = do_PUT = do_DELETE = _handle_write  # noqa: N815
     do_PATCH = _refuse_write  # noqa: N815
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002 — stdlib signature

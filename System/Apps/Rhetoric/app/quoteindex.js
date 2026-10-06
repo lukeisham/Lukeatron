@@ -38,6 +38,10 @@ export function creditedName(source) {
 
 const capitalised = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
+// A generational suffix belongs to the name ("Martin Luther King Jr."), not the surname.
+const NAME_SUFFIX = /^(jr\.?|sr\.?|ii|iii|iv)$/i;
+const hasNameSuffix = (author) => NAME_SUFFIX.test(author.trim().split(/\s+/).at(-1));
+
 // An author written as a body ("Advisory Committee to the Surgeon General", "The Preacher") has no surname to put first.
 const IS_BODY = /\s(to|of)\s|^the\s/i;
 
@@ -54,13 +58,14 @@ export function sourceHeading(quote) {
   const first = author.split(' and ')[0].trim();
   const words = first.split(/\s+/);
   if (words.length === 1) return author;
+  const suffix = hasNameSuffix(first) ? words.pop() : '';
   const given = words.slice(0, -1).join(' ');
-  return `${words.at(-1)}, ${given}${author.slice(first.length)}`;
+  return `${words.at(-1).replace(/,$/, '')}, ${given}${suffix ? `, ${suffix}` : ''}${author.slice(first.length)}`;
 }
 
 /** The short source on an index line: the author's surname (or the credited name), plus the work's italic title when the source line gives one: "Shakespeare, As You Like It". Only the first clause (before a ";") is read for the title: what follows is a gloss or a note, such as "*bread* stands for all food" or a book that merely lists the quote. */
 export function sourceShort(quote) {
-  const name = quote.author ? sourceHeading(quote).split(',')[0] : creditedName(quote.source);
+  const name = quote.author ? (hasNameSuffix(quote.author) ? quote.author : sourceHeading(quote).split(',')[0]) : creditedName(quote.source);
   const title = /\*([^*]+)\*/.exec(quote.source.split(';')[0])?.[1];
   const short = title && !name.includes(title) ? `${name}, ${title}` : name;
   return short.length <= SOURCE_SHORT_MAX ? short : `${short.slice(0, SOURCE_SHORT_MAX - 1).trimEnd()}…`;

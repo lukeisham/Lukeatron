@@ -40,6 +40,7 @@
   font-size: var(--font-size-marker);
 }
 .marker-example { font-size: var(--font-size-marker-small); }
+.marker-hidden { color: #000; font-size: var(--font-size-marker-large); }
 
 .heading-row,
 .device-row {
@@ -54,6 +55,9 @@
 
 .node-name,
 .device-name { font-weight: 700; }
+
+/* In Grammar the labels are grey so the devices filed under them stand out in normal ink. */
+.node[data-hierarchy="grammar"] > .heading-row > .node-name { color: var(--color-ink-soft); }
 
 .node-definition {
   color: var(--color-ink-soft);
@@ -73,13 +77,6 @@
   color: var(--color-ink-soft);
 }
 
-/* The grammar explanation, in the two grammatical groups only: a summary, then each filled slot (Grammar function, Grammar form) as its labels and an example with key parts italic and each term's definition in [brackets]. */
-.device-explanation { padding: 0 0 var(--space-2) var(--space-6); }
-.explanation-summary { margin: 0; color: var(--color-ink-soft); }
-.explanation-example { margin: 0; font-size: var(--font-size-example); }
-.explanation-slot { margin: var(--space-2) 0 0; font-size: var(--font-size-example); }
-.explanation-slot-name { color: var(--color-ink-soft); font-family: var(--font-ui); font-size: var(--font-size-toolbar-small); letter-spacing: var(--letter-spacing-sort); text-transform: uppercase; }
-.explanation-labels { margin-left: var(--space-4); }
 
 .example {
   display: flex;
@@ -132,7 +129,6 @@
 .source { color: var(--color-ink-soft); }
 
 body.hide-definitions .device:not(.expanded) .device-definition,
-body.hide-explanations .device:not(.expanded) .device-explanation,
 body.hide-examples .device:not(.expanded) .examples { display: none; }
 body.hide-confidence .confidence-badge { display: none; }
 

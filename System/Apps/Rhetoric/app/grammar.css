@@ -1,0 +1,57 @@
+/* ==========================================================================
+   grammar.css — Grammar editing: the Add label form (name, explanation, parent) and the
+   Add device form with its type-ahead drop-down. Monochrome like the list body (no accent).
+   A label's own tools reuse topical.css (.type-actions, .type-action, drag feedback).
+   Tokens: --color-ink, --color-ink-soft, --color-rule-body, --color-page, --color-drop-wash,
+   --space-*, --border-hairline, --font-ui, --font-size-toolbar, --shade-raised.
+   ========================================================================== */
+.grammar-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+  font-family: var(--font-ui);
+}
+.grammar-bar[hidden] { display: none; }
+
+.grammar-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.label-explanation input { width: 260px; }
+
+.grammar-form .toolbar-select { max-width: 200px; padding: var(--space-2); font-size: var(--font-size-toolbar); }
+
+/* The device picker: the text box with its list hanging beneath it. */
+.picker { position: relative; }
+.picker .type-field input { width: 220px; }
+
+.picker-list {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  min-width: 100%;
+  max-height: 260px;
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow-y: auto;
+  list-style: none;
+  border: var(--border-hairline) solid var(--color-rule-body);
+  background: var(--color-page);
+  box-shadow: var(--shade-raised);
+}
+.picker-list[hidden] { display: none; }
+
+.picker-option {
+  padding: var(--space-2) var(--space-5);
+  color: var(--color-ink);
+  font-size: var(--font-size-toolbar);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.picker-option[aria-selected="true"],
+.picker-option:hover { background: var(--color-drop-wash); }

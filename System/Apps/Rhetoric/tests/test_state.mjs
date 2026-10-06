@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  COMPARATORS, createState, deviceView, setActiveView, setSortOrder, sortedDevices, subtreeView, toggleExpanded, toggleRevealed,
+  COMPARATORS, createState, deviceView, setActiveView, setSortOrder, sortedDevices, subtreeView, toggleExpanded, toggleOpened, openWithAncestors,
 } from '../app/state.js';
 import { currentView, viewToText } from '../app/view.js';
 import { payload, plainState } from './fixture.mjs';
@@ -140,34 +140,53 @@ test('no group selected and no query shows a hint, not the whole database', () =
 
 // ---- Reveal mode --------------------------------------------------------------
 
-test('reveal mode (the default) shows groups and types only, each with a reveal button', () => {
+test('open and closed (the default): a heading with sub-labels starts open, the Types start closed, each with a button', () => {
   const state = createState(payload());
   setSortOrder(state, 'form');
   const view = currentView(state);
   const root = view.items[0];
   const type = root.children[0];
   assert.equal(type.children.length, 0);
-  assert.equal(type.revealable, true);
+  assert.equal(type.foldable, true);
+  assert.equal(root.open, true);
+  assert.equal(type.open, false);
   assert.equal(type.deviceCount, 2);
   assert.equal(root.deviceCount, 2);
   assert.equal(viewToText(state, view).includes('Metaphor'), false);
 });
 
-test('revealing a heading shows the devices beneath it; hiding it again takes them away', () => {
+test('opening a heading shows the devices beneath it; closing it again takes them away', () => {
   const state = createState(payload());
   setSortOrder(state, 'form');
   const typeId = currentView(state).items[0].children[0].id;
-  assert.equal(toggleRevealed(state, 'form', typeId), true);
+  assert.equal(toggleOpened(state, 'form', typeId), true);
   assert.deepEqual(names(currentView(state).items[0].children[0].children), ['Metaphor', 'Anaphora']);
-  assert.equal(toggleRevealed(state, 'form', typeId), false);
+  assert.equal(toggleOpened(state, 'form', typeId), false);
   assert.equal(currentView(state).items[0].children[0].children.length, 0);
 });
 
-test('revealing a root reveals every device under its types', () => {
+test('closing a root hides its sub-labels and devices; opening it shows the sub-labels again, still closed', () => {
   const state = createState(payload());
   setSortOrder(state, 'form');
-  toggleRevealed(state, 'form', currentView(state).items[0].id);
-  assert.equal(currentView(state).items[0].children[0].children.length, 2);
+  const rootId = currentView(state).items[0].id;
+  assert.equal(toggleOpened(state, 'form', rootId), false);
+  assert.equal(currentView(state).items[0].children.length, 0);
+  assert.equal(toggleOpened(state, 'form', rootId), true);
+  const type = currentView(state).items[0].children[0];
+  assert.equal(type.children.length, 0);
+  assert.equal(type.open, false);
+});
+
+test('openWithAncestors opens the heading and every heading above it, and leaves an unknown one alone', () => {
+  const state = createState(payload());
+  setSortOrder(state, 'form');
+  const view = currentView(state);
+  const [rootId, typeId] = [view.items[0].id, view.items[0].children[0].id];
+  state.opened.clear();
+  openWithAncestors(state, 'form', typeId);
+  assert.deepEqual([...state.opened].sort(), [`form:${rootId}`, `form:${typeId}`].sort());
+  openWithAncestors(state, 'form', 99999);
+  assert.equal(state.opened.size, 2);
 });
 
 test('reveal off lists every device with no reveal buttons', () => {
@@ -176,7 +195,7 @@ test('reveal off lists every device with no reveal buttons', () => {
   setSortOrder(state, 'form');
   const type = currentView(state).items[0].children[0];
   assert.equal(type.children.length, 2);
-  assert.equal(type.revealable, false);
+  assert.equal(type.foldable, false);
 });
 
 test('searching lists its matches in full, and an isolated heading shows all beneath it', () => {

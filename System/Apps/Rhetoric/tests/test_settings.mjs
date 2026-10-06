@@ -9,8 +9,8 @@ function fakeStorage(initial = {}) {
 }
 
 const allOff = {
-  showDefinitions: false, showExamples: false, showConfidence: false, showExplanations: false, reveal: false,
-  tableNames: false, tableDefinitions: false, tableExamples: false, indexFull: false,
+  showDefinitions: false, showExamples: false, showConfidence: false, reveal: false,
+  tableNames: false, tableDefinitions: false, tableExamples: false, indexFull: false, editMode: false,
 };
 
 test('the display and table toggles survive a save and a reload', () => {

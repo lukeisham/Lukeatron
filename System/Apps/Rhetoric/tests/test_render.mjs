@@ -95,13 +95,15 @@ test('each device row carries an AI-confidence badge showing its rating', () => 
   assert.deepEqual(badges.map((b) => [b.textContent, b.dataset.rating]), [['AI low', 'low'], ['AI high', 'high']]);
 });
 
-test('a revealable heading gets a reveal button that says how many devices it holds and whether they show', () => {
+test('a heading with something beneath it gets a button that says how many devices it holds and whether it is open', () => {
   const state = createState(payload());
   setSortOrder(state, 'form');
   const buttons = findAll(draw(state), withClass('reveal-toggle'));
-  assert.deepEqual(buttons.map((b) => b.textContent), ['▸ 2', '▸ 2']);
-  assert.equal(buttons[0].attributes['aria-expanded'], 'false');
-  assert.match(buttons[0].attributes['aria-label'], /^Reveal 2 devices in Form/);
+  assert.deepEqual(buttons.map((b) => b.textContent), ['▾ 2', '▸ 2']);
+  assert.equal(buttons[0].attributes['aria-expanded'], 'true');
+  assert.equal(buttons[1].attributes['aria-expanded'], 'false');
+  assert.match(buttons[0].attributes['aria-label'], /^Close Form Root, 2 devices/);
+  assert.match(buttons[1].attributes['aria-label'], /^Open /);
   assert.equal(findAll(draw(state), withClass('device')).length, 0);
 });
 

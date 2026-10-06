@@ -7,8 +7,8 @@
  * so toggling a checkbox or expanding a row never re-renders.
  */
 
-import { parseInline } from './markup.js';
-import { GRAMMAR, GRAMMAR_SLOTS } from './state.js';
+import { parseInline, stripInline } from './markup.js';
+import { GRAMMAR } from './state.js';
 
 function make(doc, tag, className, text) {
   const node = doc.createElement(tag);
@@ -23,8 +23,9 @@ function marker(doc, glyph, extraClass = '') {
   return node;
 }
 
-function exampleText(doc, text) {
-  const wrapper = make(doc, 'span', 'example-text');
+/** A span holding `text` with its `*italic*` pieces drawn as <em>, never as HTML. */
+function inlineSpan(doc, className, text) {
+  const wrapper = make(doc, 'span', className);
   for (const segment of parseInline(text)) {
     wrapper.appendChild(segment.italic
       ? make(doc, 'em', 'latin', segment.text)
@@ -32,6 +33,8 @@ function exampleText(doc, text) {
   }
   return wrapper;
 }
+
+const exampleText = (doc, text) => inlineSpan(doc, 'example-text', text);
 
 const RATING_TITLES = {
   high: 'AI confidence: high — the AI is confident the definition, example and categorisation are accurate',
@@ -54,22 +57,6 @@ function removeButton(doc, device, typeName) {
   return button;
 }
 
-/** A precise summary, then each filled grammar slot (Grammar function, Grammar form): its labels, and an example with its key parts italic and each term's definition in brackets. */
-function explanationBlock(doc, explanation) {
-  const block = make(doc, 'div', 'device-explanation');
-  block.appendChild(make(doc, 'p', 'explanation-summary', explanation.summary));
-  for (const { key, title } of GRAMMAR_SLOTS) {
-    const slot = explanation[key];
-    if (!slot) continue;
-    const heading = make(doc, 'p', 'explanation-slot');
-    heading.append(make(doc, 'span', 'explanation-slot-name', title), make(doc, 'span', 'explanation-labels', slot.labels.join(', ')));
-    const example = make(doc, 'p', 'explanation-example');
-    example.appendChild(exampleText(doc, slot.example));
-    block.append(heading, example);
-  }
-  return block;
-}
-
 function deviceRow(doc, state, entry, mode) {
   const { device } = entry;
   const expanded = mode === 'device' || state.expanded.has(device.id);
@@ -83,12 +70,10 @@ function deviceRow(doc, state, entry, mode) {
   row.setAttribute('aria-expanded', String(expanded));
   row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.label));
   if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
-  if (entry.removeFrom != null) row.appendChild(removeButton(doc, device, entry.removeFrom.name));
+  if (entry.removeFrom != null) row.appendChild(removeButton(doc, device, stripInline(entry.removeFrom.name)));
   item.appendChild(row);
 
   if (device.definition) item.appendChild(make(doc, 'p', 'device-definition', device.definition));
-
-  if (device.explanation && state.sortOrder === GRAMMAR) item.appendChild(explanationBlock(doc, device.explanation));
 
   if (device.examples.length > 0) {
     const examples = make(doc, 'ul', 'examples');
@@ -103,19 +88,23 @@ function deviceRow(doc, state, entry, mode) {
 }
 
 function revealButton(doc, node) {
-  const button = make(doc, 'button', 'reveal-toggle', `${node.revealed ? '▾' : '▸'} ${node.deviceCount}`);
+  const button = make(doc, 'button', 'reveal-toggle', `${node.open ? '▾' : '▸'}${node.deviceCount > 0 ? ` ${node.deviceCount}` : ''}`);
   button.setAttribute('type', 'button');
-  button.setAttribute('aria-expanded', String(node.revealed));
-  button.setAttribute('aria-label', `${node.revealed ? 'Hide' : 'Reveal'} ${node.deviceCount} devices in ${node.name}`);
+  button.setAttribute('aria-expanded', String(node.open));
+  button.setAttribute('aria-label', `${node.open ? 'Close' : 'Open'} ${stripInline(node.name)}${node.deviceCount > 0 ? `, ${node.deviceCount} ${node.deviceCount === 1 ? 'device' : 'devices'}` : ''}`);
   return button;
 }
 
+const TYPE_BUTTONS = [['type-rename', 'Rename'], ['type-delete', 'Delete']];
+// A grammar label adds devices, and its Edit changes the explanation as well as the name.
+const LABEL_BUTTONS = [['label-add', 'Add device'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
+
 function typeActions(doc, node) {
   const actions = make(doc, 'span', 'type-actions');
-  for (const [className, label] of [['type-rename', 'Rename'], ['type-delete', 'Delete']]) {
+  for (const [className, label] of node.hierarchy === GRAMMAR ? LABEL_BUTTONS : TYPE_BUTTONS) {
     const button = make(doc, 'button', `type-action ${className}`, label);
     button.setAttribute('type', 'button');
-    button.setAttribute('aria-label', `${label} ${node.name}`);
+    button.setAttribute('aria-label', `${label} ${stripInline(node.name)}`);
     actions.appendChild(button);
   }
   return actions;
@@ -127,18 +116,21 @@ function nodeRow(doc, state, node, mode, depth) {
   else item.dataset.nodeId = String(node.id);
   item.dataset.hierarchy = node.hierarchy;
   if (node.editable) item.dataset.droppable = 'true';
+  if (node.parentId != null) item.dataset.parentId = String(node.parentId);
 
   const row = make(doc, 'div', 'heading-row');
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
-  row.append(marker(doc, '•'), make(doc, 'span', 'node-name', node.name));
-  if (node.definition) row.appendChild(make(doc, 'span', 'node-definition', node.definition));
+  // A closed heading with something folded away under it shows a bigger black dot, so it reads as having more inside.
+  const dot = marker(doc, '•', node.foldable && !node.open ? 'marker-hidden' : '');
+  row.append(dot, inlineSpan(doc, 'node-name', node.name));
+  if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {
-    row.setAttribute('draggable', 'true'); // the handle for reordering Types
+    row.setAttribute('draggable', 'true'); // the handle for reordering Types and labels
     row.title = 'Drag to reorder';
     row.appendChild(typeActions(doc, node));
   }
-  if (node.revealable) row.appendChild(revealButton(doc, node));
+  if (node.foldable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
 
   if (node.children.length > 0) {

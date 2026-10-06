@@ -123,22 +123,30 @@ test('the no-group search does not cover the Grammar group', () => {
   assert.deepEqual(names, ['category', 'form', 'function']);
 });
 
-// ---- Dragging labels: only among siblings ----------------------------------------------------
+// ---- Dragging labels: beside any label, or inside one, never into itself or what is beneath it ----------------------------------------------------
 
 function element(dataset) {
   const classes = new Set();
-  return { dataset, classes, classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) }, getBoundingClientRect: () => ({ top: 0, height: 100 }) };
+  const self = {
+    dataset, classes, classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) },
+    getBoundingClientRect: () => ({ top: 0, height: 100 }),
+    querySelector: () => self, // its heading row: the same box
+    contains: (node) => node === self,
+  };
+  return self;
 }
 
-function dragLabel(fromDataset) {
+function dragLabel(fromDataset, beneath = []) {
   const handlers = {};
   const drops = [];
   bindDragAndDrop({ addEventListener: (type, handler) => { handlers[type] = handler; }, contains: () => true }, (d) => drops.push(d));
   const own = element(fromDataset);
+  const below = beneath.map((dataset) => element(dataset));
+  own.contains = (node) => node === own || below.includes(node);
   const handle = { ...element({}), closest: () => own };
   handlers.dragstart({ target: { closest: (s) => (s.includes('heading-row') ? handle : null) }, dataTransfer: { setData() {} } });
   const at = (dataset, y) => {
-    const label = element(dataset);
+    const label = [own, ...below].find((node) => node.dataset === dataset) ?? element(dataset);
     const target = { closest: (s) => (s.includes('data-droppable') || s.includes('data-node-id') ? label : null) };
     let accepted = false;
     handlers.dragover({ target, clientY: y, dataTransfer: {}, preventDefault: () => { accepted = true; } });
@@ -148,19 +156,22 @@ function dragLabel(fromDataset) {
   return { at, drops };
 }
 
-test('a label can be dropped beside a sibling, but not onto a label with another parent', () => {
+test('a label can be dropped beside or inside any label of its group, but not into another group', () => {
   const { at, drops } = dragLabel({ nodeId: '1', hierarchy: 'grammar' });
-  assert.equal(at({ nodeId: '2', hierarchy: 'grammar', parentId: '1' }, 10), false); // a sub-label of its own
   assert.equal(at({ nodeId: '3', hierarchy: 'topical' }, 10), false); // another group
-  assert.equal(at({ nodeId: '3', hierarchy: 'grammar' }, 90), true);
-  assert.deepEqual(drops, [{ kind: 'type', hierarchy: 'grammar', id: 1, overType: 3, overDevice: null, side: 'after' }]);
+  assert.equal(at({ nodeId: '3', hierarchy: 'grammar' }, 90), true); // after a top-level label
+  assert.equal(at({ nodeId: '5', hierarchy: 'grammar', parentId: '3' }, 10), true); // before a sub-label: it changes level
+  assert.equal(at({ nodeId: '3', hierarchy: 'grammar' }, 50), true); // inside a label
+  assert.deepEqual(drops.map((d) => [d.overType, d.side]), [[3, 'after'], [5, 'before'], [3, 'inside']]);
 });
 
-test('a sub-label can be dropped only beside a label under the same parent', () => {
-  const { at, drops } = dragLabel({ nodeId: '2', hierarchy: 'grammar', parentId: '1' });
-  assert.equal(at({ nodeId: '3', hierarchy: 'grammar' }, 10), false); // a top-level label
-  assert.equal(at({ nodeId: '4', hierarchy: 'grammar', parentId: '1' }, 10), true);
-  assert.equal(drops.length, 1);
+test('a label cannot be dropped onto itself or onto a label beneath it', () => {
+  const sub = { nodeId: '2', hierarchy: 'grammar', parentId: '1' };
+  const itself = { nodeId: '1', hierarchy: 'grammar' };
+  const { at, drops } = dragLabel(itself, [sub]);
+  assert.equal(at(itself, 50), false);
+  assert.equal(at(sub, 50), false);
+  assert.deepEqual(drops, []);
 });
 
 // ---- *Italics* in a label's name and explanation, by the same star rule as examples ----

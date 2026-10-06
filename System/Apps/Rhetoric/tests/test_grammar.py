@@ -74,6 +74,59 @@ class GrammarTest(unittest.TestCase):
         self.assertEqual(names(self.tree()), ["A", "B", "C"])
         self.assertEqual(names(self.tree()[0]["children"]), ["Child"])
 
+    def test_a_label_can_move_to_another_parent_with_what_is_beneath_it(self):
+        for name in ("A", "B"):
+            grammar.create_label(self.db_path, name, "d")
+        grammar.create_label(self.db_path, "Sub", "d", 1)
+        grammar.create_label(self.db_path, "Leaf", "d", 3)
+        grammar.add_placement(self.db_path, 3, 1)
+        grammar.move_label(self.db_path, 3, 0, 2)  # Sub (with Leaf and its device) goes under B
+        a, b = self.tree()
+        self.assertEqual((names(a["children"]), names(b["children"])), ([], ["Sub"]))
+        self.assertEqual(names(b["children"][0]["children"]), ["Leaf"])
+        self.assertEqual(device_ids(b["children"][0]), [1])  # Sub keeps its own device
+        grammar.move_label(self.db_path, 3, 1, 0)  # to the top level, after A
+        self.assertEqual(names(self.tree()), ["A", "Sub", "B"])
+        grammar.move_label(self.db_path, 3, 0)  # no parent given: stays where it is
+        self.assertEqual(names(self.tree()), ["Sub", "A", "B"])
+
+    def test_moving_a_label_closes_the_gap_it_leaves_and_inserts_at_the_index(self):
+        for name in ("A", "B"):
+            grammar.create_label(self.db_path, name, "d")
+        for name in ("x", "y", "z"):
+            grammar.create_label(self.db_path, name, "d", 1)
+        grammar.create_label(self.db_path, "p", "d", 2)
+        grammar.move_label(self.db_path, 4, 0, 2)  # y goes first under B
+        a, b = self.tree()
+        self.assertEqual((names(a["children"]), names(b["children"])), (["x", "z"], ["y", "p"]))
+        with sqlite3.connect(self.db_path) as conn:
+            self.assertEqual(conn.execute("SELECT position FROM grammar_labels WHERE parent_id = 1 ORDER BY position").fetchall(), [(0,), (1,)])
+
+    def test_a_move_is_refused_into_itself_past_the_depth_or_onto_a_name(self):
+        grammar.create_label(self.db_path, "A", "d")           # 1
+        grammar.create_label(self.db_path, "B", "d", 1)        # 2
+        grammar.create_label(self.db_path, "C", "d", 2)        # 3
+        grammar.create_label(self.db_path, "D", "d", 3)        # 4  (four levels)
+        grammar.create_label(self.db_path, "Other", "d")       # 5
+        grammar.create_label(self.db_path, "Other2", "d", 5)   # 6
+        cases = [
+            (lambda: grammar.move_label(self.db_path, 1, 0, 1), "bad_request"),   # under itself
+            (lambda: grammar.move_label(self.db_path, 1, 0, 3), "bad_request"),   # under its own descendant
+            (lambda: grammar.move_label(self.db_path, 5, 0, 4), "bad_request"),   # Other under D would be a fifth level
+            (lambda: grammar.move_label(self.db_path, 5, 0, 3), "bad_request"),   # Other plus Other2 under C: fifth level
+            (lambda: grammar.move_label(self.db_path, 6, 0, 99), "not_found"),
+            (lambda: grammar.move_label(self.db_path, 99, 0, 1), "not_found"),
+        ]
+        for attempt, code in cases:
+            with self.assertRaises(grammar.GrammarError) as caught:
+                attempt()
+            self.assertEqual(caught.exception.code, code)
+        grammar.move_label(self.db_path, 6, 0, 3)  # a single label under C is a fourth level: allowed
+        grammar.create_label(self.db_path, "B", "d", 5)  # "B" now also under Other
+        with self.assertRaises(grammar.GrammarError) as clash:
+            grammar.move_label(self.db_path, 2, 0, 5)  # B (under A) onto Other, which has a B
+        self.assertEqual(clash.exception.code, "conflict")
+
     def test_a_device_can_sit_under_several_labels_at_different_levels(self):
         grammar.create_label(self.db_path, "Clause", "d")
         grammar.create_label(self.db_path, "Relative", "d", 1)

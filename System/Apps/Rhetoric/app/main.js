@@ -87,15 +87,16 @@ const EDITING = {
  * with, so the screen only ever shows what was saved. A failure leaves the screen as it was and says why.
  * @param {string} hierarchy TOPICAL or GRAMMAR
  * @param {string} [clash] what a 409 means for this change, when it is not a name clash
+ * @param {string} [refused] what a 400 means for this change, when there is something to say about it
  * @returns {Promise<boolean>} whether the change was saved
  */
-async function saveChange(hierarchy, change, clash) {
+async function saveChange(hierarchy, change, clash, refused) {
   const editing = EDITING[hierarchy];
   try {
     setEditableTree(state, hierarchy, await change());
   } catch (error) {
     console.error(`Could not save the ${hierarchy} change`, error);
-    flashStatus(editing.status(), error.status === 409 ? (clash ?? editing.clash) : 'Could not save — is the server running?');
+    flashStatus(editing.status(), error.status === 409 ? (clash ?? editing.clash) : error.status === 400 && refused ? refused : 'Could not save — is the server running?');
     return false;
   }
   refresh();
@@ -149,11 +150,19 @@ const PLACING = {
   [GRAMMAR]: { add: addLabelPlacement, remove: removeLabelPlacement, move: moveLabel },
 };
 
+/** What a Type or label dropped on `overType` becomes: under it (last) for 'inside', or beside it under its parent, before or after. */
+function movedTo(hierarchy, id, overType, side) {
+  const parentId = side === 'inside' ? overType : parentOf(hierarchy, overType);
+  const index = side === 'inside' ? savedSiblingIds(hierarchy, parentId).length : insertionIndex(savedSiblingIds(hierarchy, parentId), id, overType, side);
+  return { parentId, index };
+}
+
 function onEditableDrop({ kind, hierarchy, id, overType, overDevice, side }) {
   const placing = PLACING[hierarchy];
   if (kind === 'type') {
-    const parentId = parentOf(hierarchy, overType);
-    return void saveChange(hierarchy, () => placing.move(id, insertionIndex(savedSiblingIds(hierarchy, parentId), id, overType, side)));
+    const { parentId, index } = movedTo(hierarchy, id, overType, side);
+    if (parentId !== null) openWithAncestors(state, hierarchy, parentId); // so the Type or label is seen landing
+    return void saveChange(hierarchy, () => placing.move(id, index, parentId), undefined, `There is no room: Types and labels go ${MAX_LABEL_DEPTH} levels deep, counting what is beneath them`);
   }
   openWithAncestors(state, hierarchy, overType); // so the device is seen landing
   if (overDevice === null) return void saveChange(hierarchy, () => placing.add(overType, id));

@@ -149,6 +149,21 @@ class TopicalTest(unittest.TestCase):
         self.assertEqual([c["name"] for c in a["children"]], ["z", "x", "y"])
         self.assertEqual([n["name"] for n in (a, b)], ["A", "B"])
 
+    def test_a_type_can_move_to_another_parent_or_the_top_with_its_sub_types(self):
+        for name in ("A", "B"):
+            topical.create_type(self.db_path, name)
+        topical.create_type(self.db_path, "Sub", 1)
+        topical.create_type(self.db_path, "Leaf", 3)
+        topical.move_type(self.db_path, 3, 0, 2)  # Sub, with Leaf, goes under B
+        a, b, _ = self.tree()
+        self.assertEqual(([c["name"] for c in a["children"]], [c["name"] for c in b["children"]]), ([], ["Sub"]))
+        self.assertEqual([c["name"] for c in b["children"][0]["children"]], ["Leaf"])
+        topical.move_type(self.db_path, 3, 0, 0)  # to the top level, first
+        self.assertEqual([n["name"] for n in self.tree()], ["Sub", "A", "B", "Unsorted"])
+        with self.assertRaises(topical.TopicalError) as refused:
+            topical.move_type(self.db_path, 3, 0, 4)  # under its own sub-Type
+        self.assertEqual(refused.exception.code, "bad_request")
+
     def test_a_type_with_sub_types_cannot_be_deleted_until_they_go(self):
         topical.create_type(self.db_path, "A")
         topical.create_type(self.db_path, "Sub", 1)

@@ -4,14 +4,16 @@
  * row) and what can receive (`data-droppable`: real Types); nothing else in the list reacts.
  *
  * It serves both editable groups (Topical's Types, Grammar's labels): a drop is reported with the group it
- * happened in (`hierarchy`), and a Type or label can only be dropped on a sibling (same `data-parent-id`,
- * which only Grammar labels carry), never across groups.
+ * happened in (`hierarchy`), and never lands across groups. A Type or label can be dropped on any other Type or
+ * label of its group except itself and what is beneath it; where it goes depends on where in the heading it lands.
  *
  * What a drop means is reported, not decided here (main.js decides, with the data):
  *   a device on a Type or label heading or its empty space -> { overDevice: null, side: null }  (put it last)
  *   a device on another device row in that Type or label   -> { overDevice, side }              (put it there)
- *   a Type or label on a sibling                           -> { overDevice: null, side }        (reorder)
- * `side` is 'before' or 'after' the row under the pointer, by which half of it the pointer is in.
+ *   a Type or label on another Type or label              -> { overDevice: null, side }        (move it)
+ * For a device, `side` is 'before' or 'after' the row under the pointer, by which half of it the pointer is in.
+ * For a Type or label, `side` is 'before' or 'after' the heading (its top or bottom quarter: beside it, under its
+ * parent) or 'inside' (the middle, or anywhere over what is beneath the heading: last among its sub-labels).
  */
 
 const DROP_CLASS = 'drop-target';
@@ -21,6 +23,16 @@ const DRAGGING_CLASS = 'dragging';
 function sideOf(event, element) {
   const box = element.getBoundingClientRect();
   return event.clientY < box.top + box.height / 2 ? 'before' : 'after';
+}
+
+const EDGE = 0.25; // the top and bottom quarter of a heading mean beside it; the middle half means inside it
+
+/** Where on a Type or label heading the pointer is: 'before', 'after', or 'inside' (the middle, or below the heading over what it holds). */
+function zoneOf(event, heading) {
+  const box = heading.getBoundingClientRect();
+  const fraction = (event.clientY - box.top) / box.height;
+  if (fraction < EDGE) return 'before';
+  return fraction > 1 - EDGE && fraction <= 1 ? 'after' : 'inside';
 }
 
 /** @param {(drop: {kind: 'device' | 'type', hierarchy: string, id: number, overType: number, overDevice: number | null, side: string | null}) => void} onDrop */
@@ -47,9 +59,9 @@ export function bindDragAndDrop(list, onDrop) {
     if (type.dataset.hierarchy !== dragged.hierarchy) return null;
     const overType = Number(type.dataset.nodeId);
     if (dragged.kind === 'type') {
-      if (dragged.id === overType || type.dataset.parentId !== dragged.parentId) return null;
-      const side = sideOf(event, type);
-      return { element: type, className: SIDE_CLASS[side], overType, overDevice: null, side };
+      if (dragged.item.contains(type)) return null; // itself, or something beneath it: it cannot go under itself
+      const side = zoneOf(event, type.querySelector('.heading-row'));
+      return { element: type, className: side === 'inside' ? DROP_CLASS : SIDE_CLASS[side], overType, overDevice: null, side };
     }
     const row = event.target.closest('[data-device-id]');
     if (row && Number(row.dataset.deviceId) !== dragged.id) {
@@ -67,7 +79,7 @@ export function bindDragAndDrop(list, onDrop) {
     const heading = handle?.closest('[data-node-id]');
     dragged = device
       ? { kind: 'device', hierarchy: device.closest('[data-hierarchy]').dataset.hierarchy, id: Number(device.dataset.deviceId) }
-      : { kind: 'type', hierarchy: heading.dataset.hierarchy, parentId: heading.dataset.parentId, id: Number(heading.dataset.nodeId) };
+      : { kind: 'type', hierarchy: heading.dataset.hierarchy, item: heading, id: Number(heading.dataset.nodeId) };
     event.dataTransfer.setData('text/plain', String(dragged.id)); // Firefox starts no drag without data
     event.dataTransfer.effectAllowed = dragged.kind === 'device' ? 'copy' : 'move';
     (device ?? handle).classList.add(DRAGGING_CLASS);

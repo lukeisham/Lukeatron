@@ -57,7 +57,8 @@ TOPICAL_ROUTES: list[Route] = [
      lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False)])),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.rename_type, lambda h: _body_fields(h, [("name", _as_name, True)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.delete_type, lambda h: []),
-    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type, lambda h: _body_fields(h, [("index", _as_index, True)])),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type,
+     lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.remove_placement, lambda h: []),
 ]
@@ -67,7 +68,8 @@ GRAMMAR_ROUTES: list[Route] = [
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.edit_label,
      lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True)])),
     ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.delete_label, lambda h: []),
-    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/position$"), grammar.move_label, lambda h: _body_fields(h, [("index", _as_index, True)])),
+    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/position$"), grammar.move_label,
+     lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
     ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.remove_placement, lambda h: []),
 ]
@@ -139,6 +141,13 @@ def _as_index(value: Any) -> int | None:
 
 def _as_id(value: Any) -> int | None:
     if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= MAX_ID:
+        return None
+    return value
+
+
+def _as_parent(value: Any) -> int | None:
+    """A new parent for a move: a Type or label id, or 0 for the top level."""
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= MAX_ID:
         return None
     return value
 

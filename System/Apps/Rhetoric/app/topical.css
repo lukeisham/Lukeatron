@@ -70,13 +70,13 @@ body.read-only .heading-row[draggable="true"] { cursor: pointer; }
 .heading-row[draggable="true"] { cursor: grab; }
 .dragging { opacity: var(--opacity-dragging); }
 
-/* A device dropped on a Type goes in at the end: a dashed frame and a faint wash on the whole block. */
+/* A device dropped on a Type goes in at the end, and a Type or label dropped on the middle of another goes inside it, last: a dashed frame and a faint wash on the whole block. */
 .node.drop-target {
   background: var(--color-drop-wash);
   outline: var(--border-hairline) dashed var(--color-ink-soft);
   outline-offset: var(--outline-offset);
 }
 
-/* Reordering: a heavy rule on the edge the dragged Type or device will land against. */
+/* Reordering, or moving beside a heading: a heavy rule on the edge the dragged Type, label or device will land against. */
 .drop-before { box-shadow: 0 calc(-1 * var(--border-strong)) 0 var(--color-ink); }
 .drop-after { box-shadow: 0 var(--border-strong) 0 var(--color-ink); }

@@ -13,11 +13,14 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import labeltree
+
 # The derived "Unsorted" heading sits beside the real Types; app/state.js mirrors this id.
 # Real Type ids start at 1 (AUTOINCREMENT), so 0 can never collide.
 UNSORTED_ID = 0
 UNSORTED_NAME = "Unsorted"
 UNSORTED_DEFINITION = "not yet placed under a Type"
+TABLE = "topical_types"
 MAX_DEPTH = 4  # levels of Types; mirrors MAX_LABEL_DEPTH in app/state.js and grammar.MAX_DEPTH
 
 
@@ -68,32 +71,12 @@ def _node(node_id: int, name: str, definition: str, device_ids: list[int]) -> di
     }
 
 
-def _depth(conn: sqlite3.Connection, type_id: int | None) -> int:
-    """Levels from the top down to and including this Type; 0 for no Type (the top of the tree)."""
-    depth = 0
-    while type_id is not None:
-        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
-        if row is None:
-            raise TopicalError("not_found")
-        depth += 1
-        type_id = row[0]
-    return depth
-
-
-def _taken(conn: sqlite3.Connection, parent_id: int | None, name: str, except_id: int | None = None) -> bool:
-    """Whether a sibling already has this name (case-blind)."""
-    return conn.execute(
-        "SELECT 1 FROM topical_types WHERE parent_id IS ? AND lower(name) = lower(?) AND id IS NOT ?",
-        (parent_id, name, except_id),
-    ).fetchone() is not None
-
-
 def create_type(db_path: Path, name: str, parent_id: int | None = None) -> None:
     """The new Type goes last among its siblings, under `parent_id` or at the top."""
     with closing(connect_writable(db_path)) as conn, conn:
-        if _depth(conn, parent_id) >= MAX_DEPTH:
+        if labeltree.depth(conn, TABLE, parent_id, TopicalError) >= MAX_DEPTH:
             raise TopicalError("bad_request")  # a fifth level is refused
-        if _taken(conn, parent_id, name):
+        if labeltree.taken(conn, TABLE, parent_id, name):
             raise TopicalError("conflict")
         conn.execute(
             "INSERT INTO topical_types (parent_id, name, position) VALUES "
@@ -107,7 +90,7 @@ def rename_type(db_path: Path, type_id: int, name: str) -> None:
         row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
         if row is None:
             raise TopicalError("not_found")
-        if _taken(conn, row[0], name, except_id=type_id):
+        if labeltree.taken(conn, TABLE, row[0], name, except_id=type_id):
             raise TopicalError("conflict")
         conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
 
@@ -122,18 +105,12 @@ def delete_type(db_path: Path, type_id: int) -> None:
         conn.execute("DELETE FROM topical_types WHERE id = ?", (type_id,))
 
 
-def move_type(db_path: Path, type_id: int, index: int) -> None:
-    """Puts the Type at `index` among its siblings (0 = first); an index past the end means last."""
+def move_type(db_path: Path, type_id: int, index: int, parent_id: int | None = None) -> None:
+    """Puts the Type at `index` among its siblings (0 = first; past the end = last). `parent_id` None keeps its
+    parent, 0 moves it (with everything beneath it) to the top level, any other id moves it under that Type
+    (see labeltree.move for what is refused)."""
     with closing(connect_writable(db_path)) as conn, conn:
-        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
-        if row is None:
-            raise TopicalError("not_found")
-        ordered = [r[0] for r in conn.execute(
-            "SELECT id FROM topical_types WHERE parent_id IS ? ORDER BY position, id", (row[0],))]
-        ordered.remove(type_id)
-        ordered.insert(index, type_id)
-        conn.executemany("UPDATE topical_types SET position = ? WHERE id = ?",
-                         [(position, moved) for position, moved in enumerate(ordered)])
+        labeltree.move(conn, TABLE, type_id, index, MAX_DEPTH, TopicalError, parent_id)
 
 
 def add_placement(db_path: Path, type_id: int, device_id: int, index: int | None = None) -> None:

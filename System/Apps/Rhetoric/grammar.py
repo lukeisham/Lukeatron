@@ -14,7 +14,10 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import labeltree
+
 HIERARCHY = "grammar"  # the Grammar group files devices under the grammar-label tree
+TABLE = "grammar_labels"
 MAX_DEPTH = 4  # levels: top-level, then three below; mirrors MAX_LABEL_DEPTH in app/state.js
 
 
@@ -53,32 +56,12 @@ def grammar_tree(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     return roots
 
 
-def _depth(conn: sqlite3.Connection, label_id: int | None) -> int:
-    """Levels from the top down to and including this label; 0 for no label (the top of the tree)."""
-    depth = 0
-    while label_id is not None:
-        row = conn.execute("SELECT parent_id FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
-        if row is None:
-            raise GrammarError("not_found")
-        depth += 1
-        label_id = row[0]
-    return depth
-
-
-def _taken(conn: sqlite3.Connection, parent_id: int | None, name: str, except_id: int | None = None) -> bool:
-    """Whether a sibling already has this name (case-blind), as Types do."""
-    return conn.execute(
-        "SELECT 1 FROM grammar_labels WHERE parent_id IS ? AND lower(name) = lower(?) AND id IS NOT ?",
-        (parent_id, name, except_id),
-    ).fetchone() is not None
-
-
 def create_label(db_path: Path, name: str, definition: str, parent_id: int | None = None) -> None:
     """The new label goes last among its siblings, under `parent_id` or at the top."""
     with closing(connect_writable(db_path)) as conn, conn:
-        if _depth(conn, parent_id) >= MAX_DEPTH:
+        if labeltree.depth(conn, TABLE, parent_id, GrammarError) >= MAX_DEPTH:
             raise GrammarError("bad_request")  # a fifth level is refused
-        if _taken(conn, parent_id, name):
+        if labeltree.taken(conn, TABLE, parent_id, name):
             raise GrammarError("conflict")
         conn.execute(
             "INSERT INTO grammar_labels (parent_id, name, definition, position) VALUES "
@@ -92,7 +75,7 @@ def edit_label(db_path: Path, label_id: int, name: str, definition: str) -> None
         row = conn.execute("SELECT parent_id FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
         if row is None:
             raise GrammarError("not_found")
-        if _taken(conn, row[0], name, except_id=label_id):
+        if labeltree.taken(conn, TABLE, row[0], name, except_id=label_id):
             raise GrammarError("conflict")
         conn.execute("UPDATE grammar_labels SET name = ?, definition = ? WHERE id = ?", (name, definition, label_id))
 
@@ -107,18 +90,12 @@ def delete_label(db_path: Path, label_id: int) -> None:
         conn.execute("DELETE FROM grammar_labels WHERE id = ?", (label_id,))
 
 
-def move_label(db_path: Path, label_id: int, index: int) -> None:
-    """Puts the label at `index` among its siblings (0 = first); an index past the end means last."""
+def move_label(db_path: Path, label_id: int, index: int, parent_id: int | None = None) -> None:
+    """Puts the label at `index` among its siblings (0 = first; past the end = last). `parent_id` None keeps its
+    parent, 0 moves it (with everything beneath it) to the top level, any other id moves it under that label
+    (see labeltree.move for what is refused)."""
     with closing(connect_writable(db_path)) as conn, conn:
-        row = conn.execute("SELECT parent_id FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
-        if row is None:
-            raise GrammarError("not_found")
-        ordered = [r[0] for r in conn.execute(
-            "SELECT id FROM grammar_labels WHERE parent_id IS ? ORDER BY position, id", (row[0],))]
-        ordered.remove(label_id)
-        ordered.insert(index, label_id)
-        conn.executemany("UPDATE grammar_labels SET position = ? WHERE id = ?",
-                         [(position, moved) for position, moved in enumerate(ordered)])
+        labeltree.move(conn, TABLE, label_id, index, MAX_DEPTH, GrammarError, parent_id)
 
 
 def add_placement(db_path: Path, label_id: int, device_id: int, index: int | None = None) -> None:

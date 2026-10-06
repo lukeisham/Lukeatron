@@ -99,6 +99,19 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L2", "parent_id": 1})[0], 409)  # sibling clash
         self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 409)  # it still has a sub-Type
 
+    def test_the_position_route_can_move_a_type_to_another_parent_or_the_top(self):
+        for name in ("A", "B"):
+            fetch(self.topical_url(), "POST", {"name": name})
+        fetch(self.topical_url(), "POST", {"name": "Sub", "parent_id": 1})
+        status, body = fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": 2})
+        self.assertEqual(status, 200)
+        a, b, _ = json.loads(body)["topical"]
+        self.assertEqual(([c["name"] for c in a["children"]], [c["name"] for c in b["children"]]), ([], ["Sub"]))
+        status, body = fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": 0})  # 0 is the top level
+        self.assertEqual([n["name"] for n in json.loads(body)["topical"]], ["Sub", "A", "B", "Unsorted"])
+        self.assertEqual(fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": 3})[0], 400)  # into itself
+        self.assertEqual(fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": -1})[0], 400)
+
     def test_permitted_topical_writes_pass_and_return_the_fresh_tree(self):
         status, body = fetch(self.topical_url(), "POST", {"name": "  Irony "})
         self.assertEqual(status, 200)

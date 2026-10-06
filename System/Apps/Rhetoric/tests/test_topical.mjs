@@ -138,12 +138,15 @@ function fakeList() {
 /** An element with the dataset and class list drag.js touches, and a 100px-tall box at y 0-100. */
 function element(dataset = {}) {
   const classes = new Set();
-  return {
+  const self = {
     dataset, classes,
     closest: () => ({ dataset: { hierarchy: 'topical' } }), // the group a device row sits in
     classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) },
     getBoundingClientRect: () => ({ top: 0, height: 100 }),
+    querySelector: () => self, // its heading row: the same box
+    contains: (node) => node === self,
   };
+  return self;
 }
 
 /** A pointer target whose `closest` answers by the attribute each selector asks for. */
@@ -216,7 +219,7 @@ test('dropping a device on itself is not a drop target', () => {
   assert.deepEqual(drops, []);
 });
 
-test('a Type dragged by its heading is reported against another Type, never against a device or itself', () => {
+test('a Type dragged by its heading is reported against another Type, never against a device, itself or what is beneath it', () => {
   const { list, drops } = bound();
   const own = element({ nodeId: '7', hierarchy: 'topical' });
   const handle = { ...element(), closest: () => own };
@@ -228,6 +231,38 @@ test('a Type dragged by its heading is reported against another Type, never agai
   assert.ok(other.classes.has('drop-after'));
   drop(list, pointerAt({ type: other }), 90);
   assert.deepEqual(drops, [{ kind: 'type', hierarchy: 'topical', id: 7, overType: 9, overDevice: null, side: 'after' }]);
+});
+
+test('a Type dropped on the top or bottom quarter of a heading goes beside it, and on the middle goes inside it', () => {
+  const { list, drops } = bound();
+  const own = element({ nodeId: '7', hierarchy: 'topical' });
+  const handle = { ...element(), closest: () => own };
+  startDrag(list, { closest: (s) => (s.includes('heading-row') ? handle : null), classList: handle.classList });
+  const other = element({ nodeId: '9', hierarchy: 'topical' });
+  const at = () => pointerAt({ type: other });
+  over(list, at(), 10);
+  assert.ok(other.classes.has('drop-before'));
+  over(list, at(), 50);
+  assert.ok(other.classes.has('drop-target') && !other.classes.has('drop-before'));
+  drop(list, at(), 50);
+  over(list, at(), 160); // below the heading, over what it holds: still inside it
+  assert.ok(other.classes.has('drop-target'));
+  drop(list, at(), 160);
+  over(list, at(), 90);
+  drop(list, at(), 90);
+  assert.deepEqual(drops.map((d) => d.side), ['inside', 'inside', 'after']);
+});
+
+test('a Type cannot be dropped onto something beneath it', () => {
+  const { list, drops } = bound();
+  const own = element({ nodeId: '7', hierarchy: 'topical' });
+  const child = element({ nodeId: '8', hierarchy: 'topical', parentId: '7' });
+  own.contains = (node) => node === own || node === child;
+  const handle = { ...element(), closest: () => own };
+  startDrag(list, { closest: (s) => (s.includes('heading-row') ? handle : null), classList: handle.classList });
+  assert.equal(over(list, pointerAt({ type: child }), 50), false);
+  drop(list, pointerAt({ type: child }), 50);
+  assert.deepEqual(drops, []);
 });
 
 test('a drag that did not start in the list (selected text) lands nowhere', () => {

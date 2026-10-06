@@ -35,3 +35,12 @@ test('a name typed out in full counts as a choice, case-blind; a part of a name 
   assert.equal(exactDevice(devices, ''), null);
   assert.equal(exactDevice([device(1, 'Same'), device(2, 'same')], 'same'), null); // two devices, so no guess
 });
+
+test('a parent list keeps the tree order, narrows by any part of the path, and is not cut at twelve', () => {
+  const tree = [device(1, 'Figures'), device(2, 'Figures > Tropes'), device(3, 'Figures > Tropes > Irony'), device(4, 'Arguments')];
+  assert.deepEqual(labels(pickerOptions(tree, '', false, 200, false)), ['Figures', 'Figures > Tropes', 'Figures > Tropes > Irony', 'Arguments']);
+  assert.deepEqual(labels(pickerOptions(tree, 'tropes', false, 200, false)), ['Figures > Tropes', 'Figures > Tropes > Irony']);
+  const many = Array.from({ length: 40 }, (_, i) => device(i, `Label ${i}`));
+  assert.equal(pickerOptions(many, '', false, 200, false).length, 40);
+  assert.equal(exactDevice(tree, 'figures > tropes')?.id, 2);
+});

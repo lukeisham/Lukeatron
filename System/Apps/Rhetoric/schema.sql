@@ -18,7 +18,7 @@
 -- table they are written by server.py (granted exception, app-decisions.md); the seed pipeline
 -- never touches them, so rebuilding the database from scratch discards them.
 -- `grammar_labels` / `grammar_placements` hold Luke's own Grammar arrangement: grammatical-term
--- labels in a tree up to four levels deep (each with an explanation, `definition`), and the devices
+-- labels in a tree up to five levels deep (each with an explanation, `definition`), and the devices
 -- filed under them (a device may sit under any number of labels, at any level). Like the Topical
 -- tables they are written by server.py (granted exception, app-decisions.md); the seed pipeline never
 -- touches them, so rebuilding the database from scratch discards them. `position` orders a label among
@@ -77,13 +77,15 @@ CREATE TABLE IF NOT EXISTS examples (
                              OR quote_date GLOB '-[0-9][0-9][0-9][0-9]')
 );
 
--- A Topical Type label, in a tree up to four levels deep (`parent_id` is NULL for a top-level Type).
+-- A Topical Type label, in a tree up to five levels deep (`parent_id` is NULL for a top-level Type), with an
+-- explanation (`definition`, '' on a Type made before it existed; seed/add_topical_definition.py adds the column).
 -- A Type's name is unique among its siblings, ignoring case, by the index below. `position` is the
 -- display order among siblings (ties fall back to id; gaps are fine, topical.py renumbers on a move).
 CREATE TABLE IF NOT EXISTS topical_types (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id INTEGER REFERENCES topical_types(id),
     name      TEXT NOT NULL,
+    definition TEXT NOT NULL DEFAULT '',
     position  INTEGER NOT NULL DEFAULT 0,
     tables_json TEXT NOT NULL DEFAULT '[]'
 );

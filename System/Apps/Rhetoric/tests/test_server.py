@@ -90,19 +90,19 @@ class ServerTest(unittest.TestCase):
         with sqlite3.connect(self.db_path) as conn:
             return [row[0] for row in conn.execute("SELECT name FROM topical_types ORDER BY id")]
 
-    def test_a_topical_type_can_be_created_under_a_parent_to_four_levels(self):
-        fetch(self.topical_url(), "POST", {"name": "L1"})
-        for parent, name in ((1, "L2"), (2, "L3"), (3, "L4")):
-            self.assertEqual(fetch(self.topical_url(), "POST", {"name": name, "parent_id": parent})[0], 200)
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L5", "parent_id": 4})[0], 400)  # a fifth level
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "X", "parent_id": 99})[0], 404)
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L2", "parent_id": 1})[0], 409)  # sibling clash
+    def test_a_topical_type_can_be_created_under_a_parent_to_five_levels(self):
+        fetch(self.topical_url(), "POST", {"name": "L1", "definition": "d"})
+        for parent, name in ((1, "L2"), (2, "L3"), (3, "L4"), (4, "L5")):
+            self.assertEqual(fetch(self.topical_url(), "POST", {"name": name, "definition": "d", "parent_id": parent})[0], 200)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L6", "definition": "d", "parent_id": 5})[0], 400)  # a sixth level
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "X", "definition": "d", "parent_id": 99})[0], 404)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L2", "definition": "d", "parent_id": 1})[0], 409)  # sibling clash
         self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 409)  # it still has a sub-Type
 
     def test_the_position_route_can_move_a_type_to_another_parent_or_the_top(self):
         for name in ("A", "B"):
-            fetch(self.topical_url(), "POST", {"name": name})
-        fetch(self.topical_url(), "POST", {"name": "Sub", "parent_id": 1})
+            fetch(self.topical_url(), "POST", {"name": name, "definition": "d"})
+        fetch(self.topical_url(), "POST", {"name": "Sub", "definition": "d", "parent_id": 1})
         status, body = fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": 2})
         self.assertEqual(status, 200)
         a, b, _ = json.loads(body)["topical"]
@@ -113,19 +113,22 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": -1})[0], 400)
 
     def test_permitted_topical_writes_pass_and_return_the_fresh_tree(self):
-        status, body = fetch(self.topical_url(), "POST", {"name": "  Irony "})
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "Irony"})[0], 400)  # an explanation is required, as for a label
+        status, body = fetch(self.topical_url(), "POST", {"name": "  Irony ", "definition": " saying the opposite "})
         self.assertEqual(status, 200)
-        self.assertEqual([n["name"] for n in json.loads(body)["topical"]], ["Irony", "Unsorted"])
+        self.assertEqual([(n["name"], n["definition"]) for n in json.loads(body)["topical"]], [("Irony", "saying the opposite"), ("Unsorted", "not yet placed under a Type")])
         status, body = fetch(self.topical_url("/1/devices/1"), "PUT")
         self.assertEqual([len(n["children"]) for n in json.loads(body)["topical"]], [1, 1])
-        self.assertEqual(fetch(self.topical_url("/1"), "PUT", {"name": "Wit"})[0], 200)
+        self.assertEqual(fetch(self.topical_url("/1"), "PUT", {"name": "Wit"})[0], 400)  # the explanation is required here too
+        status, body = fetch(self.topical_url("/1"), "PUT", {"name": "Wit", "definition": "quick cleverness"})
+        self.assertEqual((status, json.loads(body)["topical"][0]["definition"]), (200, "quick cleverness"))
         self.assertEqual(fetch(self.topical_url("/1/devices/1"), "DELETE")[0], 200)
         self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 200)
         self.assertEqual(self.topical_type_names(), [])
 
     def test_reordering_routes_move_types_and_devices(self):
         for name in ("A", "B"):
-            fetch(self.topical_url(), "POST", {"name": name})
+            fetch(self.topical_url(), "POST", {"name": name, "definition": "d"})
         _, body = fetch(self.topical_url("/2/position"), "PUT", {"index": 0})
         self.assertEqual([n["name"] for n in json.loads(body)["topical"]], ["B", "A", "Unsorted"])
         fetch(self.topical_url("/1/devices/1"), "PUT")
@@ -135,7 +138,7 @@ class ServerTest(unittest.TestCase):
         self.assertEqual([c["id"] for c in a["children"]], [2, 1])
 
     def test_a_bad_index_is_a_400(self):
-        fetch(self.topical_url(), "POST", {"name": "A"})
+        fetch(self.topical_url(), "POST", {"name": "A", "definition": "d"})
         for url, body in ((self.topical_url("/1/position"), {"index": -1}), (self.topical_url("/1/position"), {"index": "0"}),
                           (self.topical_url("/1/position"), {"index": True}), (self.topical_url("/1/position"), {}),
                           (self.topical_url("/1/devices/1"), {"index": 1.5}), (self.topical_url("/1/devices/1"), {"index": 10**9})):
@@ -152,7 +155,7 @@ class ServerTest(unittest.TestCase):
 
     def test_a_write_from_another_origin_or_host_is_forbidden(self):
         for headers in ({"Origin": "https://evil.example"}, {"Origin": "null"}, {"Host": "evil.example"}):
-            status, _ = fetch(self.topical_url(), "POST", {"name": "X"}, headers)
+            status, _ = fetch(self.topical_url(), "POST", {"name": "X", "definition": "d"}, headers)
             self.assertEqual(status, 403, headers)
         self.assertEqual(self.topical_type_names(), [])
 
@@ -164,8 +167,8 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(self.topical_type_names(), [])
 
     def test_refusals_map_to_registry_statuses(self):
-        fetch(self.topical_url(), "POST", {"name": "Irony"})
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "IRONY"})[0], 409)
+        fetch(self.topical_url(), "POST", {"name": "Irony", "definition": "d"})
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "IRONY", "definition": "d"})[0], 409)
         self.assertEqual(fetch(self.topical_url("/99"), "DELETE")[0], 404)
         self.assertEqual(fetch(self.topical_url("/1/devices/99"), "PUT")[0], 404)
         self.assertEqual(fetch(self.topical_url("/abc"), "DELETE")[0], 404)
@@ -174,7 +177,7 @@ class ServerTest(unittest.TestCase):
 
     def test_a_labels_tables_are_saved_through_the_tables_route_and_returned_with_the_tree(self):
         fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
-        fetch(self.topical_url(), "POST", {"name": "Irony"})
+        fetch(self.topical_url(), "POST", {"name": "Irony", "definition": "d"})
         grid = {"caption": "", "colHeads": True, "rowHeads": False, "cells": [["A", "B"], ["1", "2"]]}
         status, body = fetch(self.grammar_url("/1/tables"), "PUT", {"tables": [grid]})
         self.assertEqual(status, 200)

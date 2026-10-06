@@ -38,15 +38,16 @@ class GrammarTest(unittest.TestCase):
         self.assertEqual(names(self.tree()), ["Clause", "Phrase"])
         self.assertEqual(self.tree()[0]["definition"], "a group of words with a subject and a verb")
 
-    def test_labels_nest_four_levels_and_a_fifth_is_refused(self):
+    def test_labels_nest_five_levels_and_a_sixth_is_refused(self):
         grammar.create_label(self.db_path, "Clause", "d")
         grammar.create_label(self.db_path, "Subordinate", "d", 1)
         grammar.create_label(self.db_path, "Relative", "d", 2)
         grammar.create_label(self.db_path, "Restrictive", "d", 3)
+        grammar.create_label(self.db_path, "Reduced", "d", 4)
         self.assertEqual(names(self.tree()[0]["children"][0]["children"]), ["Relative"])
         self.assertEqual(names(self.tree()[0]["children"][0]["children"][0]["children"]), ["Restrictive"])
         with self.assertRaises(grammar.GrammarError) as refused:
-            grammar.create_label(self.db_path, "Too deep", "d", 4)
+            grammar.create_label(self.db_path, "Too deep", "d", 5)
         self.assertEqual(refused.exception.code, "bad_request")
         with self.assertRaises(grammar.GrammarError) as unknown:
             grammar.create_label(self.db_path, "Orphan", "d", 99)
@@ -106,25 +107,26 @@ class GrammarTest(unittest.TestCase):
         grammar.create_label(self.db_path, "A", "d")           # 1
         grammar.create_label(self.db_path, "B", "d", 1)        # 2
         grammar.create_label(self.db_path, "C", "d", 2)        # 3
-        grammar.create_label(self.db_path, "D", "d", 3)        # 4  (four levels)
-        grammar.create_label(self.db_path, "Other", "d")       # 5
-        grammar.create_label(self.db_path, "Other2", "d", 5)   # 6
+        grammar.create_label(self.db_path, "D", "d", 3)        # 4
+        grammar.create_label(self.db_path, "E", "d", 4)        # 5  (five levels)
+        grammar.create_label(self.db_path, "Other", "d")       # 6
+        grammar.create_label(self.db_path, "Other2", "d", 6)   # 7
         cases = [
             (lambda: grammar.move_label(self.db_path, 1, 0, 1), "bad_request"),   # under itself
             (lambda: grammar.move_label(self.db_path, 1, 0, 3), "bad_request"),   # under its own descendant
-            (lambda: grammar.move_label(self.db_path, 5, 0, 4), "bad_request"),   # Other under D would be a fifth level
-            (lambda: grammar.move_label(self.db_path, 5, 0, 3), "bad_request"),   # Other plus Other2 under C: fifth level
-            (lambda: grammar.move_label(self.db_path, 6, 0, 99), "not_found"),
+            (lambda: grammar.move_label(self.db_path, 6, 0, 5), "bad_request"),   # Other under E would be a sixth level
+            (lambda: grammar.move_label(self.db_path, 6, 0, 4), "bad_request"),   # Other plus Other2 under D: sixth level
+            (lambda: grammar.move_label(self.db_path, 7, 0, 99), "not_found"),
             (lambda: grammar.move_label(self.db_path, 99, 0, 1), "not_found"),
         ]
         for attempt, code in cases:
             with self.assertRaises(grammar.GrammarError) as caught:
                 attempt()
             self.assertEqual(caught.exception.code, code)
-        grammar.move_label(self.db_path, 6, 0, 3)  # a single label under C is a fourth level: allowed
-        grammar.create_label(self.db_path, "B", "d", 5)  # "B" now also under Other
+        grammar.move_label(self.db_path, 7, 0, 4)  # a single label under D is a fifth level: allowed
+        grammar.create_label(self.db_path, "B", "d", 6)  # "B" now also under Other
         with self.assertRaises(grammar.GrammarError) as clash:
-            grammar.move_label(self.db_path, 2, 0, 5)  # B (under A) onto Other, which has a B
+            grammar.move_label(self.db_path, 2, 0, 6)  # B (under A) onto Other, which has a B
         self.assertEqual(clash.exception.code, "conflict")
 
     def test_a_device_can_sit_under_several_labels_at_different_levels(self):

@@ -7,6 +7,8 @@
  * The limits mirror labeltables.py, which refuses anything past them.
  */
 
+import { stripInline } from './markup.js';
+
 export const MAX_TABLES = 5; // per label
 export const MAX_ROWS = 20;
 export const MAX_COLS = 8;
@@ -65,6 +67,6 @@ export function tidyTable(table) {
 
 /** The longest unbroken word in any cell (at least 4, at most 24): the width a column needs, which render.js hands to the CSS that shrinks the text. */
 export function longestWord(table) {
-  const longest = Math.max(...table.cells.flat().flatMap((cell) => cell.replace(/\*/g, '').split(/\s+/)).map((word) => word.length));
+  const longest = Math.max(...table.cells.flat().flatMap((cell) => stripInline(cell).split(/\s+/)).map((word) => word.length));
   return clamp(longest, 4, 24);
 }

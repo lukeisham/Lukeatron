@@ -3,8 +3,8 @@ Like topical.py it writes only its own two tables (`grammar_labels`, `grammar_pl
 exception (app-decisions.md); server.py routes to it and items.py reads the tree through `grammar_tree`.
 Routing holds no SQL (API-1).
 
-A label is a grammatical term with an explanation (`definition`). Labels nest at most four levels
-deep (a top-level label, then three more below it). A device may be filed under any number
+A label is a grammatical term with an explanation (`definition`). Labels nest at most five levels
+deep (a top-level label, then four more below it). A device may be filed under any number
 of labels, at any level, so it can sit under a label and under one of that label's sub-labels too."""
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ import labeltree
 
 HIERARCHY = "grammar"  # the Grammar group files devices under the grammar-label tree
 TABLE = "grammar_labels"
-MAX_DEPTH = 4  # levels: top-level, then three below; mirrors MAX_LABEL_DEPTH in app/state.js
+MAX_DEPTH = 5  # levels: top-level, then four below; mirrors MAX_LABEL_DEPTH in app/state.js
 
 
 class GrammarError(Exception):
@@ -62,7 +62,7 @@ def create_label(db_path: Path, name: str, definition: str, parent_id: int | Non
     """The new label goes last among its siblings, under `parent_id` or at the top."""
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, GrammarError) >= MAX_DEPTH:
-            raise GrammarError("bad_request")  # a fifth level is refused
+            raise GrammarError("bad_request")  # a sixth level is refused
         if labeltree.taken(conn, TABLE, parent_id, name):
             raise GrammarError("conflict")
         conn.execute(

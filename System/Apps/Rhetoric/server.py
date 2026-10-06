@@ -56,8 +56,9 @@ MAX_ID = 999_999_999
 Route = tuple[str, re.Pattern[str], Callable[..., None], Callable[[BaseHTTPRequestHandler], list[Any] | None]]
 TOPICAL_ROUTES: list[Route] = [
     ("POST", re.compile(r"^/api/topical/types$"), topical.create_type,
-     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False)])),
-    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.rename_type, lambda h: _body_fields(h, [("name", _as_name, True)])),
+     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False), ("definition", _as_definition, True)])),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.edit_type,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.delete_type, lambda h: []),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type,
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),

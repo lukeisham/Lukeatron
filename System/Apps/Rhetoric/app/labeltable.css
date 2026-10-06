@@ -35,16 +35,18 @@ body.read-only .label-table-edit { display: none; }
 
 .label-table th,
 .label-table td {
-  padding: 0.25em 0.8em 0.25em 0;
-  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  padding: 0.25em 0.6em;
+  height: calc(var(--line-height-body) * 1em + 0.5em); /* a blank cell keeps a full row, now that it has borders */
+  border: var(--border-hairline) solid var(--color-rule-body);
   text-align: left;
   vertical-align: top;
   overflow-wrap: break-word;
 }
 
-/* Column and row headings: bold, in full ink. */
+/* Column and row headings: bold, in full ink; a darker line sets them off, as the Compare table's does under its headings. */
 .label-table th { font-weight: 700; }
 .label-table thead th { border-bottom-color: var(--color-ink); }
+.label-table tbody th[scope="row"] { border-right-color: var(--color-ink); }
 
 .label-table-caption {
   padding-bottom: var(--space-2);
@@ -58,6 +60,9 @@ body.read-only .label-table-edit { display: none; }
 @media print {
   .label-table-wrap { overflow: visible; }
   .label-table tr { break-inside: avoid; }
+  /* The lines are the table's structure on paper, so they print in full ink, not the screen's pale grey. */
+  .label-table th,
+  .label-table td { border-color: var(--color-ink); }
 }
 
 /* ---- The add / edit dialog ---- */

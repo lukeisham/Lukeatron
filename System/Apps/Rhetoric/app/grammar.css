@@ -28,6 +28,10 @@
 /* The device picker: the text box with its list hanging beneath it. */
 .picker { position: relative; }
 .picker .type-field input { width: 220px; }
+.parent-picker .type-field input { width: 250px; }
+/* A parent's whole path can be long: the list is wider than the box and wraps instead of running off the page. */
+.parent-picker .picker-list { width: 420px; max-width: calc(100vw - 2 * var(--space-6)); }
+.parent-picker .picker-option { white-space: normal; overflow-wrap: anywhere; }
 
 .picker-list {
   position: absolute;

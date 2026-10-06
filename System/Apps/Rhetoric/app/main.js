@@ -1,15 +1,15 @@
 /** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
 
 import {
-  addLabelPlacement, addPlacement, createLabel, createType, deleteLabel, deleteType, editLabel, fetchItems, moveLabel, moveType, removeLabelPlacement,
-  removePlacement, renameType, saveLabelTables, saveTypeTables,
+  addLabelPlacement, addPlacement, createLabel, createType, deleteLabel, deleteType, editLabel, editType, fetchItems, moveLabel, moveType, removeLabelPlacement,
+  removePlacement, saveLabelTables, saveTypeTables,
 } from './api.js';
 import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
 import { INDEX_ORDERS } from './quoteindex.js';
 import { renderCompareBar, renderCount, renderIndexOrders, renderList, renderSortButtons, renderStatus } from './render.js';
 import { stripInline } from './markup.js';
-import { bindDevicePicker } from './picker.js';
+import { PARENT_LIMIT, bindDevicePicker } from './picker.js';
 import { bindTableEditor } from './tableeditor.js';
 import { MAX_TABLES, newTable } from './tablegrid.js';
 import {
@@ -29,8 +29,8 @@ const els = {
   indexBar: $('index-bar'), indexOrders: $('index-orders'), indexFull: $('index-full'),
   compare: $('compare'), compareBar: $('compare-bar'), comparePick: $('compare-pick'), comparePrev: $('compare-prev'), compareNext: $('compare-next'), compareCount: $('compare-count'),
   tableNames: $('table-names'), tableDefinitions: $('table-definitions'), tableExamples: $('table-examples'),
-  typeForm: $('type-form'), typeName: $('type-name'), typeParent: $('type-parent'), typeStatus: $('type-status'),
-  grammarBar: $('grammar-bar'), labelForm: $('label-form'), labelName: $('label-name'), labelDefinition: $('label-definition'), labelParent: $('label-parent'),
+  typeForm: $('type-form'), typeName: $('type-name'), typeDefinition: $('type-definition'), typeParent: $('type-parent'), typeParentList: $('type-parent-list'), typeStatus: $('type-status'),
+  grammarBar: $('grammar-bar'), labelForm: $('label-form'), labelName: $('label-name'), labelDefinition: $('label-definition'), labelParent: $('label-parent'), labelParentList: $('label-parent-list'),
   deviceForm: $('label-device-form'), devicePick: $('device-pick'), devicePickList: $('device-pick-list'), deviceLabel: $('device-label'), grammarStatus: $('grammar-status'),
   tableDialog: $('table-dialog'), tableForm: $('table-form'), tableTitle: $('table-dialog-title'), tableCaption: $('table-caption'), tableCols: $('table-cols'),
   tableRows: $('table-rows'), tableColHeads: $('table-col-heads'), tableRowHeads: $('table-row-heads'), tableGrid: $('table-grid'), tableStatus: $('table-status'),
@@ -41,6 +41,8 @@ const els = {
 const STATUS_MS = 2000;
 let state = null;
 let devicePicker = null;
+let typeParentPicker = null;
+let labelParentPicker = null;
 let tableEditor = null;
 
 // Even reading `window.localStorage` can throw when site data is blocked; null makes every settings call fall back to defaults.
@@ -63,7 +65,6 @@ function refresh() {
   els.home.hidden = state.activeView === FULL_VIEW;
   els.typeForm.hidden = state.sortOrder !== TOPICAL;
   els.grammarBar.hidden = state.sortOrder !== GRAMMAR;
-  if (state.sortOrder === TOPICAL) fillParentPicker(els.typeParent, TOPICAL, 'Type');
   if (state.sortOrder === GRAMMAR) fillLabelPickers();
   els.compareBar.hidden = state.sortOrder !== COMPARE;
   els.indexBar.hidden = state.sortOrder !== INDEX;
@@ -120,17 +121,14 @@ function nodeOf(element) {
 
 function renameFromRow(button) {
   const { hierarchy, node } = nodeOf(button);
-  if (hierarchy === GRAMMAR) return editLabelFromRow(node);
-  const name = window.prompt('Rename this Type', node.name)?.trim();
-  if (name && name !== node.name) saveChange(TOPICAL, () => renameType(node.id, name));
-}
-
-/** Two prompts, name then explanation; cancelling either leaves the label as it was. */
-function editLabelFromRow(label) {
-  const name = window.prompt('Name of this label', label.name)?.trim();
+  const noun = hierarchy === GRAMMAR ? 'label' : 'Type';
+  const save = hierarchy === GRAMMAR ? editLabel : editType;
+  // Two prompts, name then explanation; cancelling either leaves it as it was. A Type made before Types had
+  // explanations opens with a blank one, and is saved only once it has one, as a label always does.
+  const name = window.prompt(`Name of this ${noun}`, node.name)?.trim();
   if (!name) return;
-  const definition = window.prompt(`What "${stripInline(name)}" means`, label.definition)?.trim();
-  if (definition && (name !== label.name || definition !== label.definition)) saveChange(GRAMMAR, () => editLabel(label.id, name, definition));
+  const definition = window.prompt(`What "${stripInline(name)}" means`, node.definition)?.trim();
+  if (definition && (name !== node.name || definition !== node.definition)) saveChange(hierarchy, () => save(node.id, name, definition));
 }
 
 const SAVE_TABLES = { [TOPICAL]: saveTypeTables, [GRAMMAR]: saveLabelTables };
@@ -222,21 +220,32 @@ function optionFor(value, text, selected) {
   return option;
 }
 
-/** Refills an "Add under" menu from the saved tree of `hierarchy`: the top level, or any label or Type with room for another level; keeps what Luke had chosen. */
-function fillParentPicker(select, hierarchy, noun) {
-  const parentChoice = select.value;
-  select.replaceChildren(
-    optionFor('', 'At the top level', parentChoice === ''),
-    ...treeLabels(state, hierarchy).filter((label) => label.depth < MAX_LABEL_DEPTH).map((label) => optionFor(label.id, `Under ${stripInline(label.path)}`, parentChoice === String(label.id))),
-  );
-  select.title = `Where the new ${noun} goes: at the top, or under one, up to ${MAX_LABEL_DEPTH} levels deep`;
+/** Where a new label or Type may go: any label or Type of `hierarchy` with room for another level, named by its path. */
+function parentChoices(hierarchy) {
+  return treeLabels(state, hierarchy).filter((label) => label.depth < MAX_LABEL_DEPTH).map((label) => ({ id: label.id, label: stripInline(label.path) }));
+}
+
+/** An "Under …" box: type-ahead over the saved tree (tree order, narrowing as Luke types); an empty box means the top level. */
+function bindParentPicker(input, list, hierarchy, noun) {
+  input.title = `Where the new ${noun} goes: leave empty for the top, or type to find one to go under, up to ${MAX_LABEL_DEPTH} levels deep`;
+  return bindDevicePicker({ input, list, getDevices: () => parentChoices(hierarchy), isFuzzy: () => state.fuzzy, limit: PARENT_LIMIT, sorted: false });
+}
+
+/** @returns {{parentId: number | null} | null} the chosen parent (null id = the top level), or null after reporting text that names no parent */
+function readParent(picker, status, noun) {
+  if (picker.isEmpty()) return { parentId: null };
+  const parentId = picker.chosen();
+  if (parentId === null) {
+    flashStatus(status, `Choose where the ${noun} goes from the list, or empty the box for the top level`);
+    return null;
+  }
+  return { parentId };
 }
 
 /** Refills the two label pickers from the saved tree, keeping what Luke had chosen. */
 function fillLabelPickers() {
   const labels = treeLabels(state, GRAMMAR);
   const indent = (label) => `${'\u2003'.repeat(label.depth - 1)}${stripInline(label.name)}`;
-  fillParentPicker(els.labelParent, GRAMMAR, 'label');
   const labelChoice = els.deviceLabel.value;
   els.deviceLabel.replaceChildren(
     ...(labels.length === 0 ? [optionFor('', 'Add a label first', true)] : labels.map((label) => optionFor(label.id, indent(label), labelChoice === String(label.id)))),
@@ -249,7 +258,9 @@ async function onAddLabel(event) {
   const name = els.labelName.value.trim();
   const definition = els.labelDefinition.value.trim();
   if (!name || !definition) return;
-  const parentId = els.labelParent.value === '' ? null : Number(els.labelParent.value);
+  const parent = readParent(labelParentPicker, els.grammarStatus, 'label');
+  if (parent === null) return;
+  const { parentId } = parent;
   if (parentId !== null) openWithAncestors(state, GRAMMAR, parentId); // so the new sub-label is seen
   if (await saveChange(GRAMMAR, () => createLabel(name, definition, parentId))) {
     els.labelName.value = '';
@@ -409,10 +420,17 @@ function bindControls() {
   els.typeForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const name = els.typeName.value.trim();
-    if (!name) return;
-    const parentId = els.typeParent.value === '' ? null : Number(els.typeParent.value);
+    const definition = els.typeDefinition.value.trim();
+    if (!name || !definition) return;
+    const parent = readParent(typeParentPicker, els.typeStatus, 'Type');
+    if (parent === null) return;
+    const { parentId } = parent;
     if (parentId !== null) openWithAncestors(state, TOPICAL, parentId); // so the new sub-Type is seen
-    if (await saveChange(TOPICAL, () => createType(name, parentId))) els.typeName.value = '';
+    if (await saveChange(TOPICAL, () => createType(name, definition, parentId))) {
+      els.typeName.value = '';
+      els.typeDefinition.value = '';
+      els.typeName.focus();
+    }
   });
   els.labelForm.addEventListener('submit', onAddLabel);
   els.deviceForm.addEventListener('submit', onAddDeviceToLabel);
@@ -420,6 +438,8 @@ function bindControls() {
     dialog: els.tableDialog, form: els.tableForm, title: els.tableTitle, caption: els.tableCaption, cols: els.tableCols, rows: els.tableRows,
     colHeads: els.tableColHeads, rowHeads: els.tableRowHeads, grid: els.tableGrid, status: els.tableStatus, remove: els.tableDelete, cancel: els.tableCancel,
   });
+  typeParentPicker = bindParentPicker(els.typeParent, els.typeParentList, TOPICAL, 'Type');
+  labelParentPicker = bindParentPicker(els.labelParent, els.labelParentList, GRAMMAR, 'label');
   devicePicker = bindDevicePicker({ input: els.devicePick, list: els.devicePickList, getDevices: () => state.devices.values(), isFuzzy: () => state.fuzzy });
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');

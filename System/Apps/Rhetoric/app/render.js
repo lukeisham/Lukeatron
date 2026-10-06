@@ -18,19 +18,25 @@ function make(doc, tag, className, text) {
   return node;
 }
 
+function wrapIn(parent, child) {
+  parent.appendChild(child);
+  return parent;
+}
+
 function marker(doc, glyph, extraClass = '') {
   const node = make(doc, 'span', `marker ${extraClass}`.trim(), glyph);
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
 
-/** A span holding `text` with its `*italic*` pieces drawn as <em>, never as HTML. */
+/** A span holding `text` with its `*italic*` pieces drawn as <em> and its `_bold_` pieces as <strong>, never as HTML. */
 function inlineSpan(doc, className, text) {
   const wrapper = make(doc, 'span', className);
   for (const segment of parseInline(text)) {
-    wrapper.appendChild(segment.italic
-      ? make(doc, 'em', 'latin', segment.text)
-      : doc.createTextNode(segment.text));
+    let piece = doc.createTextNode(segment.text);
+    if (segment.bold) piece = wrapIn(make(doc, 'strong'), piece);
+    if (segment.italic) piece = wrapIn(make(doc, 'em', 'latin'), piece);
+    wrapper.appendChild(piece);
   }
   return wrapper;
 }
@@ -96,7 +102,7 @@ function revealButton(doc, node) {
   return button;
 }
 
-const TYPE_BUTTONS = [['label-table-add', 'Add table'], ['type-rename', 'Rename'], ['type-delete', 'Delete']];
+const TYPE_BUTTONS = [['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
 // A grammar label adds devices, and its Edit changes the explanation as well as the name.
 const LABEL_BUTTONS = [['label-add', 'Add device'], ['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
 
@@ -111,7 +117,7 @@ function typeActions(doc, node) {
   return actions;
 }
 
-/** A table cell (or heading) holding `text`, with its `*italic*` pieces drawn as <em>. */
+/** A table cell (or heading) holding `text`, with its `*italic*` pieces drawn as <em> and its `_bold_` pieces as <strong>. */
 function gridCell(doc, tag, text, scope) {
   const cell = make(doc, tag);
   if (scope) cell.setAttribute('scope', scope);

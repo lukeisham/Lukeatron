@@ -83,12 +83,12 @@ test('Copy writes the Topical Types and the devices revealed under them', () => 
 
 // ---- Render ----------------------------------------------------------------------------------
 
-test('a real Type is droppable and carries Add table, Rename and Delete; Unsorted carries none', () => {
+test('a real Type is droppable and carries Add table, Edit and Delete; Unsorted carries none', () => {
   const container = draw(topicalState());
   const droppable = findAll(container, (n) => n.dataset.droppable === 'true');
   assert.deepEqual(droppable.map((n) => n.dataset.nodeId), ['7']);
   assert.equal(findAll(container, withClass('type-actions')).length, 1);
-  assert.deepEqual(findAll(container, withClass('type-action')).map((n) => n.textContent), ['Add table', 'Rename', 'Delete']);
+  assert.deepEqual(findAll(container, withClass('type-action')).map((n) => n.textContent), ['Add table', 'Edit', 'Delete']);
 });
 
 test('a Type with no definition draws no definition text', () => {
@@ -286,13 +286,14 @@ test('dragend clears the highlight and forgets the drag', () => {
   assert.deepEqual(drops, []);
 });
 
-// ---- Nested Types (four levels) ------------------------------------------------------------------
+// ---- Nested Types (five levels) ------------------------------------------------------------------
 
 const nestedTypes = () => [
   { kind: 'node', id: 1, name: 'Place', definition: '', children: [
     { kind: 'node', id: 2, name: 'Sound', definition: '', children: [
       { kind: 'node', id: 3, name: 'Rhythm', definition: '', children: [
-        { kind: 'node', id: 4, name: 'Meter', definition: '', children: [{ kind: 'device', id: 1 }] }] }] }] },
+        { kind: 'node', id: 4, name: 'Meter', definition: '', children: [
+          { kind: 'node', id: 5, name: 'Foot', definition: 'one unit of metre', children: [{ kind: 'device', id: 1 }] }] }] }] }] },
 ];
 
 test('treeLabels lists Types with level and path, and leaves out the derived Unsorted heading', () => {
@@ -300,16 +301,25 @@ test('treeLabels lists Types with level and path, and leaves out the derived Uns
   setEditableTree(state, 'topical', [...nestedTypes(), { kind: 'node', id: UNSORTED_ID, name: 'Unsorted', definition: '', children: [] }]);
   assert.deepEqual(treeLabels(state, 'topical').map((l) => [l.id, l.depth, l.path]), [
     [1, 1, 'Place'], [2, 2, 'Place > Sound'], [3, 3, 'Place > Sound > Rhythm'], [4, 4, 'Place > Sound > Rhythm > Meter'],
+    [5, 5, 'Place > Sound > Rhythm > Meter > Foot'],
   ]);
 });
 
-test('a fourth-level Type draws, indents and carries its parent id for dragging', () => {
+test('a fifth-level Type draws, shows its explanation, indents and carries its parent id for dragging', () => {
   const state = topicalState();
   setEditableTree(state, 'topical', nestedTypes());
-  for (const id of [1, 2, 3, 4]) state.opened.add(openKey('topical', id));
+  for (const id of [1, 2, 3, 4, 5]) state.opened.add(openKey('topical', id));
   const container = draw(state);
-  const meter = findAll(container, (n) => n.dataset?.nodeId === '4')[0];
-  assert.equal(meter.dataset.parentId, '3');
-  assert.equal(meter.dataset.droppable, 'true');
-  assert.match(viewToText(state, currentView(state)), /Meter/);
+  const foot = findAll(container, (n) => n.dataset?.nodeId === '5')[0];
+  assert.equal(foot.dataset.parentId, '4');
+  assert.equal(foot.dataset.droppable, 'true');
+  assert.equal(findAll(foot, withClass('node-definition'))[0].textContent, 'one unit of metre');
+  assert.match(viewToText(state, currentView(state)), /Foot — one unit of metre/);
+});
+
+test('a Type with no explanation copies as its name alone', () => {
+  const state = topicalState();
+  setEditableTree(state, 'topical', [{ kind: 'node', id: 1, name: 'Old Type', definition: '', children: [] }]);
+  state.opened.add(openKey('topical', 1));
+  assert.match(viewToText(state, currentView(state)), /^• Old Type$/m);
 });

@@ -21,8 +21,9 @@ const topicalChange = change('/api/topical/types', 'topical');
 const grammarChange = change('/api/grammar/labels', 'grammar');
 
 // A Type, like a label, may sit under a parent Type.
-export const createType = (name, parentId) => topicalChange('POST', '', parentId == null ? { name } : { name, parent_id: parentId });
-export const renameType = (typeId, name) => topicalChange('PUT', `/${typeId}`, { name });
+export const createType = (name, definition, parentId) =>
+  topicalChange('POST', '', parentId == null ? { name, definition } : { name, definition, parent_id: parentId });
+export const editType = (typeId, name, definition) => topicalChange('PUT', `/${typeId}`, { name, definition });
 export const deleteType = (typeId) => topicalChange('DELETE', `/${typeId}`);
 // A move may also change the parent: `parentId` null is the top level; leave it out to keep the parent.
 export const moveType = (typeId, index, parentId) =>

@@ -20,11 +20,11 @@ export const COMPARE = 'compare';
 /** Every group the app can open on: the sort buttons plus Compare (the "Open on" menu in index.html lists the same keys). */
 export const OPENING_CHOICES = [...SORTS, { key: COMPARE, label: 'Compare' }];
 
-/** The group that files devices under Luke's own grammar labels (explained terms, up to four levels deep); like Topical it is edited in the app, and it is kept out of the no-group search. */
+/** The group that files devices under Luke's own grammar labels (explained terms, up to five levels deep); like Topical it is edited in the app, and it is kept out of the no-group search. */
 export const GRAMMAR = 'grammar';
 
 /** How many levels of labels or Types the Grammar and Topical groups hold; mirrors grammar.MAX_DEPTH and topical.MAX_DEPTH. */
-export const MAX_LABEL_DEPTH = 4;
+export const MAX_LABEL_DEPTH = 5;
 
 /** The group that lists every real quote, ordered by `indexOrder` (see quoteindex.js); it is not a tree and not a device list. */
 export const INDEX = 'index';
@@ -112,7 +112,7 @@ export function createState(payload) {
   const quotes = (payload.quotes ?? []).map((quote) => ({
     id: quote.id,
     deviceId: quote.device_id,
-    text: quote.text, // the quoted words, with *italic* markup
+    text: quote.text, // the quoted words, with *italic* and _bold_ markup
     source: quote.source, // the closing parenthesis: who said it, where and when
     author: quote.author ?? null,
     date: quote.date ?? null, // 'YYYY', 'YYYY-MM-DD' or null when not known

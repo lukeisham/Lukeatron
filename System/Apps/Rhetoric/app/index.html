@@ -68,8 +68,14 @@
     <button id="home" class="home-link" type="button" hidden>← Home</button>
     <form id="type-form" class="type-form" autocomplete="off" hidden>
       <label class="type-field"><span class="visually-hidden">New Type name</span>
-        <input id="type-name" type="text" maxlength="80" placeholder="New Type…"></label>
-      <label><span class="visually-hidden">Add the Type under</span><select id="type-parent" class="toolbar-select"></select></label>
+        <input id="type-name" type="text" maxlength="80" placeholder="New Type…" required></label>
+      <label class="type-field label-explanation"><span class="visually-hidden">What the Type means</span>
+        <input id="type-definition" type="text" maxlength="300" placeholder="What it means…" required></label>
+      <span class="picker parent-picker">
+        <label class="type-field"><span class="visually-hidden">Add the Type under</span>
+          <input id="type-parent" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="type-parent-list" placeholder="At the top level — or find a parent…"></label>
+        <ul id="type-parent-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
       <button class="btn" type="submit">Add Type</button>
       <span id="type-status" class="toolbar-status" role="status"></span>
     </form>
@@ -80,7 +86,11 @@
         <input id="label-name" type="text" maxlength="80" placeholder="New label…" required></label>
       <label class="type-field label-explanation"><span class="visually-hidden">What the label means</span>
         <input id="label-definition" type="text" maxlength="300" placeholder="What it means…" required></label>
-      <label><span class="visually-hidden">Add the label under</span><select id="label-parent" class="toolbar-select"></select></label>
+      <span class="picker parent-picker">
+        <label class="type-field"><span class="visually-hidden">Add the label under</span>
+          <input id="label-parent" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="label-parent-list" placeholder="At the top level — or find a parent…"></label>
+        <ul id="label-parent-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
       <button class="btn" type="submit">Add label</button>
     </form>
     <form id="label-device-form" class="grammar-form" autocomplete="off">
@@ -122,7 +132,7 @@
     </div>
     <label class="table-caption-field">Caption (optional) <input id="table-caption" type="text"></label>
     <div class="table-grid-wrap"><table id="table-grid" class="table-grid"></table></div>
-    <p class="table-hint">Headings are the first row and column, shown in bold. Paste from a spreadsheet to fill the grid. <code>*word*</code> makes italics.</p>
+    <p class="table-hint">Headings are the first row and column, shown in bold. Paste from a spreadsheet to fill the grid. <code>*word*</code> makes italics and <code>_word_</code> makes bold.</p>
     <div class="table-actions">
       <button id="table-delete" class="btn" type="button" hidden>Delete table</button>
       <span id="table-status" class="toolbar-status" role="status"></span>

@@ -1,18 +1,21 @@
 /**
- * The device picker for the Grammar group: a text box with a drop-down list that narrows as Luke types,
- * matching the way the search box does (`matchesName`, so the Fuzzy option applies). Choosing an option
- * fills the box and remembers the device; `chosen()` also accepts a name typed out in full.
+ * The type-ahead pickers: a text box with a drop-down list that narrows as Luke types, matching the way the
+ * search box does (`matchesName`, so the Fuzzy option applies). Choosing an option fills the box and remembers
+ * it; `chosen()` also accepts a name typed out in full. Two use it: the Grammar device box, and the "Under …"
+ * parent boxes of the label and Type forms, which would be a very long menu once there are dozens of labels.
  */
 
 import { matchesName } from './search.js';
 
 export const PICKER_LIMIT = 12;
+export const PARENT_LIMIT = 200; // a parent list keeps tree order and scrolls, so it is not cut short
 
 const byLabel = (a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' });
 
-/** The devices whose shown label matches `query`, A to Z, at most `limit`; an empty query lists the first ones. */
-export function pickerOptions(devices, query, fuzzy, limit = PICKER_LIMIT) {
-  return [...devices].filter((device) => matchesName(device.label, query, fuzzy)).sort(byLabel).slice(0, limit);
+/** The items whose shown label matches `query`, A to Z (or as given when `sorted` is false), at most `limit`; an empty query lists the first ones. */
+export function pickerOptions(devices, query, fuzzy, limit = PICKER_LIMIT, sorted = true) {
+  const found = [...devices].filter((device) => matchesName(device.label, query, fuzzy));
+  return (sorted ? found.sort(byLabel) : found).slice(0, limit);
 }
 
 /** The one device the typed text names exactly (case-blind), or null; a Flipside's label is `Fallacy/Flipside`. */
@@ -24,11 +27,12 @@ export function exactDevice(devices, text) {
 }
 
 /**
- * Wires `input` and its `list` (a `ul`). `getDevices()` and `isFuzzy()` are read on every keystroke so a
- * redraw of the page never leaves them stale.
- * @returns {{chosen: () => number | null, clear: () => void}}
+ * Wires `input` and its `list` (a `ul`). `getDevices()` (the `{id, label}` items) and `isFuzzy()` are read on
+ * every keystroke so a redraw of the page never leaves them stale. `limit` and `sorted` suit a long list that
+ * must keep its own order, such as a tree.
+ * @returns {{chosen: () => number | null, isEmpty: () => boolean, clear: () => void}}
  */
-export function bindDevicePicker({ input, list, getDevices, isFuzzy }) {
+export function bindDevicePicker({ input, list, getDevices, isFuzzy, limit = PICKER_LIMIT, sorted = true }) {
   let options = [];
   let active = -1;
   let picked = null;
@@ -48,7 +52,7 @@ export function bindDevicePicker({ input, list, getDevices, isFuzzy }) {
   };
 
   const open = () => {
-    options = pickerOptions(getDevices(), input.value, isFuzzy());
+    options = pickerOptions(getDevices(), input.value, isFuzzy(), limit, sorted);
     list.replaceChildren(...options.map((device, position) => {
       const item = list.ownerDocument.createElement('li');
       item.id = `${list.id}-option-${position}`;
@@ -98,7 +102,10 @@ export function bindDevicePicker({ input, list, getDevices, isFuzzy }) {
   });
 
   return {
-    chosen: () => picked ?? exactDevice(getDevices(), input.value)?.id ?? null,
+    // A remembered choice counts only while it is still among the items (its label may have been deleted since).
+    chosen: () => (picked !== null && [...getDevices()].some((device) => device.id === picked) ? picked : exactDevice(getDevices(), input.value)?.id ?? null),
+    // Whether the box holds nothing, which a parent picker reads as "at the top level".
+    isEmpty: () => input.value.trim() === '',
     clear: () => { picked = null; input.value = ''; close(); },
   };
 }

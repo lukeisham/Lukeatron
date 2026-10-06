@@ -3,7 +3,8 @@ The only module outside the seed pipeline that writes rhetoric.db (with grammar.
 topical_* tables (a granted exception, app-decisions.md). server.py routes to it; items.py reads
 the tree through `topical_tree`. Routing holds no SQL (API-1).
 
-Types nest at most four levels deep (a top-level Type, then three more below it), as Grammar's labels do.
+Types nest at most five levels deep (a top-level Type, then four more below it), as Grammar's labels do, and each has
+an explanation (`definition`) as a Grammar label does.
 A device may be filed under any number of Types, at any level."""
 
 from __future__ import annotations
@@ -22,7 +23,7 @@ UNSORTED_ID = 0
 UNSORTED_NAME = "Unsorted"
 UNSORTED_DEFINITION = "not yet placed under a Type"
 TABLE = "topical_types"
-MAX_DEPTH = 4  # levels of Types; mirrors MAX_LABEL_DEPTH in app/state.js and grammar.MAX_DEPTH
+MAX_DEPTH = 5  # levels of Types; mirrors MAX_LABEL_DEPTH in app/state.js and grammar.MAX_DEPTH
 
 
 class TopicalError(Exception):
@@ -46,10 +47,10 @@ def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> lis
     (devices in `ordered_device_ids` order) when any device is unplaced under any Type."""
     built: dict[int, dict[str, Any]] = {}
     parents: list[tuple[int, int | None]] = []
-    for type_id, parent_id, name, tables in conn.execute(
-        "SELECT id, parent_id, name, tables_json FROM topical_types ORDER BY position, id"
+    for type_id, parent_id, name, definition, tables in conn.execute(
+        "SELECT id, parent_id, name, definition, tables_json FROM topical_types ORDER BY position, id"
     ):
-        built[type_id] = _node(type_id, name, "", [], labeltables.parse(tables))
+        built[type_id] = _node(type_id, name, definition, [], labeltables.parse(tables))
         parents.append((type_id, parent_id))
     roots = []
     for type_id, parent_id in parents:
@@ -74,28 +75,33 @@ def _node(node_id: int, name: str, definition: str, device_ids: list[int], table
     }
 
 
-def create_type(db_path: Path, name: str, parent_id: int | None = None) -> None:
-    """The new Type goes last among its siblings, under `parent_id` or at the top."""
+def create_type(db_path: Path, name: str, parent_id: int | None = None, definition: str = "") -> None:
+    """The new Type goes last among its siblings, under `parent_id` or at the top. (server.py always requires an
+    explanation; the default here is only for callers that build Types without one.)"""
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, TopicalError) >= MAX_DEPTH:
-            raise TopicalError("bad_request")  # a fifth level is refused
+            raise TopicalError("bad_request")  # a sixth level is refused
         if labeltree.taken(conn, TABLE, parent_id, name):
             raise TopicalError("conflict")
         conn.execute(
-            "INSERT INTO topical_types (parent_id, name, position) VALUES "
-            "(?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types WHERE parent_id IS ?))",
-            (parent_id, name, parent_id),
+            "INSERT INTO topical_types (parent_id, name, definition, position) VALUES "
+            "(?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types WHERE parent_id IS ?))",
+            (parent_id, name, definition, parent_id),
         )
 
 
-def rename_type(db_path: Path, type_id: int, name: str) -> None:
+def edit_type(db_path: Path, type_id: int, name: str, definition: str | None = None) -> None:
+    """Renames the Type and, unless `definition` is None, replaces its explanation."""
     with closing(connect_writable(db_path)) as conn, conn:
         row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
         if row is None:
             raise TopicalError("not_found")
         if labeltree.taken(conn, TABLE, row[0], name, except_id=type_id):
             raise TopicalError("conflict")
-        conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
+        if definition is None:
+            conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
+        else:
+            conn.execute("UPDATE topical_types SET name = ?, definition = ? WHERE id = ?", (name, definition, type_id))
 
 
 def set_tables(db_path: Path, type_id: int, tables: list[dict[str, Any]]) -> None:

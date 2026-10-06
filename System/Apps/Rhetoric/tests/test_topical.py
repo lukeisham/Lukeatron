@@ -98,25 +98,35 @@ class TopicalTest(unittest.TestCase):
     def test_rename_changes_the_name_only(self):
         topical.create_type(self.db_path, "Old")
         topical.add_placement(self.db_path, 1, 1)
-        topical.rename_type(self.db_path, 1, "New")
+        topical.edit_type(self.db_path, 1, "New")
         self.assertEqual(self.tree()[0]["name"], "New")
         self.assertEqual(device_ids(self.tree()[0]), [1])
 
-    def test_types_nest_four_levels_and_a_fifth_is_refused(self):
+    def test_types_nest_five_levels_and_a_sixth_is_refused(self):
         topical.create_type(self.db_path, "Place")
         topical.create_type(self.db_path, "Sound", 1)
         topical.create_type(self.db_path, "Rhythm", 2)
         topical.create_type(self.db_path, "Meter", 3)
+        topical.create_type(self.db_path, "Foot", 4)
         node = self.tree()[0]
-        for expected in ("Sound", "Rhythm", "Meter"):
+        for expected in ("Sound", "Rhythm", "Meter", "Foot"):
             [node] = [c for c in node["children"] if c["kind"] == "node"]
             self.assertEqual(node["name"], expected)
         with self.assertRaises(topical.TopicalError) as refused:
-            topical.create_type(self.db_path, "Too deep", 4)
+            topical.create_type(self.db_path, "Too deep", 5)
         self.assertEqual(refused.exception.code, "bad_request")
         with self.assertRaises(topical.TopicalError) as unknown:
             topical.create_type(self.db_path, "Orphan", 99)
         self.assertEqual(unknown.exception.code, "not_found")
+
+    def test_a_type_carries_an_explanation_that_can_be_edited(self):
+        topical.create_type(self.db_path, "Irony", None, "saying one thing and meaning another")
+        topical.create_type(self.db_path, "Bare")  # built without one: blank, not missing
+        self.assertEqual([n["definition"] for n in self.tree()[:2]], ["saying one thing and meaning another", ""])
+        topical.edit_type(self.db_path, 1, "Irony", "a gap between what is said and meant")
+        topical.edit_type(self.db_path, 1, "Verbal irony")  # no explanation given: the saved one stays
+        [irony, *_] = self.tree()
+        self.assertEqual((irony["name"], irony["definition"]), ("Verbal irony", "a gap between what is said and meant"))
 
     def test_a_sub_type_lists_before_its_devices_and_a_device_under_it_is_not_unsorted(self):
         topical.create_type(self.db_path, "Place")
@@ -136,8 +146,8 @@ class TopicalTest(unittest.TestCase):
         self.assertEqual(clash.exception.code, "conflict")
         topical.create_type(self.db_path, "Same", 2)  # another parent: a different sibling set
         with self.assertRaises(topical.TopicalError):
-            topical.rename_type(self.db_path, 2, "a")  # B onto A at the top level
-        topical.rename_type(self.db_path, 3, "SAME")  # its own name is not a clash
+            topical.edit_type(self.db_path, 2, "a")  # B onto A at the top level
+        topical.edit_type(self.db_path, 3, "SAME")  # its own name is not a clash
 
     def test_moving_a_type_reorders_its_siblings_only(self):
         for name in ("A", "B"):
@@ -179,8 +189,8 @@ class TopicalTest(unittest.TestCase):
         topical.create_type(self.db_path, "Other")
         cases = [
             (lambda: topical.create_type(self.db_path, "irony"), "conflict"),  # names are case-blind
-            (lambda: topical.rename_type(self.db_path, 2, "IRONY"), "conflict"),
-            (lambda: topical.rename_type(self.db_path, 99, "X"), "not_found"),
+            (lambda: topical.edit_type(self.db_path, 2, "IRONY"), "conflict"),
+            (lambda: topical.edit_type(self.db_path, 99, "X"), "not_found"),
             (lambda: topical.delete_type(self.db_path, 99), "not_found"),
             (lambda: topical.add_placement(self.db_path, 99, 1), "not_found"),
             (lambda: topical.add_placement(self.db_path, 1, 99), "not_found"),

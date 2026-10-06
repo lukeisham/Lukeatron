@@ -65,6 +65,16 @@ test('a caption is drawn, and cell text goes in as text and italics, never as ma
   assert.deepEqual(findAll(cells[1], tag('em')).map((n) => n.textContent), ['puella']);
 });
 
+test('_underscored_ cell text is drawn bold, and bold inside italics carries both', () => {
+  const { container } = drawWith([{ caption: '', colHeads: false, rowHeads: false, cells: [['_Nominative_ case', '*a _b_ c*']] }]);
+  const cells = findAll(container, tag('td'));
+  assert.deepEqual(findAll(cells[0], tag('strong')).map((n) => n.textContent), ['Nominative']);
+  assert.equal(cells[0].textContent, 'Nominative case');
+  assert.deepEqual(findAll(cells[1], tag('strong')).map((n) => n.textContent), ['b']);
+  assert.equal(cells[1].textContent, 'a b c');
+  assert.equal(findAll(cells[1], tag('em')).length, 3); // the plain, bold and plain pieces are all italic
+});
+
 test('the table carries its column count and its longest word for the CSS that sizes the text', () => {
   const { container } = drawWith([CASES]);
   const [table] = findAll(container, tag('table'));
@@ -102,15 +112,21 @@ test('a label with no tables key, or an empty list, draws no table', () => {
   assert.equal(findAll(container, tag('table')).length, 0);
 });
 
-test('Copy writes a table as text under its label: caption, a rule under the column headings, rows with | between cells', () => {
+test('Copy writes a table as text under its label: caption, then a row per line with commas between cells', () => {
   const { state } = drawWith([CASES]);
   const lines = viewToText(state, currentView(state)).split('\n');
   const start = lines.findIndex((line) => line.includes('Clause'));
-  assert.deepEqual(lines.slice(start + 1, start + 6), [
+  assert.deepEqual(lines.slice(start + 1, start + 5), [
     '  Latin cases',
-    '   | Singular | Plural',
-    '  --------------------',
-    '  Nominative | puella | puellae',
-    '  Genitive | puellae | puellarum',
+    '  ,Singular,Plural',
+    '  Nominative,puella,puellae',
+    '  Genitive,puellae,puellarum',
   ]);
+});
+
+test('Copy quotes a cell that holds a comma or a quote, and drops the bold and italic marks', () => {
+  const { state } = drawWith([{ caption: '', colHeads: false, rowHeads: false, cells: [['a, b', 'say "hi"', '_bold_ *it*'], ['', 'x', 'y']] }]);
+  const lines = viewToText(state, currentView(state)).split('\n');
+  const start = lines.findIndex((line) => line.includes('"a, b"'));
+  assert.deepEqual(lines.slice(start, start + 2), ['  "a, b","say ""hi""",bold it', '  ,x,y']);
 });

@@ -168,13 +168,16 @@ function compareToText(state, current) {
   return lines.join('\n');
 }
 
-/** A label's table as text: its caption, then a line per row with cells separated by ` | `, and a rule under the column headings. */
+/** One cell as a comma-separated value: a cell holding a comma, a quote or a line break is wrapped in quotes, with its own quotes doubled, so a pasted row keeps its columns. */
+function csvCell(text) {
+  const plain = stripInline(text);
+  return /[",\n]/.test(plain) ? `"${plain.replace(/"/g, '""')}"` : plain;
+}
+
+/** A label's table as text: its caption, then a line per row with the cells separated by commas (comma-separated values, so a spreadsheet reads the columns). */
 function tableToText(table, pad) {
   const lines = table.caption ? [`${pad}${stripInline(table.caption)}`] : [];
-  table.cells.forEach((row, index) => {
-    lines.push(`${pad}${row.map(stripInline).join(' | ')}`);
-    if (index === 0 && table.colHeads) lines.push(`${pad}${'-'.repeat(Math.max(3, lines.at(-1).length - pad.length))}`);
-  });
+  table.cells.forEach((row) => lines.push(`${pad}${row.map(csvCell).join(',')}`));
   return lines;
 }
 
@@ -186,7 +189,7 @@ export function viewToText(state, view) {
   const write = (item, depth) => {
     const pad = '  '.repeat(depth);
     if (item.kind === 'node') {
-      lines.push(`${pad}• ${stripInline(item.name)} — ${stripInline(item.definition)}`);
+      lines.push(`${pad}• ${stripInline(item.name)}${item.definition ? ` — ${stripInline(item.definition)}` : ''}`); // a Type made before explanations has none
       (item.tables ?? []).forEach((table) => lines.push(...tableToText(table, `${pad}  `)));
       item.children.forEach((child) => write(child, depth + 1));
       return;

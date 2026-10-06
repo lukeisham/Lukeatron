@@ -4,7 +4,7 @@ topical_* tables (a granted exception, app-decisions.md). server.py routes to it
 the tree through `topical_tree`. Routing holds no SQL (API-1).
 
 Types nest at most five levels deep (a top-level Type, then four more below it), as Grammar's labels do, and each has
-an explanation (`definition`) as a Grammar label does.
+an optional explanation (`definition`) as a Grammar label does.
 A device may be filed under any number of Types, at any level."""
 
 from __future__ import annotations
@@ -75,9 +75,8 @@ def _node(node_id: int, name: str, definition: str, device_ids: list[int], table
     }
 
 
-def create_type(db_path: Path, name: str, parent_id: int | None = None, definition: str = "") -> None:
-    """The new Type goes last among its siblings, under `parent_id` or at the top. (server.py always requires an
-    explanation; the default here is only for callers that build Types without one.)"""
+def create_type(db_path: Path, name: str, parent_id: int | None = None, definition: str | None = None) -> None:
+    """The new Type goes last among its siblings, under `parent_id` or at the top. The explanation is optional (None or blank)."""
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, TopicalError) >= MAX_DEPTH:
             raise TopicalError("bad_request")  # a sixth level is refused
@@ -86,12 +85,12 @@ def create_type(db_path: Path, name: str, parent_id: int | None = None, definiti
         conn.execute(
             "INSERT INTO topical_types (parent_id, name, definition, position) VALUES "
             "(?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types WHERE parent_id IS ?))",
-            (parent_id, name, definition, parent_id),
+            (parent_id, name, definition or "", parent_id),
         )
 
 
 def edit_type(db_path: Path, type_id: int, name: str, definition: str | None = None) -> None:
-    """Renames the Type and, unless `definition` is None, replaces its explanation."""
+    """Renames the Type and, unless `definition` is None, replaces its explanation (blank clears it)."""
     with closing(connect_writable(db_path)) as conn, conn:
         row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
         if row is None:

@@ -65,6 +65,16 @@ class GrammarTest(unittest.TestCase):
         grammar.edit_label(self.db_path, 1, "CLAUSE", "new explanation")  # its own name is not a clash
         self.assertEqual((self.tree()[0]["name"], self.tree()[0]["definition"]), ("CLAUSE", "new explanation"))
 
+    def test_a_label_needs_no_explanation_and_editing_can_leave_or_clear_it(self):
+        grammar.create_label(self.db_path, "Clause", None)
+        grammar.create_label(self.db_path, "Phrase", "")
+        self.assertEqual([n["definition"] for n in self.tree()], ["", ""])
+        grammar.edit_label(self.db_path, 1, "Clause", "a group of words with a verb")
+        grammar.edit_label(self.db_path, 1, "Main clause")  # no explanation given: the saved one stays
+        self.assertEqual((self.tree()[0]["name"], self.tree()[0]["definition"]), ("Main clause", "a group of words with a verb"))
+        grammar.edit_label(self.db_path, 1, "Main clause", "")  # blank clears it
+        self.assertEqual(self.tree()[0]["definition"], "")
+
     def test_moving_a_label_reorders_its_siblings_only(self):
         for name in ("A", "B", "C"):
             grammar.create_label(self.db_path, name, "d")

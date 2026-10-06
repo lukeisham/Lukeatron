@@ -3,7 +3,7 @@ Like topical.py it writes only its own two tables (`grammar_labels`, `grammar_pl
 exception (app-decisions.md); server.py routes to it and items.py reads the tree through `grammar_tree`.
 Routing holds no SQL (API-1).
 
-A label is a grammatical term with an explanation (`definition`). Labels nest at most five levels
+A label is a grammatical term with an optional explanation (`definition`, blank when none). Labels nest at most five levels
 deep (a top-level label, then four more below it). A device may be filed under any number
 of labels, at any level, so it can sit under a label and under one of that label's sub-labels too."""
 
@@ -58,8 +58,8 @@ def grammar_tree(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     return roots
 
 
-def create_label(db_path: Path, name: str, definition: str, parent_id: int | None = None) -> None:
-    """The new label goes last among its siblings, under `parent_id` or at the top."""
+def create_label(db_path: Path, name: str, definition: str | None, parent_id: int | None = None) -> None:
+    """The new label goes last among its siblings, under `parent_id` or at the top. The explanation is optional (None or blank)."""
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, GrammarError) >= MAX_DEPTH:
             raise GrammarError("bad_request")  # a sixth level is refused
@@ -68,18 +68,22 @@ def create_label(db_path: Path, name: str, definition: str, parent_id: int | Non
         conn.execute(
             "INSERT INTO grammar_labels (parent_id, name, definition, position) VALUES "
             "(?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM grammar_labels WHERE parent_id IS ?))",
-            (parent_id, name, definition, parent_id),
+            (parent_id, name, definition or "", parent_id),
         )
 
 
-def edit_label(db_path: Path, label_id: int, name: str, definition: str) -> None:
+def edit_label(db_path: Path, label_id: int, name: str, definition: str | None = None) -> None:
+    """Renames the label and, unless `definition` is None, replaces its explanation (blank clears it)."""
     with closing(connect_writable(db_path)) as conn, conn:
         row = conn.execute("SELECT parent_id FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
         if row is None:
             raise GrammarError("not_found")
         if labeltree.taken(conn, TABLE, row[0], name, except_id=label_id):
             raise GrammarError("conflict")
-        conn.execute("UPDATE grammar_labels SET name = ?, definition = ? WHERE id = ?", (name, definition, label_id))
+        if definition is None:
+            conn.execute("UPDATE grammar_labels SET name = ? WHERE id = ?", (name, label_id))
+        else:
+            conn.execute("UPDATE grammar_labels SET name = ?, definition = ? WHERE id = ?", (name, definition, label_id))
 
 
 def set_tables(db_path: Path, label_id: int, tables: list[dict[str, Any]]) -> None:

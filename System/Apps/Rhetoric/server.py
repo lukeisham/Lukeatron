@@ -56,9 +56,9 @@ MAX_ID = 999_999_999
 Route = tuple[str, re.Pattern[str], Callable[..., None], Callable[[BaseHTTPRequestHandler], list[Any] | None]]
 TOPICAL_ROUTES: list[Route] = [
     ("POST", re.compile(r"^/api/topical/types$"), topical.create_type,
-     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False), ("definition", _as_definition, True)])),
+     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False), ("definition", _as_definition, False)])),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.edit_type,
-     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True)])),
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.delete_type, lambda h: []),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type,
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
@@ -69,9 +69,9 @@ TOPICAL_ROUTES: list[Route] = [
 ]
 GRAMMAR_ROUTES: list[Route] = [
     ("POST", re.compile(r"^/api/grammar/labels$"), grammar.create_label,
-     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True), ("parent_id", _as_id, False)])),
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False), ("parent_id", _as_id, False)])),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.edit_label,
-     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, True)])),
+     lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False)])),
     ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.delete_label, lambda h: []),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/position$"), grammar.move_label,
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
@@ -135,7 +135,9 @@ def _as_name(value: Any) -> str | None:
 
 
 def _as_definition(value: Any) -> str | None:
-    if not isinstance(value, str) or not 0 < len(value.strip()) <= MAX_DEFINITION_LENGTH:
+    """A label's or Type's explanation: optional, so an empty one is valid (it clears the explanation) and a missing
+    one is left to the caller (blank when adding, unchanged when editing)."""
+    if not isinstance(value, str) or len(value.strip()) > MAX_DEFINITION_LENGTH:
         return None
     return value.strip()
 

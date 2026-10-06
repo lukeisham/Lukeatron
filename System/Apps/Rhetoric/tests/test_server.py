@@ -112,16 +112,25 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": 3})[0], 400)  # into itself
         self.assertEqual(fetch(self.topical_url("/3/position"), "PUT", {"index": 0, "parent_id": -1})[0], 400)
 
+    def test_an_explanation_is_optional_when_adding_a_type_or_a_label(self):
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "Bare"})[0], 200)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "Blank", "definition": "  "})[0], 200)
+        with sqlite3.connect(self.db_path) as conn:
+            self.assertEqual(conn.execute("SELECT name, definition FROM topical_types ORDER BY id").fetchall(), [("Bare", ""), ("Blank", "")])
+
     def test_permitted_topical_writes_pass_and_return_the_fresh_tree(self):
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "Irony"})[0], 400)  # an explanation is required, as for a label
         status, body = fetch(self.topical_url(), "POST", {"name": "  Irony ", "definition": " saying the opposite "})
         self.assertEqual(status, 200)
         self.assertEqual([(n["name"], n["definition"]) for n in json.loads(body)["topical"]], [("Irony", "saying the opposite"), ("Unsorted", "not yet placed under a Type")])
         status, body = fetch(self.topical_url("/1/devices/1"), "PUT")
         self.assertEqual([len(n["children"]) for n in json.loads(body)["topical"]], [1, 1])
-        self.assertEqual(fetch(self.topical_url("/1"), "PUT", {"name": "Wit"})[0], 400)  # the explanation is required here too
+        status, body = fetch(self.topical_url("/1"), "PUT", {"name": "Wit"})  # no explanation sent: the saved one stays
+        self.assertEqual((status, json.loads(body)["topical"][0]["definition"]), (200, "saying the opposite"))
         status, body = fetch(self.topical_url("/1"), "PUT", {"name": "Wit", "definition": "quick cleverness"})
         self.assertEqual((status, json.loads(body)["topical"][0]["definition"]), (200, "quick cleverness"))
+        status, body = fetch(self.topical_url("/1"), "PUT", {"name": "Wit", "definition": ""})  # blank clears it
+        self.assertEqual((status, json.loads(body)["topical"][0]["definition"]), (200, ""))
+        self.assertEqual(fetch(self.topical_url("/1"), "PUT", {"name": "Wit", "definition": "x" * 301})[0], 400)
         self.assertEqual(fetch(self.topical_url("/1/devices/1"), "DELETE")[0], 200)
         self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 200)
         self.assertEqual(self.topical_type_names(), [])
@@ -229,12 +238,14 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "clause", "definition": "d"})[0], 409)
         self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "X", "definition": "d", "parent_id": 99})[0], 404)
         self.assertEqual(fetch(self.grammar_url("/99"), "DELETE")[0], 404)
-        for body in ({"name": "X"}, {"name": "X", "definition": ""}, {"name": "X", "definition": "x" * 301},
+        for body in ({"name": "X", "definition": "x" * 301}, {"name": "X", "definition": 5},
                      {"name": "X", "definition": "d", "parent_id": "1"}, {"name": "X", "definition": "d", "parent_id": 0},
                      {"definition": "d"}):
             status, raw = fetch(self.grammar_url(), "POST", body)
             self.assertEqual((status, json.loads(raw)), (400, {"error": "bad_request"}), body)
-        self.assertEqual(fetch(self.grammar_url("/1"), "PUT", {"name": "X"})[0], 400)
+        self.assertEqual(fetch(self.grammar_url("/1"), "PUT", {"definition": "d"})[0], 400)  # a name is still required
+        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "Bare"})[0], 200)  # the explanation is optional
+        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "Blank", "definition": ""})[0], 200)
 
     def test_a_grammar_write_from_another_origin_is_forbidden_and_other_grammar_paths_404(self):
         for headers in ({"Origin": "https://evil.example"}, {"Host": "evil.example"}):

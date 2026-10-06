@@ -123,12 +123,13 @@ function renameFromRow(button) {
   const { hierarchy, node } = nodeOf(button);
   const noun = hierarchy === GRAMMAR ? 'label' : 'Type';
   const save = hierarchy === GRAMMAR ? editLabel : editType;
-  // Two prompts, name then explanation; cancelling either leaves it as it was. A Type made before Types had
-  // explanations opens with a blank one, and is saved only once it has one, as a label always does.
+  // Two prompts, name then explanation; cancelling either leaves it as it was. The explanation is optional: emptying
+  // the second box and confirming clears it.
   const name = window.prompt(`Name of this ${noun}`, node.name)?.trim();
   if (!name) return;
-  const definition = window.prompt(`What "${stripInline(name)}" means`, node.definition)?.trim();
-  if (definition && (name !== node.name || definition !== node.definition)) saveChange(hierarchy, () => save(node.id, name, definition));
+  const definition = window.prompt(`What "${stripInline(name)}" means (optional)`, node.definition)?.trim();
+  if (definition === undefined) return; // cancelled
+  if (name !== node.name || definition !== node.definition) saveChange(hierarchy, () => save(node.id, name, definition));
 }
 
 const SAVE_TABLES = { [TOPICAL]: saveTypeTables, [GRAMMAR]: saveLabelTables };
@@ -257,7 +258,7 @@ async function onAddLabel(event) {
   event.preventDefault();
   const name = els.labelName.value.trim();
   const definition = els.labelDefinition.value.trim();
-  if (!name || !definition) return;
+  if (!name) return;
   const parent = readParent(labelParentPicker, els.grammarStatus, 'label');
   if (parent === null) return;
   const { parentId } = parent;
@@ -421,7 +422,7 @@ function bindControls() {
     event.preventDefault();
     const name = els.typeName.value.trim();
     const definition = els.typeDefinition.value.trim();
-    if (!name || !definition) return;
+    if (!name) return;
     const parent = readParent(typeParentPicker, els.typeStatus, 'Type');
     if (parent === null) return;
     const { parentId } = parent;

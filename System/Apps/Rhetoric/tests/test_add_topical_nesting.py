@@ -34,12 +34,11 @@ class AddTopicalNestingTest(unittest.TestCase):
                          [(1, None, "B", 0), (2, None, "A", 1)])
         self.assertEqual(self.conn.execute("SELECT type_id, device_id FROM topical_placements").fetchall(), [(2, 7)])
 
-    def test_a_name_may_now_repeat_under_another_parent_but_not_among_siblings(self):
+    def test_a_name_may_repeat_under_another_parent_and_among_siblings(self):
         add_topical_nesting.migrate(self.conn)
         self.conn.execute("INSERT INTO topical_types (name) VALUES ('A')")
         self.conn.execute("INSERT INTO topical_types (parent_id, name) VALUES (1, 'A')")
-        with self.assertRaises(sqlite3.IntegrityError):
-            self.conn.execute("INSERT INTO topical_types (parent_id, name) VALUES (1, 'a')")
+        self.conn.execute("INSERT INTO topical_types (parent_id, name) VALUES (1, 'a')")  # the sibling-name rule is gone
 
     def test_a_second_run_changes_nothing(self):
         add_topical_nesting.migrate(self.conn)

@@ -53,16 +53,13 @@ class GrammarTest(unittest.TestCase):
             grammar.create_label(self.db_path, "Orphan", "d", 99)
         self.assertEqual(unknown.exception.code, "not_found")
 
-    def test_a_sibling_name_is_unique_case_blind_but_free_elsewhere(self):
+    def test_names_may_repeat_among_siblings_and_elsewhere(self):
         grammar.create_label(self.db_path, "Clause", "d")
         grammar.create_label(self.db_path, "Phrase", "d")
-        with self.assertRaises(grammar.GrammarError) as clash:
-            grammar.create_label(self.db_path, "CLAUSE", "d")
-        self.assertEqual(clash.exception.code, "conflict")
-        grammar.create_label(self.db_path, "Clause", "d", 2)  # under another label it is a different sibling set
-        with self.assertRaises(grammar.GrammarError):
-            grammar.edit_label(self.db_path, 2, "clause", "d")  # renaming Phrase onto Clause
-        grammar.edit_label(self.db_path, 1, "CLAUSE", "new explanation")  # its own name is not a clash
+        grammar.create_label(self.db_path, "CLAUSE", "d")  # a sibling with the same name, case apart
+        grammar.create_label(self.db_path, "Clause", "d", 2)  # and under another label
+        grammar.edit_label(self.db_path, 2, "clause", "d")  # renaming Phrase onto Clause
+        grammar.edit_label(self.db_path, 1, "CLAUSE", "new explanation")
         self.assertEqual((self.tree()[0]["name"], self.tree()[0]["definition"]), ("CLAUSE", "new explanation"))
 
     def test_a_label_needs_no_explanation_and_editing_can_leave_or_clear_it(self):
@@ -135,9 +132,7 @@ class GrammarTest(unittest.TestCase):
             self.assertEqual(caught.exception.code, code)
         grammar.move_label(self.db_path, 7, 0, 4)  # a single label under D is a fifth level: allowed
         grammar.create_label(self.db_path, "B", "d", 6)  # "B" now also under Other
-        with self.assertRaises(grammar.GrammarError) as clash:
-            grammar.move_label(self.db_path, 2, 0, 6)  # B (under A) onto Other, which has a B
-        self.assertEqual(clash.exception.code, "conflict")
+        grammar.move_label(self.db_path, 2, 0, 6)  # B (under A) onto Other, which has a B: allowed now
 
     def test_a_device_can_sit_under_several_labels_at_different_levels(self):
         grammar.create_label(self.db_path, "Clause", "d")

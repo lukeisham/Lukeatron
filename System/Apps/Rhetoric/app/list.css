@@ -76,6 +76,10 @@
 .node[data-hierarchy="grammar"] > .heading-row > .node-name,
 .node[data-hierarchy="topical"] > .heading-row > .node-name { color: var(--color-ink-soft); }
 
+/* A link label (Add link): not bold and underlined, so it reads as a link to its own section of the About page rather than a heading. */
+.node-name.node-link-name { font-weight: 400; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.node[data-hierarchy] > .heading-row > .node-link-name:hover { color: var(--color-ink); }
+
 .node-definition {
   color: var(--color-ink-soft);
   font-size: var(--font-size-definition);

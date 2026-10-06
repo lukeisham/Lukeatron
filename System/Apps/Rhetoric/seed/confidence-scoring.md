@@ -1,6 +1,6 @@
 # Rhetoric: AI confidence scoring record (2026-10-03, looser Test 1 applied to every device)
 
-How each device's `ai_confidence_rating` was set under the rubric in `README.md`. Only failed tests are listed; every other test passed. Re-score a device here whenever its definition, example or placement changes.
+How each device's `ai_confidence_rating` was set under the rubric in `guides/confidence-rubric.md`. Only failed tests are listed; every other test passed. Re-score a device here whenever its definition, example or placement changes.
 
 Test 1 = Definition · Test 2 = Example · Test 3 = Categorisation. Source counts come from `seed/popularity.json` (four scraped lists plus reference sources, Wikipedia excluded).
 

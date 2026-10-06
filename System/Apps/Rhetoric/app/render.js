@@ -29,9 +29,9 @@ function marker(doc, glyph, extraClass = '') {
   return node;
 }
 
-/** A span holding `text` with its `*italic*` pieces drawn as <em> and its `_bold_` pieces as <strong>, never as HTML. */
-function inlineSpan(doc, className, text) {
-  const wrapper = make(doc, 'span', className);
+/** A span (or another `tag`) holding `text` with its `*italic*` pieces drawn as <em> and its `_bold_` pieces as <strong>, never as HTML. */
+function inlineSpan(doc, className, text, tag = 'span') {
+  const wrapper = make(doc, tag, className);
   for (const segment of parseInline(text)) {
     let piece = doc.createTextNode(segment.text);
     if (segment.bold) piece = wrapIn(make(doc, 'strong'), piece);
@@ -116,12 +116,13 @@ function revealButton(doc, node) {
   return button;
 }
 
-// A Type or label adds devices and tables, and its Edit changes the explanation as well as the name.
+// A Type or label adds devices and tables, and its Edit changes the explanation as well as the name. A link label holds neither, so it only renames and deletes.
 const TYPE_BUTTONS = [['label-add', 'Add device'], ['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
+const LINK_BUTTONS = TYPE_BUTTONS.filter(([className]) => className.startsWith('type-'));
 
 function typeActions(doc, node) {
   const actions = make(doc, 'span', 'type-actions');
-  for (const [className, label] of TYPE_BUTTONS) {
+  for (const [className, label] of node.about ? LINK_BUTTONS : TYPE_BUTTONS) {
     const button = make(doc, 'button', `type-action ${className}`, label);
     button.setAttribute('type', 'button');
     button.setAttribute('aria-label', `${label} ${stripInline(node.name)}`);
@@ -178,8 +179,19 @@ function tableItem(doc, node, table, index) {
   return item;
 }
 
+/** A link label's name: plain weight and underlined (list.css), going to its own section of the About page. Not draggable on its own, so a drag from it moves the row. */
+function aboutLink(doc, node) {
+  const link = inlineSpan(doc, 'node-name node-link-name', node.name, 'a');
+  link.setAttribute('href', `about.html#${encodeURIComponent(node.about)}`);
+  link.setAttribute('draggable', 'false');
+  link.title = 'Open its section of the About page';
+  return link;
+}
+
 function nodeRow(doc, state, node, mode, depth) {
-  const item = make(doc, 'li', depth === 0 ? 'node node-root' : 'node');
+  const isLink = Boolean(node.about); // a link label: its name goes to its own section of the About page
+  const item = make(doc, 'li', `${depth === 0 ? 'node node-root' : 'node'}${isLink ? ' node-link' : ''}`);
+  if (isLink) item.dataset.link = 'true';
   if (node.group) item.dataset.group = node.hierarchy;
   else item.dataset.nodeId = String(node.id);
   item.dataset.hierarchy = node.hierarchy;
@@ -187,8 +199,10 @@ function nodeRow(doc, state, node, mode, depth) {
   if (node.parentId != null) item.dataset.parentId = String(node.parentId);
 
   const row = make(doc, 'div', 'heading-row');
-  row.setAttribute('role', 'button');
-  row.setAttribute('tabindex', '0');
+  if (!isLink) { // a link's own anchor is the control, so the row is not a second one
+    row.setAttribute('role', 'button');
+    row.setAttribute('tabindex', '0');
+  }
   // A top-level label is a black square, a label with no sub-labels an empty box, and any other a dot. A closed heading
   // with something folded away under it draws its marker bigger and black, whichever shape, so it reads as having more inside.
   const closed = node.foldable && !node.open ? ' marker-hidden' : '';
@@ -196,7 +210,7 @@ function nodeRow(doc, state, node, mode, depth) {
   const dot = topLevel ? marker(doc, '', `marker-box marker-box-solid${closed}`)
     : node.leaf ? marker(doc, '', `marker-box marker-box-hollow${closed}`)
     : marker(doc, '•', `marker-dot${closed}`);
-  row.append(dot, inlineSpan(doc, 'node-name', node.name));
+  row.append(dot, isLink ? aboutLink(doc, node) : inlineSpan(doc, 'node-name', node.name));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {
     row.setAttribute('draggable', 'true'); // the handle for reordering Types and labels

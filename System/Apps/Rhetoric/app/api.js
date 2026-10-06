@@ -19,6 +19,8 @@ export const fetchItems = () => request('GET', '/api/items');
 const change = (prefix, key) => async (method, path, body) => (await request(method, `${prefix}${path}`, body))[key];
 const topicalChange = change('/api/topical/types', 'topical');
 const grammarChange = change('/api/grammar/labels', 'grammar');
+const topicalLinkChange = change('/api/topical/links', 'topical');
+const grammarLinkChange = change('/api/grammar/links', 'grammar');
 
 // A Type, like a label, may sit under a parent Type.
 export const createType = (name, definition, parentId) =>
@@ -36,6 +38,11 @@ export const removePlacement = (typeId, deviceId) => topicalChange('DELETE', `/$
 // A Type's or label's whole list of tables (each `{ caption, colHeads, rowHeads, cells }`, see tablegrid.js) is saved in one go.
 export const saveTypeTables = (typeId, tables) => topicalChange('PUT', `/${typeId}/tables`, { tables });
 export const saveLabelTables = (labelId, tables) => grammarChange('PUT', `/${labelId}/tables`, { tables });
+
+// A link label (the Add link button): just a name and an optional parent. The server gives it its own new, empty section at the
+// end of the About page and answers with the tree, where the row carries that section's id in `about`.
+export const createTypeLink = (name, parentId) => topicalLinkChange('POST', '', parentId == null ? { name } : { name, parent_id: parentId });
+export const createLabelLink = (name, parentId) => grammarLinkChange('POST', '', parentId == null ? { name } : { name, parent_id: parentId });
 
 // The Grammar labels work the same way; a label also carries its explanation, and may sit under a parent label.
 export const createLabel = (name, definition, parentId) =>

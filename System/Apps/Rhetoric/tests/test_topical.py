@@ -137,17 +137,14 @@ class TopicalTest(unittest.TestCase):
         self.assertEqual([(c["kind"], c["id"]) for c in place["children"]], [("node", 2), ("device", 1)])
         self.assertEqual(device_ids(place["children"][0]), [2])
 
-    def test_a_sibling_name_is_unique_case_blind_but_free_under_another_parent(self):
+    def test_names_may_repeat_among_siblings_and_under_another_parent(self):
         topical.create_type(self.db_path, "A")
         topical.create_type(self.db_path, "B")
         topical.create_type(self.db_path, "Same", 1)
-        with self.assertRaises(topical.TopicalError) as clash:
-            topical.create_type(self.db_path, "SAME", 1)
-        self.assertEqual(clash.exception.code, "conflict")
-        topical.create_type(self.db_path, "Same", 2)  # another parent: a different sibling set
-        with self.assertRaises(topical.TopicalError):
-            topical.edit_type(self.db_path, 2, "a")  # B onto A at the top level
-        topical.edit_type(self.db_path, 3, "SAME")  # its own name is not a clash
+        topical.create_type(self.db_path, "SAME", 1)  # a sibling with the same name, case apart
+        topical.create_type(self.db_path, "Same", 2)  # and under another parent
+        topical.edit_type(self.db_path, 2, "a")  # B onto A at the top level
+        topical.edit_type(self.db_path, 3, "SAME")
 
     def test_moving_a_type_reorders_its_siblings_only(self):
         for name in ("A", "B"):
@@ -188,8 +185,6 @@ class TopicalTest(unittest.TestCase):
         topical.create_type(self.db_path, "Irony")
         topical.create_type(self.db_path, "Other")
         cases = [
-            (lambda: topical.create_type(self.db_path, "irony"), "conflict"),  # names are case-blind
-            (lambda: topical.edit_type(self.db_path, 2, "IRONY"), "conflict"),
             (lambda: topical.edit_type(self.db_path, 99, "X"), "not_found"),
             (lambda: topical.delete_type(self.db_path, 99), "not_found"),
             (lambda: topical.add_placement(self.db_path, 99, 1), "not_found"),

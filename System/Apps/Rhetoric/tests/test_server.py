@@ -172,6 +172,36 @@ class ServerTest(unittest.TestCase):
 
     # ---- The Grammar write routes share the gate and the answer shape. ----
 
+    def test_a_labels_tables_are_saved_through_the_tables_route_and_returned_with_the_tree(self):
+        fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
+        fetch(self.topical_url(), "POST", {"name": "Irony"})
+        grid = {"caption": "", "colHeads": True, "rowHeads": False, "cells": [["A", "B"], ["1", "2"]]}
+        status, body = fetch(self.grammar_url("/1/tables"), "PUT", {"tables": [grid]})
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(body)["grammar"][0]["tables"], [grid])
+        status, body = fetch(self.topical_url("/1/tables"), "PUT", {"tables": [grid, grid]})
+        self.assertEqual(len(json.loads(body)["topical"][0]["tables"]), 2)
+        _, body = fetch(self.base + "/api/items")
+        self.assertEqual(json.loads(body)["trees"]["grammar"][0]["tables"], [grid])
+        self.assertEqual(json.loads(fetch(self.grammar_url("/1/tables"), "PUT", {"tables": []})[1])["grammar"][0]["tables"], [])
+
+    def test_a_bad_tables_body_unknown_label_or_foreign_origin_is_refused(self):
+        fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
+        grid = {"caption": "", "colHeads": False, "rowHeads": False, "cells": [["A"]]}
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "PUT", {"tables": "no"})[0], 400)
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "PUT", {})[0], 400)
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "PUT", {"tables": [dict(grid, cells=[["A"], ["B", "C"]])]})[0], 400)
+        self.assertEqual(fetch(self.grammar_url("/99/tables"), "PUT", {"tables": [grid]})[0], 404)
+        self.assertEqual(fetch(self.topical_url("/0/tables"), "PUT", {"tables": [grid]})[0], 404)  # Unsorted holds none
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "PUT", {"tables": [grid]}, {"Origin": "http://evil.example"})[0], 403)
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "POST", {"tables": [grid]})[0], 404)  # only PUT is a route
+
+    def test_a_large_tables_body_passes_where_a_name_body_would_not(self):
+        fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
+        big = {"caption": "", "colHeads": True, "rowHeads": True, "cells": [["x" * 200] * 8] * 20}
+        self.assertEqual(fetch(self.grammar_url("/1/tables"), "PUT", {"tables": [big, big]})[0], 200)
+        self.assertEqual(fetch(self.grammar_url("/1"), "PUT", {"name": "n" * 5000, "definition": "d"})[0], 400)
+
     def grammar_url(self, suffix: str = "") -> str:
         return self.base + "/api/grammar/labels" + suffix
 

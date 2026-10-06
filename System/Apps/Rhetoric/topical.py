@@ -13,6 +13,7 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import labeltables
 import labeltree
 
 # The derived "Unsorted" heading sits beside the real Types; app/state.js mirrors this id.
@@ -45,8 +46,10 @@ def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> lis
     (devices in `ordered_device_ids` order) when any device is unplaced under any Type."""
     built: dict[int, dict[str, Any]] = {}
     parents: list[tuple[int, int | None]] = []
-    for type_id, parent_id, name in conn.execute("SELECT id, parent_id, name FROM topical_types ORDER BY position, id"):
-        built[type_id] = _node(type_id, name, "", [])
+    for type_id, parent_id, name, tables in conn.execute(
+        "SELECT id, parent_id, name, tables_json FROM topical_types ORDER BY position, id"
+    ):
+        built[type_id] = _node(type_id, name, "", [], labeltables.parse(tables))
         parents.append((type_id, parent_id))
     roots = []
     for type_id, parent_id in parents:
@@ -64,9 +67,9 @@ def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> lis
     return roots
 
 
-def _node(node_id: int, name: str, definition: str, device_ids: list[int]) -> dict[str, Any]:
+def _node(node_id: int, name: str, definition: str, device_ids: list[int], tables: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     return {
-        "kind": "node", "id": node_id, "name": name, "definition": definition,
+        "kind": "node", "id": node_id, "name": name, "definition": definition, "tables": tables or [],
         "children": [{"kind": "device", "id": device_id} for device_id in device_ids],
     }
 
@@ -93,6 +96,12 @@ def rename_type(db_path: Path, type_id: int, name: str) -> None:
         if labeltree.taken(conn, TABLE, row[0], name, except_id=type_id):
             raise TopicalError("conflict")
         conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
+
+
+def set_tables(db_path: Path, type_id: int, tables: list[dict[str, Any]]) -> None:
+    """Replaces the Type's tables with `tables` (already `labeltables.clean`ed; the server does that)."""
+    with closing(connect_writable(db_path)) as conn, conn:
+        labeltables.save(conn, TABLE, type_id, tables, TopicalError)
 
 
 def delete_type(db_path: Path, type_id: int) -> None:

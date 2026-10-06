@@ -42,6 +42,19 @@
 .marker-example { font-size: var(--font-size-marker-small); }
 .marker-hidden { color: #000; font-size: var(--font-size-marker-large); }
 
+/* Heading markers drawn as boxes: solid for a top-level label, hollow for one with no sub-labels. Closed (.marker-hidden)
+   grows the box and turns its edge black, the same change the dot gets, so a folded heading reads alike in every shape. */
+.marker-box {
+  box-sizing: border-box;
+  width: var(--marker-box);
+  height: var(--marker-box);
+  border: var(--marker-box-edge) solid var(--color-marker);
+  transform: translateY(1px);
+}
+.marker-box-solid { border-color: #000; background: #000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.marker-box-hollow { background: none; }
+.marker-box.marker-hidden { width: var(--marker-box-large); height: var(--marker-box-large); border-color: #000; }
+
 .heading-row,
 .device-row {
   display: flex;

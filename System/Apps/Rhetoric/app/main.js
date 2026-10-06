@@ -2,7 +2,7 @@
 
 import {
   addLabelPlacement, addPlacement, createLabel, createType, deleteLabel, deleteType, editLabel, fetchItems, moveLabel, moveType, removeLabelPlacement,
-  removePlacement, renameType,
+  removePlacement, renameType, saveLabelTables, saveTypeTables,
 } from './api.js';
 import { bindDragAndDrop } from './drag.js';
 import { copyCurrentView, printCurrentView } from './actions.js';
@@ -10,6 +10,8 @@ import { INDEX_ORDERS } from './quoteindex.js';
 import { renderCompareBar, renderCount, renderIndexOrders, renderList, renderSortButtons, renderStatus } from './render.js';
 import { stripInline } from './markup.js';
 import { bindDevicePicker } from './picker.js';
+import { bindTableEditor } from './tableeditor.js';
+import { MAX_TABLES, newTable } from './tablegrid.js';
 import {
   COMPARE, EVERYTHING, FULL_VIEW, GRAMMAR, INDEX, MAX_LABEL_DEPTH, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, openWithAncestors,
   setActiveView, setComparePair, setEditableTree, setIndexOrder, setSortOrder, subtreeView, toggleExpanded, toggleOpened, treeLabels,
@@ -30,12 +32,16 @@ const els = {
   typeForm: $('type-form'), typeName: $('type-name'), typeParent: $('type-parent'), typeStatus: $('type-status'),
   grammarBar: $('grammar-bar'), labelForm: $('label-form'), labelName: $('label-name'), labelDefinition: $('label-definition'), labelParent: $('label-parent'),
   deviceForm: $('label-device-form'), devicePick: $('device-pick'), devicePickList: $('device-pick-list'), deviceLabel: $('device-label'), grammarStatus: $('grammar-status'),
+  tableDialog: $('table-dialog'), tableForm: $('table-form'), tableTitle: $('table-dialog-title'), tableCaption: $('table-caption'), tableCols: $('table-cols'),
+  tableRows: $('table-rows'), tableColHeads: $('table-col-heads'), tableRowHeads: $('table-row-heads'), tableGrid: $('table-grid'), tableStatus: $('table-status'),
+  tableDelete: $('table-delete'), tableCancel: $('table-cancel'),
   deviceCount: $('device-count'), print: $('print'), copy: $('copy'), copyStatus: $('copy-status'), home: $('home'),
 };
 
 const STATUS_MS = 2000;
 let state = null;
 let devicePicker = null;
+let tableEditor = null;
 
 // Even reading `window.localStorage` can throw when site data is blocked; null makes every settings call fall back to defaults.
 const storage = (() => {
@@ -124,15 +130,35 @@ function editLabelFromRow(label) {
   if (definition && (name !== label.name || definition !== label.definition)) saveChange(GRAMMAR, () => editLabel(label.id, name, definition));
 }
 
+const SAVE_TABLES = { [TOPICAL]: saveTypeTables, [GRAMMAR]: saveLabelTables };
+
+/** Opens the table dialog on a new table (`index` null) or on one of this Type's or label's saved tables; saving writes the whole list. */
+function editTable(button, index) {
+  const { hierarchy, node } = nodeOf(button);
+  const tables = node.tables ?? [];
+  if (index === null && tables.length >= MAX_TABLES) return flashStatus(EDITING[hierarchy].status(), `A ${hierarchy === GRAMMAR ? 'label' : 'Type'} holds up to ${MAX_TABLES} tables`);
+  const saveList = (next) => saveChange(hierarchy, () => SAVE_TABLES[hierarchy](node.id, next));
+  tableEditor.open(index === null ? newTable() : tables[index], {
+    heading: `${index === null ? 'Add a table to' : `Edit table ${index + 1} of`} \u201c${stripInline(node.name)}\u201d`,
+    canDelete: index !== null,
+    save: (table) => {
+      openWithAncestors(state, hierarchy, node.id); // so the table is seen
+      return saveList(index === null ? [...tables, table] : tables.map((saved, at) => (at === index ? table : saved)));
+    },
+    remove: () => saveList(tables.filter((_, at) => at !== index)),
+  });
+}
+
 function deleteFromRow(button) {
   const { hierarchy, node } = nodeOf(button);
+  const withTables = (node.tables ?? []).length > 0 ? ' Its tables go with it.' : '';
   if (hierarchy === GRAMMAR) {
-    if (window.confirm(`Delete the label "${stripInline(node.name)}"? Its devices stay in the library and under any other label.`)) {
+    if (window.confirm(`Delete the label "${stripInline(node.name)}"? Its devices stay in the library and under any other label.${withTables}`)) {
       saveChange(GRAMMAR, () => deleteLabel(node.id), 'Delete its sub-labels first');
     }
     return;
   }
-  if (window.confirm(`Delete the Type "${stripInline(node.name)}"? Its devices stay in the library and in any other Type.`)) {
+  if (window.confirm(`Delete the Type "${stripInline(node.name)}"? Its devices stay in the library and in any other Type.${withTables}`)) {
     saveChange(TOPICAL, () => deleteType(node.id), 'Delete its sub-Types first');
   }
 }
@@ -291,6 +317,9 @@ function onListClick(event) {
     return void saveChange(hierarchy, () => PLACING[hierarchy].remove(node.id, deviceId));
   }
   if (event.target.closest('.label-add')) return aimDeviceFormAt(event.target);
+  if (event.target.closest('.label-table-add')) return editTable(event.target, null);
+  const tableEdit = event.target.closest('.label-table-edit');
+  if (tableEdit) return editTable(tableEdit, Number(tableEdit.closest('.label-table-item').dataset.tableIndex));
   if (event.target.closest('.type-rename')) return renameFromRow(event.target);
   if (event.target.closest('.type-delete')) return deleteFromRow(event.target);
   const headingRow = event.target.closest('.heading-row');
@@ -384,6 +413,10 @@ function bindControls() {
   });
   els.labelForm.addEventListener('submit', onAddLabel);
   els.deviceForm.addEventListener('submit', onAddDeviceToLabel);
+  tableEditor = bindTableEditor(document, {
+    dialog: els.tableDialog, form: els.tableForm, title: els.tableTitle, caption: els.tableCaption, cols: els.tableCols, rows: els.tableRows,
+    colHeads: els.tableColHeads, rowHeads: els.tableRowHeads, grid: els.tableGrid, status: els.tableStatus, remove: els.tableDelete, cancel: els.tableCancel,
+  });
   devicePicker = bindDevicePicker({ input: els.devicePick, list: els.devicePickList, getDevices: () => state.devices.values(), isFuzzy: () => state.fuzzy });
   els.sort.addEventListener('click', (event) => {
     const button = event.target.closest('[data-sort]');

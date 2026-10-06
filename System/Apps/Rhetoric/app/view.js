@@ -31,7 +31,8 @@ function countDevices(node) {
 /**
  * A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
  * `reveal.on` makes a heading show its sub-labels and its own devices only while it is in `reveal.opened`;
- * a closed heading shows nothing beneath it. A heading with anything beneath it carries `foldable` and `open` for its button and dot.
+ * a closed heading shows nothing beneath it. A heading with anything beneath it carries `foldable` and `open` for its button and marker;
+ * `leaf` is true when it has no sub-labels of its own (devices and tables do not count), which draws its marker as an empty box.
  * In Topical a real Type, and in Grammar every label, is `editable` (renamed or edited, deleted, dropped onto) and its devices can be removed from it;
  * `parentId` is the label above (null at the top), which lets a drag tell siblings from other labels.
  */
@@ -52,9 +53,10 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId =
   }
   if (pruneEmpty && children.length === 0) return null;
   const deviceCount = countDevices(node);
+  const tables = node.tables ?? []; // a closed heading hides its tables with everything else beneath it
   return {
     kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children,
-    deviceCount, foldable: reveal.on && node.children.length > 0, open, editable, parentId,
+    tables: open ? tables : [], deviceCount, leaf: !node.children.some((child) => child.kind !== 'device'), foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
   };
 }
 
@@ -166,6 +168,16 @@ function compareToText(state, current) {
   return lines.join('\n');
 }
 
+/** A label's table as text: its caption, then a line per row with cells separated by ` | `, and a rule under the column headings. */
+function tableToText(table, pad) {
+  const lines = table.caption ? [`${pad}${stripInline(table.caption)}`] : [];
+  table.cells.forEach((row, index) => {
+    lines.push(`${pad}${row.map(stripInline).join(' | ')}`);
+    if (index === 0 && table.colHeads) lines.push(`${pad}${'-'.repeat(Math.max(3, lines.at(-1).length - pad.length))}`);
+  });
+  return lines;
+}
+
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
 export function viewToText(state, view) {
   if (view.mode === 'compare') return compareToText(state, view.current);
@@ -175,6 +187,7 @@ export function viewToText(state, view) {
     const pad = '  '.repeat(depth);
     if (item.kind === 'node') {
       lines.push(`${pad}• ${stripInline(item.name)} — ${stripInline(item.definition)}`);
+      (item.tables ?? []).forEach((table) => lines.push(...tableToText(table, `${pad}  `)));
       item.children.forEach((child) => write(child, depth + 1));
       return;
     }

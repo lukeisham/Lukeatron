@@ -32,6 +32,10 @@ export const addPlacement = (typeId, deviceId, index) =>
   topicalChange('PUT', `/${typeId}/devices/${deviceId}`, index === undefined ? undefined : { index });
 export const removePlacement = (typeId, deviceId) => topicalChange('DELETE', `/${typeId}/devices/${deviceId}`);
 
+// A Type's or label's whole list of tables (each `{ caption, colHeads, rowHeads, cells }`, see tablegrid.js) is saved in one go.
+export const saveTypeTables = (typeId, tables) => topicalChange('PUT', `/${typeId}/tables`, { tables });
+export const saveLabelTables = (labelId, tables) => grammarChange('PUT', `/${labelId}/tables`, { tables });
+
 // The Grammar labels work the same way; a label also carries its explanation, and may sit under a parent label.
 export const createLabel = (name, definition, parentId) =>
   grammarChange('POST', '', parentId == null ? { name, definition } : { name, definition, parent_id: parentId });

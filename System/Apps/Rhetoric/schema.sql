@@ -23,6 +23,9 @@
 -- tables they are written by server.py (granted exception, app-decisions.md); the seed pipeline never
 -- touches them, so rebuilding the database from scratch discards them. `position` orders a label among
 -- its siblings, and a placement's `position` orders a device within its label.
+-- `tables_json` (on both tree tables) holds the tables Luke attaches to a label or Type: a JSON list, shape and
+-- limits in labeltables.py. It is written only through grammar.set_tables / topical.set_tables and goes with its row.
+-- An older database gains the column through seed/add_label_tables.py, not through this file.
 -- Build a fresh database, or add the topical and grammar tables to an existing one: sqlite3 rhetoric.db < schema.sql
 -- (an older database whose topical_types lacks `parent_id` is rebuilt by seed/add_topical_nesting.py).
 -- (an older database whose grammar_labels lacks `position`, or that still has the retired two-slot tables,
@@ -81,7 +84,8 @@ CREATE TABLE IF NOT EXISTS topical_types (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id INTEGER REFERENCES topical_types(id),
     name      TEXT NOT NULL,
-    position  INTEGER NOT NULL DEFAULT 0
+    position  INTEGER NOT NULL DEFAULT 0,
+    tables_json TEXT NOT NULL DEFAULT '[]'
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_topical_types_sibling_name ON topical_types(COALESCE(parent_id, 0), name COLLATE NOCASE);
 
@@ -138,7 +142,8 @@ CREATE TABLE IF NOT EXISTS grammar_labels (
     parent_id   INTEGER REFERENCES grammar_labels(id),
     name        TEXT NOT NULL,
     definition  TEXT NOT NULL,
-    position    INTEGER NOT NULL DEFAULT 0
+    position    INTEGER NOT NULL DEFAULT 0,
+    tables_json TEXT NOT NULL DEFAULT '[]'
 );
 
 -- A device filed under a label; deleting the label (or the device) removes its placements.

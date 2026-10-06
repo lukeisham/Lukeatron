@@ -9,6 +9,7 @@
 
 import { parseInline, stripInline } from './markup.js';
 import { GRAMMAR } from './state.js';
+import { isHeadingCell, longestWord } from './tablegrid.js';
 
 function make(doc, tag, className, text) {
   const node = doc.createElement(tag);
@@ -95,9 +96,9 @@ function revealButton(doc, node) {
   return button;
 }
 
-const TYPE_BUTTONS = [['type-rename', 'Rename'], ['type-delete', 'Delete']];
+const TYPE_BUTTONS = [['label-table-add', 'Add table'], ['type-rename', 'Rename'], ['type-delete', 'Delete']];
 // A grammar label adds devices, and its Edit changes the explanation as well as the name.
-const LABEL_BUTTONS = [['label-add', 'Add device'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
+const LABEL_BUTTONS = [['label-add', 'Add device'], ['label-table-add', 'Add table'], ['type-rename', 'Edit'], ['type-delete', 'Delete']];
 
 function typeActions(doc, node) {
   const actions = make(doc, 'span', 'type-actions');
@@ -108,6 +109,54 @@ function typeActions(doc, node) {
     actions.appendChild(button);
   }
   return actions;
+}
+
+/** A table cell (or heading) holding `text`, with its `*italic*` pieces drawn as <em>. */
+function gridCell(doc, tag, text, scope) {
+  const cell = make(doc, tag);
+  if (scope) cell.setAttribute('scope', scope);
+  cell.appendChild(inlineSpan(doc, '', text));
+  return cell;
+}
+
+/**
+ * One saved table under a label or Type. Headings are real <th> cells (column headings in <thead>, row headings
+ * at the start of a row), drawn bold by labeltable.css. `--cols` and `--word` (the columns and the longest word)
+ * are what labeltable.css sizes the text from so the table fits the width it is given.
+ */
+function tableItem(doc, node, table, index) {
+  const item = make(doc, 'li', 'label-table-item');
+  item.dataset.tableIndex = String(index);
+  if (node.editable) {
+    const edit = make(doc, 'button', 'type-action label-table-edit', 'Edit table');
+    edit.setAttribute('type', 'button');
+    edit.setAttribute('aria-label', `Edit table ${index + 1} of ${stripInline(node.name)}`);
+    item.appendChild(edit);
+  }
+  const grid = make(doc, 'table', 'label-table');
+  grid.style.setProperty('--cols', String(table.cells[0].length));
+  grid.style.setProperty('--word', String(longestWord(table)));
+  if (table.caption) grid.appendChild(make(doc, 'caption', 'label-table-caption', table.caption));
+  const rows = table.cells.map((cells, row) => {
+    const line = make(doc, 'tr');
+    cells.forEach((text, col) => {
+      const heading = isHeadingCell(table, row, col);
+      line.appendChild(gridCell(doc, heading ? 'th' : 'td', text, heading ? (row === 0 && table.colHeads ? 'col' : 'row') : undefined));
+    });
+    return line;
+  });
+  if (table.colHeads) {
+    const head = make(doc, 'thead');
+    head.appendChild(rows.shift());
+    grid.appendChild(head);
+  }
+  const body = make(doc, 'tbody');
+  rows.forEach((line) => body.appendChild(line));
+  grid.appendChild(body);
+  const wrap = make(doc, 'div', 'label-table-wrap');
+  wrap.appendChild(grid);
+  item.appendChild(wrap);
+  return item;
 }
 
 function nodeRow(doc, state, node, mode, depth) {
@@ -121,8 +170,13 @@ function nodeRow(doc, state, node, mode, depth) {
   const row = make(doc, 'div', 'heading-row');
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
-  // A closed heading with something folded away under it shows a bigger black dot, so it reads as having more inside.
-  const dot = marker(doc, '•', node.foldable && !node.open ? 'marker-hidden' : '');
+  // A top-level label is a black square, a label with no sub-labels an empty box, and any other a dot. A closed heading
+  // with something folded away under it draws its marker bigger and black, whichever shape, so it reads as having more inside.
+  const closed = node.foldable && !node.open ? ' marker-hidden' : '';
+  const topLevel = node.parentId == null && !node.group;
+  const dot = topLevel ? marker(doc, '', `marker-box marker-box-solid${closed}`)
+    : node.leaf ? marker(doc, '', `marker-box marker-box-hollow${closed}`)
+    : marker(doc, '•', closed.trim());
   row.append(dot, inlineSpan(doc, 'node-name', node.name));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {
@@ -133,9 +187,11 @@ function nodeRow(doc, state, node, mode, depth) {
   if (node.foldable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
 
-  if (node.children.length > 0) {
+  const tables = node.tables ?? [];
+  if (node.children.length > 0 || tables.length > 0) {
     const children = make(doc, 'ul', 'node-children');
     children.style.setProperty('--depth', String(depth + 1));
+    tables.forEach((table, index) => children.appendChild(tableItem(doc, node, table, index)));
     node.children.forEach((child) => children.appendChild(itemFor(doc, state, child, mode, depth + 1)));
     item.appendChild(children);
   }

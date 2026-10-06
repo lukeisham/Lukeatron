@@ -35,12 +35,12 @@ test('labels nest, and a device sits under a label and under a label inside it',
   assert.equal(clause.children[1].device.name, 'Anaphora');
 });
 
-test('each label shows its explanation beside its name, and carries Add device, Edit and Delete', () => {
+test('each label shows its explanation beside its name, and carries Add device, Add table, Edit and Delete', () => {
   const container = draw(grammarState());
   assert.deepEqual(findAll(container, withClass('node-definition')).map((n) => n.textContent),
     ['a group of words with a subject and a verb', 'can stand alone', 'a group of words without a verb of its own']);
   assert.deepEqual(findAll(container, withClass('type-action')).map((n) => n.textContent),
-    ['Add device', 'Edit', 'Delete', 'Add device', 'Edit', 'Delete', 'Add device', 'Edit', 'Delete']);
+    ['Add device', 'Add table', 'Edit', 'Delete', 'Add device', 'Add table', 'Edit', 'Delete', 'Add device', 'Add table', 'Edit', 'Delete']);
   assert.equal(findAll(container, withClass('label-add')).length, 3);
 });
 

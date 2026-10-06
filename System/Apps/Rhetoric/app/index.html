@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="list.css">
 <link rel="stylesheet" href="topical.css">
 <link rel="stylesheet" href="grammar.css">
+<link rel="stylesheet" href="labeltable.css">
 <link rel="stylesheet" href="compare.css">
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="print.css">
@@ -110,6 +111,26 @@
   </div>
   <div id="list" class="list" aria-live="polite"></div>
 </main>
+<dialog id="table-dialog" class="table-dialog" aria-labelledby="table-dialog-title">
+  <form id="table-form" class="table-form" autocomplete="off">
+    <h2 id="table-dialog-title" class="table-dialog-title">Table</h2>
+    <div class="table-controls">
+      <label class="table-count">Columns <input id="table-cols" type="number" inputmode="numeric"></label>
+      <label class="table-count">Rows <input id="table-rows" type="number" inputmode="numeric"></label>
+      <label class="toolbar-check"><input id="table-col-heads" type="checkbox"> Column headings</label>
+      <label class="toolbar-check"><input id="table-row-heads" type="checkbox"> Row headings</label>
+    </div>
+    <label class="table-caption-field">Caption (optional) <input id="table-caption" type="text"></label>
+    <div class="table-grid-wrap"><table id="table-grid" class="table-grid"></table></div>
+    <p class="table-hint">Headings are the first row and column, shown in bold. Paste from a spreadsheet to fill the grid. <code>*word*</code> makes italics.</p>
+    <div class="table-actions">
+      <button id="table-delete" class="btn" type="button" hidden>Delete table</button>
+      <span id="table-status" class="toolbar-status" role="status"></span>
+      <button id="table-cancel" class="btn" type="button">Cancel</button>
+      <button class="btn" type="submit">Save</button>
+    </div>
+  </form>
+</dialog>
 <script type="module" src="main.js"></script>
 </body>
 </html>

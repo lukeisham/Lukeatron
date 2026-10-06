@@ -15,6 +15,7 @@
   .confidence-badge,
   .reveal-toggle,
   .type-actions,
+  .label-table-edit,
   .placement-remove { display: none; }
 
   .masthead { padding: 0 0 var(--space-5); }

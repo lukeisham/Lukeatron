@@ -19,6 +19,7 @@ from typing import Any, Callable
 
 import grammar
 import items
+import labeltables
 import topical
 
 ROOT = Path(__file__).resolve().parent
@@ -41,6 +42,7 @@ ERROR_STATUS: dict[str, int] = {
 _MIME_FALLBACK = "application/octet-stream"
 
 MAX_BODY_BYTES = 1024
+MAX_TABLES_BODY_BYTES = 600_000  # one label's tables, every grid full to its limits (labeltables.MAX_*), at up to 3 bytes a character
 MAX_TYPE_NAME_LENGTH = 80
 MAX_DEFINITION_LENGTH = 300
 MAX_INDEX = 100_000
@@ -61,6 +63,8 @@ TOPICAL_ROUTES: list[Route] = [
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})/devices/(\d{1,9})$"), topical.remove_placement, lambda h: []),
+    ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/tables$"), topical.set_tables,
+     lambda h: _body_fields(h, [("tables", _as_tables, True)], MAX_TABLES_BODY_BYTES)),
 ]
 GRAMMAR_ROUTES: list[Route] = [
     ("POST", re.compile(r"^/api/grammar/labels$"), grammar.create_label,
@@ -72,6 +76,8 @@ GRAMMAR_ROUTES: list[Route] = [
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.add_placement, lambda h: _body_fields(h, [("index", _as_index, False)])),
     ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})/devices/(\d{1,9})$"), grammar.remove_placement, lambda h: []),
+    ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/tables$"), grammar.set_tables,
+     lambda h: _body_fields(h, [("tables", _as_tables, True)], MAX_TABLES_BODY_BYTES)),
 ]
 # Each write family: its URL prefix, its routes, the loader for the tree a change answers with, and the answer's key.
 WRITE_FAMILIES = [
@@ -133,6 +139,11 @@ def _as_definition(value: Any) -> str | None:
     return value.strip()
 
 
+def _as_tables(value: Any) -> list[dict[str, Any]] | None:
+    """A label's whole list of tables, in canonical form; an empty list (every table removed) is valid."""
+    return labeltables.clean(value)
+
+
 def _as_index(value: Any) -> int | None:
     if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= MAX_INDEX:
         return None
@@ -153,7 +164,7 @@ def _as_parent(value: Any) -> int | None:
 
 
 def _body_fields(
-    handler: BaseHTTPRequestHandler, fields: list[tuple[str, Callable[[Any], Any], bool]]
+    handler: BaseHTTPRequestHandler, fields: list[tuple[str, Callable[[Any], Any], bool]], max_bytes: int = MAX_BODY_BYTES
 ) -> list[Any] | None:
     """The converted value of each `(field, convert, required)` in the JSON body, in order, or None when the
     body is not a small JSON object whose fields pass (API-4). An optional field that is missing or null gives
@@ -166,7 +177,7 @@ def _body_fields(
     if length == 0 and not any(required for _, _, required in fields):
         return [None] * len(fields)
     try:
-        if handler.headers.get_content_type() != "application/json" or not 0 < length <= MAX_BODY_BYTES:
+        if handler.headers.get_content_type() != "application/json" or not 0 < length <= max_bytes:
             return None
         body = json.loads(handler.rfile.read(length))
     except (ValueError, UnicodeDecodeError):
@@ -180,7 +191,7 @@ def _body_fields(
             values.append(None)
             continue
         value = convert(raw)
-        if value is None:
+        if value is None:  # an empty list is a real value, so only None is a failure
             return None
         values.append(value)
     return values

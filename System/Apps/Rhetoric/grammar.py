@@ -1,5 +1,5 @@
 """Grammar labels — Luke's own labels for the Grammar group, created and filled from the app.
-Like topical.py it writes only its own two tables (`grammar_labels`, `grammar_placements`), a granted
+Like topical.py it writes only its own two tables (`grammar_labels`, `grammar_placements`; a label's tables are a column of the first), a granted
 exception (app-decisions.md); server.py routes to it and items.py reads the tree through `grammar_tree`.
 Routing holds no SQL (API-1).
 
@@ -14,6 +14,7 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import labeltables
 import labeltree
 
 HIERARCHY = "grammar"  # the Grammar group files devices under the grammar-label tree
@@ -41,10 +42,11 @@ def grammar_tree(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     then its devices (in Luke's order). Every label is kept, empty or not, so it can be filled."""
     built: dict[int, dict[str, Any]] = {}
     parents: list[tuple[int, int | None]] = []
-    for label_id, parent_id, name, definition in conn.execute(
-        "SELECT id, parent_id, name, definition FROM grammar_labels ORDER BY position, id"
+    for label_id, parent_id, name, definition, tables in conn.execute(
+        "SELECT id, parent_id, name, definition, tables_json FROM grammar_labels ORDER BY position, id"
     ):
-        built[label_id] = {"kind": "node", "id": label_id, "name": name, "definition": definition, "children": []}
+        built[label_id] = {"kind": "node", "id": label_id, "name": name, "definition": definition,
+                           "tables": labeltables.parse(tables), "children": []}
         parents.append((label_id, parent_id))
     roots = []
     for label_id, parent_id in parents:
@@ -78,6 +80,12 @@ def edit_label(db_path: Path, label_id: int, name: str, definition: str) -> None
         if labeltree.taken(conn, TABLE, row[0], name, except_id=label_id):
             raise GrammarError("conflict")
         conn.execute("UPDATE grammar_labels SET name = ?, definition = ? WHERE id = ?", (name, definition, label_id))
+
+
+def set_tables(db_path: Path, label_id: int, tables: list[dict[str, Any]]) -> None:
+    """Replaces the label's tables with `tables` (already `labeltables.clean`ed; the server does that)."""
+    with closing(connect_writable(db_path)) as conn, conn:
+        labeltables.save(conn, TABLE, label_id, tables, GrammarError)
 
 
 def delete_label(db_path: Path, label_id: int) -> None:

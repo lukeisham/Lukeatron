@@ -83,12 +83,12 @@ test('Copy writes the Topical Types and the devices revealed under them', () => 
 
 // ---- Render ----------------------------------------------------------------------------------
 
-test('a real Type is droppable and carries Rename and Delete; Unsorted carries neither', () => {
+test('a real Type is droppable and carries Add table, Rename and Delete; Unsorted carries none', () => {
   const container = draw(topicalState());
   const droppable = findAll(container, (n) => n.dataset.droppable === 'true');
   assert.deepEqual(droppable.map((n) => n.dataset.nodeId), ['7']);
   assert.equal(findAll(container, withClass('type-actions')).length, 1);
-  assert.deepEqual(findAll(container, withClass('type-action')).map((n) => n.textContent), ['Rename', 'Delete']);
+  assert.deepEqual(findAll(container, withClass('type-action')).map((n) => n.textContent), ['Add table', 'Rename', 'Delete']);
 });
 
 test('a Type with no definition draws no definition text', () => {

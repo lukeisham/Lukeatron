@@ -72,8 +72,9 @@
 .node-name,
 .device-name { font-weight: 700; }
 
-/* In Grammar the labels are grey so the devices filed under them stand out in normal ink. */
-.node[data-hierarchy="grammar"] > .heading-row > .node-name { color: var(--color-ink-soft); }
+/* In Grammar and Topical the labels and Types are grey so the devices filed under them stand out in normal ink. */
+.node[data-hierarchy="grammar"] > .heading-row > .node-name,
+.node[data-hierarchy="topical"] > .heading-row > .node-name { color: var(--color-ink-soft); }
 
 .node-definition {
   color: var(--color-ink-soft);
@@ -94,6 +95,20 @@
   color: var(--color-ink-soft);
 }
 
+
+/* A single device's Labels and Types (Display options, off by default): small grey lines under its examples. */
+.device-filings {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0 0 var(--space-2) var(--space-6);
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+.device-filings dt { font-weight: 700; }
+.device-filings dd { margin: 0; }
+.device-filings .filings-none { font-style: italic; }
 
 .example {
   display: flex;

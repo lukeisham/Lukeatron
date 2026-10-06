@@ -9,6 +9,7 @@
 
 import { parseInline, stripInline } from './markup.js';
 import { isHeadingCell, longestWord } from './tablegrid.js';
+import { filingLines } from './view.js';
 
 function make(doc, tag, className, text) {
   const node = doc.createElement(tag);
@@ -90,7 +91,21 @@ function deviceRow(doc, state, entry, mode) {
     }
     item.appendChild(examples);
   }
+  const filings = filingLines(entry.filings);
+  if (filings.length > 0) item.appendChild(filingsBlock(doc, filings));
   return item;
+}
+
+/** The Labels and Types lines under a single device: where it is filed in Grammar and in Topical, one path per filing. */
+function filingsBlock(doc, filings) {
+  const block = make(doc, 'dl', 'device-filings');
+  for (const [title, paths] of filings) {
+    block.appendChild(make(doc, 'dt', '', title));
+    const value = make(doc, 'dd', paths.length > 0 ? '' : 'filings-none');
+    value.textContent = paths.length > 0 ? paths.join('; ') : 'none';
+    block.appendChild(value);
+  }
+  return block;
 }
 
 function revealButton(doc, node) {

@@ -23,7 +23,7 @@ import { currentView } from './view.js';
 const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
-  showDefinitions: $('show-definitions'), showExamples: $('show-examples'),
+  showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showLabels: $('show-labels'), showTypes: $('show-types'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), editMode: $('edit-mode'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
   indexBar: $('index-bar'), indexOrders: $('index-orders'), indexFull: $('index-full'),
@@ -478,6 +478,8 @@ function bindControls() {
   els.editMode.addEventListener('change', () => { state.editMode = els.editMode.checked; applyToggles(); saveToggles(storage, state); });
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
   els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
+  els.showLabels.addEventListener('change', () => { state.showLabels = els.showLabels.checked; refresh(); saveToggles(storage, state); });
+  els.showTypes.addEventListener('change', () => { state.showTypes = els.showTypes.checked; refresh(); saveToggles(storage, state); });
   // Like the group buttons, pressing Compare again leaves it for the everything-search state.
   els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
   els.indexOrders.addEventListener('click', (event) => {
@@ -513,6 +515,8 @@ async function start() {
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;
   els.showConfidence.checked = state.showConfidence;
+  els.showLabels.checked = state.showLabels;
+  els.showTypes.checked = state.showTypes;
   els.tableNames.checked = state.tableNames;
   els.tableDefinitions.checked = state.tableDefinitions;
   els.tableExamples.checked = state.tableExamples;

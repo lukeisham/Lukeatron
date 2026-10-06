@@ -24,6 +24,28 @@ const EMPTY_GRAMMAR_HINT = 'No labels yet. Add one above, then add devices to it
 
 const deviceItem = (device, { draggable = false, removeFrom = null } = {}) => ({ kind: 'device', device, draggable, removeFrom });
 
+/** Every path (`Parent > Child`) of an editable group's tree that holds the device directly; Topical's derived Unsorted heading is not a filing. */
+function pathsHolding(state, hierarchy, deviceId) {
+  const out = [];
+  const walk = (nodes, path) => {
+    for (const node of nodes.filter((child) => child.kind === 'node' && !(hierarchy === TOPICAL && child.id === UNSORTED_ID))) {
+      const here = [...path, stripInline(node.name)];
+      if (node.children.some((child) => child.kind === 'device' && child.id === deviceId)) out.push(here.join(' > '));
+      walk(node.children, here);
+    }
+  };
+  walk(state.trees[hierarchy] ?? [], []);
+  return out;
+}
+
+/** How a single device is filed, for the two Display options: `labels` (Grammar) and `types` (Topical) are lists of paths, or null while that option is off. */
+export function filingsOf(state, deviceId) {
+  return {
+    labels: state.showLabels ? pathsHolding(state, GRAMMAR, deviceId) : null,
+    types: state.showTypes ? pathsHolding(state, TOPICAL, deviceId) : null,
+  };
+}
+
 function countDevices(node) {
   return node.children.reduce((sum, child) => sum + (child.kind === 'device' ? 1 : countDevices(child)), 0);
 }
@@ -91,7 +113,7 @@ export function currentView(state) {
 
   if (view.kind === 'device') {
     const device = state.devices.get(view.id);
-    return { mode: 'device', items: device && matches(device) ? [deviceItem(device)] : [] };
+    return { mode: 'device', items: device && matches(device) ? [{ ...deviceItem(device), filings: filingsOf(state, device.id) }] : [] };
   }
 
   if (state.sortOrder === COMPARE) return compareView(state, matches);
@@ -181,6 +203,11 @@ function tableToText(table, pad) {
   return lines;
 }
 
+/** The [title, paths] pairs of a device's filings that are switched on, Labels before Types. */
+export function filingLines(filings) {
+  return [['Labels', filings?.labels], ['Types', filings?.types]].filter(([, paths]) => paths != null);
+}
+
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
 export function viewToText(state, view) {
   if (view.mode === 'compare') return compareToText(state, view.current);
@@ -199,6 +226,7 @@ export function viewToText(state, view) {
     lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
     if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
+    for (const [title, paths] of filingLines(item.filings)) lines.push(`${pad}  ${title}: ${paths.length > 0 ? paths.join('; ') : 'none'}`);
   };
   view.items.forEach((item) => write(item, 0));
   return lines.join('\n');

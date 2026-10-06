@@ -10,7 +10,7 @@ function fakeStorage(initial = {}) {
 }
 
 const allOff = {
-  showDefinitions: false, showExamples: false, showConfidence: false, reveal: false,
+  showDefinitions: false, showExamples: false, showConfidence: false, showLabels: false, showTypes: false, reveal: false,
   tableNames: false, tableDefinitions: false, tableExamples: false, indexFull: false, editMode: false,
 };
 

@@ -129,6 +129,8 @@ export function createState(payload) {
     showDefinitions: true,
     showExamples: true,
     showConfidence: true,
+    showLabels: false, // a single device's view also lists where it is filed in Grammar (its labels); off by default
+    showTypes: false, // ...and in Topical (its Types); off by default
     tableNames: true, // the Compare table's own switches: its Name, Definition and Examples rows
     tableDefinitions: true,
     tableExamples: true,

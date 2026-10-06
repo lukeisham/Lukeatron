@@ -9,6 +9,7 @@ export const NO_DEFAULT = 'none'; // open on the search-only screen
 
 const TOGGLES_KEY = 'rhetoric.toggles';
 const DEFAULT_SORT_KEY = 'rhetoric.defaultSort';
+const OPENED_KEY = 'rhetoric.opened';
 
 /** @returns {Object<string, boolean>} only the saved toggles that hold a real boolean */
 export function loadToggles(storage) {
@@ -46,4 +47,27 @@ export function saveDefaultSort(storage, value) {
   } catch (error) {
     console.warn('default group: could not save', error);
   }
+}
+
+/** @returns {Object<string, boolean>} the saved open/closed choice of each heading Luke has clicked, keyed by `openKey` */
+export function loadOpenChoices(storage) {
+  try {
+    const saved = JSON.parse(storage.getItem(OPENED_KEY) ?? '{}');
+    return Object.fromEntries(Object.entries(saved ?? {}).filter(([, open]) => typeof open === 'boolean'));
+  } catch (error) {
+    console.warn('open headings: storage unavailable or unreadable', error);
+    return {};
+  }
+}
+
+/** Saves `state.openChoices` if it differs from `lastSaved` (a JSON string); returns the string now saved, so a caller can pass it back and skip identical writes. */
+export function saveOpenChoices(storage, state, lastSaved = null) {
+  const json = JSON.stringify(Object.fromEntries(state.openChoices));
+  if (json === lastSaved) return lastSaved;
+  try {
+    storage.setItem(OPENED_KEY, json);
+  } catch (error) {
+    console.warn('open headings: could not save', error);
+  }
+  return json;
 }

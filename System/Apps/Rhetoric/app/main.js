@@ -13,10 +13,10 @@ import { bindDevicePicker } from './picker.js';
 import { bindTableEditor } from './tableeditor.js';
 import { MAX_TABLES, newTable } from './tablegrid.js';
 import {
-  COMPARE, EVERYTHING, FULL_VIEW, GRAMMAR, INDEX, MAX_LABEL_DEPTH, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, createState, deviceView, openWithAncestors,
+  COMPARE, EVERYTHING, FULL_VIEW, GRAMMAR, INDEX, MAX_LABEL_DEPTH, OPENING_CHOICES, SORTS, TOPICAL, UNSORTED_ID, applyOpenChoices, createState, deviceView, openWithAncestors,
   setActiveView, setComparePair, setEditableTree, setIndexOrder, setSortOrder, subtreeView, toggleExpanded, toggleOpened, treeLabels,
 } from './state.js';
-import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from './settings.js';
+import { NO_DEFAULT, loadDefaultSort, loadOpenChoices, loadToggles, saveDefaultSort, saveOpenChoices, saveToggles } from './settings.js';
 import { insertionIndex } from './order.js';
 import { currentView } from './view.js';
 
@@ -53,7 +53,10 @@ const storage = (() => {
   }
 })();
 
+let savedOpenChoices = null; // the JSON last written for the open and closed headings, so refresh writes only when a choice changed
+
 function refresh() {
+  savedOpenChoices = saveOpenChoices(storage, state, savedOpenChoices);
   renderSortButtons(document, els.sort, SORTS, state.sortOrder);
   const view = currentView(state);
   renderList(document, els.list, state, view);
@@ -464,6 +467,7 @@ async function start() {
   }
   renderCount(els.deviceCount, state.devices.size);
   Object.assign(state, loadToggles(storage));
+  applyOpenChoices(state, loadOpenChoices(storage));
   els.showDefinitions.checked = state.showDefinitions;
   els.showExamples.checked = state.showExamples;
   els.showConfidence.checked = state.showConfidence;

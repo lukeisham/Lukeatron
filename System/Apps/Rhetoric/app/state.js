@@ -136,6 +136,7 @@ export function createState(payload) {
     indexFull: false, // Index: full quotes with a link to the device, instead of one line each
     comparePairId: null, // the Flipside's id of the pair shown in Compare; null shows the first pair
     reveal: true, // the "Indent" menu option: headings open and close, a click on one shows or hides what is beneath it; off lists every sub-label and device
+    openChoices: new Map(), // openKey -> true/false for each heading Luke has opened or closed himself; only these are remembered between visits (settings.js), so a new label starts as the defaults say
     opened: initiallyOpen(payload.trees), // openKeys of the headings that are open: their sub-labels and their own devices show; a closed heading shows nothing beneath it
     editMode: true, // the "Edit mode" menu option: on shows the add forms and the Rename, Edit, Delete and × buttons and lets rows be dragged; off is read only
     expanded: new Set(),
@@ -197,12 +198,27 @@ export function setActiveView(state, view) {
 /** @returns {boolean} whether the heading is now open (its sub-labels and devices show) */
 export function toggleOpened(state, hierarchy, nodeId) {
   const key = openKey(hierarchy, nodeId);
-  if (state.opened.has(key)) {
-    state.opened.delete(key);
-    return false;
+  const open = !state.opened.has(key);
+  if (open) state.opened.add(key);
+  else state.opened.delete(key);
+  state.openChoices.set(key, open);
+  return open;
+}
+
+/** Re-applies saved open/closed choices (a `{ openKey: boolean }` object), skipping any for a heading that no longer exists. */
+export function applyOpenChoices(state, saved) {
+  const existing = new Set(Object.entries(state.trees).flatMap(([hierarchy, roots]) => {
+    const keys = [];
+    const walk = (nodes) => nodes.filter((child) => child.kind === 'node').forEach((node) => { keys.push(openKey(hierarchy, node.id)); walk(node.children); });
+    walk(roots);
+    return keys;
+  }));
+  for (const [key, open] of Object.entries(saved)) {
+    if (!existing.has(key)) continue;
+    state.openChoices.set(key, open);
+    if (open) state.opened.add(key);
+    else state.opened.delete(key);
   }
-  state.opened.add(key);
-  return true;
 }
 
 /** Opens the heading and every heading above it, so something just added or dropped under it is seen. A heading not in the tree is left alone. */
@@ -215,7 +231,10 @@ export function openWithAncestors(state, hierarchy, nodeId) {
     }
     return null;
   };
-  for (const id of find(state.trees[hierarchy]) ?? []) state.opened.add(openKey(hierarchy, id));
+  for (const id of find(state.trees[hierarchy]) ?? []) {
+    state.opened.add(openKey(hierarchy, id));
+    state.openChoices.set(openKey(hierarchy, id), true);
+  }
 }
 
 /** @returns {boolean} whether the device is now expanded */

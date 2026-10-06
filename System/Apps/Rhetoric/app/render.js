@@ -176,7 +176,7 @@ function nodeRow(doc, state, node, mode, depth) {
   const topLevel = node.parentId == null && !node.group;
   const dot = topLevel ? marker(doc, '', `marker-box marker-box-solid${closed}`)
     : node.leaf ? marker(doc, '', `marker-box marker-box-hollow${closed}`)
-    : marker(doc, '•', closed.trim());
+    : marker(doc, '•', `marker-dot${closed}`);
   row.append(dot, inlineSpan(doc, 'node-name', node.name));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {

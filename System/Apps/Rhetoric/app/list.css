@@ -48,12 +48,14 @@
   box-sizing: border-box;
   width: var(--marker-box);
   height: var(--marker-box);
+  margin-inline: calc((var(--marker-box-large) - var(--marker-box)) / 2); /* every heading marker fills one --marker-box-large slot, so names of a layer start at the same x */
   border: var(--marker-box-edge) solid var(--color-marker);
   transform: translateY(1px);
 }
+.marker-dot { width: var(--marker-box-large); text-align: center; }
 .marker-box-solid { border-color: #000; background: #000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 .marker-box-hollow { background: none; }
-.marker-box.marker-hidden { width: var(--marker-box-large); height: var(--marker-box-large); border-color: #000; }
+.marker-box.marker-hidden { width: var(--marker-box-large); height: var(--marker-box-large); margin-inline: 0; border-color: #000; }
 
 .heading-row,
 .device-row {
@@ -78,7 +80,8 @@
 }
 .node-definition::before { content: "— "; }
 
-/* Indent grows one step per level up to --indent-max-depth, then stops (the tree stays nested). */
+/* Indent grows one step per level up to --indent-max-depth, then stops (the tree stays nested). A step is a marker slot plus the
+   row gap, so each layer's marker sits under its parent's name; the first layer is never indented. */
 .list .node-children {
   padding-left: calc((min(var(--depth), var(--indent-max-depth)) - min(var(--depth) - 1, var(--indent-max-depth))) * var(--indent-step));
   padding-bottom: var(--space-2);

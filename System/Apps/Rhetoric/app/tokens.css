@@ -64,7 +64,7 @@
   --space-9: 28px;
   --space-10: 44px;
   --space-11: 100px;
-  --indent-step: 14px;
+  --indent-step: calc(var(--marker-box-large) + var(--space-3)); /* a heading marker's slot plus the row gap: a sub-label's marker sits under its parent's name */
   --indent-max-depth: 4;
   --search-width: 300px;
   --body-max-width: 780px;

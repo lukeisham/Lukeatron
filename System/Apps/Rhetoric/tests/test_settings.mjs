@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { NO_DEFAULT, loadDefaultSort, loadToggles, saveDefaultSort, saveToggles } from '../app/settings.js';
-import { OPENING_CHOICES, SORTS } from '../app/state.js';
+import { NO_DEFAULT, loadDefaultSort, loadOpenChoices, loadToggles, saveDefaultSort, saveOpenChoices, saveToggles } from '../app/settings.js';
+import { OPENING_CHOICES, SORTS, applyOpenChoices, createState, openKey, toggleOpened } from '../app/state.js';
+import { payload } from './fixture.mjs';
 
 function fakeStorage(initial = {}) {
   const data = { ...initial };
@@ -53,4 +54,30 @@ test('Compare can be the opening group although it is not a sort button', () => 
   saveDefaultSort(storage, 'compare');
   assert.equal(loadDefaultSort(storage, OPENING_CHOICES), 'compare');
   assert.equal(OPENING_CHOICES.length, SORTS.length + 1);
+});
+
+function firstHeading(state) {
+  const [hierarchy, roots] = Object.entries(state.trees).find(([, nodes]) => nodes.some((node) => node.kind === 'node'));
+  return [hierarchy, roots.find((node) => node.kind === 'node').id];
+}
+
+test('headings Luke opened or closed are remembered; an unknown or junk entry is ignored', () => {
+  const storage = fakeStorage();
+  const first = createState(payload());
+  const [hierarchy, id] = firstHeading(first);
+  const key = openKey(hierarchy, id);
+  const wasOpen = first.opened.has(key);
+  toggleOpened(first, hierarchy, id);
+  const json = saveOpenChoices(storage, first);
+  assert.equal(saveOpenChoices(storage, first, json), json); // unchanged: nothing is written again
+
+  const second = createState(payload());
+  applyOpenChoices(second, loadOpenChoices(storage));
+  assert.equal(second.opened.has(key), !wasOpen);
+
+  const third = createState(payload());
+  applyOpenChoices(third, { 'grammar:99999': true });
+  assert.equal(third.opened.has('grammar:99999'), false); // a heading that no longer exists
+  assert.deepEqual(loadOpenChoices(fakeStorage({ 'rhetoric.opened': '{"a":true,"b":"x"}' })), { a: true });
+  assert.deepEqual(loadOpenChoices(fakeStorage({ 'rhetoric.opened': 'junk' })), {});
 });

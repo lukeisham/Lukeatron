@@ -7,6 +7,13 @@
 !/.Claude/
 !/.gitignore
 
+# Rhetoric is the exception to all of this (Luke, 2026-10-06): nothing of it is ignored.
+# Its dated backups in Archive/ are tracked (the rest of Archive/ stays local), and so are its
+# Python caches (re-allowed at the foot of this file, after the rules that ignore them) and database.
+!/Archive/
+/Archive/*
+!/Archive/Rhetoric-*/
+
 # Within System/: exclude scratch, and the entire Credentials/ directory
 # (all credential material stays local-only; nothing under it is ever pushed)
 /System/Sandbox/**
@@ -35,3 +42,7 @@ __pycache__/
 /System/Apps/Storytelling/reference/**/*.png
 /System/Apps/Storytelling/reference/**/*.pdf
 /System/Apps/Storytelling/dist/
+
+# Rhetoric's Python caches: re-allowed here because a later rule beats an earlier one (see the Rhetoric note above)
+!/System/Apps/Rhetoric/**/__pycache__/
+!/System/Apps/Rhetoric/**/*.pyc

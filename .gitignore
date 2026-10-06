@@ -37,11 +37,11 @@ __pycache__/
 # Home: the day's verse cache and per-app launch logs
 /System/Apps/Home/cache/
 
-# Storytelling: the source poster image, its working crops and the shareable bundle stay local
-# until the poster's licence (PRD open question OQ-X1) is settled — this repo is public.
+# Storytelling: the source poster image and any working images or PDFs under reference/ stay local until the
+# poster's licence (PRD open question OQ-X1) is settled — this repo is public. dist/ (the single-file app and the
+# shareable bundle) is committed, at Luke's decision on 2026-10-06.
 /System/Apps/Storytelling/reference/**/*.png
 /System/Apps/Storytelling/reference/**/*.pdf
-/System/Apps/Storytelling/dist/
 
 # Rhetoric's Python caches: re-allowed here because a later rule beats an earlier one (see the Rhetoric note above)
 !/System/Apps/Rhetoric/**/__pycache__/

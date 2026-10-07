@@ -35,6 +35,8 @@ Rhetoric/
 
 **Between apps.** Home launches Rhetoric: its `catalog.json` entry runs `server.py` from this folder's root on port 8794. Moving or renaming `server.py`, or changing the port, breaks that tile. The port is also fixed in `server.py` and `Start Rhetoric.command`. Rhetoric reads nothing from another app and no other app reads its data.
 
+**Teaching App family.** Rhetoric is one of six apps (Rhetoric, Grammar, Logic, Research, Writing, Style) whose function (the code in `*.py`, `app/`, `seed/`, `tests/`, `schema.sql` and this README) is kept in step by `System/Tools/teaching-app-family/`: when a turn ends after code here changed, it offers the change to the others and carries it where Luke says. Data (the database, `images/`, `app-decisions.md`, `wishlist.md`, `app/about.html`) is never carried. Rhetoric's code has diverged, so it is only reported to, never merged.
+
 **Between files.**
 - `schema.sql` → `items.py`: table and column names; a rename breaks `/api/items` with a 500. `topical_rank` is not read by the app: Types and placements order the Topical view. `examples.attribution` is never null (`Unattributed` when none is recorded).
 - `items.py` → `server.py` → `app/`: `GET /api/items` returns `trees` (one per hierarchy, device leaves as ids), a flat `devices` map with each device sent once, and a flat `quotes` list. Every sort, search and filter runs client-side on that payload. `server.py` checks the API route before serving `app/` as static files and returns 503 if the database cannot be opened (`app/api.js` treats any non-OK response as "could not load"). The database is opened read-only for `GET`; the only writes are the Topical and Grammar routes below, and any other POST, PUT, PATCH or DELETE gets 405.

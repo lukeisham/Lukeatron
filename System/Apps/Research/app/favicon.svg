@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Research">
+  <rect x="2" y="2" width="60" height="60" rx="11" fill="#f6efe2" stroke="#6b1f2a" stroke-width="3"/>
+  <rect x="7" y="7" width="50" height="50" rx="7" fill="none" stroke="#e3d9c8" stroke-width="1.2"/>
+  <text x="32" y="44" text-anchor="middle" font-family="Georgia, 'Iowan Old Style', serif" font-size="30" font-weight="700" fill="#6b1f2a">Rs</text>
+  <path fill="none" stroke="#6b1f2a" stroke-width="1.4" stroke-linecap="round" d="M12 55 Q32 58 52 55"/>
+</svg>

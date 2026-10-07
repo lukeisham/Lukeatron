@@ -1,0 +1,17 @@
+{
+  "family": "Teaching App family",
+  "apps_dir": "System/Apps",
+  "members": {
+    "Rhetoric": {"db": "rhetoric", "port": 8794, "item": "device",  "items": "devices",  "mode": "manual"},
+    "Grammar":  {"db": "grammar",  "port": 8802, "item": "pattern", "items": "patterns", "mode": "merge"},
+    "Logic":    {"db": "logic",    "port": 8803, "item": "form",    "items": "forms",    "mode": "merge"},
+    "Research": {"db": "research", "port": 8804, "item": "topic",   "items": "topics",   "mode": "merge"},
+    "Writing":  {"db": "writing",  "port": 8805, "item": "pattern", "items": "patterns", "mode": "merge"},
+    "Style":    {"db": "style",    "port": 8806, "item": "element", "items": "elements", "mode": "merge"}
+  },
+  "function_globs": ["*.py", "schema.sql", "README.md", "Start *.command", "app/*.js", "app/*.css", "app/index.html", "seed/*.py", "tests/*"],
+  "data_globs": ["*.db", "images/*", "app-decisions.md", "wishlist.md", "app/about.html", "app/favicon.svg", "*.log", "*.pyc", "*/__pycache__/*", "__pycache__/*", ".DS_Store", "*/.DS_Store"],
+  "only": {
+    "Style": ["seed/add_image.py", "app/grid.css", "tests/test_grid.mjs", "tests/test_add_image.py", "tests/test_images.py"]
+  }
+}

@@ -1,0 +1,138 @@
+/* ==========================================================================
+   labeltable.css — the tables Luke attaches to a label: the table in the list, and
+   the dialog that adds or edits one. Monochrome like the list body (no accent). Headings are bold.
+   Tokens: --color-ink*, --color-rule-body, --color-page, --color-backdrop, --font-ui, --font-size-*,
+   --table-char-width, --line-height-body, --space-*, --border-hairline, --shade-float, --outline-offset.
+   ========================================================================== */
+.label-table-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) 0 var(--space-4);
+}
+.label-table-edit { align-self: flex-end; }
+body.read-only .label-table-edit { display: none; }
+
+/*
+ * The table shrinks its text to fit the room it has, and never below --font-size-table-min. The wrap is a size
+ * container, so 100cqw is the width this table was actually given (a deeper label has less); dividing it by the
+ * columns times the longest word times the reckoned character width gives the largest text that keeps the
+ * longest word in an even column. Past the floor the wrap scrolls sideways. The first font-size is the fallback
+ * for a browser without container query units.
+ */
+.label-table-wrap {
+  container-type: inline-size;
+  overflow-x: auto;
+}
+
+.label-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--color-ink);
+  font-size: var(--font-size-definition);
+  font-size: clamp(var(--font-size-table-min), calc(100cqw / (var(--cols) * var(--word) * var(--table-char-width))), var(--font-size-body));
+  line-height: var(--line-height-body);
+}
+
+.label-table th,
+.label-table td {
+  padding: 0.25em 0.6em;
+  height: calc(var(--line-height-body) * 1em + 0.5em); /* a blank cell keeps a full row, now that it has borders */
+  border: var(--border-hairline) solid var(--color-rule-body);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+
+/* Column and row headings: bold, in full ink; a darker line sets them off, as the Compare table's does under its headings. */
+.label-table th { font-weight: 700; }
+.label-table thead th { border-bottom-color: var(--color-ink); }
+.label-table tbody th[scope="row"] { border-right-color: var(--color-ink); }
+
+.label-table-caption {
+  padding-bottom: var(--space-2);
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-toolbar-small);
+  letter-spacing: var(--letter-spacing-sort);
+  text-align: left;
+}
+
+@media print {
+  .label-table-wrap { overflow: visible; }
+  .label-table tr { break-inside: avoid; }
+  /* The lines are the table's structure on paper, so they print in full ink, not the screen's pale grey. */
+  .label-table th,
+  .label-table td { border-color: var(--color-ink); }
+}
+
+/* ---- The add / edit dialog ---- */
+.table-dialog {
+  width: min(640px, calc(100vw - 2 * var(--space-6)));
+  max-height: calc(100vh - 2 * var(--space-6));
+  padding: var(--space-6);
+  border: var(--border-hairline) solid var(--color-rule-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  box-shadow: var(--shade-float);
+  font-family: var(--font-ui);
+}
+.table-dialog::backdrop { background: var(--color-backdrop); }
+
+.table-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  font-size: var(--font-size-toolbar);
+}
+
+.table-dialog-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-search);
+  font-weight: 700;
+}
+
+.table-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+}
+.table-count { display: inline-flex; align-items: center; gap: var(--space-3); }
+.table-count input { width: 4.5em; }
+
+.table-caption-field { display: flex; align-items: baseline; gap: var(--space-3); }
+.table-caption-field input { flex: 1; }
+
+.table-dialog input[type="text"],
+.table-dialog input[type="number"] {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid var(--color-rule-body);
+  background: var(--color-page);
+  color: var(--color-ink);
+  font: inherit;
+}
+.table-dialog input:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.table-grid-wrap {
+  max-height: 50vh;
+  overflow: auto;
+}
+.table-grid { border-collapse: separate; border-spacing: var(--space-2); }
+.table-grid-input { width: 100%; min-width: 7em; box-sizing: border-box; }
+.table-dialog .table-grid-input[data-heading] { font-weight: 700; }
+
+.table-hint { margin: 0; color: var(--color-ink-soft); }
+.table-hint code { font-family: inherit; font-style: italic; }
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.table-actions .toolbar-status { margin-right: auto; }
+.table-actions #table-delete { margin-right: auto; }
+.table-actions #table-delete[hidden] { display: none; }

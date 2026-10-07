@@ -1,0 +1,129 @@
+/* ==========================================================================
+   about.css — the About page body: a narrow reading column under the shared masthead.
+   Monochrome like the list body; the accent colour stays in the masthead.
+   Tokens: --color-ink*, --color-rule-body, --font-*, --space-*, --body-max-width.
+   ========================================================================== */
+.about {
+  max-width: var(--body-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-8) var(--space-11);
+  font-size: var(--font-size-body);
+  line-height: 1.55;
+}
+
+.workspace-bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3) var(--space-6); margin: 0; min-height: var(--space-8); }
+.about-actions { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-4); }
+
+.back-link {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+
+/* Headings are numbered by counters, so adding or moving a section renumbers itself: 1., then 1.1, 1.2. */
+.about { counter-reset: part; }
+.about section { margin-top: var(--space-10); counter-increment: part; counter-reset: sub; }
+.about h2::before { content: counter(part) ". "; }
+.about h3 { counter-increment: sub; }
+.about h3::before { content: counter(part) "." counter(sub) "\00a0"; color: var(--color-ink-soft); font-weight: 400; }
+
+.about h2 {
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.about h3 {
+  margin: var(--space-8) 0 var(--space-3);
+  font-size: var(--font-size-body);
+  font-weight: 700;
+}
+
+.about p,
+.about ol,
+.about ul { margin: 0 0 var(--space-5); }
+
+.about ol,
+.about ul { padding-left: var(--space-8); }
+.about li { margin-bottom: var(--space-2); }
+
+.about a { color: var(--color-ink); text-underline-offset: var(--space-1); }
+.about a:hover { color: var(--color-accent); }
+.about a:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); margin: 0 0 var(--space-5); }
+.facts dt { font-weight: 700; }
+.facts dd { margin: 0; }
+.formula { font-family: var(--font-ui); font-size: var(--font-size-example); }
+
+/* The short intro under the back link: a lead line, three jump links, then the version and technical facts. */
+.intro { margin-top: var(--space-5); padding-bottom: var(--space-5); border-bottom: var(--border-hairline) solid var(--color-rule-body); }
+.contents ol { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-7); margin: 0 0 var(--space-5); padding: 0; list-style: none; counter-reset: jump; }
+.contents li { margin: 0; counter-increment: jump; }
+.contents li::before { content: counter(jump) ". "; color: var(--color-ink-soft); }
+.facts { margin-bottom: 0; font-size: var(--font-size-example); }
+.about code { font-family: var(--font-ui); font-size: 0.92em; }
+
+/* Tables read as ruled lists: hairlines only, header row in the soft ink. */
+table {
+  width: 100%;
+  margin: 0 0 var(--space-5);
+  border-collapse: collapse;
+  font-size: var(--font-size-example);
+}
+
+caption {
+  padding-bottom: var(--space-3);
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+  text-align: left;
+}
+
+th,
+td {
+  padding: var(--space-3) var(--space-5) var(--space-3) 0;
+  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-toolbar-small);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-sort);
+  text-transform: uppercase;
+}
+
+.tests th[scope="row"] { width: 28%; white-space: nowrap; }
+.scale { max-width: 460px; }
+
+.sources-note {
+  margin: var(--space-6) 0 var(--space-3);
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-toolbar-small);
+  letter-spacing: var(--letter-spacing-sort);
+  text-transform: uppercase;
+}
+.sources { list-style: none; padding-left: 0; }
+
+@media (max-width: 600px) {
+  .about { padding-inline: var(--space-6); }
+  .tests th[scope="row"] { width: auto; white-space: normal; }
+  .facts { grid-template-columns: 1fr; gap: 0; }
+  .facts dd { margin-bottom: var(--space-3); }
+}
+
+/* Print with one section chosen: the others vanish, and about.js sets the counter so the heading keeps its number. */
+@media print {
+  .about.part-only .intro,
+  .about.part-only section:not(.is-part) { display: none; }
+  .about a { text-decoration: none; }
+  .about section { break-inside: avoid; }
+}

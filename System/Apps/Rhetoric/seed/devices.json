@@ -1064,6 +1064,11 @@
    {
     "text": "\"I'm afraid the new chef really knows how to handle sausages.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"The Aussie Cricket XI wouldn't give a XXXX for any other lager.\" (Castlemaine XXXX, poster, 1985)",
+    "attribution": "Castlemaine XXXX",
+    "date": "1985"
    }
   ],
   "aliases": [
@@ -3310,6 +3315,11 @@
    {
     "text": "Millions buy it, so it must be good.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"50,000,000 Elvis Fans Can't Be Wrong\" (RCA Victor, album title, *50,000,000 Elvis Fans Can't Be Wrong: Elvis' Gold Records, Volume 2*, 13 November 1959)",
+    "attribution": "RCA Victor",
+    "date": "1959-11-13"
    }
   ],
   "aliases": [
@@ -4308,6 +4318,10 @@
    {
     "text": "The structural engineer says the bridge is safe.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Four out of five dentists surveyed recommend sugarless gum for their patients who chew gum.\" (Trident)",
+    "attribution": "Trident"
    }
   ],
   "aliases": [
@@ -4952,6 +4966,10 @@
    {
     "text": "\"Nine in ten local farmers plant after the first frost. They know this soil; that is reason enough to wait.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"In tests, 8 out of 10 owners who expressed a preference, said their cat preferred it.\" (Whiskas)",
+    "attribution": "Whiskas"
    }
   ],
   "aliases": [],

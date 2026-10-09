@@ -37,7 +37,7 @@ System/Apps/LukeatronWiki/
 ├── seal.py                               Loads _sealed.yaml, enforces the seal check
 ├── library.py                            Read access to Long-Term stores + Nodes graph
 ├── render.py                             Data → three-column HTML (rail / content / Tufte margin)
-├── search.py                             Substring search across unsealed stores
+├── search.py                             Ranked search across unsealed stores (shared engine)
 ├── capture.py                            Fixed-template quick-capture writes
 ├── enrich.py                             ⊕ request → draft → accept flow
 ├── yamlio.py                             Minimal YAML read (+ fixed-template appends)
@@ -69,27 +69,22 @@ The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores l
 |---|---|---|---|
 | seal | library | a deny/allow check on every path before any read | a sealed store becomes reachable through render or search |
 | library | render | raw store-file content + node/edge graph, verbatim | render silently starts transforming — the verbatim guarantee breaks |
-| library | search | the same seal-filtered content, indexed for substring | search surfaces a sealed store because it bypassed library |
+| library | search | `search_index()`: the shared memory-search engine, plus seal-filtered listings every hit is re-checked against | search surfaces a sealed store because it bypassed library |
 | capture | library (write side) | one fixed-template queue row + one verbatim store-note append | any parsing or "where this belongs" guessing creeps in |
 | enrich | `!Checkpoint` → library (write side) | an accepted draft, as a `.p-gen` block with a `verified:` stamp | a draft lands in a store without Luke's Accept click |
 | server | seal, library, render, search, capture, enrich | HTTP routing only — server owns `:8787` and dispatches | a module assumes a host other than localhost |
 | migration | server | nothing at runtime — only the SessionStart hook and archive path | if migration and server disagree on the entrypoint, the hook fails |
 
-## Key decisions
+## Decisions and exceptions
 
-| # | Decision | Reason | Rejected alternative |
-|---|---|---|---|
-| D-1 | The seal check lives inside `library`, not re-checked by each caller | One enforcement point that can't be forgotten | Each module checks `_sealed.yaml` itself — one omission leaks a sealed store |
-| D-2 | `server` is a thin stdlib dispatcher with no business logic | Keeps stdlib-only compliance trivial to audit | A fatter server that renders inline — harder to test and audit independently |
-| D-3 | `capture` and `enrich` are two separate modules | They sit on opposite sides of the trust boundary: capture is deterministic and ungated; enrich is agent-drafted and gated | One writer module — conflates a no-agent path with an approval-required one |
-
-## Granted rule exceptions
+See [app-decisions.md](app-decisions.md) → Key decisions (D-1–D-3: the seal/library boundary,
+`server`'s thin-dispatcher shape, and the capture/enrich split) and → Rule exceptions. Not copied
+here.
 
 The app writes to disk in exactly three places — capture (queue row + verbatim store note),
 enrich request (a ⊕ file in `System/Sandbox/wiki-enrich/_requests/`), and enrich accept (a draft
-into its store slot). Each is a granted Vibe-Coding exception, recorded with its reason in
-[app-decisions.md](app-decisions.md) → Rule exceptions. All three writes are fixed-template; the
-same input always produces the same bytes. Nothing is parsed or guessed.
+into its store slot). All three writes are fixed-template; the same input always produces the same
+bytes. Nothing is parsed or guessed.
 
 ## What it will not do
 

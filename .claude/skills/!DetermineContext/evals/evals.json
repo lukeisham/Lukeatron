@@ -1,0 +1,94 @@
+{
+  "skill_name": "!DetermineContext",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Help me draft Sunday's sermon on Romans 8. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Church, high.",
+      "files": [],
+      "expectations": [
+        "primary = Church",
+        "confidence = high"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fix the !Review skill so it drains the Lukeatron to-dos. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Lukeatron.",
+      "files": [],
+      "expectations": [
+        "primary = Lukeatron",
+        "Does not choose Personal Research or Personal Productivity"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build me a small macOS menubar app that shows the weather. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Personal Research (coding / amateur build).",
+      "files": [],
+      "expectations": [
+        "primary = Personal Research",
+        "Does not choose Personal Productivity"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Add a dark mode to the Dashboard on :8789. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Lukeatron (apps/dashboards of the system itself).",
+      "files": [],
+      "expectations": [
+        "primary = Lukeatron"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Make a worksheet on dangling modifiers for Year 9. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Teaching.",
+      "files": [],
+      "expectations": [
+        "primary = Teaching"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "What's on my calendar on Thursday? Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Personal Productivity; fast path may skip the readme.",
+      "files": [],
+      "expectations": [
+        "primary = Personal Productivity",
+        "Notes the fast path (readme need not load for a bare calendar read)"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Research the history of the Westminster Confession for my own interest. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Personal Research (Church as secondary at most).",
+      "files": [],
+      "expectations": [
+        "primary = Personal Research",
+        "If Church is mentioned, it is a secondary only"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Email the session clerk about the elders' meeting agenda. Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "Church (primary goal is church admin, not email).",
+      "files": [],
+      "expectations": [
+        "primary = Church",
+        "Personal Productivity at most secondary"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "hmm, sort that thing out Run !DetermineContext --dry and report primary, secondaries and confidence.",
+      "expected_output": "No clear context → best guess, confidence low, proceeds.",
+      "files": [],
+      "expectations": [
+        "confidence = low",
+        "Invites Luke to redirect",
+        "Does not halt"
+      ]
+    }
+  ]
+}

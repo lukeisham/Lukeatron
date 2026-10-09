@@ -25,7 +25,7 @@ git commit -m "Short summary of the change"
 git push origin main
 ```
 
-- Only `System/`, `.Claude/` and `.gitignore` are tracked. `Memory/`, `Inbox/`, `Outbox/` and the credentials folder never go to GitHub.
+- Only `System/`, `.claude/` and `.gitignore` are tracked. `Memory/`, `Inbox/`, `Outbox/` and the credentials folder never go to GitHub.
 - Add named files, not `git add -A`. Do not use `git commit -a`.
 - Before committing, check `git status` for a sane list. If it shows hundreds of deletions, stop and see "If status looks wrong".
 

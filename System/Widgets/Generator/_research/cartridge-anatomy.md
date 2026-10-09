@@ -981,7 +981,7 @@ No colour values hardcoded in shell; all come from `config.cartridge.colours.pal
    ```
 
 4. **Optional: Promote to a true skill** (if used repeatedly)
-   - Move repeatable build steps to `.Claude/skills/` (e.g., `!BuildParserCartridge`)
+   - Move repeatable build steps to `.claude/skills/` (e.g., `!BuildParserCartridge`)
 
 ---
 

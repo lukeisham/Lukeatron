@@ -1,0 +1,101 @@
+{
+  "skill_name": "!Tone",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Church. Run !Tone for an internal sermon-outline draft (no recipient).",
+      "expected_output": "INTERNAL → Memory/Long-Term/Tone/Church/; no authorship.",
+      "files": [],
+      "expectations": [
+        "Classifies as INTERNAL",
+        "Names Memory/Long-Term/Tone/Church/ as the source",
+        "Does not return an authorship value"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Lukeatron. Run !Tone for internal release notes about a new skill.",
+      "expected_output": "Lukeatron → Tone/Personal/ (nearest fit).",
+      "files": [],
+      "expectations": [
+        "Maps the Lukeatron context to Memory/Long-Term/Tone/Personal/",
+        "Does not report the context as unmapped"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Personal Productivity. Run !Tone for an email to Gina Gold (gina@gold.test).",
+      "expected_output": "tone.md blank → group test-friends (tone + authorship agent-disclosed) over the context baseline.",
+      "files": [],
+      "expectations": [
+        "Falls through GG01's blank tone.md",
+        "Uses the test-friends group page for tone",
+        "Resolves authorship = agent-disclosed from the group page",
+        "Returns the standard footer requirement verbatim: ---- Drafted by Lukeatron on Luke's behalf ----"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Personal Productivity. Run !Tone for an email to Lena Voice (lena@voice.test).",
+      "expected_output": "Person tone.md sets luke-voice → luke-voice, staged in Outbox.",
+      "files": [],
+      "expectations": [
+        "Resolves authorship = luke-voice from LV01's tone.md (person layer)",
+        "Reports the email must be staged in Outbox/ and never auto-sent",
+        "Says no footer and no disclosure"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Church. Run !Tone for an email to Gus Varga (gus@varga.test).",
+      "expected_output": "Person agent-disclosed beats group luke-voice.",
+      "files": [],
+      "expectations": [
+        "Resolves authorship = agent-disclosed from GV01's tone.md",
+        "Takes TONE from the test-lukevoice group page (formal) — the two values resolve independently"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Church. Run !Tone for an email to Max Mixed (max@mixed.test).",
+      "expected_output": "Two groups disagree on authorship → most restrictive (agent-disclosed) + conflict flagged.",
+      "files": [],
+      "expectations": [
+        "Detects that test-lukevoice and test-friends disagree on authorship",
+        "Chooses agent-disclosed",
+        "Flags the conflict to Luke"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Personal Productivity. Run !Tone for an email to Nora Nolist (nora@nolist.test), who has no tone.md and no group.",
+      "expected_output": "Falls to context folder / email baseline; authorship default agent-disclosed.",
+      "files": [],
+      "expectations": [
+        "Falls through to the context Tone/ folder or Lukeatron_Agent_Email_Tone.md",
+        "Defaults authorship to agent-disclosed"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Context: Personal Productivity. Luke asks: 'write a formal email to Walt White about the committee'. Run !Tone.",
+      "expected_output": "FORMAL-REGISTER flag → also returns !SimpleEnglish (pragmatic mode).",
+      "files": [],
+      "expectations": [
+        "Flags FORMAL-REGISTER",
+        "Returns the !SimpleEnglish reference in pragmatic mode alongside the tone source"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Run !Tone for an email to Walt White, but pretend People/WW01-tone.md is unreadable.",
+      "expected_output": "Missing layer → falls through, flags the gap, never invents tone; authorship defaults safe.",
+      "files": [],
+      "expectations": [
+        "Flags the unreadable tone.md",
+        "Does not invent tone content",
+        "Never defaults authorship to luke-voice"
+      ]
+    }
+  ]
+}

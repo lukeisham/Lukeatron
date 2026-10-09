@@ -4,7 +4,7 @@
 
 ```
 CONTEXT      Lukeatron
-TRIGGERS     build/fix/refactor a skill · memory structure · Skillbank · ProjectKanban / LukeatronWiki viewer · CLAUDE.md · the Lukeatron system itself
+TRIGGERS     build/fix/refactor a skill · memory structure · Skillbank · Project Dashboard / LukeatronWiki viewer · CLAUDE.md · the Lukeatron system itself
 LOADS WITH   !DetermineContext  →  /context
 TONE         precise, self-critical, house-style-consistent — Luke's own voice
 ```
@@ -26,7 +26,7 @@ Active, hands-on work **on Lukeatron itself** — the agent system Luke runs thi
 
 - **🛠️ Creating skills** — authoring new capability/checkpoint skills to the house format (frontmatter → ⚡TRIGGER / 🛠️LOGIC / ✅OUTPUT, plus `manifest.json` and `EVAL.md`).
 - **♻️ Refactoring skills** — tidying, consolidating, deleting and repairing existing skills (e.g. broken top-level symlinks under `.claude/skills/`, aligning log paths, pruning dead sub-skills).
-- **🧩 Apps & viewers** — ProjectKanban (`System/Apps/ProjectKanban/`), LukeatronWiki (`System/Apps/LukeatronWiki/`), and any other internal tooling.
+- **🧩 Apps & viewers** — Project Dashboard (`System/Apps/ProjectDashboard/`), LukeatronWiki (`System/Apps/LukeatronWiki/`), and any other internal tooling.
 - **🗂️ Memory structure** — the Long-Term/Medium-Term layout, store conventions, `_tracking.yaml`, `_index.yaml` doctrine.
 - **🧠 Learning how Claude works** — the harness: skills & slash commands, hooks, MCP servers, memory, settings, subagents, and how it wires into the CLAUDE.md bootloader.
 - **📄 CLAUDE.md itself** — the operating manual, subject to the sign-off rule below.
@@ -51,7 +51,7 @@ Active, hands-on work **on Lukeatron itself** — the agent system Luke runs thi
 - Never modify a **Key Skill, Checkpoint, or Template** (per CLAUDE.md's list) without Luke's explicit sign-off.
 - Never modify **CLAUDE.md** itself without Luke's explicit sign-off.
 - Anything that leaves the system or changes Long-Term memory clears `!Checkpoint`.
-- Log every skill failure to `Logs/skills.log`, per *Failure Handling*.
+- Log every skill failure to `Memory/Long-Term/Logs/skills.log`, per *Failure Handling*.
 
 ---
 
@@ -75,7 +75,7 @@ Active, hands-on work **on Lukeatron itself** — the agent system Luke runs thi
 - `System/Skillbank/_index.yaml` — the on-demand skill catalog
 - `System/Apps/`, `System/Tools/` — the dashboards and viewers this context builds/maintains
 
-> Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.
+> Native memory (`.claude/memory.md`) carries *working-style* preferences only — not domain facts.
 
 ---
 

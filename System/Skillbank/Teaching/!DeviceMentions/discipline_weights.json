@@ -1,0 +1,9 @@
+{"_note": "Devices whose Ngram count is dominated by a specialist literature (formal logic, philosophy, statistics) rather than the general rhetoric/argument teaching the app serves. Their adjusted count is multiplied by `weight` before ranking. Tunable: 1.0 = no effect. Raw and adjusted-before-weight counts are kept in the output.",
+ "weight": 0.25,
+ "devices": {
+  "Modus Ponens": "formal logic", "Modus Tollens": "formal logic", "Constructive Dilemma": "formal logic",
+  "Reductio ad Absurdum": "mathematics and formal logic", "Inference to the Best Explanation": "philosophy of science",
+  "Syllogism": "formal logic", "Tautology": "formal logic and mathematics", "Principle of Charity": "philosophy of language",
+  "Ecological Fallacy": "statistics and sociology", "Argument from Expert Opinion": "argumentation theory",
+  "Naturalistic Fallacy": "moral philosophy", "Is-Ought Fallacy": "moral philosophy"
+ }}

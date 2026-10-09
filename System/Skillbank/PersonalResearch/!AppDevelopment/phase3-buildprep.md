@@ -59,6 +59,9 @@ records "design closed".
   widget-only "Done when" clause with the host app named in the PRD. The build may touch the host
   app only at the seam the Host contract names (the mount point), committed separately.
   IF `kind` = app ➔ delete that clause.
+  IF the app or widget serves on localhost ➔ RUN `python3 System/Tools/ports/ports.py next app`,
+  ADD that port to `System/Apps/ports.json` (name, band `app`, path), and write it into the build
+  prompt's port line. ELSE delete that line. Never pick a port by hand.
 
 **STEP 4 — Hand over**
   SHOW Luke the build prompt and tell him plainly that this skill's part is done until the build

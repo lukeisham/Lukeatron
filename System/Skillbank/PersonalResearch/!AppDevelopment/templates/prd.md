@@ -33,7 +33,7 @@ status: <drafting | approved>
 ## UI
 <!-- Apps only — a widget inherits its host app's styling; delete this section for a widget. -->
 <`!HouseStyle`'s verdict for this surface — EXEMPT / SUBORDINATE / UNCLASSIFIED, from
-`.Claude/skills/!HouseStyle/reference/sources.md` — and what that means here.>
+`.claude/skills/!HouseStyle/reference/sources.md` — and what that means here.>
 <The one rule: where every visual value must live (normally one token file every other file cites
 rather than writing a literal colour, size, or duration).>
 <First-pass palette / type / spacing / motion intent — tested against the mockups in Phase 2.

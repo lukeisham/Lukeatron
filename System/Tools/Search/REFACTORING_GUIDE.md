@@ -81,8 +81,9 @@ and a cancel endpoint the fetch loop polls — a bigger change; spec it as a new
 subtask before coding.
 
 ### Change the port
-`PORT` at the top of `serve.py` (default `8789`; `8787` wiki-viewer and `8788`
-dashboard are taken). Update the number in `README.md` if you do.
+`PORT` at the top of `serve.py` (default `8790`). Take the new number from
+`System/Apps/ports.json` (`python3 System/Tools/ports/ports.py next tool`), record it
+there, and update `README.md`.
 
 ## Guardrails to preserve
 

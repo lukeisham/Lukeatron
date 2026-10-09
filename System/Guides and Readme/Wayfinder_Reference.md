@@ -94,11 +94,11 @@ autonomous and worth gating before first live use.
 ## 4. Git location
 
 `https://github.com/lukeisham/Lukeatron.git` (private) is the `origin` remote, set up
-2026-07-14. Scope is deliberately narrow — only `System/` and `.Claude/` (skills, templates,
+2026-07-14. Scope is deliberately narrow — only `System/` and `.claude/` (skills, templates,
 Skillbank, config) are tracked; `.gitignore` excludes `Memory/`, `Inbox/`, `Outbox/`,
 `Archive/`, `System/Sandbox/`, and real credentials (`System/Credentials/*`, keeping only
 the `.example.*` files) at the repo root. No personal data — People/, Contacts/, sermon
 prep, projects — is version-controlled. Initial commit pushed to `main`.
 
-One file worth a look if the repo's visibility ever changes: `.Claude/skills/!OutgoingContentCheck/whitelist.yaml`
+One file worth a look if the repo's visibility ever changes: `.claude/skills/!OutgoingContentCheck/whitelist.yaml`
 is tracked (it's system config, not Memory/) and may list real contact identifiers.

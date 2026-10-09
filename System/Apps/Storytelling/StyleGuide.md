@@ -4,7 +4,7 @@ This app is a deliberate, scoped exception to `!HouseStyle`'s default token **pa
 are sampled from the source poster (*The Periodic Table of Storytelling*, ComputerSherpa/TV
 Tropes) rather than drawn from the house palette, because the whole point is that the app looks
 like the poster came alive. Registered 2026-09-29 in `!HouseStyle`'s surface register
-(`.Claude/skills/!HouseStyle/reference/sources.md`, row 14) as **EXEMPT (palette only)**.
+(`.claude/skills/!HouseStyle/reference/sources.md`, row 14) as **EXEMPT (palette only)**.
 Everything *other* than the palette — spacing scale, elevation levels, the counted motion/glyph
 budget, the reduced-motion floor — still follows the house default in full.
 

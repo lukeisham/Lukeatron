@@ -1,6 +1,6 @@
 # !SvgImage Style Guide — Index
 
-**Version:** matches `skill.md`.
+**Version:** matches `SKILL.md`.
 
 Coordinating index for `!SvgImage`'s style library. Each style's full body (Visual DNA, standard
 `<g id>` layers, distinctive SVG techniques, palette, typography) lives in its own file in this folder

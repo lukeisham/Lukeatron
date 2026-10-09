@@ -9,7 +9,7 @@ partial transparency.
 - Bézier-over-primitives does not apply — every shape is a `<rect>` on the integer cell grid, never a `<path>`/Bézier curve or a `<circle>`/`<ellipse>` (a "circle" is drawn as a stepped cluster of square cells). Grid alignment is the signature, not organic silhouette.
 - No gradients and no partial opacity — every fill is 100% opaque flat colour; a two-colour dithered `<pattern>` (see Distinctive SVG techniques) stands in for any blend or partial-opacity effect.
 - No one-global-light comment or contact shadows — tonal value comes from the palette's own hue-shifted ramp steps and dithering, not from a light direction or a drawn contact-shadow shape.
-- No detail-budget floor — this style may sit at or below skill.md's detail-budget minimum by design; state that it is deliberately minimal within the cell grid rather than padding it with extra elements.
+- No detail-budget floor — this style may sit at or below SKILL.md's detail-budget minimum by design; state that it is deliberately minimal within the cell grid rather than padding it with extra elements.
 - The 1080-wide reference canvas does not apply either — see the grid-to-canvas mapping note below; pick a power-of-two-friendly size instead.
 **Typical subject / composition:** sprites (characters, items), tilesets, small portraits, small
 scenes/dioramas, and icons. The subject must be *designed* for the cell budget — a 16×16 grid reads

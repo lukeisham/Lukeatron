@@ -1,159 +1,82 @@
 """
-search.py — plain substring search across every unsealed store.
+search.py — ranked full-text search across every unsealed store.
 
-Reaches disk ONLY through `library` (FR-2/AC-6) — never opens the
-Long-Term store tree or the wiki's own control surface itself. No index,
-no cache: every
-call re-walks every unsealed store live via `library.list_stores()` /
-`library.list_store()` / `library.read_store_file()` (AD-1/FR-4), so an
-edited file shows up on the very next query with no restart needed.
+Reaches disk ONLY through `library` (FR-2/AC-6). The ranking and matching come
+from the shared memory-search engine (`library.search_index()`): every query
+term must match, a term matches inside a word, "quoted phrases" stay together,
+and results are ranked with filename matches first. The engine refreshes
+changed files on every query, so an edit shows up on the very next search.
 
-No ranking, no relevance scoring — the PRD rules that out ("plain
-substring"). Matching is case-insensitive plain substring, on the filename
-(title) and on file body text.
+Two fences keep sealed material out: the engine never indexes a sealed path,
+and every hit is re-checked here against `library.list_store()`, which is
+seal-filtered. A file the engine cannot index (an image, a binary) can still
+match on its filename through that same listing.
 """
 
 try:
     from . import library
 except ImportError:
-    # Fallback for testing / direct execution (mirrors library.py's own
-    # dual-import pattern, since this module may run outside a package
-    # context — see server.py, which imports it the same way).
     import library
 
 
-# Excerpt window: how much context to keep on each side of a body match,
-# in characters. Purely a display convenience — has no bearing on whether
-# something matches.
-_EXCERPT_CONTEXT = 60
-_EXCERPT_MAX = 160
+_LIMIT = 500
 
 
 def search(query):
     """
     Search every unsealed store for `query`, grouped by store.
 
-    Args:
-        query: str — plain text to search for, case-insensitive substring.
-
     Returns:
-        list[dict] — one entry per store that has at least one hit, in the
-        same order `library.list_stores()` returns them:
+        list[dict] — one entry per store with at least one hit, in
+        `library.list_stores()` order:
             {"store": "<folder name>",
              "hits": [{"filename", "relpath", "kind": "title"|"body",
                        "excerpt", "line"}]}
+        Within a store, hits keep the engine's rank; filename-only matches
+        on files the engine does not index come last.
 
-        An empty or whitespace-only query returns [] — there is nothing to
-        substring-match against.
+        An empty or whitespace-only query returns []. If the seal manifest
+        cannot be read, the engine indexes nothing and this returns [].
 
-    FR-7/AC-1: a sealed store never appears here at all — not as an empty
-    group, not as a count. `library.list_stores()` already excludes sealed
-    stores, and `library.list_store()` / `library.read_store_file()` each
-    re-check the seal gate per file, so a single sealed file inside an
-    otherwise-open store is silently skipped the same way.
-
-    FR-5/AC-3: a title match and a body match are visibly distinguished —
-    `kind` is "title" whenever the query appears in the filename, even if
-    it also appears in the body (title takes precedence for that file, one
-    hit per file, never two rows for the same file/query pair). Otherwise,
-    if the query appears anywhere in the body, `kind` is "body" and `line`
-    names the first matching line (1-indexed).
-
-    Binary/undecodable files (`library.read_store_file()` returns
-    `{"text": None, "binary": True}`) can still title-match (the filename
-    check needs no body read) but are skipped for body matching — there is
-    no text to search, and this must never crash or match against None.
+    `kind` is "title" when every query term appears in the filename (title
+    takes precedence, one hit per file); otherwise "body", with `line`
+    naming the best-matching line (1-indexed).
     """
     if not query or not query.strip():
         return []
+    terms = [t.strip('"').lower() for t in query.split() if t.strip('"')]
+    whole = query.strip().strip('"').lower()
 
-    needle = query.lower()
-    groups = []
-
-    for store_info in library.list_stores():
-        store = store_info["folder"]
+    stores = [s["folder"] for s in library.list_stores()]
+    listings = {}
+    for store in stores:
         files = library.list_store(store)
-        if not files:
+        if files:
+            listings[store] = {f["filename"]: f for f in files}
+
+    hits_by_store = {store: [] for store in listings}
+    seen = set()
+    index = library.search_index()
+    for hit in (index.search(query, area="long", limit=_LIMIT) if index else []):
+        store = hit["store"]
+        filename = hit["path"].split("/", 3)[3] if hit["path"].count("/") >= 3 else ""
+        entry = listings.get(store, {}).get(filename)
+        if entry is None:
             continue
+        seen.add(entry["relpath"])
+        if all(t in filename.lower() for t in terms):
+            hits_by_store[store].append(_hit(entry, "title", filename, None))
+        else:
+            hits_by_store[store].append(_hit(entry, "body", hit["snippet"], hit["line"]))
 
-        hits = []
-        for entry in files:
-            filename = entry["filename"]
-            relpath = entry["relpath"]
+    for store, files in listings.items():
+        for filename, entry in files.items():
+            if entry["relpath"] not in seen and whole in filename.lower():
+                hits_by_store[store].append(_hit(entry, "title", filename, None))
 
-            if needle in filename.lower():
-                hits.append({
-                    "filename": filename,
-                    "relpath": relpath,
-                    "kind": "title",
-                    "excerpt": filename,
-                    "line": None,
-                })
-                continue
-
-            # Title didn't match — only now do we pay for a body read.
-            file_data = library.read_store_file(store, filename)
-            if file_data is None or file_data is library.SEALED:
-                # Sealed-after-all, or vanished between listing and read —
-                # either way, no hit, and definitely no crash.
-                continue
-            if file_data.get("binary"):
-                continue
-
-            text = file_data.get("text")
-            if not text:
-                continue
-
-            match = _first_body_match(text, needle)
-            if match is None:
-                continue
-
-            line_no, excerpt = match
-            hits.append({
-                "filename": filename,
-                "relpath": relpath,
-                "kind": "body",
-                "excerpt": excerpt,
-                "line": line_no,
-            })
-
-        if hits:
-            groups.append({"store": store, "hits": hits})
-
-    return groups
+    return [{"store": s, "hits": hits_by_store[s]} for s in stores if hits_by_store.get(s)]
 
 
-def _first_body_match(text, needle):
-    """
-    Find the first line of `text` containing `needle` (already lowercased),
-    case-insensitively. Returns (line_number, excerpt) with line_number
-    1-indexed, or None if there is no match.
-    """
-    for i, line in enumerate(text.splitlines(), start=1):
-        idx = line.lower().find(needle)
-        if idx != -1:
-            return i, _excerpt(line, idx, len(needle))
-    return None
-
-
-def _excerpt(line, idx, needle_len):
-    """
-    Trim a matching line down to a short excerpt centred on the match, with
-    an ellipsis on either side that got cut off. Purely cosmetic — never
-    affects whether something is considered a match.
-    """
-    stripped = line.strip()
-    # Recompute idx against the stripped line (leading whitespace removed).
-    lead_trim = len(line) - len(line.lstrip())
-    idx = max(0, idx - lead_trim)
-
-    start = max(0, idx - _EXCERPT_CONTEXT)
-    end = min(len(stripped), idx + needle_len + _EXCERPT_CONTEXT)
-    excerpt = stripped[start:end]
-
-    if len(excerpt) > _EXCERPT_MAX:
-        excerpt = excerpt[:_EXCERPT_MAX]
-
-    prefix = "…" if start > 0 else ""
-    suffix = "…" if end < len(stripped) else ""
-    return f"{prefix}{excerpt}{suffix}"
+def _hit(entry, kind, excerpt, line):
+    return {"filename": entry["filename"], "relpath": entry["relpath"],
+            "kind": kind, "excerpt": excerpt, "line": line}

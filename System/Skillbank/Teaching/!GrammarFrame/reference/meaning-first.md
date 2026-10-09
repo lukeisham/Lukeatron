@@ -29,7 +29,7 @@ This gives the skill its posture. A rule is never taught as a list to memorise. 
 Meaning does two distinct jobs across the guides, and the skill must keep both straight:
 
 1. **The PRINCIPLE** — a single standing claim about the whole enterprise, true of every heading at
-   once. Rendered VERBATIM, ONCE, near the top of each guide (skill.md STEP 6/7) — never repeated
+   once. Rendered VERBATIM, ONCE, near the top of each guide (SKILL.md STEP 6/7) — never repeated
    per heading, never paraphrased run to run:
 
    > **Grammar allows the communication of meaning.**
@@ -38,7 +38,7 @@ Meaning does two distinct jobs across the guides, and the skill must keep both s
    html` renders it exactly as above. Either way it says the same thing once, and never again.
 
 2. **The RULE'S OWN WHY** — specific to one rule, different rule to rule, even within the same
-   heading. This is sentence A2 of that rule's DEFINITION (skill.md STEP 5's "FOR EACH RULE"), never
+   heading. This is sentence A2 of that rule's DEFINITION (SKILL.md STEP 5's "FOR EACH RULE"), never
    a separate block of its own. It answers "why THIS rule", not "why grammar" — the PRINCIPLE above
    already covers the second question, once, for the whole guide.
 

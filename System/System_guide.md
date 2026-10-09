@@ -239,7 +239,7 @@ Every outgoing message to a person resolves through three axes, in order:
                                 ▼
         ┌────────────────────────────────────────────────────────┐
         │  y — DOMAIN    (active context + Preferences/ /         │
-        │                 Style Guide/)                           │
+        │                 Style-Guide/)                           │
         │                                                         │
         │     → constrains WHAT is communicated (subject-matter)  │
         └───────────────────────┬────────────────────────────────┘

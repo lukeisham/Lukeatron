@@ -4,7 +4,7 @@
     hook.py stop   when a turn ends: if an app was noted, look for a real function change and, if there is one that Luke has
                    not already ruled on, hold the turn open once with a message sending Claude to the !AppPropagate skill
 
-Both fail open: any trouble is written to Logs/skills.log and the hook exits quietly, so it can never block his work."""
+Both fail open: any trouble is written to Memory/Long-Term/Logs/workers.log and the hook exits quietly, so it can never block his work."""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ def message(records: list[dict]) -> str:
         decided = f" Luke's rules already send it to: {', '.join(record['targets'])}." if record["status"] == changes.DECIDED else ""
         lines.append(f"{record['app']} function changed ({files}); change id {record['id']}.{decided}")
     return ("Teaching App family: " + " ".join(lines) + " Read the Skillbank skill !AppPropagate "
-            "(System/Skillbank/PersonalResearch/!AppPropagate/skill.md) and follow it: decide with Luke whether this goes to all, some or "
+            "(System/Skillbank/PersonalResearch/!AppPropagate/SKILL.md) and follow it: decide with Luke whether this goes to all, some or "
             "none of the other apps, then carry it. Say nothing else about it until it is settled.")
 
 
@@ -75,9 +75,9 @@ def stop(family: Family, event: dict) -> dict | None:
 
 
 def _log(family: Family, text: str) -> None:
-    log = family.root / "Logs" / "skills.log"
+    log = family.root / "Memory" / "Long-Term" / "Logs" / "workers.log"
     with log.open("a", encoding="utf-8") as stream:
-        stream.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} teaching-app-family hook: {text}\n")
+        stream.write(f"[{datetime.now():%Y-%m-%dT%H:%M:%S}] [WORKER: teaching-app-family hook] [FAIL] {text}\n")
 
 
 def main(argv: list[str]) -> int:

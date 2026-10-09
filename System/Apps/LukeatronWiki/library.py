@@ -6,9 +6,13 @@ module's functions. Every function here consults `seal` before returning
 anything (FR-9): there is exactly one place the privacy gate can go wrong.
 
 No cache, no database, no module-level memoisation of content (FR-8). Every
-call hits disk fresh, every time.
+call hits disk fresh, every time. One exception, owned here so it stays behind
+the gate: `search_index()` hands search the shared memory-search engine, whose
+index leaves sealed paths out at build time and refreshes changed files on
+every query. Search still re-checks every hit against `list_store()`.
 """
 
+import importlib.util
 import mimetypes
 import os
 import re
@@ -811,3 +815,25 @@ def media_bytes(name):
 
     mimetype, _ = mimetypes.guess_type(candidate.name)
     return data, (mimetype or "application/octet-stream")
+
+
+def search_index():
+    """
+    The shared memory-search engine over the current Long-Term root.
+
+    Returns an object with `.refresh()` and `.search(query, store, area, limit)`, or None when
+    the seal manifest cannot be read (the engine fails closed: nothing is indexed, so nothing
+    is searchable). The real tree uses the engine's machine-local cache; any other root (a test
+    fixture) gets a throwaway in-memory index.
+    """
+    spec = importlib.util.spec_from_file_location("memory_search_engine", paths.SEARCH_ENGINE)
+    engine = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(engine)
+    root = paths.LT.parents[1]
+    real = paths.LT.resolve() == (paths.ROOT / "Memory" / "Long-Term").resolve()
+    index = engine.Index(root, None if real else ":memory:")
+    try:
+        index.refresh()
+    except engine.SealError:
+        return None
+    return index

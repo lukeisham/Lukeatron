@@ -1,0 +1,27 @@
+{
+  "about": "The one register of localhost ports for every Lukeatron app, widget, tool and preview server. Take a new port with `python3 System/Tools/ports/ports.py next <band>`, add it here, then run `ports.py check`.",
+  "bands": {
+    "core":  {"range": [8780, 8789], "for": "always-on surfaces: Home, LukeatronWiki, Project Dashboard"},
+    "tool":  {"range": [8790, 8799], "for": "System/Tools servers, dev previews and verify servers"},
+    "app":   {"range": [8800, 8899], "for": "apps in System/Apps/ and widgets in System/Widgets/"},
+    "test":  {"range": [9300, 9399], "for": "throwaway servers started by test scripts"}
+  },
+  "ports": {
+    "8780": {"name": "Home",               "band": "core", "path": "System/Apps/Home"},
+    "8781": {"name": "home-verify",        "band": "core", "path": "System/Apps/Home/tests/verify_server.py"},
+    "8787": {"name": "LukeatronWiki",      "band": "core", "path": "System/Apps/LukeatronWiki"},
+    "8789": {"name": "ProjectDashboard",   "band": "core", "path": "System/Apps/ProjectDashboard"},
+    "8790": {"name": "Search",             "band": "tool", "path": "System/Tools/Search"},
+    "8791": {"name": "grammar-parser",     "band": "tool", "path": ".claude/launch.json"},
+    "8792": {"name": "storytelling-verify","band": "tool", "path": ".claude/launch.json"},
+    "8793": {"name": "Storytelling",       "band": "tool", "path": "System/Apps/Storytelling", "note": "app predates the app band; keep"},
+    "8794": {"name": "Rhetoric",           "band": "tool", "path": "System/Apps/Rhetoric", "note": "app predates the app band; keep"},
+    "8795": {"name": "wiki-preview",       "band": "tool", "path": ".claude/launch.json"},
+    "8802": {"name": "Grammar",            "band": "app",  "path": "System/Apps/Grammar"},
+    "8803": {"name": "Logic",              "band": "app",  "path": "System/Apps/Logic"},
+    "8804": {"name": "Research",           "band": "app",  "path": "System/Apps/Research"},
+    "8805": {"name": "Writing",            "band": "app",  "path": "System/Apps/Writing"},
+    "8806": {"name": "Style",              "band": "app",  "path": "System/Apps/Style"},
+    "9333": {"name": "storytelling-print-check", "band": "test", "path": "System/Apps/Storytelling/reference/work/print-check.mjs"}
+  }
+}

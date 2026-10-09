@@ -6,6 +6,38 @@ Generate pulls a public-domain folk tale from the baked pool, the shell highligh
 narrative beats (setup / twist / result) with a legend, and Copy puts the plain tale text on the
 clipboard. Shipped widget: `FolkTale_generator.html`, **282,026 bytes**.
 
+## Navigation
+
+```
+FolkTale/
+├── FolkTale_generator.html               the shipped, built widget — open this directly
+├── cartridge/
+│   └── build/
+│       ├── build_folktale.py             compiles the seed into pool.json + folktale_content.md
+│       ├── config.yaml
+│       ├── engine.js
+│       ├── explainer.js
+│       ├── styles.css
+│       ├── folktale.miniwiki.json
+│       ├── folktale_content.md
+│       └── pool.json
+├── tests/
+│   ├── js/
+│   │   ├── test-beat-accuracy.mjs
+│   │   └── test-engine.mjs
+│   └── test_build_folktale.py
+├── app-decisions.md
+├── wishlist.md
+└── README.md
+```
+
+## Cross-app behaviour
+
+| From | To | What crosses | What breaks if it changes |
+|---|---|---|---|
+| `System/Widgets/Generator/_shell/` | this app's `cartridge/build/` | `assemble.py` bakes `config.yaml` + the compiled cartridge files into `FolkTale_generator.html` | A shell contract change breaks the build until this cartridge is updated to match — the shell stayed behind in `Widgets/Generator/` when this app was promoted out |
+| `System/Widgets/Generator/_research/seed/folk-tales.md` | this app's `build_folktale.py` | The 40-tale seed text `build_folktale.py` parses into `pool.json` and `folktale_content.md` | The seed research also stayed behind in `Widgets/Generator/`; rebuilding this app's pool requires that file to still exist there |
+
 ## What it does
 
 `ENGINE.getPool()` returns the 40-tale pool; `ENGINE.render(item)` returns
@@ -149,3 +181,8 @@ seed parse, over-cap tale rejected loudly).
   figure without deliberately stripping a tale's spans.
 - No answer-checking or explainer — this cartridge's interaction surface is
   intentionally minimal (read + copy only).
+
+## Decisions and exceptions
+
+See [app-decisions.md](app-decisions.md) for approvals and any granted rule exceptions. Not
+copied here.

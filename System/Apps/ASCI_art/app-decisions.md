@@ -10,9 +10,10 @@ later agent does not "restore" the old behaviour.
 |---|---|---|
 | — | — | — |
 
-Note: this app has no PRD, spec, or code yet — `System/Widgets/Generator/ASCI_art/` was an empty
-placeholder folder, moved to `System/Apps/ASCI_art/` on 2026-09-29 per Luke's direction in chat.
-Nothing else has been proposed or built.
+Note: `System/Widgets/Generator/ASCI_art/` was an empty placeholder folder, moved to
+`System/Apps/ASCI_art/` on 2026-09-29 per Luke's direction in chat. A Phase 1 PRD
+(`_build/prd.md`, status: drafting) was added the same day, virtually empty — no core job, no
+mode, no content source decided yet. No spec or code exists.
 
 ## Rule exceptions
 

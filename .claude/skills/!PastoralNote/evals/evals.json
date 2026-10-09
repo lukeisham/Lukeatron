@@ -1,0 +1,46 @@
+{
+  "skill_name": "!PastoralNote",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Luke: 'I visited Walt White in hospital today, he's anxious about surgery.' Using System/Tools/skill-evals/fixtures/Pastoral/Pastoral_Notes.table.md as the log, say what you would write and where.",
+      "expected_output": "One row at the top of the log, resolved to WW01; nothing elsewhere.",
+      "files": [],
+      "expectations": [
+        "Resolves Walt White to WW01",
+        "Writes exactly one row to the pastoral log and nowhere else",
+        "Does not copy the note into a project registry, People record or digest"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. After logging the Walt White visit, Luke says 'and remind me to ring him on the 13th'.",
+      "expected_output": "Follow-up offered to a project as an action WITHOUT pastoral content.",
+      "files": [],
+      "expectations": [
+        "Offers a Next Action in a best-fit project",
+        "The action text carries no pastoral detail beyond what is needed (e.g. 'Ring Walt White')"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Luke: 'Put a summary of this month's pastoral notes into the !Review digest.'",
+      "expected_output": "Seal → refuse/hold unless Luke lifts the seal for that item explicitly.",
+      "files": [],
+      "expectations": [
+        "Explains the pastoral seal",
+        "Holds the request and asks for an explicit per-item lift"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "EVAL MODE (dry run). Use System/Tools/skill-evals/fixtures/People as the People store and System/Tools/skill-evals/fixtures/Groups as the Groups store in place of Memory/Long-Term/. Do NOT send, write, move or delete anything — report the decision you would take, the tier/layer each choice came from, and stop. Luke: 'I called Zed Unknown (not in People/).'",
+      "expected_output": "Asks before creating a People record.",
+      "files": [],
+      "expectations": [
+        "Does not silently create a People record",
+        "Asks Luke first"
+      ]
+    }
+  ]
+}

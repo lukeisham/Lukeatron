@@ -5,7 +5,7 @@ secondary_contexts: []
 created: 2026-09-25
 status: New
 major_because: "multi-step; changes the Next Actions file format in every project registry; modifies core skills (!ProjectSweep, !CreateProject, !Intake) and a Key Template (Template_ProjectRegistry.md)"
-project: "LU-02-projectkanban"           # existing project; this plan closes Next Actions #3 and #4 and wishlist #15 + #16
+project: "LU-02-projectdashboard"           # existing project; this plan closes Next Actions #3 and #4 and wishlist #15 + #16
 skills_used: ["!CreatePlan", "!ReviewPlan"]
 review: "RETURNED pass 1 (11 flags) → revised; RETURNED pass 2 (6 flags) → revised; RETURNED pass 3 (1 flag) → revised; APPROVED — see Notes → Review history"
 ---
@@ -13,7 +13,7 @@ review: "RETURNED pass 1 (11 flags) → revised; RETURNED pass 2 (6 flags) → r
 # Plan — Dashboard: one State column, bulk State edits, and suggested States you confirm
 
 > ⚠️ **Needs revision before execution (2026-09-28).** This plan was written against the old
-> `!AppDevelopment` layout: `_template/` (now flattened into `System/Apps/ProjectKanban/`) and
+> `!AppDevelopment` layout: `_template/` (now flattened into `System/Apps/ProjectDashboard/`) and
 > `refactor-registry.md` (retired — Luke's approvals and rule exceptions now live in
 > `app-decisions.md`; the build history is in git). Its paths, docs step and staging approach must be
 > revised against `!AppDevelopment` v2.0.0 before it runs. See
@@ -78,7 +78,7 @@ The two use the same words but mean different things and are ranked in different
 - Docs: `README.md`, `StyleGuide.md` and `refactor-registry.md` (a Migration-log row) are updated. Wishlist #15/#16 rows are deleted. LU-02 #3/#4 are ticked with Decision Log lines. `System/System_guide.md` and `CLAUDE.md` are re-grepped: still no Kind/Type reference.
 
 ## Resources
-- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md`; `_template/README.md`, `StyleGuide.md`; `.Claude/skills/!ProjectSweep/skill.md` (lines 92, 104–150, 164–173, 202, 215, 238–241, 310–320); `!CreateProject/skill.md:70`; `!Intake/skill.md:78`; `Template_ProjectRegistry.md:88–100`; `_links.yaml` header (esp. :37); `LU-02-projectkanban/notes.md`; `System/Plans/New/projectkanban-urgency-shading.md`.
+- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md`; `_template/README.md`, `StyleGuide.md`; `.claude/skills/!ProjectSweep/SKILL.md` (lines 92, 104–150, 164–173, 202, 215, 238–241, 310–320); `!CreateProject/SKILL.md:70`; `!Intake/SKILL.md:78`; `Template_ProjectRegistry.md:88–100`; `_links.yaml` header (esp. :37); `LU-02-projectdashboard/notes.md`; `System/Plans/New/projectkanban-urgency-shading.md`.
 - **Capability skills:** none. The scheduled-tasks tools are used to pause and resume `project-sweep` / `intake-sweep`.
 - **Domain skills (Skillbank):** new `!SuggestState` (Step 4). `!AppWishlist`'s delete-built-rows rule.
 - **Sub-agents:** (a) back end: Steps 6–7; (b) front end: Step 8. Each is briefed with this plan's Success criteria and Notes → Decisions. The coordinator reads every diff.
@@ -109,7 +109,7 @@ The two use the same words but mean different things and are ranked in different
      - (iii) no open rows → with a wake set, today's wake behaviour (unchanged); without one, 🔴 Incoming (adrift). (Replaces today's `unshaped` for the no-wake case.)
      
      For each sweep rule, Luke marks **keep as an override on top of (i)** or **drop**:
-     - an overdue Event → 🔴 (skill.md:104–110);
+     - an overdue Event → 🔴 (SKILL.md:104–110);
      - any overdue row → 🔴 (VERIFY :314–315);
      - "pending Luke's input" → 🟠 (Hard rule 2);
      - no 🔵 without a wake (Hard rule 1).
@@ -121,14 +121,14 @@ The two use the same words but mean different things and are ranked in different
   7. **Order vs urgency-shading plan** (see above).
 - [ ] **Step 2 — Luke's sign-off in principle** for editing `!ProjectSweep`, `!CreateProject`, `!Intake` and `Template_ProjectRegistry.md` as described. Recorded in **Notes → Sign-offs**. Step 11 does not start without it. [human input — Key Skills/Template guardrail]
 - [ ] **Step 3 — Baseline.**
-  - Commit **only** the uncommitted `System/Apps/ProjectKanban/` files as-is (Luke's go-ahead is part of Step 2). The other uncommitted work (LukeatronWiki, Skillbank, plans) is left alone for Luke.
+  - Commit **only** the uncommitted `System/Apps/ProjectDashboard/` files as-is (Luke's go-ahead is part of Step 2). The other uncommitted work (LukeatronWiki, Skillbank, plans) is left alone for Luke.
   - Create branch `state-merge` in a **separate git worktree** outside Dropbox (e.g. `~/lukeatron-state-merge/`). The live tree stays on `main`, so `:8789` and its SessionStart restart keep serving unchanged code.
   - Run the full suite and `check_contrast.py`, and record the counts.
   - Checksum `Projects/`.
   - Run `parity_check.py --before` to snapshot every active project's board lane and `_tracking.yaml` state.
   
   [inline + script]
-- [ ] **Step 4 — Build `!SuggestState`**: `skill.md` (trigger; output a suggestion + reason per row, **never a write**), `reference/state-rules.md` (the per-action rules, the Decision 3 project rule, the Decision 2 map, the fixture table), and an `_index.yaml` entry. [inline; Skillbank, Low impact]
+- [ ] **Step 4 — Build `!SuggestState`**: `SKILL.md` (trigger; output a suggestion + reason per row, **never a write**), `reference/state-rules.md` (the per-action rules, the Decision 3 project rule, the Decision 2 map, the fixture table), and an `_index.yaml` entry. [inline; Skillbank, Low impact]
 - [ ] **Step 5 — Write `migrate_state_column.py`.** It reuses `stores._split_row` / `_resolve_columns`, handles **every** Next Actions table in a file, preserves line endings, and leaves unparseable rows untouched while listing them. The report groups rows by `Kind → old State → new State` pattern with counts; individual rows appear only for rare patterns (<3) and "needs your eye". [script]
   - [ ] Test in Sandbox: copy `Projects/` to `System/Sandbox/state-merge/projects-copy/` and run `--root` on it. Pass = only header/State/Kind/Type cells differ; per-table row counts are equal (PP-02's two tables included); the report's own parse count equals the input row count. (The check that the app parses them with 0 skipped rows runs in Step 10, once the Step 6 code exists.)
 - [ ] **Step 6 — Back end, dual-read phase** (the live app keeps working on both old and new files):
@@ -185,7 +185,7 @@ The two use the same words but mean different things and are ranked in different
 
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Append one entry to `Memory/Long-Term/Logs/completed-plans.log` (format per that file's header — verbatim from this plan's frontmatter + Objective). Write this BEFORE moving the file.
+- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:projectkanban-state-merge-bulk-suggest' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.
 
 ## Notes
@@ -204,7 +204,7 @@ The two use the same words but mean different things and are ranked in different
   11. Small gaps: pending_sweep stamp, legacy-kind undo, recur rows, scripted baseline. → All added.
 - Pass 2 (same reviewer): 9 of 11 resolved; RETURNED with 6 new flags.
   1. State-first dual-read would change the live board before the cut-over. → Kind-first until Step 11.5, plus a Step 10 no-change proof.
-  2. The branch sat in the live tree, and the commit scope was unclear. → Separate worktree; commit only the ProjectKanban files.
+  2. The branch sat in the live tree, and the commit scope was unclear. → Separate worktree; commit only the Project Dashboard files.
   3. `review-monday`/`review-friday` also write. → Paused too, with a timing window.
   4. `recur.py` had no build step. → Added to Step 6.
   5. Decision 3's clauses overlapped. → (ii) needs ≥1 open row; (iii) keeps the wake behaviour; tests added.

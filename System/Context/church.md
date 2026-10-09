@@ -101,7 +101,7 @@ Templates this context leans on: `Template_SermonPrep.md` (single-passage prep, 
 - `System/Widgets/Parser/Biblical Commentary/` — commentary reference (parser-tool build; raw material — `CalvinCommentaries`, `Clarke`, `DTN`, `KingComments`, `RWP`, `Scofield` — moved here from `Bible/` on 2026-08-09)
 - `Memory/Long-Term/Boilerplate/recurring.md` — recurring service/roster elements
 
-> Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.
+> Native memory (`.claude/memory.md`) carries *working-style* preferences only — not domain facts.
 
 ---
 

@@ -36,7 +36,7 @@ AiCharacteristics gains a **Scrape** button that turns the Wikipedia article on 
 - **Temp-skills:** none
 
 ## Revision — 2026-10-02 (Luke: "the scrape will be a special skill in skillbank", DeepSeek key for the Scrape)
-The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristics` (`System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/`: `skill.md`, `run.py`, `aichar_scrape/`, `tests/`; catalogued in `_index.yaml`). It calls DeepSeek (`deepseek-flash`, thinking off) through DeepSeek's Anthropic-compatible endpoint, so the one request shape serves both providers. The app keeps `criteria/{store,llm,transport,judge}.py`; Check still calls Haiku. The button remains: Home's route imports the skill's code. Steps 6-9 below describe the first build; where they say "Haiku" for the Scrape, read DeepSeek. Tests now: skill 33, app Python 16, JS 14, Home 94. **Step 14 now needs:** `System/Credentials/Home/deepseek-key` (and an answer on extending the SR-5 exception to that file), the `anthropic-key` for Check, and Luke pressing Scrape.
+The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristics` (`System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/`: `SKILL.md`, `run.py`, `aichar_scrape/`, `tests/`; catalogued in `_index.yaml`). It calls DeepSeek (`deepseek-flash`, thinking off) through DeepSeek's Anthropic-compatible endpoint, so the one request shape serves both providers. The app keeps `criteria/{store,llm,transport,judge}.py`; Check still calls Haiku. The button remains: Home's route imports the skill's code. Steps 6-9 below describe the first build; where they say "Haiku" for the Scrape, read DeepSeek. Tests now: skill 33, app Python 16, JS 14, Home 94. **Step 14 now needs:** `System/Credentials/Home/deepseek-key` (and an answer on extending the SR-5 exception to that file), the `anthropic-key` for Check, and Luke pressing Scrape.
 
 ## Steps
 
@@ -87,5 +87,5 @@ The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristi
 
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Append one entry to `Memory/Long-Term/Logs/completed-plans.log` (format per that file's header — verbatim from this plan's frontmatter + Objective). Write this BEFORE moving the file.
+- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:aicharacteristics-criteria-judge' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.

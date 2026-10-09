@@ -1,10 +1,10 @@
-# Lukeatron: only System/ and .Claude/ are version-controlled.
+# Lukeatron: only System/ and .claude/ are version-controlled.
 # Personal data (Memory/, Inbox/, Outbox/, Archive/) and local/secret state
 # (Sandbox/, Credentials/, local settings, temp files) never go to GitHub.
 
 /*
 !/System/
-!/.Claude/
+!/.claude/
 !/.gitignore
 
 # Rhetoric keeps its database and Python caches tracked (Luke, 2026-10-06; the caches are re-allowed at the foot of
@@ -16,9 +16,9 @@
 /System/Sandbox/**
 /System/Credentials/
 
-# Within .Claude/: exclude local-only settings and temp files
-/.Claude/settings.local.json
-/.Claude/*.tmp
+# Within .claude/: exclude local-only settings and temp files
+/.claude/settings.local.json
+/.claude/*.tmp
 
 # Junk / build artifacts, wherever they appear under the tracked trees
 .DS_Store
@@ -56,3 +56,6 @@ Specs/
 # Rhetoric's Python caches: re-allowed here because a later rule beats an earlier one (see the Rhetoric note above)
 !/System/Apps/Rhetoric/**/__pycache__/
 !/System/Apps/Rhetoric/**/*.pyc
+
+# memory-search indexes are machine-local caches (default ~/Library/Caches/Lukeatron/); never commit one
+*.sqlite

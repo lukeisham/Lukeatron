@@ -1,6 +1,6 @@
 # criteria.md — the one canonical standard for `!GrammarFrame`
 
-Always loaded with `skill.md`. This file is the ONLY place a criterion's wording lives. `skill.md`'s
+Always loaded with `SKILL.md`. This file is the ONLY place a criterion's wording lives. `SKILL.md`'s
 VERB, STEP 9 and error paths reference criteria by id and never repeat them — one copy is why two
 copies cannot drift.
 

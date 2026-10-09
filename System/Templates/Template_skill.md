@@ -1,14 +1,14 @@
 # LUKEATRON SKILL WRITING TEMPLATE
-For vibe-coding skill.md files that are lean and agent-executable.
+For vibe-coding SKILL.md files that are lean and agent-executable.
 
 > **Everything above the YAML frontmatter is guidance for the author — do not copy it into the skill.**
 > A real skill begins at the `---` frontmatter and contains only the three body sections below.
 
 ## THE PRIME DIRECTIVE
-A skill.md is not documentation. It is an instruction set. Every line must earn its place. If it doesn't change agent behaviour, cut it.
+A SKILL.md is not documentation. It is an instruction set. Every line must earn its place. If it doesn't change agent behaviour, cut it.
 
 ## THE THREE-PART STRUCTURE
-Every skill.md has exactly three sections — **⚡ TRIGGER**, **🛠️ VERB**, **✅ OUTPUT** — plus YAML frontmatter.
+Every SKILL.md has exactly three sections — **⚡ TRIGGER**, **🛠️ VERB**, **✅ OUTPUT** — plus YAML frontmatter.
 
 ---
 
@@ -85,3 +85,20 @@ VERIFY [metric/state == expected_value] ELSE [error_path]
 ```
 CATCH [*] ➔ [Fallback action, user alert protocol, or graceful degradation script]
 ```
+
+**Log Line**
+```
+Log: python3 System/Tools/skilllog/skilllog.py write '!SkillName' <SUCCESS|FAIL|HELD> "<key=value outcome>"
+  → Memory/Long-Term/Logs/skills.log   (one line per RUN; never per step — script chatter goes to workers.log)
+```
+
+## 📏 PROGRESSIVE DISCLOSURE
+Keep SKILL.md to what EVERY run needs (aim ≤ 150 lines). Move material only some runs need — long
+examples, rubrics, rare branches, rendering specs — into `reference/<topic>.md` beside it, and leave a
+one-line pointer saying WHEN to read it: `READ reference/x.md WHEN <condition>`. Safety rules, gates and
+hard ASSERTs always stay in SKILL.md, never in a reference file.
+
+## 🧪 EVALS
+A skill that gates, sends, deletes, or routes ships with `evals/evals.json` (skill-creator schema:
+id · prompt · expected_output · expectations[]). Run the structural lint after any edit:
+`python3 System/Tools/skill-evals/lint_skills.py`.

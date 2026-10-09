@@ -254,7 +254,7 @@ Standard chassis layers (colour highlighting + key; icons; hover tokens/pop-ups;
 
 **Files**
 
-- `Memory/Long-Term/Tropes & symbols/_index.yaml` (empty); `build/README.md`, `build_parser.py`, `build_lexicon.py`, `template.html` (verbatim Grammar clones); `build/Tropes & symbols_content.md` (546 lines, DRAFT).
+- `Memory/Long-Term/Tropes-and-symbols/_index.yaml` (empty); `build/README.md`, `build_parser.py`, `build_lexicon.py`, `template.html` (verbatim Grammar clones); `build/Tropes & symbols_content.md` (546 lines, DRAFT).
 - `Memory/Medium-Term/Projects/TE-07-tropes-symbols-app/registry.md` + `notes.md`.
 
 ---
@@ -347,7 +347,7 @@ Input cap 1000 words. Proposed two-panel Explainer: per-token table (Token · La
 6. Test with e.g. John 1:1 and Genesis 1:1.
 
 **Files**
-- `Memory/Long-Term/Greek and Hebrew/build/` — README.md, build_parser.py, build_lexicon.py, template.html (verbatim clones), `Greek and Hebrew_content.md` (43 KB draft).
+- `Memory/Long-Term/Greek-and-Hebrew/build/` — README.md, build_parser.py, build_lexicon.py, template.html (verbatim clones), `Greek and Hebrew_content.md` (43 KB draft).
 - `Memory/Medium-Term/Projects/CH-13-greek-and-hebrew-app/` — registry.md, notes.md (constraint: never invent Scripture).
 
 ---
@@ -377,7 +377,7 @@ Chassis stack; focus levels TBD (likely Locus / Ordo Salutis / TULIP / theme-fre
 6. Build, offline-test with a sermon passage, then spec.
 
 **Files**
-- `Memory/Long-Term/Systematic Theology/build/` — README.md (2.1 KB), template.html (87 KB), build_parser.py, build_lexicon.py (all Grammar clones), `Systematic_Theology_content.md` (58 KB DRAFT).
+- `Memory/Long-Term/Systematic-Theology/build/` — README.md (2.1 KB), template.html (87 KB), build_parser.py, build_lexicon.py (all Grammar clones), `Systematic_Theology_content.md` (58 KB DRAFT).
 - `Memory/Medium-Term/Projects/CH-11-systematic-theology-app/` — registry.md, notes.md.
 
 ---
@@ -404,7 +404,7 @@ Chassis stack. Explainer: four-row table per matched concept — concept name, p
 3. Write spec; Luke review of draft; test with sermon texts; freeze version.
 
 **Files**
-- `Memory/Long-Term/Biblical Theology/build/` — README.md, build_parser.py, build_lexicon.py, template.html (Grammar clones), `Biblical Theology_content.md` (262 lines DRAFT).
+- `Memory/Long-Term/Biblical-Theology/build/` — README.md, build_parser.py, build_lexicon.py, template.html (Grammar clones), `Biblical Theology_content.md` (262 lines DRAFT).
 - `Memory/Medium-Term/Projects/CH-12-biblical-theology-app/` — registry.md, notes.md.
 
 ---
@@ -434,7 +434,7 @@ Layer 1 colour by symbol category (water=teal, light=amber, sacrifice=coral…);
 6. Rename title/footer; assemble (no lexicon embed); Luke review of DRAFT.
 
 **Files**
-- `Memory/Long-Term/Biblical symbols and cross-references/build/` — README.md, template.html (1900+ lines), build_parser.py, build_lexicon.py (Grammar clones), content file (1083 lines DRAFT).
+- `Memory/Long-Term/Biblical-symbols-and-cross-references/build/` — README.md, template.html (1900+ lines), build_parser.py, build_lexicon.py (Grammar clones), content file (1083 lines DRAFT).
 - `Memory/Medium-Term/Projects/CH-14-biblical-symbols-cross-references-app/registry.md` — active; content ✓, chassis + build app ☐.
 
 ---
@@ -464,7 +464,7 @@ Chassis stack (single-file HTML, offline for Tier A). Explainer format undefined
 5. Write spec; implement engine; build and test.
 
 **Files**
-- `Memory/Long-Term/Biblical Commentary/build/` — README.md, build_parser.py, build_lexicon.py, template.html (Grammar clones), `Biblical Commentary_content.md` (232 lines, DRAFT · UNVERIFIED).
+- `Memory/Long-Term/Biblical-Commentary/build/` — README.md, build_parser.py, build_lexicon.py, template.html (Grammar clones), `Biblical Commentary_content.md` (232 lines, DRAFT · UNVERIFIED).
 - `Memory/Long-Term/Bible/` — six SWORD commentary modules (raw material, unparsed).
 - `Memory/Medium-Term/Projects/CH-15-biblical-commentary-app/` — registry.md, notes.md.
 

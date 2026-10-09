@@ -25,7 +25,7 @@ you can see how expensive it was. The UI runs one phase at a time, so pausing
 between phases and repeating a phase are both just "don't click / click again".
 
 Zero dependencies — pure Python 3 standard library. One-click launch:
-    python3 serve.py            (auto-opens http://localhost:8789)
+    python3 serve.py            (auto-opens http://localhost:8790)
 Stop: Ctrl-C.
 
 The three functions (scrape_social_media / targeted_search / confirm_match) are
@@ -47,7 +47,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 HERE = Path(__file__).resolve().parent
-PORT = 8789
+PORT = 8790
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) LukeatronSearch/1.0"
 
 # Bounds that keep a run honest and cheap. Nothing is truncated SILENTLY — every

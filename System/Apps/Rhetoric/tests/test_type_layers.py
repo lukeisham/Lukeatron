@@ -27,6 +27,7 @@ def load(conn, hierarchy, text):
     return entries
 
 
+@unittest.skipUnless(category_roots.TEXTUAL_DATABASE.exists(), "textual_rhetoric_database.json is no longer on disk")
 class TypeLayersTest(unittest.TestCase):
     def test_form_outline_loads_exactly_as_authored(self):
         conn = seeded_db()

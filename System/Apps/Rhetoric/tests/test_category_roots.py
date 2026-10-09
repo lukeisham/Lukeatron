@@ -18,7 +18,11 @@ def memory_db() -> sqlite3.Connection:
     return conn
 
 
+NEEDS_SOURCE = unittest.skipUnless(category_roots.TEXTUAL_DATABASE.exists(), "textual_rhetoric_database.json is no longer on disk")
+
+
 class CategoryRootsTest(unittest.TestCase):
+    @NEEDS_SOURCE
     def test_reads_all_eight_roots_with_definitions_from_the_real_source(self):
         roots = category_roots.read_root_definitions()
         self.assertEqual([name for name, _ in roots], [r[2] for r in category_roots.ROOTS])
@@ -27,6 +31,7 @@ class CategoryRootsTest(unittest.TestCase):
         self.assertEqual(roots[0][0], "Resemblance")
         self.assertIn("comparing two distinct things", roots[0][1])
 
+    @NEEDS_SOURCE
     def test_seeding_gives_eight_parentless_category_roots(self):
         conn = memory_db()
         added = category_roots.seed_roots(conn, category_roots.read_root_definitions())
@@ -34,6 +39,7 @@ class CategoryRootsTest(unittest.TestCase):
         self.assertEqual(category_roots.category_root_count(conn), 8)
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM nodes WHERE hierarchy != 'category'").fetchone()[0], 0)
 
+    @NEEDS_SOURCE
     def test_rerun_adds_nothing(self):
         conn = memory_db()
         roots = category_roots.read_root_definitions()

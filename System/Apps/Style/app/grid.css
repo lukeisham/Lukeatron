@@ -1,0 +1,102 @@
+/* ==========================================================================
+   grid.css — the Grid group and the thumbnails under an entry: the options bar, the grid of tiles, the role
+   badge and the strip beneath an entry. Monochrome like the list body (no accent): an Issue badge is filled and
+   a Fix badge outlined, as the AI-confidence badge is. Thumbnails are small PNG files; their width and height
+   are on the tag so nothing shifts as they load.
+   Tokens: --grid-*, --thumb-strip-edge, --color-ink*, --color-rule-body, --color-drop-wash, --color-badge-fill*,
+   --font-ui, --font-size-*, --letter-spacing-badge, --radius-badge, --space-*, --border-hairline, --motion-fast.
+   ========================================================================== */
+.grid-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  font-family: var(--font-ui);
+}
+.grid-bar[hidden] { display: none; }
+.grid-roles { display: inline-flex; gap: var(--space-3); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-tile-min), 1fr));
+  gap: var(--grid-gap);
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid-open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  border: var(--border-hairline) solid var(--color-rule-body);
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.grid-open:hover { background: var(--color-drop-wash); }
+.grid-open:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.grid-thumb {
+  align-self: center;
+  max-width: 100%;
+  height: auto;
+  background: var(--color-drop-wash);
+}
+.grid-entry { font-weight: 700; }
+
+.image-role {
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-ink);
+  border-radius: var(--radius-badge);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  letter-spacing: var(--letter-spacing-badge);
+  text-transform: uppercase;
+}
+.image-role[data-role="issue"] { background: var(--color-badge-fill); color: var(--color-badge-fill-text); }
+.image-caption {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+
+/* Under an entry: a wrapping row of small thumbnails, each with its role and caption beneath. */
+.entry-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin: var(--space-2) 0 var(--space-2) var(--indent-step);
+  padding: 0;
+  list-style: none;
+}
+.entry-image {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: var(--thumb-strip-edge);
+}
+.entry-thumb {
+  max-width: var(--thumb-strip-edge);
+  max-height: var(--thumb-strip-edge);
+  width: auto;
+  height: auto;
+  background: var(--color-drop-wash);
+}
+/* An opened entry shows its thumbnails at their own size. */
+.entry.expanded .entry-image { max-width: 100%; }
+.entry.expanded .entry-thumb { max-width: 100%; max-height: none; }
+
+@media print {
+  .grid-open { border-color: var(--color-ink); break-inside: avoid; }
+  .grid { gap: var(--space-4); }
+}

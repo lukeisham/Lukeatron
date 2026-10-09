@@ -1,22 +1,22 @@
-# Opening ProjectKanban and the Wiki — a plain guide
+# Opening Project Dashboard and the Wiki — a plain guide
 
 Two browser windows show you what Lukeatron is tracking:
 
-- **ProjectKanban** — every active project, lane by whose move it is, column by how soon it's due. `http://localhost:8789`
+- **Project Dashboard** — every active project, lane by whose move it is, column by how soon it's due. `http://localhost:8789`
 - **LukeatronWiki** — the reading/watching/writing backlog and the idea pages. `http://localhost:8787`
 
 ## 1. Just open them
 
 Both are **already running** whenever Claude is open — you don't need to start anything. Just type the address into your browser:
 
-- ProjectKanban: `http://localhost:8789`
+- Project Dashboard: `http://localhost:8789`
 - Wiki: `http://localhost:8787`
 
 (Bookmark them if you like — they don't move.)
 
 ## 2. Editing — neither tool has a mode switch
 
-**ProjectKanban** — the board itself (the lane × column grid) is always read-only — click a card to
+**Project Dashboard** — the board itself (the lane × column grid) is always read-only — click a card to
 open that project's own page, and every field there (checkboxes, due dates, owner, kind, notes) is
 live and editable straight away, no switch to flip. Click **"← Back to board"** to return. A
 **Copy** button next to a field copies its text for pasting elsewhere; it doesn't change anything.
@@ -42,7 +42,7 @@ You almost never need to — they're designed to run quietly in the background. 
 
 - Open Terminal and run:
   ```
-  pkill -f "ProjectKanban/server.py"      # stops ProjectKanban
+  pkill -f "ProjectDashboard/server.py"      # stops Project Dashboard
   pkill -f "Apps/LukeatronWiki/server.py"            # stops the Wiki
   ```
 - They'll come back automatically the next time a Claude session starts.
@@ -50,5 +50,5 @@ You almost never need to — they're designed to run quietly in the background. 
 ## Advanced (optional, most people can skip this)
 
 Both tools have exactly one double-click launcher each — `System/Apps/LukeatronWiki/Start
-LukeatronWiki.command` and `System/Apps/ProjectKanban/Start ProjectKanban.command` —
+LukeatronWiki.command` and `System/Apps/ProjectDashboard/Start ProjectDashboard.command` —
 since neither has a mode to start into beyond its normal one.

@@ -6,7 +6,7 @@ and **news articles with comment sections**, from a single browser tab.
 ## Launch (one click)
 
 Double-click **`Start Search.command`**. It runs `python3 serve.py` and opens
-`http://localhost:8789` in your browser. Press **Ctrl-C** in the terminal to stop.
+`http://localhost:8790` in your browser. Press **Ctrl-C** in the terminal to stop.
 
 *(No installation. Pure Python 3 standard library — nothing to `pip install`.)*
 
@@ -36,4 +36,4 @@ Hacker News, Reddit, and Google News — all key-free, all comment-bearing.
 Adding more (or authenticated ones like X/Instagram) is documented in
 **`REFACTORING_GUIDE.md`**. The spec history lives in **`_Builds/`**.
 
-Port `8789` (the wiki viewer uses `8787`, the project dashboard `8788`).
+Port `8790`, assigned in `System/Apps/ports.json` (the port registry).

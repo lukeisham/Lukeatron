@@ -94,13 +94,13 @@ Apply these to all research output unless Luke says otherwise:
 
 ## 🗃️ Memory this context leans on
 
-- `Memory/Long-Term/` subject stores — the full topic range (Bible, Philosophy, Sociology, Medical, Theology, Wisdom, Writing Fiction/Non-Fiction, YouTube, …)
+- `Memory/Long-Term/` subject stores — the full topic range (Bible, Philosophy, Sociology, Medical, Theology, Wisdom, Writing-Fiction/Non-Fiction, YouTube, …)
 - `Memory/Long-Term/Coding/` — coding conventions & notes (build work)
 - `Memory/Long-Term/Preferences/` — approved domains & source preferences
 - `Memory/Long-Term/Subscriptions/` — accounts and resources available for research
 - `Memory/Long-Term/Method/` — research methods
 
-> Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.
+> Native memory (`.claude/memory.md`) carries *working-style* preferences only — not domain facts.
 
 ---
 

@@ -3,7 +3,8 @@ Like topical.py it writes only its own two tables (`grammar_labels`, `grammar_pl
 exception (app-decisions.md); server.py routes to it and items.py reads the tree through `grammar_tree`.
 Routing holds no SQL (API-1).
 
-A label is a grammatical term with an optional explanation (`definition`, blank when none). Labels nest at most five levels
+A label is a grammatical term with an optional explanation (`definition`, blank when none). A link label (`about_section` set) is a
+leaf that links to its own section of the About page and holds no devices, tables or sub-labels. Labels nest at most five levels
 deep (a top-level label, then four more below it). A device may be filed under any number
 of labels, at any level, so it can sit under a label and under one of that label's sub-labels too."""
 
@@ -14,6 +15,7 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import aboutpage
 import labeltables
 import labeltree
 
@@ -42,11 +44,11 @@ def grammar_tree(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     then its devices (in Luke's order). Every label is kept, empty or not, so it can be filled."""
     built: dict[int, dict[str, Any]] = {}
     parents: list[tuple[int, int | None]] = []
-    for label_id, parent_id, name, definition, tables in conn.execute(
-        "SELECT id, parent_id, name, definition, tables_json FROM grammar_labels ORDER BY position, id"
+    for label_id, parent_id, name, definition, tables, about in conn.execute(
+        "SELECT id, parent_id, name, definition, tables_json, about_section FROM grammar_labels ORDER BY position, id"
     ):
         built[label_id] = {"kind": "node", "id": label_id, "name": name, "definition": definition,
-                           "tables": labeltables.parse(tables), "children": []}
+                           "tables": labeltables.parse(tables), "about": about, "children": []}
         parents.append((label_id, parent_id))
     roots = []
     for label_id, parent_id in parents:
@@ -63,8 +65,8 @@ def create_label(db_path: Path, name: str, definition: str | None, parent_id: in
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, GrammarError) >= MAX_DEPTH:
             raise GrammarError("bad_request")  # a sixth level is refused
-        if labeltree.taken(conn, TABLE, parent_id, name):
-            raise GrammarError("conflict")
+        if parent_id is not None:
+            labeltree.require_plain(conn, TABLE, parent_id, GrammarError)  # a link label has nothing under it
         conn.execute(
             "INSERT INTO grammar_labels (parent_id, name, definition, position) VALUES "
             "(?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM grammar_labels WHERE parent_id IS ?))",
@@ -72,15 +74,20 @@ def create_label(db_path: Path, name: str, definition: str | None, parent_id: in
         )
 
 
-def edit_label(db_path: Path, label_id: int, name: str, definition: str | None = None) -> None:
-    """Renames the label and, unless `definition` is None, replaces its explanation (blank clears it)."""
+def create_link(db_path: Path, name: str, parent_id: int | None = None, about_path: Path = aboutpage.ABOUT_PATH) -> None:
+    """A link label: a leaf that shows its name as a link to its own new, empty section of the About page (labeltree.create_link)."""
     with closing(connect_writable(db_path)) as conn, conn:
-        row = conn.execute("SELECT parent_id FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
+        labeltree.create_link(conn, TABLE, name, parent_id, MAX_DEPTH, GrammarError, about_path)
+
+
+def edit_label(db_path: Path, label_id: int, name: str, definition: str | None = None) -> None:
+    """Renames the label and, unless `definition` is None, replaces its explanation (blank clears it). A link label has no
+    explanation, so only its name changes; its About section keeps the heading it was made with."""
+    with closing(connect_writable(db_path)) as conn, conn:
+        row = conn.execute("SELECT about_section FROM grammar_labels WHERE id = ?", (label_id,)).fetchone()
         if row is None:
             raise GrammarError("not_found")
-        if labeltree.taken(conn, TABLE, row[0], name, except_id=label_id):
-            raise GrammarError("conflict")
-        if definition is None:
+        if definition is None or row[0] is not None:
             conn.execute("UPDATE grammar_labels SET name = ? WHERE id = ?", (name, label_id))
         else:
             conn.execute("UPDATE grammar_labels SET name = ?, definition = ? WHERE id = ?", (name, definition, label_id))
@@ -89,6 +96,7 @@ def edit_label(db_path: Path, label_id: int, name: str, definition: str | None =
 def set_tables(db_path: Path, label_id: int, tables: list[dict[str, Any]]) -> None:
     """Replaces the label's tables with `tables` (already `labeltables.clean`ed; the server does that)."""
     with closing(connect_writable(db_path)) as conn, conn:
+        labeltree.require_plain(conn, TABLE, label_id, GrammarError)  # a link label holds no tables
         labeltables.save(conn, TABLE, label_id, tables, GrammarError)
 
 
@@ -114,6 +122,7 @@ def add_placement(db_path: Path, label_id: int, device_id: int, index: int | Non
     """Files the device under the label, last by default. A device already there stays put unless
     `index` is given, which puts it at that spot among the label's devices (so this is also the move)."""
     with closing(connect_writable(db_path)) as conn, conn:
+        labeltree.require_plain(conn, TABLE, label_id, GrammarError)  # a link label holds no devices
         try:
             conn.execute(
                 "INSERT OR IGNORE INTO grammar_placements (label_id, device_id, position) VALUES "

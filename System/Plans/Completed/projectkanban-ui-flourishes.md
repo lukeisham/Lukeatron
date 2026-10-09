@@ -31,7 +31,7 @@ Add three small, motion-safe UI flourishes to the Dashboard (`System/Apps/Projec
 - **Docs.** `StyleGuide.md` gains the new tokens and a short "flourish rules" section; `refactor-registry.md` gets one dated Migration-log row. `wishlist.md` gets no row (built items are deleted, never added-then-marked-built; this was never filed there).
 
 ## Resources
-- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md` (CSS-1/CSS-2, JS-1/JS-2, TEST-rules); `System/Apps/ProjectKanban/_template/StyleGuide.md`; `.Claude/skills/!HouseStyle/reference/aesthetic.md` (flourish budget: at most 2 animating elements, 3 durations).
+- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md` (CSS-1/CSS-2, JS-1/JS-2, TEST-rules); `System/Apps/ProjectKanban/_template/StyleGuide.md`; `.claude/skills/!HouseStyle/reference/aesthetic.md` (flourish budget: at most 2 animating elements, 3 durations).
 - **Capability skills:** none.
 - **Domain skills (Skillbank):** none — `!AppDevelopment`'s refactor loop does not apply (ProjectKanban has no `_test/` copy; Luke declined one 2026-09-12), so changes land directly in `_template/`, as every recent ProjectKanban plan has.
 - **Sub-agents:** one implementation sub-agent per code step (Steps 3–7), each briefed with the specimen and the Success criteria; the coordinator reads every diff and does the live verification itself.

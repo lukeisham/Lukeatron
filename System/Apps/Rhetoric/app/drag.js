@@ -13,7 +13,8 @@
  *   a Type or label on another Type or label              -> { overDevice: null, side }        (move it)
  * For a device, `side` is 'before' or 'after' the row under the pointer, by which half of it the pointer is in.
  * For a Type or label, `side` is 'before' or 'after' the heading (its top or bottom quarter: beside it, under its
- * parent) or 'inside' (the middle, or anywhere over what is beneath the heading: last among its sub-labels).
+ * parent) or 'inside' (the middle, or anywhere over what is beneath the heading: last among its sub-labels). A link label
+ * (`data-link`) has no inside: the middle counts as the nearer edge, and a device cannot be dropped on it.
  */
 
 const DROP_CLASS = 'drop-target';
@@ -58,11 +59,15 @@ export function bindDragAndDrop(list, onDrop) {
     if (!type || !dragged) return null;
     if (type.dataset.hierarchy !== dragged.hierarchy) return null;
     const overType = Number(type.dataset.nodeId);
+    const isLink = type.dataset.link === 'true'; // a link label holds nothing: a Type or label lands beside it, a device nowhere on it
     if (dragged.kind === 'type') {
       if (dragged.item.contains(type)) return null; // itself, or something beneath it: it cannot go under itself
-      const side = zoneOf(event, type.querySelector('.heading-row'));
+      const heading = type.querySelector('.heading-row');
+      const zone = zoneOf(event, heading);
+      const side = zone === 'inside' && isLink ? sideOf(event, heading) : zone;
       return { element: type, className: side === 'inside' ? DROP_CLASS : SIDE_CLASS[side], overType, overDevice: null, side };
     }
+    if (isLink) return null;
     const row = event.target.closest('[data-device-id]');
     if (row && Number(row.dataset.deviceId) !== dragged.id) {
       const side = sideOf(event, row);

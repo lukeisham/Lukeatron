@@ -1,0 +1,94 @@
+/* ==========================================================================
+   tokens.css — the only file that defines a visual value (frontend.spec AD-7,
+   CSS-2). Two zones: the masthead carries the burgundy accent and manuscript
+   type; the list body is dense, monochrome and accent-free (AD-8).
+   ========================================================================== */
+:root {
+  /* Colour */
+  --color-page: #ffffff;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #666666;
+  --color-accent: #6b1f2a;
+  --color-rule-masthead: #e3d9c8;
+  --color-rule-body: #d8d8d8;
+  --color-marker: #9a9a9a;
+  --color-badge-fill: #1a1a1a;
+  --color-badge-fill-text: #ffffff;
+  --color-button-border: #cdbfa6;
+  --color-accent-wash: #f6eeee;
+  --color-drop-wash: #f2f2f2;
+  --color-focus: #a8843c;
+  --color-backdrop: rgba(26, 26, 26, 0.28);
+  --focus-ring: 0 0 0 3px rgba(168, 132, 60, 0.32);
+  --shade-raised: 0 1px 2px rgba(26, 26, 26, 0.06), 0 2px 6px rgba(26, 26, 26, 0.05);
+  --shade-float: 0 2px 4px rgba(26, 26, 26, 0.07), 0 8px 24px rgba(26, 26, 26, 0.09);
+
+  /* Type */
+  --font-serif: Georgia, 'Iowan Old Style', serif;
+  --font-ui: -apple-system, 'Helvetica Neue', sans-serif;
+  --font-size-title: 26px;
+  --font-size-subrule: 12px;
+  --font-size-toolbar: 12px;
+  --font-size-toolbar-small: 11.5px;
+  --font-size-search: 14px;
+  --font-size-body: 14px;
+  --font-size-definition: 12.5px;
+  --font-size-example: 13px;
+  --font-size-marker: 13px;
+  --font-size-marker-small: 10px;
+  --font-size-marker-large: 20px;
+  --marker-box: 8px; /* the square or empty box that marks a label; its closed size is --marker-box-large */
+  --marker-box-large: 12px;
+  --marker-box-edge: 1.5px;
+  --font-size-table-min: 11px; /* the smallest a label table's text shrinks to; past it the table scrolls sideways instead */
+  --table-char-width: 0.6; /* em a character of table text is reckoned to take, used to size the text from the room the table has */
+  --font-size-badge: 10px;
+  --letter-spacing-badge: 0.05em;
+  --radius-badge: 8px;
+  --radius-button: 4px;
+  --line-height-body: 1.35;
+  --letter-spacing-title: 0.04em;
+  --letter-spacing-subrule: 0.3em;
+  --letter-spacing-ornament: 0.2em;
+  --letter-spacing-sort: 0.03em;
+
+  /* Space */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 18px;
+  --space-8: 22px;
+  --space-9: 28px;
+  --space-10: 44px;
+  --space-11: 100px;
+  --indent-step: calc(var(--marker-box-large) + var(--space-3)); /* a heading marker's slot plus the row gap: a sub-label's marker sits under its parent's name */
+  --indent-max-depth: 5;
+  --grid-tile-min: 150px; /* the narrowest a Grid tile gets: the grid fits as many columns as the width allows */
+  --grid-gap: var(--space-5);
+  --thumb-strip-edge: 96px; /* the longest side of a thumbnail under an entry */
+  --search-width: 300px;
+  --body-max-width: 780px;
+
+  /* Line */
+  --border-hairline: 1px;
+  --border-strong: 2px;
+  --sort-weight-active: 600;
+  --outline-offset: 2px;
+  --opacity-dragging: 0.45;
+
+  /* Motion: the house's two feedback durations; nothing else animates. */
+  --motion-fast: 90ms;
+  --motion-base: 180ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Motion floor: reduced-motion users get no animation at all. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

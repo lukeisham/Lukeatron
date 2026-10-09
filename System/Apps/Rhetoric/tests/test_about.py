@@ -36,10 +36,11 @@ class AboutPageTest(unittest.TestCase):
         self.assertEqual(ABOUT.count("<h1 "), 1)
         self.assertIn('href="about.html"', INDEX)
 
-    def test_intro_links_reach_the_six_sections(self):
+    def test_intro_links_reach_the_six_sections_and_any_link_label_sections_after_them(self):
         targets = re.findall(r'<nav class="contents".*?</nav>', ABOUT, re.S)[0]
         anchors = re.findall(r'href="#([^"]+)"', targets)
-        self.assertEqual(anchors, ["popularity", "confidence", "descriptions", "examples", "quotes", "methodology"])
+        self.assertEqual(anchors[:6], ["popularity", "confidence", "descriptions", "examples", "quotes", "methodology"])
+        self.assertTrue(all(anchor.startswith("link-") for anchor in anchors[6:]))  # a link label's own section (aboutpage.py)
         for anchor in anchors:
             self.assertEqual(ABOUT.count(f'<section id="{anchor}">'), 1)
 

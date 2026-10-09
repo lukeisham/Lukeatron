@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — A Reference of Topics</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="header.css">
+<link rel="stylesheet" href="list.css">
+<link rel="stylesheet" href="labels.css">
+<link rel="stylesheet" href="labeltable.css">
+<link rel="stylesheet" href="compare.css">
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="print.css">
+</head>
+<body>
+<header class="masthead">
+  <h1 class="masthead-title">Research</h1>
+  <p class="masthead-subrule">A Reference of Topics <span id="entry-count" class="masthead-count"></span></p>
+  <div class="toolbar">
+    <div class="search-row">
+      <label class="search-field">
+        <span class="visually-hidden">Search topics</span>
+        <span class="search-glyph" aria-hidden="true">⌕</span>
+        <input id="search" type="search" placeholder="Search topics…" autocomplete="off">
+      </label>
+      <label class="toolbar-check"><input id="fuzzy" type="checkbox"> Fuzzy match</label>
+    </div>
+    <div id="sort" class="sort-list" role="group" aria-label="Sort order"></div>
+    <div class="options-row">
+      <div class="menu">
+        <button id="display-button" class="btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="display-panel">Display <span class="btn-caret" aria-hidden="true">▾</span></button>
+        <div id="display-panel" class="menu-panel" role="group" aria-label="Display options" hidden>
+          <label class="menu-item"><input id="show-definitions" type="checkbox" checked> Show definitions</label>
+          <label class="menu-item"><input id="show-examples" type="checkbox" checked> Show examples</label>
+          <label class="menu-item"><input id="show-confidence" type="checkbox" checked> Show AI confidence</label>
+          <label class="menu-item" title="On: a single topic's view lists the labels it is filed under. Off by default."><input id="show-labels" type="checkbox"> Show Labels</label>
+          <label class="menu-item" title="On: add, edit, delete and drag labels and the topics under them. Off: read only; clicking and the options above still work."><input id="edit-mode" type="checkbox" checked> Edit mode</label>
+          <label class="menu-item" title="On: a click on a label opens it (its sub-labels and topics show) or closes it. Off: every sub-label and topic is listed."><input id="reveal" type="checkbox" checked> Indent</label>
+        </div>
+      </div>
+      <label class="toolbar-check">Open on
+        <select id="default-sort" class="toolbar-select">
+          <option value="none">Search only</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="form">Form</option>
+          <option value="function">Function</option>
+          <option value="category">Category</option>
+          <option value="popularity">Popularity</option>
+          <option value="labels">Labels</option>
+          <option value="index">Index</option>
+          <option value="compare">Compare</option>
+        </select>
+      </label>
+      <button id="print" class="btn" type="button">Print</button>
+      <button id="copy" class="btn" type="button">Copy</button>
+      <button id="compare" class="btn" type="button" aria-pressed="false">Compare</button>
+      <a class="btn btn-link" href="about.html">About</a>
+      <span id="copy-status" class="toolbar-status" role="status"></span>
+    </div>
+  </div>
+  <p class="ornament" aria-hidden="true">── ❧ ──</p>
+</header>
+<main class="workspace">
+  <div class="workspace-bar">
+    <button id="home" class="home-link" type="button" hidden>← Home</button>
+  </div>
+  <div id="labels-bar" class="labels-bar" role="group" aria-label="Add labels and topics" hidden>
+    <form id="label-form" class="labels-form" autocomplete="off">
+      <label class="label-field"><span class="visually-hidden">New label name</span>
+        <input id="label-name" type="text" maxlength="80" placeholder="New label…" required></label>
+      <label class="label-field label-explanation"><span class="visually-hidden">What the label means</span>
+        <input id="label-definition" type="text" maxlength="300" placeholder="What it means (optional)…"></label>
+      <span class="picker parent-picker">
+        <label class="label-field"><span class="visually-hidden">Add the label under</span>
+          <input id="label-parent" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="label-parent-list" placeholder="At the top level — or find a parent…"></label>
+        <ul id="label-parent-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
+      <button class="btn" type="submit">Add label</button>
+      <button class="btn" type="submit" data-link="true" title="Add the name as a link to a new, empty section at the end of the About page. A link has no explanation and holds no topics.">Add link</button>
+    </form>
+    <form id="label-entry-form" class="labels-form" autocomplete="off">
+      <span class="picker">
+        <label class="label-field"><span class="visually-hidden">Topic to add</span>
+          <input id="entry-pick" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="entry-pick-list" placeholder="Find a topic…"></label>
+        <ul id="entry-pick-list" class="picker-list" role="listbox" hidden></ul>
+      </span>
+      <label><span class="visually-hidden">Add the topic to</span><select id="entry-label" class="toolbar-select"></select></label>
+      <button class="btn" type="submit">Add topic</button>
+    </form>
+    <span id="labels-status" class="toolbar-status" role="status"></span>
+  </div>
+  <div id="index-bar" class="index-bar" role="group" aria-label="Index options" hidden>
+    <span id="index-orders" class="index-orders"></span>
+    <button id="index-full" class="btn" type="button" aria-pressed="false" title="Show each whole quote, with a link to its topic">Full display</button>
+  </div>
+  <div id="compare-bar" class="compare-bar" role="group" aria-label="Compare a topic with its Counterpart" hidden>
+    <label class="compare-field"><span class="visually-hidden">Topic</span><select id="compare-pick" class="toolbar-select"></select></label>
+    <button id="compare-prev" class="btn" type="button">◂ Prev</button>
+    <button id="compare-next" class="btn" type="button">Next ▸</button>
+    <span id="compare-count" class="toolbar-status" role="status"></span>
+    <span class="compare-switches">
+      <label class="toolbar-check"><input id="table-names" type="checkbox" checked> Names</label>
+      <label class="toolbar-check"><input id="table-definitions" type="checkbox" checked> Definitions</label>
+      <label class="toolbar-check"><input id="table-examples" type="checkbox" checked> Examples</label>
+    </span>
+  </div>
+  <div id="list" class="list" aria-live="polite"></div>
+</main>
+<dialog id="table-dialog" class="table-dialog" aria-labelledby="table-dialog-title">
+  <form id="table-form" class="table-form" autocomplete="off">
+    <h2 id="table-dialog-title" class="table-dialog-title">Table</h2>
+    <div class="table-controls">
+      <label class="table-count">Columns <input id="table-cols" type="number" inputmode="numeric"></label>
+      <label class="table-count">Rows <input id="table-rows" type="number" inputmode="numeric"></label>
+      <label class="toolbar-check"><input id="table-col-heads" type="checkbox"> Column headings</label>
+      <label class="toolbar-check"><input id="table-row-heads" type="checkbox"> Row headings</label>
+    </div>
+    <label class="table-caption-field">Caption (optional) <input id="table-caption" type="text"></label>
+    <div class="table-grid-wrap"><table id="table-grid" class="table-grid"></table></div>
+    <p class="table-hint">Headings are the first row and column, shown in bold. Paste from a spreadsheet to fill the grid. <code>*word*</code> makes italics and <code>_word_</code> makes bold.</p>
+    <div class="table-actions">
+      <button id="table-delete" class="btn" type="button" hidden>Delete table</button>
+      <span id="table-status" class="toolbar-status" role="status"></span>
+      <button id="table-cancel" class="btn" type="button">Cancel</button>
+      <button class="btn" type="submit">Save</button>
+    </div>
+  </form>
+</dialog>
+<script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 """Brings an existing database's Topical Types up to nested Types (up to four levels deep, Luke 2026-10-06).
 
-`topical_types` gains a `parent_id` column, and its old table-wide UNIQUE name is replaced by a name that is
-unique among siblings (the index in schema.sql). SQLite cannot drop a UNIQUE constraint in place, so the table is
+`topical_types` gains a `parent_id` column, and its old table-wide UNIQUE name is dropped (it first became a
+name unique among siblings; that rule was itself removed 2026-10-07, see seed/drop_topical_name_index.py). SQLite cannot drop a UNIQUE constraint in place, so the table is
 rebuilt with every existing Type kept as a top-level Type, with its id and position; placements point at the same
 ids and are untouched. Safe to run twice. A fresh database gets the new shape from schema.sql directly.
 
@@ -34,7 +34,7 @@ def migrate(conn: sqlite3.Connection) -> bool:
             conn.execute("ALTER TABLE topical_types_new RENAME TO topical_types")
     finally:
         conn.execute("PRAGMA foreign_keys = ON")
-    conn.executescript(SCHEMA_PATH.read_text())  # the sibling-name and parent indexes
+    conn.executescript(SCHEMA_PATH.read_text())  # the parent index
     return True
 
 

@@ -84,7 +84,7 @@ _SOURCE_STORES = {"Bible"}
 
 _WIKILINK_RE = re.compile(r"\[\[([a-zA-Z0-9_\-]+)\]\]")
 
-# Port defined at System/Apps/ProjectKanban/server.py (PORT).
+# Port defined at System/Apps/ProjectDashboard/server.py (PORT).
 _DASHBOARD_URL = "http://localhost:8789/"
 
 
@@ -762,6 +762,7 @@ def _page_shell(title, content_html, rail_html, margin_html, counts, search_q=""
         '<meta charset="UTF-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
         f"<title>{_esc(title)} — LukeatronWiki</title>\n"
+        '<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">\n'
         '<link rel="stylesheet" href="/static/wiki-page.css">\n'
         '<link rel="stylesheet" href="/static/app.css">\n'
         "</head>\n"
@@ -773,7 +774,7 @@ def _page_shell(title, content_html, rail_html, margin_html, counts, search_q=""
         "</form>"
         '<div class="topbar-controls">'
         f'<a class="topbar-link" href="{_DASHBOARD_URL}" target="lukeatron-dashboard" '
-        'rel="noopener" title="Open the Dashboard (projects)">Dashboard</a>'
+        'rel="noopener" title="Open the Project Dashboard (projects)">Project Dashboard</a>'
         '<button class="btn-theme-toggle" type="button" title="Toggle theme">&#9680;</button>'
         '<button class="btn-print" type="button" title="Print">&#9033;</button>'
         "</div></div>\n"
@@ -812,6 +813,7 @@ def _seal_failure_page():
         '<meta charset="UTF-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
         "<title>Seal failure — LukeatronWiki</title>\n"
+        '<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">\n'
         '<link rel="stylesheet" href="/static/wiki-page.css">\n'
         '<link rel="stylesheet" href="/static/app.css">\n'
         "</head>\n"

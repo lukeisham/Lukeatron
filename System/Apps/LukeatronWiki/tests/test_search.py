@@ -186,8 +186,8 @@ class TestAC4Performance(unittest.TestCase):
             f"/ {total_files} files: {elapsed:.3f}s, {sum(len(g['hits']) for g in results)} hits"
         )
 
-        # Generous ceiling — this is a live full-text walk of ~187 files /
-        # 26MB (AD-1: no index), not a snappy-UI budget. Catches an actual
+        # Generous ceiling — the shared index refreshes changed files, then
+        # every hit is re-checked against the seal-filtered listings. Catches an actual
         # regression (e.g. an accidental O(n^2)) without being flaky on a
         # slow or loaded machine.
         self.assertLess(elapsed, 10.0)
@@ -246,6 +246,22 @@ class TestAC7NoWritePath(unittest.TestCase):
             and any(kw in name.lower() for kw in ("write", "save", "submit", "delete"))
         ]
         self.assertEqual(write_like, [])
+
+
+class TestRankedEngine(SearchFixtureTestCase):
+    def test_every_term_must_match_anywhere_in_the_file(self):
+        results = search.search("Augustine special")
+        files = [h["filename"] for g in results for h in g["hits"]]
+        self.assertEqual(files, ["augustine.md"])
+
+    def test_term_matches_inside_a_word(self):
+        results = search.search("anom")
+        self.assertIn("durkheim.md", [h["filename"] for g in results for h in g["hits"]])
+
+    def test_binary_file_still_matches_on_its_filename(self):
+        results = search.search("image")
+        hit = [h for g in results for h in g["hits"] if h["filename"] == "image.png"]
+        self.assertEqual(hit[0]["kind"], "title")
 
 
 class TestEdgeCases(SearchFixtureTestCase):

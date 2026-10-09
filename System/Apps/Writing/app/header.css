@@ -1,0 +1,242 @@
+/* ==========================================================================
+   header.css — the manuscript masthead and toolbar (accent zone).
+   Tokens: --color-accent, --color-ink*, --color-rule-masthead, --font-*,
+   --space-*, --letter-spacing-*, --border-*.
+   ========================================================================== */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: var(--border-hairline);
+  height: var(--border-hairline);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.masthead {
+  padding: var(--space-10) var(--space-9) 0;
+  text-align: center;
+}
+
+.masthead-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-title);
+  font-weight: 400;
+  font-variant: small-caps;
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.masthead-subrule {
+  margin: 0 0 var(--space-9);
+  color: var(--color-accent);
+  font-size: var(--font-size-subrule);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-subrule);
+}
+
+.masthead-count {
+  color: var(--color-ink-soft);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.toolbar { font-family: var(--font-ui); }
+
+.search-row,
+.options-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.search-row { margin-bottom: var(--space-5); }
+.options-row {
+  margin: var(--space-3) 0 var(--space-8);
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-toolbar-small);
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: var(--search-width);
+  padding: var(--space-3) var(--space-1);
+  border-bottom: var(--border-hairline) solid var(--color-rule-masthead);
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-search);
+}
+
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  appearance: none;
+}
+
+.search-field:focus-within { border-bottom-color: var(--color-accent); }
+
+.toolbar-check {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-toolbar-small);
+  white-space: nowrap;
+}
+
+.toolbar-select {
+  padding: 0 var(--space-2);
+  border: var(--border-hairline) solid var(--color-rule-masthead);
+  background: none;
+  color: var(--color-ink-soft);
+  font: inherit;
+}
+
+.sort-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.sort-option {
+  padding: 0 0 var(--space-2);
+  border: none;
+  border-bottom: var(--border-hairline) solid transparent;
+  background: none;
+  color: var(--color-ink-soft);
+  font: inherit;
+  font-size: var(--font-size-toolbar);
+  letter-spacing: var(--letter-spacing-sort);
+  cursor: pointer;
+}
+
+.sort-option[aria-pressed="true"] {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: var(--sort-weight-active);
+}
+
+/* Buttons (Display, Print, Copy): house-style anatomy. A raised hairline-bordered control; hover
+   lifts and turns accent to say "clickable", press sinks 1px, an open menu stays accent-washed,
+   keyboard focus is the ochre ring (a different signal from accent, which means "active"). */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-5);
+  border: var(--border-hairline) solid var(--color-button-border);
+  border-radius: var(--radius-button);
+  background: var(--color-page);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--font-size-toolbar);
+  letter-spacing: var(--letter-spacing-sort);
+  line-height: 1.3;
+  cursor: pointer;
+  transition: border-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
+}
+.btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: var(--shade-raised);
+}
+.btn:active {
+  background: var(--color-accent-wash);
+  box-shadow: none;
+  transform: translateY(var(--border-hairline));
+}
+.btn[aria-expanded="true"],
+.btn[aria-pressed="true"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-wash);
+  color: var(--color-accent);
+}
+.btn-link { text-decoration: none; }
+.btn-caret { font-size: var(--font-size-badge); }
+
+/* The Display menu: a pull-down list of checkable options, growing from its button. */
+.menu { position: relative; }
+
+.menu-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: 10;
+  min-width: 100%;
+  padding: var(--space-2) 0;
+  border: var(--border-hairline) solid var(--color-button-border);
+  border-radius: var(--radius-button);
+  background: var(--color-page);
+  box-shadow: var(--shade-float);
+  text-align: left;
+  animation: menu-in var(--motion-base) var(--ease-out);
+}
+.menu-panel[hidden] { display: none; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  color: var(--color-ink);
+  font-size: var(--font-size-toolbar);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.menu-item:hover { background: var(--color-accent-wash); }
+.menu-item input { margin: 0; accent-color: var(--color-accent); }
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--space-2))); }
+  to { opacity: 1; transform: none; }
+}
+
+.toolbar-status { color: var(--color-ink-soft); min-width: var(--space-9); text-align: left; }
+
+/* The Copied / Copy failed message takes no room in the row, so the buttons stay centred; the text
+   overflows to the right of About. */
+.options-row .toolbar-status {
+  width: 0;
+  min-width: 0;
+  margin-left: calc(-1 * var(--space-6));
+  text-indent: var(--space-4);
+  white-space: nowrap;
+}
+
+.ornament {
+  margin: 0 0 var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--font-size-subrule);
+  letter-spacing: var(--letter-spacing-ornament);
+}
+
+.masthead :focus-visible {
+  outline: var(--border-strong) solid var(--color-accent);
+  outline-offset: var(--outline-offset);
+}
+.masthead .btn:focus-visible,
+.masthead .menu-item:focus-within {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+@media (max-width: 600px) {
+  .masthead { padding-inline: var(--space-6); }
+  .search-field { width: 100%; }
+}

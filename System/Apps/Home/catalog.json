@@ -5,21 +5,16 @@
       "blurb": "Long-Term memory, read as one interconnected wiki",
       "launch": {"kind": "ensure", "script": "ensure-wiki.sh", "port": 8787}
     },
-    "ProjectKanban": {
-      "title": "Dashboard",
+    "ProjectDashboard": {
+      "title": "Project Dashboard",
       "context": "Lukeatron",
       "blurb": "Every tracked project, by whose move and how soon",
-      "launch": {"kind": "ensure", "script": "ensure-kanban.sh", "port": 8789}
+      "launch": {"kind": "ensure", "script": "ensure-dashboard.sh", "port": 8789}
     },
     "Storytelling": {
       "context": "Personal Research",
       "blurb": "The periodic table of story; build your own story maps",
       "launch": {"kind": "server", "entry": "server.py", "port": 8793}
-    },
-    "CurriculumPreparation": {
-      "context": "Teaching",
-      "blurb": "Unit prep: curriculum tree, lessons, crib sheet, assessment",
-      "launch": {"kind": "self-opening", "entry": "serve.py", "cwd": "_template"}
     },
     "Riddle": {
       "context": "Teaching",
@@ -46,17 +41,34 @@
       "blurb": "Rhetorical devices by category, form and function",
       "launch": {"kind": "server", "entry": "server.py", "port": 8794}
     },
+    "Grammar": {
+      "context": "Teaching",
+      "blurb": "Grammar patterns by category, form and function, with your own labels",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8802}
+    },
+    "Logic": {
+      "context": "Teaching",
+      "blurb": "Logical forms by category, form and function, with your own labels",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8803}
+    },
+    "Research": {
+      "context": "Personal Research",
+      "blurb": "Research topics by category, form and function, with your own labels",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8804}
+    },
+    "Style": {
+      "context": "Teaching",
+      "blurb": "Graphic design issues and fixes, with a grid of thumbnails",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8806}
+    },
+    "Writing": {
+      "context": "Teaching",
+      "blurb": "Writing patterns by category, form and function, with your own labels",
+      "launch": {"kind": "server", "entry": "server.py", "port": 8805}
+    },
     "ASCI_art": {
       "context": "Personal Research",
       "blurb": "ASCII art studio"
-    },
-    "Fact-checking": {
-      "context": "Personal Research",
-      "blurb": "Check a claim against its sources"
-    },
-    "HistoryOfPhilosophy": {
-      "context": "Personal Research",
-      "blurb": "The history of philosophy, navigable"
     }
   }
 }

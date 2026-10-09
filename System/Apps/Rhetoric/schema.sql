@@ -26,6 +26,10 @@
 -- `tables_json` (on both tree tables) holds the tables Luke attaches to a label or Type: a JSON list, shape and
 -- limits in labeltables.py. It is written only through grammar.set_tables / topical.set_tables and goes with its row.
 -- An older database gains the column through seed/add_label_tables.py, not through this file.
+-- `about_section` (on both tree tables) makes a row a LINK label: it is the id of the row's own section in app/about.html
+-- ('link-<name>'), the name shows as a link to it, and the row holds no devices, tables or sub-rows (labeltree.py enforces that).
+-- NULL on every ordinary label or Type. Written only by labeltree.create_link, which also adds the section to the page
+-- (aboutpage.py); an older database gains the column through seed/add_link_labels.py.
 -- Build a fresh database, or add the topical and grammar tables to an existing one: sqlite3 rhetoric.db < schema.sql
 -- (an older database whose topical_types lacks `parent_id` is rebuilt by seed/add_topical_nesting.py).
 -- (an older database whose grammar_labels lacks `position`, or that still has the retired two-slot tables,
@@ -79,7 +83,8 @@ CREATE TABLE IF NOT EXISTS examples (
 
 -- A Topical Type label, in a tree up to five levels deep (`parent_id` is NULL for a top-level Type), with an
 -- explanation (`definition`, '' on a Type made before it existed; seed/add_topical_definition.py adds the column).
--- A Type's name is unique among its siblings, ignoring case, by the index below. `position` is the
+-- A Type's name need not be unique: two Types, even siblings, may share one (Luke 2026-10-07; an existing
+-- database loses its old sibling-name index through seed/drop_topical_name_index.py). `position` is the
 -- display order among siblings (ties fall back to id; gaps are fine, topical.py renumbers on a move).
 CREATE TABLE IF NOT EXISTS topical_types (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,9 +92,9 @@ CREATE TABLE IF NOT EXISTS topical_types (
     name      TEXT NOT NULL,
     definition TEXT NOT NULL DEFAULT '',
     position  INTEGER NOT NULL DEFAULT 0,
-    tables_json TEXT NOT NULL DEFAULT '[]'
+    tables_json TEXT NOT NULL DEFAULT '[]',
+    about_section TEXT
 );
-CREATE UNIQUE INDEX IF NOT EXISTS idx_topical_types_sibling_name ON topical_types(COALESCE(parent_id, 0), name COLLATE NOCASE);
 
 -- A device may sit under several Types; deleting a Type deletes its placements, never the device.
 -- `position` orders the devices within one Type.
@@ -103,10 +108,10 @@ CREATE TABLE IF NOT EXISTS topical_placements (
 -- REVIEW TAG. One row per device: Claude's private review ledger. It is never read by items.py,
 -- server.py or the app (they select named columns), never copied to devices.json, and never shown
 -- to Luke in the interface; only the agent reads it, straight from the database.
---   definition_reviewed  1 once the device's definition has been read against the README
---                        "Definitions" rules (and the sources they name); 0 until then.
+--   definition_reviewed  1 once the device's definition has been read against
+--                        seed/guides/definitions.md (and the sources they name); 0 until then.
 --   ai_example_reviewed  1 once the device's AI-written (constructed) example has been checked
---                        against the README "Constructed examples" rules; 0 until then.
+--                        against seed/guides/constructed-examples.md; 0 until then.
 --   quote_changes        how many times a credited quote has been written for the device: every
 --                        insert of, or edit to, a credited example adds 1 (a deletion adds 0), so
 --                        1 is the original quote and more than 1 means it has been replaced or edited.
@@ -145,7 +150,8 @@ CREATE TABLE IF NOT EXISTS grammar_labels (
     name        TEXT NOT NULL,
     definition  TEXT NOT NULL,
     position    INTEGER NOT NULL DEFAULT 0,
-    tables_json TEXT NOT NULL DEFAULT '[]'
+    tables_json TEXT NOT NULL DEFAULT '[]',
+    about_section TEXT
 );
 
 -- A device filed under a label; deleting the label (or the device) removes its placements.

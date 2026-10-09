@@ -1,0 +1,128 @@
+/* ==========================================================================
+   labels.css — Labels editing: the Add label form (name, explanation, parent), the Add pattern form with its
+   type-ahead drop-down, a label's Edit/Delete tools, the remove-from-label cross, and drag-and-drop and
+   reorder feedback. Monochrome like the list body (no accent).
+   Tokens: --color-ink, --color-ink-soft, --color-marker, --color-rule-body, --color-page, --color-drop-wash,
+   --opacity-dragging, --space-*, --border-hairline, --font-ui, --font-size-toolbar, --font-size-badge,
+   --shade-raised, --motion-fast.
+   ========================================================================== */
+.labels-bar {
+  display: flex;
+  flex-direction: column; /* the Add label form, the Add entry form beneath it, then the status line */
+  align-items: flex-start;
+  gap: var(--space-4);
+  font-family: var(--font-ui);
+}
+.labels-bar[hidden] { display: none; }
+
+.labels-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.label-explanation input { width: 260px; }
+
+.labels-form .toolbar-select { max-width: 200px; padding: var(--space-2); font-size: var(--font-size-toolbar); }
+
+/* The entry picker: the text box with its list hanging beneath it. */
+.picker { position: relative; }
+.picker .label-field input { width: 220px; }
+.parent-picker .label-field input { width: 250px; }
+/* A parent's whole path can be long: the list is wider than the box and wraps instead of running off the page. */
+.parent-picker .picker-list { width: 420px; max-width: calc(100vw - 2 * var(--space-6)); }
+.parent-picker .picker-option { white-space: normal; overflow-wrap: anywhere; }
+
+.picker-list {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  min-width: 100%;
+  max-height: 260px;
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow-y: auto;
+  list-style: none;
+  border: var(--border-hairline) solid var(--color-rule-body);
+  background: var(--color-page);
+  box-shadow: var(--shade-raised);
+}
+.picker-list[hidden] { display: none; }
+
+.picker-option {
+  padding: var(--space-2) var(--space-5);
+  color: var(--color-ink);
+  font-size: var(--font-size-toolbar);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.picker-option[aria-selected="true"],
+.picker-option:hover { background: var(--color-drop-wash); }
+
+.label-field input {
+  width: 180px;
+  padding: var(--space-2) var(--space-1);
+  border: none;
+  border-bottom: var(--border-hairline) solid var(--color-rule-body);
+  outline: none;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--font-size-toolbar);
+}
+.label-field input:focus { border-bottom-color: var(--color-ink-soft); }
+
+/* Read-only mode (Display > Edit mode off): the add forms, the row tools and the grab cursor go; reading and clicking are untouched. */
+body.read-only .labels-bar,
+body.read-only .label-actions,
+body.read-only .placement-remove { display: none; }
+body.read-only .entry[draggable="true"] .entry-row,
+body.read-only .heading-row[draggable="true"] { cursor: pointer; }
+
+/* A label heading's tools sit before the reveal button; the first of them takes the free space. */
+.label-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+.label-actions + .reveal-toggle { margin-left: 0; }
+
+.label-action,
+.placement-remove {
+  padding: 0 var(--space-3);
+  border: none;
+  background: none;
+  color: var(--color-marker);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.label-action:hover,
+.placement-remove:hover { color: var(--color-ink); text-decoration: underline; }
+.label-action:focus-visible,
+.placement-remove:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.placement-remove { margin-left: auto; font-size: var(--font-size-body); }
+
+/* Draggable rows (an entry, or a label's heading): grab cursor, faded while in flight. */
+.entry[draggable="true"] .entry-row,
+.heading-row[draggable="true"] { cursor: grab; }
+.dragging { opacity: var(--opacity-dragging); }
+
+/* An entry dropped on a label goes in at the end, and a label dropped on the middle of another goes inside it, last: a dashed frame and a faint wash on the whole block. */
+.node.drop-target {
+  background: var(--color-drop-wash);
+  outline: var(--border-hairline) dashed var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+/* Reordering, or moving beside a heading: a heavy rule on the edge the dragged label or entry will land against. */
+.drop-before { box-shadow: 0 calc(-1 * var(--border-strong)) 0 var(--color-ink); }
+.drop-after { box-shadow: 0 var(--border-strong) 0 var(--color-ink); }

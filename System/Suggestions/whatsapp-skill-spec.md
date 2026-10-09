@@ -78,7 +78,7 @@ self-chat-only.
 
 ## Build stub (next steps)
 
-- `System/Skillbank/!WhatsApp/skill.md` + `_index.yaml` catalog entry (or `.claude/skills/`
+- `System/Skillbank/!WhatsApp/SKILL.md` + `_index.yaml` catalog entry (or `.claude/skills/`
   if promoted to a command).
 - `whatsapp-watch.yaml` config + `_state.yaml` high-water store.
 - Wire one extra step into `intake-sweep` to fan the watched JIDs into `!Intake`.

@@ -89,11 +89,11 @@ Templates this context leans on: the Grammar cartridge (`System/Widgets/Parser/G
 - `System/Widgets/Parser/Style/` — prose style reference
 - `System/Widgets/Parser/Story-tension/` — story tension/plot structure reference
 - `System/Widgets/Parser/Tropes & symbols/` — literary trope/symbol reference
-- `System/Apps/Fact-checking/` — the Fact-checking app (moved out of Widgets 2026-09-27): registry, wishlist, legacy widget spec
+- `Archive/Fact-checking-app-2026-10-07/` — the Fact-checking app (moved out of Widgets 2026-09-27; archived 2026-10-07): registry, wishlist, legacy widget spec
 - `Memory/Long-Term/Teaching/` — teaching method & material
 - `Memory/Long-Term/Method/` — working methods that cut across the tools
 
-> Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.
+> Native memory (`.claude/memory.md`) carries *working-style* preferences only — not domain facts.
 
 ---
 

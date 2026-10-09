@@ -1186,11 +1186,11 @@ class TestRealTree(unittest.TestCase):
             )
             self.assertIn(expected_href_tail, out, f"missing link for {f['filename']!r}")
 
-    def test_footer_store_count_is_33(self):
+    def test_footer_store_count_matches_library(self):
         out = render.render_home()
         m = re.search(r'<strong>(\d+)</strong>\s*stores</span>', out)
         self.assertIsNotNone(m)
-        self.assertEqual(m.group(1), "33")
+        self.assertEqual(m.group(1), str(len(library.list_stores())))
 
 
 if __name__ == "__main__":

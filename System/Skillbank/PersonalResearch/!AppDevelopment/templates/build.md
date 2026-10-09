@@ -23,6 +23,9 @@ You are the **boss agent** for the build of **<Name>**, a <app | widget> whose d
 - Before the app's FIRST write to any real data file, take a dated copy of it (`Memory/` is not
   in git).
 - Commit after each module lands, so any step can be reverted.
+- If the app serves on localhost, its port is <port>, already registered in `System/Apps/ports.json`.
+  Use no other number. Before the final commit, run `python3 System/Tools/ports/ports.py check`
+  and fix anything it reports.
 
 **Do not read** the PRD as a build instruction. The specs are the build instruction; the PRD is
 closed and is not reopened.

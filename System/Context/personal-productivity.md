@@ -85,7 +85,7 @@ If the primary goal is "get this practical thing done," this is the context.
 - `Memory/Medium-Term/Projects/` — active project tracking
 - `Memory/Medium-Term/file-locations.md` — where things actually live
 
-> Native memory (`.Claude/memory.md`) carries *working-style* preferences only — not domain facts.
+> Native memory (`.claude/memory.md`) carries *working-style* preferences only — not domain facts.
 
 ---
 

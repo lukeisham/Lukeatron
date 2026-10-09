@@ -96,7 +96,6 @@ class ServerTest(unittest.TestCase):
             self.assertEqual(fetch(self.topical_url(), "POST", {"name": name, "definition": "d", "parent_id": parent})[0], 200)
         self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L6", "definition": "d", "parent_id": 5})[0], 400)  # a sixth level
         self.assertEqual(fetch(self.topical_url(), "POST", {"name": "X", "definition": "d", "parent_id": 99})[0], 404)
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "L2", "definition": "d", "parent_id": 1})[0], 409)  # sibling clash
         self.assertEqual(fetch(self.topical_url("/1"), "DELETE")[0], 409)  # it still has a sub-Type
 
     def test_the_position_route_can_move_a_type_to_another_parent_or_the_top(self):
@@ -177,7 +176,7 @@ class ServerTest(unittest.TestCase):
 
     def test_refusals_map_to_registry_statuses(self):
         fetch(self.topical_url(), "POST", {"name": "Irony", "definition": "d"})
-        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "IRONY", "definition": "d"})[0], 409)
+        self.assertEqual(fetch(self.topical_url(), "POST", {"name": "IRONY", "definition": "d"})[0], 200)  # names may repeat
         self.assertEqual(fetch(self.topical_url("/99"), "DELETE")[0], 404)
         self.assertEqual(fetch(self.topical_url("/1/devices/99"), "PUT")[0], 404)
         self.assertEqual(fetch(self.topical_url("/abc"), "DELETE")[0], 404)
@@ -235,7 +234,7 @@ class ServerTest(unittest.TestCase):
 
     def test_grammar_refusals_and_bad_bodies(self):
         fetch(self.grammar_url(), "POST", {"name": "Clause", "definition": "d"})
-        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "clause", "definition": "d"})[0], 409)
+        self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "clause", "definition": "d"})[0], 200)  # names may repeat
         self.assertEqual(fetch(self.grammar_url(), "POST", {"name": "X", "definition": "d", "parent_id": 99})[0], 404)
         self.assertEqual(fetch(self.grammar_url("/99"), "DELETE")[0], 404)
         for body in ({"name": "X", "definition": "x" * 301}, {"name": "X", "definition": 5},

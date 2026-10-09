@@ -1,0 +1,176 @@
+/* ==========================================================================
+   list.css — the dense, monochrome list body (no accent colour, AD-8).
+   Tokens: --color-ink*, --color-marker, --color-rule-body, --font-size-*,
+   --line-height-body, --space-*, --indent-*, --border-hairline.
+   Definitions/examples hide by body class; an expanded row overrides both.
+   ========================================================================== */
+.workspace {
+  max-width: var(--body-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-8) var(--space-11);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.workspace-bar {
+  display: flex;
+  flex-wrap: wrap; /* the Home link and the Labels bar wrap onto separate lines when the page is narrow */
+  align-items: center;
+  gap: var(--space-6);
+  min-height: var(--space-8);
+}
+
+.home-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-ink-soft);
+  font: inherit;
+  font-size: var(--font-size-definition);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.list ul { margin: 0; padding: 0; list-style: none; }
+
+.list-message { color: var(--color-ink-soft); }
+
+.marker {
+  flex-shrink: 0;
+  color: var(--color-marker);
+  font-size: var(--font-size-marker);
+}
+.marker-example { font-size: var(--font-size-marker-small); }
+.marker-hidden { color: #000; font-size: var(--font-size-marker-large); }
+
+/* Heading markers drawn as boxes: solid for a top-level label, hollow for one with no sub-labels. Closed (.marker-hidden)
+   grows the box and turns its edge black, the same change the dot gets, so a folded heading reads alike in every shape. */
+.marker-box {
+  box-sizing: border-box;
+  width: var(--marker-box);
+  height: var(--marker-box);
+  margin-inline: calc((var(--marker-box-large) - var(--marker-box)) / 2); /* every heading marker fills one --marker-box-large slot, so names of a layer start at the same x */
+  border: var(--marker-box-edge) solid var(--color-marker);
+  transform: translateY(1px);
+}
+.marker-dot { width: var(--marker-box-large); text-align: center; }
+.marker-box-solid { border-color: #000; background: #000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.marker-box-hollow { background: none; }
+.marker-box.marker-hidden { width: var(--marker-box-large); height: var(--marker-box-large); margin-inline: 0; border-color: #000; }
+
+.heading-row,
+.entry-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+}
+
+.node-root { border-bottom: var(--border-hairline) solid var(--color-rule-body); }
+
+.node-name,
+.entry-name { font-weight: 700; }
+
+/* In Labels the label names are grey so the entries filed under them stand out in normal ink. */
+.node[data-hierarchy="labels"] > .heading-row > .node-name { color: var(--color-ink-soft); }
+
+/* A link label (Add link): not bold and underlined, so it reads as a link to its own section of the About page rather than a heading. */
+.node-name.node-link-name { font-weight: 400; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.node[data-hierarchy] > .heading-row > .node-link-name:hover { color: var(--color-ink); }
+
+.node-definition {
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+.node-definition::before { content: "— "; }
+
+/* Indent grows one step per level up to --indent-max-depth, then stops (the tree stays nested). A step is a marker slot plus the
+   row gap, so each layer's marker sits under its parent's name; the first layer is never indented. */
+.list .node-children {
+  padding-left: calc((min(var(--depth), var(--indent-max-depth)) - min(var(--depth) - 1, var(--indent-max-depth))) * var(--indent-step));
+  padding-bottom: var(--space-2);
+}
+
+.entry-definition {
+  margin: 0;
+  padding: 0 0 var(--space-1) var(--space-6);
+  color: var(--color-ink-soft);
+}
+
+
+/* A single entry's Labels line (Display options, off by default): small grey type under its examples. */
+.entry-filings {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0 0 var(--space-2) var(--space-6);
+  color: var(--color-ink-soft);
+  font-size: var(--font-size-definition);
+}
+.entry-filings dt { font-weight: 700; }
+.entry-filings dd { margin: 0; }
+.entry-filings .filings-none { font-style: italic; }
+
+.example {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: 0 0 var(--space-2) var(--space-6);
+  font-size: var(--font-size-example);
+}
+
+/* AI-confidence badge: monochrome (AD-8). High is filled, medium outlined, low dashed and faint,
+   so the three read apart without an accent colour. On screen only: print.css hides it. */
+.confidence-badge {
+  flex-shrink: 0;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-ink);
+  border-radius: var(--radius-badge);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-badge);
+  text-transform: uppercase;
+}
+.confidence-badge[data-rating="high"] { background: var(--color-badge-fill); color: var(--color-badge-fill-text); }
+.confidence-badge[data-rating="low"] {
+  border-style: dashed;
+  border-color: var(--color-ink-soft);
+  color: var(--color-ink-soft);
+}
+
+/* A heading's reveal button: shows or hides the entries beneath it (the heading click itself isolates). */
+.reveal-toggle {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-rule-body);
+  border-radius: var(--radius-badge);
+  background: none;
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-badge);
+  cursor: pointer;
+}
+.reveal-toggle:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}
+
+.latin { font-style: italic; }
+.source { color: var(--color-ink-soft); }
+
+body.hide-definitions .entry:not(.expanded) .entry-definition,
+body.hide-examples .entry:not(.expanded) .examples,
+body.hide-images .entry:not(.expanded) .entry-images { display: none; }
+body.hide-confidence .confidence-badge { display: none; }
+
+.heading-row:focus-visible,
+.entry-row:focus-visible,
+.home-link:focus-visible {
+  outline: var(--border-hairline) dotted var(--color-ink-soft);
+  outline-offset: var(--outline-offset);
+}

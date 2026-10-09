@@ -1,6 +1,6 @@
 # fleet.md — roles, models and return formats for FLEET MODE
 
-Loaded whenever the skill runs as a fleet (skill.md, 🐝 FLEET MODE). The fleet changes WHO does each
+Loaded whenever the skill runs as a fleet (SKILL.md, 🐝 FLEET MODE). The fleet changes WHO does each
 step, never WHAT it requires: every criterion binds a subagent exactly as it binds the boss.
 
 ## Roles
@@ -121,7 +121,7 @@ nothing else. Their formats govern; this file does not restate them.
 
 ## Revision mode
 
-Same roles, scoped to the unit (skill.md 🔁 REVISION MODE):
+Same roles, scoped to the unit (SKILL.md 🔁 REVISION MODE):
 
 | Redo of | Subagents |
 | :--- | :--- |

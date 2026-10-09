@@ -1,6 +1,6 @@
 ---
 plan: "<short-kebab-name>"               # becomes the filename in System/Plans/New/
-context: [Personal Productivity | Church | Teaching | Personal Research]
+context: [Personal Productivity | Church | Teaching | Personal Research | Lukeatron]
 secondary_contexts: []                   # other domains the plan touches; omit if none
 created: <YYYY-MM-DD>
 status: New                              # New → Completed (move file to System/Plans/Completed/ when done)
@@ -25,7 +25,7 @@ skills_used: []                          # filled as steps run; the final loggin
 - **Domain skills (Skillbank):** <!SkillName from System/Skillbank/_index.yaml, or "none">
 - **Sub-agents:** <one line per dynamic step that needs judgement, or "none">
 - **Scripts:** <standalone automations for deterministic/rigid steps, in Memory/Medium-Term/temp-skills/, or "none">
-- **Temp-skills:** <deterministic/rigid steps captured as a script + skill.md in Memory/Medium-Term/temp-skills/, or "none">
+- **Temp-skills:** <deterministic/rigid steps captured as a script + SKILL.md in Memory/Medium-Term/temp-skills/, or "none">
 
 ## Steps
 Bite-sized and ordered. Each box is one action. Tag the skill/tool/mode in brackets. Mark `[x]` when complete.
@@ -45,5 +45,5 @@ Bite-sized and ordered. Each box is one action. Tag the skill/tool/mode in brack
 
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Append one entry to `Memory/Long-Term/Logs/completed-plans.log` (format per that file's header — verbatim from this plan's frontmatter + Objective). Write this BEFORE moving the file.
+- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:<slug>' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.

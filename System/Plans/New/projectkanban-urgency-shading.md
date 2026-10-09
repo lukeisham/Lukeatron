@@ -5,7 +5,7 @@ secondary_contexts: []
 created: 2026-09-25
 status: New
 major_because: "multi-step"
-project: "LU-02-projectkanban"           # existing project; this plan closes its Next Action #2
+project: "LU-02-projectdashboard"           # existing project; this plan closes its Next Action #2
 skills_used: ["!CreatePlan", "!ReviewPlan"]
 review: "RETURNED pass 1 (2 flags: [alignment] Step 1 Option A mislabeled 'recommended' and the catch-up section overstated aesthetic.md's rule against an auto-refresh-triggered pulse; [measurability] Docs criterion omitted StyleGuide.md's Layout scope table for a conditional new urgency.css) → revised — catch-up section, Option A and the Docs criterion/Step 11 reworded to name the tension explicitly and route it to Luke's existing Step 1 decision rather than pre-deciding it. Step 1 answered 2026-09-28: animation = B (on attention only), which the review's own tension doesn't apply to. Ready for execution from Step 2; Step 10 (sign-off) remains as its own human-input step."
 ---
@@ -13,7 +13,7 @@ review: "RETURNED pass 1 (2 flags: [alignment] Step 1 Option A mislabeled 'recom
 # Plan — Dashboard: shade and animate cards by urgency, on top of their state colour
 
 ## Objective
-Give every Dashboard card (`System/Apps/ProjectKanban/`) a second, quieter signal — **how urgent it is** (overdue, or due / waking within a few days) — drawn as a stronger or lighter shade of the card's existing lane (state) colour, plus one small, rule-abiding animation, so Luke can see "act now" at a glance without the lane colour losing its meaning. This specialises the Lukeatron North Star ("extend it deliberately, never by accident"): urgency is computed once on the server (the board's "zero client-side derivation" rule, card.js FR-1), every value is a token in `tokens.css`, and the animation stays inside `!HouseStyle`'s counted budget. Closes LU-02 Next Action #2 ("Add state-vs-urgency colour shading + subtle animation").
+Give every Dashboard card (`System/Apps/ProjectDashboard/`) a second, quieter signal — **how urgent it is** (overdue, or due / waking within a few days) — drawn as a stronger or lighter shade of the card's existing lane (state) colour, plus one small, rule-abiding animation, so Luke can see "act now" at a glance without the lane colour losing its meaning. This specialises the Lukeatron North Star ("extend it deliberately, never by accident"): urgency is computed once on the server (the board's "zero client-side derivation" rule, card.js FR-1), every value is a token in `tokens.css`, and the animation stays inside `!HouseStyle`'s counted budget. Closes LU-02 Next Action #2 ("Add state-vs-urgency colour shading + subtle animation").
 
 ## Why this needs a plan (catch-up)
 The board already *places* cards by due date — the OVERDUE / THIS WEEK / NEXT WEEK / LATER / NO DATE columns (`model.py` `_classify_due`). What it doesn't do is make urgency visible *on the card itself*, and it ignores a project's **wake** date whenever the project has any dated action (`model.py` `_project_due`: wake only wins when every action is undated). So a Waiting project whose wake is tomorrow shows nothing. Two design rules also constrain the animation:
@@ -36,9 +36,9 @@ A permanently pulsing overdue card would break all of these, so the animation's 
 - **Docs.** `StyleGuide.md` Flourishes table gains an Urgency row + its tokens, and a line declaring the local budget use; if a new `app/board/urgency.css` is created (Tokens-only criterion above), `StyleGuide.md`'s *Layout scope, by file* table gains its row too, so that table can't silently drift; `README.md` documents the `urgency` field; `app-decisions.md` gets an Approvals row only if Luke's sign-off reverses an earlier decision.
 
 ## Resources
-- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md` (CSS-1/CSS-2, JS-1/JS-2, TEST rules); `StyleGuide.md`; `.Claude/skills/!HouseStyle/SKILL.md` + `reference/aesthetic.md` (flourish budget); `Memory/Medium-Term/Projects/_tracking.yaml` header (the `wake` field and `!ProjectSweep`'s "due within 3 days" Incoming rule); `LU-02-projectkanban/notes.md` (the original "state vs urgency shading" note).
+- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md` (CSS-1/CSS-2, JS-1/JS-2, TEST rules); `StyleGuide.md`; `.claude/skills/!HouseStyle/SKILL.md` + `reference/aesthetic.md` (flourish budget); `Memory/Medium-Term/Projects/_tracking.yaml` header (the `wake` field and `!ProjectSweep`'s "due within 3 days" Incoming rule); `LU-02-projectdashboard/notes.md` (the original "state vs urgency shading" note).
 - **Capability skills:** none.
-- **Domain skills (Skillbank):** none — ProjectKanban has no `_test/` copy (Luke declined one 2026-09-12; `_template/` was flattened into the app folder 2026-09-28), so changes land directly in the live app, as in every recent ProjectKanban plan.
+- **Domain skills (Skillbank):** none — Project Dashboard has no `_test/` copy (Luke declined one 2026-09-12; `_template/` was flattened into the app folder 2026-09-28), so changes land directly in the live app, as in every recent Project Dashboard plan.
 - **Sub-agents:** one implementation sub-agent for Step 3 (model/server) and one for Steps 4–6 (front end), each briefed with this plan's Success criteria and Step 1's decisions; the coordinator reads every diff and does Steps 8–9 itself.
 - **Scripts:** none new — `check_contrast.py` and the test suites are the deterministic checks.
 - **Temp-skills:** none.
@@ -66,7 +66,7 @@ A permanently pulsing overdue card would break all of these, so the animation's 
 
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Append one entry to `Memory/Long-Term/Logs/completed-plans.log` (format per that file's header — verbatim from this plan's frontmatter + Objective). Write this BEFORE moving the file.
+- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:projectkanban-urgency-shading' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.
 
 ## Notes

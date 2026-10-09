@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Style</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="header.css">
+<link rel="stylesheet" href="about.css">
+<link rel="stylesheet" href="print.css">
+</head>
+<body>
+<header class="masthead">
+  <h1 class="masthead-title">Style</h1>
+  <p class="masthead-subrule">About</p>
+  <p class="ornament" aria-hidden="true">── ❧ ──</p>
+</header>
+<main class="about">
+  <div class="workspace-bar">
+    <a class="back-link" href="./">← Back to the elements</a>
+    <span class="about-actions">
+      <label class="toolbar-check">Print or copy
+        <select id="about-part" class="toolbar-select"><option value="">Whole page</option></select>
+      </label>
+      <button id="about-print" class="btn" type="button">Print</button>
+      <button id="about-copy" class="btn" type="button">Copy</button>
+      <span id="about-status" class="toolbar-status" role="status"></span>
+    </span>
+  </div>
+
+  <div class="intro">
+    <p>Style is an offline reference to elements, kept for teaching preparation. Each group in the app is a different way in. This page explains what each group shows and how the scores and text fields are meant to be read; sections written for link labels follow the first four.</p>
+    <nav class="contents" aria-label="On this page">
+      <ol>
+        <li><a href="#groups">Groups</a></li>
+        <li><a href="#labels">Labels</a></li>
+        <li><a href="#scores">Popularity and AI confidence</a></li>
+        <li><a href="#examples">Examples and real quotes</a></li>
+        <li><a href="#images">Thumbnails and the Grid</a></li>
+      </ol>
+    </nav>
+    <dl class="facts">
+      <dt>Runs on</dt>
+      <dd>Local only: a Python 3 standard-library server at 127.0.0.1, port 8806.</dd>
+      <dt>Data</dt>
+      <dd>SQLite file <code>style.db</code>, read-only for browsing. The only writable data is the labels, their tables and the elements filed under them.</dd>
+      <dt>Screen</dt>
+      <dd>Plain HTML, CSS and JavaScript; no framework, no build step. Sorting, search and filtering run in the browser.</dd>
+    </dl>
+  </div>
+
+  <section id="groups">
+    <h2>Groups</h2>
+    <p>Each button above the list opens a group. Pressing the open group again clears it, and search then looks through Category, Form and Function together.</p>
+    <table class="tests">
+      <thead><tr><th scope="col">Group</th><th scope="col">Shows</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Alphabetical</th><td>Every element A to Z.</td></tr>
+        <tr><th scope="row">Popularity</th><td>Every element, highest score first; unscored ones come last.</td></tr>
+        <tr><th scope="row">Category, Form, Function</th><td>Three independent hierarchies. An element sits once in Form, once in Function, and in one or more Categories.</td></tr>
+        <tr><th scope="row">Labels</th><td>your own arrangement: labels you create, nest and order, with elements filed under them (&sect;2).</td></tr>
+        <tr><th scope="row">Grid</th><td>Every thumbnail as a tile, each opening its element. Filter by Issues or Fixes (&sect;5).</td></tr>
+        <tr><th scope="row">Index</th><td>Every real quote, by first line, source or date.</td></tr>
+        <tr><th scope="row">Compare</th><td>An element beside its counterpart, in a table.</td></tr>
+      </tbody>
+    </table>
+    <p>Labels is the only group the app lets you change. Search, the Display options, Copy and Print serve every group.</p>
+  </section>
+
+  <section id="labels">
+    <h2>Labels</h2>
+    <p>A label has a name, an optional explanation, and any number of sub-labels, up to five levels deep. An element may be filed under as many labels as fit, at any level.</p>
+
+    <h3>Adding and arranging</h3>
+    <ul>
+      <li><strong>Add label</strong> takes a name, an optional explanation and, if wanted, a parent to go under. Leave the parent empty for the top level.</li>
+      <li><strong>Add element</strong> files an element under a label; each label also has its own Add element button.</li>
+      <li><strong>Drag</strong> a label onto the middle of another to put it inside; onto the top or bottom quarter to put it before or after. Drag an element onto a label to file it there, or onto another element to place it.</li>
+      <li><strong>Click</strong> a label to open or close it; <strong>double-click</strong> to show it alone.</li>
+      <li><strong>Edit mode</strong>, in the Display menu, switches all editing off for safe reading.</li>
+    </ul>
+
+    <h3>Links</h3>
+    <p>Add link makes a label that shows its name as a link to a new, empty section at the end of this page, for writing in. A link has no explanation and holds nothing.</p>
+
+    <h3>Tables</h3>
+    <p>Each label can hold up to five tables, with a set number of columns and rows and optional column and row headings. Paste from a spreadsheet to fill one. Copy writes a table as comma-separated lines.</p>
+
+    <h3>Marking text</h3>
+    <p>In names, explanations, examples and table cells, <code>*word*</code> makes italics and <code>_word_</code> makes bold.</p>
+  </section>
+
+  <section id="scores">
+    <h2>Popularity and AI confidence</h2>
+    <p>Both are stored values, set when an element is written into the database and never recomputed in the browser. An element without a value simply shows none.</p>
+
+    <h3>Popularity</h3>
+    <p>A 0&ndash;100 score for how widely used an element is. Higher means more used. The Popularity group lists the scored elements first, highest to lowest.</p>
+
+    <h3>AI confidence</h3>
+    <p>A label (high, medium or low) for how confident the AI is that an element&rsquo;s definition, example and classification are accurate together. It defaults to low, so an unrated element never reads as trusted.</p>
+    <table class="scale">
+      <thead><tr><th scope="col">Label</th><th scope="col">Reading</th></tr></thead>
+      <tbody>
+        <tr><td>High</td><td>Safe to teach from as it stands</td></tr>
+        <tr><td>Medium</td><td>Check before relying on it</td></tr>
+        <tr><td>Low</td><td>Draft; check before use</td></tr>
+      </tbody>
+    </table>
+    <p>The badge shows on screen only; Print and Copy leave it out.</p>
+  </section>
+
+  <section id="examples">
+    <h2>Examples and real quotes</h2>
+    <p>An element can carry two kinds of example, shown in a fixed order: the AI example first, then the real quote.</p>
+
+    <h3>AI example</h3>
+    <p>A constructed example written by the AI to illustrate the definition. It is never credited to anyone, so it cannot pass as a real quote.</p>
+
+    <h3>Real quote</h3>
+    <p>Words a named person, or a long-standing common saying, actually used, credited in a closing bracket. The Index lists every real quote, and sorts by date when one is recorded. A quote with no known date comes last.</p>
+  </section>
+
+  <section id="images">
+    <h2>Thumbnails and the Grid</h2>
+    <p>Style is for diagnosing and solving graphic design issues. An element can carry small images, kept as light PNG files so the whole grid loads quickly.</p>
+
+    <h3>Issue and fix</h3>
+    <p>Each image is marked as an <strong>issue</strong>, which shows what the problem looks like, or a <strong>fix</strong>, which shows the same problem solved. An issue badge is filled and a fix badge outlined.</p>
+
+    <h3>The Grid</h3>
+    <ul>
+      <li>Every thumbnail appears as a tile with its role, its element&rsquo;s name and its caption. Click a tile to open its element on its own.</li>
+      <li>The buttons above the grid show all images, only issues, or only fixes. Search matches an element&rsquo;s name or a caption.</li>
+      <li>Copy writes one line per thumbnail; Print lays the tiles out on the page.</li>
+    </ul>
+
+    <h3>Under an element</h3>
+    <p>An element&rsquo;s own thumbnails sit under its examples. <strong>Show images</strong>, in the Display menu, turns them off in lists; they still show when the row is opened.</p>
+  </section>
+</main>
+<script type="module" src="about.js"></script>
+</body>
+</html>

@@ -17,9 +17,9 @@ outcome: "All 17 steps done. CLAUDE.md 39402→27157 bytes (31.1% reduction, tar
 Make Lukeatron's boot layer truthful and lean: repair every stale pointer so the failure ladder never trips on the system's own wiring, and single-source the doctrine that is currently repeated across CLAUDE.md, memory.md, skills, and templates — cutting the fixed per-session context cost without weakening any safety gate or the four-context routing.
 
 ## Success criteria (measurable)
-- **Zero** references to the phantom root indexes `Memory/Long-Term/_index.yaml` and `Memory/Medium-Term/_index.yaml` remain in `.Claude/` (verified by grep returning nothing).
+- **Zero** references to the phantom root indexes `Memory/Long-Term/_index.yaml` and `Memory/Medium-Term/_index.yaml` remain in `.claude/` (verified by grep returning nothing).
 - **Zero** references to the wrong template names `PlanTemplate.md` / `ProjectRegistryTemplate.md` remain (real names `Template_Plan.md` / `Template_ProjectRegistry.md` used everywhere).
-- **Zero** references to the non-existent path `System/.claude/skills/` remain in CLAUDE.md; core skills are correctly cited at `.Claude/skills/`.
+- **Zero** references to the non-existent path `System/.claude/skills/` remain in CLAUDE.md; core skills are correctly cited at `.claude/skills/`.
 - CLAUDE.md is reduced by **≥ 30 %** (from ~39 KB) with **no capability, gate, or routing rule dropped** — only relocated to its single authoritative home and pointed to.
 - Each of the **three named doctrines** appears in full in **exactly one** file, with every other mention a one-line pointer (verifiable per doctrine): (a) LukeatronWiki doctrine — full form only in `!IdeaWiki` SKILL.md + `memory-structure.md`; (b) email authorship rules — full form only in `!AgentMail` SKILL.md + `Tone/`; (c) `!ProjectSweep` colour semantics — full form only in its SKILL.md.
 - The orphaned plan `System/Plans/New/merrell-sale-tracker.md` (PP-09 abandoned) is cleared via `!PruneMemory`.
@@ -27,7 +27,7 @@ Make Lukeatron's boot layer truthful and lean: repair every stale pointer so the
 - All four `System/Context/*.md` readmes still load; a fresh dry-run of `!DetermineContext` on a sample prompt still selects the right context and reads only what it needs.
 
 ## Resources
-- **Memory to read:** `.Claude/CLAUDE.md`, `.Claude/memory.md`, `Memory/Long-Term/Lukeatron/` (relocation target for moved exposition), `Memory/Long-Term/Logs/issues.log` (fold in pre-logged drift items), `System/Skillbank/_index.yaml`
+- **Memory to read:** `.claude/CLAUDE.md`, `.claude/memory.md`, `Memory/Long-Term/Lukeatron/` (relocation target for moved exposition), `Memory/Long-Term/Logs/issues.log` (fold in pre-logged drift items), `System/Skillbank/_index.yaml`
 - **Capability skills:** none (local file work only — no Outbox, no external party)
 - **Domain skills (Skillbank):** `!PruneMemory` (clear the orphan plan)
 - **Sub-agents:** none — deterministic edits; one agent pass with per-file checkpoints
@@ -38,7 +38,7 @@ Make Lukeatron's boot layer truthful and lean: repair every stale pointer so the
 
 **D1 — Protected files: this plan, once approved, is the explicit permission.** CLAUDE.md and the core skills `!DetermineContext`, `!Intake`, `!CreatePlan`, `!Review` are on the "never modify without explicit permission" list. Luke's approval of this reviewed plan constitutes that permission; each protected-file edit still passes an inline confirm step (Phase gates) before it is written. No protected file is touched before Luke approves the plan.
 
-**D2 — Do NOT rename the `.Claude` folder.** The on-disk folder is `.Claude` (capital C); the harness auto-loads from it and `settings.json` references it. Renaming risks breaking harness auto-load and the SessionStart hooks for a purely cosmetic gain (macOS is case-insensitive). Instead: normalise *textual references* to match the real folder — `.Claude/skills/`, not `System/.claude/skills/`. Closes the `Medium/Open` casing-drift row already in `issues.log` (2026-06-26) at the reference level, not the filesystem level.
+**D2 — Do NOT rename the `.claude` folder.** The on-disk folder is `.claude` (capital C); the harness auto-loads from it and `settings.json` references it. Renaming risks breaking harness auto-load and the SessionStart hooks for a purely cosmetic gain (macOS is case-insensitive). Instead: normalise *textual references* to match the real folder — `.claude/skills/`, not `System/.claude/skills/`. Closes the `Medium/Open` casing-drift row already in `issues.log` (2026-06-26) at the reference level, not the filesystem level.
 
 **D3 — Single-source, don't delete.** No rule is removed — each is moved to its one authoritative home and pointed to:
   - **LukeatronWiki / Memory-Structure exposition** → its full form lives in `!IdeaWiki`'s SKILL.md + a new `Memory/Long-Term/Lukeatron/memory-structure.md`; CLAUDE.md keeps a short pointer paragraph.
@@ -55,12 +55,12 @@ Make Lukeatron's boot layer truthful and lean: repair every stale pointer so the
 Ordered by risk: mechanical truth-repairs first (low risk), then the restructure (needs Luke's eye), then cleanup and verify.
 
 ### Phase 1 — Stale-pointer repairs (mechanical, correctness)
-- [ ] Step 1 — Fix `.Claude/memory.md` boot set: replace the two phantom root-index lines (`Long-Term/_index.yaml`, `Medium-Term/_index.yaml`) with the truth — "stores load on demand; each store carries its own `_index.yaml`, read when a task touches it." [edits: memory.md]
+- [ ] Step 1 — Fix `.claude/memory.md` boot set: replace the two phantom root-index lines (`Long-Term/_index.yaml`, `Medium-Term/_index.yaml`) with the truth — "stores load on demand; each store carries its own `_index.yaml`, read when a task touches it." [edits: memory.md]
   - [ ] !Checkpoint — native-memory edit; confirm wording with Luke before write.
 - [ ] Step 2 — Fix `!DetermineContext/skill.md`: drop the two phantom root-index dependencies (lines 11–12) and reword STEP 4's "per Long-Term/_index.yaml" to "per each store's own `_index.yaml`, on demand." [edits: protected core skill — D1 gate]
 - [ ] Step 3 — Fix `!Intake/skill.md` line 27 and `!CreatePlan/skill.md` lines 11 & 56: same phantom-root-index correction. [edits: protected core skills — D1 gate]
 - [ ] Step 4 — Fix wrong template names: `!CreatePlan/skill.md` (lines 7, 8, 23, 83) and `!Review/skill.md` (lines 10, 70, 74) → `Template_Plan.md` / `Template_ProjectRegistry.md`. [edits: protected core skills — D1 gate]
-- [ ] Step 5 — Fix CLAUDE.md lines 15 & 196: `System/.claude/skills/` → `.Claude/skills/`. [edits: CLAUDE.md — High Impact — D1 gate]
+- [ ] Step 5 — Fix CLAUDE.md lines 15 & 196: `System/.claude/skills/` → `.claude/skills/`. [edits: CLAUDE.md — High Impact — D1 gate]
   - [ ] !Checkpoint — protected-file batch (Steps 2–5): show Luke the full diff before writing.
 
 ### Phase 2 — De-duplicate the always-loaded layer (the main saving)
@@ -83,7 +83,7 @@ Ordered by risk: mechanical truth-repairs first (low risk), then the restructure
 - [ ] Step 15 — Close the folded-in `issues.log` rows: mark the 2026-06-26 casing-drift and 2026-06-24 Skillbank-layout-drift rows `Resolved` (or note residual scope). [edits: Logs/issues.log]
 
 ### Phase 6 — Verify
-- [ ] Step 16 — Verification grep pass (read-only): confirm zero phantom root-index refs, zero wrong-template-name refs, zero `System/.claude/skills/` refs across `.Claude/`; confirm CLAUDE.md byte count is ≥ 30 % smaller. [runs: grep + wc]
+- [ ] Step 16 — Verification grep pass (read-only): confirm zero phantom root-index refs, zero wrong-template-name refs, zero `System/.claude/skills/` refs across `.claude/`; confirm CLAUDE.md byte count is ≥ 30 % smaller. [runs: grep + wc]
 - [ ] Step 17 — Dry-run `!DetermineContext --dry` on a sample prompt from each of the four contexts; confirm each still selects correctly and the fast path behaves. [runs: !DetermineContext --dry]
 - [ ] Verify — every line in **Success criteria** met, and the result matches the **Objective**? No rule lost, only relocated. [pass/fail]
 

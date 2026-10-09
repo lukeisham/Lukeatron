@@ -19,8 +19,8 @@ CATALOG_FILE = HOME_DIR / "catalog.json"
 VERSES_FILE = HOME_DIR / "verses.txt"
 LOG_FILE = HOME_DIR / "serve.log"
 
-# Both must be present: the same pair ProjectKanban's paths.py uses to recognise the root.
-ROOT_MARKERS = (Path(".Claude") / "CLAUDE.md", Path("Memory") / "Medium-Term")
+# Both must be present: the same pair Project Dashboard's paths.py uses to recognise the root.
+ROOT_MARKERS = (Path(".claude") / "CLAUDE.md", Path("Memory") / "Medium-Term")
 
 
 class RootNotFound(RuntimeError):

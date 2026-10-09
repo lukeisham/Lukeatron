@@ -6,6 +6,35 @@ Generate pulls a riddle from the baked pool, an optional Clue reveals a hint, th
 answer and Checks it, and Copy puts the plain riddle text on the clipboard. Shipped widget:
 `Riddle_generator.html`, **218,280 bytes**.
 
+## Navigation
+
+```
+Riddle/
+├── Riddle_generator.html                 the shipped, built widget — open this directly
+├── cartridge/
+│   └── build/
+│       ├── compile_riddle_pool.py        compiles the seed into pool.json + riddle_content.md
+│       ├── config.yaml
+│       ├── engine.js
+│       ├── explainer.js
+│       ├── riddle.miniwiki.json
+│       ├── riddle_content.md
+│       └── pool.json
+├── tests/
+│   └── test-engine.mjs
+├── app-decisions.md
+├── wishlist.md
+└── README.md
+```
+
+## Cross-app behaviour
+
+| From | To | What crosses | What breaks if it changes |
+|---|---|---|---|
+| `System/Widgets/Generator/_shell/` | this app's `cartridge/build/` | `assemble.py` bakes `config.yaml` + the compiled cartridge files into `Riddle_generator.html` | A shell contract change breaks the build until this cartridge is updated to match — the shell, its modules, and the seed research stayed behind in `Widgets/Generator/` when this app was promoted out |
+| `System/Widgets/Generator/_research/seed/riddles.md` | this app's `compile_riddle_pool.py` | The riddle seed text compiles into `pool.json` and `riddle_content.md` | Rebuilding this app's pool requires that seed file to still exist in `Widgets/Generator/` |
+| `System/Widgets/Generator/_modules/MiniWiki/` | this app's build | `extract_articles.py` turns `riddle_content.md` into `riddle.miniwiki.json` (`miniwiki.enabled: true`) | Build fails if that MiniWiki module is missing |
+
 ## What it does
 
 `ENGINE.getPool()` returns the compiled riddle pool; the shell's
@@ -103,3 +132,8 @@ canonical answer).
 - `checkAnswer` matching is variant-list-based, not fuzzy/semantic — an
   answer synonym not present in a riddle's `accepted variants` list will be
   marked incorrect even if it is a reasonable paraphrase.
+
+## Decisions and exceptions
+
+See [app-decisions.md](app-decisions.md) for approvals and any granted rule exceptions. Not
+copied here.

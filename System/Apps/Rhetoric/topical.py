@@ -4,7 +4,8 @@ topical_* tables (a granted exception, app-decisions.md). server.py routes to it
 the tree through `topical_tree`. Routing holds no SQL (API-1).
 
 Types nest at most five levels deep (a top-level Type, then four more below it), as Grammar's labels do, and each has
-an optional explanation (`definition`) as a Grammar label does.
+an optional explanation (`definition`) as a Grammar label does. A link Type (`about_section` set) is a leaf that links to its own
+section of the About page and holds no devices, tables or sub-Types.
 A device may be filed under any number of Types, at any level."""
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import aboutpage
 import labeltables
 import labeltree
 
@@ -47,10 +49,10 @@ def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> lis
     (devices in `ordered_device_ids` order) when any device is unplaced under any Type."""
     built: dict[int, dict[str, Any]] = {}
     parents: list[tuple[int, int | None]] = []
-    for type_id, parent_id, name, definition, tables in conn.execute(
-        "SELECT id, parent_id, name, definition, tables_json FROM topical_types ORDER BY position, id"
+    for type_id, parent_id, name, definition, tables, about in conn.execute(
+        "SELECT id, parent_id, name, definition, tables_json, about_section FROM topical_types ORDER BY position, id"
     ):
-        built[type_id] = _node(type_id, name, definition, [], labeltables.parse(tables))
+        built[type_id] = _node(type_id, name, definition, [], labeltables.parse(tables), about)
         parents.append((type_id, parent_id))
     roots = []
     for type_id, parent_id in parents:
@@ -68,9 +70,10 @@ def topical_tree(conn: sqlite3.Connection, ordered_device_ids: list[int]) -> lis
     return roots
 
 
-def _node(node_id: int, name: str, definition: str, device_ids: list[int], tables: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def _node(node_id: int, name: str, definition: str, device_ids: list[int], tables: list[dict[str, Any]] | None = None,
+          about: str | None = None) -> dict[str, Any]:
     return {
-        "kind": "node", "id": node_id, "name": name, "definition": definition, "tables": tables or [],
+        "kind": "node", "id": node_id, "name": name, "definition": definition, "tables": tables or [], "about": about,
         "children": [{"kind": "device", "id": device_id} for device_id in device_ids],
     }
 
@@ -80,8 +83,8 @@ def create_type(db_path: Path, name: str, parent_id: int | None = None, definiti
     with closing(connect_writable(db_path)) as conn, conn:
         if labeltree.depth(conn, TABLE, parent_id, TopicalError) >= MAX_DEPTH:
             raise TopicalError("bad_request")  # a sixth level is refused
-        if labeltree.taken(conn, TABLE, parent_id, name):
-            raise TopicalError("conflict")
+        if parent_id is not None:
+            labeltree.require_plain(conn, TABLE, parent_id, TopicalError)  # a link Type has nothing under it
         conn.execute(
             "INSERT INTO topical_types (parent_id, name, definition, position) VALUES "
             "(?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM topical_types WHERE parent_id IS ?))",
@@ -89,15 +92,20 @@ def create_type(db_path: Path, name: str, parent_id: int | None = None, definiti
         )
 
 
-def edit_type(db_path: Path, type_id: int, name: str, definition: str | None = None) -> None:
-    """Renames the Type and, unless `definition` is None, replaces its explanation (blank clears it)."""
+def create_link(db_path: Path, name: str, parent_id: int | None = None, about_path: Path = aboutpage.ABOUT_PATH) -> None:
+    """A link Type: a leaf that shows its name as a link to its own new, empty section of the About page (labeltree.create_link)."""
     with closing(connect_writable(db_path)) as conn, conn:
-        row = conn.execute("SELECT parent_id FROM topical_types WHERE id = ?", (type_id,)).fetchone()
+        labeltree.create_link(conn, TABLE, name, parent_id, MAX_DEPTH, TopicalError, about_path)
+
+
+def edit_type(db_path: Path, type_id: int, name: str, definition: str | None = None) -> None:
+    """Renames the Type and, unless `definition` is None, replaces its explanation (blank clears it). A link Type has no
+    explanation, so only its name changes; its About section keeps the heading it was made with."""
+    with closing(connect_writable(db_path)) as conn, conn:
+        row = conn.execute("SELECT about_section FROM topical_types WHERE id = ?", (type_id,)).fetchone()
         if row is None:
             raise TopicalError("not_found")
-        if labeltree.taken(conn, TABLE, row[0], name, except_id=type_id):
-            raise TopicalError("conflict")
-        if definition is None:
+        if definition is None or row[0] is not None:
             conn.execute("UPDATE topical_types SET name = ? WHERE id = ?", (name, type_id))
         else:
             conn.execute("UPDATE topical_types SET name = ?, definition = ? WHERE id = ?", (name, definition, type_id))
@@ -106,6 +114,7 @@ def edit_type(db_path: Path, type_id: int, name: str, definition: str | None = N
 def set_tables(db_path: Path, type_id: int, tables: list[dict[str, Any]]) -> None:
     """Replaces the Type's tables with `tables` (already `labeltables.clean`ed; the server does that)."""
     with closing(connect_writable(db_path)) as conn, conn:
+        labeltree.require_plain(conn, TABLE, type_id, TopicalError)  # a link Type holds no tables
         labeltables.save(conn, TABLE, type_id, tables, TopicalError)
 
 
@@ -131,6 +140,7 @@ def add_placement(db_path: Path, type_id: int, device_id: int, index: int | None
     """Places the device under the Type, last by default. A device already there stays put unless
     `index` is given, which puts it at that spot among the Type's devices (so this is also the move)."""
     with closing(connect_writable(db_path)) as conn, conn:
+        labeltree.require_plain(conn, TABLE, type_id, TopicalError)  # a link Type holds no devices
         try:
             conn.execute(
                 "INSERT OR IGNORE INTO topical_placements (type_id, device_id, position) VALUES "

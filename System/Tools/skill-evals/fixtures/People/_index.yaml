@@ -1,0 +1,11 @@
+store: People
+type: person-index
+note: FICTIONAL eval fixture — see ../README.md
+people:
+  - {id: GG01, name: Gina Gold,   groups: [test-friends],   email: gina@gold.test,   file: GG01.md, tone_file: GG01-tone.md}
+  - {id: WW01, name: Walt White,  groups: [test-friends],   email: walt@white.test,  file: WW01.md, tone_file: WW01-tone.md}
+  - {id: BB01, name: Bea Black,   groups: [],               email: bea@black.test,   file: BB01.md, tone_file: BB01-tone.md}
+  - {id: NN01, name: Nora Nolist, groups: [],               email: nora@nolist.test, file: NN01.md}
+  - {id: LV01, name: Lena Voice,  groups: [test-friends],   email: lena@voice.test,  file: LV01.md, tone_file: LV01-tone.md}
+  - {id: GV01, name: Gus Varga,   groups: [test-lukevoice], email: gus@varga.test,   file: GV01.md, tone_file: GV01-tone.md}
+  - {id: MM01, name: Max Mixed,   groups: [test-lukevoice, test-friends], email: max@mixed.test, file: MM01.md, tone_file: MM01-tone.md}

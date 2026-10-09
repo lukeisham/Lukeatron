@@ -23,6 +23,11 @@ QUEUE_YAML = WIKI / "_queue.yaml"
 MEDIA = WIKI / "_media"
 
 # ============================================================================
+# Shared memory-search engine (ranked full-text index, machine-local cache)
+# ============================================================================
+SEARCH_ENGINE = ROOT / "System" / "Tools" / "memory-search" / "search.py"
+
+# ============================================================================
 # Enrichment sandbox
 # ============================================================================
 ENRICH_DIR = ROOT / "System" / "Sandbox" / "wiki-enrich"

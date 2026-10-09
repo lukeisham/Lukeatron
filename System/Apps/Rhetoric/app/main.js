@@ -1,7 +1,7 @@
 /** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
 
 import {
-  addLabelPlacement, addPlacement, createLabel, createType, deleteLabel, deleteType, editLabel, editType, fetchItems, moveLabel, moveType, removeLabelPlacement,
+  addLabelPlacement, addPlacement, createLabel, createLabelLink, createType, createTypeLink, deleteLabel, deleteType, editLabel, editType, fetchItems, moveLabel, moveType, removeLabelPlacement,
   removePlacement, saveLabelTables, saveTypeTables,
 } from './api.js';
 import { bindDragAndDrop } from './drag.js';
@@ -40,6 +40,7 @@ const els = {
 };
 
 const STATUS_MS = 2000;
+const LINK_ADDED = 'Link added: its empty section is at the end of the About page';
 let state = null;
 let typeParentPicker = null;
 let labelParentPicker = null;
@@ -88,17 +89,18 @@ function flashStatus(element, text) {
   setTimeout(() => { element.textContent = ''; }, STATUS_MS);
 }
 
-// What differs between the two editable groups: where a failure is reported and what a name clash means.
+// What differs between the two editable groups: where a failure is reported. A 409 now only ever means a Type or
+// label that still has sub-Types or sub-labels is being deleted, so each caller says so through `clash`.
 const EDITING = {
-  [TOPICAL]: { status: () => els.typeStatus, clash: 'A Type with that name already exists' },
-  [GRAMMAR]: { status: () => els.grammarStatus, clash: 'A label with that name already exists here' },
+  [TOPICAL]: { status: () => els.typeStatus },
+  [GRAMMAR]: { status: () => els.grammarStatus },
 };
 
 /**
  * Sends one change to an editable group (Topical or Grammar) and redraws from the tree the server answers
  * with, so the screen only ever shows what was saved. A failure leaves the screen as it was and says why.
  * @param {string} hierarchy TOPICAL or GRAMMAR
- * @param {string} [clash] what a 409 means for this change, when it is not a name clash
+ * @param {string} [clash] what a 409 means for this change
  * @param {string} [refused] what a 400 means for this change, when there is something to say about it
  * @returns {Promise<boolean>} whether the change was saved
  */
@@ -108,7 +110,7 @@ async function saveChange(hierarchy, change, clash, refused) {
     setEditableTree(state, hierarchy, await change());
   } catch (error) {
     console.error(`Could not save the ${hierarchy} change`, error);
-    flashStatus(editing.status(), error.status === 409 ? (clash ?? editing.clash) : error.status === 400 && refused ? refused : 'Could not save — is the server running?');
+    flashStatus(editing.status(), error.status === 409 && clash ? clash : error.status === 400 && refused ? refused : 'Could not save — is the server running?');
     return false;
   }
   refresh();
@@ -129,6 +131,10 @@ function renameFromRow(button) {
   // the second box and confirming clears it.
   const name = window.prompt(`Name of this ${noun}`, node.name)?.trim();
   if (!name) return;
+  if (node.about) { // a link has no explanation to ask for; its About section keeps the heading it was made with
+    if (name !== node.name) saveChange(hierarchy, () => save(node.id, name, node.definition));
+    return;
+  }
   const definition = window.prompt(`What "${stripInline(name)}" means (optional)`, node.definition)?.trim();
   if (definition === undefined) return; // cancelled
   if (name !== node.name || definition !== node.definition) saveChange(hierarchy, () => save(node.id, name, definition));
@@ -155,6 +161,10 @@ function editTable(button, index) {
 
 function deleteFromRow(button) {
   const { hierarchy, node } = nodeOf(button);
+  if (node.about) { // a link: its section on the About page stays, since it may hold writing by now
+    if (window.confirm(`Delete the link "${stripInline(node.name)}"? Its section stays on the About page.`)) saveChange(hierarchy, () => (hierarchy === GRAMMAR ? deleteLabel : deleteType)(node.id));
+    return;
+  }
   const withTables = (node.tables ?? []).length > 0 ? ' Its tables go with it.' : '';
   if (hierarchy === GRAMMAR) {
     if (window.confirm(`Delete the label "${stripInline(node.name)}"? Its devices stay in the library and under any other label.${withTables}`)) {
@@ -268,8 +278,12 @@ function fillDeviceTargets(hierarchy) {
   select.disabled = labels.length === 0;
 }
 
+/** Whether the form was sent by its Add link button (the name only, made a link to its own new About section) rather than Add label or Add Type. */
+const sentByLinkButton = (event) => event.submitter?.dataset.link === 'true';
+
 async function onAddLabel(event) {
   event.preventDefault();
+  const asLink = sentByLinkButton(event);
   const name = els.labelName.value.trim();
   const definition = els.labelDefinition.value.trim();
   if (!name) return;
@@ -277,10 +291,11 @@ async function onAddLabel(event) {
   if (parent === null) return;
   const { parentId } = parent;
   if (parentId !== null) openWithAncestors(state, GRAMMAR, parentId); // so the new sub-label is seen
-  if (await saveChange(GRAMMAR, () => createLabel(name, definition, parentId))) {
+  if (await saveChange(GRAMMAR, () => (asLink ? createLabelLink(name, parentId) : createLabel(name, definition, parentId)))) {
     els.labelName.value = '';
     els.labelDefinition.value = '';
     els.labelName.focus();
+    if (asLink) flashStatus(els.grammarStatus, LINK_ADDED);
   }
 }
 
@@ -395,7 +410,7 @@ function onListDoubleClick(event) {
   const item = event.target.closest('[data-device-id]');
   if (item) return isolateOrReturn(deviceView(item.dataset.deviceId));
   const heading = event.target.closest('.heading-row')?.closest('[data-node-id]');
-  if (heading) isolateOrReturn(subtreeView(heading.dataset.hierarchy, heading.dataset.nodeId));
+  if (heading && heading.dataset.link !== 'true') isolateOrReturn(subtreeView(heading.dataset.hierarchy, heading.dataset.nodeId));
 }
 
 // Enter acts like a click; Shift+Enter acts like a double click (a label or device shows alone, or goes back to the full view), so the keyboard reaches both.
@@ -438,6 +453,7 @@ function bindControls() {
   bindDragAndDrop(els.list, onEditableDrop);
   els.typeForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    const asLink = sentByLinkButton(event);
     const name = els.typeName.value.trim();
     const definition = els.typeDefinition.value.trim();
     if (!name) return;
@@ -445,10 +461,11 @@ function bindControls() {
     if (parent === null) return;
     const { parentId } = parent;
     if (parentId !== null) openWithAncestors(state, TOPICAL, parentId); // so the new sub-Type is seen
-    if (await saveChange(TOPICAL, () => createType(name, definition, parentId))) {
+    if (await saveChange(TOPICAL, () => (asLink ? createTypeLink(name, parentId) : createType(name, definition, parentId)))) {
       els.typeName.value = '';
       els.typeDefinition.value = '';
       els.typeName.focus();
+      if (asLink) flashStatus(els.typeStatus, LINK_ADDED);
     }
   });
   els.labelForm.addEventListener('submit', onAddLabel);

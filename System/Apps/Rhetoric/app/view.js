@@ -57,6 +57,7 @@ function countDevices(node) {
  * `leaf` is true when it has no sub-labels of its own (devices and tables do not count), which draws its marker as an empty box.
  * In Topical a real Type, and in Grammar every label, is `editable` (renamed or edited, deleted, dropped onto) and its devices can be removed from it;
  * `parentId` is the label above (null at the top), which lets a drag tell siblings from other labels.
+ * A link label carries `about`, the id of its own section on the About page (null on every other row); it holds nothing, so it is never `foldable`.
  */
 function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId = null) {
   const open = !reveal.on || reveal.opened.has(openKey(hierarchy, node.id));
@@ -77,7 +78,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId =
   const deviceCount = countDevices(node);
   const tables = node.tables ?? []; // a closed heading hides its tables with everything else beneath it
   return {
-    kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, children,
+    kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, about: node.about ?? null, children,
     tables: open ? tables : [], deviceCount, leaf: !node.children.some((child) => child.kind !== 'device'), foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
   };
 }
@@ -216,7 +217,8 @@ export function viewToText(state, view) {
   const write = (item, depth) => {
     const pad = '  '.repeat(depth);
     if (item.kind === 'node') {
-      lines.push(`${pad}• ${stripInline(item.name)}${item.definition ? ` — ${stripInline(item.definition)}` : ''}`); // a Type made before explanations has none
+      const note = item.about ? ' (link to About)' : item.definition ? ` — ${stripInline(item.definition)}` : ''; // a Type made before explanations has none
+      lines.push(`${pad}• ${stripInline(item.name)}${note}`);
       (item.tables ?? []).forEach((table) => lines.push(...tableToText(table, `${pad}  `)));
       item.children.forEach((child) => write(child, depth + 1));
       return;

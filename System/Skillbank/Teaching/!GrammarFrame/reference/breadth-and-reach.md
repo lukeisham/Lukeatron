@@ -1,6 +1,6 @@
 # breadth-and-reach.md — where a concept sits in the whole guide
 
-Always loaded with `skill.md`. Holds the distinction, how each side is measured, and the bank of
+Always loaded with `SKILL.md`. Holds the distinction, how each side is measured, and the bank of
 Breadth (measuring only) and Reach questions. The criteria that enforce it (E6, E7, A14, B8, C34–C36, D11–D15) live
 in `criteria.md`; this file holds the content they point at.
 

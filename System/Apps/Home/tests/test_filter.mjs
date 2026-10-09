@@ -8,7 +8,7 @@ const apps = [
   { name: "Psychometric", title: "Psychometric", blurb: "Practice items, with clue", context: "Teaching" },
   { name: "Riddle", title: "Riddle", blurb: "A riddle, with a clue", context: "Teaching" },
   { name: "Storytelling", title: "Storytelling", blurb: "Story maps", context: "Personal Research" },
-  { name: "ProjectKanban", title: "Dashboard", blurb: "Every tracked project", context: "Lukeatron" },
+  { name: "ProjectDashboard", title: "Project Dashboard", blurb: "Every tracked project", context: "Lukeatron" },
   { name: "LukeatronWiki", title: "LukeatronWiki", blurb: "Long-Term memory", context: "Lukeatron" },
 ];
 const titles = (query) => rank(apps, query).map((i) => apps[i].title);
@@ -22,15 +22,15 @@ test("name matches come before blurb-only matches (AC-3a)", () => {
 });
 
 test("three bands: name starts, name contains, blurb only", () => {
-  assert.deepEqual(titles("p"), ["Psychometric", "Dashboard", "Storytelling"]);
+  assert.deepEqual(titles("p"), ["Psychometric", "Project Dashboard", "Storytelling"]);
 });
 
 test("the folder name still finds an app shown under a display title", () => {
-  assert.deepEqual(titles("kanban"), ["Dashboard"]);
+  assert.deepEqual(titles("projectdash"), ["Project Dashboard"]);
 });
 
 test("context words match", () => {
-  assert.deepEqual(titles("lukeatron"), ["LukeatronWiki", "Dashboard"]);
+  assert.deepEqual(titles("lukeatron"), ["LukeatronWiki", "Project Dashboard"]);
 });
 
 test("case-insensitive, and no match gives an empty list", () => {

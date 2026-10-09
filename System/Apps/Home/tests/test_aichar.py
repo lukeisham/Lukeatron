@@ -90,7 +90,7 @@ class TestScrape(AicharTest):
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(response.body)["summary"]["new"], ["c-001"])
         call = self.claude.calls[0]
-        self.assertIn("!ScrapeAiCharacteristics/skill.md", call["prompt"])
+        self.assertIn("!ScrapeAiCharacteristics/SKILL.md", call["prompt"])
         self.assertEqual(call["stdin"], "")
         self.assertIn(aichar.DATA_RULE, call["tools"])
         self.assertFalse([t for t in call["tools"] if t.startswith(("Edit", "WebFetch")) or t == "Write"])
@@ -140,7 +140,7 @@ class TestCheck(AicharTest):
         call = self.claude.calls[0]
         self.assertEqual((call["stdin"], call["tools"]), (PASTED, ("Read",)))
         self.assertNotIn("PASTED-TEXT-MARKER", call["prompt"])
-        self.assertIn("!CheckAiCharacteristics/skill.md", call["prompt"])
+        self.assertIn("!CheckAiCharacteristics/SKILL.md", call["prompt"])
 
     def test_check_writes_nothing(self):
         self.save_criteria()

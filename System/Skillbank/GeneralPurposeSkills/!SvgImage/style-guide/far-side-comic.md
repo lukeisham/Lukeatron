@@ -12,7 +12,7 @@
 - `<g id="caption-text">` — set below the panel, outside the frame; third-person narration rather than character dialogue
 **Distinctive SVG techniques:**
 - Uniform outline: constant `stroke-width` (no taper) on every character/prop path, 5-6 units wide on a 1080-wide canvas — the opposite of Calvin & Hobbes' tapered line; a deliberately slightly loose/hand-drawn path (not perfectly smoothed bezier) keeps the sketchy quality without reading as sloppy.
-**Craft-rule carve-outs:** this style's uniform stroke weight is deliberate and overrides skill.md's generic edge-variation rule (no two adjacent shapes sharing a stroke-width) — constant weight across every figure and prop IS the signature tell; do not vary line weight by depth here.
+**Craft-rule carve-outs:** this style's uniform stroke weight is deliberate and overrides SKILL.md's generic edge-variation rule (no two adjacent shapes sharing a stroke-width) — constant weight across every figure and prop IS the signature tell; do not vary line weight by depth here.
 - Solid fill and silhouette as primary tonal device: block in shadow shapes and dark props as flat black fills bounded by the same outline weight, rather than building value from line density.
 - Sparse hatch shading (secondary only): a repeating `<pattern>` of straight parallel diagonal lines at 45°, 0.75-unit weight, 6-unit spacing on a 1080-wide canvas, applied only to small shadow/texture areas — never across a whole figure.
 - Stipple shading (secondary only): a `<pattern>` of dots 1.5-unit radius on an 8-unit grid for soft texture in small areas, used interchangeably with sparse hatch, never as the main tonal mechanism.

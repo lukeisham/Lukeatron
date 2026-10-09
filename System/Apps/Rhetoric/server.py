@@ -2,7 +2,8 @@
 Topical Type and Grammar label write routes. Data assembly lives in items.py and every write in
 topical.py or grammar.py; this module only parses the request, calls them, and shapes the response
 (API-1). Writes are limited to /api/topical/... and /api/grammar/... (granted exceptions to
-PY-12/API-5, app-decisions.md); every other write verb is refused."""
+PY-12/API-5, app-decisions.md); every other write verb is refused. The one write outside the database is a link label's
+new section in app/about.html (aboutpage.py), made only by the two `.../links` routes."""
 
 from __future__ import annotations
 
@@ -25,6 +26,7 @@ import topical
 ROOT = Path(__file__).resolve().parent
 APP_DIR = ROOT / "app"
 DB_PATH = ROOT / "rhetoric.db"
+ABOUT_PATH = APP_DIR / "about.html"  # where a new link label's section goes; a test points the server at a copy
 
 HOST = "127.0.0.1"  # never 0.0.0.0
 PORT = 8794  # 8787 wiki, 8789 dashboard, 8793 Storytelling
@@ -59,6 +61,8 @@ TOPICAL_ROUTES: list[Route] = [
      lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False), ("definition", _as_definition, False)])),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.edit_type,
      lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False)])),
+    ("POST", re.compile(r"^/api/topical/links$"), topical.create_link,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False)])),
     ("DELETE", re.compile(r"^/api/topical/types/(\d{1,9})$"), topical.delete_type, lambda h: []),
     ("PUT", re.compile(r"^/api/topical/types/(\d{1,9})/position$"), topical.move_type,
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
@@ -72,6 +76,8 @@ GRAMMAR_ROUTES: list[Route] = [
      lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False), ("parent_id", _as_id, False)])),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.edit_label,
      lambda h: _body_fields(h, [("name", _as_name, True), ("definition", _as_definition, False)])),
+    ("POST", re.compile(r"^/api/grammar/links$"), grammar.create_link,
+     lambda h: _body_fields(h, [("name", _as_name, True), ("parent_id", _as_id, False)])),
     ("DELETE", re.compile(r"^/api/grammar/labels/(\d{1,9})$"), grammar.delete_label, lambda h: []),
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/position$"), grammar.move_label,
      lambda h: _body_fields(h, [("index", _as_index, True), ("parent_id", _as_parent, False)])),
@@ -80,6 +86,9 @@ GRAMMAR_ROUTES: list[Route] = [
     ("PUT", re.compile(r"^/api/grammar/labels/(\d{1,9})/tables$"), grammar.set_tables,
      lambda h: _body_fields(h, [("tables", _as_tables, True)], MAX_TABLES_BODY_BYTES)),
 ]
+# The routes whose change also edits the About page, and so is handed the path of that page.
+WRITES_ABOUT = {topical.create_link, grammar.create_link}
+
 # Each write family: its URL prefix, its routes, the loader for the tree a change answers with, and the answer's key.
 WRITE_FAMILIES = [
     ("/api/topical/", TOPICAL_ROUTES, items.load_topical, "topical"),
@@ -210,7 +219,8 @@ def _apply_change(handler: BaseHTTPRequestHandler, path: str, routes: list[Route
         body_arguments = read_body(handler)
         if body_arguments is None:
             return send_error(handler, "bad_request")
-        change(db_path, *(int(group) for group in match.groups()), *body_arguments)
+        extra = {"about_path": handler.server.about_path} if change in WRITES_ABOUT else {}  # type: ignore[attr-defined]
+        change(db_path, *(int(group) for group in match.groups()), *body_arguments, **extra)
         return send_json(handler, 200, {key: load(db_path)})
     send_error(handler, "not_found")
 
@@ -286,13 +296,14 @@ class Handler(BaseHTTPRequestHandler):
 class Server(socketserver.TCPServer):
     allow_reuse_address = True
 
-    def __init__(self, address: tuple[str, int], db_path: Path) -> None:
+    def __init__(self, address: tuple[str, int], db_path: Path, about_path: Path = ABOUT_PATH) -> None:
         self.db_path = db_path
+        self.about_path = about_path
         super().__init__(address, Handler)
 
 
-def create_httpd(host: str = HOST, port: int = PORT, db_path: Path = DB_PATH) -> Server:
-    return Server((host, port), db_path)
+def create_httpd(host: str = HOST, port: int = PORT, db_path: Path = DB_PATH, about_path: Path = ABOUT_PATH) -> Server:
+    return Server((host, port), db_path, about_path)
 
 
 def run(port: int = PORT) -> None:

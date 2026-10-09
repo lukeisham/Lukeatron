@@ -1,0 +1,26 @@
+<!-- !TabularRecipe: ingredient list + one-click copy. Paste inside the recipe page's <body>, under the SVG.
+     Replace the <li> items; the button copies exactly the list text, one ingredient per line. -->
+<style>
+  .ing{font:15px/1.5 system-ui,sans-serif;max-width:34rem;margin:1.2rem 0}
+  .ing h2{font-size:1rem;margin:0 0 .4rem;display:flex;align-items:center;gap:.8rem}
+  .ing button{font:inherit;font-size:.85rem;padding:.2rem .7rem;border:1px solid var(--rule,#8a8577);border-radius:4px;background:var(--ing,#f1eee6);color:inherit;cursor:pointer}
+  .ing button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+  .ing ul{margin:0;padding-left:1.2rem}
+</style>
+<section class="ing">
+  <h2>Ingredients <button type="button" id="copy-ing">Copy list</button></h2>
+  <ul id="ing-list">
+    <li>1 onion</li>
+  </ul>
+</section>
+<script>
+document.getElementById('copy-ing').addEventListener('click', async function () {
+  var b = this, text = [].map.call(document.querySelectorAll('#ing-list li'), function (li) { return li.textContent.trim(); }).join('\n');
+  function done(ok) { b.textContent = ok ? 'Copied ✓' : 'Select & copy manually'; setTimeout(function () { b.textContent = 'Copy list'; }, 1800); }
+  try { await navigator.clipboard.writeText(text); done(true); }
+  catch (e) {
+    var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e2) {} t.remove(); done(ok);
+  }
+});
+</script>

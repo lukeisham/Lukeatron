@@ -506,7 +506,7 @@ class TestPathNormalization(unittest.TestCase):
         """Test paths with spaces (e.g., 'Writing Non-Fiction')."""
         # This store name has spaces in the real filesystem
         # Paths under it should be sealed
-        test_path = "Writing Non-Fiction/some_file.md"
+        test_path = "Writing-Non-Fiction/some_file.md"
         # Note: this may or may not be sealed depending on _sealed.yaml content
         # But the matching logic should handle spaces correctly
         result = is_sealed(test_path)

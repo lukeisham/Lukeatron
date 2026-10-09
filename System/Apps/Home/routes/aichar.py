@@ -59,7 +59,7 @@ def package_loads() -> bool:
         _package()
     except ImportError:
         return False
-    return all((SKILL_DIR / name / "skill.md").is_file()
+    return all((SKILL_DIR / name / "SKILL.md").is_file()
                for name in ("!ScrapeAiCharacteristics", "!CheckAiCharacteristics"))
 
 
@@ -148,7 +148,7 @@ def scrape(home: Home, request: Request) -> Response:
         return refused
     if not _scrape_running.acquire(blocking=False):
         return json_response({"error": "conflict", "message": "a Scrape is already running"}, ERROR_STATUS["conflict"])
-    prompt = ("Read System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/skill.md and follow it exactly. "
+    prompt = ("Read System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/SKILL.md and follow it exactly. "
               "Reply with its final JSON object only.")
     try:
         text = _claude(home)(prompt, "", SCRAPE_TOOLS, SCRAPE_SECONDS, 40)
@@ -190,7 +190,7 @@ def check(home: Home, request: Request) -> Response:
         return json_response({"error": "unavailable", "message": str(unavailable)}, 503)
     if not _check_running.acquire(blocking=False):
         return json_response({"error": "conflict", "message": "a Check is already running"}, ERROR_STATUS["conflict"])
-    prompt = ("Read System/Skillbank/PersonalResearch/!CheckAiCharacteristics/skill.md and follow it exactly. "
+    prompt = ("Read System/Skillbank/PersonalResearch/!CheckAiCharacteristics/SKILL.md and follow it exactly. "
               "The passage to check is the input text that follows this instruction. Reply with its JSON only.")
     try:
         reply = _claude(home)(prompt, text, CHECK_TOOLS, CHECK_SECONDS, 8)

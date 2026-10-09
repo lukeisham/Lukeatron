@@ -4,7 +4,7 @@ context: [Lukeatron]
 secondary_contexts: [Personal Research, Teaching]
 created: 2026-09-28
 status: Completed
-major_because: "multi-step; modifies CLAUDE.md, a core skill reference (!HouseStyle sources.md) and .Claude/settings.json; moves a live app"
+major_because: "multi-step; modifies CLAUDE.md, a core skill reference (!HouseStyle sources.md) and .claude/settings.json; moves a live app"
 project: ""
 skills_used: [!CreatePlan, !ReviewPlan, !AppDevelopment, !Checkpoint]
 reviewed: 2026-09-28 — !ReviewPlan APPROVED (2 passes, 6 flags resolved)
@@ -29,7 +29,7 @@ North Star: keep the system correct, legible and doing what CLAUDE.md says it do
 ## Success criteria (measurable)
 - `templates/app-decisions.md` exists; `templates/registry.md` and `templates/refactor-registry.md` are gone.
 - `grep -rn "registry\.md\|refactor-registry\|_template\|_test/\|refactor board\|divergence allowlist"`
-  over `.Claude/`, `System/` (excluding `Archive/`, `Plans/Completed/`, `Sandbox/`) returns ONLY these
+  over `.claude/`, `System/` (excluding `Archive/`, `Plans/Completed/`, `Sandbox/`) returns ONLY these
   expected hits: (a) anything under `System/Widgets/CurriculumPreparation/` and `!NewUnit/skill.md`
   (excluded widget); (b) the *project* registry — `Template_ProjectRegistry.md` and skills that read
   `Projects/<id>/registry.md`; (c) this plan. Any other hit fails the check.
@@ -62,7 +62,7 @@ North Star: keep the system correct, legible and doing what CLAUDE.md says it do
 
 **Safety net**
 - [x] Step 1 — Copy every `System/Sandbox/<app>/` folder being retired (not git-tracked) to `Archive/appdevelopment-restructure-2026-09-28/` [inline]
-- [x] Step 2 — Commit current `System/` + `.Claude/` state (per Gate C), then `git status` clean [git]
+- [x] Step 2 — Commit current `System/` + `.claude/` state (per Gate C), then `git status` clean [git]
 
 **Rewrite the skill**
 - [x] Step 3 — Write `templates/app-decisions.md`: two tables only, Approvals (date · what was approved · version) and Rule Exceptions (rule ID · where · reason · date). Delete `templates/registry.md` and `templates/refactor-registry.md` [inline]
@@ -79,7 +79,7 @@ North Star: keep the system correct, legible and doing what CLAUDE.md says it do
 - [x] Step 9 — Draft `app-decisions.md` for each app from its registries and README [sub-agent per app, Opus review]
 - [x] Step 10 — Per app — order: HistoryOfPhilosophy → Fact-checking (+ legacy-widget → Archive/) → Rhetoric (mockups → `Sandbox/Rhetoric-mockups/`) → LukeatronWiki → Storytelling (move built app to `System/Apps/Storytelling/`, first grep its code for `Sandbox` paths and fix any; run its tests + launcher, then retire build docs) — move docs to the Gate A location, write the approved `app-decisions.md`, delete `registry.md` / `refactor-registry.md`, and replace README "Rule exceptions" tables with a pointer to `app-decisions.md` [inline]
   - [x] !Checkpoint — each deletion of a registry or Sandbox folder
-- [x] Step 11 — ProjectKanban flatten: `_template/*` → `System/Apps/ProjectKanban/`; fix paths in `.Claude/settings.json` hook, `.Claude/launch.json`, `ensure-kanban.sh`, `System/Viewer-Launch-Guide.md`, `!HouseStyle/reference/sources.md`, `!GenerateSupportiveContent/reference/targets.md`, `!NewUnit/skill.md`, and the open ProjectKanban plans `lukeatronwiki-link-to-projectkanban.md` + `projectkanban-urgency-shading.md` in `Plans/New/`. Stop :8789, move, fix the hook path, re-run `ensure-kanban.sh`, confirm :8789 serves, run both test suites [inline]
+- [x] Step 11 — ProjectKanban flatten: `_template/*` → `System/Apps/ProjectKanban/`; fix paths in `.claude/settings.json` hook, `.claude/launch.json`, `ensure-kanban.sh`, `System/Viewer-Launch-Guide.md`, `!HouseStyle/reference/sources.md`, `!GenerateSupportiveContent/reference/targets.md`, `!NewUnit/skill.md`, and the open ProjectKanban plans `lukeatronwiki-link-to-projectkanban.md` + `projectkanban-urgency-shading.md` in `Plans/New/`. Stop :8789, move, fix the hook path, re-run `ensure-kanban.sh`, confirm :8789 serves, run both test suites [inline]
   - [x] `projectkanban-state-merge-bulk-suggest.md` is built on `_template/_test` + `refactor-registry.md` — not a path fix. Add a header note marking it `needs revision before execution` and tell Luke; do not rewrite it in this plan
   - [x] !Checkpoint — `!HouseStyle` is a Key Skill: Luke signs off the path edit
 

@@ -3,7 +3,7 @@ row for every device that lacks one.
 
 The table is the agent's own review ledger (see schema.sql, REVIEW TAG); nothing in the app reads it.
 A device gets `definition_reviewed` and `ai_example_reviewed` = 1 when it belongs to a group Luke's
-decision log records as reviewed under the README rules, today the 58 fallacies and their 58
+decision log records as reviewed under the seed/guides rules, today the 58 fallacies and their 58
 Flipsides (app-decisions.md, 2026-10-05). `quote_changes` starts at the number of credited examples
 the device has, so 1 means the original quote and the triggers add 1 for every later write.
 Only missing rows are inserted, so a second run changes nothing and never resets a flag or count.

@@ -1,0 +1,134 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "grammar-parser",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8791",
+        "--directory",
+        "Memory/Long-Term/Grammar"
+      ],
+      "port": 8791
+    },
+    {
+      "name": "project-dashboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/ProjectDashboard",
+      "port": 8789
+    },
+    {
+      "name": "wiki-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8795",
+        "--directory",
+        "System"
+      ],
+      "port": 8795
+    },
+    {
+      "name": "storytelling",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Storytelling",
+      "port": 8793
+    },
+    {
+      "name": "storytelling-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8792",
+        "--bind",
+        "127.0.0.1"
+      ],
+      "cwd": "System/Apps/Storytelling",
+      "port": 8792
+    },
+    {
+      "name": "home",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Home",
+      "port": 8780,
+      "url": "http://localhost:8780"
+    },
+    {
+      "name": "home-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "tests/verify_server.py"
+      ],
+      "cwd": "System/Apps/Home",
+      "port": 8781,
+      "url": "http://localhost:8781"
+    },
+    {
+      "name": "rhetoric",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Rhetoric",
+      "port": 8794
+    },
+    {
+      "name": "grammar",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Grammar",
+      "port": 8802
+    },
+    {
+      "name": "logic",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Logic",
+      "port": 8803
+    },
+    {
+      "name": "research",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Research",
+      "port": 8804
+    },
+    {
+      "name": "writing",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Writing",
+      "port": 8805
+    },
+    {
+      "name": "style",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "cwd": "System/Apps/Style",
+      "port": 8806
+    }
+  ]
+}

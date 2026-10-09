@@ -18,6 +18,45 @@ true` — the only Generator cartridge with all three present-mode features
 on). One focus level, `item` (`parser.levels`), cap 1 item at a time
 (`parser.cap`).
 
+## Navigation
+
+```
+Psychometric/
+├── Psychometric_generator.html           the shipped, built widget — open this directly
+├── Psychometric-test-formats-reference.md
+├── cartridge/
+│   └── build/
+│       ├── abstract_specs.py             structured rule data for the 12 abstract-reasoning items
+│       ├── build_psychometric.py         compiles the seed + rule specs into pool.json
+│       ├── config.yaml
+│       ├── engine.js
+│       ├── explainer.js
+│       ├── styles.css
+│       ├── psychometric.miniwiki.json
+│       ├── psychometric_content.md
+│       └── pool.json
+├── samples/                              23 real-world test-sample files — reference material
+│   ├── Abstract_reasoning_samples/       for authoring style, not compiled into the build
+│   └── *.md
+├── tests/
+│   ├── js/
+│   │   ├── test-abstract-rules.mjs
+│   │   └── test-engine.mjs
+│   └── python/
+│       └── test_build_psychometric.py
+├── app-decisions.md
+├── wishlist.md
+└── README.md
+```
+
+## Cross-app behaviour
+
+| From | To | What crosses | What breaks if it changes |
+|---|---|---|---|
+| `System/Widgets/Generator/_shell/` | this app's `cartridge/build/` | `assemble.py` bakes `config.yaml` + the compiled cartridge files (including SVG-rendering rule specs) into `Psychometric_generator.html` | A shell contract change breaks the build until this cartridge is updated to match — the shell stayed behind in `Widgets/Generator/` when this app was promoted out |
+| `System/Widgets/Generator/_research/seed/psychometrics.md` | this app's `build_psychometric.py` | The 60-item seed text, combined with `abstract_specs.py`'s rule data, compiles into `pool.json` | The seed research also stayed behind in `Widgets/Generator/`; rebuilding this app's pool requires that file to still exist there |
+| `samples/` | nothing | Reference material for future content authoring only | Not wired into the build — will not appear in the widget until explicitly compiled in |
+
 ## Pool size and provenance
 
 **60 items** — exactly 12 per category, five categories
@@ -111,3 +150,8 @@ rule specs).
 - Largest of the four Generator widgets (293 KB) — almost entirely the
   60-item pool plus the abstract-reasoning rule specs and MiniWiki catalogue,
   not any shared shell overhead.
+
+## Decisions and exceptions
+
+See [app-decisions.md](app-decisions.md) for approvals and any granted rule exceptions. Not
+copied here.

@@ -163,11 +163,11 @@ export function setEditableTree(state, hierarchy, roots) {
   }
 }
 
-/** Every label or Type of an editable group in tree order with its level (1 = top-level) and its path, for the pickers that name one. Topical's derived Unsorted heading is not one. */
+/** Every label or Type of an editable group in tree order with its level (1 = top-level) and its path, for the pickers that name one. Topical's derived Unsorted heading is not one, and neither is a link label: nothing can be filed or nested under it. */
 export function treeLabels(state, hierarchy) {
   const out = [];
   const walk = (nodes, depth, path) => {
-    for (const node of nodes.filter((child) => child.kind === 'node' && !(hierarchy === TOPICAL && child.id === UNSORTED_ID))) {
+    for (const node of nodes.filter((child) => child.kind === 'node' && !child.about && !(hierarchy === TOPICAL && child.id === UNSORTED_ID))) {
       const labelPath = [...path, node.name];
       out.push({ id: node.id, name: node.name, depth, path: labelPath.join(' > ') });
       walk(node.children, depth + 1, labelPath);

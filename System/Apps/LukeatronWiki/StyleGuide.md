@@ -64,7 +64,7 @@ Dead token; harmless as-is, but don't build on it assuming it does something `--
 **Dark is reachable two ways** — automatically under `prefers-color-scheme: dark` while no theme
 is chosen, or explicitly via `[data-theme="dark"]` — mirrored in both `wiki-page.css` and
 `app.css`. Both files carry the block twice (media query + explicit attribute) with identical
-values by construction; there is no automated check here (unlike ProjectKanban's
+values by construction; there is no automated check here (unlike Project Dashboard's
 `check_contrast.py`) — a visual check in both modes is what currently catches the two blocks
 drifting apart. No `paper`/third palette and no dedicated print token set exist for this app —
 print (`@media print` at the bottom of `app.css`) only hides chrome and forces a white
@@ -75,7 +75,7 @@ background; it does not redefine ink colours.
 `"IBM Plex Sans", system-ui, sans-serif` for chrome labels (topbar, rail, margin, slot headers,
 capture-form title); a bare `system-ui, sans-serif` for inputs, buttons and body-adjacent text.
 Sizes in use range `0.7rem`–`1.2rem` as literal `rem` values scattered through the rules below —
-**there is no fixed size-scale token set** in `app.css` (unlike ProjectKanban's three
+**there is no fixed size-scale token set** in `app.css` (unlike Project Dashboard's three
 `--font-size-*` tokens). Document new sizes here if you add one; don't invent a token scale that
 doesn't exist yet without deciding to build it.
 

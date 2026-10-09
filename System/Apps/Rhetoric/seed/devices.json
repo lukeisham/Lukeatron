@@ -3096,6 +3096,11 @@
    {
     "text": "Grant that the policy failed; the fault lay in the delay.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Thou believest that there is one God; thou doest well: the devils also believe, and tremble.\" (James 2:19, KJV)",
+    "attribution": "James",
+    "date": "0048"
    }
   ],
   "aliases": [],
@@ -3269,6 +3274,11 @@
    {
     "text": "Sleeping pills make you sleepy because they have a power to induce sleep.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"I am asked by the learned doctor the cause and reason why opium makes one sleep. To which I reply: because there is in it a dormitive virtue, whose nature is to make the senses drowsy.\" (the candidate, in Molière, *Le Malade imaginaire*, third interlude; English by Claude (AI) from the macaronic Latin \"Quia est in eo / Virtus dormitiva\")",
+    "attribution": "Molière",
+    "date": "1673"
    }
   ],
   "aliases": [
@@ -3635,6 +3645,11 @@
    {
     "text": "If it rained the road is wet; the road is wet; so it rained.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"If he be not in love with some woman, there is no believing old signs: a' brushes his hat a mornings; what should that bode?\" (Claudio, of Benedick, in Shakespeare, *Much Ado About Nothing*, 3.2)",
+    "attribution": "William Shakespeare",
+    "date": "1598"
    }
   ],
   "aliases": [],
@@ -3652,6 +3667,11 @@
    {
     "text": "If it rained the road is wet; it did not rain; so the road is dry.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"If each man had a definite set of rules of conduct by which he regulated his life he would be no better than a machine. But there are no such rules, so men cannot be machines.\" (the argument from the informality of behaviour, as Turing states it, \"Computing Machinery and Intelligence\", *Mind*, 1950)",
+    "attribution": "Alan Turing",
+    "date": "1950"
    }
   ],
   "aliases": [],
@@ -3863,6 +3883,10 @@
    {
     "text": "It is herbal, so it is safe.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Since then some men are slaves by nature, and others are freemen, it is clear that where slavery is advantageous to any one, then it is just to make him a slave.\" (Aristotle, *Politics*, book I, ch. 5, trans. Ellis)",
+    "attribution": "Aristotle"
    }
   ],
   "aliases": [],
@@ -4436,6 +4460,11 @@
    {
     "text": "Either we cut costs or raise fees; cutting harms staff; raising harms clients.",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"…for one of two things—either death is a state of nothingness and utter unconsciousness, or, as men say, there is a change and migration of the soul from this world to another. … Now if death be of such a nature, I say that to die is gain… But if death is the journey to another place, and there, as men say, all the dead abide, what good, O my friends and judges, can be greater than this?\" (Socrates to his judges, in Plato, *Apology*, trans. Jowett)",
+    "attribution": "Plato",
+    "date": "-0399"
    }
   ],
   "aliases": [],
@@ -5990,6 +6019,10 @@
    {
     "text": "\"Let me put your view briefly. Correct me if I miss anything: you want lower taxes so that families keep more of their own money. Have I got it right?\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"Come, then, and let us examine what we are saying. That thing or person which is dear to the gods is pious, and that thing or person which is hateful to the gods is impious, these two being the extreme opposites of one another. Was not that said?\" \"It was.\" (Socrates and Euthyphro, in Plato, *Euthyphro*, trans. Jowett)",
+    "attribution": "Plato"
    }
   ],
   "aliases": [],
@@ -6117,6 +6150,10 @@
    {
     "text": "\"Let us assume, only for the sake of argument, that the bridge is safe. Then it must carry the test load without cracking, so we test it, and if it cracks the assumption is false.\"",
     "attribution": "Unattributed"
+   },
+   {
+    "text": "\"In the theoretical kind we assume what is sought as if it were existent and true, after which we pass through its successive consequences… to something admitted: then (a) if that something admitted is true, that which is sought will also be true… but (b) if we come upon something admittedly false, that which is sought will also be false.\" (Pappus, *Collection*, book VII, on analysis, trans. Heath, in *The Thirteen Books of Euclid's Elements*, vol. 1)",
+    "attribution": "Pappus of Alexandria"
    }
   ],
   "aliases": [],

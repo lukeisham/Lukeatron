@@ -40,7 +40,7 @@ test('device text is a text node, never markup: a script tag renders as literal 
   assert.equal(findAll(container, (n) => n.tag === 'script').length, 0);
 });
 
-test('examples: Latin is an italic em, quotes and bracketed source stay literal, outline-square marker', () => {
+test('examples: Latin is an italic em, quotes and bracketed source stay literal, small-dot marker', () => {
   const state = plainState();
   state.sortOrder = 'category';
   const container = draw(state);
@@ -48,7 +48,7 @@ test('examples: Latin is an italic em, quotes and bracketed source stay literal,
   assert.equal(latin.tag, 'em');
   assert.equal(latin.textContent, 'diem');
   const [example] = findAll(container, withClass('example'));
-  assert.equal(example.textContent, '□carpe diem is a "saying" (Horace)');
+  assert.equal(example.textContent, 'carpe diem is a "saying" (Horace)');
 });
 
 test('the same device renders identically from two different trees', () => {

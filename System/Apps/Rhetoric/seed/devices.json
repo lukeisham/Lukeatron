@@ -20,9 +20,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Saying by Denying",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "high"
  },
  {
@@ -46,9 +46,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Root Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "medium"
  },
  {
@@ -75,9 +75,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Distortion of Scale",
   "form": "Addition & Omission > Escalation",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Distortion of Scale",
   "ai_confidence_rating": "high"
  },
  {
@@ -100,9 +100,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Extended Meaning",
-  "form": "Replacement > Substitution",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Extended Meaning > Substitution",
+  "form": "Replacement > Substitution > Persona",
+  "function": "Clarity > Concrete Grounding > Embodiment",
   "ai_confidence_rating": "high"
  },
  {
@@ -176,7 +176,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
+  "category": "Elocutio > Surprise",
   "form": "Sentence Shape > Broken Construction",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "high"
@@ -201,9 +201,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Fixed Position",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -228,7 +228,7 @@
   "lists_naming": 3,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Comparison",
   "ai_confidence_rating": "high"
  },
  {
@@ -252,9 +252,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 4,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Fixed Position",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -277,7 +277,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
+  "category": "Elocutio > Foregrounding",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
   "ai_confidence_rating": "medium"
@@ -301,8 +301,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
+  "category": "Elocutio > Surprise",
+  "form": "Addition & Omission > Addition > Insertion & Framing",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "high"
  },
@@ -326,9 +326,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Elocutio > Wit & Humor",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -351,9 +351,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > The Exchange",
   "form": "Pairing > Juxtaposition",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -378,7 +378,7 @@
   "flipside_of": null,
   "lists_naming": 2,
   "category": "Invention",
-  "form": "Replacement > Substitution",
+  "form": "Replacement > Substitution > Renaming",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "high"
  },
@@ -402,8 +402,8 @@
   "flipside_of": null,
   "lists_naming": 2,
   "category": "Resemblance",
-  "form": "Replacement > Substitution",
-  "function": "Clarity > Concrete Grounding",
+  "form": "Replacement > Substitution > Persona",
+  "function": "Clarity > Concrete Grounding > Embodiment",
   "ai_confidence_rating": "medium"
  },
  {
@@ -421,7 +421,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
+  "category": "Elocutio > Memorability",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Memorability",
   "ai_confidence_rating": "high"
@@ -446,8 +446,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Irony",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "high"
  },
@@ -473,9 +473,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Fixed Position",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -499,9 +499,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 4,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Balance & Contrast",
   "form": "Pairing > Comparison",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Balance & Contrast",
   "ai_confidence_rating": "high"
  },
  {
@@ -528,9 +528,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "high"
  },
  {
@@ -580,9 +580,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > The Exchange",
   "form": "Speech Act > Question",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -606,8 +606,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Saying by Denying",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "medium"
  },
@@ -632,7 +632,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Inventio",
+  "category": "Inventio > Intimacy",
   "form": "Speech Act > Question",
   "function": "Connection > Intimacy",
   "ai_confidence_rating": "high"
@@ -658,9 +658,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Interruption & Turn",
   "form": "Addition & Omission > Omission",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Interruption & Turn",
   "ai_confidence_rating": "high"
  },
  {
@@ -683,9 +683,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
+  "category": "Elocutio > Emotional Appeal",
   "form": "Speech Act > Exclamation",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "high"
  },
  {
@@ -708,9 +708,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Clarity",
+  "category": "Elocutio > Clarity",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Clarity > Clarity > Definition & Gloss",
   "ai_confidence_rating": "high"
  },
  {
@@ -735,7 +735,7 @@
   "lists_naming": 3,
   "category": "Pronuntiatio",
   "form": "Sonic > Assonance",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "high"
  },
  {
@@ -761,8 +761,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
+  "category": "Elocutio > Foregrounding",
+  "form": "Addition & Omission > Addition > Insertion & Framing",
   "function": "Emphasis > Foregrounding",
   "ai_confidence_rating": "medium"
  },
@@ -787,9 +787,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 4,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Balance & Contrast",
   "form": "Addition & Omission > Omission",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Balance & Contrast",
   "ai_confidence_rating": "high"
  },
  {
@@ -812,8 +812,8 @@
   "flipside_of": null,
   "lists_naming": 1,
   "category": "Ornamental Epithet",
-  "form": "Addition & Omission > Addition",
-  "function": "Persuasion > Emotional Appeal",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "high"
  },
  {
@@ -861,8 +861,8 @@
   "flipside_of": null,
   "lists_naming": 1,
   "category": "Invention",
-  "form": "Replacement > Substitution",
-  "function": "Clarity > Clarity",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Clarity > Clarity > Comparison",
   "ai_confidence_rating": "medium"
  },
  {
@@ -886,9 +886,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Naming",
-  "form": "Addition & Omission > Addition",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Naming > Addition",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "medium"
  },
  {
@@ -910,9 +910,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Addition & Omission > Escalation",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Escalation",
   "ai_confidence_rating": "high"
  },
  {
@@ -932,9 +932,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Close Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -958,9 +958,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Elocutio > Emotional Appeal",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "high"
  },
  {
@@ -985,7 +985,7 @@
   "lists_naming": 1,
   "category": "Pronuntiatio",
   "form": "Sonic",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "high"
  },
  {
@@ -1008,9 +1008,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Dispositio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Dispositio > Concrete Grounding",
+  "form": "Addition & Omission > Addition > Description",
+  "function": "Clarity > Concrete Grounding > Vivid Description",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1032,9 +1032,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Close Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -1057,9 +1057,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Replacement > Substitution",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Elocutio > Emotional Appeal",
+  "form": "Replacement > Substitution > Recolouring",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1082,9 +1082,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Clarity > Clarity",
+  "category": "Inventio > Clarity",
+  "form": "Semantic Play > Ambiguity > Sense in Argument",
+  "function": "Clarity > Clarity > Definition & Gloss",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1107,9 +1107,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Extended Meaning",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Extended Meaning > Ambiguity",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1131,8 +1131,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Extended Meaning",
-  "form": "Semantic Play > Ambiguity",
+  "category": "Extended Meaning > Ambiguity",
+  "form": "Semantic Play > Ambiguity > Hidden Meaning",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "medium"
  },
@@ -1155,9 +1155,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Recolouring",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "high"
  },
  {
@@ -1180,7 +1180,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
+  "category": "Elocutio > Conciseness",
   "form": "Addition & Omission > Omission",
   "function": "Clarity > Conciseness",
   "ai_confidence_rating": "high"
@@ -1204,9 +1204,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > Deduction",
   "form": "Addition & Omission > Omission",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1228,9 +1228,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Dispositio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Clarity",
+  "category": "Dispositio > Clarity",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Clarity > Clarity > Ordering",
   "ai_confidence_rating": "high"
  },
  {
@@ -1248,9 +1248,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Fixed Position",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -1299,9 +1299,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
+  "category": "Elocutio > Logical Appeal",
   "form": "Speech Act > Question",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -1324,8 +1324,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Recolouring",
   "function": "Evasion",
   "ai_confidence_rating": "high"
  },
@@ -1350,7 +1350,7 @@
   "lists_naming": 2,
   "category": "Pronuntiatio",
   "form": "Sonic",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1373,9 +1373,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Dispositio",
+  "category": "Dispositio > Clarity",
   "form": "Sentence Shape > Numbered Points",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Ordering",
   "ai_confidence_rating": "high"
  },
  {
@@ -1397,9 +1397,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
+  "category": "Inventio > Concrete Grounding",
   "form": "Speech Act > Recollection & Example",
-  "function": "Clarity > Concrete Grounding",
+  "function": "Clarity > Concrete Grounding > Example",
   "ai_confidence_rating": "high"
  },
  {
@@ -1421,9 +1421,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Distortion of Scale",
   "form": "Addition & Omission",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Distortion of Scale",
   "ai_confidence_rating": "high"
  },
  {
@@ -1446,7 +1446,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Inventio",
+  "category": "Inventio > Foregrounding",
   "form": "Speech Act > Question",
   "function": "Emphasis > Foregrounding",
   "ai_confidence_rating": "high"
@@ -1470,9 +1470,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
+  "category": "Dispositio > Clarity",
   "form": "Sentence Shape > Subordination",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Ordering",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1494,8 +1494,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Irony",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "high"
  },
@@ -1519,9 +1519,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Elocutio > Aesthetic Effect",
+  "form": "Sonic > Repetition > Structural Repetition",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "high"
  },
  {
@@ -1543,9 +1543,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Pairing > Juxtaposition",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Balance & Contrast",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1567,9 +1567,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
-  "form": "Reversal > Reversal",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Distortion of Scale",
+  "form": "Reversal > Reversal > Saying by Denying",
+  "function": "Emphasis > Emphasis > Distortion of Scale",
   "ai_confidence_rating": "high"
  },
  {
@@ -1593,9 +1593,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Replacement > Substitution",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Elocutio > Wit & Humor",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -1620,9 +1620,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Distortion of Scale",
   "form": "Addition & Omission",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Distortion of Scale",
   "ai_confidence_rating": "high"
  },
  {
@@ -1646,9 +1646,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Reversal > Reversal",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Interruption & Turn",
+  "form": "Reversal > Reversal > Reversed Expectation",
+  "function": "Emphasis > Emphasis > Interruption & Turn",
   "ai_confidence_rating": "high"
  },
  {
@@ -1670,7 +1670,7 @@
   "lists_naming": 3,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Comparison",
   "ai_confidence_rating": "high"
  },
  {
@@ -1717,9 +1717,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Fallacy",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Invalid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -1748,7 +1748,7 @@
   "lists_naming": 3,
   "category": "Invention",
   "form": "Sonic",
-  "function": "Clarity > Concrete Grounding",
+  "function": "Clarity > Concrete Grounding > Vivid Description",
   "ai_confidence_rating": "high"
  },
  {
@@ -1770,7 +1770,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 4,
-  "category": "Elocutio",
+  "category": "Elocutio > Surprise",
   "form": "Pairing > Juxtaposition",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "high"
@@ -1792,8 +1792,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Reversed Expectation",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "high"
  },
@@ -1814,9 +1814,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Pairing > Juxtaposition",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Balance & Contrast",
   "ai_confidence_rating": "high"
  },
  {
@@ -1839,8 +1839,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
+  "category": "Elocutio > Intimacy",
+  "form": "Addition & Omission > Addition > Insertion & Framing",
   "function": "Connection > Intimacy",
   "ai_confidence_rating": "high"
  },
@@ -1863,7 +1863,7 @@
   "lists_naming": 1,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "high"
  },
  {
@@ -1888,7 +1888,7 @@
   "lists_naming": 4,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Clarity > Concrete Grounding",
+  "function": "Clarity > Concrete Grounding > Embodiment",
   "ai_confidence_rating": "high"
  },
  {
@@ -1911,9 +1911,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "high"
  },
  {
@@ -1933,9 +1933,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Sonic > Repetition > Structural Repetition",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "high"
  },
  {
@@ -1958,9 +1958,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Elocutio > Wit & Humor",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -1982,9 +1982,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > The Exchange",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -2006,9 +2006,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2030,7 +2030,7 @@
   "lists_naming": 1,
   "category": "Pronuntiatio",
   "form": "Sonic",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2052,7 +2052,7 @@
   "lists_naming": 3,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Comparison",
   "ai_confidence_rating": "high"
  },
  {
@@ -2072,9 +2072,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Inventio",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Valid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2093,9 +2093,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Fixed Position",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -2115,9 +2115,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Naming",
+  "category": "Naming > Synecdoche",
   "form": "Replacement > Synecdoche",
-  "function": "Clarity > Concrete Grounding",
+  "function": "Clarity > Concrete Grounding > Example",
   "ai_confidence_rating": "high"
  },
  {
@@ -2139,9 +2139,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Elocutio > Wit & Humor",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -2161,9 +2161,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "high"
  },
  {
@@ -2183,9 +2183,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Recolouring",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "high"
  },
  {
@@ -2209,7 +2209,7 @@
   "lists_naming": 0,
   "category": "Association",
   "form": "Replacement > Metonymy",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "high"
  },
  {
@@ -2230,8 +2230,8 @@
   "flipside_of": null,
   "lists_naming": 0,
   "category": "Invention",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "form": "Addition & Omission > Addition > Insertion & Framing",
+  "function": "Emphasis > Emphasis > Interruption & Turn",
   "ai_confidence_rating": "high"
  },
  {
@@ -2253,8 +2253,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
+  "category": "Elocutio > Memorability",
+  "form": "Sonic > Repetition > Structural Repetition",
   "function": "Emphasis > Memorability",
   "ai_confidence_rating": "medium"
  },
@@ -2275,9 +2275,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Wit & Humor",
   "form": "Speech Act > Dismissal",
-  "function": "Aesthetic > Wit & Humor",
+  "function": "Aesthetic > Wit & Humor > Repartee",
   "ai_confidence_rating": "high"
  },
  {
@@ -2299,7 +2299,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Shared Understanding",
   "form": "Speech Act > Question",
   "function": "Connection > Shared Understanding",
   "ai_confidence_rating": "high"
@@ -2323,9 +2323,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Replacement > Substitution",
-  "function": "Emphasis > Emphasis",
+  "category": "Inventio > Emphasis",
+  "form": "Replacement > Substitution > Persona",
+  "function": "Emphasis > Emphasis > Interruption & Turn",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2345,8 +2345,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Irony",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "high"
  },
@@ -2367,7 +2367,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
+  "category": "Dispositio > Foregrounding",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
   "ai_confidence_rating": "high"
@@ -2389,9 +2389,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Reversal > Inversion",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "low"
  },
  {
@@ -2411,9 +2411,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2433,9 +2433,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > The Exchange",
   "form": "Speech Act > Concession",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -2455,9 +2455,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Authority/Power",
   "form": "Speech Act > Dismissal",
-  "function": "Persuasion > Authority/Power",
+  "function": "Persuasion > Authority/Power > Command & Force",
   "ai_confidence_rating": "high"
  },
  {
@@ -2477,9 +2477,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Replacement > Substitution",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Inventio > Concrete Grounding",
+  "form": "Replacement > Substitution > Persona",
+  "function": "Clarity > Concrete Grounding > Embodiment",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2501,9 +2501,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Elocutio > Concrete Grounding",
+  "form": "Addition & Omission > Addition > Description",
+  "function": "Clarity > Concrete Grounding > Vivid Description",
   "ai_confidence_rating": "high"
  },
  {
@@ -2525,9 +2525,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Elocutio > Aesthetic Effect",
+  "form": "Addition & Omission > Addition > Description",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2547,9 +2547,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Elocutio > Concrete Grounding",
+  "form": "Addition & Omission > Addition > Description",
+  "function": "Clarity > Concrete Grounding > Vivid Description",
   "ai_confidence_rating": "high"
  },
  {
@@ -2568,9 +2568,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Authority/Power",
   "form": "Speech Act > Recollection & Example",
-  "function": "Persuasion > Authority/Power",
+  "function": "Persuasion > Authority/Power > Precedent & the Many",
   "ai_confidence_rating": "high"
  },
  {
@@ -2590,9 +2590,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Clarity",
+  "category": "Elocutio > Clarity",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Clarity > Clarity > Definition & Gloss",
   "ai_confidence_rating": "high"
  },
  {
@@ -2612,8 +2612,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Extended Meaning",
-  "form": "Semantic Play > Ambiguity",
+  "category": "Extended Meaning > Ambiguity",
+  "form": "Semantic Play > Ambiguity > Hidden Meaning",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "high"
  },
@@ -2634,9 +2634,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Addition & Omission > Addition",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Cause & Consequence",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "high"
  },
  {
@@ -2656,9 +2656,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Inventio > Emphasis",
+  "form": "Sonic > Repetition > Insistence",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2678,9 +2678,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Elocutio > Wit & Humor",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Repartee",
   "ai_confidence_rating": "high"
  },
  {
@@ -2700,8 +2700,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Irony",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "medium"
  },
@@ -2722,9 +2722,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Emotional Appeal",
   "form": "Speech Act > Question",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "high"
  },
  {
@@ -2744,9 +2744,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Insistence",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -2768,9 +2768,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Aesthetic Effect",
   "form": "Sonic > Assonance",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2790,9 +2790,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Elocutio > Aesthetic Effect",
+  "form": "Sonic > Repetition > Root Repetition",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "high"
  },
  {
@@ -2812,9 +2812,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Aesthetic Effect",
   "form": "Sonic > Alliteration",
-  "function": "Aesthetic > Aesthetic Effect",
+  "function": "Aesthetic > Aesthetic Effect > Sound & Symmetry",
   "ai_confidence_rating": "medium"
  },
  {
@@ -2834,9 +2834,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Inventio > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "high"
  },
  {
@@ -2856,7 +2856,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Evasion",
   "form": "Argument Structure > Diversion",
   "function": "Evasion",
   "ai_confidence_rating": "high"
@@ -2878,7 +2878,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Conciseness",
   "form": "Addition & Omission > Omission",
   "function": "Clarity > Conciseness",
   "ai_confidence_rating": "high"
@@ -2902,9 +2902,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Replacement > Substitution",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Elocutio > Aesthetic Effect",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "high"
  },
  {
@@ -2924,9 +2924,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
-  "form": "Addition & Omission > Addition",
-  "function": "Clarity > Clarity",
+  "category": "Dispositio > Clarity",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Clarity > Clarity > Ordering",
   "ai_confidence_rating": "high"
  },
  {
@@ -2948,9 +2948,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "high"
  },
  {
@@ -2970,9 +2970,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Accumulation",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Accumulation",
   "ai_confidence_rating": "high"
  },
  {
@@ -2992,9 +2992,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Emotional Appeal",
   "form": "Speech Act > Exclamation",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3014,9 +3014,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Emphasis > Interruption & Turn",
   "form": "Speech Act > Exclamation",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Interruption & Turn",
   "ai_confidence_rating": "high"
  },
  {
@@ -3038,9 +3038,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Emotional Appeal",
   "form": "Speech Act > Exclamation",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "high"
  },
  {
@@ -3060,9 +3060,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Recolouring",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "high"
  },
  {
@@ -3084,9 +3084,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Extended Meaning",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Extended Meaning > Ambiguity",
+  "form": "Semantic Play > Ambiguity > Hidden Meaning",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -3106,9 +3106,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > The Exchange",
   "form": "Speech Act > Concession",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -3128,9 +3128,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Authority/Power",
   "form": "Speech Act > Dismissal",
-  "function": "Persuasion > Authority/Power",
+  "function": "Persuasion > Authority/Power > Command & Force",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3150,8 +3150,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
+  "category": "Elocutio > Elegance",
+  "form": "Sonic > Repetition > Structural Repetition",
   "function": "Aesthetic > Elegance",
   "ai_confidence_rating": "high"
  },
@@ -3172,8 +3172,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Reversal > Reversal",
+  "category": "Elocutio > Surprise",
+  "form": "Reversal > Reversal > Reversed Expectation",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "medium"
  },
@@ -3194,7 +3194,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Naming",
+  "category": "Naming > Synecdoche",
   "form": "Replacement > Synecdoche",
   "function": "Clarity > Conciseness",
   "ai_confidence_rating": "medium"
@@ -3218,8 +3218,8 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Reversal > Reversal",
+  "category": "Elocutio > Surprise",
+  "form": "Reversal > Reversal > Reversed Expectation",
   "function": "Disruption > Surprise",
   "ai_confidence_rating": "medium"
  },
@@ -3240,7 +3240,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Naming",
+  "category": "Naming > Metonymy",
   "form": "Replacement > Metonymy",
   "function": "Clarity > Conciseness",
   "ai_confidence_rating": "low"
@@ -3262,9 +3262,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Naming",
-  "form": "Replacement > Substitution",
-  "function": "Aesthetic > Aesthetic Effect",
+  "category": "Naming > Substitution",
+  "form": "Replacement > Substitution > Renaming",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3286,9 +3286,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -3308,9 +3308,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Semantic Play > Ambiguity > Sense in Argument",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -3330,9 +3330,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Parts & Wholes",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -3352,9 +3352,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Parts & Wholes",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -3376,9 +3376,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Consistency & Manner",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "high"
  },
  {
@@ -3398,9 +3398,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "high"
  },
  {
@@ -3422,9 +3422,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Absence as Evidence",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -3447,9 +3447,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Authority/Power",
+  "category": "Fallacy > Authority/Power",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Authority/Power > Precedent & the Many",
   "ai_confidence_rating": "high"
  },
  {
@@ -3471,9 +3471,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Authority/Power",
+  "category": "Fallacy > Authority/Power",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Authority/Power > Precedent & the Many",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3495,9 +3495,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3519,9 +3519,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Authority/Power",
+  "category": "Fallacy > Authority/Power",
+  "form": "Argument Structure > Appeal to Pressure > Threat & Stakes",
+  "function": "Persuasion > Authority/Power > Command & Force",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3543,9 +3543,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -3567,9 +3567,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Patterns & Chance",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -3589,9 +3589,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -3614,9 +3614,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Exchange",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -3638,9 +3638,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3660,9 +3660,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Invalid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -3682,9 +3682,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Invalid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -3704,9 +3704,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Invalid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3731,9 +3731,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -3753,9 +3753,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -3775,9 +3775,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3797,9 +3797,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "high"
  },
  {
@@ -3819,9 +3819,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3845,9 +3845,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Patterns & Chance",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3869,9 +3869,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Sample to Whole",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -3891,9 +3891,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Nature",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3912,9 +3912,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Nature",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3936,9 +3936,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Appeal to a Standard > Outcomes & Investment",
+  "function": "Persuasion > Emotional Appeal > Fear & Hope",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3958,9 +3958,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Appeal to a Standard > Outcomes & Investment",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -3980,9 +3980,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Character & Motive",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "high"
  },
  {
@@ -4005,9 +4005,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -4027,9 +4027,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Group & Member",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4051,9 +4051,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Causes & Chains",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4075,9 +4075,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Semantic Play > Ambiguity > Sense in Argument",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -4099,9 +4099,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Absence as Evidence",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4123,9 +4123,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Ridicule",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4147,9 +4147,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Sonic > Repetition",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Exchange",
+  "form": "Sonic > Repetition > Insistence",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "low"
  },
  {
@@ -4169,9 +4169,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Sample to Whole",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4193,9 +4193,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Part–Whole Inference > Rule & Case",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -4217,9 +4217,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Hidden Bridge",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -4239,9 +4239,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4261,9 +4261,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > The Source",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4283,9 +4283,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Consistency & Manner",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4307,9 +4307,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > The Exchange",
   "form": "Speech Act > Dismissal",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4331,9 +4331,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4355,9 +4355,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Hidden Bridge",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "high"
  },
  {
@@ -4379,9 +4379,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Logical Appeal > The Exchange",
   "form": "Speech Act > Concession",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "low"
  },
  {
@@ -4403,9 +4403,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Valid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4425,7 +4425,7 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
+  "category": "Inventio > Shared Understanding",
   "form": "Speech Act > Concession",
   "function": "Connection > Shared Understanding",
   "ai_confidence_rating": "medium"
@@ -4449,9 +4449,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Valid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4473,9 +4473,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Valid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4495,9 +4495,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Valid Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -4519,9 +4519,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Inventio > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Causes & Chains",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4542,9 +4542,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Inventio",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Authority/Power",
+  "category": "Inventio > Authority/Power",
+  "form": "Argument Structure > Appeal to a Standard > Authority",
+  "function": "Persuasion > Authority/Power > Expertise",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4566,7 +4566,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
+  "category": "Elocutio > Memorability",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Memorability",
   "ai_confidence_rating": "high"
@@ -4592,7 +4592,7 @@
   "lists_naming": 1,
   "category": "Resemblance",
   "form": "Pairing > Comparison",
-  "function": "Aesthetic > Wit & Humor",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "high"
  },
  {
@@ -4616,8 +4616,8 @@
   "flipside_of": null,
   "lists_naming": 1,
   "category": "Ornamental Epithet",
-  "form": "Addition & Omission > Addition",
-  "function": "Aesthetic > Aesthetic Effect",
+  "form": "Addition & Omission > Addition > Elaboration",
+  "function": "Aesthetic > Aesthetic Effect > Ornamental Naming",
   "ai_confidence_rating": "high"
  },
  {
@@ -4637,9 +4637,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 4,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Close Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -4661,9 +4661,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Extended Meaning",
+  "category": "Extended Meaning > Comparison",
   "form": "Pairing > Comparison",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Comparison",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4685,7 +4685,7 @@
   ],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
+  "category": "Elocutio > Foregrounding",
   "form": "Reversal > Inversion",
   "function": "Emphasis > Foregrounding",
   "ai_confidence_rating": "high"
@@ -4710,9 +4710,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 3,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Balance & Contrast",
+  "form": "Sonic > Repetition > Structural Repetition",
+  "function": "Emphasis > Emphasis > Balance & Contrast",
   "ai_confidence_rating": "high"
  },
  {
@@ -4735,9 +4735,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Root Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -4757,9 +4757,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 2,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Close Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "high"
  },
  {
@@ -4779,8 +4779,8 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 1,
-  "category": "Extended Meaning",
-  "form": "Reversal > Reversal",
+  "category": "Extended Meaning > Reversal",
+  "form": "Reversal > Reversal > Irony",
   "function": "Disruption > Irony",
   "ai_confidence_rating": "medium"
  },
@@ -4801,9 +4801,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Addition & Omission > Escalation",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Escalation",
   "ai_confidence_rating": "high"
  },
  {
@@ -4823,9 +4823,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Dispositio",
+  "category": "Dispositio > Emphasis",
   "form": "Addition & Omission > Escalation",
-  "function": "Emphasis > Emphasis",
+  "function": "Emphasis > Emphasis > Escalation",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4845,9 +4845,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Sonic > Repetition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Sonic > Repetition > Close Repetition",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4867,9 +4867,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Attack on the Source > Character & Motive",
+  "function": "Persuasion > Emotional Appeal > Indignation & Contempt",
   "ai_confidence_rating": "high"
  },
  {
@@ -4889,9 +4889,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > The Exchange",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "high"
  },
  {
@@ -4911,9 +4911,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
+  "category": "Fallacy > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -4933,9 +4933,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Causal Inference > Causes & Chains",
+  "function": "Persuasion > Emotional Appeal > Fear & Hope",
   "ai_confidence_rating": "high"
  },
  {
@@ -4955,9 +4955,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Authority/Power",
+  "category": "Fallacy > Authority/Power",
+  "form": "Argument Structure > Appeal to a Standard > Authority",
+  "function": "Persuasion > Authority/Power > Expertise",
   "ai_confidence_rating": "high"
  },
  {
@@ -4977,9 +4977,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Sample to Whole",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "high"
  },
  {
@@ -4999,9 +4999,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "high"
  },
  {
@@ -5021,9 +5021,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy > Logical Appeal > Deduction",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "high"
  },
  {
@@ -5043,9 +5043,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Colouring & Display",
   "ai_confidence_rating": "high"
  },
  {
@@ -5065,8 +5065,8 @@
   "aliases": [],
   "flipside_of": "Begging the Question",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
+  "category": "Fallacy Flipside > Shared Understanding",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
   "function": "Connection > Shared Understanding",
   "ai_confidence_rating": "medium"
  },
@@ -5087,9 +5087,9 @@
   "aliases": [],
   "flipside_of": "Equivocation",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Aesthetic > Wit & Humor",
+  "category": "Fallacy Flipside > Wit & Humor",
+  "form": "Semantic Play > Ambiguity > Wordplay",
+  "function": "Aesthetic > Wit & Humor > Wordplay",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5108,9 +5108,9 @@
   "aliases": [],
   "flipside_of": "Fallacy of Composition",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Parts & Wholes",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5130,9 +5130,9 @@
   "aliases": [],
   "flipside_of": "Fallacy of Division",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Group & Member",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5152,9 +5152,9 @@
   "aliases": [],
   "flipside_of": "Tu Quoque",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Consistency & Manner",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5174,9 +5174,9 @@
   "aliases": [],
   "flipside_of": "Genetic Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5196,9 +5196,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Ignorance",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Absence as Evidence",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5217,9 +5217,9 @@
   "aliases": [],
   "flipside_of": "Bandwagon Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5239,9 +5239,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Tradition",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5261,9 +5261,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Pity",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy Flipside > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5283,9 +5283,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Force",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Appeal to Pressure > Threat & Stakes",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5305,9 +5305,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Novelty",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Age, Novelty & the Crowd",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5327,9 +5327,9 @@
   "aliases": [],
   "flipside_of": "Gambler's Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Patterns & Chance",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5349,9 +5349,9 @@
   "aliases": [],
   "flipside_of": "No True Scotsman",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5371,9 +5371,9 @@
   "aliases": [],
   "flipside_of": "Loaded Question",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Exchange",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5393,9 +5393,9 @@
   "aliases": [],
   "flipside_of": "Cum Hoc Ergo Propter Hoc",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5415,9 +5415,9 @@
   "aliases": [],
   "flipside_of": "Affirming the Consequent",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Deduction",
+  "form": "Argument Structure > Conditional Schema > Tentative Forms",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5437,9 +5437,9 @@
   "aliases": [],
   "flipside_of": "Denying the Antecedent",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Conditional Schema",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Conditional Schema > Tentative Forms",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5459,9 +5459,9 @@
   "aliases": [],
   "flipside_of": "Undistributed Middle",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Group & Member",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "low"
  },
  {
@@ -5480,9 +5480,9 @@
   "aliases": [],
   "flipside_of": "Argument to Moderation",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5502,9 +5502,9 @@
   "aliases": [],
   "flipside_of": "Special Pleading",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5524,9 +5524,9 @@
   "aliases": [],
   "flipside_of": "Moving the Goalposts",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Shifting Standards",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5546,9 +5546,9 @@
   "aliases": [],
   "flipside_of": "Poisoning the Well",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5568,9 +5568,9 @@
   "aliases": [],
   "flipside_of": "Guilt by Association",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Origin & Association",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5590,9 +5590,9 @@
   "aliases": [],
   "flipside_of": "Texas Sharpshooter Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Patterns & Chance",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5612,9 +5612,9 @@
   "aliases": [],
   "flipside_of": "Cherry Picking",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Sample to Whole",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5634,9 +5634,9 @@
   "aliases": [],
   "flipside_of": "Naturalistic Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Nature",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5656,9 +5656,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Nature",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Appeal to a Standard > Nature",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5678,9 +5678,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Consequences",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Appeal to a Standard > Outcomes & Investment",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5700,9 +5700,9 @@
   "aliases": [],
   "flipside_of": "Sunk Cost Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Appeal to a Standard > Outcomes & Investment",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5722,9 +5722,9 @@
   "aliases": [],
   "flipside_of": "Bulverism",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Character & Motive",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5744,9 +5744,9 @@
   "aliases": [],
   "flipside_of": "Continuum Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5766,9 +5766,9 @@
   "aliases": [],
   "flipside_of": "Ecological Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Group & Member",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5788,9 +5788,9 @@
   "aliases": [],
   "flipside_of": "Single Cause Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Causes & Chains",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5810,9 +5810,9 @@
   "aliases": [],
   "flipside_of": "Fallacy of Four Terms",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Semantic Play > Ambiguity",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Deduction",
+  "form": "Semantic Play > Ambiguity > Sense in Argument",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5832,9 +5832,9 @@
   "aliases": [],
   "flipside_of": "Argument from Incredulity",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
   "form": "Argument Structure > Absence as Evidence",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5854,9 +5854,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Ridicule",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Exchange",
+  "form": "Argument Structure > Appeal to Pressure > Ridicule",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5876,8 +5876,8 @@
   "aliases": [],
   "flipside_of": "Proof by Assertion",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Sonic > Repetition",
+  "category": "Fallacy Flipside > Memorability",
+  "form": "Sonic > Repetition > Insistence",
   "function": "Emphasis > Memorability",
   "ai_confidence_rating": "medium"
  },
@@ -5898,9 +5898,9 @@
   "aliases": [],
   "flipside_of": "Anecdotal Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Concrete Grounding",
   "form": "Speech Act > Recollection & Example",
-  "function": "Clarity > Concrete Grounding",
+  "function": "Clarity > Concrete Grounding > Example",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5920,9 +5920,9 @@
   "aliases": [],
   "flipside_of": "Fallacy of Accident",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Part–Whole Inference > Rule & Case",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5942,9 +5942,9 @@
   "aliases": [],
   "flipside_of": "Reification",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Replacement > Substitution",
-  "function": "Clarity > Concrete Grounding",
+  "category": "Fallacy Flipside > Concrete Grounding",
+  "form": "Replacement > Substitution > Persona",
+  "function": "Clarity > Concrete Grounding > Embodiment",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5964,9 +5964,9 @@
   "aliases": [],
   "flipside_of": "Slothful Induction",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -5986,9 +5986,9 @@
   "aliases": [],
   "flipside_of": "Whataboutism",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6008,9 +6008,9 @@
   "aliases": [],
   "flipside_of": "Tone Policing",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Consistency & Manner",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6030,9 +6030,9 @@
   "aliases": [],
   "flipside_of": "Appeal to the Stone",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > The Exchange",
   "form": "Speech Act > Dismissal",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6052,9 +6052,9 @@
   "aliases": [],
   "flipside_of": "Relative Privation",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6074,9 +6074,9 @@
   "aliases": [],
   "flipside_of": "Is-Ought Fallacy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
+  "form": "Argument Structure > Assumed Premise > Hidden Bridge",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6096,9 +6096,9 @@
   "aliases": [],
   "flipside_of": "Ad Hominem",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Attack on the Source",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > The Source",
+  "form": "Argument Structure > Attack on the Source > Character & Motive",
+  "function": "Persuasion > Logical Appeal > The Source",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6117,9 +6117,9 @@
   "aliases": [],
   "flipside_of": "Straw Man",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Clarity",
   "form": "Argument Structure > Diversion",
-  "function": "Clarity > Clarity",
+  "function": "Clarity > Clarity > Definition & Gloss",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6139,9 +6139,9 @@
   "aliases": [],
   "flipside_of": "False Dichotomy",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Standards & Values",
   "form": "Argument Structure > Option Framing",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Standards & Values",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6161,9 +6161,9 @@
   "aliases": [],
   "flipside_of": "Slippery Slope",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Causes & Chains",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6183,9 +6183,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Authority",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to a Standard",
-  "function": "Persuasion > Authority/Power",
+  "category": "Fallacy Flipside > Authority/Power",
+  "form": "Argument Structure > Appeal to a Standard > Authority",
+  "function": "Persuasion > Authority/Power > Expertise",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6205,9 +6205,9 @@
   "aliases": [],
   "flipside_of": "Hasty Generalization",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Part–Whole Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Induction & Evidence",
+  "form": "Argument Structure > Part–Whole Inference > Sample to Whole",
+  "function": "Persuasion > Logical Appeal > Induction & Evidence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6227,9 +6227,9 @@
   "aliases": [],
   "flipside_of": "Post Hoc",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Causal Inference",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Cause & Consequence",
+  "form": "Argument Structure > Causal Inference > Correlation & Sequence",
+  "function": "Persuasion > Logical Appeal > Cause & Consequence",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6248,9 +6248,9 @@
   "aliases": [],
   "flipside_of": "Circular Reasoning",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Assumed Premise",
-  "function": "Persuasion > Logical Appeal",
+  "category": "Fallacy Flipside > Logical Appeal > Deduction",
+  "form": "Argument Structure > Assumed Premise > Built-in Conclusion",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6270,9 +6270,9 @@
   "aliases": [],
   "flipside_of": "Red Herring",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > The Exchange",
   "form": "Argument Structure > Diversion",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > The Exchange",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6292,9 +6292,9 @@
   "aliases": [],
   "flipside_of": "Appeal to Emotion",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy Flipside > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6314,9 +6314,9 @@
   "aliases": [],
   "flipside_of": "Non Sequitur",
   "lists_naming": 0,
-  "category": "Fallacy Flipside",
+  "category": "Fallacy Flipside > Logical Appeal > Deduction",
   "form": "Addition & Omission > Omission",
-  "function": "Persuasion > Logical Appeal",
+  "function": "Persuasion > Logical Appeal > Deduction",
   "ai_confidence_rating": "medium"
  },
  {
@@ -6338,9 +6338,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Authority/Power",
   "form": "Sentence Shape > Subordination",
-  "function": "Persuasion > Authority/Power",
+  "function": "Persuasion > Authority/Power > Command & Force",
   "ai_confidence_rating": "low"
  },
  {
@@ -6364,9 +6364,9 @@
   ],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
+  "category": "Elocutio > Emotional Appeal",
   "form": "Speech Act > Exclamation",
-  "function": "Persuasion > Emotional Appeal",
+  "function": "Persuasion > Emotional Appeal > Fear & Hope",
   "ai_confidence_rating": "low"
  },
  {
@@ -6386,9 +6386,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Elocutio",
-  "form": "Addition & Omission > Addition",
-  "function": "Emphasis > Emphasis",
+  "category": "Elocutio > Emphasis > Repetition",
+  "form": "Addition & Omission > Addition > Amplification",
+  "function": "Emphasis > Emphasis > Repetition",
   "ai_confidence_rating": "low"
  },
  {
@@ -6408,9 +6408,9 @@
   "aliases": [],
   "flipside_of": null,
   "lists_naming": 0,
-  "category": "Fallacy",
-  "form": "Argument Structure > Appeal to Pressure",
-  "function": "Persuasion > Emotional Appeal",
+  "category": "Fallacy > Emotional Appeal",
+  "form": "Argument Structure > Appeal to Pressure > Pity & Sentiment",
+  "function": "Persuasion > Emotional Appeal > Sympathy",
   "ai_confidence_rating": "low"
  }
 ]

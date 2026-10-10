@@ -90,8 +90,8 @@ test('Copy writes both sides and honours the table\'s three switches', () => {
   const state = compareState();
   setComparePair(state, 3);
   assert.equal(viewToText(state, currentView(state)), [
-    '• Fallacy: Metaphor', '  a comparison without "like"', '  □ carpe diem is a "saying" (Horace)', '',
-    '• Flipside: Shared Ground', '  fair use of metaphor', '  □ the common ground',
+    '• Fallacy: Metaphor', '  a comparison without "like"', '  · carpe diem is a "saying" (Horace)', '',
+    '• Flipside: Shared Ground', '  fair use of metaphor', '  · the common ground',
   ].join('\n'));
   state.tableNames = false;
   state.tableExamples = false;

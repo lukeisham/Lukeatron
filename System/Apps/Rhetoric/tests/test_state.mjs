@@ -91,7 +91,7 @@ test('copy text follows the toggles, but an expanded device shows both', () => {
   toggleExpanded(state, 1);
   assert.equal(
     viewToText(state, currentView(state)),
-    '• Anaphora\n• Metaphor\n  a comparison without "like"\n  □ carpe diem is a "saying" (Horace)',
+    '• Anaphora\n• Metaphor\n  a comparison without "like"\n  · carpe diem is a "saying" (Horace)',
   );
 });
 

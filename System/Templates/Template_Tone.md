@@ -53,6 +53,7 @@ USING THE TEMPLATE
 type: "Tone"
 person_id: ""          # matches the Person record's uniqueid — the join key for !Tone
 title: ""              # mirrors the Person record's title (full name)
+description: ""        # one sentence: whose tone overrides these are, e.g. "Tone overrides for emails to Alex Donnelly."
 group: ""              # mirrored from the Person record's group: field — one string, or a list
 authorship: "agent-disclosed"   # agent-disclosed (default) | luke-voice — see note below. Blank ⇒ inherit group, then default
 register: ""           # e.g. formal | conversational | pastoral — left blank until assessed

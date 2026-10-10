@@ -108,6 +108,8 @@ FOR EACH arrived item:
 
    ② MEMORY — is there a durable FACT to keep?
         IF yes THEN WRITE it to the matching Memory/Long-Term/<subject> store (+ its _index.yaml)
+             A NEW .md file opens with frontmatter: type (the store's type in
+             Memory/Long-Term/Lukeatron/memory-structure.md), title, description (one sentence).
         [GATE: Long-Term write → !Checkpoint]
 
    ③ WIKI — is this thinking-FODDER? (a book/article/link/video to read·watch·write, an idea, a question)

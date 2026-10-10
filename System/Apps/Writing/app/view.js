@@ -13,9 +13,10 @@ import { COMPARE, EDITABLE_TREES, EVERYTHING, LABELS, INDEX, TREE_SORTS, counter
 
 // Heading rows for the Everything view: one per group, in the order the trees are filed.
 const GROUPS = [
-  { hierarchy: 'category', name: 'Category', definition: 'what patterns are' },
-  { hierarchy: 'form', name: 'Form', definition: 'what patterns look like' },
-  { hierarchy: 'function', name: 'Function', definition: 'what patterns do' },
+  { hierarchy: 'templates', name: 'Templates', definition: 'patterns that give a piece its shape' },
+  { hierarchy: 'brainstorming', name: 'Brainstorming', definition: 'patterns for finding something to say' },
+  { hierarchy: 'research', name: 'Research', definition: 'patterns for gathering and weighing sources' },
+  { hierarchy: 'topical', name: 'Topical', definition: 'patterns by subject' },
 ];
 
 // `draggable` and `removeFrom` (the `{ id, name }` of the label the row can be taken out of) are set only in the editable tree.
@@ -51,7 +52,7 @@ function countEntries(node) {
  * A copy of `node` keeping only entries that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
  * `reveal.on` makes a heading show its sub-labels and its own entries only while it is in `reveal.opened`;
  * a closed heading shows nothing beneath it. A heading with anything beneath it carries `foldable` and `open` for its button and marker;
- * `leaf` is true when it has no sub-labels of its own (entries and tables do not count), which draws its marker as an empty box.
+ * `empty` is true when it holds no sub-labels, entries or tables, which draws its marker as an outlined circle.
  * In Labels every label is `editable` (renamed or edited, deleted, dropped onto) and its entries can be removed from it;
  * `parentId` is the label above (null at the top), which lets a drag tell siblings from other labels.
  * A link label carries `about`, the id of its own section on the About page (null on every other row); it holds nothing, so it is never `foldable`.
@@ -60,6 +61,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId =
   const open = !reveal.on || reveal.opened.has(openKey(hierarchy, node.id));
   const editable = EDITABLE_TREES.has(hierarchy);
   const placement = { draggable: EDITABLE_TREES.has(hierarchy), removeFrom: editable ? { id: node.id, name: node.name } : null };
+  const self = node.type ? state.entries.get(node.id) : null; // a type heading is also an entry, with its own example and rating
   const children = [];
   for (const child of open ? node.children : []) {
     if (child.kind === 'entry') {
@@ -71,12 +73,12 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId =
       if (kept) children.push(kept);
     }
   }
-  if (pruneEmpty && children.length === 0) return null;
+  if (pruneEmpty && children.length === 0 && !(self && keep(self))) return null;
   const entryCount = countEntries(node);
   const tables = node.tables ?? []; // a closed heading hides its tables with everything else beneath it
   return {
-    kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, about: node.about ?? null, children,
-    tables: open ? tables : [], entryCount, leaf: !node.children.some((child) => child.kind !== 'entry'), foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
+    kind: 'node', id: node.id, hierarchy, entry: self, name: node.name, definition: node.definition, about: node.about ?? null, children,
+    tables: open ? tables : [], entryCount, empty: node.children.length === 0 && tables.length === 0, foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
   };
 }
 
@@ -119,7 +121,7 @@ export function currentView(state) {
 
   if (state.sortOrder === EVERYTHING) {
     if (!searching) return { mode: 'tree', items: [], hint: 'Type to search every pattern, or choose a group above.' };
-    // Each entry is listed under every node it is filed in, across all three trees.
+    // Each entry is listed under every node it is filed in, across all four trees.
     const items = GROUPS.map(({ hierarchy, name, definition }) => ({
       kind: 'node', group: true, hierarchy, name, definition,
       children: state.trees[hierarchy]
@@ -183,7 +185,7 @@ function compareToText(state, current) {
     if (lines.length > 0) lines.push('');
     lines.push(state.tableNames ? `• ${role}: ${entry.name}` : `• ${role}`);
     if (state.tableDefinitions && entry.definition) lines.push(`  ${entry.definition}`);
-    if (state.tableExamples) entry.examples.forEach((example) => lines.push(`  □ ${stripInline(example)}`));
+    if (state.tableExamples) entry.examples.forEach((example) => lines.push(`  · ${stripInline(example)}`));
   }
   return lines.join('\n');
 }
@@ -216,6 +218,7 @@ export function viewToText(state, view) {
     if (item.kind === 'node') {
       const note = item.about ? ' (link to About)' : item.definition ? ` — ${stripInline(item.definition)}` : '';
       lines.push(`${pad}• ${stripInline(item.name)}${note}`);
+      if (item.entry && showsDetail(state, item.entry, view.mode).examples) item.entry.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
       (item.tables ?? []).forEach((table) => lines.push(...tableToText(table, `${pad}  `)));
       item.children.forEach((child) => write(child, depth + 1));
       return;
@@ -224,7 +227,7 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, entry, view.mode);
     lines.push(`${pad}• ${entry.label}`);
     if (shown.definition && entry.definition) lines.push(`${pad}  ${entry.definition}`);
-    if (shown.examples) entry.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
+    if (shown.examples) entry.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
     for (const [title, paths] of filingLines(item.filings)) lines.push(`${pad}  ${title}: ${paths.length > 0 ? paths.join('; ') : 'none'}`);
   };
   view.items.forEach((item) => write(item, 0));

@@ -2,7 +2,7 @@
 # Double-click launcher for Style.
 #
 # Serves the Style library and opens it in Chrome. Closing this Terminal window
-# (or Ctrl-C) stops the server. The only thing it ever writes is Luke's labels, their tables and placements in style.db.
+# (or Ctrl-C) stops the server. It writes only Luke's labels, their tables and placements in style.db, and a new link's empty section in app/about.html.
 # The port is fixed at 8806; a collision fails loudly rather than rebinding.
 
 cd "$(dirname "$0")" || exit 1

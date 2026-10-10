@@ -113,7 +113,7 @@ test('the no-group search does not cover the Labels group', () => {
   const state = createState(payload());
   state.query = 'a';
   const names = currentView(state).items.map((group) => group.hierarchy);
-  assert.deepEqual(names, ['category', 'form', 'function']);
+  assert.deepEqual(names, ['templates', 'brainstorming', 'research', 'topical']);
 });
 
 // ---- Dragging labels: beside any label, or inside one, never into itself or what is beneath it ----------------------------------------------------
@@ -151,7 +151,7 @@ function dragLabel(fromDataset, beneath = []) {
 
 test('a label can be dropped beside or inside any label of its group, but not into another group', () => {
   const { at, drops } = dragLabel({ nodeId: '1', hierarchy: 'labels' });
-  assert.equal(at({ nodeId: '3', hierarchy: 'category' }, 10), false); // another group
+  assert.equal(at({ nodeId: '3', hierarchy: 'templates' }, 10), false); // another group
   assert.equal(at({ nodeId: '3', hierarchy: 'labels' }, 90), true); // after a top-level label
   assert.equal(at({ nodeId: '5', hierarchy: 'labels', parentId: '3' }, 10), true); // before a sub-label: it changes level
   assert.equal(at({ nodeId: '3', hierarchy: 'labels' }, 50), true); // inside a label

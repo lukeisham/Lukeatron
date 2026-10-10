@@ -32,7 +32,7 @@ test('blocked storage never throws', () => {
   console.warn = () => {};
   try {
     saveToggles(blocked, allOff);
-    saveDefaultSort(blocked, 'form');
+    saveDefaultSort(blocked, 'brainstorming');
     assert.deepEqual(loadToggles(blocked), {});
     assert.equal(loadDefaultSort(blocked, OPENING_CHOICES), NO_DEFAULT);
     assert.deepEqual(loadToggles(null), {});
@@ -43,8 +43,8 @@ test('blocked storage never throws', () => {
 
 test('the opening group is remembered only if it is a real group', () => {
   const storage = fakeStorage();
-  saveDefaultSort(storage, 'function');
-  assert.equal(loadDefaultSort(storage, OPENING_CHOICES), 'function');
+  saveDefaultSort(storage, 'research');
+  assert.equal(loadDefaultSort(storage, OPENING_CHOICES), 'research');
   saveDefaultSort(storage, 'bogus');
   assert.equal(loadDefaultSort(storage, OPENING_CHOICES), NO_DEFAULT);
 });

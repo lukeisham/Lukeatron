@@ -1,13 +1,15 @@
--- Canonical schema for writing.db. Three independent hierarchies (category, form, function) share one `nodes`
--- table. An entry has at most one Form tag and one Function tag (columns on `entries`) and any number of Category
--- tags (`entry_categories`).
+-- Canonical schema for writing.db. An entry is a plain entry (`kind` 'entry', shown as a pattern, the smallest item) or a TYPE (`kind` 'type'): a type has the same
+-- fields as a pattern and is listed beside patterns, but in the four hierarchies (templates, brainstorming, research,
+-- topical) it works as a heading that can hold patterns and other types. `placements` is the one table of that holding:
+-- a row says that in one hierarchy `member_id` sits under the type `parent_id` (NULL = at the top level). A member may sit
+-- in any number of hierarchies and under any number of types; what a type holds in a hierarchy is the same wherever it is
+-- shown. Labels are separate (below): Luke's own organisers.
 -- Every connection must run `PRAGMA foreign_keys = ON` itself (SQL-8) — SQLite defaults it off.
--- Cross-hierarchy invariants (a node's parent and an entry's links sit in the correct hierarchy) are checked by the
--- agent that writes the entries, not by triggers.
+-- A parent must be a type and a type may not hold itself, directly or through other types, in one hierarchy: triggers
+-- below enforce both.
 -- `ai_confidence_rating` (high / medium / low) is the AI's confidence in the accuracy of the entry's definition,
 -- example and classification together; it defaults to 'low' so an unrated entry never reads as trusted.
--- `popularity` (0-100), `form_node_id` and `function_node_id` are NULL until the entry is scored or classified; an
--- entry with no Form or Function simply does not appear in that tree, and sorts after every scored entry by Popularity.
+-- An entry with no placement in a hierarchy simply does not appear in that tree.
 -- `counterpart_of` is NULL for every ordinary entry; an entry that is the deliberate counterpart of another points at it.
 -- `labels` / `label_placements` hold Luke's own arrangement: labels in a tree up to five levels deep (each with an
 -- explanation, `definition`, blank when none), and the entries filed under them (an entry may sit under any number of
@@ -21,31 +23,50 @@
 -- ordinary label. Written only by labeltree.create_link, which also adds the section to the page (aboutpage.py).
 -- Build a fresh database, or add any missing table to an existing one: sqlite3 writing.db < schema.sql
 
-CREATE TABLE IF NOT EXISTS nodes (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    hierarchy   TEXT NOT NULL CHECK (hierarchy IN ('category', 'form', 'function')),
-    parent_id   INTEGER REFERENCES nodes(id),
-    name        TEXT NOT NULL,
-    definition  TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS entries (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    kind              TEXT NOT NULL DEFAULT 'entry' CHECK (kind IN ('entry', 'type')),
     name              TEXT NOT NULL,
     definition        TEXT NOT NULL,
-    form_node_id      INTEGER REFERENCES nodes(id),
-    function_node_id  INTEGER REFERENCES nodes(id),
-    popularity        INTEGER CHECK (popularity IS NULL OR popularity BETWEEN 0 AND 100),
     ai_confidence_rating TEXT NOT NULL DEFAULT 'low' CHECK (ai_confidence_rating IN ('high', 'medium', 'low')),
     counterpart_of    INTEGER REFERENCES entries(id)
 );
 
--- An entry's Category tags: one row per tag.
-CREATE TABLE IF NOT EXISTS entry_categories (
-    entry_id  INTEGER NOT NULL REFERENCES entries(id),
-    node_id   INTEGER NOT NULL REFERENCES nodes(id),
-    PRIMARY KEY (entry_id, node_id)
+CREATE TABLE IF NOT EXISTS placements (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    hierarchy   TEXT NOT NULL CHECK (hierarchy IN ('templates', 'brainstorming', 'research', 'topical')),
+    parent_id   INTEGER REFERENCES entries(id) ON DELETE CASCADE,
+    member_id   INTEGER NOT NULL REFERENCES entries(id) ON DELETE CASCADE,
+    CHECK (parent_id IS NULL OR parent_id <> member_id)
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_placements_unique ON placements(hierarchy, COALESCE(parent_id, 0), member_id);
+
+CREATE TRIGGER IF NOT EXISTS trg_placements_parent_is_type BEFORE INSERT ON placements
+WHEN NEW.parent_id IS NOT NULL AND (SELECT kind FROM entries WHERE id = NEW.parent_id) <> 'type'
+BEGIN
+    SELECT RAISE(ABORT, 'a placement parent must be a type');
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_placements_no_cycle BEFORE INSERT ON placements
+WHEN NEW.parent_id IS NOT NULL AND EXISTS (
+    WITH RECURSIVE above(id) AS (
+        SELECT NEW.parent_id
+        UNION
+        SELECT p.parent_id FROM placements p JOIN above a ON p.member_id = a.id
+        WHERE p.hierarchy = NEW.hierarchy AND p.parent_id IS NOT NULL
+    )
+    SELECT 1 FROM above WHERE id = NEW.member_id
+)
+BEGIN
+    SELECT RAISE(ABORT, 'a type cannot hold itself');
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_entries_type_in_use BEFORE UPDATE OF kind ON entries
+WHEN NEW.kind = 'entry' AND EXISTS (SELECT 1 FROM placements WHERE parent_id = NEW.id)
+BEGIN
+    SELECT RAISE(ABORT, 'a type that holds something cannot become a plain entry');
+END;
 
 -- `body` carries inline italics as *word* and bold as _word_. `attribution` is the person an example's
 -- words are credited to ("Julius Caesar"); the work and passage stay in `body`. 'Unattributed'
@@ -118,13 +139,9 @@ CREATE TABLE IF NOT EXISTS label_placements (
     PRIMARY KEY (label_id, entry_id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_nodes_parent_id            ON nodes(parent_id);
-CREATE INDEX IF NOT EXISTS idx_nodes_hierarchy            ON nodes(hierarchy);
 CREATE INDEX IF NOT EXISTS idx_entries_name               ON entries(name);
-CREATE INDEX IF NOT EXISTS idx_entry_categories_node      ON entry_categories(node_id);
-CREATE INDEX IF NOT EXISTS idx_entries_form_node_id       ON entries(form_node_id);
-CREATE INDEX IF NOT EXISTS idx_entries_function_node_id   ON entries(function_node_id);
-CREATE INDEX IF NOT EXISTS idx_entries_popularity         ON entries(popularity);
+CREATE INDEX IF NOT EXISTS idx_placements_member          ON placements(member_id);
+CREATE INDEX IF NOT EXISTS idx_placements_parent          ON placements(hierarchy, parent_id);
 CREATE INDEX IF NOT EXISTS idx_entries_counterpart_of     ON entries(counterpart_of);
 CREATE INDEX IF NOT EXISTS idx_examples_entry_id          ON examples(entry_id);
 CREATE INDEX IF NOT EXISTS idx_labels_parent              ON labels(parent_id, position);

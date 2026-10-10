@@ -34,8 +34,9 @@
     <nav class="contents" aria-label="On this page">
       <ol>
         <li><a href="#groups">Groups</a></li>
+        <li><a href="#types">Patterns, types and labels</a></li>
         <li><a href="#labels">Labels</a></li>
-        <li><a href="#scores">Popularity and AI confidence</a></li>
+        <li><a href="#scores">AI confidence</a></li>
         <li><a href="#examples">Examples and real quotes</a></li>
       </ol>
     </nav>
@@ -51,19 +52,28 @@
 
   <section id="groups">
     <h2>Groups</h2>
-    <p>Each button above the list opens a group. Pressing the open group again clears it, and search then looks through Category, Form and Function together.</p>
+    <p>Each button above the list opens a group. Pressing the open group again clears it, and search then looks through Templates, Brainstorming, Research and Topical together.</p>
     <table class="tests">
       <thead><tr><th scope="col">Group</th><th scope="col">Shows</th></tr></thead>
       <tbody>
         <tr><th scope="row">Alphabetical</th><td>Every pattern A to Z.</td></tr>
-        <tr><th scope="row">Popularity</th><td>Every pattern, highest score first; unscored ones come last.</td></tr>
-        <tr><th scope="row">Category, Form, Function</th><td>Three independent hierarchies. An pattern sits once in Form, once in Function, and in one or more Categories.</td></tr>
+        <tr><th scope="row">Templates, Brainstorming, Research, Topical</th><td>Four independent hierarchies. Their headings are types; a type holds patterns and other types, and a pattern or type may sit under any number of types in each, and in none.</td></tr>
         <tr><th scope="row">Labels</th><td>your own arrangement: labels you create, nest and order, with patterns filed under them (&sect;2).</td></tr>
         <tr><th scope="row">Index</th><td>Every real quote, by first line, source or date.</td></tr>
         <tr><th scope="row">Compare</th><td>An pattern beside its counterpart, in a table.</td></tr>
       </tbody>
     </table>
     <p>Labels is the only group the app lets you change. Search, the Display options, Copy and Print serve every group.</p>
+  </section>
+
+  <section id="types">
+    <h2>Patterns, types and labels</h2>
+    <p>Three kinds of item, from smallest to widest.</p>
+    <ul>
+      <li><strong>Pattern</strong>: the smallest item. It has a name, a definition, an example, a real quote and an AI-confidence rating.</li>
+      <li><strong>Type</strong>: a record with the same fields as a pattern, tagged <em>Type</em>. It is listed in Alphabetical beside the patterns. In Templates, Brainstorming, Research and Topical it works as a heading that holds patterns and other types.</li>
+      <li><strong>Label</strong>: only an organiser, with a name and an optional explanation. Labels are yours to arrange; patterns and types are filed under them, but a label is not a type.</li>
+    </ul>
   </section>
 
   <section id="labels">
@@ -90,13 +100,8 @@
   </section>
 
   <section id="scores">
-    <h2>Popularity and AI confidence</h2>
-    <p>Both are stored values, set when an pattern is written into the database and never recomputed in the browser. An pattern without a value simply shows none.</p>
-
-    <h3>Popularity</h3>
-    <p>A 0&ndash;100 score for how widely used an pattern is. Higher means more used. The Popularity group lists the scored patterns first, highest to lowest.</p>
-
-    <h3>AI confidence</h3>
+    <h2>AI confidence</h2>
+    <p>A stored value, set when a pattern is written into the database and never recomputed in the browser.</p>
     <p>A label (high, medium or low) for how confident the AI is that an pattern&rsquo;s definition, example and classification are accurate together. It defaults to low, so an unrated pattern never reads as trusted.</p>
     <table class="scale">
       <thead><tr><th scope="col">Label</th><th scope="col">Reading</th></tr></thead>

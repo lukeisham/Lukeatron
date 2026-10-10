@@ -1,5 +1,5 @@
-"""Reads research.db and assembles the `/api/items` payload: nested trees (the three classification hierarchies and
-Labels) whose entry leaves are references, one flat `entries` map, and the flat list of real `quotes` the Index group
+"""Reads research.db and assembles the `/api/items` payload: nested trees (the four classification hierarchies and
+Labels) whose type headings carry their own entry id and whose topic leaves are references, one flat `entries` map, and the flat list of real `quotes` the Index group
 lists. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL."""
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ from typing import Any
 import labels
 import quotes
 
-HIERARCHIES = ("category", "form", "function")
+HIERARCHIES = ("templates", "brainstorming", "research", "topical")
 
 # Entries are listed by the label they are shown under, so a Counterpart files under its base.
 _ENTRY_ORDER = (
@@ -31,16 +31,10 @@ def connect_readonly(db_path: Path) -> sqlite3.Connection:
 
 def load_items(db_path: Path) -> dict[str, Any]:
     with closing(connect_readonly(db_path)) as conn:
-        nodes = conn.execute(
-            "SELECT id, hierarchy, parent_id, name, definition FROM nodes ORDER BY id"
-        ).fetchall()
         entries = conn.execute(
-            "SELECT id, name, definition, form_node_id, function_node_id, "
-            "popularity, ai_confidence_rating, counterpart_of FROM entries " + _ENTRY_ORDER
+            "SELECT id, name, definition, ai_confidence_rating, counterpart_of, kind FROM entries " + _ENTRY_ORDER
         ).fetchall()
-        tags = conn.execute(
-            "SELECT entry_id, node_id FROM entry_categories ORDER BY entry_id, node_id"
-        ).fetchall()
+        placements = conn.execute("SELECT hierarchy, parent_id, member_id FROM placements").fetchall()
         examples = conn.execute(
             "SELECT entry_id, body, attribution FROM examples ORDER BY id"
         ).fetchall()
@@ -48,8 +42,7 @@ def load_items(db_path: Path) -> dict[str, Any]:
         quote_list = quotes.quotes(conn)
 
     entry_map = _entry_map(entries, examples)
-    links = _links(entries, tags)
-    trees = {h: _build_tree(h, nodes, links[h]) for h in HIERARCHIES}
+    trees = {h: _build_tree(h, entries, placements) for h in HIERARCHIES}
     trees[labels.HIERARCHY] = labels_roots
     return {"trees": trees, "entries": entry_map, "quotes": quote_list}
 
@@ -65,9 +58,9 @@ def _entry_map(entries: list[tuple], examples: list[tuple]) -> dict[str, dict[st
         str(row[0]): {
             "name": row[1],
             "definition": row[2],
-            "popularity": row[5],
-            "ai_confidence_rating": row[6],
-            "counterpart_of": row[7],
+            "kind": row[5],
+            "ai_confidence_rating": row[3],
+            "counterpart_of": row[4],
             "examples": [],
         }
         for row in entries
@@ -79,44 +72,35 @@ def _entry_map(entries: list[tuple], examples: list[tuple]) -> dict[str, dict[st
     return by_id
 
 
-def _links(entries: list[tuple], tags: list[tuple]) -> dict[str, list[tuple[int, int]]]:
-    """(entry id, node id) pairs per hierarchy. Category has one pair per tag, so an entry with several Category tags
-    appears under each; Form and Function have at most one, and an entry not yet given one has no pair there."""
-    return {
-        "category": list(tags),
-        "form": [(row[0], row[3]) for row in entries if row[3] is not None],
-        "function": [(row[0], row[4]) for row in entries if row[4] is not None],
-    }
+def _build_tree(hierarchy: str, entries: list[tuple], placements: list[tuple]) -> list[dict[str, Any]]:
+    """The top level of one hierarchy. A type becomes a heading `{kind: node, type: true, id: the type's entry id, name,
+    definition, children}`; a topic becomes a leaf `{kind: entry, id}`. A heading lists its types first, then its
+    topics, each in the order entries are shown. What a type holds in a hierarchy does not depend on where it is
+    placed, so every copy of it is the same. A type met again below itself (the schema forbids it) is left empty with a
+    warning rather than failing the whole payload."""
+    shown = {row[0]: place for place, row in enumerate(entries)}
+    by_id = {row[0]: row for row in entries}
+    held: dict[int | None, list[int]] = {}
+    for placed_in, parent_id, member_id in placements:
+        if placed_in == hierarchy:
+            held.setdefault(parent_id, []).append(member_id)
 
-
-def _build_tree(hierarchy: str, nodes: list[tuple], links: list[tuple[int, int]]) -> list[dict[str, Any]]:
-    """Roots of one hierarchy, each with nested `children` (nodes first, then entry leaves; an entry with several Category tags is a leaf under each).
-
-    A node whose parent is missing or in another hierarchy, and an entry whose link points
-    outside this hierarchy, are skipped with a warning rather than failing the whole payload —
-    keeping the hierarchies consistent is the job of whatever writes the entries."""
-    own = {row[0]: row for row in nodes if row[1] == hierarchy}
-    built: dict[int, dict[str, Any]] = {
-        node_id: {"kind": "node", "id": node_id, "name": row[3], "definition": row[4], "children": []}
-        for node_id, row in own.items()
-    }
-
-    roots: list[dict[str, Any]] = []
-    for node_id, row in own.items():
-        parent_id = row[2]
-        if parent_id is None:
-            roots.append(built[node_id])
-        elif parent_id in built:
-            built[parent_id]["children"].append(built[node_id])
+    def build(member_id: int, path: tuple[int, ...]) -> dict[str, Any]:
+        row = by_id[member_id]
+        if row[5] != "type":
+            return {"kind": "entry", "id": member_id}
+        node = {"kind": "node", "type": True, "id": member_id, "name": row[1], "definition": row[2], "children": []}
+        if member_id in path:
+            _warn(f"type {member_id} holds itself in {hierarchy}; its inner copy is left empty")
         else:
-            _warn(f"node {node_id} in {hierarchy} has parent {parent_id} outside that hierarchy; skipped")
+            node["children"] = [build(member, path + (member_id,)) for member in _in_order(held.get(member_id, []), by_id, shown)]
+        return node
 
-    for entry_id, node_id in links:
-        if node_id in built:
-            built[node_id]["children"].append({"kind": "entry", "id": entry_id})
-        else:
-            _warn(f"entry {entry_id} links to node {node_id}, not in {hierarchy}; left out of that tree")
-    return roots
+    return [build(member, ()) for member in _in_order(held.get(None, []), by_id, shown)]
+
+
+def _in_order(members: list[int], by_id: dict[int, tuple], shown: dict[int, int]) -> list[int]:
+    return sorted(members, key=lambda member: (by_id[member][5] != "type", shown[member]))
 
 
 def _warn(message: str) -> None:

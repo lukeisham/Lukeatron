@@ -35,28 +35,25 @@
 
 .list-message { color: var(--color-ink-soft); }
 
+/* Every marker is a round black dot centred in one --marker-slot: large for a label holding anything, medium for an entry,
+   small for an example. An outlined circle marks a label holding nothing. */
 .marker {
   flex-shrink: 0;
-  color: var(--color-marker);
-  font-size: var(--font-size-marker);
-}
-.marker-example { font-size: var(--font-size-marker-small); }
-.marker-hidden { color: #000; font-size: var(--font-size-marker-large); }
-
-/* Heading markers drawn as boxes: solid for a top-level label, hollow for one with no sub-labels. Closed (.marker-hidden)
-   grows the box and turns its edge black, the same change the dot gets, so a folded heading reads alike in every shape. */
-.marker-box {
+  align-self: flex-start;
   box-sizing: border-box;
-  width: var(--marker-box);
-  height: var(--marker-box);
-  margin-inline: calc((var(--marker-box-large) - var(--marker-box)) / 2); /* every heading marker fills one --marker-box-large slot, so names of a layer start at the same x */
-  border: var(--marker-box-edge) solid var(--color-marker);
-  transform: translateY(1px);
+  width: var(--marker-size);
+  height: var(--marker-size);
+  margin-block-start: calc((1lh - var(--marker-size)) / 2);
+  margin-inline: calc((var(--marker-slot) - var(--marker-size)) / 2);
+  border-radius: 50%;
+  background: #000;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
-.marker-dot { width: var(--marker-box-large); text-align: center; }
-.marker-box-solid { border-color: #000; background: #000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-.marker-box-hollow { background: none; }
-.marker-box.marker-hidden { width: var(--marker-box-large); height: var(--marker-box-large); margin-inline: 0; border-color: #000; }
+.marker-large { --marker-size: var(--marker-large); }
+.marker-medium { --marker-size: var(--marker-medium); }
+.marker-small { --marker-size: var(--marker-small); }
+.marker-empty { --marker-size: var(--marker-empty); border: var(--marker-edge) solid #000; background: none; }
 
 .heading-row,
 .device-row {

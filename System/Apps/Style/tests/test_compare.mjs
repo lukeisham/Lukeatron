@@ -9,8 +9,8 @@ import { payload } from './fixture.mjs';
 // The fixture plus two Counterparts: "Shared Ground" answers Metaphor (id 1), "Flagged Pun" answers Anaphora (id 2).
 function compareState() {
   const data = payload();
-  data.entries[3] = { name: 'Shared Ground', definition: 'fair use of metaphor', popularity: 10, ai_confidence_rating: 'medium', counterpart_of: 1, examples: ['the *common* ground'] };
-  data.entries[4] = { name: 'Flagged Pun', definition: 'an announced pun', popularity: 5, ai_confidence_rating: 'low', counterpart_of: 2, examples: [] };
+  data.entries[3] = { name: 'Shared Ground', definition: 'fair use of metaphor', ai_confidence_rating: 'medium', counterpart_of: 1, examples: ['the *common* ground'] };
+  data.entries[4] = { name: 'Flagged Pun', definition: 'an announced pun', ai_confidence_rating: 'low', counterpart_of: 2, examples: [] };
   const state = createState(data);
   setSortOrder(state, COMPARE);
   return state;
@@ -90,8 +90,8 @@ test('Copy writes both sides and honours the table\'s three switches', () => {
   const state = compareState();
   setComparePair(state, 3);
   assert.equal(viewToText(state, currentView(state)), [
-    '• Element: Metaphor', '  a comparison without "like"', '  □ carpe diem is a "saying" (Horace)', '',
-    '• Counterpart: Shared Ground', '  fair use of metaphor', '  □ the common ground',
+    '• Element: Metaphor', '  a comparison without "like"', '  · carpe diem is a "saying" (Horace)', '',
+    '• Counterpart: Shared Ground', '  fair use of metaphor', '  · the common ground',
   ].join('\n'));
   state.tableNames = false;
   state.tableExamples = false;

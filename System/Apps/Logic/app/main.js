@@ -454,7 +454,8 @@ async function start() {
     renderStatus(document, els.list, 'The forms could not be loaded. Is the server running?');
     return;
   }
-  renderCount(els.entryCount, state.entries.size);
+  const typeCount = [...state.entries.values()].filter((entry) => entry.kind === 'type').length;
+  renderCount(els.entryCount, state.entries.size - typeCount, typeCount);
   Object.assign(state, loadToggles(storage));
   applyOpenChoices(state, loadOpenChoices(storage));
   els.showDefinitions.checked = state.showDefinitions;

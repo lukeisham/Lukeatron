@@ -5,18 +5,7 @@ from pathlib import Path
 
 SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
 
-CROSS_PARENT = ("SELECT COUNT(*) FROM nodes c JOIN nodes p ON c.parent_id = p.id "
-                "WHERE c.hierarchy != p.hierarchy")
-
-
-def wrong_hierarchy_links(db, column, hierarchy):
-    if column == "category":
-        return db.execute(
-            "SELECT COUNT(*) FROM entry_categories dc JOIN nodes n ON n.id = dc.node_id "
-            "WHERE n.hierarchy != 'category'").fetchone()[0]
-    return db.execute(
-        f"SELECT COUNT(*) FROM entries d JOIN nodes n ON d.{column} = n.id "
-        "WHERE n.hierarchy != ?", (hierarchy,)).fetchone()[0]
+HIERARCHIES = ("templates", "brainstorming", "research", "topical")
 
 
 class SchemaTest(unittest.TestCase):
@@ -28,28 +17,27 @@ class SchemaTest(unittest.TestCase):
     def tearDown(self):
         self.db.close()
 
-    def add_node(self, hierarchy, name="n", parent_id=None):
-        return self.db.execute(
-            "INSERT INTO nodes (hierarchy, parent_id, name, definition) VALUES (?, ?, ?, 'd')",
-            (hierarchy, parent_id, name)).lastrowid
+    def add_entry(self, name="Metaphor", kind="entry"):
+        return self.db.execute("INSERT INTO entries (kind, name, definition) VALUES (?, ?, 'd')", (kind, name)).lastrowid
 
-    def add_entry(self, category, form, function, popularity=50):
-        entry = self.db.execute(
-            "INSERT INTO entries (name, definition, form_node_id, function_node_id, popularity) "
-            "VALUES ('Metaphor', 'd', ?, ?, ?)", (form, function, popularity)).lastrowid
-        self.db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, ?)",
-                        (entry, category))
-        return entry
+    def add_type(self, name="Figures"):
+        return self.add_entry(name, "type")
+
+    def place(self, hierarchy, parent, member):
+        return self.db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES (?, ?, ?)",
+                               (hierarchy, parent, member)).lastrowid
 
     def seed_valid(self):
-        ids = [self.add_node(h) for h in ("category", "form", "function")]
-        return ids, self.add_entry(*ids)
+        figures, entry = self.add_type(), self.add_entry()
+        for h in HIERARCHIES:
+            self.place(h, figures, entry)
+        return figures, entry
 
     def test_foreign_keys_pragma_is_on(self):
         self.assertEqual(self.db.execute("PRAGMA foreign_keys").fetchone()[0], 1)
 
     def test_schema_has_no_medium_column(self):
-        columns = [row[1] for table in ("nodes", "entries", "examples")
+        columns = [row[1] for table in ("entries", "placements", "examples")
                    for row in self.db.execute(f"PRAGMA table_info({table})")]
         self.assertFalse([c for c in columns if "medium" in c.lower()])
 
@@ -69,92 +57,97 @@ class SchemaTest(unittest.TestCase):
                 self.db.execute("INSERT INTO examples (entry_id, body, quote_date) VALUES (?, 'x', ?)", (entry, bad))
 
     def test_happy_path_reads_chain_back(self):
-        (category, form, function), entry = self.seed_valid()
-        self.db.execute("INSERT INTO examples (entry_id, body) VALUES (?, 'carpe *diem*')",
-                        (entry,))
+        figures, entry = self.seed_valid()
+        self.db.execute("INSERT INTO examples (entry_id, body) VALUES (?, 'carpe *diem*')", (entry,))
         row = self.db.execute(
-            "SELECT d.name, c.hierarchy, f.hierarchy, u.hierarchy, e.body FROM entries d "
-            "JOIN entry_categories dc ON dc.entry_id = d.id JOIN nodes c ON c.id = dc.node_id "
-            "JOIN nodes f ON f.id = d.form_node_id "
-            "JOIN nodes u ON u.id = d.function_node_id JOIN examples e ON e.entry_id = d.id"
+            "SELECT p.name, t.name, group_concat(pl.hierarchy), e.body FROM placements pl "
+            "JOIN entries p ON p.id = pl.member_id JOIN entries t ON t.id = pl.parent_id "
+            "JOIN examples e ON e.entry_id = p.id GROUP BY p.id"
         ).fetchone()
-        self.assertEqual(row, ("Metaphor", "category", "form", "function", "carpe *diem*"))
-        self.assertEqual(self.db.execute(CROSS_PARENT).fetchone()[0], 0)
-        for column, hierarchy in (("category", "category"), ("form_node_id", "form"),
-                                  ("function_node_id", "function")):
-            self.assertEqual(wrong_hierarchy_links(self.db, column, hierarchy), 0)
+        self.assertEqual(row, ("Metaphor", "Figures", ",".join(HIERARCHIES), "carpe *diem*"))
 
-    def test_dangling_parent_id_rejected(self):
+    def test_an_entry_is_a_plain_entry_unless_it_is_made_a_type(self):
+        self.assertEqual(self.db.execute("SELECT kind FROM entries WHERE id = ?", (self.add_entry(),)).fetchone(), ("entry",))
         with self.assertRaises(sqlite3.IntegrityError):
-            self.add_node("form", parent_id=999)
+            self.add_entry("Odd", "category")
 
-    def test_dangling_entry_link_rejected(self):
-        (category, form, _), _ = self.seed_valid()
+    def test_a_placement_needs_a_known_hierarchy_and_real_entries(self):
+        figures, entry = self.add_type(), self.add_entry()
         with self.assertRaises(sqlite3.IntegrityError):
-            self.add_entry(category, form, 999)
+            self.place("medium", figures, entry)
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.place("topical", 999, entry)
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.place("topical", figures, 999)
+
+    def test_a_parent_must_be_a_type(self):
+        topic, other = self.add_entry("A"), self.add_entry("B")
+        with self.assertRaises(sqlite3.DatabaseError) as raised:
+            self.place("topical", topic, other)
+        self.assertIn("must be a type", str(raised.exception))
+
+    def test_a_type_or_pattern_can_sit_at_the_top_level_but_only_once(self):
+        figures = self.add_type()
+        self.place("templates", None, figures)
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.place("templates", None, figures)
+        self.place("research", None, figures)  # another hierarchy is a different place
+
+    def test_a_member_can_sit_under_several_types_but_not_the_same_one_twice(self):
+        first, second, entry = self.add_type("First"), self.add_type("Second"), self.add_entry()
+        self.place("topical", first, entry)
+        self.place("topical", second, entry)
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.place("topical", first, entry)
+
+    def test_a_type_cannot_hold_itself_directly_or_through_others(self):
+        a, b, c = self.add_type("A"), self.add_type("B"), self.add_type("C")
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.place("topical", a, a)
+        self.place("topical", a, b)
+        self.place("topical", b, c)
+        with self.assertRaises(sqlite3.DatabaseError) as raised:
+            self.place("topical", c, a)
+        self.assertIn("hold itself", str(raised.exception))
+        self.place("research", c, a)  # the same pair is fine in another hierarchy
+
+    def test_deleting_an_entry_removes_its_placements_but_not_what_it_held(self):
+        figures, entry = self.add_type(), self.add_entry()
+        self.place("topical", None, figures)
+        self.place("topical", figures, entry)
+        self.db.execute("DELETE FROM entry_review WHERE entry_id = ?", (figures,))  # the review ledger row goes first
+        self.db.execute("DELETE FROM entries WHERE id = ?", (figures,))
+        self.assertEqual(self.db.execute("SELECT COUNT(*) FROM placements").fetchone()[0], 0)
+        self.assertEqual(self.db.execute("SELECT COUNT(*) FROM entries WHERE id = ?", (entry,)).fetchone()[0], 1)
+
+    def test_a_type_that_holds_something_cannot_become_a_plain_entry(self):
+        figures, entry = self.seed_valid()
+        with self.assertRaises(sqlite3.DatabaseError):
+            self.db.execute("UPDATE entries SET kind = 'entry' WHERE id = ?", (figures,))
+        self.db.execute("UPDATE entries SET kind = 'type' WHERE id = ?", (entry,))  # an entry may become a type
 
     def test_dangling_example_entry_rejected(self):
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("INSERT INTO examples (entry_id, body) VALUES (999, 'x')")
 
-    def test_unknown_hierarchy_rejected(self):
-        with self.assertRaises(sqlite3.IntegrityError):
-            self.add_node("medium")
 
-    def test_cross_hierarchy_parent_detected(self):
-        category = self.add_node("category")
-        self.add_node("form", parent_id=category)
-        self.assertEqual(self.db.execute(CROSS_PARENT).fetchone()[0], 1)
 
-    def test_entry_linked_into_wrong_hierarchy_detected(self):
-        category, form, function = (self.add_node(h) for h in ("category", "form", "function"))
-        self.add_entry(form, form, function)
-        self.assertEqual(wrong_hierarchy_links(self.db, "category", "category"), 1)
-        self.assertEqual(wrong_hierarchy_links(self.db, "form_node_id", "form"), 0)
-        self.assertEqual(wrong_hierarchy_links(self.db, "function_node_id", "function"), 0)
-
-    def test_sort_columns_are_indexed(self):
-        indexed = {row[1] for row in self.db.execute("PRAGMA index_list(entries)")}
-        for column in ("name", "popularity"):
-            self.assertIn(f"idx_entries_{column}", indexed)
 
     def test_counterpart_links_to_its_base_and_is_optional(self):
-        ids, base = self.seed_valid()
-        flip = self.add_entry(*ids)
+        _, base = self.seed_valid()
+        flip = self.add_entry("Flip")
         self.db.execute("UPDATE entries SET counterpart_of = ? WHERE id = ?", (base, flip))
         self.assertIsNone(self.db.execute(
             "SELECT counterpart_of FROM entries WHERE id = ?", (base,)).fetchone()[0])
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("UPDATE entries SET counterpart_of = 9999 WHERE id = ?", (flip,))
 
-    def test_entry_can_hold_several_category_tags_but_not_the_same_twice(self):
-        (category, _, _), entry = self.seed_valid()
-        naming = self.add_node("category", "Naming")
-        self.db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, ?)",
-                        (entry, naming))
-        self.assertEqual(self.db.execute(
-            "SELECT COUNT(*) FROM entry_categories WHERE entry_id = ?", (entry,)).fetchone()[0], 2)
-        with self.assertRaises(sqlite3.IntegrityError):
-            self.db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, ?)",
-                            (entry, naming))
 
-    def test_dangling_category_tag_rejected(self):
-        _, entry = self.seed_valid()
-        with self.assertRaises(sqlite3.IntegrityError):
-            self.db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, 999)",
-                            (entry,))
-
-    def test_popularity_is_optional_but_within_range_when_given(self):
-        ids, _ = self.seed_valid()
-        self.add_entry(*ids, popularity=None)
-        for bad in (-1, 101):
-            with self.assertRaises(sqlite3.IntegrityError):
-                self.add_entry(*ids, popularity=bad)
 
     def test_an_entry_needs_only_a_name_and_a_definition(self):
         self.db.execute("INSERT INTO entries (name, definition) VALUES ('Bare', 'd')")
         self.assertEqual(self.db.execute(
-            "SELECT form_node_id, function_node_id, popularity, ai_confidence_rating FROM entries").fetchone(), (None, None, None, "low"))
+            "SELECT ai_confidence_rating FROM entries").fetchone(), ("low",))
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("INSERT INTO entries (name) VALUES ('No definition')")
 
@@ -180,8 +173,6 @@ class SchemaTest(unittest.TestCase):
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("INSERT INTO label_placements (label_id, entry_id) VALUES (99, 1)")
 
-    def test_ids_are_distinct(self):
-        self.assertNotEqual(self.add_node("form"), self.add_node("form"))
 
 
 if __name__ == "__main__":

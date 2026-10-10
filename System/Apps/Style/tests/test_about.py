@@ -30,7 +30,7 @@ class AboutPageTest(unittest.TestCase):
     def test_contents_list_reaches_every_section_exactly_once(self):
         nav = re.findall(r'<nav class="contents".*?</nav>', ABOUT, re.S)[0]
         anchors = re.findall(r'href="#([^"]+)"', nav)
-        self.assertEqual(anchors, ["groups", "labels", "scores", "examples", "images"])
+        self.assertEqual(anchors, ["groups", "types", "labels", "scores", "examples", "images"])
         for anchor in anchors:
             self.assertEqual(ABOUT.count(f'<section id="{anchor}">'), 1)
         self.assertEqual(len(re.findall(r"<section id=", ABOUT)), len(anchors))

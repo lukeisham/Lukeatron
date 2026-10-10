@@ -54,7 +54,7 @@ function countDevices(node) {
  * A copy of `node` keeping only devices that pass `keep`; with `pruneEmpty`, headings left empty are dropped.
  * `reveal.on` makes a heading show its sub-labels and its own devices only while it is in `reveal.opened`;
  * a closed heading shows nothing beneath it. A heading with anything beneath it carries `foldable` and `open` for its button and marker;
- * `leaf` is true when it has no sub-labels of its own (devices and tables do not count), which draws its marker as an empty box.
+ * `empty` is true when it holds no sub-labels, devices or tables, which draws its marker as an outlined circle.
  * In Topical a real Type, and in Grammar every label, is `editable` (renamed or edited, deleted, dropped onto) and its devices can be removed from it;
  * `parentId` is the label above (null at the top), which lets a drag tell siblings from other labels.
  * A link label carries `about`, the id of its own section on the About page (null on every other row); it holds nothing, so it is never `foldable`.
@@ -79,7 +79,7 @@ function filterNode(state, hierarchy, node, keep, pruneEmpty, reveal, parentId =
   const tables = node.tables ?? []; // a closed heading hides its tables with everything else beneath it
   return {
     kind: 'node', id: node.id, hierarchy, name: node.name, definition: node.definition, about: node.about ?? null, children,
-    tables: open ? tables : [], deviceCount, leaf: !node.children.some((child) => child.kind !== 'device'), foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
+    tables: open ? tables : [], deviceCount, empty: node.children.length === 0 && tables.length === 0, foldable: reveal.on && (node.children.length > 0 || tables.length > 0), open, editable, parentId,
   };
 }
 
@@ -186,7 +186,7 @@ function compareToText(state, current) {
     if (lines.length > 0) lines.push('');
     lines.push(state.tableNames ? `• ${role}: ${device.name}` : `• ${role}`);
     if (state.tableDefinitions && device.definition) lines.push(`  ${device.definition}`);
-    if (state.tableExamples) device.examples.forEach((example) => lines.push(`  □ ${stripInline(example)}`));
+    if (state.tableExamples) device.examples.forEach((example) => lines.push(`  · ${stripInline(example)}`));
   }
   return lines.join('\n');
 }
@@ -227,7 +227,7 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, device, view.mode);
     lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
-    if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  □ ${stripInline(example)}`));
+    if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
     for (const [title, paths] of filingLines(item.filings)) lines.push(`${pad}  ${title}: ${paths.length > 0 ? paths.join('; ') : 'none'}`);
   };
   view.items.forEach((item) => write(item, 0));

@@ -159,7 +159,7 @@ class LabelsTest(unittest.TestCase):
         labels.remove_placement(self.db_path, 1, 1)
         labels.remove_placement(self.db_path, 1, 1)  # idempotent
         self.assertEqual(entry_ids(self.tree()[0]), [])
-        self.assertEqual(len(items.load_items(self.db_path)["entries"]), 2)
+        self.assertEqual(len([e for e in items.load_items(self.db_path)["entries"].values() if e["kind"] == "entry"]), 2)
         with self.assertRaises(labels.LabelError):
             labels.remove_placement(self.db_path, 99, 1)
         with self.assertRaises(labels.LabelError):

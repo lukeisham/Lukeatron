@@ -27,9 +27,7 @@ class QuotesTest(unittest.TestCase):
     def setUp(self):
         self.conn = sqlite3.connect(":memory:")
         self.conn.executescript(SCHEMA)
-        for hierarchy, name in (("category", "C"), ("form", "F"), ("function", "U")):
-            self.conn.execute("INSERT INTO nodes (hierarchy, name, definition) VALUES (?, ?, 'd')", (hierarchy, name))
-        self.conn.execute("INSERT INTO entries (name, definition, form_node_id, function_node_id, popularity) VALUES ('Metaphor', 'd', 2, 3, 10)")
+        self.conn.execute("INSERT INTO entries (name, definition) VALUES ('Metaphor', 'd')")
         self.conn.executemany("INSERT INTO examples (entry_id, body, attribution, quote_date) VALUES (1, ?, ?, ?)", [
             ("constructed (just a note)", "Unattributed", None),
             ('"All the world\'s a stage" (Shakespeare, *As You Like It*, 2.7)', "William Shakespeare", None),

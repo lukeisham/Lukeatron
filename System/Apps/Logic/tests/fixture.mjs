@@ -1,7 +1,7 @@
 import { createState } from '../app/state.js';
 
-// Shared hand-built /api/items payload for the front-end tests: two entries in three trees,
-// one ranked and one not, one with a Latin example and one with markup-shaped text.
+// Shared hand-built /api/items payload for the front-end tests: two entries in four trees,
+// one with a Latin example and one with markup-shaped text.
 export function payload() {
   const leaf = (id) => ({ kind: 'entry', id });
   const tree = (rootId, typeId, name) => [{
@@ -13,9 +13,10 @@ export function payload() {
   }];
   return {
     trees: {
-      category: tree(1, 2, 'Category'),
-      form: tree(3, 4, 'Form'),
-      function: tree(5, 6, 'Function'),
+      templates: tree(1, 2, 'Templates'),
+      brainstorming: tree(3, 4, 'Brainstorming'),
+      research: tree(5, 6, 'Research'),
+      topical: tree(7, 8, 'Topical'),
       // Labels: two labels, "Independent clause" inside "Clause" and a second top-level "Phrase" with nothing in it;
       // Anaphora is filed under the inner label and under Clause itself (an entry may sit at two levels), Metaphor under neither.
       labels: [
@@ -35,11 +36,11 @@ export function payload() {
     ],
     entries: {
       1: {
-        name: 'Metaphor', definition: 'a comparison without "like"', popularity: 90, ai_confidence_rating: 'high',
+        name: 'Metaphor', definition: 'a comparison without "like"', ai_confidence_rating: 'high',
         examples: ['carpe *diem* is a "saying" (Horace)'],
       },
       2: {
-        name: 'Anaphora', definition: '<script>alert(1)</script>', popularity: null, ai_confidence_rating: 'low',
+        name: 'Anaphora', definition: '<script>alert(1)</script>', ai_confidence_rating: 'low',
         examples: [],
       },
     },

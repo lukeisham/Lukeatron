@@ -34,12 +34,12 @@
   --font-size-body: 14px;
   --font-size-definition: 12.5px;
   --font-size-example: 13px;
-  --font-size-marker: 13px;
-  --font-size-marker-small: 10px;
-  --font-size-marker-large: 20px;
-  --marker-box: 8px; /* the square or empty box that marks a label; its closed size is --marker-box-large */
-  --marker-box-large: 12px;
-  --marker-box-edge: 1.5px;
+  --marker-large: 11px; /* a label holding sub-labels, entries or tables */
+  --marker-medium: 7px; /* an entry */
+  --marker-small: 4px; /* an example */
+  --marker-empty: 9px; /* the outlined circle of a label holding nothing */
+  --marker-edge: 1.5px;
+  --marker-slot: 12px; /* every marker is centred in one slot, so the names of a layer start at the same x */
   --font-size-table-min: 11px; /* the smallest a label table's text shrinks to; past it the table scrolls sideways instead */
   --table-char-width: 0.6; /* em a character of table text is reckoned to take, used to size the text from the room the table has */
   --font-size-badge: 10px;
@@ -64,7 +64,7 @@
   --space-9: 28px;
   --space-10: 44px;
   --space-11: 100px;
-  --indent-step: calc(var(--marker-box-large) + var(--space-3)); /* a heading marker's slot plus the row gap: a sub-label's marker sits under its parent's name */
+  --indent-step: calc(var(--marker-slot) + var(--space-3)); /* a heading marker's slot plus the row gap: a sub-label's marker sits under its parent's name */
   --indent-max-depth: 5;
   --grid-tile-min: 150px; /* the narrowest a Grid tile gets: the grid fits as many columns as the width allows */
   --grid-gap: var(--space-5);

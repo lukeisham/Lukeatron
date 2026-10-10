@@ -23,8 +23,8 @@ function wrapIn(parent, child) {
   return parent;
 }
 
-function marker(doc, glyph, extraClass = '') {
-  const node = make(doc, 'span', `marker ${extraClass}`.trim(), glyph);
+function marker(doc, size) {
+  const node = make(doc, 'span', `marker ${size}`);
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
@@ -56,6 +56,12 @@ function confidenceBadge(doc, rating) {
   return badge;
 }
 
+function kindBadge(doc) {
+  const badge = make(doc, 'span', 'kind-badge', 'Type');
+  badge.title = 'A type: like a topic, but it can hold topics and other types';
+  return badge;
+}
+
 function removeButton(doc, entry, labelName) {
   const button = make(doc, 'button', 'placement-remove', '×');
   button.setAttribute('type', 'button');
@@ -75,7 +81,8 @@ function entryRow(doc, state, listing, mode) {
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
-  row.append(marker(doc, '•'), make(doc, 'span', 'entry-name', entry.label));
+  row.append(marker(doc, 'marker-medium'), make(doc, 'span', 'entry-name', entry.label));
+  if (entry.kind === 'type') row.appendChild(kindBadge(doc));
   if (RATING_TITLES[entry.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, entry.aiConfidenceRating));
   if (listing.removeFrom != null) row.appendChild(removeButton(doc, entry, stripInline(listing.removeFrom.name)));
   item.appendChild(row);
@@ -86,7 +93,7 @@ function entryRow(doc, state, listing, mode) {
     const examples = make(doc, 'ul', 'examples');
     for (const example of entry.examples) {
       const item = make(doc, 'li', 'example');
-      item.append(marker(doc, '□', 'marker-example'), exampleText(doc, example));
+      item.append(marker(doc, 'marker-small'), exampleText(doc, example));
       examples.appendChild(item);
     }
     item.appendChild(examples);
@@ -203,14 +210,12 @@ function nodeRow(doc, state, node, mode, depth) {
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
   }
-  // A top-level label is a black square, a label with no sub-labels an empty box, and any other a dot. A closed heading
-  // with something folded away under it draws its marker bigger and black, whichever shape, so it reads as having more inside.
-  const closed = node.foldable && !node.open ? ' marker-hidden' : '';
-  const topLevel = node.parentId == null && !node.group;
-  const dot = topLevel ? marker(doc, '', `marker-box marker-box-solid${closed}`)
-    : node.leaf ? marker(doc, '', `marker-box marker-box-hollow${closed}`)
-    : marker(doc, '•', `marker-dot${closed}`);
+  // A label holding sub-labels, entries or tables is a large dot, a type holding nothing a medium dot (it is an entry),
+  // and any other label holding nothing an outlined circle.
+  const dot = marker(doc, !node.empty ? 'marker-large' : node.entry ? 'marker-medium' : 'marker-empty');
   row.append(dot, isLink ? aboutLink(doc, node) : inlineSpan(doc, 'node-name', node.name));
+  if (node.entry) row.appendChild(kindBadge(doc));
+  if (node.entry && RATING_TITLES[node.entry.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, node.entry.aiConfidenceRating));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {
     row.setAttribute('draggable', 'true'); // the handle for reordering labels
@@ -219,6 +224,16 @@ function nodeRow(doc, state, node, mode, depth) {
   }
   if (node.foldable) row.appendChild(revealButton(doc, node));
   item.appendChild(row);
+
+  if (node.entry && node.entry.examples.length > 0) {
+    const examples = make(doc, 'ul', 'examples node-examples');
+    for (const example of node.entry.examples) {
+      const line = make(doc, 'li', 'example');
+      line.append(marker(doc, 'marker-small'), exampleText(doc, example));
+      examples.appendChild(line);
+    }
+    item.appendChild(examples);
+  }
 
   const tables = node.tables ?? [];
   if (node.children.length > 0 || tables.length > 0) {
@@ -268,7 +283,7 @@ const examplesCell = (doc) => (entry) => {
   const list = make(doc, 'ul', 'compare-examples');
   for (const example of entry.examples) {
     const item = make(doc, 'li', 'compare-example');
-    item.append(marker(doc, '□', 'marker-example'), exampleText(doc, example));
+    item.append(marker(doc, 'marker-small'), exampleText(doc, example));
     list.appendChild(item);
   }
   cell.appendChild(list);
@@ -385,9 +400,10 @@ export function renderStatus(doc, container, text) {
   container.replaceChildren(message(doc, text));
 }
 
-/** The quiet "· 272 topics" beside the subtitle: the whole collection, not the current view. */
-export function renderCount(container, total) {
-  container.textContent = `· ${total} ${total === 1 ? 'topic' : 'topics'}`;
+/** The quiet "· 272 topics, 14 types" beside the subtitle: the whole collection, not the current view; types are left out until there is one. */
+export function renderCount(container, total, types = 0) {
+  const text = `${total} ${total === 1 ? 'topic' : 'topics'}`;
+  container.textContent = `· ${types > 0 ? `${text}, ${types} ${types === 1 ? 'type' : 'types'}` : text}`;
 }
 
 export function renderSortButtons(doc, container, sorts, activeKey) {

@@ -164,5 +164,5 @@ test('the index bar draws one button per order with the active one pressed', () 
 test('the Index is a group of its own and stays out of the no-group search', () => {
   const state = createState(payload());
   state.query = 'a';
-  assert.deepEqual(currentView(state).items.map((group) => group.hierarchy), ['category', 'form', 'function']);
+  assert.deepEqual(currentView(state).items.map((group) => group.hierarchy), ['templates', 'brainstorming', 'research', 'topical']);
 });

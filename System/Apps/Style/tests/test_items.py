@@ -1,6 +1,4 @@
 """Smoke tests for items.py against throwaway on-disk databases built from schema.sql."""
-import contextlib
-import io
 import sqlite3
 import tempfile
 import unittest
@@ -13,29 +11,32 @@ import items  # noqa: E402
 SCHEMA = (Path(__file__).resolve().parent.parent / "schema.sql").read_text()
 
 
-def build_db(path: Path, *, mislink_form: bool = False, multi_category: bool = False) -> None:
+HIERARCHIES = ("templates", "brainstorming", "research", "topical")
+
+
+def add_type(db, name, *, hierarchy=None, parent=None) -> int:
+    type_id = db.execute("INSERT INTO entries (kind, name, definition) VALUES ('type', ?, 'd')", (name,)).lastrowid
+    if hierarchy:
+        db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES (?, ?, ?)", (hierarchy, parent, type_id))
+    return type_id
+
+
+def build_db(path: Path, *, multi_tag: bool = False) -> None:
+    """Entries 1 (Metaphor) and 2 (Anaphora) are elements; each hierarchy has a root type holding a sub type that holds both."""
     db = sqlite3.connect(path)
     db.executescript(SCHEMA)
-    ids = {}
-    for h in ("category", "form", "function"):
-        root = db.execute("INSERT INTO nodes (hierarchy, name, definition) VALUES (?, ?, 'd')",
-                          (h, h.title())).lastrowid
-        ids[h] = db.execute("INSERT INTO nodes (hierarchy, parent_id, name, definition) "
-                            "VALUES (?, ?, ?, 'd')", (h, root, h.title() + " Type")).lastrowid
-    form_link = ids["category"] if mislink_form else ids["form"]
-    for name in ("Metaphor", "Anaphora"):
-        entry = db.execute(
-            "INSERT INTO entries (name, definition, form_node_id, "
-            "function_node_id, popularity) VALUES (?, 'd', ?, ?, 90)",
-            (name, form_link, ids["function"])).lastrowid
-        db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, ?)",
-                   (entry, ids["category"]))
-        if multi_category:
-            extra = db.execute("INSERT INTO nodes (hierarchy, name, definition) "
-                               "VALUES ('category', 'Naming', 'd')").lastrowid
-            db.execute("INSERT INTO entry_categories (entry_id, node_id) VALUES (?, ?)",
-                       (entry, extra))
-    db.execute("INSERT INTO examples (entry_id, body) VALUES (?, 'carpe *diem*')", (entry,))
+    elements = [db.execute("INSERT INTO entries (name, definition) VALUES (?, 'd')", (name,)).lastrowid
+                for name in ("Metaphor", "Anaphora")]
+    for h in HIERARCHIES:
+        root = add_type(db, h.title(), hierarchy=h)
+        sub = add_type(db, h.title() + " Type", hierarchy=h, parent=root)
+        for element in elements:
+            db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES (?, ?, ?)", (h, sub, element))
+    if multi_tag:
+        naming = add_type(db, "Naming", hierarchy="templates")
+        for element in elements:
+            db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES ('templates', ?, ?)", (naming, element))
+    db.execute("INSERT INTO examples (entry_id, body) VALUES (?, 'carpe *diem*')", (elements[-1],))
     db.commit()
     db.close()
 
@@ -59,16 +60,16 @@ class ItemsTest(unittest.TestCase):
     def test_happy_path_references_each_entry_once_per_tree(self):
         build_db(self.db_path)
         payload = items.load_items(self.db_path)
-        self.assertEqual(set(payload["trees"]), {"category", "form", "function", "labels"})
-        self.assertEqual(len(payload["entries"]), 2)
-        for hierarchy in ("category", "form", "function"):
+        self.assertEqual(set(payload["trees"]), {*HIERARCHIES, "labels"})
+        self.assertEqual(sum(e["kind"] == "entry" for e in payload["entries"].values()), 2)
+        for hierarchy in HIERARCHIES:
             tree = payload["trees"][hierarchy]
             self.assertEqual(sorted(l["id"] for l in leaves(tree)), [1, 2])
             for leaf in leaves(tree):
                 self.assertIn(str(leaf["id"]), payload["entries"])
         anaphora = payload["entries"]["2"]
         self.assertEqual(anaphora["examples"], ["carpe *diem*"])
-        self.assertEqual(anaphora["popularity"], 90)
+        self.assertNotIn("popularity", anaphora)
         self.assertEqual(anaphora["ai_confidence_rating"], "low")  # the schema default for an unrated entry
         self.assertNotIn("medium", str(payload).lower())
 
@@ -124,50 +125,83 @@ class ItemsTest(unittest.TestCase):
         build_db(self.db_path)
         db = sqlite3.connect(self.db_path)
         metaphor = db.execute("SELECT id FROM entries WHERE name = 'Metaphor'").fetchone()[0]
-        db.execute("INSERT INTO entries (name, definition, form_node_id, function_node_id, popularity, counterpart_of) "
-                   "SELECT 'Aardvark Flip', 'd', form_node_id, function_node_id, 5, ? FROM entries WHERE id = ?",
-                   (metaphor, metaphor))
+        db.execute("INSERT INTO entries (name, definition, counterpart_of) VALUES ('Aardvark Flip', 'd', ?)", (metaphor,))
+        flip_id = db.execute("SELECT id FROM entries WHERE name = 'Aardvark Flip'").fetchone()[0]
+        db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) "
+                   "SELECT hierarchy, parent_id, ? FROM placements WHERE member_id = ?", (flip_id, metaphor))
         db.commit()
         db.close()
         payload = items.load_items(self.db_path)
         flip = next(d for d in payload["entries"].values() if d["name"] == "Aardvark Flip")
         self.assertEqual(flip["counterpart_of"], metaphor)
         self.assertIsNone(payload["entries"][str(metaphor)]["counterpart_of"])
-        form_names = [payload["entries"][str(leaf["id"])]["name"] for leaf in leaves(payload["trees"]["form"])]
+        form_names = [payload["entries"][str(leaf["id"])]["name"] for leaf in leaves(payload["trees"]["templates"])]
         self.assertEqual(form_names, ["Anaphora", "Metaphor", "Aardvark Flip"])  # "Metaphor/Aardvark Flip" follows Metaphor
 
-    def test_entry_with_several_category_tags_appears_under_each(self):
-        build_db(self.db_path, multi_category=True)
+    def test_a_pattern_placed_under_several_types_appears_under_each(self):
+        build_db(self.db_path, multi_tag=True)
         payload = items.load_items(self.db_path)
-        category = leaves(payload["trees"]["category"])
-        self.assertEqual(sorted(l["id"] for l in category), [1, 1, 2, 2])
-        self.assertEqual(len(leaves(payload["trees"]["form"])), 2)
+        templates = leaves(payload["trees"]["templates"])
+        self.assertEqual(sorted(l["id"] for l in templates), [1, 1, 2, 2])
+        self.assertEqual(len(leaves(payload["trees"]["topical"])), 2)
 
-    def test_misfiled_entry_left_out_of_affected_tree_with_warning(self):
-        build_db(self.db_path, mislink_form=True)
-        err = io.StringIO()
-        with contextlib.redirect_stderr(err):
-            payload = items.load_items(self.db_path)
-        self.assertEqual(leaves(payload["trees"]["form"]), [])
-        self.assertEqual(len(leaves(payload["trees"]["category"])), 2)
-        self.assertEqual(len(leaves(payload["trees"]["function"])), 2)
-        self.assertIn("not in form", err.getvalue())
+    def test_a_placement_in_one_hierarchy_does_not_leak_into_another(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        db.execute("DELETE FROM placements WHERE hierarchy = 'research'")
+        db.commit()
+        db.close()
+        payload = items.load_items(self.db_path)
+        self.assertEqual(payload["trees"]["research"], [])
+        self.assertEqual(len(leaves(payload["trees"]["templates"])), 2)
+
+    def test_a_type_is_a_heading_with_its_entry_id_and_holds_types_then_patterns(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        sub = db.execute("SELECT id FROM entries WHERE name = 'Templates Type'").fetchone()[0]
+        inner = add_type(db, "Zeta Inner", hierarchy="templates", parent=sub)
+        db.commit()
+        db.close()
+        payload = items.load_items(self.db_path)
+        root = payload["trees"]["templates"][0]
+        self.assertEqual((root["kind"], root["type"], root["name"]), ("node", True, "Templates"))
+        self.assertEqual(payload["entries"][str(root["id"])]["kind"], "type")
+        held = root["children"][0]["children"]
+        self.assertEqual([(c["kind"], c["id"]) for c in held], [("node", inner), ("entry", 2), ("entry", 1)])
+
+    def test_a_type_can_sit_in_two_hierarchies_and_under_two_parents(self):
+        build_db(self.db_path)
+        db = sqlite3.connect(self.db_path)
+        shared = add_type(db, "Shared", hierarchy="templates")
+        db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES ('research', NULL, ?)", (shared,))
+        other = db.execute("SELECT id FROM entries WHERE name = 'Templates'").fetchone()[0]
+        db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES ('templates', ?, ?)", (other, shared))
+        db.execute("INSERT INTO placements (hierarchy, parent_id, member_id) VALUES ('templates', ?, 1)", (shared,))
+        db.commit()
+        db.close()
+        payload = items.load_items(self.db_path)
+        ids = lambda tree: sorted(n["id"] for n in tree if n["kind"] == "node")
+        self.assertIn(shared, ids(payload["trees"]["templates"]))
+        self.assertIn(shared, ids(payload["trees"]["research"]))
+        top = next(n for n in payload["trees"]["templates"] if n["id"] == other)
+        inside = next(n for n in top["children"] if n["id"] == shared)
+        self.assertEqual(inside["children"], [{"kind": "entry", "id": 1}])
 
     def test_a_database_with_nothing_in_it_loads_as_empty_trees(self):
         sqlite3.connect(self.db_path).executescript(SCHEMA)
         payload = items.load_items(self.db_path)
-        self.assertEqual(payload, {"trees": {"category": [], "form": [], "function": [], "labels": []}, "entries": {}, "quotes": []})
+        self.assertEqual(payload, {"trees": {**{h: [] for h in HIERARCHIES}, "labels": []}, "entries": {}, "quotes": []})
 
-    def test_an_entry_not_yet_scored_or_classified_loads_and_sits_in_no_form_or_function_tree(self):
+    def test_an_entry_with_no_placement_loads_and_sits_in_no_tree(self):
         db = sqlite3.connect(self.db_path)
         db.executescript(SCHEMA)
         db.execute("INSERT INTO entries (name, definition) VALUES ('Bare', 'd')")
         db.commit()
         db.close()
         payload = items.load_items(self.db_path)
-        self.assertIsNone(payload["entries"]["1"]["popularity"])
         self.assertEqual(payload["entries"]["1"]["ai_confidence_rating"], "low")
-        self.assertEqual(leaves(payload["trees"]["form"]) + leaves(payload["trees"]["function"]), [])
+        self.assertEqual(payload["entries"]["1"]["kind"], "entry")
+        self.assertEqual([payload["trees"][h] for h in HIERARCHIES], [[]] * 4)
 
     def test_missing_database_raises_and_creates_nothing(self):
         with self.assertRaises(sqlite3.OperationalError):

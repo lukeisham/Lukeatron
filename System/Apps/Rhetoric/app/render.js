@@ -23,8 +23,8 @@ function wrapIn(parent, child) {
   return parent;
 }
 
-function marker(doc, glyph, extraClass = '') {
-  const node = make(doc, 'span', `marker ${extraClass}`.trim(), glyph);
+function marker(doc, size) {
+  const node = make(doc, 'span', `marker ${size}`);
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
@@ -75,7 +75,7 @@ function deviceRow(doc, state, entry, mode) {
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
-  row.append(marker(doc, '•'), make(doc, 'span', 'device-name', device.label));
+  row.append(marker(doc, 'marker-medium'), make(doc, 'span', 'device-name', device.label));
   if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
   if (entry.removeFrom != null) row.appendChild(removeButton(doc, device, stripInline(entry.removeFrom.name)));
   item.appendChild(row);
@@ -86,7 +86,7 @@ function deviceRow(doc, state, entry, mode) {
     const examples = make(doc, 'ul', 'examples');
     for (const example of device.examples) {
       const entry = make(doc, 'li', 'example');
-      entry.append(marker(doc, '□', 'marker-example'), exampleText(doc, example));
+      entry.append(marker(doc, 'marker-small'), exampleText(doc, example));
       examples.appendChild(entry);
     }
     item.appendChild(examples);
@@ -203,13 +203,9 @@ function nodeRow(doc, state, node, mode, depth) {
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
   }
-  // A top-level label is a black square, a label with no sub-labels an empty box, and any other a dot. A closed heading
-  // with something folded away under it draws its marker bigger and black, whichever shape, so it reads as having more inside.
-  const closed = node.foldable && !node.open ? ' marker-hidden' : '';
-  const topLevel = node.parentId == null && !node.group;
-  const dot = topLevel ? marker(doc, '', `marker-box marker-box-solid${closed}`)
-    : node.leaf ? marker(doc, '', `marker-box marker-box-hollow${closed}`)
-    : marker(doc, '•', `marker-dot${closed}`);
+  // A label holding sub-labels, entries or tables is a large dot, a type holding nothing a medium dot (it is an entry),
+  // and any other label holding nothing an outlined circle.
+  const dot = marker(doc, !node.empty ? 'marker-large' : node.entry ? 'marker-medium' : 'marker-empty');
   row.append(dot, isLink ? aboutLink(doc, node) : inlineSpan(doc, 'node-name', node.name));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {
@@ -268,7 +264,7 @@ const examplesCell = (doc) => (device) => {
   const list = make(doc, 'ul', 'compare-examples');
   for (const example of device.examples) {
     const item = make(doc, 'li', 'compare-example');
-    item.append(marker(doc, '□', 'marker-example'), exampleText(doc, example));
+    item.append(marker(doc, 'marker-small'), exampleText(doc, example));
     list.appendChild(item);
   }
   cell.appendChild(list);

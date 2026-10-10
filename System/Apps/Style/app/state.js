@@ -5,10 +5,10 @@
 
 export const SORTS = [
   { key: 'alphabetical', label: 'Alphabetical' },
-  { key: 'form', label: 'Form' },
-  { key: 'function', label: 'Function' },
-  { key: 'category', label: 'Category' },
-  { key: 'popularity', label: 'Popularity' },
+  { key: 'templates', label: 'Templates' },
+  { key: 'brainstorming', label: 'Brainstorming' },
+  { key: 'research', label: 'Research' },
+  { key: 'topical', label: 'Topical' },
   { key: 'labels', label: 'Labels' },
   { key: 'grid', label: 'Grid' },
   { key: 'index', label: 'Index' },
@@ -39,7 +39,7 @@ export const GRID_ROLES = [
 /** The group that lists every real quote, ordered by `indexOrder` (see quoteindex.js); it is not a tree and not an entry list. */
 export const INDEX = 'index';
 
-export const TREE_SORTS = new Set(['form', 'function', 'category', LABELS]);
+export const TREE_SORTS = new Set(['templates', 'brainstorming', 'research', 'topical', LABELS]);
 
 /** The tree Luke edits in the app. */
 export const EDITABLE_TREES = new Set([LABELS]);
@@ -47,7 +47,7 @@ export const EDITABLE_TREES = new Set([LABELS]);
 /** Label ids overlap other hierarchies' node ids, so an open heading is keyed by hierarchy too. */
 export const openKey = (hierarchy, nodeId) => `${hierarchy}:${nodeId}`;
 
-/** `sortOrder` is null when no group is selected: search then covers all three classification trees at once, so one entry can appear once per way it is filed. */
+/** `sortOrder` is null when no group is selected: search then covers all four classification trees at once, so one entry can appear once per way it is filed. */
 export const EVERYTHING = null;
 
 export const FULL_VIEW = 'full';
@@ -94,9 +94,9 @@ export function createState(payload) {
       Number(id),
       {
         id: Number(id),
+        kind: record.kind ?? 'pattern', // 'pattern', or 'type': a type is listed beside patterns and heads a group tree
         name: record.name,
         definition: record.definition,
-        popularity: record.popularity,
         aiConfidenceRating: record.ai_confidence_rating,
         counterpartOf: record.counterpart_of ?? null,
         examples: record.examples,
@@ -264,19 +264,8 @@ export function toggleExpanded(state, entryId) {
 // Sorts by the shown label, so a Counterpart files under its base's name.
 const byName = (a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' });
 
-/** Orders by `key` in `direction`; an entry with no value sorts after every valued one, then by name. */
-function rankedThenAlphabetical(key, direction) {
-  return (a, b) => {
-    const missingA = a[key] == null;
-    const missingB = b[key] == null;
-    if (missingA || missingB) return missingA === missingB ? byName(a, b) : missingA ? 1 : -1;
-    return (a[key] - b[key]) * direction || byName(a, b);
-  };
-}
-
 export const COMPARATORS = {
   alphabetical: byName,
-  popularity: rankedThenAlphabetical('popularity', -1),
 };
 
 export function sortedEntries(state, sortOrder) {

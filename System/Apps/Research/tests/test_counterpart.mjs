@@ -10,10 +10,10 @@ import { payload } from './fixture.mjs';
 function counterpartState() {
   const data = payload();
   data.entries[3] = {
-    name: 'Shared Ground', definition: 'd', popularity: 10, ai_confidence_rating: 'low',
+    name: 'Shared Ground', definition: 'd', ai_confidence_rating: 'low',
     counterpart_of: 1, examples: [],
   };
-  data.trees.form[0].children[0].children.push({ kind: 'entry', id: 3 });
+  data.trees.brainstorming[0].children[0].children.push({ kind: 'entry', id: 3 });
   const state = createState(data);
   state.reveal = false;
   return state;
@@ -27,7 +27,7 @@ test('a Counterpart shows as [Topic]/[Counterpart]; an ordinary entry keeps its 
 
 test('the list row, the copy text and search all use the combined name', () => {
   const state = counterpartState();
-  state.sortOrder = 'form';
+  state.sortOrder = 'brainstorming';
   const container = fakeDoc.createElement('div');
   renderList(fakeDoc, container, state, currentView(state));
   const names = findAll(container, withClass('entry-name')).map((n) => n.textContent);

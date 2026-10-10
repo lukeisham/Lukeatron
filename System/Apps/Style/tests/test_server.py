@@ -52,7 +52,7 @@ class ServerTest(unittest.TestCase):
         status, body = fetch(self.base + "/api/items")
         payload = json.loads(body)
         self.assertEqual(status, 200)
-        self.assertEqual(len(payload["entries"]), 2)
+        self.assertEqual(sum(e["kind"] == "entry" for e in payload["entries"].values()), 2)
         total_leaves = 0
         stack = [n for tree in payload["trees"].values() for n in tree]
         while stack:
@@ -63,7 +63,7 @@ class ServerTest(unittest.TestCase):
                     self.assertIn(str(child["id"]), payload["entries"])
                 else:
                     stack.append(child)
-        self.assertEqual(total_leaves, 3 * len(payload["entries"]))  # the three hierarchies; Labels is empty
+        self.assertEqual(total_leaves, 4 * 2)  # the four hierarchies; Labels is empty
 
     def test_missing_database_returns_clean_json_error(self):
         self.db_path.unlink()
@@ -84,7 +84,7 @@ class ServerTest(unittest.TestCase):
     def seeded_rows(self) -> list:
         with sqlite3.connect(self.db_path) as conn:
             return [conn.execute(f"SELECT * FROM {t} ORDER BY 1, 2").fetchall()
-                    for t in ("nodes", "entries", "entry_categories", "examples")]
+                    for t in ("entries", "placements", "examples")]
 
     def label_names(self) -> list[str]:
         with sqlite3.connect(self.db_path) as conn:

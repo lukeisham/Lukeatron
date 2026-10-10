@@ -2,7 +2,7 @@
 # Double-click launcher for Research.
 #
 # Serves the Research library and opens it in Chrome. Closing this Terminal window
-# (or Ctrl-C) stops the server. The only thing it ever writes is Luke's labels, their tables and placements in research.db.
+# (or Ctrl-C) stops the server. It writes only Luke's labels, their tables and placements in research.db, and a new link's empty section in app/about.html.
 # The port is fixed at 8804; a collision fails loudly rather than rebinding.
 
 cd "$(dirname "$0")" || exit 1

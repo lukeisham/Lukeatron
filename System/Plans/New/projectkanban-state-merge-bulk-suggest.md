@@ -12,13 +12,6 @@ review: "RETURNED pass 1 (11 flags) → revised; RETURNED pass 2 (6 flags) → r
 
 # Plan — Dashboard: one State column, bulk State edits, and suggested States you confirm
 
-> ⚠️ **Needs revision before execution (2026-09-28).** This plan was written against the old
-> `!AppDevelopment` layout: `_template/` (now flattened into `System/Apps/ProjectDashboard/`) and
-> `refactor-registry.md` (retired — Luke's approvals and rule exceptions now live in
-> `app-decisions.md`; the build history is in git). Its paths, docs step and staging approach must be
-> revised against `!AppDevelopment` v2.0.0 before it runs. See
-> `System/Plans/New/appdevelopment-registry-to-decisions.md`.
-
 ## Objective
 Replace today's two overlapping per-action fields with **one State column** that means the same thing in the files, the Dashboard and `!ProjectSweep`. A project's State becomes **the State of its Next Action** (the top open row). Luke can **set State on several selected actions in one go**. **Suggested States** are offered for him to confirm or change, so nothing sets a per-action State without him. This specialises the Lukeatron North Star (*keep it correct and legible, extend it deliberately*): it removes a duplicated field and a silent writer rather than adding a feature on top of them.
 
@@ -39,7 +32,7 @@ means                                                           date-blocked, or
 
 The two use the same words but mean different things and are ranked in different orders, so the board and the sweep can disagree about the same project. On 2026-09-15 this forced a hand-recast of three rows in CH-01. The data: 45 registry files holding 46 Next Actions tables (PP-02 has two), 214 filled rows, 108 of them with a Kind that disagrees with their State. The sweep also rewrites State **silently** every Monday at 07:30, which is what LU-02 #4 objects to.
 
-**Impact.** Local: the Dashboard (`stores`/`model`/`writes`/`server`, the project view, board lanes, tokens), all 45 registries and the app's test fixtures change. Global: `!ProjectSweep`, `!CreateProject` and `!Intake` (all three are core skills), `Template_ProjectRegistry.md` (a Key Template), and the `_links.yaml` header are affected. The scheduled `project-sweep`, `intake-sweep`, `review-monday` and `review-friday` tasks must be paused during the cut-over (all four write registries or create them from the template). Nothing leaves the system, and no `Long-Term/` store changes apart from log appends.
+**Impact.** Local: the Dashboard (`stores`/`model`/`writes`/`server`, the project view, board lanes, tokens), all 45 registries and the app's test fixtures change. Global: `!ProjectSweep`, `!CreateProject` and `!Intake` (all three are core skills), `Template_ProjectRegistry.md` (a Key Template), and the `_links.yaml` header are affected. The scheduled jobs `project-sweep.sh`, `intake-sweep.sh`, `review-monday.sh` and `review-friday.sh` write registries or create them from the template. They run on the Mac mini (`System/Tools/cron/schedule.json`), so the cut-over runs in a window when none of them is due. Nothing leaves the system, and no `Long-Term/` store changes apart from log appends.
 
 ## Success criteria (measurable)
 **File format (how files are written)**
@@ -62,24 +55,24 @@ The two use the same words but mean different things and are ranked in different
 - `state` is added to `_EDIT_COLUMNS`, and `kind` is removed at the cut-over. The single-row lane `<select>` in `task-row.js` becomes the State select.
 
 **Suggested States (LU-02 #4)**
-- One written rule set: `System/Skillbank/PersonalProductivity/!SuggestState/reference/state-rules.md`, registered in `_index.yaml`. It holds the per-action rules from `!ProjectSweep` STEP 2, plus a fixture table of 15 or more example rows with expected suggestions and reasons. It is the **single** "due within 3 days" definition: `suggest.py` and (if it lands) the urgency-shading helper both import one `model.py` function that implements it.
+- One written rule set: `System/Skillbank/PersonalProductivity/!SuggestState/reference/state-rules.md`, registered in `_index.yaml`. It holds the per-action rules from `!ProjectSweep` STEP 2, plus a fixture table of 15 or more example rows with expected suggestions and reasons. It is the **single** "due within 3 days" definition: `suggest.py` imports it from one `model.py` function.
 - `suggest.py` implements those rules as pure functions. `test_suggest.py` runs every fixture row, so the code and the written rules can't drift apart silently.
 - The project view shows a quiet **suggestion chip** on each open row whose suggested State differs from the stored one: the State, a reason in words, ✓ Accept and ✕ Dismiss. Accept writes through `set_cell`. Dismiss is remembered for this browser only (`localStorage`, wrapped in try/catch) until the row's data changes. "Accept all suggestions (N)" goes through `set_cells`. Meaning is never shown by colour alone.
-- The State select (single and bulk) marks the suggested value "suggested". **No code path or skill writes an existing row's State without a click from Luke.** A brand-new row's first State comes from `!SuggestState`, set by `!Intake`, `!CreateProject`, `!ProjectSweep` STEP 3, or `recur.py` when it reopens a recurring row (Decision 6).
-- `!ProjectSweep` no longer writes existing rows' State (STEP 2 per-row writes and STEP 2.5b State sync removed). It lists suggested changes in its digest, and still writes the **project** row in `_tracking.yaml` by the Decision 3 rule.
+- The State select (single and bulk) marks the suggested value "suggested". **No code path or skill writes an existing row's State without a click from Luke.** A brand-new row's first State comes from `!SuggestState`, set by `!Intake`, `!CreateProject` or `!ProjectSweep` STEP 3. A row reopened by `recur.py` keeps its last State (Decision 6).
+- `!ProjectSweep` no longer writes existing rows' State (STEP 2 per-row writes and STEP 2.5b State sync removed). It lists suggested changes in its digest, and still writes the **project** row in `_tracking.yaml` by the Decision 3 rule. Its STEP 2.5 link sync (`reference/linked-actions.md`) syncs Status only.
 
 **Charter baseline, house style and safety**
 - Full suite (`python3 -m unittest discover`, `node --test tests/*.mjs`, `check_contrast.py`) shows 0 new failures against the Step 3 baseline, plus the new cases.
 - Verified live: first on a second instance over a Sandbox copy of the migrated data (Step 10), then on `:8789` after the cut-over (Step 11). Covers bulk set → one-step undo, accepting and dismissing a suggestion, and lane order, in default, dark and paper palettes, condensed density, reduced motion and print. No console errors. Screenshots are in **Notes → Verification**.
-- The scheduled `project-sweep`, `intake-sweep`, `review-monday` and `review-friday` tasks are paused for the cut-over and **confirmed running again** afterwards (`list_scheduled_tasks` output recorded). The cut-over is not scheduled across Fri 17:00 or Mon 07:30–08:00.
+- The cut-over (Step 11) starts after 13:15 and finishes before 17:45 on a Monday to Thursday, so no scheduled job is due during it (`intake-sweep.sh` 08/13/18 daily, `project-sweep.sh` Mon 07:30, `review-monday.sh` Mon 08:00, `review-friday.sh` Fri 17:00). `schedule.py check` is clean before and after, and is recorded in **Notes → Verification**.
 - Until Step 11.2, the live `:8789` serves `main` unchanged: all build work happens in a separate `git worktree`.
 - The new controls use existing tokens only, and add at most one flourish, declared in the StyleGuide Flourishes table.
 - Every core-skill and template change carries Luke's explicit sign-off (**Notes → Sign-offs**).
-- Docs: `README.md`, `StyleGuide.md` and `refactor-registry.md` (a Migration-log row) are updated. Wishlist #15/#16 rows are deleted. LU-02 #3/#4 are ticked with Decision Log lines. `System/System_guide.md` and `CLAUDE.md` are re-grepped: still no Kind/Type reference.
+- Docs: `README.md` (Cross-app behaviour: State column, `edit-batch`, `suggestion`) and `StyleGuide.md` are updated. `app-decisions.md` → Approvals gets one row for the merge, stating that it reverses the Kind field and the sweep's per-row State writes. Wishlist #15/#16 rows are deleted. LU-02 #3/#4 are ticked with Decision Log lines. `System/System_guide.md` and `CLAUDE.md` are re-grepped: still no Kind/Type reference.
 
 ## Resources
-- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md`; `_template/README.md`, `StyleGuide.md`; `.claude/skills/!ProjectSweep/SKILL.md` (lines 92, 104–150, 164–173, 202, 215, 238–241, 310–320); `!CreateProject/SKILL.md:70`; `!Intake/SKILL.md:78`; `Template_ProjectRegistry.md:88–100`; `_links.yaml` header (esp. :37); `LU-02-projectdashboard/notes.md`; `System/Plans/New/projectkanban-urgency-shading.md`.
-- **Capability skills:** none. The scheduled-tasks tools are used to pause and resume `project-sweep` / `intake-sweep`.
+- **Memory to read:** `Memory/Long-Term/Coding/vibe-coding-rules.md`; `System/Apps/ProjectDashboard/README.md`, `app-decisions.md`, `StyleGuide.md`; `.claude/skills/!ProjectSweep/SKILL.md` (STEP 2, STEP 3, STEP 4, VERIFY) and `reference/linked-actions.md`, `reference/digest.md`; `!CreateProject/SKILL.md:70`; `!Intake/SKILL.md:78`; `Template_ProjectRegistry.md` (Next Actions section); `_links.yaml` header; `LU-02-projectdashboard/notes.md`; `!AppDevelopment/phase4-retire.md` (Refactor Health Check).
+- **Capability skills:** none. `python3 System/Tools/cron/schedule.py check` confirms the job record before and after the cut-over.
 - **Domain skills (Skillbank):** new `!SuggestState` (Step 4). `!AppWishlist`'s delete-built-rows rule.
 - **Sub-agents:** (a) back end: Steps 6–7; (b) front end: Step 8. Each is briefed with this plan's Success criteria and Notes → Decisions. The coordinator reads every diff.
 - **Scripts:**
@@ -91,11 +84,11 @@ The two use the same words but mean different things and are ranked in different
 | Up to and including | If something goes wrong |
 |---|---|
 | Steps 1–10 (all work in a separate worktree; live `main`, data and skills untouched) | Delete the worktree and branch. Nothing live changed. |
-| Step 11 (cut-over) | Restore `Projects/` from the Archive copy. Revert the merge of `state-merge` into `main` and the skill/template edits. Un-pause the scheduled tasks. **Only valid if restored before Luke makes new Dashboard edits.** After that, re-run `--apply` forwards rather than restoring. |
+| Step 11 (cut-over) | Restore `Projects/` from the Archive copy. Revert the merge of `state-merge` into `main` and the skill/template edits. **Only valid if restored before Luke makes new Dashboard edits.** After that, re-run `--apply` forwards rather than restoring. |
 | After Step 11 | Fix forwards. The Archive copy is kept until close-out. |
 
 ## Steps
-**Order with the urgency-shading plan** (`projectkanban-urgency-shading.md`, LU-02 #2): decided in Step 1. Recommended: urgency shading runs **first**, since it is smaller and read-only. Its Step 9 checks that `Projects/` is unchanged, which would fail if this plan's migration landed in between. This plan then reuses its "within 3 days" helper and re-checks the shading on the renamed lane tokens in Steps 10–11.
+**Shared helper.** This plan builds the one "within N days" helper in `model.py` (Decision 7).
 
 - [x] **Step 1 — Luke decides.** Answers go in **Notes → Decisions**. [human input — LU-02]
   1. **Column set.** Recommended: drop **both** `Kind` and `Type`, and keep `State`. Owner already says Luke / Agent / a person.
@@ -118,20 +111,20 @@ The two use the same words but mean different things and are ranked in different
   4. **Bulk scope.** Recommended: within one project view only.
   5. **Suggestion source.** Recommended: deterministic rules in the app. `!SuggestState` can also be run in chat for a judgement pass (notes.md, Decision Log) on cases rules can't see.
   6. **Recurring rows.** Recommended: a row reopened by `recur.py` gets a fresh suggested State (usually 🟠 Mine or 🟢 Delegate by Owner), not its stale old one.
-  7. **Order vs urgency-shading plan** (see above).
-- [ ] **Step 2 — Luke's sign-off in principle** for editing `!ProjectSweep`, `!CreateProject`, `!Intake` and `Template_ProjectRegistry.md` as described. Recorded in **Notes → Sign-offs**. Step 11 does not start without it. [human input — Key Skills/Template guardrail]
-- [ ] **Step 3 — Baseline.**
-  - Commit **only** the uncommitted `System/Apps/ProjectDashboard/` files as-is (Luke's go-ahead is part of Step 2). The other uncommitted work (LukeatronWiki, Skillbank, plans) is left alone for Luke.
+  7. **Order vs urgency-shading plan.**
+- [x] **Step 2 — Luke's sign-off in principle** for editing `!ProjectSweep`, `!CreateProject`, `!Intake` and `Template_ProjectRegistry.md` as described. Recorded in **Notes → Sign-offs**. Step 11 does not start without it. [human input — Key Skills/Template guardrail]
+- [x] **Step 3 — Baseline.**
+  - `git fetch`; confirm local `main` is on top of `origin/main`. Commit **only** the uncommitted `System/Apps/ProjectDashboard/` files as-is (Luke's go-ahead is part of Step 2), and push. The other uncommitted work (LukeatronWiki, Skillbank, plans) is left alone for Luke.
   - Create branch `state-merge` in a **separate git worktree** outside Dropbox (e.g. `~/lukeatron-state-merge/`). The live tree stays on `main`, so `:8789` and its SessionStart restart keep serving unchanged code.
   - Run the full suite and `check_contrast.py`, and record the counts.
   - Checksum `Projects/`.
   - Run `parity_check.py --before` to snapshot every active project's board lane and `_tracking.yaml` state.
   
   [inline + script]
-- [ ] **Step 4 — Build `!SuggestState`**: `SKILL.md` (trigger; output a suggestion + reason per row, **never a write**), `reference/state-rules.md` (the per-action rules, the Decision 3 project rule, the Decision 2 map, the fixture table), and an `_index.yaml` entry. [inline; Skillbank, Low impact]
-- [ ] **Step 5 — Write `migrate_state_column.py`.** It reuses `stores._split_row` / `_resolve_columns`, handles **every** Next Actions table in a file, preserves line endings, and leaves unparseable rows untouched while listing them. The report groups rows by `Kind → old State → new State` pattern with counts; individual rows appear only for rare patterns (<3) and "needs your eye". [script]
-  - [ ] Test in Sandbox: copy `Projects/` to `System/Sandbox/state-merge/projects-copy/` and run `--root` on it. Pass = only header/State/Kind/Type cells differ; per-table row counts are equal (PP-02's two tables included); the report's own parse count equals the input row count. (The check that the app parses them with 0 skipped rows runs in Step 10, once the Step 6 code exists.)
-- [ ] **Step 6 — Back end, dual-read phase** (the live app keeps working on both old and new files):
+- [x] **Step 4 — Build `!SuggestState`**: `SKILL.md` (trigger; output a suggestion + reason per row, **never a write**), `reference/state-rules.md` (the per-action rules, the Decision 3 project rule, the Decision 2 map, the fixture table), and an `_index.yaml` entry. [inline; Skillbank, Low impact]
+- [x] **Step 5 — Write `migrate_state_column.py`.** It reuses `stores._split_row` / `_resolve_columns`, handles **every** Next Actions table in a file, preserves line endings, and leaves unparseable rows untouched while listing them. The report groups rows by `Kind → old State → new State` pattern with counts; individual rows appear only for rare patterns (<3) and "needs your eye". [script]
+  - [x] Test in Sandbox: copy `Projects/` to `System/Sandbox/state-merge/projects-copy/` and run `--root` on it. Pass = only header/State/Kind/Type cells differ; per-table row counts are equal (PP-02's two tables included); the report's own parse count equals the input row count. (The check that the app parses them with 0 skipped rows runs in Step 10, once the Step 6 code exists.)
+- [x] **Step 6 — Back end, dual-read phase** (the live app keeps working on both old and new files):
   - `model.py`:
     - `resolve_lane` reads **Kind first when the column is present** (today's behaviour, so unmigrated live data shows exactly as now), otherwise State, understanding old State labels too. Switching to State-only happens at Step 11.5;
     - the Decision 3 project rule, with `_lane_driver`/`lane_source` removed;
@@ -141,32 +134,32 @@ The two use the same words but mean different things and are ranked in different
   - `writes.py`: `state` added to `_EDIT_COLUMNS` (keep `kind` for now); `set_cells` plus batch undo, the once-per-batch `pending_sweep` stamp and the legacy-kind undo reason.
   - `server.py`: `/api/edit-batch`; `suggestion` on each task in the payload.
   - `suggest.py`.
-  - `recur.py`: a reopened row gets a fresh suggested State (Decision 6), with a `test_recur.py` case.
+  - `recur.py`: a reopened row keeps its last State (Decision 6); a `test_recur.py` case proves it.
   - Tests: `test_model.py` / `test_stores.py` / `test_writes.py` / `test_server.py` / `test_suggest.py`.
   - **Migrate `tests/fixtures/`** with the Step 5 script (ZZ-10, ZZ-11, ZZ-20, `registry_multi_stream.md` and the rest), keeping one legacy-Kind fixture.
   
   [sub-agent (a)]
 - [ ] **Step 7 — Dry run on live data, show Luke the grouped report** (files, tables, patterns, "needs your eye"). Luke approves or amends the map. [script `--dry-run` + human input]
-- [ ] **Step 8 — Front end.** Before editing, grep `unshaped|delegate|incoming|kind|lane` across `app/` and list every hit in **Notes → Review**. Known hits: `task-row.js` (the State select, the badge removed), `undo.js` (`COLUMN_NAMES`, batch label), `shared/flourish.js:77`, `shared/flourish.css:26-30`, `board/board.css:12,85,145` (its own `--l-unshaped`), `board/card.css:57`, `board/render.js:21,105` (empty-state copy), `board/keynav.js`, and `tokens.css` in every palette block.
+- [x] **Step 8 — Front end.** Before editing, grep `unshaped|delegate|incoming|kind|lane` across `app/` and list every hit in **Notes → Review**. Known hits: `task-row.js` (the State select, the badge removed), `undo.js` (`COLUMN_NAMES`, batch label), `shared/flourish.js:77`, `shared/flourish.css:26-30`, `board/board.css:12,85,145` (its own `--l-unshaped`), `board/card.css:57`, `board/render.js:21,105` (empty-state copy), `board/keynav.js`, and `tokens.css` in every palette block.
   
   New work: `app/project/bulk.js` + `bulk.css` (Select mode, bulk bar, Accept all), the suggestion chip with dismiss memory, and the "suggested" marker in the selects.
   
   Tests: `test_project.mjs` / `test_undo.mjs` / `test_board.mjs` / `test_keynav.mjs` / `check_contrast.py`. [sub-agent (b)]
-- [ ] **Step 9 — Review diffs.** Check every diff against the Success criteria and `StyleGuide.md`'s 7-question visual checklist. Findings and fixes go in **Notes → Review**. [inline]
-- [ ] **Step 10 — Pre-cut-over check on a copy.** Full suite: 0 new failures. Run `migrate --root` on a fresh Sandbox copy. Confirm the app's `stores` parses every migrated file with 0 skipped rows. Start a **second instance** of the app from the worktree, on another port, with `LUKEATRON_ROOT` pointed at that copy (`paths.py:19`), (as the undo plan did), and walk through every live check in the Success criteria, with screenshots. Run `parity_check.py --after` on the copy. Also run the worktree code over an **unmigrated** copy and confirm every board lane matches the `parity_check.py --before` snapshot (proves dual-read shows no change). [inline + browser]
+- [x] **Step 9 — Review diffs.** Check every diff against the Success criteria and `StyleGuide.md`'s 7-question visual checklist, then run the Refactor Health Check (`!AppDevelopment/phase4-retire.md`). Findings and fixes go in **Notes → Review**. [inline]
+- [x] **Step 10 — Pre-cut-over check on a copy.** Full suite: 0 new failures. Run `migrate --root` on a fresh Sandbox copy. Confirm the app's `stores` parses every migrated file with 0 skipped rows. Start a **second instance** of the app from the worktree, on another port, with `LUKEATRON_ROOT` pointed at that copy (`paths.py:19`), (as the undo plan did), and walk through every live check in the Success criteria, with screenshots. Run `parity_check.py --after` on the copy. Also run the worktree code over an **unmigrated** copy and confirm every board lane matches the `parity_check.py --before` snapshot (proves dual-read shows no change). [inline + browser]
 - [ ] **Step 11 — Cut-over, in one sitting, with Luke present.** [human sign-off per diff; script]
-  1. Pause the scheduled tasks `project-sweep`, `intake-sweep`, `review-monday` and `review-friday`, and record their state. Don't start within an hour before Fri 17:00 or Mon 07:30.
+  1. Confirm the window (Mon–Thu, start after 13:15, finish before 17:45) and run `schedule.py check`; record both.
   2. Merge the dual-read branch (Kind-first, `kind` and `state` both editable) into `main` in the live tree and restart `:8789`. Confirm the board is unchanged against the `--before` snapshot. From here the live app can read both formats.
   2a. Back up `Projects/` → `Archive/projects-pre-state-merge-<date>/`.
   3. `migrate --apply`. Re-run the diff and parse checks on live data. Either fails → restore (see Rollback).
   4. Core skill and template edits. Show Luke each diff before saving:
-     - `!ProjectSweep`:
-       - lines 92, 202 and 215: `Type` → State;
+     - `!ProjectSweep` (find each by content; line numbers drift):
+       - every "Owner + Type" / "Type Human" / "Type Agent" mention → State;
        - STEP 2: stop per-row State writes, and apply the Decision 3 project rule and overrides;
-       - STEP 2.5b: stop syncing State, and sync Status only;
+       - STEP 2.5 (`reference/linked-actions.md`): stop syncing State, and sync Status only;
        - STEP 3: a new row's State comes from `!SuggestState`;
-       - STEP 4 and the digest: add "N suggested State changes";
-       - VERIFY lines 310–320: align them with Decision 3.
+       - STEP 4 and `reference/digest.md`: add "N suggested State changes";
+       - VERIFY: align with Decision 3, and remove the pending-Luke-input → 🟠 check (Hard rule 2, dropped).
      - `!CreateProject:70`: "Owner + Kind" → "Owner + State (from `!SuggestState`)".
      - `!Intake:78`: "Owner/Type" → "Owner; State from `!SuggestState`".
      - `Template_ProjectRegistry.md`: new header and legend.
@@ -174,8 +167,8 @@ The two use the same words but mean different things and are ranked in different
   5. On the branch: switch `resolve_lane` to State-only and remove the dual-read leftovers (the `kind`/`type` aliases, `kind` in `_EDIT_COLUMNS`). Tests stay green, including the legacy-fixture test. Merge again into `main`.
   6. Restart `:8789` a second time. Live walk-through on real data. Run `parity_check.py --after`.
   7. Sandboxed sweep dry run on a fresh copy. Pass = no existing row's State written; project states match parity; the digest lists suggestions.
-  8. **Un-pause** all four tasks, and confirm with `list_scheduled_tasks`.
-- [ ] **Step 12 — Docs + project.** `README.md` (State column, `edit-batch`, `suggestion`), `StyleGuide.md` (bulk bar, chip, flourish row), a `refactor-registry.md` Migration-log row + Next step, delete wishlist #15/#16, tick LU-02 #3/#4 with Decision Log lines, re-grep `System_guide.md` and `CLAUDE.md`. Remove the worktree. [inline]
+  8. Run `schedule.py check` again and confirm no scheduled job ran during the window; record both.
+- [ ] **Step 12 — Docs + project.** `README.md` (State column, `edit-batch`, `suggestion`), `StyleGuide.md` (bulk bar, chip, flourish row), the `app-decisions.md` Approvals row, delete wishlist #15/#16, tick LU-02 #3/#4 with Decision Log lines, re-grep `System_guide.md` and `CLAUDE.md`. Remove the worktree. [inline]
 - [ ] **Step 13 — Luke's sign-off on the feel** (live; tune tokens only). [human input — LU-02]
 - [ ] **Verify** — every line in **Success criteria** holds and the result matches the **Objective**. [pass/fail]
 
@@ -220,16 +213,37 @@ _(Step 1 — answered 2026-09-28.)_
 4. **Bulk scope.** Within one project view only, not across the whole board.
 5. **Suggestion source.** Deterministic rules in the app (`suggest.py`) as the primary source, plus `!SuggestState` run in chat for a judgement pass on cases the rules can't see (logged in `notes.md`'s Decision Log).
 6. **Recurring rows.** A row reopened by `recur.py` **keeps its last State** rather than getting a fresh suggestion. This is a deliberate departure from the plan's own recommendation (fresh suggestion) — flagged so Step 6/11 implementation doesn't silently "correct" it back.
-7. **Order vs urgency-shading plan.** `projectkanban-urgency-shading.md` (LU-02 #2) runs **first**; this plan reuses its "within 3 days" helper and re-checks shading on the renamed lane tokens in Steps 10–11.
+7. **Order vs urgency-shading plan.** The urgency-shading plan is abandoned (2026-10-10, `Archive/Plans-2026-10-10/`; LU-02 #2 dropped). This plan builds the "within N days" helper itself.
 
 ### Sign-offs
 _(Steps 2, 11, 13.)_
+- 2026-10-10 — Step 2: Luke approves in principle the edits to `!ProjectSweep`, `!CreateProject`, `!Intake` and `Template_ProjectRegistry.md` (each diff still shown at Step 11.4), and the commit of the uncommitted `System/Apps/ProjectDashboard/` files.
 
 ### Baseline
 _(Step 3.)_
+- 2026-10-10 — Commit `fbcf888` (Dashboard files only, pushed). Worktree `~/lukeatron-state-merge/`, branch `state-merge`.
+- Live tree: `unittest` 218 OK; `node --test tests/*.mjs` 158/158; `check_contrast.py` 108/108. In the worktree, 2 real-tree tests error without `LUKEATRON_ROOT` (no `Memory/` there) and `test_paths` fails 2 with it set — environment, not code; the worktree baseline is 216 + those 2.
+- `Projects/` checksums: `System/Sandbox/state-merge/projects-before.sha`.
+- `parity_check.py --before --today 2026-10-10`: 50 projects; 32 of 50 board lanes disagree with `_tracking.yaml` state.
 
 ### Review
 _(Steps 8–9.)_
+- Branch `state-merge` (worktree `~/lukeatron-state-merge/`): `cfb5699` back end, `5ee998f` front end, `916019e` fixes, `aadd301` README + StyleGuide.
+- Step 8 grep hits, all handled: `board.css`, `card.css`, `flourish.css`, `flourish.js` (`kind` → `state` control), `render.js` (lane order, empty-state copy), `keynav.js` (takes lanes from `render.js`, no change), `tokens.css` (`--l-unshaped` → `--l-undefined`, 4 blocks), `task-row.js` (State select, lane-source badge removed), `undo.js` (State, batch label).
+- `set_cells` takes `changes: [(row, value)]`, not `rows` + one `value`, so "Accept all suggestions" (each row its own State) is still one write and one undo. `POST /api/edit-batch` takes `changes: [{row, value}]`.
+- Decision 3 (ii) needs a **dated** wake. A trigger or `<pending first sweep>` wake no longer fires P3 (it did in the first build pass, which put 18 projects in Incoming for that reason alone). A `<placeholder>` is not a wake for P6 either. Written into `state-rules.md`.
+- P5's blank-State fallback is the Owner rules (R5–R8), matching the success criterion; `state-rules.md` says so.
+- Found and fixed: the done tick sat beside the select box in select mode (two look-alike checkboxes) — the tick now steps aside; the Undo button vanished on any re-render that saved nothing (Select, Show done, Decision Log toggles) — every render now redraws it.
+- Side effect: `task-row.css` is 142 lines, under the CSS-1 cap (closes the 2026-09-20 issue).
+- Refactor Health Check: Q1 yes · Q2 yes · Q3 yes (every new function reached from a click) · Q4 yes · Q5 n/a · Q6 yes (no exception) · Q7 yes (README updated) → 10/10. `comment_lint.py` clean on every changed file.
+- `!SuggestState` catalog entry is held in `System/Sandbox/state-merge/index-entry.yaml` (the live `_index.yaml` has other uncommitted edits); it is added at Step 11.4. The skill's folder arrives with the merge.
+- Temporary: `.claude/launch.json` entry `project-dashboard-state-merge` (test band :9301) — remove at Step 12.
 
 ### Verification
 _(Steps 10–11.)_
+- Tests on the branch: `unittest` 253 (2 real-tree tests need the live tree, run at Step 11.2; the stores one passes against live data now); `node --test` 167/167; `check_contrast.py` 108/108.
+- Step 5 / 10 on a fresh copy: 50 registries, 51 tables, 244/244 rows, 3 listed, 0 need your eye; `verify_migration.py` 0 problems (only header/separator/State/Kind/Type cells differ; no `notes.md` or `_tracking.yaml` byte changed); the app parses every migrated file with 0 skipped rows.
+- Dual-read proof: `parity_check.py --same` (branch code over live, unmigrated data): 50 projects, **0 lane changes**.
+- New rule over the migrated copy: Mine 20 · Delegate 12 · Incoming 10 · Waiting 4 · Undefined 4 (today's board: Mine 22 · Incoming 21 · Waiting 3 · Delegate 2 · Undefined 2). 33 of 50 differ from `_tracking.yaml`, which the sweep last wrote under the old precedence rules; they converge on the first sweep after cut-over.
+- Second instance (:9301 over the Sandbox copy), checked live: Accept one suggestion → saved, Undo label right; Select → shift-range 1–3 → Delegate → Apply → one batch, "Undo: State on 3 rows (1, 2, 3)" → one Undo restored all three; Dismiss survives a reload; Accept all (5) → one batch, one undo; dark and paper palettes; phone width; lanes Incoming → Undefined with counts 10/20/4/12/4; no console errors. A write through a symlinked test root was refused 403 by the fence, as designed.
+- Live `Projects/` untouched: checksums match `projects-before.sha`.

@@ -1,7 +1,6 @@
 # Riddle
 
-Promoted from `System/Widgets/Generator/Riddle/` to a standalone Lukeatron app on 2026-09-29. It is
-still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
+A standalone Lukeatron app. It is assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
 Generate pulls a riddle from the baked pool, an optional Clue reveals a hint, the user types an
 answer and Checks it, and Copy puts the plain riddle text on the clipboard. Shipped widget:
 `Riddle_generator.html`, **218,280 bytes**.
@@ -89,7 +88,7 @@ Category picker (filters the shuffled queue), Generate, Clue (reveals
 `clue` field text), answer input + Check (accepts near-misses/synonyms via
 `accepted variants`), Copy (plain riddle text to clipboard). No explainer
 panel, no analyse-mode input/word-cap/spell-check (present mode hides all
-three, D-4). MiniWiki catalogue (`riddle.miniwiki.json`) lists every riddle
+three). MiniWiki catalogue (`riddle.miniwiki.json`) lists every riddle
 by tradition.
 
 ## Build recipe

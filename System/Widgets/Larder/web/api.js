@@ -1,4 +1,4 @@
-// The panel's only network access (FR-8, JS-5): Home's two Larder routes. Rejects with an Error on any
+// The panel's only network access (JS-5): Home's two Larder routes. Rejects with an Error on any
 // non-OK reply so callers can show their error state.
 
 async function getJson(path) {

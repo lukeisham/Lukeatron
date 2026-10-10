@@ -6,6 +6,7 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { escapeHtml } from "../../../../Tools/web-shared/escape-html.js";
 
 const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -16,6 +17,7 @@ const BUILD_DIR = path.resolve(HERE, "../../cartridge/build");
 // assembled HTML defines these globals ahead of ENGINE_JS).
 const pool = JSON.parse(readFileSync(path.join(BUILD_DIR, "pool.json"), "utf8"));
 global.CONTENT = pool;
+global.escapeHtml = escapeHtml;
 global.CONFIG = {
   clausePalette: [
     { h100: "#9FE1CB", h800: "#085041" },
@@ -32,8 +34,6 @@ test("imports cleanly and exposes the present-mode contract", () => {
 });
 
 test("getPool returns the full 40-tale pool, each item id-unique", () => {
-  // 2026-08-13 (Luke's instruction): Turkey/Middle East (4) removed, Persia
-  // (Pre-Islamic) (3), American Gothic (3), and Australian Gothic (2) added.
   const items = ENGINE.getPool();
   assert.equal(items.length, 40);
   const ids = new Set(items.map((it) => it.id));

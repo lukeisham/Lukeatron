@@ -1,5 +1,5 @@
 /**
- * backend.js — the injectable DictionaryBackend seam (spec FR-3).
+ * backend.js — the injectable DictionaryBackend seam.
  *
  *   interface DictionaryBackend {
  *     query(word: string): { pos: string|null, rank: number, variant: "AU"|"GB"|"US"|null } | null;
@@ -20,7 +20,7 @@
  *
  * `createSqlJsBackend(sqlJsDatabase)` is the convenience adapter a real host
  * uses: `sqlJsDatabase` is an already-open sql.js `Database` (the module
- * owns its own sql.js wiring per plan D-5 — it never reaches into a host's
+ * owns its own sql.js wiring — it never reaches into a host's
  * `LEX` portal). Not exercised by this module's own test suite (TEST-4
  * forbids sql.js in the test path); exercised only by hand in-browser.
  */
@@ -79,8 +79,8 @@ function createSqlJsBackend(sqlJsDatabase) {
 
 /**
  * supportsGzipDecompression() -> boolean
- * Feature-detects the Compression Streams API's `DecompressionStream`
- * (TASK-1, 2026-08-10 test-and-refine pass). This is a pure Streams-API
+ * Feature-detects the Compression Streams API's `DecompressionStream`.
+ * This is a pure Streams-API
  * transform with no network/origin gating, so it works on `file://` the
  * same as any other origin — verified in Node (a stand-in for the V8/
  * SpiderMonkey/JSC engines the target browsers embed), not guessed at.

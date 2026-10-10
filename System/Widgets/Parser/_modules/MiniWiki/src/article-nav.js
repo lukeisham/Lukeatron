@@ -6,9 +6,8 @@
  * one job" instinct — ui.js already renders everything else on the page.
  *
  * "Related" here means siblings (same parent) — the only relationship the
- * build-time article model actually carries (Specs/MiniWikiModule.spec.md
- * §4 has no curated "related articles" field, and the extractor is out of
- * scope to change). This is a deliberate scope decision, not an oversight.
+ * build-time article model actually carries: it has no curated "related
+ * articles" field. This is deliberate scope, not an oversight.
  */
 import { getChildren } from "./tree.js";
 import { el } from "./ui.js";

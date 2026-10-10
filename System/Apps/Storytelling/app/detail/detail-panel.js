@@ -1,4 +1,4 @@
-/** The element detail panel (viewport-detail spec FR-V5, FR-V9, FR-V11). Opens on `storytelling:open`; Print and Copy live only here. */
+/** The element detail panel. Opens on `storytelling:open`; Print and Copy live only here. */
 import { EVT_OPEN } from "../shared/events.js";
 import { setPrintTarget, copyText } from "../shared/output.js";
 import { setTip } from "../shared/tooltip.js";
@@ -20,7 +20,7 @@ export function creditOf(element) {
 const sourceLinkOf = (element) => (isWebUrl(element.sourceUrl) ? element.sourceUrl : null);
 
 /**
- * The text Copy puts on the clipboard (FR-V5): `<symbol> — <name>`, description, `Example: …`,
+ * The text Copy puts on the clipboard: `<symbol> — <name>`, description, `Example: …`,
  * `In this story: …` (only when a bead note is supplied), then the credit. Lines with no content are omitted.
  * @param {{id:string, symbol?:string, name:string, description?:string, example?:string, added?:boolean, sourceUrl?:string}} element
  * @param {string} [note] the bead's library note
@@ -167,7 +167,7 @@ function fillParts(parts, element, groups, request) {
   fillCredit(parts, element);
 }
 
-/** What is being shown: the element itself, or the Rogue card / a rogue bead built from ROGUE (FR-V11). */
+/** What is being shown: the element itself, or the Rogue card / a rogue bead built from ROGUE. */
 function resolveSubject(request, lookup, rogue, rogueText) {
   if (request.elementId === rogue.id) {
     return request.label ? { ...rogue, name: request.label } : { ...rogue, description: rogueText };

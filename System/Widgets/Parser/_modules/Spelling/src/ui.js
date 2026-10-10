@@ -1,8 +1,8 @@
 /**
- * ui.js — the replacement UI (spec FR-9, FR-10, FR-11).
+ * ui.js — the replacement UI.
  *
  * Rendering: CSS Custom Highlight API primary (no DOM mutation, caret- and
- * undo-safe — AD-2), a non-mutating absolutely-positioned overlay as the
+ * undo-safe), a non-mutating absolutely-positioned overlay as the
  * ONLY fallback (never the innerHTML+TreeWalker approach the research
  * confirmed breaks IME composition and undo history in both Chrome and
  * Firefox — that approach is excluded outright, not offered as a tier).
@@ -17,7 +17,7 @@ const HIGHLIGHT_NAME = "spelling-misspelled";
 const POPOVER_ID = "spelling-suggestions";
 const OVERLAY_ID = "spelling-overlay";
 
-/** supportsHighlightAPI() -> boolean (spec FR-9). */
+/** supportsHighlightAPI() -> boolean. */
 function supportsHighlightAPI() {
   return (
     typeof CSS !== "undefined" &&
@@ -103,7 +103,7 @@ function renderHighlightsViaOverlay(doc, inputEl, tokens) {
 }
 
 /**
- * renderHighlights(inputEl, tokens, options) -> void  (spec FR-9)
+ * renderHighlights(inputEl, tokens, options) -> void
  * options: { document?: Document }
  */
 function renderHighlights(inputEl, tokens, options = {}) {
@@ -197,7 +197,7 @@ function attachPopoverKeyboardNav(popover, doc) {
 }
 
 /**
- * showSuggestions(word, anchorEl, actions, options) -> void  (spec FR-10)
+ * showSuggestions(word, anchorEl, actions, options) -> void
  * actions: { onReplace(word), onIgnore(word), onLearn(word) }
  * options: { document?, getSuggestions?: (word) => string[] }
  */
@@ -252,7 +252,7 @@ function showSuggestions(word, anchorEl, actions = {}, options = {}) {
 }
 
 /**
- * replaceWord(range, replacement, doc) -> void  (spec FR-11)
+ * replaceWord(range, replacement, doc) -> void
  * Range API deleteContents + insertNode — never innerHTML — so caret and
  * undo history are preserved.
  */

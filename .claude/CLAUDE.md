@@ -19,28 +19,6 @@ After step 3 the agent is oriented; everything else — skills in `.claude/skill
 
 **Load-bearing wiring:** the system is reachable only if (a) this file is at `_Lukeatron/.claude/CLAUDE.md`, (b) `_Lukeatron/.claude/memory.md` exists, and (c) the two `@` import lines above are intact. If any is wrong, the system is invisible, memory-blind, or skill-blind.
 
-## Types of Contexts
-
-*Personal Productivity Context*
-
-The personal productivity context is the broadest context, focused on a wide range of personal administration: emails, calendar and projects, and amateur coding projects. 
-
-*Church Context*
-
-Church context is focused on Balaclava Presbyterian Church preaching preparation (sermon series and preaching passage) and church-related administration.
-
-*Teaching Context*
-
-The teaching context is focused on preparing specific tools to help with a potential career in teaching: English grammar, rhetoric, interpretation, and logic. 
-
-*Personal Research Context*
-
-Personal research context is focused on research across a wide variety of topics.
-
-*Lukeatron Context*
-
-The Lukeatron context is focused on building, maintaining, and improving the Lukeatron system itself — skills, memory structure, apps/dashboards, and the harness it runs on.
-
 ## Workflow at a Glance
 
 The whole system is one repeating loop. Information enters, gets placed, work is done, and nothing leaves or changes without a safety gate. Each stage names the skill that runs it; the sections below give the detail. For a visual map of the whole loop, see the companion **System Guide** (`System/System_guide.md`).
@@ -61,8 +39,6 @@ The whole system is one repeating loop. Information enters, gets placed, work is
 > **System Guide drift-check.** `System/System_guide.md` is the visual companion to this file; CLAUDE.md remains the source of truth. You need not update the guide in the same pass as every CLAUDE.md edit — instead, `!Review` carries a standing drift-check: on each twice-weekly run it flags (does not silently fix) any guide diagram that no longer matches CLAUDE.md's loop, skill set, memory model, or Interactions axes, so drift surfaces without doubling every edit's cost.
 
 ## Operating system workflow
-
-Every task begins the same way — respond to a user prompt or new material (`Inbox/` · AgentMail · WhatsApp), determine context with `!DetermineContext`, then route. **Arriving material** is routed by `!Intake` to one or more of four outcomes — ① Project, ② Long-Term memory, ③ LukeatronWiki, ④ Action — or Discarded (see *Inbox Disposition*). For an **Action** (and for a direct user prompt), scan the Skillbank catalog for a specialized skill whose trigger matches (see *Skillbank*), then route by size.
 
 **Routing gate** — a task is **Major** if it is multi-step, touches `Outbox/` / external parties, or modifies `Long-Term/` memory. Everything else is **minor**.
 
@@ -91,27 +67,13 @@ Execute the task directly, running `!Checkpoint` before anything leaves or chang
 4. Suggest capturing any repetitive or deterministic steps as a skill using `!Suggest`.
 5. Close out with `!Checkpoint`, which archives durable memory via `!ArchiveMemory`.
 
-During execution (minor task or Major step 3), the agent calls capability skills as the task requires: `!Tone` (resolve where tone should come from, before drafting), `!AgentMail` (email), `!Calendar` (events and appointments), `!HeadlessChromeBrowser` (web research), `!GenerateWiki` (knowledge pages).
-
 ### Inbox Disposition
 
-New material — from `Inbox/`, AgentMail, or WhatsApp — is routed by **`!Intake`**, which runs right after `!DetermineContext`. `!DetermineContext` picks the **context** (the coordinate system); `!Intake` then assesses the four **outcome-axes** within it and dispatches. Knowing the context narrows *where* each outcome lands (this context's projects, stores, typical actions), which is what makes the routing deterministic.
-
-| Outcome | When | Hand-off |
-| :--- | :--- | :--- |
-| **① Project** | It belongs to a tracked endeavour (same ongoing work-strand: same endeavour + same primary people/subject/purpose — NOT mere keyword overlap) | `!Intake` → existing registry / new project (`!CreateProject`) + `_tracking.yaml` (Medium-Term, apply-safe); a minor/one-off becomes a Next Action in the best-fit Active project; ambiguous items stay in `Inbox/`, flagged for Luke |
-| **② Store** | A durable fact to keep | The matching `Memory/Long-Term/` store — gated by `!Checkpoint` |
-| **③ Think** | A book/article/link/video to read·watch·write, or an idea/question to connect — not a task | **LukeatronWiki** via `!IdeaWiki`: a pointer node in `Memory/Long-Term/LukeatronWiki/`, its verbatim content written into the matching `Memory/Long-Term/<subject store>` |
-| **④ Act** | Something to do — a one-off, or a multi-step plan. If it sends/publishes, `!Checkpoint` decides direct-send (whitelisted) vs `Outbox/` (approval) | execute directly / `!CreatePlan` → `!Checkpoint` |
-| **∅ Discard** | Handled, or noise | Delete, or move to `Archive/` |
-
-Outcomes are **compoundable** — 0..4 may fire on one item (e.g. update a project ① + store a decision ② + draft a reply ④). Forwarding to an external party is just an **Act** whose channel `!Checkpoint` chooses (whitelisted → direct; otherwise → `Outbox/`). Not everything is stored; an item that fires no outcome is Discarded.
-
-**Minor-task and ambiguous fallback (axis ① decision tree):** A self-contained one-off becomes a single Next Action in the Active project whose Purpose would naturally hold it; if none fits, it goes to the context's **catch-all** project — PP-18 Chores and Errands · CH-28 Church Odds and Ends · TE-13 Teaching Odds and Ends · LU-03 Lukeatron Odds and Ends · PR-08 Research Odds and Ends. An item that can't be classified stays in `Inbox/`, unprocessed, and is flagged for Luke to decide. Agents never invent a project for a one-off.
+`!Intake` routes new material from `Inbox/`, AgentMail or WhatsApp, right after `!DetermineContext` has set the context, to 0..4 **compoundable** outcomes — ① Project · ② Store (gated by `!Checkpoint`) · ③ Think (LukeatronWiki via `!IdeaWiki`) · ④ Act — or ∅ Discard. The outcome table, the one-off decision tree and the per-context catch-all projects live only in `!Intake`. Two rules hold everywhere: an item that will not classify stays in `Inbox/`, flagged for Luke, and agents never invent a project for a one-off.
 
 ### Context Determination
 
-Select the context from the Quick Decision Guide below — this table is the single source for the routing decision. Once selected, load the matching `System/Context/` readme to set the agent's behavior and knowledge base, plus any relevant `Memory/` files.
+Select one of the five contexts from the Quick Decision Guide below — this table is the single source for the routing decision. Then load that context's `System/Context/` readme (its charter, focus and tone) plus any relevant `Memory/` files.
 
 **Quick Decision Guide:**
 
@@ -127,7 +89,7 @@ When contexts overlap, choose the one matching the primary goal of the request.
 
 ## Key Skills, Checkpoints and Templates
 
-List of key skills, checkpoints, and templates that can never be deleted or modified without explicit permission from Luke:
+Key skills, checkpoints and templates can never be deleted or modified without explicit permission from Luke.
 
 **Skills**
 
@@ -148,27 +110,7 @@ Each skill's trigger, logic and output live in its own `SKILL.md`; the harness i
 | `!ArchiveMemory`         | Move memory to archive or delete it, after a double-check and user review. |
 | `!Checkpoint`            | Decides whether `!OutgoingContentCheck` and/or `!ArchiveMemory` should be triggered. |
 
-**Templates**
-
-One line each; each template file is self-documenting on open.
-
-| File                     | Purpose |
-|--------------------------|--------|
-| `Template_SermonPrep.md` | Exegetical sermon-prep for one preaching passage (exegesis only, MLA-cited). |
-| `CongregationalPrayer.md`| A congregational prayer. *(planned — not yet on disk)* |
-| `Template_ProjectRegistry.md` | A project's registry — its control surface. **Always created together with `notes.md`**, never one alone. |
-| `Template_ProjectNotes.md` | A project's mandatory `notes.md` scratchpad (loose scraps + 🧭 Agent guidance); sits beside `registry.md`. |
-| `Template_Person.md`     | A person record (carries `interaction_tier` + `group`). |
-| `Template_Tone.md`       | A person's `tone.md` — blank per-person tone override for `!Tone`, sits beside their `People/` record. |
-| `Template_Plan.md`       | A plan (used by `!CreatePlan`). |
-| `Template_skill.md`      | A new skill (frontmatter + body). |
-| `Template_WikiPage.md`   | A `!GenerateWiki` standalone article (Markdown master + styled HTML, optional MediaWiki). Carries the four-layer provenance contract. |
-| `wiki-page.css`          | The house style for `!GenerateWiki` pages — the four provenance inks, the Tufte margin column, the sparkbar. Linked by every page, never inlined. |
-| `Template_IdeaPage.md`   | A LukeatronWiki pointer node (no substantive content; points to a Long-Term store). |
-| `Template_Group.md`      | A `Groups/` page — the z-axis tone & action reference for Lukeatron Interactions. |
-| `Template_Contact.md`    | A temp contact record in `Medium-Term/Contacts/` (always non-listed). |
-| `Template_TechSpec.md`   | A technical spec / build doc for a coding or tool project. |
-| `Template_MLA_Reference.md` | MLA citation-format guide (inline citations, works cited) for research/sermon sourcing. |
+**Templates** — the protected templates live in `System/Templates/`; `System/Templates/_index.yaml` lists each with one line of purpose. Read it when making an artefact.
 
 ## Skillbank — On-Demand Skills
 
@@ -178,7 +120,7 @@ One line each; each template file is self-documenting on open.
 
 ```
 System/Skillbank/
-├── _index.yaml                    # catalog only — name, intent, triggers, path. Imported at boot.
+├── _index.yaml                    # catalog only — name, path, intent, triggers. Imported at boot.
 └── <Domain>/                      # domain folder: GeneralPurposeSkills/ · Church/ · Teaching/ · PersonalProductivity/ · PersonalResearch/ (Lukeatron-context skills go in GeneralPurposeSkills/)
     └── !SkillName/
         └── SKILL.md               # full instructions + frontmatter. Loaded only when a trigger fires.
@@ -192,7 +134,7 @@ The catalog's `path:` field is authoritative for each skill's location — the d
 3. Several match → pick the most specific. None match → proceed without one.
 4. Never load a skill body until its trigger fires — the catalog is enough to decide.
 
-**Adding a skill:** create `<Domain>/!SkillName/SKILL.md`, then add a one-line entry to `_index.yaml` (with its `path:`). Record the change with `logs.py decide '!SkillName' "…"`, never as comments in `_index.yaml` — the catalog loads every session, so history there costs tokens every time. Each `intent` is one line of 150 characters or less; the triggers do the matching. The catalog is the source of truth for what is discoverable — a skill missing from it is invisible. Skillbank skills use the same `SKILL.md` frontmatter as `.claude/skills/`, so a heavily-used one can be promoted to a true command by moving its folder.
+**Adding a skill:** create `<Domain>/!SkillName/SKILL.md`, then add a one-line entry to `_index.yaml` (with its `path:`). Record the change with `logs.py decide '!SkillName' "…"`, never as comments in `_index.yaml` — the catalog loads every session, so history there costs tokens every time. Each `intent` is one line of 150 characters or less and carries most of the matching; give at most five `triggers`, each a distinct phrasing the intent would miss. The domain is the folder in `path:`, never a separate field. The catalog is the source of truth for what is discoverable — a skill missing from it is invisible. Skillbank skills use the same `SKILL.md` frontmatter as `.claude/skills/`, so a heavily-used one can be promoted to a true command by moving its folder.
 
 ## Information Flow
 
@@ -221,14 +163,7 @@ Every outgoing human interaction is resolved as a function of three axes: **(x, 
 
 > **The distinction:** y = **what** is communicated (content, subject-matter). z = **how** it is communicated and what kind of action is taken (tone, manner, nature). They are distinct filters — not two flavours of "tone."
 
-### x — Trust tier values
-
-| Tier | `interaction_tier` value | Behaviour |
-|---|---|---|
-| **Gold** | `gold` | Proceeds automatically — no `!Checkpoint` or `!OutgoingContentCheck` |
-| **White** | `white` | Known / approved person — light "confirm send" approval via `!OutgoingContentCheck` |
-| **Non-listed** | *(field absent from Person record)* | Unknown person — default four-way approval; no group/tone profile loaded |
-| **Black** | `black` | **Do-not-contact — HARD STOP.** Blocked by default. Proceeds ONLY on an explicit deliberate Luke override naming the person and reason; no auto-send, no light approval |
+**x tiers** (`interaction_tier` in the People record): **gold** proceeds automatically · **white** gets a light confirm-send via `!OutgoingContentCheck` · **non-listed** (field absent) gets the four-way approval, no tone profile · **black** is a do-not-contact **hard stop**, lifted only by Luke naming the person and reason.
 
 > **⚠️ Safety floor — `luke-voice` is NEVER auto-sent.** Mail written first-person as Luke
 > (`authorship: luke-voice`) is always staged in `Outbox/` for Luke to send himself, whatever the
@@ -261,7 +196,7 @@ When something breaks, two rules override everything: **never stall silently**, 
 
 | Log | Holds | Write | Read |
 | :-- | :-- | :-- | :-- |
-| `history.log` | Every DECISION Luke makes and PERMISSION he grants whose effect reaches beyond one file, plus every Vibe-Coding rule-exception PERMISSION. A decision confined to one file is never logged. | `logs.py decide\|permit '<scope>' "<rule> — <why>"` (≤240 chars) | `logs.py history` |
+| `history.log` | Every DECISION Luke makes and PERMISSION he grants whose effect reaches beyond one file and beyond one app. An app's own decisions and Vibe-Coding rule exceptions go in its `app-decisions.md`; a decision confined to one file is never logged. | `logs.py decide\|permit '<scope>' "<rule> — <why>"` (≤240 chars) | `logs.py history` |
 | `issues.log` | Anything that could make Lukeatron better: a failed skill step, a script fault, drift, a gap. Staleness is fine. | `logs.py issue '<scope>' "<problem> — <where> — <fix hint>" --severity X` | `logs.py issues --open` |
 
 Record every failure from the ladder above as one `issues.log` line. Skill runs are not logged: usage comes from Claude Code's own transcripts, summarised weekly into `Logs/usage.md` by `System/Tools/usage/usage.py`, and `!Improve` turns `usage.md` + open issues into proposed edits each month. CLAUDE.md, `memory.md`, skills, indexes and code state only the current rule — no dates, "was/now", "retired on" or "replaced" notes. A reversal is a new `history.log` line beginning "Reverses YYYY-MM-DD:".
@@ -290,13 +225,14 @@ There are two separate memory stores that must never duplicate each other:
 - **Memory is never pruned automatically.** `Medium-Term/` is pruned only on demand, when Luke or a task explicitly runs `!PruneMemory` to clear stale temp-skills, dormant projects, and orphaned plan files in `System/Plans/New/`.
 - `Long-Term/` is pruned only via `!ArchiveMemory` (gated, double-checked, user-reviewed) — never automatically.
 - Move stale items to `Archive/`. Never delete anything from `Long-Term/` unless Luke explicitly requests it.
+- A `Stop` hook (`System/Tools/hygiene/`) checks each turn's edits: it syncs the `_index.yaml` of any Long-Term store touched, and holds the turn once when a Skillbank skill is missing from the catalog or Major-looking work ran with no plan. It never edits content and fails open.
 
 ### Memory Structure
 
 Two persistent stores, both read **on demand** (each carries its own `_index.yaml`; there is no root-level index):
 
 - **Long-term** (`Memory/Long-Term/`) — kept until explicitly deleted; `!ArchiveMemory` gates any removal. Core stores (`Purpose/`, `Preferences/`, `Tone/`, `Style-Guide/`, `People/`, `Groups/`, …), the `Lukeatron/` system-doc store, the subject stores (`Bible/`, `Theology/`, `Grammar/`, …), and **`LukeatronWiki/`** — the permanent Ideas wiki of pointer nodes whose verbatim content lives in the subject stores (`!IdeaWiki`; viewer on `localhost:8787`).
-- **Medium-term** (`Memory/Medium-Term/`) — pruned on demand via `!PruneMemory`. `Projects/` (colour board `_tracking.yaml`; owned by `!ProjectSweep`; board on `localhost:8789` via the **Project Dashboard**, see *Browser tools* below), `Contacts/` (temp contacts, always non-listed), `temp-skills/`, `file-locations.md`.
+- **Medium-term** (`Memory/Medium-Term/`) — pruned on demand via `!PruneMemory`. `Projects/` (colour board `_tracking.yaml`; owned by `!ProjectSweep`; board on `localhost:8789` via the **Project Dashboard**, see `folder-reference.md`), `Contacts/` (temp contacts, always non-listed), `temp-skills/`, `file-locations.md`.
 
 > **Full detail** — store-by-store layout, the LukeatronWiki doctrine (pointer nodes, verbatim store writes, four formats, churn), and the `Projects/` ownership rules — lives in `Memory/Long-Term/Lukeatron/memory-structure.md`, loaded on demand when a task touches memory layout or the wiki.
 
@@ -306,37 +242,8 @@ Two persistent stores, both read **on demand** (each carries its own `_index.yam
 
 **Where Lukeatron lives** — `_Lukeatron/` is one Dropbox folder (`~/Library/CloudStorage/Dropbox/_Lukeatron/`), shared by two machines: Luke's Mac laptop and his Mac mini. Luke runs Claude on both, so a session on either Mac may have made the latest changes. Dropbox's own sync keeps the files identical on both machines, so both always see the same working tree. Git history does not travel with the files: each Mac keeps its own git directory outside Dropbox (`~/.gitdirs/Lukeatron.git`, pointed to by the `.git` file), and GitHub (`lukeisham/Lukeatron`) is the only link between the two git histories. Before committing on either Mac, run `git fetch` and work on top of `origin/main`. After pushing, the other Mac must fetch and reset its index to `origin/main` (files untouched), or it will show the other machine's work as uncommitted changes.
 
-**Top-level areas** — `.claude/` (CLAUDE.md, memory.md, skills/, settings.json, settings.local.json) · `System/` (below) · `Memory/` (Long-Term/ + Medium-Term/) · `Archive/` · `Inbox/` · `Outbox/`
+**Both Macs work in one set of files, and nothing locks a file.** Commit or push only when no other Claude session is open on either Mac. If `git status` lists a file this session did not change, and that file changed in the last few minutes, another session is still working: wait, and tell Luke. A session cannot read the other Mac's transcripts, so a decision reached in chat reaches the other Mac only when it is written to a file (`history.log`, an app's `app-decisions.md`, a registry or `notes.md`).
 
-**`System/` folders**
+**Scheduled jobs run on the Mac mini.** `System/Tools/cron/schedule.json` is the one record of which Mac runs which job. Only `usage.sh` runs on both Macs, because it reads that Mac's own transcripts; any other job run on both would send two emails and write the same files at once. A crontab cannot live in Dropbox, so after changing `schedule.json`, run `python3 System/Tools/cron/schedule.py install` on each Mac. `schedule.py check` reports a Mac whose crontab differs from the record.
 
-| Folder / file | Holds |
-| :--- | :--- |
-| `Apps/` · `Widgets/` | Built apps and widgets (see *Apps*) |
-| `Context/` | The five context readmes |
-| `Credentials/` | Local secrets and their `.example` templates — git-ignored, never copied out |
-| `Guides and Readme/` | Reference guides for Luke (Git/GitHub, Wayfinder) |
-| `Lukeatron_Improvements/` | `Improvements.md` — the live improvement discussion table |
-| `Plans/New/` · `Plans/Completed/` | Major-task plans (`!CreatePlan`) |
-| `Sandbox/` | Agent scratch space (see *Information Flow*) |
-| `Skillbank/` | On-demand skills: `_index.yaml`, `<Domain>/!Name/SKILL.md` |
-| `Suggestions/` | Idea write-ups not yet adopted — skill outlines (`!Suggest`), app ideas, specs |
-| `Templates/` | The templates listed above |
-| `Tools/` | Scripts and local tools (`logs/`, `usage/`, `skill-evals/`, `cron/`, `Search/`, …) |
-| `System_guide.md` | Visual companion to this file |
-| `Viewer-Launch-Guide.md` | Plain guide to opening the Project Dashboard and LukeatronWiki |
-
-**Uncatalogued top-level areas** — `Scratch/`, `Trash/`, and root `scratchpad.md` exist on disk but sit outside the formal loop (*Information Flow*) and aren't owned by any skill. Treat them as informal workspace: `Scratch/` for loose working drafts, `Trash/` as a holding pen before real deletion, `scratchpad.md` as free notes. Nothing routes through them automatically, and no skill prunes them — clear by hand, or fold a given file into `System/Sandbox/`, `Archive/`, or a proper store when it's ready to be governed.
-
-> **Rule — generated caches go to `Trash/`, never into `Archive/`**. A `__pycache__/` folder (and any stray `*.pyc`) is machine-generated and regrows on its own, so it is not worth keeping. Whenever a folder is archived, or an agent finds a cache that is no longer needed, **move it to `Trash/` instead of leaving it in `Archive/`**, keeping its original path under a dated folder (`Trash/pycache-from-<place>-<date>/…`) so it can be traced back. Do this at archive time: move the folder into `Archive/` first, then move its caches on to `Trash/` in the same step. Clearing `Trash/` stays by hand. This does not apply to `System/Apps/Rhetoric/`, whose caches are tracked on purpose (see `.gitignore`).
-
-**Medium-Term** (`Memory/Medium-Term/`) — `Projects/` (owned by `!ProjectSweep`), `Contacts/`, `temp-skills/`, `file-locations.md`. Store-by-store detail in `Memory/Long-Term/Lukeatron/memory-structure.md`.
-
-**Apps** — each app built by `!AppDevelopment` lives in one folder, `System/Apps/<Name>/` (widgets: `System/Widgets/<Name>/`), running on real data from its first build. Beside the code sit `app-decisions.md` (Luke's approvals and granted Vibe-Coding rule exceptions — the only state file; there is no registry, template or test copy) and `wishlist.md` (`!AppWishlist`); `_build/` holds the PRD and specs until the build is verified. **Ports:** every localhost port (apps, widgets, tools, previews) is registered in `System/Apps/ports.json`, in bands — core 8780–8789 (Home 8780, LukeatronWiki 8787, Project Dashboard 8789), tool 8790–8799, app 8800–8899. Take a new port with `python3 System/Tools/ports/ports.py next <band>`; `ports.py check` catches clashes.
-
-**Browser tools** — read-only-over-Long-Term local viewers, each kept live on its port by a `SessionStart` hook in `.claude/settings.json`: the **Project Dashboard** (`System/Apps/ProjectDashboard/`, `:8789`) over `Projects/`, and **LukeatronWiki** (`System/Apps/LukeatronWiki/`, `:8787`) over `Memory/Long-Term/` (see *Memory Structure*). Both: `python3 server.py` or a double-click `.command` launcher; neither ever writes Long-Term content of its own accord — LukeatronWiki's own generation gate and quick-capture are the sole, narrowly-scoped exceptions (see `Memory/Long-Term/Lukeatron/memory-structure.md`).
-
-> **Project Dashboard.** The viewer app is the **Project Dashboard**, at `System/Apps/ProjectDashboard/`, served on `:8789`. LU-02 (`Memory/Medium-Term/Projects/LU-02-projectdashboard/`) is the tracked project that improves it. Skills and triggers should read "dashboard" / "project dashboard" as this app.
-
-
-**Long-Term stores** (`Memory/Long-Term/`) — every store has `_index.yaml`, its only navigation file (there are no `index.md` pages); most also have a `<store>.md` primary file. The full store-by-store directory (BalaclavaPC/ · Bible/ · Church/ · Coding/ · People/ · Groups/ · Theology/ · Preaching/ · … every store) lives in `Memory/Long-Term/Lukeatron/memory-structure.md`, loaded on demand.
+**Everything else about where things live** — the `System/` folders table, the informal areas (`Scratch/`, `Trash/`, `scratchpad.md`) and the generated-cache rule, apps and the port register, and the browser tools — is in `Memory/Long-Term/Lukeatron/folder-reference.md`. Read it before creating a top-level folder, taking a port, archiving a folder, or starting a viewer.

@@ -1,11 +1,11 @@
 /* ============================================================
-   SHELL · UI + HARNESS (GeneratorShell.spec.md FR-9/FR-10/FR-12)
+   SHELL · UI + HARNESS
    Never edited per cartridge. Reads ONLY CONFIG, CONTENT, ENGINE,
-   EXPLAINER and the ParseResult schema (§4/§6 of the spec) — never
+   EXPLAINER and the ParseResult schema — never
    the DOM, never re-derives Explainer content itself.
 
-   AD-1: needSpace()/posShort() are NOT re-implemented here. They
-   are required EXPLAINER exports (FR-5); this file calls
+   needSpace()/posShort() are NOT re-implemented here. They
+   are required EXPLAINER exports; this file calls
    EXPLAINER.needSpace(a,b) / EXPLAINER.posShort(t) exclusively.
    ============================================================ */
 var UI = (function () {
@@ -47,7 +47,7 @@ var UI = (function () {
     $("wcount").style.color = wc > CONFIG.cap ? "var(--red)" : "";
   }
 
-  /* ---- Focus-level bar (FR-12: built from CONFIG.levels, never hardcoded) ---- */
+  /* ---- Focus-level bar (built from CONFIG.levels, never hardcoded) ---- */
   function buildFocusBar() {
     var bar = $("focusbar");
     var html = '<span class="muted">Focus</span>';
@@ -60,7 +60,7 @@ var UI = (function () {
     });
   }
 
-  /* ---- Sweep selector (FR-19/FR-20: built from CONFIG.sweeps.items, opt-in,
+  /* ---- Sweep selector (built from CONFIG.sweeps.items, opt-in,
      default off — a cartridge that omits CONFIG.sweeps never sees this bar) ---- */
   function sweepsEnabled() { return !!(CONFIG.sweeps && CONFIG.sweeps.enabled && CONFIG.sweeps.items && CONFIG.sweeps.items.length); }
   function buildSweepBar() {
@@ -95,7 +95,7 @@ var UI = (function () {
     });
   }
   // Builds the `selection` object ENGINE.parse's additive second argument
-  // reads (FR-20). Returns undefined (not {}) when sweeps aren't in play, so
+  // reads. Returns undefined (not {}) when sweeps aren't in play, so
   // ENGINE.parse(text, undefined) behaves exactly like ENGINE.parse(text)
   // for every cartridge that doesn't declare CONFIG.sweeps.
   function readSweepSelection() {
@@ -109,7 +109,7 @@ var UI = (function () {
     return sel;
   }
 
-  /* ---- Spell check (delegates to the injected SpellingSeam — FR-11, D-5) ---- */
+  /* ---- Spell check (delegates to the injected SpellingSeam) ---- */
   var spelling = null;
   var spellTimer = null;
   var spellTokens = [];
@@ -117,7 +117,7 @@ var UI = (function () {
   function initSpelling() {
     if (!spellCheckAvailable()) { $("spellLabel").style.display = "none"; return; }
     $("spellLabel").style.display = "flex";
-    // FR-11: the shell supplies DOM mount points only (input + suggestion
+    // The shell supplies DOM mount points only (input + suggestion
     // popover) — it never passes ENGINE.tokenize or any cartridge data in.
     // SpellingSeam.init is async (dictionary decompress + sql.js load), so
     // `spelling` is only set once onReady fires; runSpellCheck() already
@@ -137,9 +137,9 @@ var UI = (function () {
     if (typeof spelling.renderHighlights === "function") spelling.renderHighlights(el, spellTokens);
   }
   /* Locate the flagged token under a click point. The Highlight API never
-     mutates the DOM (AD-2), so there is no per-word element to listen on —
+     mutates the DOM, so there is no per-word element to listen on —
      the shell maps the click's caret offset back onto the character-offset
-     spans SpellingModule.check() already returned (FR-4). */
+     spans SpellingModule.check() already returned. */
   function tokenRangeAt(start, end) {
     var textNode = $("input").firstChild || $("input");
     var r = document.createRange();
@@ -375,7 +375,7 @@ var UI = (function () {
     if (CONFIG.lexicon && CONFIG.lexicon.enabled) {
       lexinfo.innerHTML = renderAttribution(" · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : ""));
     }
-    // AC-8: attribution is sourced from CONFIG.spelling.attribution, which
+    // Attribution is sourced from CONFIG.spelling.attribution, which
     // the assembler set from its own SPELLING_ATTRIBUTION constant — never
     // hardcoded per cartridge here.
     if (CONFIG.spelling && CONFIG.spelling.enabled && CONFIG.spelling.attribution) {

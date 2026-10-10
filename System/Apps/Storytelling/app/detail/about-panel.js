@@ -1,4 +1,4 @@
-/** The About panel (distribution spec FR-X7). Opens on `storytelling:open-about`; closes on Esc or the Close button and returns focus to the toolbar's About button (viewport-detail FR-V10). */
+/** The About panel. Opens on `storytelling:open-about`; closes on Esc or the Close button and returns focus to the toolbar's About button. */
 import { EVT_OPEN_ABOUT } from "../shared/events.js";
 import { APP_VERSION } from "../data/version.js";
 import { ABOUT } from "../data/furniture.js";
@@ -6,7 +6,7 @@ import { ABOUT } from "../data/furniture.js";
 const ABOUT_BUTTON_SELECTOR = '[data-action="about"]';
 
 /**
- * Mount the About panel: it builds its contents inside the host element and shows or hides the host itself. It holds exactly what FR-X7 lists: the app name and
+ * Mount the About panel: it builds its contents inside the host element and shows or hides the host itself. It holds exactly this: the app name and
  * version, then the statements from `data/furniture.js`, then the poster's attribution `credits` (`licenceNotes` there are deliberately not shown).
  * @param {HTMLElement} host the host element supplied by index.html
  * @param {{ doc?: Document, about?: Object, version?: string }} [options] test overrides

@@ -1,4 +1,4 @@
-/* tiles.css — everything drawn inside the diagram <svg> (style.spec FR-S3–S5, S12–S14, S16; diagram spec FR-D*).
+/* tiles.css — everything drawn inside the diagram <svg>.
    Group colour is ONE custom property per group (`--tile-fill`), read by tile and chip rectangles alike;
    print.css re-points the same property to the gray tokens. Font sizes are set inline by the generator,
    so none is set here. The `transition` values for hover/select live in motion.css. */
@@ -28,7 +28,7 @@
 [data-box-id="call-to-adventure-box"] { --tile-fill: var(--g-setting); }
 [data-box-id="fourth-wall-box"] { --tile-fill: var(--g-metatropes); }
 
-/* ---- Tile: flat, thin edge, no shadow at rest (FR-S3) ---- */
+/* ---- Tile: flat, thin edge, no shadow at rest ---- */
 .tile, .chip { --tile-edge-dark: color-mix(in srgb, var(--tile-fill) 40%, var(--color-ink)); }
 .tile { cursor: pointer; touch-action: none; transform-box: fill-box; transform-origin: center; outline: none; }
 .tile-rect, .chip-rect { fill: var(--tile-fill, var(--g-rogue)); stroke: var(--color-edge); stroke-width: var(--tile-edge-width); }
@@ -55,12 +55,12 @@ svg[data-pop="off"] .pop, svg[data-pop="off"] .pop-key { display: none; }
 .tile.is-picked .tile-rect { stroke: var(--color-ink); stroke-dasharray: 3 2; }
 
 
-/* ---- In-story mark (FR-S12): 3px ink outline and a step badge; static, never yellow ---- */
+/* ---- In-story mark: 3px ink outline and a step badge; static, never yellow ---- */
 .tile.is-in-story .tile-rect { stroke: var(--color-ink); stroke-width: 3; }
 .step-badge { display: none; fill: var(--color-ink); font-weight: 800; paint-order: stroke; stroke: var(--tile-fill); stroke-width: 2.5; stroke-linejoin: round; }
 .tile.is-in-story .step-badge:not([hidden]):not(:empty) { display: inline; }
 
-/* ---- Rogue card (FR-S16): dotted outline, symbol in soft ink, no popularity ---- */
+/* ---- Rogue card: dotted outline, symbol in soft ink, no popularity ---- */
 .tile-rogue .tile-rect { stroke: var(--color-ink-soft); stroke-width: 1.4; stroke-dasharray: 0 3; stroke-linecap: round; }
 .tile-rogue .sym { fill: var(--color-ink-soft); }
 .tile.tile-rogue.is-selected .tile-rect, .tile.tile-rogue.is-in-story .tile-rect { stroke-dasharray: none; }

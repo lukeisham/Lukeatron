@@ -1,5 +1,5 @@
 /**
- * Splits text on the `*italic*` and `_bold_` conventions (database.spec AD-6) into segments, each with its own
+ * Splits text on the `*italic*` and `_bold_` conventions into segments, each with its own
  * `italic` and `bold` flag; one can sit inside the other (`*a _b_ c*`), so a segment can carry both.
  * Returning data, not markup, keeps DB text out of innerHTML (JS-6): render.js turns each segment into a text node,
  * an <em>, a <strong>, or both.

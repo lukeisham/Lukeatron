@@ -1,5 +1,5 @@
 /**
- * rules.js — the misspelled-or-not pass (spec §4, FR-4, FR-7).
+ * rules.js — the misspelled-or-not pass.
  *
  * Rule order (first match wins, "accept" = not misspelled), ten rules per
  * spec §4.
@@ -23,10 +23,9 @@
  * still flag, per §4's own worked example — because check() (below) tracks
  * sentence boundaries and only applies the widened exemption when a token
  * is not the first word of its sentence, where "this looks like a proper
- * noun" is a much safer inference. Re-measured false-positive rate after
- * this change is recorded in README.md; if it still exceeds the 2% budget,
- * the next lever is re-adding SCOWL's proper-names at a higher tier, not
- * further loosening this rule.
+ * noun" is a much safer inference. README.md records the false-positive
+ * rate; if it exceeds the 2% budget, the next lever is re-adding SCOWL's
+ * proper-names at a higher tier, not further loosening this rule.
  */
 
 import {

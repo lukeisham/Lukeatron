@@ -1,4 +1,4 @@
-"""Smoke tests for schema.sql: happy path, FK guards, and the AC-3/AC-4 invariant queries."""
+"""Smoke tests for schema.sql: happy path, FK guards, and the invariant queries."""
 import sqlite3
 import unittest
 from pathlib import Path

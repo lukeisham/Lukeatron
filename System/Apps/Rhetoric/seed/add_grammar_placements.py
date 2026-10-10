@@ -2,9 +2,8 @@
 
 `grammar_labels` gains a `position` column (its order among sibling labels, set from the existing id order),
 `grammar_placements` is created (the devices filed under each label, from schema.sql), and the retired
-two-slot tables `device_labels` and `grammar_explanations` are dropped. The slots and their examples were
-removed from the Grammar group (Luke, 2026-10-05); those tables held no rows in Luke's database, so this
-refuses to run while either holds any, rather than discard them. Safe to run twice. A fresh database
+two-slot tables `device_labels` and `grammar_explanations` are dropped. The Grammar group has no slots, and
+this refuses to run while either table holds any rows, rather than discard them. Safe to run twice. A fresh database
 gets the new shape from schema.sql directly.
 
 Run: python3 -m seed.add_grammar_placements   (from System/Apps/Rhetoric/)

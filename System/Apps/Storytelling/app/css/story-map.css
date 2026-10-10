@@ -1,5 +1,5 @@
 /* story-map.css — the Storytelling story map: toolbar, saved list, tray, beads, tandem, ribbons,
-   drag and drop looks. The Ribbon look (style.spec FR-S3a), tandem and rogue (FR-S16), AI chip (FR-S17).
+   drag and drop looks. The Ribbon look, tandem and rogue, AI chip.
    Motion: transitions on the motion tokens only; the ten @keyframes live in motion.css.
    On-screen-only chrome (print.css hides it): .st-story__toolbar, .st-story__saved, .st-story__status,
    .st-tray__empty, .st-tray::after, .st-thread-cut, .st-thread__hit, .st-thread--temp, .st-ghost,
@@ -114,7 +114,7 @@ body.st-is-dragging { cursor: grabbing; user-select: none; -webkit-user-select: 
 .st-bead__step { position: absolute; top: -8px; left: -8px; z-index: 3; box-sizing: border-box; min-width: 18px; height: 18px; padding: 0 var(--space-xs); border-radius: 50%; background: var(--color-ink); color: var(--color-ground); font: 700 10px/18px var(--font-ui); text-align: center; pointer-events: none; }
 .st-bead__note { position: absolute; left: 0; top: 100%; max-width: 8em; margin-top: 2px; overflow: hidden; font-size: 9px; line-height: 1.2; color: var(--color-ink-soft); text-overflow: ellipsis; white-space: nowrap; pointer-events: none; }
 
-/* ---- Tandem: two tiles edge to edge in one frame, a "+" seam (FR-S16) ---- */
+/* ---- Tandem: two tiles edge to edge in one frame, a "+" seam ---- */
 .st-bead.is-tandem .st-bead__tiles { border: 1px solid var(--color-edge); border-radius: var(--radius-lg); background: var(--g-rogue); }
 .st-bead.is-tandem .st-bead__half { border: 0; border-radius: 0; }
 .st-bead.is-tandem .st-bead__half.is-added { border: 1.4px dashed var(--color-ink); }

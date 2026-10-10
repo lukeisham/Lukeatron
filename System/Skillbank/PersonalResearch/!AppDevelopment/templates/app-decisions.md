@@ -2,13 +2,12 @@
      Lives PERMANENTLY at System/Apps/<Name>/app-decisions.md (widgets: System/Widgets/<Name>/),
      created in Phase 1 and never deleted with the build documents.
      It holds only what the files themselves cannot show: Luke's approvals, the Vibe-Coding rule
-     exceptions he granted, and any explicit decision Luke wants logged. Not a running decision
-     log — the code is self-documenting, and an architectural point that is cross-app or
-     multi-file belongs in README, not here. This file is only for a decision Luke explicitly
-     flags as needing a permanent record. Not phase state, not a task board, not a next step
-     (that lives in the project's Next Actions). Append a row the moment Luke gives an approval,
-     flags a decision, or grants an exception — never batch at the end, never write one here in
-     anticipation of Luke flagging it later. Delete these comment lines when instantiating. -->
+     exceptions he granted, and the app's important decisions (vibe-coding-rules CORE-4). Not a
+     running decision log — the code is self-documenting, and an architectural point that is
+     cross-app or multi-file belongs in README, not here. Not phase state, not a task board, not a
+     next step (that lives in the project's Next Actions). Append a row the moment an approval is
+     given, an important decision is made, or an exception is granted — never batch at the end.
+     Delete these comment lines when instantiating. -->
 
 # <Name> — Decisions
 
@@ -24,8 +23,9 @@ later agent does not "restore" the old behaviour.
 
 ## Key decisions
 
-Not every decision — only one Luke explicitly wants logged, not left to the code or README. Each
-gets its reason; the reason is the point. Append the moment Luke flags one, whenever that is.
+Only an important decision (CORE-4): one a future agent, reading only the code and README, would
+likely undo or do differently. Each gets its reason; the reason is the point. Append it the moment
+it is made. A minor or easily guessed choice belongs in the commit message.
 
 | # | Decision | Reason | Rejected alternative |
 |---|---|---|---|

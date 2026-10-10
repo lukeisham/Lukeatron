@@ -1,0 +1,35 @@
+# System/Templates/_index.yaml
+# One line each; each template file is self-documenting on open.
+# These templates are protected: never deleted or modified without explicit permission from Luke.
+templates:
+  - file: Template_SermonPrep.md
+    purpose: "Exegetical sermon-prep for one preaching passage (exegesis only, MLA-cited)."
+  - file: CongregationalPrayer.md
+    purpose: "A congregational prayer."
+    status: planned
+  - file: Template_ProjectRegistry.md
+    purpose: "A project's registry — its control surface. Always created together with notes.md, never one alone."
+  - file: Template_ProjectNotes.md
+    purpose: "A project's mandatory notes.md scratchpad (loose scraps + Agent guidance); sits beside registry.md."
+  - file: Template_Person.md
+    purpose: "A person record (carries interaction_tier + group)."
+  - file: Template_Tone.md
+    purpose: "A person's tone.md — blank per-person tone override for !Tone, sits beside their People/ record."
+  - file: Template_Plan.md
+    purpose: "A plan (used by !CreatePlan)."
+  - file: Template_skill.md
+    purpose: "A new skill (frontmatter + body)."
+  - file: Template_WikiPage.md
+    purpose: "A !GenerateWiki standalone article (Markdown master + styled HTML, optional MediaWiki). Carries the four-layer provenance contract."
+  - file: wiki-page.css
+    purpose: "The house style for !GenerateWiki pages — four provenance inks, Tufte margin column, sparkbar. Linked by every page, never inlined."
+  - file: Template_IdeaPage.md
+    purpose: "A LukeatronWiki pointer node (no substantive content; points to a Long-Term store)."
+  - file: Template_Group.md
+    purpose: "A Groups/ page — the z-axis tone & action reference for Lukeatron Interactions."
+  - file: Template_Contact.md
+    purpose: "A temp contact record in Medium-Term/Contacts/ (always non-listed)."
+  - file: Template_TechSpec.md
+    purpose: "A technical spec / build doc for a coding or tool project."
+  - file: Template_MLA_Reference.md
+    purpose: "MLA citation-format guide (inline citations, works cited) for research/sermon sourcing."

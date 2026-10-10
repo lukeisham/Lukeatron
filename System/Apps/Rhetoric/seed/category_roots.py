@@ -1,5 +1,5 @@
 """Seeds the Category tree's 8 root nodes from the kept Textual Rhetoric Database
-(seed-pipeline FR-1, plan step 2). Reads the JSON only; Ethos/Pathos/Logos and the Visual
+Reads the JSON only; Ethos/Pathos/Logos and the Visual
 database are never opened. Safe to re-run: a root that already exists is left alone.
 
 Run: python3 -m seed.category_roots            (from System/Apps/Rhetoric/)

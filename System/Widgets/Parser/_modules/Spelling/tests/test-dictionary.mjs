@@ -98,7 +98,7 @@ test("createSpellingModule(): isValid()/lookup() happy path and guard path (empt
   assert.equal(spelling.lookup("zzqxnotaword").known, false);
 });
 
-// TASK-1 (test-and-refine pass, 2026-08-10) -- gzip decompression seam.
+// The gzip decompression seam.
 test("supportsGzipDecompression(): true under Node v26 (DecompressionStream + Response both present)", () => {
   assert.equal(supportsGzipDecompression(), true);
 });

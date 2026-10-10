@@ -1,6 +1,4 @@
-// test-ui.mjs — TEST-8 coverage for _shell/src/ui.js (closes the TEST-8 gap
-// flagged in the 2026-08-10 test-and-refine pass: the shell's own UI
-// harness had zero node:test coverage).
+// test-ui.mjs — TEST-8 coverage for _shell/src/ui.js.
 //
 // _shell/src/ui.js is not an ES module -- it is a plain script, concatenated
 // verbatim into shell.html by assemble.py and executed there against
@@ -180,11 +178,11 @@ test("spelling-module-present: initSpelling() shows the checkbox and wires Spell
   assert.equal(doc.getElementById("spellLabel").style.display, "flex");
 });
 
-// ---- Sweep selector (FR-19/FR-20, GeneratorShell.spec.md) ----
+// ---- Sweep selector ----
 // A cartridge that omits CONFIG.sweeps entirely (every cartridge today,
 // Grammar included) must see zero behaviour change from this addition —
 // asserted directly here, not just inferred from the byte-diff regression
-// check performed against Grammar's actual build (Style/Specs/StyleParser.spec.md AC-S5).
+// check performed against Grammar's actual build.
 
 test("sweep selector absent (CONFIG.sweeps undefined): #sweepbar stays unrendered and ENGINE.parse still receives a usable call", () => {
   const { sandbox, doc, parseCalls } = makeSandbox(); // no `sweeps` option -> CONFIG.sweeps undefined

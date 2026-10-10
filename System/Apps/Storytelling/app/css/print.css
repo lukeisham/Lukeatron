@@ -1,4 +1,4 @@
-/* print.css — print for A4 and Letter (style.spec FR-S9, FR-S11, FR-S12–S15; lists FR-K6; story-map FR-C13).
+/* print.css — print for A4 and Letter.
    Keys off two attributes that shared/output.js puts on <body> only while printing:
    data-print = element | story | story-with-table | table | list      data-tone = colour | gray
    Paper size is left to the printer (only the orientation is set), so one sheet rule serves A4 and Letter.
@@ -31,7 +31,7 @@
   body[data-print="story-with-table"] .st-diagram-host { height: 110mm; margin-bottom: var(--space-md); }
   body[data-print="story-with-table"] .st-story { break-inside: avoid; }
 
-  /* No selection cue and no in-story mark on any printed poster (FR-S9, FR-S12); the rogue dots stay. */
+  /* No selection cue and no in-story mark on any printed poster; the rogue dots stay. */
   body .tile.is-selected, body .tile.is-in-story, body .tile:hover { transform: none; filter: none; }
   body .tile:is(.is-selected, .is-in-story) .tile-rect { stroke: var(--color-edge); stroke-width: var(--tile-edge-width); }
   body .tile.tile-rogue:is(.is-selected, .is-in-story) .tile-rect { stroke: var(--color-ink-soft); stroke-width: 1.4; stroke-dasharray: 0 3; }
@@ -73,7 +73,7 @@
   body[data-print="list"] [data-print-list] h2:not(:first-child) { break-before: page; }
   body[data-print="list"] [data-print-list] li { break-inside: avoid; }
 
-  /* ---- Grayscale: each group's fill becomes its designed gray token; popularity numbers go black (FR-S14) ---- */
+  /* ---- Grayscale: each group's fill becomes its designed gray token; popularity numbers go black ---- */
   body[data-tone="gray"] :is(.tile-structure, .chip-structure) { --tile-fill: var(--gray-structure); --st-tile-bg: var(--gray-structure); }
   body[data-tone="gray"] :is(.tile-setting, .chip-setting) { --tile-fill: var(--gray-setting); --st-tile-bg: var(--gray-setting); }
   body[data-tone="gray"] :is(.tile-storymod, .chip-storymod) { --tile-fill: var(--gray-storymod); --st-tile-bg: var(--gray-storymod); }

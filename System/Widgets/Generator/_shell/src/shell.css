@@ -1,9 +1,9 @@
 /* ============================================================
    Generator Shell — generic chassis CSS
-   Never edited per-cartridge (GeneratorShell.spec.md §3-FR-9, D-3).
+   Never edited per-cartridge.
    Focus-level CSS (.v-<level> rules) is NOT here — it is generated
    at build time from CONFIG.levels by _shell/build/assemble.py
-   (AD-2) and appended after this file. A cartridge's own
+   and appended after this file. A cartridge's own
    files.styles CSS (optional) loads after the generated block and
    may override any selector here.
 
@@ -35,14 +35,14 @@ button:disabled{opacity:.45;cursor:not-allowed;}
 button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
 #input{border:1px solid var(--line2);border-radius:var(--radius);padding:12px 14px;min-height:64px;font-size:15px;background:#fff;outline:none;}
 #input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg);}
-/* Spelling module (SpellingModule.spec.md FR-9): CSS Custom Highlight API
+/* Spelling module: CSS Custom Highlight API
    is the primary rendering path (::highlight(spelling-misspelled), set via
    CSS.highlights in _modules/Spelling/src/ui.js — no DOM mutation, so no
    selector inside #input targets it); .spelling-mark styles the
    non-mutating absolute-position overlay fallback for browsers without the
    Highlight API. Neither existed in the pre-shell monolith's innerHTML+
-   TreeWalker approach (excluded outright, not offered as a fallback tier —
-   AD-2), so this is new chassis CSS, not a port of the old .miss rule. */
+   TreeWalker approach (excluded outright: rewriting the input's DOM breaks
+   undo), so this is new chassis CSS, not a port of the old .miss rule. */
 ::highlight(spelling-misspelled){text-decoration:underline wavy var(--red) 2px;text-underline-offset:3px;}
 .spelling-mark{border-bottom:2px wavy var(--red);}
 .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;}
@@ -65,7 +65,7 @@ button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
 #ctx{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px 0;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;min-width:200px;}
 #ctx div{padding:5px 14px;}
 #ctx div.h{font-weight:600;border-bottom:1px solid var(--line);margin-bottom:4px;}
-/* Spelling module suggestion popover (SpellingModule.spec.md FR-10). The
+/* Spelling module suggestion popover. The
    module looks up this exact id (POPOVER_ID = "spelling-suggestions" in
    _modules/Spelling/src/ui.js) and reuses it if found instead of creating
    its own body-appended, unstyled div — so this id is load-bearing, not a

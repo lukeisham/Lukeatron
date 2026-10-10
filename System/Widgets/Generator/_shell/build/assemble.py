@@ -4,22 +4,21 @@
 Replaces the 13 near-identical build_parser.py clones (SR-4; vibe-coding-
 rules.md names them as its standing example). One shell (this folder's
 sibling ``src/``) is shared by every cartridge; a cartridge supplies
-CONFIG/CONTENT/ENGINE/EXPLAINER per GeneratorShell.spec.md's contract.
+CONFIG/CONTENT/ENGINE/EXPLAINER, the four keys the shell reads.
 
-Provenance (FR-21, carried over from Grammar/build/build_parser.py):
+Provenance (carried over from Grammar/build/build_parser.py):
   * sql.js 1.13.0 (sql-wasm.js + sql-wasm.wasm) — SQLite compiled to WASM.
-    Licence: MIT (sql.js) / SQLite is public domain. Originally retrieved
-    2026-07-05 from cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/; this
-    shell vendors one shared copy at _shell/build/vendor/ (extracted from
-    the shipped Grammar_generator.html, since no separate source file existed
-    on disk — see _shell/README.md) rather than embedding it per cartridge.
+    Licence: MIT (sql.js) / SQLite is public domain. Source:
+    cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/. This shell vendors one
+    shared copy at _shell/build/vendor/ (see _shell/README.md) rather than
+    embedding it per cartridge.
   * A cartridge's lexicon .db carries its own provenance in its own
     build script's header (e.g. Grammar/build/build_lexicon.py).
 
 Usage:
   python3 assemble.py <cartridge_dir> [output.html]
 
-Cartridge folder contract (GeneratorShell.spec.md §8):
+Cartridge folder contract:
   <cartridge_dir>/build/config.yaml      required — manifest
   <cartridge_dir>/build/<engine>.js      required — path from files.engine
   <cartridge_dir>/build/<explainer>.js   required — path from files.explainer
@@ -32,7 +31,7 @@ Cartridge folder contract (GeneratorShell.spec.md §8):
   <cartridge_dir>/build/<lexicon>.db     optional — path from lexicon.dbFile
 
 Every failure below is named and non-zero-exit (PY-6) — no output file is
-written on a failed validation (FR-16).
+written on a failed validation.
 """
 from __future__ import annotations
 
@@ -57,7 +56,7 @@ MINIWIKI_BUNDLE = MINIWIKI_DIR / "dist" / "miniwiki.bundle.js"
 # Required footer attribution (_research/DECISION-dictionary-source.md,
 # verbatim from the release's own Copyright file) — every cartridge that
 # ships with spelling.enabled: true must show this string, not a
-# per-cartridge restatement of it (AD-6/AC-8). The trailing URL is wrapped
+# per-cartridge restatement of it. The trailing URL is wrapped
 # in [label](url) markdown-link syntax — _shell/src/ui.js's
 # renderAttribution() turns that into a real target=_blank anchor — but the
 # visible text is unchanged, character for character, from the verbatim
@@ -72,13 +71,11 @@ REQUIRED_EXPLAINER_KEYS = {
     "tables", "rules", "toMarkdown", "toText",
     "funcOf", "phraseOf", "clauseOf", "posShort", "needSpace",
 }
-# generator.mode (task B / DECISIONS.md D-1): one shell, two modes. "analyse"
-# is Parser's original text-in/highlight-out flow (ENGINE/EXPLAINER keys
-# above, unchanged). "present" is the new pool-of-items flow (task D) — its
-# ENGINE additionally exports getPool/render, plus checkAnswer/explainItem
-# when the cartridge opts into generator.answer/generator.explainer. See
-# Specs/GeneratorShell.spec.md §3b for the full present-mode contract this
-# constant enforces.
+# generator.mode: one shell, two modes. "analyse" is Parser's
+# text-in/highlight-out flow (ENGINE/EXPLAINER keys above). "present" is the
+# pool-of-items flow — its ENGINE additionally exports getPool/render, plus
+# checkAnswer/explainItem when the cartridge opts into
+# generator.answer/generator.explainer.
 GENERATOR_MODES = {"analyse", "present"}
 REQUIRED_PRESENT_ENGINE_KEYS = {"getPool", "render"}
 PLACEHOLDER_RE = re.compile(r"__[A-Z_]+__")
@@ -149,7 +146,7 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
         if generator_cfg.get("explainer"):
             required_present_keys.add("explainItem")
         validate_module_exports(engine_js, "ENGINE", required_present_keys)
-        # EXPLAINER is Parser's ParseResult-shaped contract (FR-5) — a
+        # EXPLAINER is Parser's ParseResult-shaped contract — a
         # present-mode cartridge has no ParseResult, so it is not required
         # to ship one; an EXPLAINER file is still accepted if a cartridge
         # provides it (files.explainer stays a required manifest field for
@@ -172,8 +169,8 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
 
     # sql.js is needed if EITHER the cartridge lexicon OR the central spelling
     # dictionary is embedded — both are sql.js-backed SQLite .db payloads
-    # (GeneratorShell.spec.md FR-7 / SpellingModule.spec.md FR-3's
-    # createSqlJsBackend), and the shell only vendors one shared copy.
+    # (the spelling module reaches its .db through createSqlJsBackend), and
+    # the shell only vendors one shared copy.
     need_sqljs = bool(lexicon_cfg.get("enabled")) or spelling_enabled
     wasm_b64, sqljs_js = load_sqljs_vendor() if need_sqljs else ("", "")
     db_b64 = embed_lexicon_db(build_dir, lexicon_cfg) if lexicon_cfg.get("enabled") else ""
@@ -184,7 +181,7 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
     styles_file = config.get("files", {}).get("styles")
     cartridge_css = _read(build_dir / styles_file) if styles_file else ""
 
-    # D-1/FR-11: the spelling module is a peer module the shell wires in, not
+    # The spelling module is a peer module the shell wires in, not
     # shell code. spelling.enabled:true is what makes the assembler embed the
     # module's bundle + dictionary — the OLD ad-hoc edit-distance-1 checker
     # this replaces never existed in _shell/src/ui.js (that duplication was
@@ -337,7 +334,7 @@ def validate_manifest(config: dict) -> None:
     require("colours.palette", lambda v: isinstance(v, list) and len(v) >= 1)
     require("files.engine")
     require("files.explainer")
-    # Task B / DECISIONS.md D-1: the mode switch. Missing or not one of the
+    # The mode switch. Missing or not one of the
     # two literal values is a loud, named, non-zero failure (PY-6) — never a
     # silent default to either mode.
     require("generator.mode", lambda v: v in GENERATOR_MODES)
@@ -345,7 +342,7 @@ def validate_manifest(config: dict) -> None:
     if missing:
         raise CartridgeError("config.yaml missing/invalid required field(s): " + ", ".join(missing))
 
-    # FR-19: sweeps.items is required together with sweeps.enabled: true —
+    # sweeps.items is required together with sweeps.enabled: true —
     # absent/false by default, same contract miniwiki.enabled already uses.
     sweeps_cfg = config.get("sweeps") or {}
     if sweeps_cfg.get("enabled") and not sweeps_cfg.get("items"):
@@ -392,14 +389,14 @@ def build_config_js(config: dict) -> str:
             for hue in config["colours"]["palette"]
         ],
         "tentativeThreshold": p["tentativeThreshold"],
-        # FR-2: tierB.enabled MUST be false in this build — the assembler
+        # tierB.enabled MUST be false in this build — the assembler
         # enforces that by construction, never trusting a manifest value.
         "tierB": {"enabled": False, "note": tier_b_note},
         "lexicon": {
             "enabled": bool(lexicon_cfg.get("enabled", False)),
             "attribution": lexicon_cfg.get("attribution", ""),
         },
-        # AC-8/AD-6: attribution is sourced from the module's own metadata
+        # Attribution is sourced from the module's own metadata
         # (SPELLING_ATTRIBUTION, this file's constant, quoting the SCOWL
         # release's own Copyright file) — never a per-cartridge restatement.
         "spelling": {
@@ -420,9 +417,9 @@ def build_config_js(config: dict) -> str:
     }
     if p.get("focusLabels"):
         obj["focusLabels"] = p["focusLabels"]
-    # FR-19/FR-20: sweeps is optional and cartridge-defined; passed through
+    # Sweeps is optional and cartridge-defined; passed through
     # verbatim (the shell only reads item fields to render checkboxes — it
-    # never interprets CONTENT ids or sweep semantics itself, FR-9). Absent
+    # never interprets CONTENT ids or sweep semantics itself). Absent
     # for every cartridge that doesn't declare it, Grammar included.
     sweeps_cfg = config.get("sweeps") or {}
     if sweeps_cfg.get("enabled") and sweeps_cfg.get("items"):
@@ -506,7 +503,7 @@ def compile_content(build_dir: Path, content_ref: str | None) -> dict:
 
 
 def compile_content_markdown(md_path: Path) -> dict:
-    """Best-effort compiler: outline-numbered entries -> CONTENT (FR-3).
+    """Best-effort compiler: outline-numbered entries -> CONTENT.
 
     Recognises a line of the form ``<id> <Name>`` where <id> is a dotted
     outline number (``1.3``, ``4.1n``, ``5.3.1``) at the start of the line,
@@ -601,9 +598,8 @@ def embed_lexicon_db(build_dir: Path, lexicon_cfg: dict) -> str:
 def embed_miniwiki_articles(build_dir: Path, miniwiki_cfg: dict) -> str:
     """Read a pre-built *.miniwiki.json (extract_articles.py's output — a
     dict keyed by article id) and re-serialise it as a JSON ARRAY, which is
-    the shape MiniWikiModule.spec.md's createMiniWikiModule({articles})
-    expects (decision 5: articles come from build-time JSON only, never
-    hardcoded here or in JS)."""
+    the shape createMiniWikiModule({articles}) expects. Articles come from
+    build-time JSON only, never hardcoded here or in JS."""
     articles_file = miniwiki_cfg.get("articlesFile")
     if not articles_file:
         raise CartridgeError("miniwiki.enabled is true but miniwiki.articlesFile is not set")
@@ -624,7 +620,7 @@ def embed_miniwiki_articles(build_dir: Path, miniwiki_cfg: dict) -> str:
 
 
 def embed_spelling_db() -> str:
-    """Embed the central spelling module's gzipped dictionary (FR-11, D-1).
+    """Embed the central spelling module's gzipped dictionary.
 
     Unlike a cartridge lexicon, this .db is NOT per-cartridge — it lives at
     _modules/Spelling/data/spelling.db.gz, shared by every widget that opts
@@ -646,7 +642,7 @@ def embed_spelling_db() -> str:
 
 
 def generate_focus_css(levels: list[str], palette: list[dict]) -> str:
-    """Generate #stage.v-<level> CSS from CONFIG.levels (D-6, AD-2).
+    """Generate #stage.v-<level> CSS from CONFIG.levels.
 
     Fixed-home model: three render "kinds" — clause (.cl), phrase (.ph),
     word (.w) — each has one home level index that renders it at full
@@ -655,14 +651,13 @@ def generate_focus_css(levels: list[str], palette: list[dict]) -> str:
     for .cl instead of a home. This exact rule reproduces Grammar's
     current four-level CSS (template.html:40-50) byte-for-byte when
     levels has length 4 — verified by migration diff, not merely
-    asserted. For levels shorter than 4 (e.g. AC-5's two-level synthetic
+    asserted. For levels shorter than 4 (e.g. the two-level synthetic test
     cartridge) homes collapse: with only 2 levels, level 1 is both the
     clause home AND the last (word) home, so it renders both fully; no
     level ever gets a phrase home (index 2 doesn't exist), so no
-    orphaned .ph rule is emitted. See GeneratorShell.spec.md AD-2/OQ-1 —
-    this fixed-index reading is this build's resolution of an ambiguity
-    the spec left explicitly open pending a second, differently-shaped
-    cartridge.
+    orphaned .ph rule is emitted. The fixed-index reading holds until a
+    second, differently-shaped cartridge shows whether homes should follow
+    level names instead.
     """
     n = len(levels)
     cl_home = 1 if n > 1 else 0

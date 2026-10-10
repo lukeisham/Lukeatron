@@ -27,9 +27,6 @@ class SplitSourceTests(unittest.TestCase):
 
 class ParseSeedTests(unittest.TestCase):
     def test_seed_file_parses_to_40_tales_across_10_categories(self) -> None:
-        # 2026-08-13 (Luke's instruction): Turkey/Middle East (4 tales) removed,
-        # replaced with Persia (Pre-Islamic) (3 tales); American Gothic (3) and
-        # Australian Gothic (2) added. 36 - 4 + 3 + 3 + 2 = 40 tales, 10 categories.
         tales = build_folktale.parse_seed(build_folktale.SEED_PATH)
         self.assertEqual(len(tales), 40)
         categories = {t["category"] for t in tales}

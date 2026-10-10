@@ -1,14 +1,14 @@
-/* Psychometric cartridge ENGINE (present mode) — GeneratorShell.spec.md §3b.
+/* Psychometric cartridge ENGINE (present mode).
    getPool/render/checkAnswer/explainItem are the four present-mode exports
    (generator.answer + generator.explainer are both true in config.yaml).
 
-   Dispatch is by item.category (SR-1: one small function per category,
+   Dispatch is by item.category (one small function per category,
    not one tangled function) — see the render()/checkAnswer()/explainItem()
    switches at the bottom of this file.
 
    Abstract-Diagrammatic Reasoning (category "abstract-reasoning") is the
    one category whose item is not prose: pool.json carries a grid/sequence/
-   odd-one-out RULE SPEC (DECISIONS.md D-3), authored in
+   odd-one-out RULE SPEC, authored in
    Psychometric/cartridge/build/abstract_specs.py. deriveAnswerId() below
    walks that spec at both render time (to draw the SVG) and check-answer
    time (to grade) — the correct lettered option is *derived* from the
@@ -16,13 +16,6 @@
    test-abstract-rules.mjs cross-checks every derived answer against the
    seed content's own key. */
 var ENGINE = (function () {
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
 
   function getPool() {
     return Object.keys(CONTENT).map(function (id) {
@@ -252,7 +245,7 @@ var ENGINE = (function () {
     return dotArrangementSvg(ARRANGEMENT_SQUARE, w, h, -1);
   }
 
-  /* ---- rule derivation (the D-3 contract: same spec drives the answer) --- */
+  /* ---- rule derivation (the same spec drives drawing and grading) --- */
 
   function valueFromLine(line, skipIndex, attr) {
     for (var i = 0; i < line.length; i++) {
@@ -393,15 +386,15 @@ var ENGINE = (function () {
 
   function renderStimulusBlock(item) {
     return (
-      '<p class="psy-stimulus">' + esc(item.stimulus) + "</p>" +
-      '<p class="psy-question"><strong>' + esc(item.question) + "</strong></p>"
+      '<p class="psy-stimulus">' + escapeHtml(item.stimulus) + "</p>" +
+      '<p class="psy-question"><strong>' + escapeHtml(item.question) + "</strong></p>"
     );
   }
 
   function renderOptionsList(item) {
     var html = '<ul class="psy-options">';
     sortedLetters(item.options).forEach(function (letter) {
-      html += "<li><strong>" + letter + ":</strong> " + esc(item.options[letter]) + "</li>";
+      html += "<li><strong>" + letter + ":</strong> " + escapeHtml(item.options[letter]) + "</li>";
     });
     html += "</ul>";
     return html;
@@ -410,7 +403,7 @@ var ENGINE = (function () {
   function renderMCQ(item) {
     return {
       html: renderStimulusBlock(item) + renderOptionsList(item),
-      clueHtml: '<p>' + esc(item.clue) + "</p>",
+      clueHtml: '<p>' + escapeHtml(item.clue) + "</p>",
       canonicalText: item.stimulus + "\n\n" + item.question,
     };
   }
@@ -422,7 +415,7 @@ var ENGINE = (function () {
       '<p class="psy-meta">Type your ranking as five comma-separated letters, best to worst (e.g. B,D,A,E,C).</p>';
     return {
       html: html,
-      clueHtml: "<p>" + esc(item.clue) + "</p>",
+      clueHtml: "<p>" + escapeHtml(item.clue) + "</p>",
       canonicalText: item.stimulus + "\n\n" + item.question,
     };
   }
@@ -430,16 +423,16 @@ var ENGINE = (function () {
   function renderDirTable(table) {
     if (!table) return "";
     var html = '<table class="psy-table"><thead><tr>';
-    table.header.forEach(function (cell) { html += "<th>" + esc(cell) + "</th>"; });
+    table.header.forEach(function (cell) { html += "<th>" + escapeHtml(cell) + "</th>"; });
     html += "</tr></thead><tbody>";
     table.rows.forEach(function (row) {
       html += "<tr>";
-      row.forEach(function (cell) { html += "<td>" + esc(cell) + "</td>"; });
+      row.forEach(function (cell) { html += "<td>" + escapeHtml(cell) + "</td>"; });
       html += "</tr>";
     });
     html += "</tbody></table>";
     table.notes.forEach(function (note) {
-      html += '<p class="psy-table-note">' + esc(note) + "</p>";
+      html += '<p class="psy-table-note">' + escapeHtml(note) + "</p>";
     });
     return html;
   }
@@ -447,15 +440,15 @@ var ENGINE = (function () {
   function renderDIR(item) {
     var body = item.table
       ? renderDirTable(item.table)
-      : "<pre>" + esc(item.stimulus) + "</pre>";
+      : "<pre>" + escapeHtml(item.stimulus) + "</pre>";
     var html =
       body +
-      '<p class="psy-question"><strong>' + esc(item.question) + "</strong></p>" +
+      '<p class="psy-question"><strong>' + escapeHtml(item.question) + "</strong></p>" +
       renderOptionsList(item) +
       '<p class="psy-meta">Answer with a letter (A–E) or a number — numeric answers are checked with tolerance.</p>';
     return {
       html: html,
-      clueHtml: "<p>" + esc(item.clue) + "</p>",
+      clueHtml: "<p>" + escapeHtml(item.clue) + "</p>",
       canonicalText: item.question,
     };
   }
@@ -463,19 +456,19 @@ var ENGINE = (function () {
   function renderAR(item) {
     var puzzleSvg = item.kind === "matrix" ? renderMatrixSvg(item) : item.kind === "series" ? renderSeriesSvg(item) : "";
     var html = '<div class="ar-puzzle">' + puzzleSvg + "</div>";
-    html += '<p class="psy-question"><strong>' + esc(item.question || "Which option completes the pattern?") + "</strong></p>";
+    html += '<p class="psy-question"><strong>' + escapeHtml(item.question || "Which option completes the pattern?") + "</strong></p>";
     html += '<div class="ar-options">';
     sortedLetters(item.options).forEach(function (letter) {
       var cell = item.options[letter];
       var thumb = item.kind === "oddOneOut" ? oddOneOutOptionSvg(cell) : renderSingleCellThumb(cell);
       html +=
         '<div class="ar-option"><span class="ar-letter">' + letter + "</span>" + thumb +
-        '<span class="ar-option-label">' + esc((item.optionLabels && item.optionLabels[letter]) || "") + "</span></div>";
+        '<span class="ar-option-label">' + escapeHtml((item.optionLabels && item.optionLabels[letter]) || "") + "</span></div>";
     });
     html += "</div>";
     return {
       html: html,
-      clueHtml: "<p>" + esc(item.clue) + "</p>",
+      clueHtml: "<p>" + escapeHtml(item.clue) + "</p>",
       canonicalText: (item.question || "Abstract reasoning item " + item.id),
     };
   }
@@ -498,7 +491,7 @@ var ENGINE = (function () {
         return renderAR(item);
       default:
         console.warn("render: unknown category", item.category);
-        return { html: "<p>" + esc(item.stimulus || "") + "</p>", canonicalText: item.stimulus || "" };
+        return { html: "<p>" + escapeHtml(item.stimulus || "") + "</p>", canonicalText: item.stimulus || "" };
     }
   }
 
@@ -627,22 +620,22 @@ var ENGINE = (function () {
      ================================================================ */
 
   function explainGeneric(item) {
-    return "<p>" + esc(item.explainerText) + "</p>";
+    return "<p>" + escapeHtml(item.explainerText) + "</p>";
   }
 
   function explainSJT(item) {
     return (
-      "<p>" + esc(item.explainerText) + "</p>" +
-      "<p><strong>Model order (best → worst):</strong> " + esc(item.correctOrder.join(", ")) + "</p>"
+      "<p>" + escapeHtml(item.explainerText) + "</p>" +
+      "<p><strong>Model order (best → worst):</strong> " + escapeHtml(item.correctOrder.join(", ")) + "</p>"
     );
   }
 
   function explainAR(item) {
     var correctLetter = deriveAnswerId(item);
     return (
-      "<p>" + esc(item.explainerText) + "</p>" +
-      "<p><strong>Rule:</strong> " + esc(describeRules(item)) + "</p>" +
-      "<p><strong>Derived answer:</strong> " + esc(correctLetter || "unresolved") + "</p>"
+      "<p>" + escapeHtml(item.explainerText) + "</p>" +
+      "<p><strong>Rule:</strong> " + escapeHtml(describeRules(item)) + "</p>" +
+      "<p><strong>Derived answer:</strong> " + escapeHtml(correctLetter || "unresolved") + "</p>"
     );
   }
 

@@ -3,7 +3,7 @@ plan: "aicharacteristics-criteria-judge"
 context: [Personal Research]
 secondary_contexts: [Coding, Teaching]
 created: 2026-10-02
-status: New
+status: In progress
 major_because: "multi-step; touches external parties (Wikipedia fetch, Haiku API); modifies a built app and Home's route table"
 project: ""
 skills_used: []
@@ -75,10 +75,10 @@ The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristi
   - [x] !Checkpoint — Luke approved the list 2026-10-02 (generator HTML, `cartridge/`, miniwiki source, 3 old test files, old fixtures). Deleted with `git rm`, recoverable from history. `AI-writing-characteristics-reference.md` was not on the approved list and stays in place; Luke has not yet chosen between moving it to `Memory/Long-Term/Style/` (a Long-Term write, needs its own checkpoint), leaving it, or deleting it. New suites still pass (45 + 14); Home 92.
 
 **H. Verify and finish**
-- [ ] 14 — First live run, with Luke watching: one real Scrape (fetches Wikipedia, calls Haiku) and one real Check (sends pasted text to the Haiku API). [!Checkpoint — external fetch and external API call; Luke approves each before it fires.]
-- [ ] 15 — Run the idempotence check live (Scrape twice, compare), then exercise the app in the browser: Scrape, explainer, Check, plus the failure cases (no key, offline). [runs: preview/browser tools]
-- [ ] 16 — Run the Refactor Health Check (7 questions, scored out of 10); fix anything unmet. [runs: phase4-retire.md]
-- [ ] 17 — Rewrite README (Purpose; Navigation; Cross-app behaviour — Home routes, key location, retired shell dependency, what breaks if either changes); remove the "no refresh action" and "fixed at build time" lines. Append Luke's approval (and any granted exception) to `app-decisions.md`. Delete the wishlist row via !AppWishlist. [inline · !AppWishlist]
+- [~] 14 — First live run (2026-10-10, Luke approved both calls): the Scrape ran in chat via `!ScrapeAiCharacteristics` (real Wikipedia fetch, revision 1379367647, 15 criteria written, reading-level check passed after one rewrite) and one Check ran in chat on a synthetic passage, its reply accepted by `parse_verdicts` (three malformed replies refused). **Not yet done:** pressing Scrape/Check in the page, because headless `claude -p` is not signed in on this Mac (`claude auth status` → loggedIn false). Luke runs `claude` in Terminal once and signs in, then presses both buttons. Original wording: one real Scrape (fetches Wikipedia, calls Haiku) and one real Check (sends pasted text to the Haiku API). [!Checkpoint — external fetch and external API call; Luke approves each before it fires.]
+- [~] 15 — Idempotence: the article revision is unchanged (1379367647), so a second Scrape stops at Step 1 with "has not changed" (checked by revision id; a forced re-read was not run). Browser run of the page, button presses and failure cases still open (needs Luke's sign-in to Home and to Claude Code). Original wording: Run the idempotence check live (Scrape twice, compare), then exercise the app in the browser: Scrape, explainer, Check, plus the failure cases (no key, offline). [runs: preview/browser tools]
+- [x] 16 — Health Check 2026-10-10: Q1-4, 6, 7 yes; Q5 n/a (not a widget); 6/6 → 10/10 (live button run still outstanding, see 14-15). Original wording: Run the Refactor Health Check (7 questions, scored out of 10); fix anything unmet. [runs: phase4-retire.md]
+- [x] 17 — README already matches the new app; wishlist row deleted 2026-10-10; `app-decisions.md` already holds every approval and exception. Original wording: Rewrite README (Purpose; Navigation; Cross-app behaviour — Home routes, key location, retired shell dependency, what breaks if either changes); remove the "no refresh action" and "fixed at build time" lines. Append Luke's approval (and any granted exception) to `app-decisions.md`. Delete the wishlist row via !AppWishlist. [inline · !AppWishlist]
 - [ ] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pass/fail]
 
 ## Final step — Close out (always present)

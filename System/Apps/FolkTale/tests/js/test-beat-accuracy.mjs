@@ -13,6 +13,7 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { escapeHtml } from "../../../../Tools/web-shared/escape-html.js";
 
 const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -20,6 +21,7 @@ const BUILD_DIR = path.resolve(HERE, "../../cartridge/build");
 
 const pool = JSON.parse(readFileSync(path.join(BUILD_DIR, "pool.json"), "utf8"));
 global.CONTENT = pool;
+global.escapeHtml = escapeHtml;
 global.CONFIG = { clausePalette: [{ h100: "#9FE1CB", h800: "#085041" }, { h100: "#FAC775", h800: "#633806" }, { h100: "#F3B8AB", h800: "#7A2C1C" }] };
 
 const ENGINE = require(path.join(BUILD_DIR, "engine.js"));
@@ -50,8 +52,6 @@ function measure() {
 }
 
 test("detectBeats() sentence-labelling accuracy against all 40 seeded tales", () => {
-  // 2026-08-13 (Luke's instruction): Turkey/Middle East (4) removed, Persia
-  // (Pre-Islamic) (3), American Gothic (3), and Australian Gothic (2) added.
   const { ids, totalSentences, accuracy, perTale } = measure();
   assert.equal(ids.length, 40, "expected all 40 seeded tales in the pool");
   // eslint-disable-next-line no-console
@@ -61,9 +61,7 @@ test("detectBeats() sentence-labelling accuracy against all 40 seeded tales", ()
     .sort((a, b) => a.acc - b.acc)
     .slice(0, 5);
   console.log("Worst 5 tales:", worst.map((t) => `${t.id}:${(t.acc * 100).toFixed(0)}%`).join(", "));
-  // Baseline was ~64% on 36 tales (2026-08-12); re-measured after the
-  // 2026-08-13 content change — see this run's console output for the
-  // current number. This guard only catches a future regression, it does
-  // not claim the heuristic is highly accurate.
+  // The console output above gives the current number. This guard only
+  // catches a regression; it does not claim the heuristic is accurate.
   assert.ok(accuracy >= 0.5, `accuracy regressed below 50% floor: ${(accuracy * 100).toFixed(1)}%`);
 });

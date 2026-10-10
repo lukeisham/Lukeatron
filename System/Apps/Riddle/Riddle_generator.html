@@ -8,10 +8,10 @@
 <style>
 /* ============================================================
    Generator Shell — generic chassis CSS
-   Never edited per-cartridge (GeneratorShell.spec.md §3-FR-9, D-3).
+   Never edited per-cartridge.
    Focus-level CSS (.v-<level> rules) is NOT here — it is generated
    at build time from CONFIG.levels by _shell/build/assemble.py
-   (AD-2) and appended after this file. A cartridge's own
+   and appended after this file. A cartridge's own
    files.styles CSS (optional) loads after the generated block and
    may override any selector here.
 
@@ -43,14 +43,14 @@ button:disabled{opacity:.45;cursor:not-allowed;}
 button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
 #input{border:1px solid var(--line2);border-radius:var(--radius);padding:12px 14px;min-height:64px;font-size:15px;background:#fff;outline:none;}
 #input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg);}
-/* Spelling module (SpellingModule.spec.md FR-9): CSS Custom Highlight API
+/* Spelling module: CSS Custom Highlight API
    is the primary rendering path (::highlight(spelling-misspelled), set via
    CSS.highlights in _modules/Spelling/src/ui.js — no DOM mutation, so no
    selector inside #input targets it); .spelling-mark styles the
    non-mutating absolute-position overlay fallback for browsers without the
    Highlight API. Neither existed in the pre-shell monolith's innerHTML+
-   TreeWalker approach (excluded outright, not offered as a fallback tier —
-   AD-2), so this is new chassis CSS, not a port of the old .miss rule. */
+   TreeWalker approach (excluded outright: rewriting the input's DOM breaks
+   undo), so this is new chassis CSS, not a port of the old .miss rule. */
 ::highlight(spelling-misspelled){text-decoration:underline wavy var(--red) 2px;text-underline-offset:3px;}
 .spelling-mark{border-bottom:2px wavy var(--red);}
 .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;}
@@ -73,7 +73,7 @@ button.fv.on{border:2px solid var(--acc);color:var(--acc);padding:5px 13px;}
 #ctx{position:absolute;display:none;background:#fff;border:1px solid var(--line2);border-radius:var(--radius);padding:6px 0;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.12);z-index:60;min-width:200px;}
 #ctx div{padding:5px 14px;}
 #ctx div.h{font-weight:600;border-bottom:1px solid var(--line);margin-bottom:4px;}
-/* Spelling module suggestion popover (SpellingModule.spec.md FR-10). The
+/* Spelling module suggestion popover. The
    module looks up this exact id (POPOVER_ID = "spelling-suggestions" in
    _modules/Spelling/src/ui.js) and reuses it if found instead of creating
    its own body-appended, unstyled div — so this id is load-bearing, not a
@@ -166,7 +166,7 @@ body.mode-present #categoryBar.present-only,body.mode-present #presentToolbar.pr
 <div class="analyse-only" id="stage"></div>
 <div class="muted analyse-only" id="hoverhint" style="display:none;">Hover a word for its description at the selected focus level · right-click for word-class detail</div>
 
-<!-- Present mode (GeneratorShell.spec.md §3b, task D) — hidden entirely
+<!-- Present mode — hidden entirely
      in analyse-mode builds via the .present-only / body.mode-present CSS
      rule below; present-mode.js decides which of these appear within a
      present-mode build based on CONFIG.generator's feature flags. -->
@@ -213,8 +213,8 @@ body.mode-present #categoryBar.present-only,body.mode-present #presentToolbar.pr
 
 <div id="tip"></div>
 <div id="ctx"></div>
-<!-- Spelling module's suggestion popover mount (SpellingModule.spec.md FR-10
-     POPOVER_ID) — the module finds this by id and reuses it (styled by
+<!-- Spelling module's suggestion popover mount (its POPOVER_ID) — the
+     module finds this by id and reuses it (styled by
      shell.css) instead of creating its own unstyled body-appended div. -->
 <div id="spelling-suggestions"></div>
 
@@ -247,7 +247,7 @@ var MINIWIKI_CARTRIDGE_NAME = "Riddle catalogue";
 </script>
 <script>
 /* ============================================================
-   SHELL · LEXICON PORTAL (GeneratorShell.spec.md FR-7)
+   SHELL · LEXICON PORTAL
    sql.js-backed embedded SQLite lexicon. A cartridge with
    lexicon.enabled:false in its manifest never calls this; LEX.ready
    stays false and every query returns null. Never edited per
@@ -324,7 +324,7 @@ function escapeHtml(value) {
 
 </script>
 <script>
-/* Riddle cartridge ENGINE (present mode) — GeneratorShell.spec.md §3b.
+/* Riddle cartridge ENGINE (present mode).
    getPool/render/checkAnswer are the three required-by-config exports
    (generator.answer: true makes checkAnswer required; generator.explainer:
    false means explainItem is never called, so it is intentionally
@@ -340,12 +340,6 @@ function escapeHtml(value) {
    normalisation, fuzzy tolerance is for typos on the canonical spelling
    only). */
 var ENGINE = (function () {
-  function esc(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
 
   function getPool() {
     return Object.keys(CONTENT).map(function (id) {
@@ -356,8 +350,8 @@ var ENGINE = (function () {
   function render(item) {
     var meta = item.tradition + " · difficulty: " + item.difficulty;
     return {
-      html: "<p>" + esc(item.text) + "</p><p>" + esc(meta) + "</p>",
-      clueHtml: "<p>" + esc(item.clue) + "</p>",
+      html: "<p>" + escapeHtml(item.text) + "</p><p>" + escapeHtml(meta) + "</p>",
+      clueHtml: "<p>" + escapeHtml(item.clue) + "</p>",
       canonicalText: item.text,
     };
   }
@@ -465,8 +459,8 @@ var ENGINE = (function () {
 
 </script>
 <script>
-/* files.explainer stays a required manifest field in present mode
-   (GeneratorShell.spec.md §3b), but its nine-key export set is only
+/* files.explainer stays a required manifest field in present mode,
+   but its nine-key export set is only
    checked in analyse mode, and generator.explainer: false means the
    shell never calls ENGINE.explainItem either — riddles ship no
    explainer by design (task brief). Placeholder only. */
@@ -479,15 +473,12 @@ var EXPLAINER = (function () {
 /* ============================================================
    SHELL · SPELLING MODULE INJECTION SEAM
    ============================================================
-   GeneratorShell.spec.md FR-11 / plan D-1: the spelling module
-   (System/Widgets/Generator/_modules/Spelling/, forked from the Parser
-   project's module of the same name — not yet copied in as of this
-   shell rework, since no Generator cartridge currently opts in) is a
-   PEER module, not shell code. The shell supplies DOM mount points and calls the
-   module's own public API (SpellingModule.spec.md §3) — it never
-   reaches into a cartridge's ENGINE.tokenize() for spell-checking
-   (that coupling, present in the pre-shell monolith, is the exact
-   defect D-5 cuts).
+   The spelling module (System/Widgets/Generator/_modules/Spelling/, a
+   fork of the Parser project's module of the same name; no Generator
+   cartridge opts in yet) is a PEER module, not shell code. The shell
+   supplies DOM mount points and calls the module's own public API — it
+   never reaches into a cartridge's ENGINE.tokenize() for spell-checking,
+   so a cartridge's tokenizer can change without breaking spelling.
 
    THIS FILE IS THE INJECTION POINT. Two ways it resolves at build
    time (_shell/build/assemble.py, step "wire in spelling module"):
@@ -496,8 +487,7 @@ var EXPLAINER = (function () {
         the assembler finds a built spelling-module bundle at
         _modules/Spelling/dist/spelling.bundle.js, that bundle's
         source is prepended above this file, verbatim, and it
-        defines window.createSpellingModule per FR-1 of
-        SpellingModule.spec.md.
+        defines window.createSpellingModule.
      2. Otherwise (no bundle built yet, or spelling.enabled: false),
         this stub ships as-is: window.createSpellingModule stays
         undefined, and the block below degrades the UI accordingly
@@ -515,11 +505,11 @@ var SpellingSeam = (function () {
 
   /* The central dictionary (SPELLDB_B64, from _shell/build/assemble.py's
      embed_spelling_db()) ships gzip-compressed (~2.06 MB base64 vs ~4.55 MB
-     raw — SpellingModule.spec.md's "Compression" measurement) and is
+     raw) and is
      decompressed + opened as a sql.js Database here, once, lazily. This is
      the shell's OWN sql.js wiring (b64bytes()/initSqlJs() from lexicon.js,
-     already loaded for LEX) — NOT the shell's LEX portal itself (D-5: the
-     spelling module never shares LEX's cartridge lexicon connection). */
+     already loaded for LEX) — NOT the shell's LEX portal itself: the
+     spelling module never shares LEX's cartridge lexicon connection. */
   function loadBackend() {
     if (backendPromise) return backendPromise;
     if (typeof SPELLDB_B64 === "undefined" || !SPELLDB_B64 || SPELLDB_B64.indexOf("__") === 0) {
@@ -541,8 +531,8 @@ var SpellingSeam = (function () {
 
   /* init(inputEl, options, onReady) — DB load + sql.js WASM init are both
      async, so this returns null immediately and calls onReady(module) once
-     the module is actually constructed (D-1: the shell only supplies mount
-     points; it never blocks on the module's own load path). */
+     the module is actually constructed. The shell only supplies mount
+     points; it never blocks on the module's own load path. */
   function init(inputEl, options, onReady) {
     if (!available) return null;
     if (module) { if (onReady) onReady(module); return module; }
@@ -568,9 +558,8 @@ var MINIWIKI_BUNDLE_SRC = "/* AUTO-GENERATED by build/bundle_miniwiki.py \u2014 
 /* ============================================================
    SHELL · MINIWIKI MODULE INJECTION SEAM
    ============================================================
-   MiniWikiModule.spec.md FR-1 / this module is a PEER module, not
-   shell code (SR-4, mirrors spelling-seam.js). Per Luke's correction,
-   the Mini-Wiki is NOT an in-page panel — it opens as its own
+   This module is a PEER module, not shell code (it mirrors
+   spelling-seam.js). The Mini-Wiki is NOT an in-page panel — it opens as its own
    complete, self-contained HTML document in a NEW BROWSER TAB, with
    its own hash routing (#/1.1.1), independent of the parser tab. The
    parser page carries exactly one launch button; this seam builds the
@@ -701,13 +690,13 @@ var MiniWikiSeam = (function () {
 </script>
 <script>
 /* ============================================================
-   SHELL · UI + HARNESS (GeneratorShell.spec.md FR-9/FR-10/FR-12)
+   SHELL · UI + HARNESS
    Never edited per cartridge. Reads ONLY CONFIG, CONTENT, ENGINE,
-   EXPLAINER and the ParseResult schema (§4/§6 of the spec) — never
+   EXPLAINER and the ParseResult schema — never
    the DOM, never re-derives Explainer content itself.
 
-   AD-1: needSpace()/posShort() are NOT re-implemented here. They
-   are required EXPLAINER exports (FR-5); this file calls
+   needSpace()/posShort() are NOT re-implemented here. They
+   are required EXPLAINER exports; this file calls
    EXPLAINER.needSpace(a,b) / EXPLAINER.posShort(t) exclusively.
    ============================================================ */
 var UI = (function () {
@@ -749,7 +738,7 @@ var UI = (function () {
     $("wcount").style.color = wc > CONFIG.cap ? "var(--red)" : "";
   }
 
-  /* ---- Focus-level bar (FR-12: built from CONFIG.levels, never hardcoded) ---- */
+  /* ---- Focus-level bar (built from CONFIG.levels, never hardcoded) ---- */
   function buildFocusBar() {
     var bar = $("focusbar");
     var html = '<span class="muted">Focus</span>';
@@ -762,7 +751,7 @@ var UI = (function () {
     });
   }
 
-  /* ---- Sweep selector (FR-19/FR-20: built from CONFIG.sweeps.items, opt-in,
+  /* ---- Sweep selector (built from CONFIG.sweeps.items, opt-in,
      default off — a cartridge that omits CONFIG.sweeps never sees this bar) ---- */
   function sweepsEnabled() { return !!(CONFIG.sweeps && CONFIG.sweeps.enabled && CONFIG.sweeps.items && CONFIG.sweeps.items.length); }
   function buildSweepBar() {
@@ -797,7 +786,7 @@ var UI = (function () {
     });
   }
   // Builds the `selection` object ENGINE.parse's additive second argument
-  // reads (FR-20). Returns undefined (not {}) when sweeps aren't in play, so
+  // reads. Returns undefined (not {}) when sweeps aren't in play, so
   // ENGINE.parse(text, undefined) behaves exactly like ENGINE.parse(text)
   // for every cartridge that doesn't declare CONFIG.sweeps.
   function readSweepSelection() {
@@ -811,7 +800,7 @@ var UI = (function () {
     return sel;
   }
 
-  /* ---- Spell check (delegates to the injected SpellingSeam — FR-11, D-5) ---- */
+  /* ---- Spell check (delegates to the injected SpellingSeam) ---- */
   var spelling = null;
   var spellTimer = null;
   var spellTokens = [];
@@ -819,7 +808,7 @@ var UI = (function () {
   function initSpelling() {
     if (!spellCheckAvailable()) { $("spellLabel").style.display = "none"; return; }
     $("spellLabel").style.display = "flex";
-    // FR-11: the shell supplies DOM mount points only (input + suggestion
+    // The shell supplies DOM mount points only (input + suggestion
     // popover) — it never passes ENGINE.tokenize or any cartridge data in.
     // SpellingSeam.init is async (dictionary decompress + sql.js load), so
     // `spelling` is only set once onReady fires; runSpellCheck() already
@@ -839,9 +828,9 @@ var UI = (function () {
     if (typeof spelling.renderHighlights === "function") spelling.renderHighlights(el, spellTokens);
   }
   /* Locate the flagged token under a click point. The Highlight API never
-     mutates the DOM (AD-2), so there is no per-word element to listen on —
+     mutates the DOM, so there is no per-word element to listen on —
      the shell maps the click's caret offset back onto the character-offset
-     spans SpellingModule.check() already returned (FR-4). */
+     spans SpellingModule.check() already returned. */
   function tokenRangeAt(start, end) {
     var textNode = $("input").firstChild || $("input");
     var r = document.createRange();
@@ -1077,7 +1066,7 @@ var UI = (function () {
     if (CONFIG.lexicon && CONFIG.lexicon.enabled) {
       lexinfo.innerHTML = renderAttribution(" · lexicon " + (LEX.morphOnly ? "unavailable — morphology fallback" : Number(LEX.count).toLocaleString() + " words") + (CONFIG.lexicon.attribution ? " (" + CONFIG.lexicon.attribution + ")" : ""));
     }
-    // AC-8: attribution is sourced from CONFIG.spelling.attribution, which
+    // Attribution is sourced from CONFIG.spelling.attribution, which
     // the assembler set from its own SPELLING_ATTRIBUTION constant — never
     // hardcoded per cartridge here.
     if (CONFIG.spelling && CONFIG.spelling.enabled && CONFIG.spelling.attribution) {
@@ -1109,10 +1098,10 @@ var UI = (function () {
 </script>
 <script>
 /* ============================================================
-   SHELL · PRESENT MODE (GeneratorShell.spec.md §3b, DECISIONS.md D-1)
+   SHELL · PRESENT MODE
    Never edited per cartridge. Reads ONLY CONFIG.generator and the ENGINE
    present-mode exports (getPool, render, checkAnswer, explainItem) — never
-   the DOM beyond its own mount points, never a cartridge's name (D-3).
+   the DOM beyond its own mount points, never a cartridge's name, so one shell serves every cartridge.
 
    Present-mode ENGINE contract (the cartridge side of this seam):
 
@@ -1349,7 +1338,7 @@ var PresentMode = (function () {
 </script>
 <script>
 /* ============================================================
-   SHELL · TIER B — Claude API pool refresh (DECISIONS.md D-2, task E)
+   SHELL · TIER B — Claude API pool refresh
    Never edited per cartridge. THE ONE PLACE ANY fetch() LIVES (JS-5) —
    nothing else in the shell or a cartridge should call fetch directly.
 

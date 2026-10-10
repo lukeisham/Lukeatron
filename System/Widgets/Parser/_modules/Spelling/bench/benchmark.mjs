@@ -1,6 +1,6 @@
 /**
  * benchmark.mjs — measures suggestion quality (new vs. old) and the
- * false-positive rate (spec AC-6), against the REAL shipped dictionary
+ * false-positive rate, against the REAL shipped dictionary
  * (data/spelling.db, opened read-only via Node's built-in `node:sqlite` --
  * a dev-time-only tool, not part of the shipped module or its test suite;
  * TEST-4's "never touch a real .db" applies to `tests/`, not to this
@@ -123,7 +123,7 @@ function main() {
   console.log(`Delta: Precision@1 ${(oldResult.precisionAt1 * 100).toFixed(1)}% -> ${(newResult.precisionAt1 * 100).toFixed(1)}%`);
   console.log();
 
-  // --- false-positive rate (AC-6) ---
+  // --- false-positive rate ---
   const holdout = JSON.parse(readFileSync(HOLDOUT_PATH, "utf8"));
   const ctx = { backend, isIgnored: () => false, isLearned: () => false };
   const falsePositives = [];

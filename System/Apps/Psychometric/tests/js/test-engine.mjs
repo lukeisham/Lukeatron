@@ -7,13 +7,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { escapeHtml } from "../../../../Tools/web-shared/escape-html.js";
 import vm from "node:vm";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const buildDir = path.resolve(here, "../../cartridge/build");
 
 const CONTENT = JSON.parse(readFileSync(path.join(buildDir, "pool.json"), "utf8"));
-const sandbox = { CONTENT, console };
+const sandbox = { CONTENT, console, escapeHtml };
 vm.createContext(sandbox);
 vm.runInContext(readFileSync(path.join(buildDir, "engine.js"), "utf8"), sandbox, { filename: "engine.js" });
 const ENGINE = sandbox.ENGINE;

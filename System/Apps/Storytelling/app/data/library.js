@@ -1,18 +1,18 @@
-// The shipped library: twelve narrative types, one story map each (library.spec FR-L1).
+// The shipped library: twelve narrative types, one story map each.
 // Every entry uses the saved-story shape plus a one-line `note` on each bead.
-// Adding an entry is a data edit only (FR-L7). Element ids must exist in ELEMENTS;
-// notes are facts about the lead work, at most 80 characters (FR-L6).
+// Adding an entry is a data edit only. Element ids must exist in ELEMENTS;
+// notes are facts about the lead work, at most 80 characters.
 
 const POSTER_CREDIT =
   "Built from the outline in the Periodic Table of Storytelling (ComputerSherpa)";
 
-/** Credit line for an entry we authored ourselves (FR-L5). */
+/** Credit line for an entry we authored ourselves. */
 function authoredCredit(lead, type) {
   return `Our reading of ${lead} as ${type} — an interpretation`;
 }
 
 /**
- * Freezes a value and everything reachable from it, so no entry can be edited (FR-L4).
+ * Freezes a value and everything reachable from it, so no entry can be edited.
  * Recursion is safe here: the library is plain nested arrays and objects with no cycles.
  */
 function deepFreezeLibrary(value) {
@@ -24,7 +24,7 @@ function deepFreezeLibrary(value) {
 const ENTRIES = [
   {
     // Poster outline: Five Man Band - Conflict - Empire, then Dragon+Chosen One and You Have Failed Me
-    // (the three-element chip is a tandem plus a bead, story-map OQ-T1). Cal, Mcg, Cmx and Den extend it.
+    // (the three-element chip is a tandem plus a bead). Cal, Mcg, Cmx and Den extend it.
     id: "quest-heros-journey",
     title: "Quest / Hero's Journey",
     examples: ["Star Wars", "The Hobbit", "Avatar: The Last Airbender", "The Wizard of Oz"],

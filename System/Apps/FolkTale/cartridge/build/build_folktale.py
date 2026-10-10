@@ -8,7 +8,7 @@ every tale against the 400-word cap (hard build failure over cap, PY-6),
 and writes two build-time artefacts beside this script:
 
   * pool.json            — files.content for the present-mode ENGINE
-                            (GeneratorShell.spec.md FR-D2), keyed by id.
+                            keyed by id.
   * folktale_content.md  — MiniWiki's labelled-bold-field dialect
                             (_modules/MiniWiki/build/extract_catalogue.py),
                             one block per tale, source/licence/translator/
@@ -36,7 +36,7 @@ import re
 import sys
 from pathlib import Path
 
-SEED_PATH = Path(__file__).resolve().parents[3] / "_research" / "seed" / "folk-tales.md"
+SEED_PATH = Path(__file__).resolve().parents[4] / "Widgets" / "Generator" / "_research" / "seed" / "folk-tales.md"
 BUILD_DIR = Path(__file__).resolve().parent
 POOL_OUT = BUILD_DIR / "pool.json"
 CONTENT_MD_OUT = BUILD_DIR / "folktale_content.md"
@@ -53,11 +53,7 @@ YEAR_RE = re.compile(r"\((\d{4}(?:-\d{4})?)\)")
 # collapses to the broader region for the category filter, while the
 # original text is kept verbatim in the tale's own `culture` field.
 #
-# 2026-08-13 (Luke's instruction): "Turkey/Middle East" removed and its 4
-# Nasreddin Hodja tales deleted from the seed; replaced with "Persia
-# (Pre-Islamic)" (Shahnameh legendary era, Helen Zimmern's 1883 translation).
-# Two new genre categories added alongside the existing culture/region ones:
-# "American Gothic" and "Australian Gothic" — these are literary-tradition
+# "American Gothic" and "Australian Gothic" are literary-tradition
 # categories, not geographic culture/region ones, but fold through the same
 # CATEGORY_OF_CULTURE mechanism since the seed's culture_region field is
 # reused as the category-grouping key regardless of whether the grouping is

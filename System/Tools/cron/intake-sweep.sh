@@ -4,12 +4,11 @@
 # Uses a lock file to prevent overlapping runs.
 # Invoked by crontab; CLAUDE.md auto-loads from the working directory.
 
-LUKEATRON="/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron"
-CLAUDE="/Users/lukeishammacbookair/.local/bin/claude"
+LUKEATRON="${0:A:h:h:h:h}"
+CLAUDE="$HOME/.local/bin/claude"
 LOG="$LUKEATRON/System/Tools/cron/out/intake-sweep.log"; mkdir -p "${LOG:h}"
 LOCK="/tmp/lukeatron-intake-sweep.lock"
-export HOME="/Users/lukeishammacbookair"
-export PATH="/Users/lukeishammacbookair/.local/bin:/usr/local/bin:/usr/bin:/bin"
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 # Prevent overlapping runs
 if [ -f "$LOCK" ]; then

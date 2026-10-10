@@ -1,4 +1,4 @@
-/* motion.css — the ten animations of style.spec FR-S6, on the motion tokens only (--m-fast/-base/-slow, --ease-*).
+/* motion.css — the app's ten animations, on the motion tokens only (--m-fast/-base/-slow, --ease-*).
    Where each lives:
    #1 hover, #2 select ........ transitions below (the lifted/edge values are tiles.css)
    #3 pick up ................. .st-ghost keyframe below; the placeholder fade is story-map.css `.is-picked`
@@ -43,7 +43,7 @@
   to { background-color: color-mix(in srgb, var(--color-highlight) 55%, transparent); }
 }
 
-/* ---- Reduced motion (FR-S7): every animation is an instant change; each cue stays as a static state
+/* ---- Reduced motion: every animation is an instant change; each cue stays as a static state
    (selected edge, placeholder outline, highlighted target and its label, the panel itself, the "Saved" text).
    The tokens already read 0ms here; this block also removes the keyframes outright. Selectors repeat the
    animating ones above so their specificity matches. ---- */

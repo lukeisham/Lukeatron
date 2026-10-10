@@ -1,6 +1,6 @@
 """Reads rhetoric.db and assembles the `/api/items` payload: nested trees (the three seeded
 hierarchies, Topical, and Grammar) whose device leaves are references, one flat `devices` map, and
-the flat list of real `quotes` the Index group lists. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL (server.spec AD-3)."""
+the flat list of real `quotes` the Index group lists. Called only by server.py (API-1: routing holds no SQL); tree wiring is a plain O(n) pass, not recursive SQL."""
 
 from __future__ import annotations
 
@@ -112,7 +112,7 @@ def _build_tree(hierarchy: str, nodes: list[tuple], links: list[tuple[int, int]]
 
     A node whose parent is missing or in another hierarchy, and a device whose link points
     outside this hierarchy, are skipped with a warning rather than failing the whole payload —
-    the database invariants (database.spec AC-3/AC-4) are the seed pipeline's job to hold."""
+    the database invariants are the seed pipeline's job to hold."""
     own = {row[0]: row for row in nodes if row[1] == hierarchy}
     built: dict[int, dict[str, Any]] = {
         node_id: {"kind": "node", "id": node_id, "name": row[3], "definition": row[4], "children": []}

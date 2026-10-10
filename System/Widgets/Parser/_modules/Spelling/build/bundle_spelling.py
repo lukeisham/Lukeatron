@@ -10,7 +10,7 @@ script is the one place that gap is bridged: concatenate the modules in
 dependency order, strip their `import {...} from "./x.js";` and
 `export {...};` statements (both always well-formed brace blocks in this
 source, verified by inspection), and wrap the result in an IIFE that
-assigns exactly two globals: `window.createSpellingModule` (spec FR-1)
+assigns exactly two globals: `window.createSpellingModule`
 and `window.SpellingBackend` (the backend helpers a host needs to open
 the embedded dictionary — `createSqlJsBackend`, `supportsGzipDecompression`,
 `decompressGzipBase64`, per backend.js's own exports).

@@ -129,6 +129,18 @@
       ],
       "cwd": "System/Apps/Style",
       "port": 8806
+    },
+    {
+      "name": "project-dashboard-state-merge",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "LUKEATRON_ROOT=/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron/System/Sandbox/state-merge/root",
+        "python3",
+        "-c",
+        "import sys; sys.path.insert(0, '/Users/lukeishammacbookair/lukeatron-state-merge/System/Apps/ProjectDashboard'); import server; server.run(9301)"
+      ],
+      "cwd": ".",
+      "port": 9301
     }
   ]
 }

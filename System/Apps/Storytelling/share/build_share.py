@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Strict single-file bundler for Storytelling (distribution.spec FR-X2, FR-X3, FR-X4).
+"""Strict single-file bundler for Storytelling.
 
 Reads app/index.html, inlines its stylesheets into <style> and every module reachable from its
 module script into ONE classic <script>, and writes dist/Storytelling-<version>.html plus a
-dist/Storytelling.html copy. The build step is a granted JS-7 exception (Luke, 2026-09-21)
-confined to this script and its output.
+dist/Storytelling.html copy. The build step is confined to this script and its output, so the
+app source stays a no-build ES-module tree (JS-7).
 
-The bundler is a strict, checked subset (AD-X3). It supports only named static imports and
+The bundler is a strict, checked subset. It supports only named static imports and
 exports with relative ".js" specifiers, and refuses everything else with a file:line list:
 default / namespace / side-effect / renamed imports, dynamic import(), import.meta, export
 default, export *, re-exports, top-level await, import cycles, missing files, imported names a

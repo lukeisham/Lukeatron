@@ -1,12 +1,12 @@
 /**
  * agent-api.js — `window.storytellingAgent`: hidden, self-describing levers an AI agent can call
- * from inside the open page (agent-api.spec).
+ * from inside the open page.
  *
  * Every lever is synchronous, takes and returns plain JSON, and never throws. Success is
  * `{ ok: true, … }`; failure is `{ ok: false, error: { code, message, hint } }`. Writes go through
- * the same story-model functions the mouse gestures call (AD-A2), and saves go through
- * story-store.saveStory with `agent: true` (FR-A8). The manifest, the `<meta>` tag and `help()` are all
- * generated from one lever table (AD-A5), so they cannot drift from the code.
+ * the same story-model functions the mouse gestures call, and saves go through
+ * story-store.saveStory with `agent: true`. The manifest, the `<meta>` tag and `help()` are all
+ * generated from one lever table, so they cannot drift from the code.
  *
  * Every top-level name here starts with `agent`/`AGENT` because the single-file bundler refuses a
  * name declared in two modules.
@@ -107,7 +107,7 @@ function agentReadName(value) {
   return { ok: true, value: text };
 }
 
-/* ---------- nearest element ids (FR-A9) ---------- */
+/* ---------- nearest element ids ---------- */
 
 function agentEditDistance(a, b) {
   let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
@@ -137,7 +137,7 @@ function agentNearestElements(query, elements) {
 
 /* ---------- the lever table ---------- */
 
-/** One example call and the shape of what comes back are part of each lever (FR-A2). */
+/** One example call and the shape of what comes back are part of each lever. */
 function agentLever(name, kind, maxArgs, args, returns, example, run) {
   return { name, kind, maxArgs, arguments: args, returns, example, run };
 }
@@ -503,7 +503,7 @@ function agentCheck({ beads, ribbons }, layoutFn) {
   };
 }
 
-/* ---------- saving (FR-A8) ---------- */
+/* ---------- saving ---------- */
 
 function agentSave(ctx, name, replace) {
   const { beads, ribbons } = ctx.store.getState();
@@ -591,7 +591,7 @@ function agentDefaultApi() {
 
 /**
  * Installs `window.storytellingAgent`, the `<meta name="storytelling-agent">` tag and the JSON
- * manifest. No visible control is added (FR-A1). All dependencies are injectable for tests.
+ * manifest. No visible control is added. All dependencies are injectable for tests.
  *
  * @param {{ store?: object, storyStoreApi?: { save: Function, list: Function }, doc?: Document, win?: Window,
  *   data?: object, layoutFn?: Function, listTextFn?: Function, storyTextFn?: Function }} [options]

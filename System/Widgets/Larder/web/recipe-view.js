@@ -1,6 +1,6 @@
 // One recipe's page inside the leaf: title, deck, the table image, Method, and the margin column.
-// larder.js calls renderRecipe() and keeps the returned handle until the view changes (FR-5..FR-7).
-// Every string from a recipe goes in through textContent; the SVG only ever becomes an <img> (FR-6).
+// larder.js calls renderRecipe() and keeps the returned handle until the view changes.
+// Every string from a recipe goes in through textContent; the SVG only ever becomes an <img>.
 
 const COPY_LABEL = "Copy list";
 const FALLBACK_LABEL = "Select and copy";

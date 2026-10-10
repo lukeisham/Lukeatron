@@ -1,5 +1,5 @@
-/* panels.css — the diagram toolbar and the poster's white legend panels: element detail, Lists, About
-   (style.spec FR-S3, FR-S4, FR-S15). White panel, grey frame, raised level, no group colour except the
+/* panels.css — the diagram toolbar and the poster's white legend panels: element detail, Lists, About.
+   White panel, grey frame, raised level, no group colour except the
    detail symbol tile. The Library panel frame is shared here; its insides are in library.css.
    Motion: the open/close fade (#8) is motion.css's; nothing here animates but plain transitions.
    On-screen-only chrome (print.css hides it): .st-toolbar, .st-detail (except when printing an element),

@@ -1,9 +1,9 @@
 /**
- * story-highlight.js — marks the poster tiles used by the open story (library.spec FR-L8, diagram FR-D10).
+ * story-highlight.js — marks the poster tiles used by the open story.
  *
  * It only toggles the class `is-in-story` on each `<g class="tile">` and fills or hides the
  * `<text class="step-badge">` the diagram generator put inside it. It never touches tile data or the
- * printed table: the mark itself is drawn by CSS (style FR-S12).
+ * printed table: the mark itself is drawn by CSS.
  */
 import { EVT_STORY_CHANGED } from "../shared/events.js";
 import { ROGUE } from "../data/elements.js";
@@ -35,7 +35,7 @@ export function elementsInStory(beads) {
 }
 
 /**
- * The step number to show on each element: the lowest step of any bead that uses it (FR-L8).
+ * The step number to show on each element: the lowest step of any bead that uses it.
  * Both halves of a tandem take the tandem's step. Beads missing from `stepNumbers` are skipped.
  * @param {Array<{ uid: string, elementId: string, with?: string }>} beads
  * @param {{ stepNumbers: Record<string, number> }} layoutResult result of `layout()`

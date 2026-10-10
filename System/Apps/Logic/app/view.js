@@ -1,6 +1,6 @@
 /**
  * Derives what is on screen from state — the one source that render.js draws and actions.js
- * copies, so Print/Copy can never disagree with the screen (frontend.spec AD-5).
+ * copies, so Print/Copy can never disagree with the screen.
  *
  * A view is `{ mode: 'tree' | 'flat' | 'entry', items }`, where each item is
  * `{ kind: 'node', id, hierarchy, name, definition, children }` or `{ kind: 'entry', entry }`.

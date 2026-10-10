@@ -64,9 +64,9 @@
     "attribution": "Unattributed"
    },
    {
-    "text": "\"And I will luve thee still, my dear, / Till a' the seas gang dry.\" (Burns, \"A Red, Red Rose\")",
-    "attribution": "Robert Burns",
-    "date": "1794"
+    "text": "\"Until the rainbow burns the stars out in the sky\" (Stevie Wonder, \"As,\" 1976)",
+    "attribution": "Stevie Wonder",
+    "date": "1976"
    }
   ],
   "aliases": [
@@ -410,6 +410,10 @@
   "name": "Antimetabole",
   "definition": "Repeating words in successive clauses in reverse grammatical order (AB-BA), so the second clause mirrors the first.",
   "examples": [
+   {
+    "text": "Don't *count* your *days*; make your *days* *count*.",
+    "attribution": "Unattributed"
+   },
    {
     "text": "\"Ask not what your country can do for you; ask what you can do for your country.\" (Kennedy, inaugural address, 20 January 1961)",
     "attribution": "John F. Kennedy",
@@ -1237,6 +1241,10 @@
   "name": "Epanalepsis",
   "definition": "Beginning and ending a clause or sentence with the same word or phrase.",
   "examples": [
+   {
+    "text": "*Slowly* the old man crossed the square, *slowly*.",
+    "attribution": "Unattributed"
+   },
    {
     "text": "\"Once more unto the breach, dear friends, once more\" (Shakespeare, *Henry V*, 3.1)",
     "attribution": "William Shakespeare",
@@ -2081,6 +2089,10 @@
   "name": "Symploce",
   "definition": "A rhetorical device combining anaphora (repetition at the beginning of clauses) and epistrophe (repetition at the end) in the same passage for heightened emphasis.",
   "examples": [
+   {
+    "text": "*Whoever* seeks justice *must be brave*; *whoever* seeks peace *must be brave*.",
+    "attribution": "Unattributed"
+   },
    {
     "text": "\"When there is talk of hatred, let us stand up and talk against it. When there is talk of violence, let us stand up and talk against it.\" (Clinton, Oklahoma City memorial prayer service, 23 April 1995)",
     "attribution": "Bill Clinton",
@@ -3652,9 +3664,9 @@
     "attribution": "Unattributed"
    },
    {
-    "text": "\"If he be not in love with some woman, there is no believing old signs: a' brushes his hat a mornings; what should that bode?\" (Claudio, of Benedick, in Shakespeare, *Much Ado About Nothing*, 3.2)",
-    "attribution": "William Shakespeare",
-    "date": "1598"
+    "text": "\"Homer: Not a bear in sight. The Bear Patrol must be working like a charm. / Lisa: That's specious reasoning, Dad. / Homer: Thank you, dear. / Lisa: By your logic, I could claim that this rock keeps tigers away. / Homer: Oh, how does it work? / Lisa: It doesn't work. It's just a stupid rock. / Homer: Uh-huh. / Lisa: But I don't see any tigers around, do you? / Homer: Lisa, I want to buy your rock.\" (Homer and Lisa Simpson, in *The Simpsons*, \"Much Apu About Nothing\", 1996)",
+    "attribution": "Homer and Lisa Simpson",
+    "date": "1996"
    }
   ],
   "aliases": [],
@@ -4624,6 +4636,10 @@
   "name": "Epizeuxis",
   "definition": "Repeating a word or phrase immediately, with nothing between, for emphasis or intensity.",
   "examples": [
+   {
+    "text": "*Quiet*, *quiet*, *quiet*; the baby is asleep.",
+    "attribution": "Unattributed"
+   },
    {
     "text": "\"O horror, horror, horror!\" (Shakespeare, *Macbeth*, 2.3)",
     "attribution": "William Shakespeare",

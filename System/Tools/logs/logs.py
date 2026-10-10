@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """logs — the one way to write and read Lukeatron's two logs, both in Memory/Long-Term/Logs/.
 
-  history.log — every DECISION and PERMISSION whose effect reaches beyond one file, plus every
-                Vibe-Coding rule-exception PERMISSION (even when it covers one file).
+  history.log — every DECISION and PERMISSION whose effect reaches beyond one file and beyond
+                one app. An app's own decisions and rule exceptions go in its app-decisions.md.
                 [YYYY-MM-DD] [DECISION|PERMISSION] [<scope>] <current rule or grant> — <why>
   issues.log  — anything that could make Lukeatron better: defects, gaps, script faults, failed skills.
                 [YYYY-MM-DD] [OPEN|RESOLVED] [Low|Medium|High] [<scope>] <problem> — <where> — <fix hint>

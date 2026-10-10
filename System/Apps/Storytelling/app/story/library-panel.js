@@ -1,8 +1,8 @@
 /**
- * library-panel.js — the Library panel (library.spec FR-L2, FR-L3, FR-L5).
+ * library-panel.js — the Library panel.
  *
  * Lists the twelve ready-made story maps and opens the chosen one as an editable copy through the
- * story model's `openStory`. The frozen `LIBRARY` entries are only read here, never changed (FR-L4).
+ * story model's `openStory`. The frozen `LIBRARY` entries are only read here, never changed.
  * Panel visibility uses the `hidden` attribute.
  */
 import { EVT_OPEN_LIBRARY } from "../shared/events.js";
@@ -27,7 +27,7 @@ function button(doc, className, label) {
   return node;
 }
 
-/** Example works with the lead first (FR-L2), whatever order the data lists them in. */
+/** Example works with the lead first, whatever order the data lists them in. */
 export function examplesLeadFirst(entry) {
   return [entry.lead, ...entry.examples.filter((name) => name !== entry.lead)];
 }
@@ -137,7 +137,7 @@ export function mountLibraryPanel(host, options = {}) {
     confirm.hidden = true;
   }
 
-  /** Opens a copy: the entry is copied into a fresh shape and named for its title (FR-L3). */
+  /** Opens a copy: the entry is copied into a fresh shape and named for its title. */
   function openCopy(entry) {
     hideConfirm();
     const result = openShape({ ...entry, name: entry.title });

@@ -1,4 +1,4 @@
-// The four marks on an empty box, a selection, and an already-marked selection (note-box AC-1).
+// The four marks on an empty box, a selection, and an already-marked selection.
 // Mirrors: web/marks.js   Run: node --test tests/test_marks.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";

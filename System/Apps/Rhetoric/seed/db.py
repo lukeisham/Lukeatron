@@ -1,4 +1,4 @@
-"""The seed pipeline's writable connection — the only one in the project (seed-pipeline AD-7).
+"""The seed pipeline's writable connection — the only one in the project.
 server.py opens the same file `mode=ro`."""
 
 from __future__ import annotations

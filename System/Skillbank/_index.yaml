@@ -6,181 +6,145 @@ last_updated: 2026-10-10
 skills:
   - name: "!GenerateSupportiveContent"
     path: "System/Skillbank/GeneralPurposeSkills/!GenerateSupportiveContent/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Write content that supports an existing target in its own voice; verifies every claim against a primary source and abstains rather than produce slop."
-    triggers: ["generate supportive content", "write something to back this up", "make the case for this", "add supporting content to", "illustrate this", "defend this", "write a companion piece for", "expand on this in its own voice", "support this argument", "!GenerateSupportiveContent"]
+    triggers: ["write something to back this up", "make the case for this", "illustrate this", "write a companion piece for", "expand on this in its own voice"]
   - name: "!Improve"
     path: "System/Skillbank/GeneralPurposeSkills/!Improve/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Monthly: turn usage.md and open issues into at most five evidence-backed proposed edits to skills and instructions."
-    triggers: ["!Improve", "run improve", "how am I using lukeatron", "what should we improve", "monthly improvement pass", "which skills do I use", "which skills never fire"]
+    triggers: ["run improve", "how am I using lukeatron", "what should we improve", "which skills never fire"]
   - name: "!Magpie"
     path: "System/Skillbank/GeneralPurposeSkills/!Magpie/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Survey top-ranked agent-skill repos on GitHub to spot patterns or lift ideas, code or whole skills; read-only outward, Sandbox-first inward."
-    triggers: ["magpie", "survey the skill repos", "what skills are popular", "what's out there", "how do others do this skill", "find me a skill for", "steal a skill", "scan github for skills", "is there a skill for this already"]
+    triggers: ["magpie", "survey the skill repos", "how do others do this skill", "steal a skill", "is there a skill for this already"]
   - name: "!Brainstorm"
     path: "System/Skillbank/GeneralPurposeSkills/!Brainstorm/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Divergent thinking session: runs methods from a fixed deck, pivots with Luke's steer, outputs nothing until READY; hands off to !grilling."
-    triggers: ["brainstorm", "let's think about", "open this up", "what are the options", "give me some angles on", "ideas for", "what am I missing", "think out loud with me", "what else could this be", "I don't know where to start with"]
+    triggers: ["brainstorm", "give me some angles on", "what am I missing", "think out loud with me", "I don't know where to start with"]
   - name: "!write-a-skill"
     path: "System/Skillbank/GeneralPurposeSkills/!write-a-skill/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Author a new skill with proper structure, progressive disclosure and bundled resources, reviewed with Luke."
     triggers: ["create a skill", "write a new skill", "build a new skill", "author a skill", "skill structure"]
   - name: "!teach"
     path: "System/Skillbank/GeneralPurposeSkills/!teach/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Stateful multi-session teaching workspace: tracks a mission and learning records, produces short HTML lessons at Luke's level."
     triggers: ["teach me", "teach me about", "I want to learn", "help me learn", "teach about"]
   - name: "!grilling"
     path: "System/Skillbank/GeneralPurposeSkills/!grilling/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Interview Luke relentlessly about a plan or design, in rounds with recommended answers, until the decision tree is settled."
-    triggers: ["grill me", "stress-test this plan", "stress-test this design", "get grilled on design", "pressure-test decisions", "pressure-test this plan"]
+    triggers: ["grill me", "stress-test this plan", "pressure-test decisions"]
   - name: "!handoff"
     path: "System/Skillbank/GeneralPurposeSkills/!handoff/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Compact the conversation into a redacted handoff document in the OS temp folder so a fresh agent can continue."
     triggers: ["handoff", "write a handoff", "hand this off", "summarise for the next session", "prep a handoff doc"]
   - name: "!BookCover"
     path: "System/Skillbank/GeneralPurposeSkills/!BookCover/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Fetch a book cover from OpenLibrary for a LukeatronWiki page (one search, one fetch)."
     triggers: ["fetch a book cover", "book cover", "openlibrary cover"]
   - name: "!BuildParserCartridge"
     path: "System/Skillbank/PersonalResearch/!BuildParserCartridge/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Build a new Parser-widget cartridge by cloning the Grammar cartridge onto the shared _shell/ chassis until the assembler passes."
-    triggers: ["build the parser", "build a cartridge for", "make a parser cartridge", "clone the parser chassis", "wire up the parser widget", "build parser cartridge", "next parser to build"]
+    triggers: ["build the parser", "build a cartridge for", "clone the parser chassis", "wire up the parser widget", "next parser to build"]
   - name: "!IdeaWiki"
     path: "System/Skillbank/GeneralPurposeSkills/!IdeaWiki/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Tend LukeatronWiki: capture books, links, videos and ideas as pointer nodes, store content verbatim in Long-Term, work the backlog. Not for tasks."
-    triggers: ["add this to the wiki", "add to lukeatronwiki", "remember this book", "remember this video", "I want to read", "I want to watch", "I want to write", "save this idea", "save this link", "what should I read next", "what should I watch next", "what should I write next", "show the backlog", "what's in my queue", "what connects to", "what do I have on", "develop this idea", "promote this page", "show the wiki", "lukeatronwiki"]
+    triggers: ["add this to the wiki / lukeatronwiki", "I want to read / watch / write", "save this idea / link / book / video", "what should I read next / show the backlog", "what connects to / what do I have on"]
   - name: "!ThinPortal"
     path: "System/Skillbank/GeneralPurposeSkills/!ThinPortal/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Recipe for building a new external-access portal skill, the pattern behind !AgentMail, !HeadlessChromeBrowser and !Calendar."
-    triggers: ["build a skill for", "add a connector", "make a portal", "give the system access to", "rebuild this integration", "new external access", "build a pipe for"]
+    triggers: ["add a connector", "make a portal", "give the system access to", "rebuild this integration", "build a pipe for"]
   - name: "!PruneMemory"
     path: "System/Skillbank/GeneralPurposeSkills/!PruneMemory/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "On-demand, Luke-reviewed prune of Medium-Term: stale temp-skills, dormant projects and orphaned plans. Long-Term goes via !ArchiveMemory."
-    triggers: ["prune memory", "prune the memory", "tidy medium-term", "clear out temp-skills", "clean up dormant projects", "sweep medium-term", "clear stale projects", "clear stale plans", "clean up old plans"]
+    triggers: ["prune memory", "tidy medium-term", "clear out temp-skills", "clean up dormant projects", "clear stale plans"]
   - name: "!WhatsApp"
     path: "System/Skillbank/GeneralPurposeSkills/!WhatsApp/SKILL.md"
-    domain: "PersonalProductivity"
     intent: "Read-only WhatsApp portal: list chats, search messages, read contact history. Sending is disabled; the bridge must be running."
-    triggers: ["read my whatsapp", "check whatsapp", "whatsapp digest", "what's in whatsapp", "find a whatsapp message", "summarise my whatsapp", "what did [person] say on whatsapp", "whatsapp inbox", "whatsapp messages"]
+    triggers: ["check whatsapp", "whatsapp digest", "find a whatsapp message", "what did [person] say on whatsapp"]
   - name: "!HarvestWidgetContent"
     path: "System/Skillbank/PersonalResearch/!HarvestWidgetContent/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Grow the Generator widgets' content pools (riddles, folk tales, psychometric items), de-duplicated with provenance, then rebuild and test."
-    triggers: ["add more riddles", "find more folk tales", "grow the psychometric pool", "top up the generator content", "check the ai characteristics taxonomy", "harvest content for the generator", "generate content for the widget", "add generator content"]
+    triggers: ["add more riddles", "find more folk tales", "grow the psychometric pool", "top up the generator content", "check the ai characteristics taxonomy"]
   - name: "!ScrapeAiCharacteristics"
     path: "System/Skillbank/PersonalResearch/!ScrapeAiCharacteristics/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Refresh the AiCharacteristics criteria from Wikipedia's 'Signs of AI writing', changing as little as possible; never edits locked criteria."
-    triggers: ["scrape the ai characteristics", "refresh the ai characteristics", "update the ai writing criteria", "refresh the criteria from wikipedia", "scrape signs of ai writing", "update aicharacteristics criteria"]
+    triggers: ["refresh the ai characteristics", "update the ai writing criteria", "scrape signs of ai writing"]
   - name: "!CheckAiCharacteristics"
     path: "System/Skillbank/PersonalResearch/!CheckAiCharacteristics/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Check a passage of up to 700 words against the AiCharacteristics criteria; yes/no plus confidence per criterion, JSON only."
     triggers: ["check this against the ai characteristics", "check this text for ai writing signs", "run the ai characteristics check", "which signs of ai writing are in this", "check content against the criteria"]
   - name: "!SvgImage"
     path: "System/Skillbank/GeneralPurposeSkills/!SvgImage/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Draw an image as hand-written, layered, accessible SVG in a chosen size and style from the 24-style library; saved to Sandbox."
-    triggers: ["generate an image", "make me a graphic", "create an svg", "draw this as svg", "make an icon", "design a poster", "make a banner", "vector illustration of", "svg export", "image generation", "in the style of"]
+    triggers: ["make me a graphic", "create an svg", "make an icon", "design a poster / banner", "in the style of"]
   - name: "!NewUnit"
     path: "System/Skillbank/Teaching/!NewUnit/SKILL.md"
-    domain: "Teaching"
     intent: "Generate a new, empty curriculum unit bundle at a chosen path from subject, level, unit name and teacher."
-    triggers: ["new unit", "!NewUnit", "create a unit", "start a new teaching unit", "create a new unit"]
+    triggers: ["new unit", "create a unit", "start a new teaching unit", "create a new unit"]
   - name: "!FactCheck"
     path: "System/Skillbank/Teaching/!FactCheck/SKILL.md"
-    domain: "Teaching"
     intent: "Verify claims in a pasted paragraph against whitelisted sources and label provenance; unconfirmed claims fail closed as unverified."
-    triggers: ["fact-check this", "fact check this", "verify these claims", "check the sources on this", "verify this claim", "is this true", "check this fact", "!FactCheck"]
+    triggers: ["fact-check this", "verify these claims", "check the sources on this", "is this true"]
   - name: "!UpdateTagCriteria"
     path: "System/Skillbank/Teaching/!UpdateTagCriteria/SKILL.md"
-    domain: "Teaching"
     intent: "Turn Luke's correction of a wrong fact-check tag into the smallest regression-checked fix to tag-criteria.md, written only on approval."
-    triggers: ["fix the tag criteria", "update the tag criteria", "this phrase got the wrong tag", "the classifier got this wrong", "update the criteria", "tag conflict", "!UpdateTagCriteria"]
+    triggers: ["update the tag criteria", "this phrase got the wrong tag", "the classifier got this wrong", "tag conflict"]
   - name: "!DeviceMentions"
     path: "System/Skillbank/Teaching/!DeviceMentions/SKILL.md"
-    domain: "Teaching"
     intent: "Rank the Rhetoric app's devices by Google Books Ngram frequency with one script; writes seed/ngram_mentions.json only."
-    triggers: ["rank the devices by ngram", "ngram mentions of the devices", "google ngram device popularity", "score device popularity", "count mentions of the devices", "re-run the device mentions", "!DeviceMentions", "!WikipediaMentions"]
+    triggers: ["rank the devices by ngram", "google ngram device popularity", "re-run the device mentions", "!WikipediaMentions"]
   - name: "!Comprehension"
     path: "System/Skillbank/GeneralPurposeSkills/!Comprehension/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Test whether a cold reader recovers an artefact's intended meaning from its prose and layout; typed defects and PASS/REPAIR/REJECT."
-    triggers: ["can a reader follow this", "is this comprehensible", "comprehension check", "run a cold read", "does this actually communicate", "will they get it", "test this on a fresh reader", "check the layout reads right", "!Comprehension"]
+    triggers: ["can a reader follow this", "comprehension check", "run a cold read", "will they get it", "check the layout reads right"]
   - name: "!ConceptFidelity"
     path: "System/Skillbank/GeneralPurposeSkills/!ConceptFidelity/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Test whether an artefact relays a concept accurately against an independent ground: omissions, fabrications, distortions. Not truth."
-    triggers: ["is this concept right", "does this describe it accurately", "concept check", "fidelity check", "is the idea intact", "did the meaning survive the rewrite", "does the metaphor distort this", "is this faithful to the source", "!ConceptFidelity"]
+    triggers: ["concept check", "fidelity check", "did the meaning survive the rewrite", "does the metaphor distort this", "is this faithful to the source"]
   - name: "!GrammarFrame"
     path: "System/Skillbank/Teaching/!GrammarFrame/SKILL.md"
-    domain: "Teaching"
     intent: "Turn Luke's raw grammar notes into the Technical Outline and Theatre guides on one shared skeleton, gating every change through Luke."
-    triggers: ["run the grammar framework", "process this grammar content", "regenerate the theatre guide", "regenerate the technical outline", "build the grammar guide", "grammar guide", "theatre metaphor grammar", "breadth and reach", "!GrammarFrame"]
+    triggers: ["run the grammar framework", "process this grammar content", "regenerate the theatre guide / technical outline", "theatre metaphor grammar", "breadth and reach"]
   - name: "!AppDevelopment"
     path: "System/Skillbank/PersonalResearch/!AppDevelopment/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Four-phase app or widget lifecycle in its permanent folder: PRD, specs and mockups, build prompt, then verify and retire _build/."
-    triggers: ["build an app", "build a widget", "make a new widget", "start a new app", "new app idea", "write a PRD", "spec out this app", "app development", "resume the app build", "where is the build up to", "retire the build docs", "!AppPRD", "!AppSpecs", "!AppBuildPrep", "!AppRetire"]
+    triggers: ["build an app / widget", "write a PRD", "spec out this app", "resume the app build / where is the build up to", "!AppPRD / !AppSpecs / !AppBuildPrep / !AppRetire"]
   - name: "!AppPropagate"
     path: "System/Skillbank/PersonalResearch/!AppPropagate/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Carry a code change in one Teaching App family app to the other members, on Luke's choice of all, some or none."
-    triggers: ["propagate this change", "carry this to the other apps", "sync the Teaching apps", "Teaching App family function changed", "what is waiting to be propagated", "!AppPropagate"]
+    triggers: ["propagate this change", "carry this to the other apps", "sync the Teaching apps", "what is waiting to be propagated"]
   - name: "!AppWishlist"
     path: "System/Skillbank/PersonalResearch/!AppWishlist/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Add, list or delete wishes in an app's wishlist.md; tracks nothing else."
-    triggers: ["add to the wishlist", "what's on the wishlist", "note this idea for", "wish for", "wishlist for", "!AppWishlist"]
+    triggers: ["add to the wishlist", "what's on the wishlist", "note this idea for", "wish for"]
   - name: "!ProseDetox"
     path: "System/Skillbank/GeneralPurposeSkills/!ProseDetox/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Mode of !PlainEnglish for voiced prose: strip classical bloat and AI tics. Technical docs go to !SimpleEnglish."
-    triggers: ["detox this", "cut the ai voice", "rewrite plainly", "tighten this writing", "make this sound less like ai", "audit this prose", "strip ai tics", "fix the writing"]
+    triggers: ["detox this", "cut the ai voice", "make this sound less like ai", "strip ai tics", "fix the writing"]
   - name: "!SimpleEnglish"
     path: "System/Skillbank/GeneralPurposeSkills/!SimpleEnglish/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Mode of !PlainEnglish for technical docs: full ASD-STE100 Simplified Technical English (pragmatic or strict). Not voiced prose."
-    triggers: ["simplified technical english", "ste rules", "asd-ste100", "de-slop this", "write for non-native readers", "make this readable", "write like a manual", "technical writing rules"]
+    triggers: ["simplified technical english / ste / asd-ste100", "de-slop this", "write for non-native readers", "write like a manual", "technical writing rules"]
   - name: "!DesignCheck"
     path: "System/Skillbank/PersonalResearch/!DesignCheck/SKILL.md"
-    domain: "PersonalResearch"
     intent: "Check a UI against !HouseStyle through one lens: visual, usability, theory (why it confuses) or interaction (one control). Never an alternative."
-    triggers: [my ui looks off, fix the design, tailwind styling, color palette, visual hierarchy, design system, spacing scale, component styling, dark mode theme, polish the ui, usability audit, users are confused, form usability, navigation problems, nielsen heuristics, cognitive walkthrough, is this easy to use, why is this confusing, affordance, error prevention, discoverability, mental model, mapping, users keep making mistakes, this is unintuitive, people cant figure out how to use it, microinteraction, button feedback, loading state, toggle design, animation detail, state transitions, the interface feels dead, make the ui feel responsive, add polish, '!DesignCheck', design check]
+    triggers: ["design check / my ui looks off / polish the ui", "usability audit / is this easy to use", "why is this confusing / users keep making mistakes", "microinteraction / button feedback / loading state", "visual hierarchy / spacing / colour palette"]
   - name: "!RealEstateSearch"
     path: "System/Skillbank/PersonalProductivity/!RealEstateSearch/SKILL.md"
-    domain: "PersonalProductivity"
     intent: "Search Victorian rentals by suburb, bedrooms, price and features, verify each listing is under 30 days old, output a three-column table."
-    triggers: ["find me a rental", "search for a place to rent", "look for a rental in", "find an apartment in", "find a house to rent", "rental search", "house hunting", "what's available to rent in", "search real estate", "find real estate listings", "!RealEstateSearch"]
+    triggers: ["find me a rental", "look for a rental in", "find an apartment / house to rent", "house hunting", "search real estate"]
   - name: "!POVScript"
     path: "System/Skillbank/GeneralPurposeSkills/!POVScript/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Seven-phase, gated pipeline that turns a subject and notes into a second-person 'ladder' audio script of 8-10 levels."
-    triggers: ["write a POV script about", "start a new POV script for", "build the ladder outline for", "generate the next scene", "write level", "continue the POV script for", "verify the script against the outline", "revise the pov script", "stitch the script together", "!POVScript"]
+    triggers: ["write a POV script about", "build the ladder outline for", "generate the next scene / write level", "verify the script against the outline", "stitch the script together"]
   - name: "!POVStyleGuide"
     path: "System/Skillbank/GeneralPurposeSkills/!POVStyleGuide/SKILL.md"
-    domain: "GeneralPurpose"
     intent: "Six-phase, gated pipeline that turns a POV script into a tool-agnostic visual style guide and shot list; prompts only."
-    triggers: ["make a style guide for the POV script", "visual style guide for", "image prompts for the script", "style bible for", "shot list for level", "continue the style guide for", "compile the style guide for", "!POVStyleGuide"]
+    triggers: ["visual style guide for the POV script", "image prompts for the script", "style bible for", "shot list for level", "compile the style guide for"]
   - name: "!TabularRecipe"
     path: "System/Skillbank/PersonalProductivity/!TabularRecipe/SKILL.md"
-    domain: "PersonalProductivity"
     intent: "Turn a recipe into a Cooking-for-Engineers table (Thermomix by default), checking saved recipes first; offers to save to Recipes/."
-    triggers: ["tabular recipe", "recipe table", "cooking for engineers style", "put this recipe in a table", "recipe as a table", "find me a thermomix recipe", "thermomix recipe for", "without a thermomix", "!TabularRecipe"]
+    triggers: ["tabular recipe / recipe table", "cooking for engineers style", "thermomix recipe for", "without a thermomix"]
   # - name: "!ExampleSkill"
   #   path: "System/Skillbank/!ExampleSkill/SKILL.md"
-  #   domain: "Church"
   #   intent: "One line on what it does and when to use it."
   #   triggers: ["example phrase", "another trigger"]

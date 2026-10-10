@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """lint_skills — deterministic structural checks over the core skills in .claude/skills/.
 
-Catches the classes of defect found in the 2026-10-09 audit before they reach a live run:
+Catches these classes of defect before they reach a live run:
   frontmatter   every skill has a parseable `name` + `description` the harness can show
   contexts      every System/Context/*.md is known to !DetermineContext, !Tone and !Review
   logging       no skill points at a removed log or tool (skills.log, workers.log, skilllog.py); the logs are history.log and issues.log

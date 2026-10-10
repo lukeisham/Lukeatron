@@ -46,6 +46,8 @@ data and never starts this.
     4. None, and stop asking about these files (`--remember <glob>`)
   Put what changed in one plain sentence in the question; never paste a diff.
   RECORD it: `T decide <id> --to all|none|<A,B> [--remember <glob>]`.
+  IF a standing rule is made or reversed ➔ add one row to the Approvals table of each affected app's `app-decisions.md`.
+  Family decisions apply to these apps alone: never write them to `Memory/Long-Term/Logs/history.log`.
   IF none ➔ the tool has closed the change; STEP 5 report only.
 
 **STEP 2 — Check the target is ready (delegation to !AppDevelopment)**

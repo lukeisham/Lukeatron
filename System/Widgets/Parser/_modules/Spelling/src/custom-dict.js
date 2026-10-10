@@ -1,6 +1,6 @@
 /**
  * custom-dict.js — the custom dictionary: ignore/learn/unlearn/export/import
- * (spec FR-6, §7). JSON schema is §7's, unchanged from
+ * (§7). JSON schema is §7's, unchanged from
  * `persistence-ui-testing.md`.
  *
  * IGNORE vs LEARN (§7): ignore() is session-Map-only and NEVER calls
@@ -22,7 +22,7 @@ function createCustomDict(options = {}) {
   const persist = typeof options.persist === "function" ? options.persist : null;
 
   function callPersist() {
-    // Guard per JS-2: persist is optional by design (spec FR-1), so a
+    // Guard per JS-2: persist is optional by design, so a
     // missing callback is a valid, silent no-op here — not a "shouldn't
     // happen" state. Only an unexpected throw FROM the callback is worth
     // surfacing, and we let that propagate to the caller rather than

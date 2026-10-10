@@ -1,6 +1,6 @@
 /**
  * main.js — the only module that imports several others; it finds each page region by id and mounts the
- * module that owns it (documentation.spec §3). Modules talk to each other by events, so the order below
+ * module that owns it. Modules talk to each other by events, so the order below
  * matters only where one needs another's return value (the drag-drop and library wiring).
  *
  * Every mount is isolated: a module that throws is logged by name and the rest of the page still comes up (JS-2).

@@ -83,12 +83,12 @@ function close() {
   applyFilter();
 }
 
-// Apps open in a new tab so Home stays put (Luke, 2026-09-29). Called only from a click or a key
+// Apps open in a new tab so Home stays put. Called only from a click or a key
 // press, so the browser treats window.open as user-initiated and does not block it.
 function go(row) {
   if (!row || !choosable(row)) return;
   if (row.dataset.panel) {
-    // A hosted panel opens in-page; its onClose hands focus back to the bar (Larder AC-5).
+    // A hosted panel opens in-page; its onClose hands focus back to the bar.
     const panel = panels[row.dataset.panel];
     close();
     if (panel) panel.open();

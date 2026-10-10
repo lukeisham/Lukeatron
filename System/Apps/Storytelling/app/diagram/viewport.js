@@ -19,7 +19,7 @@ const WHEEL_LINE_PX = 16;
 const WHEEL_SENSITIVITY = 0.0015;
 const WHEEL_PINCH_SENSITIVITY = 0.01;
 const VIEWPORT_TILE_SELECTOR = ".tile";
-/** Print targets that show the whole poster whatever the on-screen zoom (viewport-detail FR-V8, story-map FR-C13). */
+/** Print targets that show the whole poster whatever the on-screen zoom. */
 const FULL_POSTER_PRINT_TARGETS = ["table", "story-with-table"];
 
 /* ------------------------------------------------------------------ pure viewBox maths */

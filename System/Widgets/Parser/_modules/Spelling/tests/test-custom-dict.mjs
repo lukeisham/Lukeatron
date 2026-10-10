@@ -74,7 +74,7 @@ test("TEST-7 gate: importDictionary() merges a valid payload and calls persist o
   assert.equal(persistCalls, 1);
 });
 
-// --- AC-4: export/import round-trip across a fresh instance ---------------
+// --- export/import round-trip across a fresh instance ---------------------
 
 test("AC-4: exportDictionary() output re-imported into a fresh module instance reproduces the same isLearned results", () => {
   const original = createCustomDict();

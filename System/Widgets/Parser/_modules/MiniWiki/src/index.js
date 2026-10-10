@@ -1,5 +1,5 @@
 /**
- * index.js — createMiniWikiModule(options) factory (spec FR-1), mirroring
+ * index.js — createMiniWikiModule(options) factory, mirroring
  * SpellingModule's createSpellingModule(options) shape (Spelling/src/index.js):
  * one public factory, no globals leaked beyond what a host explicitly binds
  * at build time, everything else injected for testability (TEST-4/TEST-8).

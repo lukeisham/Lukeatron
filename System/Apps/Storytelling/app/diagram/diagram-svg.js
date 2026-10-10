@@ -1,9 +1,9 @@
 /**
- * Draws the whole table as one <svg> (diagram spec FR-D4, FR-D9-D14).
+ * Draws the whole table as one <svg>.
  *
  * Painter's order: furniture -> tiles -> connectors -> interaction layer (SVG-3). Everything is
  * built with createElementNS and textContent (never innerHTML). Colour comes only from CSS
- * classes; the one thing set inline is geometry and font-size, so the fit guarantee (AC-D3) does
+ * classes; the one thing set inline is geometry and font-size, so the fit guarantee does
  * not depend on the stylesheet. The stylesheet must therefore NOT set font-size on `.sym`, `.nm`
  * or `.pop`.
  *
@@ -44,7 +44,7 @@ const DEFAULT_DIAGRAM_DATA = Object.freeze({
 /** Cell size fallback when an injected layout has no `geometry`. */
 const FALLBACK_GEOMETRY = Object.freeze({ originX: 29, cellWidth: 62.1, cellHeight: 75 });
 
-/** Rogue card: column 0, the row of the Five Man Band sub-tiles (FR-D14). */
+/** Rogue card: column 0, the row of the Five Man Band sub-tiles. */
 const ROGUE_Y = 1125;
 
 // ---- tile text metrics (poster pixels) -------------------------------------------------------
@@ -135,7 +135,7 @@ function wrapWords(text, maxWidth, fontSize) {
 }
 
 /**
- * Chooses the font size and line breaks for a tile's name so it fits (AC-D3): tries the sizes from
+ * Chooses the font size and line breaks for a tile's name so it fits: tries the sizes from
  * large to the legible floor; at the floor it merges surplus lines and, only if a line is still too
  * wide, compresses that line with `textLength`.
  * @param {string} name

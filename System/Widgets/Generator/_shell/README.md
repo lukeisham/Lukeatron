@@ -4,12 +4,12 @@ The shell is the shared chassis every Generator widget is built from: display
 harness, focus-level renderer, lexicon portal, export bar, the spelling and
 MiniWiki module injection seams, and the `analyse`/`present` mode switch
 (`generator.mode` in the manifest — see `Specs/GeneratorShell.spec.md` §3).
-**One copy, four cartridges** (AiCharacteristics runs `analyse` mode; Riddle,
-FolkTale, and Psychometric run `present` mode). Full contract:
+**One copy, three cartridges** (Riddle, FolkTale and Psychometric, all in
+`present` mode; `analyse` mode remains in the shell with no cartridge using it). Full contract:
 `Specs/GeneratorShell.spec.md`.
 
-**All four cartridges were promoted to standalone apps on 2026-09-29** — they now live at
-`System/Apps/AiCharacteristics/`, `System/Apps/FolkTale/`, `System/Apps/Psychometric/`, and
+**All three cartridges are standalone apps** — they live at
+`System/Apps/FolkTale/`, `System/Apps/Psychometric/`, and
 `System/Apps/Riddle/` rather than beside this shell. This chassis, `_modules/`, and `_research/`
 stayed behind here; each app's README gives the cross-tree rebuild command.
 
@@ -95,7 +95,7 @@ Build one cartridge into its shipped widget file:
 ```bash
 python3 _shell/build/assemble.py <Cartridge>/cartridge [output.html]
 # e.g.
-python3 _shell/build/assemble.py AiCharacteristics/cartridge AiCharacteristics/aicharacteristics_generator.html
+python3 _shell/build/assemble.py ../../Apps/Riddle/cartridge ../../Apps/Riddle/Riddle_generator.html
 ```
 
 Default output (no second argument): `<cartridge_dir>/<cartridge.id>_generator.html`.
@@ -280,18 +280,17 @@ this tree:
 
 | Cartridge | Mode | Size (bytes) |
 |---|---|---:|
-| AiCharacteristics | analyse | 174,717 |
-| Riddle | present | 218,280 |
-| FolkTale | present | 258,238 |
-| Psychometric | present | 293,083 |
+| Riddle | present | 218,133 |
+| FolkTale | present | 281,906 |
+| Psychometric | present | 292,978 |
 
-All four are well under the ~4.2 MB a Parser cartridge with the spelling
-module wired in reaches — none of the four Generator cartridges opts into
+All three are well under the ~4.2 MB a Parser cartridge with the spelling
+module wired in reaches — none of the three Generator cartridges opts into
 `spelling.enabled` (present mode never shows the spell-check control at
-all, D-4; AiCharacteristics could opt in but doesn't). The bulk of each
-file is the MiniWiki module (bundle + article JSON, all four opt in) plus
+all). The bulk of each
+file is the MiniWiki module (bundle + article JSON, all three opt in) plus
 the cartridge's own baked content pool — there is no lexicon `.db` or
-spelling dictionary in any of the four.
+spelling dictionary in any of the three.
 
 ## Cloning a new cartridge (see `_research/cartridge-anatomy.md`)
 

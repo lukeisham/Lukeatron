@@ -2,7 +2,7 @@
 approved reference sources, counts for every device in seed/devices.json how many distinct sources
 mention its name or any alias (the four scraped lists are already counted in `lists_naming`), and
 writes seed/popularity.json. It changes nothing else: no database write, no edit to devices.json.
-This is the stage's only network use (seed FR-8). Re-runnable.
+This is the stage's only network use. Re-runnable.
 
 Run: python3 -m seed.popularity_pass            (from System/Apps/Rhetoric/)
 """

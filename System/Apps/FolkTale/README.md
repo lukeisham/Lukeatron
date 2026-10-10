@@ -1,7 +1,6 @@
 # FolkTale
 
-Promoted from `System/Widgets/Generator/FolkTale/` to a standalone Lukeatron app on 2026-09-29. It
-is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
+A standalone Lukeatron app. It is assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present` mode**:
 Generate pulls a public-domain folk tale from the baked pool, the shell highlights its three
 narrative beats (setup / twist / result) with a legend, and Copy puts the plain tale text on the
 clipboard. Shipped widget: `FolkTale_generator.html`, **282,026 bytes**.
@@ -47,28 +46,18 @@ Copy. No clue, no answer-checking, no explainer (`generator.clue: false`,
 is read-and-highlight only. One focus level, `beat` (`parser.levels`), cap
 400 words per tale (`parser.cap`).
 
-## Revision (2026-08-13, Luke's instruction)
+## Categories
 
-The **Turkey/Middle East** category (4 Nasreddin Hodja tales) was removed
-entirely — seed entries, pool items, MiniWiki catalogue rows, and every
-`CATEGORY_OF_CULTURE`/`CATEGORY_LABELS`/`config.yaml` reference. It was
-replaced with **Persia (Pre-Islamic)** (3 tales from the legendary/mythical
-era of Ferdowsi's Shahnameh, via Helen Zimmern's 1883 prose translation,
-*The Epic of Kings*, hosted at MIT's Internet Classics Archive). Two new
-**genre** categories were added alongside the existing culture/region ones:
-**American Gothic** (3 tales — Irving's "The Legend of Sleepy Hollow" 1820,
-Hawthorne's "Young Goodman Brown" 1835, Poe's "The Tell-Tale Heart" 1843)
-and **Australian Gothic** (2 tales — Lawson's "The Drover's Wife" 1892,
-Clarke's "The Haunted Author", undated). All 8 new tales are condensed
-retellings from real, individually web-verified public-domain sources —
-every source was fetched and checked directly (not trusted from a search
-snippet) before being written into the seed, after an earlier citation
-fabrication was found elsewhere in this project. Australian Gothic was
-deliberately scoped to the settler/colonial literary tradition rather than
-Aboriginal Dreaming stories, which carry cultural-protocol and permission
-considerations this seed file is not equipped to navigate responsibly.
-
-Net change: 36 → 40 tales, 8 → 10 categories.
+Ten categories hold 40 tales. Most are culture/region categories; **Persia
+(Pre-Islamic)** draws on Ferdowsi's Shahnameh in Helen Zimmern's 1883 prose
+translation, *The Epic of Kings* (MIT's Internet Classics Archive). Two are
+**genre** categories, folded through the same `CATEGORY_OF_CULTURE`
+mechanism: **American Gothic** (Irving's "The Legend of Sleepy Hollow",
+Hawthorne's "Young Goodman Brown", Poe's "The Tell-Tale Heart") and
+**Australian Gothic** (Lawson's "The Drover's Wife", Clarke's "The Haunted
+Author"). Every tale is a condensed retelling from a public-domain source
+fetched and checked directly, never trusted from a search snippet. Which
+categories exist, and why, is in `app-decisions.md`.
 
 ## Read this before trusting the beat highlighting
 
@@ -87,9 +76,7 @@ carry hand-authored ground truth. `tests/js/test-beat-accuracy.mjs` measures
 tales' own ground-truth spans (never letting the detector see the spans it's
 being scored against):
 
-**62.4% sentence-level accuracy** (290 sentences across 40 tales, measured
-2026-08-13 after the category revision above; was 64.0%/275 sentences/36
-tales on 2026-08-12). Per-tale accuracy ranges from **100%** on several
+**62.4% sentence-level accuracy** (290 sentences across 40 tales). Per-tale accuracy ranges from **100%** on several
 tales down to **11%** on the new worst case, `persian-001` ("Zal and the
 Simurgh") — the cue-based detector's discourse-marker cues are tuned to
 modern narrative prose and struggle badly with the Zimmern translation's

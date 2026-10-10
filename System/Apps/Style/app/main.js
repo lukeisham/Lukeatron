@@ -1,4 +1,4 @@
-/** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
+/** Wires the page: loads data once, then re-renders on each state change. */
 
 import {
   addPlacement, createLabel, createLabelLink, deleteLabel, editLabel, fetchItems, moveLabel, removePlacement, saveLabelTables,

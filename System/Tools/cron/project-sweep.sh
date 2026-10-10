@@ -3,11 +3,10 @@
 # Runs !ProjectSweep every Monday at 07:30 AEST.
 # Invoked by crontab; CLAUDE.md auto-loads from the working directory.
 
-LUKEATRON="/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron"
-CLAUDE="/Users/lukeishammacbookair/.local/bin/claude"
+LUKEATRON="${0:A:h:h:h:h}"
+CLAUDE="$HOME/.local/bin/claude"
 LOG="$LUKEATRON/System/Tools/cron/out/project-sweep.log"; mkdir -p "${LOG:h}"
-export HOME="/Users/lukeishammacbookair"
-export PATH="/Users/lukeishammacbookair/.local/bin:/usr/local/bin:/usr/bin:/bin"
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 echo "=== project-sweep START $(date) ===" >> "$LOG"
 cd "$LUKEATRON" && "$CLAUDE" -p \

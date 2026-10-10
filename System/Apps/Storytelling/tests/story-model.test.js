@@ -62,7 +62,7 @@ test("constants match the spec", () => {
   assert.equal(TANDEM_FULL_MESSAGE, "A tandem holds two");
 });
 
-/* ---------- add: the drop targets (FR-C3, C4, AC-C1, AC-C2) ---------- */
+/* ---------- add: the drop targets (C4) ---------- */
 
 test("drop on empty space with no active bead starts an unattached bead and makes it active", () => {
   const { store } = makeStore();
@@ -181,7 +181,7 @@ test("the app's bound functions act on the shared store", () => {
   assert.equal(typeof storyStore.getState, "function");
 });
 
-/* ---------- caps (FR-C1, AD-C4) ---------- */
+/* ---------- caps ---------- */
 
 test("the 200-bead cap refuses the next bead with a visible message", () => {
   const { store } = makeStore();
@@ -213,7 +213,7 @@ test("the 400-ribbon cap refuses a link and any drop that needs a new ribbon, le
   assert.equal(store.getState().beads.length, beadsBefore);
 });
 
-/* ---------- linking and cutting (FR-C5, AC-C3) ---------- */
+/* ---------- linking and cutting ---------- */
 
 test("linkBeads builds a merge and a loop", () => {
   const { store } = makeStore();
@@ -259,7 +259,7 @@ test("setActive changes which bead the next drop joins; an unknown bead is refus
   assert.equal(store.setActive("zz").error.code, "unknown-bead");
 });
 
-/* ---------- remove and heal (FR-C6, AC-C4) ---------- */
+/* ---------- remove and heal ---------- */
 
 test("removing a middle bead of a straight chain leaves an unbroken chain", () => {
   const { store } = makeStore();
@@ -323,7 +323,7 @@ test("guard: removing an unknown bead is refused", () => {
   assert.equal(warnings.length, 1);
 });
 
-/* ---------- move (FR-C6, AC-C4) ---------- */
+/* ---------- move ---------- */
 
 test("moving a bead is one gesture: it heals its old place and joins the new target, sending one event", () => {
   const { store, events } = makeStore();
@@ -365,7 +365,7 @@ test("moving the active bead to empty space leaves it as a new unattached start"
   assert.notEqual(a, undefined);
 });
 
-/* ---------- tandem (FR-C16, AC-C12) ---------- */
+/* ---------- tandem ---------- */
 
 test("a tile dropped on a dock pairs with that bead; the bead stays one bead and becomes active", () => {
   const { store } = makeStore();
@@ -478,7 +478,7 @@ test("guard: merging refuses two tandems, the same element, or the bead onto its
   assert.notDeepEqual(before, again);
 });
 
-/* ---------- rogue (FR-C15, AC-C11) ---------- */
+/* ---------- rogue ---------- */
 
 test("a rogue bead gets the label 'Rogue' by default and keeps one it is given", () => {
   const { store } = makeStore();
@@ -548,7 +548,7 @@ test("a note can be given when a bead is added", () => {
   assert.deepEqual(store.getBead(uid), { uid, elementId: "A", note: "Start here" });
 });
 
-/* ---------- clear and undo (FR-C17, AC-C14) ---------- */
+/* ---------- clear and undo ---------- */
 
 test("Clear empties the map at once and Undo restores it exactly, active bead included", () => {
   const { store, clock } = makeStore();
@@ -630,7 +630,7 @@ test("snapshot and restore round-trip the whole map by value", () => {
   assert.equal(store.restore({ beads: 1 }).error.code, "bad-argument");
 });
 
-/* ---------- loadStory: one loader for saved stories and library entries (FR-C14, L3) ---------- */
+/* ---------- loadStory: one loader for saved stories and library entries (L3) ---------- */
 
 const librarySample = () =>
   deepFreeze({

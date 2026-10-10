@@ -264,7 +264,7 @@ test("copyText returns error when clipboard fails and fallback also fails", asyn
   assert.ok(result.error);
 });
 
-// setPrintTarget: the attribute names are the CSS contract (style.spec FR-S9, FR-S11)
+// setPrintTarget: the attribute names are the CSS contract
 test("print attributes are `data-print` and `data-tone` on the body, as style.spec names them", () => {
   const doc = createFakeDocument();
   const win = createFakeWindow();
@@ -311,7 +311,7 @@ test("afterprint listener removes itself so repeated prints do not stack handler
   assert.equal(win.listeners.get("afterprint").length, 0);
 });
 
-// Print events: how the diagram and the story map learn to prepare their print view (documentation.spec D-7)
+// Print events: how the diagram and the story map learn to prepare their print view
 function createRecordingDocument() {
   const doc = createFakeDocument();
   doc.events = [];

@@ -1,4 +1,4 @@
-/* FolkTale generator — present-mode ENGINE (GeneratorShell.spec.md §3b).
+/* FolkTale generator — present-mode ENGINE.
    getPool()/render() are the two required exports; checkAnswer/explainItem
    are omitted on purpose (generator.answer/generator.explainer are both
    false in config.yaml — a quiz/answer surface doesn't fit "read a tale
@@ -27,9 +27,6 @@
    labels against scoreFromSpans()'s labels for all 36 seeded tales — the
    only place a real "detector accuracy" number can come from. */
 var ENGINE = (function () {
-  function esc(s) {
-    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
 
   /* ---------------------------------------------------------- sentences */
 
@@ -217,7 +214,7 @@ var ENGINE = (function () {
       var hue = hueFor(beat);
       html +=
         '<span class="ft-chip" style="background:' + hue.h100 + ";color:" + hue.h800 + '">' +
-        esc(BEAT_NAME[beat]) +
+        escapeHtml(BEAT_NAME[beat]) +
         "</span>";
     });
     html += "</div>";
@@ -231,7 +228,7 @@ var ENGINE = (function () {
       var hue = hueFor(beat);
       html +=
         '<span class="ft-beat" data-beat="' + beat + '" style="background:' + hue.h100 + ";color:" + hue.h800 + '" title="' +
-        esc(BEAT_NAME[beat]) + '">' + esc(sentences[i]) + "</span> ";
+        escapeHtml(BEAT_NAME[beat]) + '">' + escapeHtml(sentences[i]) + "</span> ";
     }
     return html;
   }
@@ -253,14 +250,14 @@ var ENGINE = (function () {
 
     var meta =
       '<p class="ft-meta">' +
-      esc(item.culture || "") +
-      (item.translator ? " &middot; " + esc(item.translator) : "") +
-      (item.year ? " (" + esc(item.year) + ")" : "") +
+      escapeHtml(item.culture || "") +
+      (item.translator ? " &middot; " + escapeHtml(item.translator) : "") +
+      (item.year ? " (" + escapeHtml(item.year) + ")" : "") +
       "</p>";
 
     var html =
       renderLegend() +
-      "<h2 class=\"ft-title\">" + esc(item.title || "") + "</h2>" +
+      "<h2 class=\"ft-title\">" + escapeHtml(item.title || "") + "</h2>" +
       meta +
       '<p class="ft-tale">' + renderTale(sentences, labels) + "</p>";
 

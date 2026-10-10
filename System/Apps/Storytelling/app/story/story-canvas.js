@@ -1,5 +1,5 @@
 /**
- * story-canvas.js — the story map's renderer and its own toolbar (story-map FR-C4, C8–C12, C13, C15–C17).
+ * story-canvas.js — the story map's renderer and its own toolbar.
  *
  * Draws beads and ribbons from `layout()` and the story store; it never decides where a bead sits and
  * never changes a story except through the bound story-model functions. Pointer drags (ghost, hit-testing,
@@ -66,7 +66,7 @@ import {
 const CANVAS_SVG_NS = "http://www.w3.org/2000/svg";
 const NAME_MAX = 60;
 
-/** Drop-target wording (story-map FR-C3); drag-drop.js relies on the tray's `data-hint` carrying these. */
+/** Drop-target wording; drag-drop.js relies on the tray's `data-hint` carrying these. */
 export const HINT_BRANCH = "Branch from this bead";
 export const HINT_INSERT = "Insert on this ribbon";
 export const HINT_ADD = "Add to the story";
@@ -74,7 +74,7 @@ export const HINT_DOCK = "Pair as a tandem";
 
 const CANVAS_ELEMENTS = new Map([...ELEMENTS, ROGUE].map((element) => [element.id, element]));
 
-/* ---------- small DOM helpers (never innerHTML, D-11) ---------- */
+/* ---------- small DOM helpers (never innerHTML) ---------- */
 
 function canvasNode(tag, className, text) {
   const node = globalThis.document.createElement(tag);
@@ -529,7 +529,7 @@ export function mountStoryCanvas(host, options = {}) {
     ]);
   }
 
-  /* ----- clear and undo (FR-C17) ----- */
+  /* ----- clear and undo ----- */
 
   function onUndoExpiry() {
     undoTimerId = null;
@@ -614,7 +614,7 @@ export function mountStoryCanvas(host, options = {}) {
     render();
   }
 
-  /* ----- rogue label editing (FR-C15) ----- */
+  /* ----- rogue label editing ----- */
 
   function startLabelEdit(uid, half) {
     editing = { uid, half };
@@ -669,7 +669,7 @@ export function mountStoryCanvas(host, options = {}) {
 
   /* ----- opening detail ----- */
 
-  /** Detail for the clicked half; the detail panel needs the rogue label and the other half (FR-V11). */
+  /** Detail for the clicked half; the detail panel needs the rogue label and the other half. */
   function openDetail(bead, which) {
     const halves = beadHalves(bead);
     const clicked = halves.find((half) => half.which === which) ?? halves[0];

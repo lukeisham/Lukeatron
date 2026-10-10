@@ -1,8 +1,8 @@
 /* ============================================================
-   SHELL · PRESENT MODE (GeneratorShell.spec.md §3b, DECISIONS.md D-1)
+   SHELL · PRESENT MODE
    Never edited per cartridge. Reads ONLY CONFIG.generator and the ENGINE
    present-mode exports (getPool, render, checkAnswer, explainItem) — never
-   the DOM beyond its own mount points, never a cartridge's name (D-3).
+   the DOM beyond its own mount points, never a cartridge's name, so one shell serves every cartridge.
 
    Present-mode ENGINE contract (the cartridge side of this seam):
 

@@ -78,6 +78,19 @@ class GitsyncTest(unittest.TestCase):
         self.assertIn("Dropbox has not finished", result["systemMessage"])
         self.assertEqual(git(self.laptop, "rev-parse", "HEAD"), head)
 
+    def test_untracked_and_ignored_file_does_not_hold(self):
+        self.write(self.mini, "keep.txt", "local only\n")
+        self.commit(self.mini, "second")
+        self.dropbox()
+        self.run_sync()
+        git(self.mini, "rm", "-q", "--cached", "keep.txt")
+        self.write(self.mini, ".gitignore", "keep.txt\n")
+        self.commit(self.mini, "stop tracking keep.txt")
+        self.dropbox()
+        result = self.run_sync()
+        self.assertIn("caught up 1 commit", result["systemMessage"])
+        self.assertEqual((self.laptop / "keep.txt").read_text(), "local only\n")
+
     def test_holds_when_this_mac_has_unpushed_commits(self):
         self.write(self.mini, "a.txt", "two\n")
         self.commit(self.mini, "second")

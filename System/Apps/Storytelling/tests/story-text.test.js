@@ -374,7 +374,7 @@ test("defaults to id when symbol not provided", () => {
   assert.equal(lines[1], "1. A — Alpha");
 });
 
-/* ---------- Exact output format (AC-C8, AC-C13) ---------- */
+/* ---------- Exact output format ---------- */
 
 test("exact format: straight chain matches FR-C13", () => {
   const beads = [
@@ -424,7 +424,7 @@ test("exact format: rogue with branching arrow", () => {
   assert.equal(lines[3], "3. B — Beta");
 });
 
-/* ---------- FR-C13 details found in review ---------- */
+/* ---------- rogue cards and tandems in the printed story text ---------- */
 
 test("a rogue card that is the FIRST half of a tandem prints both halves", () => {
   const beads = [{ uid: "b1", elementId: "Rg", label: "Twist", with: "A" }];

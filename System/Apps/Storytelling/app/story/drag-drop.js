@@ -1,12 +1,12 @@
 /**
- * drag-drop.js — the pointer gestures that build and edit the story map (story-map FR-C2..C6).
+ * drag-drop.js — the pointer gestures that build and edit the story map.
  *
- * Three gestures, all with pointer events (documentation D-4), all starting only after a move of more
- * than DRAG_THRESHOLD_PX so a plain press stays a click (D-5):
+ * Three gestures, all with pointer events, all starting only after a move of more
+ * than DRAG_THRESHOLD_PX so a plain press stays a click:
  *   - "tile": a diagram tile (or the Rogue card) dragged into the tray  -> addBead / pairBead
  *   - "bead": a bead dragged around                                     -> moveBead / mergeBeads / removeBead
  *   - "link": a bead's link dot dragged onto another bead                -> linkBeads
- * A background press is never ours: dragging the diagram background pans (viewport.js, D-6).
+ * A background press is never ours: dragging the diagram background pans (viewport.js).
  *
  * This file only calls the model; it never edits a story itself (documentation contract row).
  */
@@ -15,10 +15,10 @@ import { DRAG_THRESHOLD_PX } from "../diagram/selection.js";
 import { pointOnCurve, ribbonCurve } from "./story-layout.js";
 import { addBead, moveBead, removeBead, linkBeads, pairBead, mergeBeads, getStoryState } from "./story-model.js";
 
-/** Width and height of a bead's dock notch (style FR-S16); half of it sits outside the bead's right edge. */
+/** Width and height of a bead's dock notch; half of it sits outside the bead's right edge. */
 export const DOCK_WIDTH = 14;
 export const DOCK_HEIGHT = 30;
-/** How close (px) the pointer must be to a ribbon's curve to count as "on" it (FR-C3). */
+/** How close (px) the pointer must be to a ribbon's curve to count as "on" it. */
 export const RIBBON_HIT_DISTANCE = 14;
 
 const RIBBON_SAMPLES = 32;

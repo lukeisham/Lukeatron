@@ -1,20 +1,20 @@
 /**
- * story-store.js — persistence for saved stories and the draft (story-map FR-C10 to FR-C12).
+ * story-store.js — persistence for saved stories and the draft.
  *
- * The only file that touches `localStorage` (AD-C1), under `storytelling.stories.v1` and
+ * The only file that touches `localStorage`, under `storytelling.stories.v1` and
  * `storytelling.draft.v1`. Every function takes an optional storage object (default: the browser's
  * localStorage, looked up safely because merely reading it can throw when it is blocked), so tests
  * pass a hand-built fake.
  *
- * Shape (AD-C2):
+ * Shape:
  *   stories: { version, stories: [{ name, beads, ribbons, agent? }] }   newest first, at most 200
  *   draft:   { version, beads, ribbons }
  *
- * Storage failure (FR-C12): if storage is missing, blocked, unreadable or full, the store keeps
+ * Storage failure: if storage is missing, blocked, unreadable or full, the store keeps
  * working from memory and `storageStatus()` / `listStories().message` say why ("Storage full" or
  * "Storage unavailable"). A later successful write clears the message.
  *
- * Agent guard (FR-A8): an agent's save (`agent: true`) may replace only a story that an agent saved.
+ * Agent guard: an agent's save (`agent: true`) may replace only a story that an agent saved.
  * A save that does not pass `agent: true` is Luke's own gesture and may replace any story.
  */
 
@@ -123,7 +123,7 @@ function checkStoryName(name) {
  * A name that is already taken is refused with `exists: true` unless `replace` is true, so the
  * caller can ask inline. Refusals never throw; they return `{ ok: false, error, exists?, code? }`.
  * An agent save (`agent: true`) is also refused (`code: "not-agent-story"`, message contains
- * "non-agent") when the existing story was not saved by an agent, whatever `replace` says (FR-A8).
+ * "non-agent") when the existing story was not saved by an agent, whatever `replace` says.
  *
  * @param {{ name: string, beads: object[], ribbons?: Array<[string, string]>, agent?: boolean, replace?: boolean }} story
  * @param {Storage} [storage] test stand-in for localStorage
@@ -198,7 +198,7 @@ export function deleteStory(name, storage) {
 }
 
 /**
- * Write the current, unsaved map as the draft; called on every change (FR-C11).
+ * Write the current, unsaved map as the draft; called on every change.
  * Always succeeds from the caller's view: if storage fails the draft stays in memory.
  *
  * @param {object[]} beads
@@ -225,7 +225,7 @@ export function writeDraft(beads, ribbons = [], storage) {
 }
 
 /**
- * The draft to restore at load (FR-C11): empty beads and ribbons when there is none.
+ * The draft to restore at load: empty beads and ribbons when there is none.
  * `message` is present when storage has failed.
  *
  * @param {Storage} [storage]
@@ -271,7 +271,7 @@ function readDraftFromStorage(storage) {
 }
 
 /**
- * Whether storage is working, for the UI's one-time note next to Save (FR-C12).
+ * Whether storage is working, for the UI's one-time note next to Save.
  *
  * @returns {{ available: boolean, message: string }} `message` is "" when available
  */

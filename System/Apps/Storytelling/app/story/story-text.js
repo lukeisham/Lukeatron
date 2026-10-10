@@ -1,8 +1,8 @@
 /**
- * story-text.js — plain-text copy of a story map (story-map FR-C13).
+ * story-text.js — plain-text copy of a story map.
  *
  * Pure function: no DOM, no side effects. One line per bead in layout order, so the copy, the
- * screen and the print all number beads the same way (D-13).
+ * screen and the print all number beads the same way.
  */
 import { ELEMENTS, ROGUE } from "../data/elements.js";
 
@@ -23,7 +23,7 @@ function defaultElementLookup() {
 }
 
 /**
- * Produce the plain text that Copy puts on the clipboard (FR-C13):
+ * Produce the plain text that Copy puts on the clipboard:
  *
  *     <name>
  *     N. <symbol> — <name>                      a bead

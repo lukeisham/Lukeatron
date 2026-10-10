@@ -25,14 +25,13 @@
 
 ## Note on source files
 
-**Everything parser-touched is centralised (2026-08-09), and the build system moved to a shared shell (2026-08-10).** The old pattern below — a `build/` folder of identical `template.html`/`build_parser.py`/`build_lexicon.py` clones inside each parser folder — has been retired (`System/Plans/New/parser-shell-and-spelling-module.md`, Step 8). Each of the 13 parsers now has one folder, `System/Widgets/Parser/<Store>/`, holding:
+**Everything parser-touched is centralised, and the build system is a shared shell.** The old pattern below — a `build/` folder of identical `template.html`/`build_parser.py`/`build_lexicon.py` clones inside each parser folder — has been retired (`System/Plans/New/parser-shell-and-spelling-module.md`, Step 8). Each of the 13 parsers now has one folder, `System/Widgets/Parser/<Store>/`, holding:
 
 - `<Store>_content.md` — the editable content source, at the widget root (drafted for all 13; Fact-checking's is a stub)
 - any raw research material that feeds the content draft (e.g. Rhetoric's schema map + two JSON databases, Logic's Fallacies/Syllogisms/Ways-of-Thinking folders)
 - `cartridge/` — Grammar only so far — the parser's code (`config.yaml`, `<store>_engine.js`, `<store>_explainer.js`, compiled content JSON, lexicon `.db` if needed), assembled against the shared shell at `System/Widgets/Parser/_shell/`
-- Grammar only, additionally: `Specs/Done/GrammarParser.spec.md`
 - the shipped `<Store>_parser.html`, once built (only Grammar's exists so far)
 
 New parsers are built as a `cartridge/` against `_shell/` (`_shell/README.md` §"Cloning a new parser"), not by cloning a template — the 12 other parsers have no `build/` folder until their cartridge is built.
 
-**What stayed in `Memory/Long-Term/<Store>/`:** nothing but a pointer `_index.yaml` per store, noting the move and reserving the store name for any future non-parser content. Biblical Commentary's six SWORD modules (`CalvinCommentaries`, `Clarke`, `DTN`, `KingComments`, `RWP`, `Scofield`) also moved, on 2026-08-09, out of `Memory/Long-Term/Bible/` into `System/Widgets/Parser/Biblical Commentary/` — Bible/ keeps everything else (Bible Reports/, QuotingPassages/, the translation module), since those serve general Bible-reference purposes beyond this one parser.
+**What stayed in `Memory/Long-Term/<Store>/`:** nothing but a pointer `_index.yaml` per store, noting the move and reserving the store name for any future non-parser content. Biblical Commentary's six SWORD modules (`CalvinCommentaries`, `Clarke`, `DTN`, `KingComments`, `RWP`, `Scofield`) live outside `Memory/Long-Term/Bible/`, in `System/Widgets/Parser/Biblical Commentary/` — Bible/ keeps everything else (Bible Reports/, QuotingPassages/, the translation module), since those serve general Bible-reference purposes beyond this one parser.

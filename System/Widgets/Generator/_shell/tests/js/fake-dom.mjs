@@ -5,17 +5,11 @@
 // querySelector(All), event listener registration/dispatch for
 // click/keydown, and a plain-string innerHTML store (no HTML parsing).
 //
-// SHARED per vibe-coding-rules.md SR-4 ("share, don't copy-paste"): this
-// file is the single canonical copy. It originated in
-// _modules/Spelling/tests/ (for _modules/Spelling/src/ui.js, TEST-8) and
-// was extracted here — _shell/tests/js/ — during the 2026-08-10
-// test-and-refine pass so _shell/src/ui.js's own new test file
-// (test-ui.mjs, TEST-8 gap closed) could reuse it instead of a second
-// hand-rolled copy. _modules/Spelling/tests/test-ui.mjs imports this file
-// by relative path; do not fork it back into a per-module copy — a bug
-// fixed in one consumer's needs (e.g. the innerHTML addition below, needed
-// by _shell/src/ui.js but not by the Spelling module's own ui.js, which
-// deliberately never uses innerHTML per AD-2) must be fixed here, once.
+// The single shared copy (SR-4): _shell/tests/js/test-ui.mjs and
+// _modules/Spelling/tests/test-ui.mjs both import it by relative path. Do
+// not fork it into a per-module copy — a need of one consumer (such as the
+// innerHTML store below, used by _shell/src/ui.js but never by the Spelling
+// module's own ui.js) is met here, once.
 
 function hasClass(el, className) {
   return (el.className || "").split(/\s+/).includes(className);

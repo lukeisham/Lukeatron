@@ -3,7 +3,7 @@
 
 Why this exists (PY-1 / SR-2): Lukeatron's live baseline is Python standard
 library only — no pip, no venv, no requirements.txt. PyYAML is a third-party
-package, so GeneratorShell.spec.md's YAML manifest format is served by this
+package, so the cartridge manifest's YAML is served by this
 hand-rolled parser instead. It supports exactly the subset the manifest
 needs: nested block mappings, block lists of scalars, block lists of
 mappings (each list item's first line is "- key: value", further keys of

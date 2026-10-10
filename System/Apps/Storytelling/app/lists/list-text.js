@@ -5,8 +5,8 @@ const LIST_CREDIT = "Descriptions and examples adapted from TV Tropes (tvtropes.
 const EXAMPLE_INDENT = "    ";
 
 /**
- * Formats storytelling elements for a category (or all categories) as a dot-point list (FR-K3, FR-K4).
- * One pure function feeds the preview, Copy and Print so they cannot disagree (AD-K2).
+ * Formats storytelling elements for a category (or all categories) as a dot-point list.
+ * One pure function feeds the preview, Copy and Print so they cannot disagree.
  *
  * @param {string} categoryKey - A CATEGORIES key, or "all" for all categories
  * @param {{ examples?: boolean }} [options] - `examples` adds each element's example line (default false)
@@ -34,7 +34,7 @@ export function listText(categoryKey, { examples = false } = {}, data) {
 
 /**
  * Elements of one category: poster elements first, then added ones, each in ELEMENTS array order
- * (the array is already in poster reading order, and added elements in placement order, FR-D11).
+ * (the array is already in poster reading order, and added elements in placement order).
  * Elements with no name are skipped so the text never holds an empty bullet.
  */
 function elementsInCategory(categoryKey, elements) {

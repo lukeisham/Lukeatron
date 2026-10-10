@@ -1,5 +1,5 @@
 /* ==========================================================================
-   list.css — the dense, monochrome list body (no accent colour, AD-8).
+   list.css — the dense, monochrome list body (no accent colour).
    Tokens: --color-ink*, --color-marker, --color-rule-body, --font-size-*,
    --line-height-body, --space-*, --indent-*, --border-hairline.
    Definitions/examples hide by body class; an expanded row overrides both.
@@ -120,7 +120,7 @@
   font-size: var(--font-size-example);
 }
 
-/* AI-confidence badge: monochrome (AD-8). High is filled, medium outlined, low dashed and faint,
+/* AI-confidence badge: monochrome. High is filled, medium outlined, low dashed and faint,
    so the three read apart without an accent colour. On screen only: print.css hides it. */
 .confidence-badge {
   flex-shrink: 0;

@@ -1,4 +1,4 @@
-/** Wires the page: loads data once, then re-renders on each state change (frontend.spec AD-1). */
+/** Wires the page: loads data once, then re-renders on each state change. */
 
 import {
   addLabelPlacement, addPlacement, createLabel, createLabelLink, createType, createTypeLink, deleteLabel, deleteType, editLabel, editType, fetchItems, moveLabel, moveType, removeLabelPlacement,
@@ -23,7 +23,7 @@ import { currentView } from './view.js';
 const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
-  showDefinitions: $('show-definitions'), showAiExamples: $('show-ai-examples'), showQuotes: $('show-quotes'), showGroups: $('show-groups'), showLabels: $('show-labels'), showTypes: $('show-types'),
+  showDefinitions: $('show-definitions'), showAiExamples: $('show-ai-examples'), showQuotes: $('show-quotes'), showGroups: $('show-groups'), showTypes: $('show-types'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), editMode: $('edit-mode'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
   indexBar: $('index-bar'), indexOrders: $('index-orders'), indexFull: $('index-full'),
@@ -498,7 +498,6 @@ function bindControls() {
   els.showAiExamples.addEventListener('change', () => { state.showAiExamples = els.showAiExamples.checked; applyToggles(); saveToggles(storage, state); });
   els.showQuotes.addEventListener('change', () => { state.showQuotes = els.showQuotes.checked; applyToggles(); saveToggles(storage, state); });
   els.showGroups.addEventListener('change', () => { state.showGroups = els.showGroups.checked; refresh(); saveToggles(storage, state); });
-  els.showLabels.addEventListener('change', () => { state.showLabels = els.showLabels.checked; refresh(); saveToggles(storage, state); });
   els.showTypes.addEventListener('change', () => { state.showTypes = els.showTypes.checked; refresh(); saveToggles(storage, state); });
   // Like the group buttons, pressing Compare again leaves it for the everything-search state.
   els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
@@ -537,7 +536,6 @@ async function start() {
   els.showQuotes.checked = state.showQuotes;
   els.showGroups.checked = state.showGroups;
   els.showConfidence.checked = state.showConfidence;
-  els.showLabels.checked = state.showLabels;
   els.showTypes.checked = state.showTypes;
   els.tableNames.checked = state.tableNames;
   els.tableDefinitions.checked = state.tableDefinitions;

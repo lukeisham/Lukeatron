@@ -21,7 +21,7 @@ calibration:
   level: Extended
   scope: Local
 memory_footprint:
-  read: [Memory/Long-Term/Coding, Memory/Long-Term/Style Guide, System/Templates]
+  read: [Memory/Long-Term/Coding, Memory/Long-Term/Style-Guide, System/Templates]
   write: [System/Apps, System/Widgets, System/Sandbox]
 ---
 

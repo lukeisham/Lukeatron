@@ -1,6 +1,6 @@
-"""Drops the unique sibling-name index from `topical_types` in an existing database, so two Types may share a name
-(Luke 2026-10-07: "I no longer want the rule"). No row changes. Safe to run twice: an index that is already gone is
-left alone. A fresh database never creates the index (schema.sql no longer has it).
+"""Drops the unique sibling-name index from `topical_types` in an existing database, so two Types may share a name.
+No row changes. Safe to run twice: an index that is already gone is left alone. A fresh database never creates the
+index, because schema.sql does not define it.
 
 Run: python3 -m seed.drop_topical_name_index   (from System/Apps/Rhetoric/)
 """

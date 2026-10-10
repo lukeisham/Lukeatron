@@ -176,7 +176,7 @@ test("a bead node survives a re-render so it can glide (same element, new transf
   assert.equal(beadNode(a), before);
 });
 
-/* ---------- clear and undo (FR-C17) ---------- */
+/* ---------- clear and undo ---------- */
 
 test("Clear shows Undo for UNDO_MS and Undo restores the map exactly", () => {
   buildFork();
@@ -217,7 +217,7 @@ test("Undo disappears on the next edit; Clear on an empty map does nothing", () 
   assert.equal(q(".st-story__clear").disabled, true);
 });
 
-/* ---------- save flow (FR-C10) ---------- */
+/* ---------- save flow ---------- */
 
 test("Save refuses an empty map, an empty name and a name over 60 characters, inline", () => {
   click(q(".st-story__save"));
@@ -321,7 +321,7 @@ test("openShape loads a library-style shape and sets the name, asking first when
   assert.equal(qa(".st-bead__note").length, 1);
 });
 
-/* ---------- draft (FR-C11) and storage failure (FR-C12) ---------- */
+/* ---------- draft and storage failure ---------- */
 
 test("the draft is restored at mount and written on every change", () => {
   const storage = makeStorage();
@@ -390,7 +390,7 @@ test("when storage is full the app keeps working and says so once, next to Save"
   }
 });
 
-/* ---------- keyboard (FR-C9) ---------- */
+/* ---------- keyboard ---------- */
 
 const select = (elementId) => document.dispatchEvent(new CustomEvent(EVT_SELECT, { detail: { elementId } }));
 
@@ -773,7 +773,7 @@ test("loadShape returns the failure and leaves the map alone when the shape is b
   assert.equal(q(".st-story__message").getAttribute("data-kind"), "error");
 });
 
-// Print scale: the map is zoomed down to the sheet's width while printing, and only for the story targets (style.spec FR-S9)
+// Print scale: the map is zoomed down to the sheet's width while printing, and only for the story targets
 test("printScaleFor shrinks a map wider than the sheet, never enlarges a narrow one", () => {
   assert.equal(printScaleFor(PRINT_SHEET_WIDTH_PX * 2), 0.5);
   assert.equal(printScaleFor(PRINT_SHEET_WIDTH_PX / 2), 1);

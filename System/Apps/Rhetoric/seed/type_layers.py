@@ -1,4 +1,4 @@
-"""Loads Luke's three hand-authored Type-layer outlines into `nodes` (seed-pipeline FR-2).
+"""Loads Luke's three hand-authored Type-layer outlines into `nodes`.
 
 The pipeline reads this content and never generates it: a node exists only because a line of
 an outline names it. Category's top-level lines must be roots seeded by category_roots.py (they
@@ -83,8 +83,8 @@ def db_paths(conn: sqlite3.Connection, hierarchy: str) -> set[tuple[str, ...]]:
 
 
 def unlisted_nodes(conn: sqlite3.Connection, hierarchy: str, entries: list[Entry]) -> list[tuple[str, ...]]:
-    """Database nodes the outline no longer lists (AC-2's 'exactly Luke's structure' check).
-    Seeded Category roots Luke chose not to list are expected, not extra."""
+    """Database nodes the outline does not list, so the database can be checked against exactly Luke's structure.
+    Seeded Category roots deliberately left out of the outline are expected, not extra."""
     listed = {entry.path for entry in entries}
     extra = db_paths(conn, hierarchy) - listed
     if hierarchy == "category":

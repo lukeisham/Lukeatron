@@ -1,5 +1,5 @@
 /**
- * index.js — createSpellingModule factory (spec FR-1). The module's single
+ * index.js — createSpellingModule factory. The module's single
  * public entry point; no globals leaked beyond what a host explicitly
  * binds (e.g. an IIFE wrapper assigning `window.SpellingModule` at build
  * time — that wiring lives in the assembler, not here).
@@ -20,7 +20,7 @@ const SUPPORTED_VARIANTS = new Set(["en-AU", "en-GB", "en-US", "auto"]);
 const NULL_BACKEND = createBackend(() => null);
 
 /**
- * createSpellingModule(options) -> SpellingModule  (spec FR-1)
+ * createSpellingModule(options) -> SpellingModule
  */
 function createSpellingModule(options = {}) {
   if (options.variant !== undefined && !SUPPORTED_VARIANTS.has(options.variant)) {
@@ -68,12 +68,12 @@ function createSpellingModule(options = {}) {
   }
 
   return {
-    // FR-2/FR-4/FR-5/FR-7
+    // Checking and suggestions
     lookup,
     check,
     suggest,
     isValid,
-    // FR-6
+    // Ignore and learn lists
     ignore: (w) => customDict.ignore(w),
     isIgnored: (w) => customDict.isIgnored(w),
     learn: (w, caseSensitive = false) => customDict.learn(w, caseSensitive),
@@ -81,9 +81,8 @@ function createSpellingModule(options = {}) {
     isLearned: (w) => customDict.isLearned(w),
     exportDictionary: () => customDict.exportDictionary(),
     importDictionary: (json) => customDict.importDictionary(json),
-    // FR-8
     tokenize,
-    // FR-9/FR-10/FR-11
+    // Rendering into the host page
     renderHighlights: (inputEl, tokens) => renderHighlights(inputEl, tokens, { document: doc }),
     showSuggestions: (word, anchorEl, actions) =>
       showSuggestions(word, anchorEl, actions, { document: doc, getSuggestions: (w) => suggest(w) }),

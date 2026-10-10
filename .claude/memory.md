@@ -10,9 +10,7 @@ This file is the Claude native memory for the Lukeatron system, located at `_Luk
 
 Lukeatron memory system root: `~/Library/CloudStorage/Dropbox/_Lukeatron/` (same Dropbox path on every Mac; the home folder differs per machine)
 
-Boot set: `_Lukeatron/.claude/CLAUDE.md` (auto-loaded by the harness), which imports this file and `System/Skillbank/_index.yaml` (skill catalog, triggers only). **Memory stores are NOT indexed at boot** — each store under `Memory/Long-Term/` and `Memory/Medium-Term/` carries its own `_index.yaml`, read on demand when a task touches that store. There is no root-level `Memory/Long-Term/_index.yaml` or `Memory/Medium-Term/_index.yaml`.
-
-Operating manual: `_Lukeatron/.claude/CLAUDE.md`
+Boot sequence and memory layout: CLAUDE.md *Boot Sequence* and *Memory*.
 
 ---
 

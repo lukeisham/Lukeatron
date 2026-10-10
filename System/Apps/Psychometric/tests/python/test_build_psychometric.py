@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 BUILD_DIR = Path(__file__).resolve().parents[2] / "cartridge" / "build"
-SEED_MD = Path(__file__).resolve().parents[3] / "_research" / "seed" / "psychometrics.md"
+SEED_MD = Path(__file__).resolve().parents[4] / "Widgets" / "Generator" / "_research" / "seed" / "psychometrics.md"
 sys.path.insert(0, str(BUILD_DIR))
 
 import build_psychometric as bp  # noqa: E402

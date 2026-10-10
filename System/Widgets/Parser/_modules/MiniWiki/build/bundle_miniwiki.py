@@ -7,8 +7,7 @@ parser widgets are a single offline HTML file with no module loader, so
 this script concatenates src/*.js in dependency order, strips their
 `import {...} from "./x.js";` / `export {...};` statements, re-creates any
 aliased import as a top-level `var alias = original;`, and wraps the
-result in an IIFE assigning one global: `window.createMiniWikiModule`
-(spec FR-1).
+result in an IIFE assigning one global: `window.createMiniWikiModule`.
 
 Usage:
   python3 build/bundle_miniwiki.py [--out dist/miniwiki.bundle.js]

@@ -1,4 +1,4 @@
-// Recipe search: AND matching, ranking, the empty query, the match-reason line (panel AC-1, AC-2).
+// Recipe search: AND matching, ranking, the empty query, the match-reason line.
 // Mirrors: web/search.js   Run: node --test tests/test_search.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";

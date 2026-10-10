@@ -50,7 +50,7 @@ __CARTRIDGE_CSS__
 <div class="analyse-only" id="stage"></div>
 <div class="muted analyse-only" id="hoverhint" style="display:none;">Hover a word for its description at the selected focus level · right-click for word-class detail</div>
 
-<!-- Present mode (GeneratorShell.spec.md §3b, task D) — hidden entirely
+<!-- Present mode — hidden entirely
      in analyse-mode builds via the .present-only / body.mode-present CSS
      rule below; present-mode.js decides which of these appear within a
      present-mode build based on CONFIG.generator's feature flags. -->
@@ -97,8 +97,8 @@ __CARTRIDGE_CSS__
 
 <div id="tip"></div>
 <div id="ctx"></div>
-<!-- Spelling module's suggestion popover mount (SpellingModule.spec.md FR-10
-     POPOVER_ID) — the module finds this by id and reuses it (styled by
+<!-- Spelling module's suggestion popover mount (its POPOVER_ID) — the
+     module finds this by id and reuses it (styled by
      shell.css) instead of creating its own unstyled body-appended div. -->
 <div id="spelling-suggestions"></div>
 

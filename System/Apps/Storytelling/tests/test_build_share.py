@@ -1,4 +1,4 @@
-"""Tests for share/build_share.py, the strict single-file bundler (distribution.spec AC-X4).
+"""Tests for share/build_share.py, the strict single-file bundler.
 
 TEST-7 gate tests: each unsupported form is refused (one test per form, blocked path) and
 a valid app passes (permitted path). The fixture bundle is executed with node so the test
@@ -308,7 +308,7 @@ class TestRefusedForms(BundlerTestCase):
 
 
 class TestCommandLineRefusals(BundlerTestCase):
-    """AC-X4: a refused app exits non-zero and the message names file and line."""
+    """A refused app exits non-zero and the message names file and line."""
 
     def run_cli(self, files: dict[str, str]) -> subprocess.CompletedProcess[str]:
         app = write_app(self.tmp, files)

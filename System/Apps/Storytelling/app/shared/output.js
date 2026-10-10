@@ -1,6 +1,6 @@
 /**
- * Print and clipboard output for Storytelling (documentation.spec; story-map FR-C13; lists FR-K5, FR-K6).
- * The print CSS (style.spec FR-S9, FR-S11) keys off two attributes on <body>: `data-print` holds the
+ * Print and clipboard output for Storytelling.
+ * The print CSS keys off two attributes on <body>: `data-print` holds the
  * target and `data-tone` holds the tone. They exist only while a print is in progress.
  */
 

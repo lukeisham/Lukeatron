@@ -1,4 +1,4 @@
-// The recipe page's Copy list (AC-4, AC-5), SVG-as-image-only (AC-7) and blob cleanup.
+// The recipe page's Copy list, SVG-as-image-only and blob cleanup.
 // Mirrors: web/recipe-view.js   Run: node --test tests/test_recipe_view.mjs
 // The fake DOM below exposes only what recipe-view.js touches (TEST-8).
 import { test, beforeEach } from "node:test";

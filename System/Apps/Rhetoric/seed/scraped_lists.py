@@ -1,5 +1,5 @@
 """Parses the recovered scraped-device-lists.md into one name set per source list, and counts
-how many of the four lists name a device (seed-pipeline FR-4). Names are matched after
+how many of the four lists name a device. Names are matched after
 normalisation (case, punctuation, a trailing parenthetical), never by fuzzy guess; a device the
 lists spell differently is reconciled by listing the variant in its `aliases`.
 """

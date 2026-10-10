@@ -1,5 +1,5 @@
 /**
- * suggest.js — fuzzy suggestion generation and ranking (spec FR-5, §6, AD-5).
+ * suggest.js — fuzzy suggestion generation and ranking (§6).
  *
  * ARCHITECTURE NOTE (deviation from the research's own recommendation,
  * recorded here per the task brief's "measure before you commit" mandate):
@@ -14,7 +14,7 @@
  * weighted OSA distance, a frequency+phonetic scoring formula, and a
  * bounded edit-distance-2 fallback the old implementation never had).
  *
- * DictionaryBackend (spec FR-3) exposes only `query`/`has` — point lookups,
+ * DictionaryBackend exposes only `query`/`has` — point lookups,
  * no range scan — so candidate generation must enumerate candidate STRINGS
  * and check each one, exactly like the old implementation; there is no way
  * to ask the backend "give me all words near X" without an index. This is
@@ -23,27 +23,15 @@
 import { weightedOSADistance } from "./distance.js";
 import { metaphone } from "./metaphone.js";
 
-// --- Tunable scoring weights (spec §6 formula) --------------------------
-// TASK-4 RETUNE (2026-08-10 test-and-refine pass): the original build's
-// weights (EDIT 3.5 / PHON 1.0 / FREQ 4.0 / FIRST 2.5 / LEN 0.5) improved
-// MRR@3 and Precision@3 over the OLD edit-1-only implementation but
-// regressed Precision@1 (48.7% -> 46.5%). Grid-searched (11,760 weight
-// combinations against the same 585-pair Birkbeck sample
-// bench/benchmark.mjs uses, candidate generation held fixed, only the five
-// scoring weights varied). AC-3's "suggest('teh')[0] === 'the'" requirement
-// was enforced as a hard filter on every combination tested -- a first,
-// higher-phonetic-weight retune (PHON 1.5 / FREQ 0.5) hit the exact
-// AC-3 failure mode the original build's own comment already warned about
-// (a coincidental Metaphone collision, "tea", outranking the much more
-// frequent correct answer, "the") and was rejected by that filter, not
-// shipped. See README's "Suggestion-quality benchmark" section for the
-// full before/after numbers and methodology. This is the AC-3-passing
-// optimum: it beats OLD on BOTH Precision@1 (53.3% vs 48.7%) AND
-// Precision@3 (69.4% vs 61.5%), and improves MRR@3 further still (0.607 vs
-// OLD's 0.544). Net change from the original build: EDIT_DISTANCE_WEIGHT
-// down (3.5 -> 1.0) and FIRST_LETTER_WEIGHT down (2.5 -> 0.5) so
-// FREQUENCY_WEIGHT (now 2.0, was 4.0) and PHONETIC_MATCH_WEIGHT (now 0.75,
-// was 1.0) carry proportionally more of the ranking decision.
+// --- Tunable scoring weights ---------------------------------------------
+// Grid-searched over 11,760 weight combinations against the 585-pair
+// Birkbeck sample that bench/benchmark.mjs uses, with candidate generation
+// held fixed. Every combination had to keep suggest('teh')[0] === 'the':
+// a heavier phonetic weight lets a coincidental Metaphone match ("tea")
+// outrank the far more frequent right answer. These weights are the best
+// that pass that filter; frequency and phonetic match carry more of the
+// ranking than edit distance and first letter. README's
+// "Suggestion-quality benchmark" section has the numbers and method.
 const BASE_SCORE = 10;
 const EDIT_DISTANCE_WEIGHT = 1.0;
 const PHONETIC_MATCH_WEIGHT = 0.75;
@@ -164,7 +152,7 @@ function score(misspelled, candidate, rank) {
 
 /**
  * suggest(word, backend, limit = 3) -> string[]
- * Ranked plain corrected words (spec FR-5) — not scored objects, so the UI
+ * Ranked plain corrected words — not scored objects, so the UI
  * layer stays simple.
  */
 function suggest(word, backend, limit = 3) {

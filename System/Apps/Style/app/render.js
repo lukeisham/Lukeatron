@@ -2,7 +2,7 @@
  * Draws a view into the list. Text always goes in through textContent / text nodes, never
  * innerHTML (JS-6), so a `<script>` in a definition shows as literal text.
  *
- * One entry-row template serves every view (AC-7). Definitions and examples are always in the
+ * One entry-row template serves every view. Definitions and examples are always in the
  * DOM; body classes (list.css) hide them per the two toggles, and `.expanded` overrides both,
  * so toggling a checkbox or expanding a row never re-renders.
  */

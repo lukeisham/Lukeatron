@@ -1,9 +1,9 @@
 /**
- * Pure logic for the verification page (diagram spec FR-D6, FR-D7). No DOM, no I/O,
+ * Pure logic for the verification page. No DOM, no I/O,
  * so `tests/verify-checks.test.js` can run it under node.
  */
 
-/** Per-channel tolerance for the colour check (FR-D6). */
+/** Per-channel tolerance for the colour check. */
 export const CHANNEL_TOLERANCE = 6;
 
 /** Sample this many source pixels in from a tile's top-left corner: clear of the centred symbol and the top-right popularity. */
@@ -112,7 +112,7 @@ export function resultsMarkdown(rows) {
 }
 
 /**
- * The poster elements only (FR-D6: the added ones have no source and are exempt from the fidelity check).
+ * The poster elements only (the added ones have no source and are exempt from the fidelity check).
  * @param {Array<{added?:boolean}>} elements
  */
 export function posterElements(elements) {

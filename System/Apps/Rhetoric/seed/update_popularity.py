@@ -27,7 +27,7 @@ def apply_scores(conn: sqlite3.Connection, scores: dict[str, int]) -> int:
         for name, score in scores.items():
             changed += conn.execute("UPDATE devices SET popularity = ? WHERE name = ? AND popularity != ?",
                                     (score, name, score)).rowcount
-        # A Flipside device is named by no source, so it takes its fallacy's score (Luke, 2026-10-02).
+        # A Flipside device is named by no source, so it takes its fallacy's score.
         changed += conn.execute(
             "UPDATE devices SET popularity = (SELECT f.popularity FROM devices f WHERE f.id = devices.flipside_of) "
             "WHERE flipside_of IS NOT NULL AND popularity != "

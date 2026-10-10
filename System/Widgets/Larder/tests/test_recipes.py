@@ -1,4 +1,4 @@
-"""Parsing, listing and reading, per recipe-reader FR-1 to FR-7 (AC-1 to AC-6).
+"""Parsing, listing and reading recipes.
 Mirrors: larder/recipes.py — always on a temp copy of tests/fixtures, never the real Recipes/ (TEST-4).
 """
 

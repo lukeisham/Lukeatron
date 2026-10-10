@@ -1,5 +1,5 @@
 /**
- * All app state in one plain object (frontend.spec AD-2, AD-5). Every function here either
+ * All app state in one plain object. Every function here either
  * builds it or changes one field; nothing here touches the DOM.
  */
 
@@ -131,9 +131,8 @@ export function createState(payload) {
     showAiExamples: true, // the constructed examples
     showQuotes: true, // the real, credited quotes
     showConfidence: true,
-    showLabels: false, // a single device's view also lists where it is filed in Grammar (its labels); off by default
+    showGroups: false, // a single device's view also lists where it is filed in the fixed groups (Category, Form, Function); off by default
     showTypes: false, // ...and in Topical (its Types); off by default
-    showGroups: false, // ...and in the fixed groups (Category, Form, Function); off by default
     tableNames: true, // the Compare table's own switches: its Name, Definition and Examples rows
     tableDefinitions: true,
     tableExamples: true,

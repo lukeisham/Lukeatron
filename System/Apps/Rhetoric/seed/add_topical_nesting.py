@@ -1,7 +1,7 @@
-"""Brings an existing database's Topical Types up to nested Types (up to four levels deep, Luke 2026-10-06).
+"""Brings an existing database's Topical Types up to nested Types (up to four levels deep).
 
-`topical_types` gains a `parent_id` column, and its old table-wide UNIQUE name is dropped (it first became a
-name unique among siblings; that rule was itself removed 2026-10-07, see seed/drop_topical_name_index.py). SQLite cannot drop a UNIQUE constraint in place, so the table is
+`topical_types` gains a `parent_id` column, and its table-wide UNIQUE name is dropped; names may repeat, even among
+siblings (seed/drop_topical_name_index.py removes the sibling index). SQLite cannot drop a UNIQUE constraint in place, so the table is
 rebuilt with every existing Type kept as a top-level Type, with its id and position; placements point at the same
 ids and are untouched. Safe to run twice. A fresh database gets the new shape from schema.sql directly.
 

@@ -1,7 +1,7 @@
 /* ==========================================================================
-   tokens.css — the only file that defines a visual value (frontend.spec AD-7,
-   CSS-2). Two zones: the masthead carries the burgundy accent and manuscript
-   type; the list body is dense, monochrome and accent-free (AD-8).
+   tokens.css — the only file that defines a visual value (CSS-2).
+   Two zones: the masthead carries the burgundy accent and manuscript
+   type; the list body is dense, monochrome and accent-free.
    ========================================================================== */
 :root {
   /* Colour */

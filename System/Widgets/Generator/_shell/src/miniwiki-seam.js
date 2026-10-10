@@ -1,9 +1,8 @@
 /* ============================================================
    SHELL · MINIWIKI MODULE INJECTION SEAM
    ============================================================
-   MiniWikiModule.spec.md FR-1 / this module is a PEER module, not
-   shell code (SR-4, mirrors spelling-seam.js). Per Luke's correction,
-   the Mini-Wiki is NOT an in-page panel — it opens as its own
+   This module is a PEER module, not shell code (it mirrors
+   spelling-seam.js). The Mini-Wiki is NOT an in-page panel — it opens as its own
    complete, self-contained HTML document in a NEW BROWSER TAB, with
    its own hash routing (#/1.1.1), independent of the parser tab. The
    parser page carries exactly one launch button; this seam builds the

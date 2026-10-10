@@ -1,0 +1,157 @@
+{
+  "scraped_at": "2026-10-10T19:20:58+11:00",
+  "article_title": "Wikipedia:Signs of AI writing",
+  "article_revision": "1379367647",
+  "criteria": [
+    {
+      "id": "c-001",
+      "title": "Inflated importance",
+      "description": "The text claims that ordinary details stand for, or add to, some bigger trend, legacy or debate.",
+      "question": "Does the passage claim that small or everyday details show a bigger trend, legacy or debate, in stock phrases?",
+      "source": "Content: undue emphasis on significance, legacy, and broader trends",
+      "plain": "The writer makes plain things sound important. A date or a name is said to show a bigger trend or a lasting legacy. Nothing in the text backs this up. Example: \"This street name highlights the wider story of the town.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-002",
+      "title": "Shallow commentary tacked on",
+      "description": "A sentence ends with an \"-ing\" phrase that adds vague comment about meaning or impact, often with no named source.",
+      "question": "Do sentences end with an \"-ing\" phrase giving vague comment on impact or meaning, such as \"highlighting its influence\"?",
+      "source": "Content: superficial analyses",
+      "plain": "A sentence states a fact. Then an \"-ing\" phrase adds a vague comment on what it means. The comment has no proof behind it. Example: \"The park opened in 1990, reflecting the city's growth.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-003",
+      "title": "Advertising tone",
+      "description": "The writing reads like a brochure or press release, with stock praise and a constant positive slant.",
+      "question": "Does the passage sound like an advert or travel guide, using stock praise instead of a neutral tone?",
+      "source": "Content: promotional and advertisement-like language",
+      "plain": "The text praises its subject like a brochure. The praise uses the same stock words each time. A neutral writer would just state the facts. Example: \"A vibrant town with a rich heritage and stunning views.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-004",
+      "title": "Vague links between things",
+      "description": "Two things are said to be \"connected to\" or \"associated with\" each other, instead of stating the plain relationship.",
+      "question": "Does the passage say things are \"connected with\" or \"associated with\" each other instead of stating the plain relationship?",
+      "source": "Content: vague expression of connection or association",
+      "plain": "The text will not say how two things relate. It says they are \"connected with\" each other. A clear writer would say who did what. Example: \"She was associated with leadership at the firm,\" not \"She led the firm.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-005",
+      "title": "Vague sources and inflated opinion",
+      "description": "An opinion is credited to unnamed experts or \"scholars\", or a view from one source is shown as widely held.",
+      "question": "Does the passage credit opinions to unnamed experts, critics or scholars, or present one view as widely held?",
+      "source": "Content: vague attributions and overgeneralization of opinions",
+      "plain": "The text says \"experts\" or \"critics\" believe something. It never names them. One view may be made to look like many. Example: \"Many scholars agree that the play is a masterpiece.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-006",
+      "title": "Formula for challenges and future",
+      "description": "A paragraph says \"despite its strengths, it faces challenges\", then ends on a hopeful note about the future.",
+      "question": "Does the passage follow the formula \"despite its strengths, it faces challenges\" and end with a hopeful outlook?",
+      "source": "Content: outline-like conclusions about challenges and future prospects",
+      "plain": "A section follows a set pattern. It starts with \"Despite its good points\" and names some problems. It ends with a hopeful look ahead. Example: \"Despite this, the club has problems, but new plans may help it grow.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-007",
+      "title": "Overused AI words",
+      "description": "Many words that chatbots favour appear close together, such as \"delve\", \"tapestry\", \"pivotal\" or \"underscore\".",
+      "question": "Does the passage use many words that chatbots overuse, such as \"delve\", \"tapestry\", \"pivotal\", \"underscore\", \"showcasing\" or \"vibrant\"?",
+      "source": "Language and grammar: high density of \"AI vocabulary\" words",
+      "plain": "Some words show up far more in chatbot text. One or two prove nothing. A crowd of them is a strong sign. Examples are \"delve\", \"pivotal\", \"tapestry\" and \"vibrant\".",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-008",
+      "title": "\"Serves as\" instead of \"is\"",
+      "description": "Plain \"is\", \"are\" or \"has\" is swapped for grander verbs such as \"serves as\", \"stands as\", \"features\" or \"boasts\".",
+      "question": "Does the passage use \"serves as\", \"stands as\", \"features\", \"boasts\" or similar instead of plain \"is\", \"are\" or \"has\"?",
+      "source": "Language and grammar: avoidance of basic copulatives",
+      "plain": "The text avoids the simple words \"is\" and \"are\". It picks grander phrases. Example: \"The hall serves as a venue and boasts a large stage,\" not \"The hall is a venue and has a large stage.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-009",
+      "title": "\"Not just X, but Y\" contrasts",
+      "description": "The text sets up a contrast that fixes a view nobody held, such as \"not only X but Y\" or \"it's not X, it's Y\".",
+      "question": "Does the passage often use contrasts like \"not just X but Y\", \"it's not X, it's Y\" or \"Y rather than X\"?",
+      "source": "Language and grammar: negative parallelisms",
+      "plain": "The writer sets up a contrast that fixes a view nobody held. The pattern is \"not just X, but Y\" or \"it's not X, it's Y\". One use is normal. Many uses are a sign. Example: \"It's not just a school, it's a community.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-010",
+      "title": "Lists of three",
+      "description": "The text keeps grouping things in threes, such as three adjectives or three short phrases, to sound complete.",
+      "question": "Does the passage keep grouping things in threes, such as three adjectives or three short phrases?",
+      "source": "Language and grammar: rule of three",
+      "plain": "The writer groups items in threes again and again. It can be three adjectives or three short phrases. It makes thin ideas sound full. Example: \"fast, reliable, and easy to use.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-011",
+      "title": "Emoji as decoration",
+      "description": "Emoji are placed before headings, bullet points or key phrases as decoration.",
+      "question": "Does the passage put emoji in front of headings, bullet points or key phrases as decoration?",
+      "source": "Style: emoji as formatting",
+      "plain": "Small pictures called emoji are used as decoration. They sit in front of headings or list items. Plain human prose rarely does this. Example: \"🚀 Key features\".",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-012",
+      "title": "Curly quotation marks",
+      "description": "Curly quotation marks and curly apostrophes are used where straight ones are normal, or the two kinds are mixed.",
+      "question": "Does the passage use curly quotation marks or curly apostrophes, or a mix of curly and straight ones?",
+      "source": "Style: curly quotation marks and apostrophes",
+      "plain": "Some chatbots type curly quotes and apostrophes. Plain typing makes straight ones. A mix of both is a stronger sign. Curly quotes alone prove nothing, because many word tools make them. Example: it’s, not it's.",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-013",
+      "title": "Notes aimed at the user",
+      "description": "The text includes messages meant for the person who asked, such as offers of help, advice or instructions to edit.",
+      "question": "Does the passage include messages meant for the person who asked for it, such as offers of help, advice or editing instructions?",
+      "source": "Communication intended for the user: collaborative communication",
+      "plain": "The text still holds chat with the user. It may offer help or give a tip. It may tell the user to edit or delete something. This is not content for readers. Example: \"I hope this helps! Let me know if you want changes.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-014",
+      "title": "Disclaimers about missing information",
+      "description": "The text says information is not publicly available, or warns that a claim is only symbolic or speculative, rather than stating facts.",
+      "question": "Does the passage claim that information is not publicly available, or warn that a source or claim should be treated as speculative rather than firm?",
+      "source": "Communication intended for the user: hedging disclaimers about source availability and recommended usage",
+      "plain": "The text says the facts are \"not publicly documented\". Or it warns that a claim is only \"symbolic\", not \"verified\". Then it often guesses what the facts might be. Example: \"Details are not widely available, but are likely to be modest.\"",
+      "status": "new",
+      "locked": false
+    },
+    {
+      "id": "c-015",
+      "title": "Blank fill-in-the-gaps text",
+      "description": "Template placeholders were left in, such as square-bracket labels, \"(Add your link here)\" or dates like \"2025-xx-xx\".",
+      "question": "Does the passage contain unfilled placeholders, such as bracketed labels like \"[Name]\", \"(Add your link here)\" or dates like \"2025-xx-xx\"?",
+      "source": "Communication intended for the user: phrasal templates and placeholder text",
+      "plain": "The chatbot left blanks for the user to fill in. The user forgot to fill them. Example: \"Dear [Recipient's Name]\" or \"Website: (Add link here)\".",
+      "status": "new",
+      "locked": false
+    }
+  ]
+}

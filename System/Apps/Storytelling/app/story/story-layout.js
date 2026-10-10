@@ -1,8 +1,8 @@
 /**
- * story-layout.js — the one automatic arrangement of a story map (FR-C7).
+ * story-layout.js — the one automatic arrangement of a story map.
  *
  * Pure and deterministic: no DOM, no storage, no randomness. The canvas draws what this returns and
- * story-text numbers beads from it, so screen, print and Copy cannot disagree (D-13).
+ * story-text numbers beads from it, so screen, print and Copy cannot disagree.
  *
  * All coordinates are in map pixels with the origin at the top-left of the tray content.
  */
@@ -135,7 +135,7 @@ function collectLinks(ribbons, known) {
 }
 
 /**
- * FR-C7 step 1. Depth-first walk from beads with no incoming ribbon (in bead order); a ribbon that
+ * Layout step 1. Depth-first walk from beads with no incoming ribbon (in bead order); a ribbon that
  * points at a bead still on the walk's stack closes a cycle and is a loop ribbon. Beads the roots
  * cannot reach (a pure cycle) are walked afterwards in bead order, so every bead is visited.
  * Iterative, so a 200-bead chain cannot overflow the call stack.
@@ -179,7 +179,7 @@ function findLoopRibbonIndexes(uids, links) {
   return loops;
 }
 
-/** FR-C7 step 2: longest path from any source, over the acyclic ribbons (Kahn's order, bead-order ties). */
+/** Layout step 2: longest path from any source, over the acyclic ribbons (Kahn's order, bead-order ties). */
 function assignLayers(uids, dagLinks) {
   const layerOf = new Map(uids.map((uid) => [uid, 0]));
   const remaining = new Map(uids.map((uid) => [uid, 0]));
@@ -201,7 +201,7 @@ function assignLayers(uids, dagLinks) {
 }
 
 /**
- * FR-C7 step 3. Beads are visited by (layer, bead order). A start takes a new lane below all existing
+ * Layout step 3. Beads are visited by (layer, bead order). A start takes a new lane below all existing
  * ones; a bead that is its parent's first child, or a merge, takes its first parent's lane. If that
  * (layer, lane) cell is already taken the bead falls back to a new lane, so nothing ever overlaps.
  */
@@ -231,7 +231,7 @@ function assignLanes(uids, dagLinks, layerOf) {
   return laneOf;
 }
 
-/** FR-C7 step 5: x from the widest bead of the layers before, y from the lane, numbers in (layer, lane) order. */
+/** Layout step 5: x from the widest bead of the layers before, y from the lane, numbers in (layer, lane) order. */
 function placeBeads(uids, layerOf, laneOf, widthClassOf, hasLoops) {
   const layerCount = Math.max(...uids.map((uid) => layerOf.get(uid))) + 1;
   const laneCount = Math.max(...uids.map((uid) => laneOf.get(uid))) + 1;

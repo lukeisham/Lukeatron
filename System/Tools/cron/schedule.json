@@ -1,0 +1,12 @@
+{
+  "macs": ["Mac mini", "Luke’s MacBook Air"],
+  "jobs": [
+    {"script": "intake-sweep.sh",  "cron": "0 8,13,18 * * *", "runs_on": ["Mac mini"]},
+    {"script": "project-sweep.sh", "cron": "30 7 * * 1",      "runs_on": ["Mac mini"]},
+    {"script": "review-monday.sh", "cron": "0 8 * * 1",       "runs_on": ["Mac mini"]},
+    {"script": "review-friday.sh", "cron": "0 17 * * 5",      "runs_on": ["Mac mini"]},
+    {"script": "memory-lint.sh",   "cron": "0 21 * * 0",      "runs_on": ["Mac mini"]},
+    {"script": "usage.sh",         "cron": "10 21 * * 0",     "runs_on": ["Mac mini", "Luke’s MacBook Air"]},
+    {"script": "improve.sh",       "cron": "0 9 1 * *",       "runs_on": ["Mac mini"]}
+  ]
+}

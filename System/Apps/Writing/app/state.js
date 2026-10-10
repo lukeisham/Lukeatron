@@ -1,5 +1,5 @@
 /**
- * All app state in one plain object (frontend.spec AD-2, AD-5). Every function here either
+ * All app state in one plain object. Every function here either
  * builds it or changes one field; nothing here touches the DOM.
  */
 

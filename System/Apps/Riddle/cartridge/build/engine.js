@@ -1,4 +1,4 @@
-/* Riddle cartridge ENGINE (present mode) — GeneratorShell.spec.md §3b.
+/* Riddle cartridge ENGINE (present mode).
    getPool/render/checkAnswer are the three required-by-config exports
    (generator.answer: true makes checkAnswer required; generator.explainer:
    false means explainItem is never called, so it is intentionally
@@ -14,12 +14,6 @@
    normalisation, fuzzy tolerance is for typos on the canonical spelling
    only). */
 var ENGINE = (function () {
-  function esc(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
 
   function getPool() {
     return Object.keys(CONTENT).map(function (id) {
@@ -30,8 +24,8 @@ var ENGINE = (function () {
   function render(item) {
     var meta = item.tradition + " · difficulty: " + item.difficulty;
     return {
-      html: "<p>" + esc(item.text) + "</p><p>" + esc(meta) + "</p>",
-      clueHtml: "<p>" + esc(item.clue) + "</p>",
+      html: "<p>" + escapeHtml(item.text) + "</p><p>" + escapeHtml(meta) + "</p>",
+      clueHtml: "<p>" + escapeHtml(item.clue) + "</p>",
       canonicalText: item.text,
     };
   }

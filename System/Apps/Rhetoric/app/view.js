@@ -1,6 +1,6 @@
 /**
  * Derives what is on screen from state — the one source that render.js draws and actions.js
- * copies, so Print/Copy can never disagree with the screen (frontend.spec AD-5).
+ * copies, so Print/Copy can never disagree with the screen.
  *
  * A view is `{ mode: 'tree' | 'flat' | 'device', items }`, where each item is
  * `{ kind: 'node', id, hierarchy, name, definition, children }` or `{ kind: 'device', device }`.
@@ -42,7 +42,6 @@ function pathsHolding(state, hierarchy, deviceId) {
 export function filingsOf(state, deviceId) {
   return {
     groups: state.showGroups ? GROUPS.map(({ hierarchy, name }) => [name, pathsHolding(state, hierarchy, deviceId)]) : null,
-    labels: state.showLabels ? pathsHolding(state, GRAMMAR, deviceId) : null,
     types: state.showTypes ? pathsHolding(state, TOPICAL, deviceId) : null,
   };
 }
@@ -213,9 +212,9 @@ function tableToText(table, pad) {
   return lines;
 }
 
-/** The [title, paths] pairs of a device's filings that are switched on: the fixed groups, then Labels, then Types. */
+/** The [title, paths] pairs of a device's filings that are switched on: the fixed groups, then Topical (its Types). */
 export function filingLines(filings) {
-  return [...(filings?.groups ?? []), ['Labels', filings?.labels], ['Types', filings?.types]].filter(([, paths]) => paths != null);
+  return [...(filings?.groups ?? []), ['Topical', filings?.types]].filter(([, paths]) => paths != null);
 }
 
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */

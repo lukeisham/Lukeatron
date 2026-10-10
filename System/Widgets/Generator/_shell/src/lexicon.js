@@ -1,5 +1,5 @@
 /* ============================================================
-   SHELL · LEXICON PORTAL (GeneratorShell.spec.md FR-7)
+   SHELL · LEXICON PORTAL
    sql.js-backed embedded SQLite lexicon. A cartridge with
    lexicon.enabled:false in its manifest never calls this; LEX.ready
    stays false and every query returns null. Never edited per

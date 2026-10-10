@@ -104,7 +104,7 @@ class TestAssemble(unittest.TestCase):
             self.assertIn("var CONFIG = ", html)
             self.assertIn("var ENGINE = ", html)
             self.assertIn("var EXPLAINER = ", html)
-            # AC-3: no surviving placeholder pattern.
+            # No surviving placeholder pattern.
             self.assertEqual(re.findall(r"__[A-Z_]+__", html), [])
 
     def test_idempotent_rebuild_is_byte_identical(self) -> None:
@@ -172,7 +172,7 @@ class TestAssemble(unittest.TestCase):
                 assemble.assemble(cartridge2, cartridge2 / "out.html")
             self.assertIn("schema mismatch", str(ctx.exception))
 
-    # ---- Focus-CSS generation (D-6 / AC-5) ----
+    # ---- Focus-CSS generation ----
 
     def test_focus_css_four_levels_matches_grammar_fixed_home_model(self) -> None:
         palette = [{"h50": "#a", "h100": "#b", "h600": "#c", "h800": "#d", "hf": "#e", "name": "x"}]
@@ -189,7 +189,7 @@ class TestAssemble(unittest.TestCase):
     def test_focus_css_two_levels_has_no_phrase_rule(self) -> None:
         palette = [{"h50": "#a", "h100": "#b", "h600": "#c", "h800": "#d", "hf": "#e", "name": "x"}]
         css = assemble.generate_focus_css(["macro", "micro"], palette)
-        self.assertNotIn(".ph{", css)  # AC-5: no orphaned Grammar-specific CSS
+        self.assertNotIn(".ph{", css)  # no orphaned Grammar-specific CSS
         self.assertIn("#stage.v-macro .cl{background:var(--hf);border-left", css)
         self.assertIn("#stage.v-micro .cl{background:var(--h50)", css)
         self.assertIn("#stage.v-micro .w{display:inline-block", css)

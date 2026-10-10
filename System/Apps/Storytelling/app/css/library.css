@@ -1,5 +1,5 @@
-/* library.css — the Library panel: twelve ready-made story maps as cards (library.spec FR-L2, FR-L3;
-   style.spec FR-S15 look). The white frame itself (border, shadow, padding) comes from panels.css.
+/* library.css — the Library panel: twelve ready-made story maps as cards,
+   in the legend panels' look. The white frame itself (border, shadow, padding) comes from panels.css.
    On-screen-only chrome (print.css hides it): the whole .st-library-panel. */
 
 .st-library-panel { position: fixed; top: var(--space-xl); left: 0; right: 0; z-index: 50; width: min(44rem, calc(100vw - 2 * var(--space-md))); max-height: calc(100vh - 2 * var(--space-xl)); margin: 0 auto; overflow: auto; }

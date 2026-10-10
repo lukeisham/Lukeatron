@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Hand-authored rule specs for the 12 Abstract/Diagrammatic Reasoning items
-(DECISIONS.md D-3): each item is **structured data** — a grid/sequence/
+Each item is **structured data** — a grid/sequence/
 odd-one-out declaration plus the rule(s) that generate it — never literal
 SVG markup and never a hand-recorded answer letter. ``engine.js``'s
 ``deriveAnswerId()`` walks each item's ``rules``/``priority`` at render and

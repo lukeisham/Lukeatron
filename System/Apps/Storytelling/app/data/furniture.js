@@ -1,5 +1,5 @@
 /**
- * Poster "furniture": everything printed on the poster that is not a tile (diagram.spec FR-D2),
+ * Poster "furniture": everything printed on the poster that is not a tile,
  * plus the fixed wording the app adds around the poster (Rogue card, About panel).
  *
  * DATA ONLY. Every export is deep-frozen. All positions are poster pixels in the viewBox
@@ -10,16 +10,16 @@
  * tile (col,row) = x 29+62.1*col, y 49+75*row.
  *
  * Text is transcribed exactly as printed (case, punctuation, spelling). Franchise logos and the
- * tvtropes wordmark are NOT reproduced (OQ-D1): plain-text titles / a plain credit line instead.
+ * tvtropes wordmark are NOT reproduced: plain-text titles / a plain credit line instead.
  *
  * ── Conventions ──────────────────────────────────────────────────────────────────────────────
  * - `block` is a block key of `layout.js` (structureA, setting, storymod, plotdev, heroes,
  *   charmod, archetypes, villains, metatropes, production, fandom). `posterCols` is that block's
  *   inclusive column range on the poster. A generator re-anchors a heading, label or connector
- *   in the revised layout from `block` (FR-D11 d); this file holds no revised-layout numbers,
+ *   in the revised layout from `block`; this file holds no revised-layout numbers,
  *   so FURNITURE_ANCHORS is NOT defined here — anchors belong to layout.js.
  * - `popKey: true` marks an item that must carry `class="pop-key"` so it hides with the
- *   popularity numbers (FR-D13).
+ *   popularity numbers.
  * - `tone` is "ink" (normal text) or "muted" (the grey words in the title).
  * - Text anchors are "start" | "middle" | "end" (SVG text-anchor); `baseline` is the SVG `y`.
  *
@@ -34,9 +34,9 @@
  *                         the "Ae" key: sample tile + three rows; `badge` and `popularity` are popKey
  * SUBTROPE_BOXES          [ callToAdventure, fourthWall ] — { id, title, box, columns/items, connector tile }
  * CONNECTORS              [{ id, kind, from, to, points, dash, width }] — six dashed lines
- * ROGUE_CAPTION           "Rogue — when nothing fits"          (FR-D14)
- * ROGUE_DETAIL_TEXT       fixed explanatory text for the Rogue card's detail panel (viewport FR-V11)
- * ABOUT                   { appName, versionLabel, statements, licenceNotes } (distribution FR-X7, OQ-X1, OQ-X3)
+ * ROGUE_CAPTION           "Rogue — when nothing fits"
+ * ROGUE_DETAIL_TEXT       fixed explanatory text for the Rogue card's detail panel
+ * ABOUT                   { appName, versionLabel, statements, licenceNotes }
  */
 
 /** Freezes an object graph so no reader can edit the shared poster text. */
@@ -108,7 +108,7 @@ export const CHARACTER_MODIFIERS_LABEL = freezeFurnitureData({
 /**
  * The "Ae" key. A sample tile (white box, no group colour), a circled sample popularity number,
  * and three labelled rows with short leader lines. Row three ("Popularity in kilowicks", its
- * leader and its two-line note) and the circled number are `popKey` (FR-D13).
+ * leader and its two-line note) and the circled number are `popKey`.
  * `leader` is an SVG path in poster pixels.
  */
 export const KEY_CALLOUT = freezeFurnitureData({
@@ -148,7 +148,7 @@ export const KEY_CALLOUT = freezeFurnitureData({
 });
 
 /**
- * The two subtrope boxes. Static, not clickable (OQ-D2). `box` is the rectangle; text starts at
+ * The two subtrope boxes. Static, not clickable. `box` is the rectangle; text starts at
  * `textX` with the first item's baseline at `firstBaseline`, then `lineHeight` per item.
  * `connectedTile` is the tile the box's dashed lines fan out from (see CONNECTORS).
  * `sitsAround` says which blocks/tiles frame it on the poster, for the layout to keep near.
@@ -302,20 +302,20 @@ export const CONNECTORS = freezeFurnitureData([
   },
 ]);
 
-/** Caption drawn under the Rogue card in the revised layout (FR-D14). */
+/** Caption drawn under the Rogue card in the revised layout. */
 export const ROGUE_CAPTION = "Rogue — when nothing fits";
 
-/** Fixed detail-panel text for the Rogue card (viewport-detail FR-V11). */
+/** Fixed detail-panel text for the Rogue card. */
 export const ROGUE_DETAIL_TEXT =
   "A rogue element stands in when no element on the table fits exactly. Give each one its own name.";
 
-/** Credit line for a tile with `added: true` (FR-D12). */
+/** Credit line for a tile with `added: true`. */
 
 /**
- * About panel wording (distribution FR-X7). `credits` are the poster's own attribution lines, moved here from the diagram. `statements` are the four quoted lines of FR-X7,
+ * About panel wording. `credits` are the poster's own attribution lines, moved here from the diagram. `statements` are the four quoted lines,
  * shown under the app name and version; `italic` is the substring to set in italics.
- * `licenceNotes` carry the OQ-X1 and OQ-X3 defaults: FR-X7 says the panel holds "exactly" the
- * statements, so the About author decides whether to show these two extra lines.
+ * `licenceNotes` are two extra lines the About panel deliberately leaves out: it holds exactly
+ * the statements.
  * Nothing here asserts a licence for the poster itself: it says the poster's is not recorded.
  */
 export const ABOUT = freezeFurnitureData({

@@ -2,9 +2,9 @@
 """build_spelling_db.py — build the Spelling module's SQLite dictionary from
 a SCOWL/ESDB release.
 
-Provenance (required before this script may ship a `.db` — SpellingModule.spec.md AD-6/OQ-3):
+Provenance (required before this script may ship a `.db`):
   Source:   SCOWL / ESDB (English Speller Database), release 2020.12.07.
-            https://github.com/en-wl/wordlist (formerly hosted as SCOWL/VarCon).
+            https://github.com/en-wl/wordlist (also known as SCOWL/VarCon).
   Licence:  Permissive, MIT-like. Copyright 2000-2018 Kevin Atkinson. Quoted
             from the release's own `Copyright` file: "Permission to use,
             copy, modify, distribute and sell these word lists, the
@@ -12,10 +12,9 @@ Provenance (required before this script may ship a `.db` — SpellingModule.spec
             documentation for any purpose is hereby granted without fee,
             provided that the above copyright notice appears in all
             copies..." No copyleft, no share-alike.
-  Ruling:   `_research/DECISION-dictionary-source.md` (2026-08-09) — this
-            source overrides the (verified-wrong) LibreOffice Hunspell
-            recommendation in `_research/dictionary-sources.md`.
-  Retrieved: 2026-08-09, `scowl-2020.12.07.tar.gz` (2.5 MB), extracted flat
+  Why:      LibreOffice Hunspell's list does not meet the module's needs;
+            `_research/DECISION-dictionary-source.md` sets out the comparison.
+  Retrieved: `scowl-2020.12.07.tar.gz` (2.5 MB), extracted flat
             word lists from its `final/` directory (359 plain-text files,
             one word per line, ISO-8859-1/latin-1 encoded).
 
@@ -47,11 +46,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from metaphone import metaphone  # noqa: E402  (sys.path setup must precede this import)
 
 DEFAULT_TIER = 50
-# Measured, not guessed (see README's size-measurement section): tier<=60 with all five SCOWL
-# categories (the ruling's suggested default) built an 11 MB .db, most of it a duplicate index
-# bug plus ~20k low-value proper-name/upper entries. Fixed and re-measured: tier<=50 with just
-# words/abbreviations/contractions gives 85,032 headwords (clears the plan's "ge60k" success
-# criterion with margin) at 3.10 MB raw / ~4.1 MB base64-inflated -- the shipped default.
+# Measured, not guessed (see README's size-measurement section): tier<=50 keeps the
+# dictionary well over the 60k headwords needed while higher tiers add several megabytes
+# of rarely useful entries.
 DIALECT_STEMS: dict[str, str | None] = {
     # stem name in SCOWL filenames -> variant tag ('AU'|'GB'|'US'|None=neutral)
     "english": None,
@@ -61,25 +58,14 @@ DIALECT_STEMS: dict[str, str | None] = {
     "australian": "AU",
 }
 ALL_CATEGORIES = ("words", "abbreviations", "contractions", "proper-names", "upper")
-# Default excludes proper-names/upper: measured at tier<=60 they contribute ~8.5k + ~12k
-# entries (16% of the list) for words that are of little spell-check value — proper nouns
-# can't be meaningfully checked against a fixed list, and ALL-CAPS/CamelCase tokens are
-# already exempted by the tokenizer+rule-order (spec FR-8 rule 7, §4 rule 3), not by dictionary
-# membership. Cutting them keeps the dictionary focused on actual vocabulary and saves real
-# bytes — see README's size-measurement section for the before/after numbers.
+# "proper-names" stays in: without it the false-positive benchmark
+# (bench/benchmark.mjs) flags about two-thirds of a 231-word proper-noun and
+# jargon holdout, because a capitalised name that is not at a sentence start
+# has no rule to protect it. It costs +0.31 MB raw (85,032 -> 93,456 words);
+# README.md's benchmark section has the numbers. "upper" (ALL-CAPS entries)
+# stays out: the tokenizer already exempts ALL-CAPS tokens by pattern, so a
+# dictionary entry for them is dead weight.
 DEFAULT_CATEGORIES = ("words", "abbreviations", "contractions", "proper-names")
-# "proper-names" was cut in an earlier pass of this script to save space, then
-# MEASURED and put back: the AC-6 false-positive benchmark (bench/benchmark.mjs)
-# showed a 65.8% false-positive rate against a 231-word proper-noun/jargon
-# holdout with proper-names excluded -- almost every capitalised place/person
-# name not at a sentence start (which is most of them) has no rule to protect
-# it once it's not literally in the dictionary. Re-adding proper-names cost
-# +0.31 MB raw (85,032 -> 93,456 words) and dropped the false-positive rate to
-# the range recorded in README.md's benchmark section -- a clearly justified
-# trade against SR-3, spelled out there with the real before/after numbers.
-# "upper" (ALL-CAPS entries) stays excluded: FR-8 rule 7 / §4 rule 3 already
-# exempt ALL-CAPS tokens by pattern, so a dictionary entry for them is dead
-# weight, not a false-positive fix.
 
 SCHEMA = """
 CREATE TABLE words (
@@ -271,18 +257,15 @@ def build_database(
 def write_gzipped_copy(db_path: Path) -> Path:
     """Write `<db_path>.gz` (gzip -9, stdlib) alongside the built `.db`.
 
-    TASK-1 (test-and-refine pass, 2026-08-10): measured against the shipped
-    93,456-word dictionary — raw 3,571,712 bytes / base64 4,762,284 bytes vs.
+    Measured against the shipped 93,456-word dictionary — raw 3,571,712 bytes / base64 4,762,284 bytes vs.
     gzip 1,620,962 bytes / base64(gzip) 2,161,284 bytes (~55% smaller than
     shipping the raw base64 `.db`). DecompressionStream('gzip') round-tripped
     byte-identical in ~64ms (Node v26, in-process; a real in-browser number
     was not obtainable in this build environment, flagged not guessed at —
     see README "Compression" section). The gzip file is a build artefact for
     a host's assembler to embed + base64-encode; this script does not touch
-    `_shell/build/assemble.py` itself, which does not yet embed the Spelling
-    module's `.db` in any cartridge build (no `dist/spelling.bundle.js`
-    exists yet — that wiring is a separate, larger gap, not in this task's
-    scope).
+    `_shell/build/assemble.py` itself, which does not embed the Spelling
+    module's `.db` in any cartridge build.
     """
     gz_path = db_path.with_suffix(db_path.suffix + ".gz")
     raw = db_path.read_bytes()

@@ -1,7 +1,6 @@
 # Psychometric
 
-Promoted from `System/Widgets/Generator/Psychometric/` to a standalone Lukeatron app on 2026-09-29.
-It is still assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present`
+A standalone Lukeatron app. It is assembled from the shared `System/Widgets/Generator/_shell/` chassis in **`present`
 mode**: Generate pulls a practice item from the baked pool, a per-category Clue/Check/Explain set
 engages, and Copy puts the plain question text on the clipboard. Shipped widget:
 `Psychometric_generator.html`, **293,083 bytes** — the largest of the four Generator apps, mostly
@@ -83,7 +82,7 @@ excerpts (GMAT, GRE, LSAT, MCAT, UCAT, GAMSAT, STAT, TSA, LNAT, Watson-Glaser,
 SHL, ACER, CASPER) gathered as *reference material for authoring style*, not
 as pool content — they are not compiled into `pool.json`.
 
-## Abstract reasoning: derived, never hand-recorded (DECISIONS.md D-3)
+## Abstract reasoning: derived, never hand-recorded
 
 The 12 abstract-reasoning items are the one category where "don't
 hand-record an answer that can silently drift from the item" was a

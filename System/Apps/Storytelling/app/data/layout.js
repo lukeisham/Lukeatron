@@ -1,5 +1,5 @@
 /**
- * The revised table as data (diagram spec FR-D11, AD-5). Pure: no DOM, no I/O.
+ * The revised table as data. Pure: no DOM, no I/O.
  *
  * One column permutation turns poster positions into the shipped table; the 36 added
  * elements have fixed placements; the Five Man Band sub-tiles mirror about their parent.
@@ -176,7 +176,7 @@ function addedCell(element) {
  * @param {{id:string, col?:number, row?:number, x?:number, y?:number, parent?:string, added?:boolean}} element
  * @param {"original"|"revised"} layoutName
  * @returns {{x:number, y:number, w:number, h:number} | null} null only for an added element in `original`
- *   (added tiles are not drawn there, AC-D6). Throws for an element it cannot place.
+ *   (added tiles are not drawn there). Throws for an element it cannot place.
  */
 export function tileRect(element, layoutName) {
   assertLayoutName(layoutName);
@@ -222,7 +222,7 @@ export function blockOf(element) {
 }
 
 /**
- * Horizontal extent of a block, for anchoring headings and callouts (FR-D11 d).
+ * Horizontal extent of a block, for anchoring headings and callouts.
  * @returns {{firstCol:number, lastCol:number, columns:number, x:number, w:number} | null} null when the block
  *   does not exist in that layout (genre and structureB have no original position).
  */
@@ -362,7 +362,7 @@ function checkMirroredSubTiles(placed, layoutName, problems) {
 }
 
 /**
- * The layout check of FR-D7 / AC-D5: places every element and reports what is wrong.
+ * The layout check: places every element and reports what is wrong.
  * In `original` the added elements are skipped, since that layout does not draw them.
  * @param {Array<object>} elements the full element list (poster and added)
  * @param {"original"|"revised"} layoutName
@@ -383,7 +383,7 @@ export function checkLayout(elements, layoutName) {
   return problems;
 }
 
-/** Everything the generator needs, gathered (FR-D11). */
+/** Everything the generator needs, gathered. */
 export const LAYOUT = Object.freeze({
   POSTER_TO_REVISED,
   ADDED_PLACEMENT,

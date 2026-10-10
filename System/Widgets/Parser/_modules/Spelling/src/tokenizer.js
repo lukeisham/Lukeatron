@@ -1,8 +1,8 @@
 /**
- * tokenizer.js — the Spelling module's own tokenizer (spec FR-8, plan D-5).
+ * tokenizer.js — the Spelling module's own tokenizer.
  *
- * Self-contained: does not call any host's `ENGINE.tokenize()`. This is the
- * one dependency plan D-5 explicitly cuts, so the module works standalone.
+ * Self-contained: does not call any host's `ENGINE.tokenize()`, so the
+ * module works standalone and a host's tokenizer can change freely.
  *
  * tokenize(text) -> SpellToken[]  where SpellToken = {text, start, end, isWord}
  * Offsets are character-accurate against the ORIGINAL input string.
@@ -19,7 +19,7 @@ function normalizeApostrophes(text) {
 }
 
 // One master regex, alternatives tried left-to-right at each position —
-// this IS the rule-order from FR-8 (url/email/number win over a generic
+// this IS the rule order (url/email/number win over a generic
 // word run; a word run itself absorbs contractions, hyphenated compounds,
 // and ALL-CAPS-with-trailing-digits in one match, since none of those need
 // a different token *boundary*, only different downstream classification).
@@ -65,14 +65,14 @@ function tokenize(text) {
 }
 
 /** isAllCaps(word) -> true for a run of 2+ uppercase letters, optional
- * trailing digits (FR-8 rule 7 / §4 rule 3), e.g. "NASA", "NASA2". */
+ * trailing digits, e.g. "NASA", "NASA2". */
 function isAllCaps(word) {
   return /^[A-Z]{2,}\d*$/.test(word);
 }
 
 /** isCamelCase(word) -> true for a mixed-case run that is not simple
  * sentence-case (single leading capital, rest lowercase) — catches
- * "iPhone", "getElementById" (FR-8 rule 8 / §4 rule 4). Requires 4+ chars
+ * "iPhone", "getElementById". Requires 4+ chars
  * per the research's CamelCase exception threshold. */
 function isCamelCase(word) {
   if (word.length < 4) return false;
@@ -81,13 +81,13 @@ function isCamelCase(word) {
 }
 
 /** isContraction(word) -> true if the token contains an apostrophe within
- * a run of letters (FR-8 rule 5 / §4 rule 7). */
+ * a run of letters. */
 function isContraction(word) {
   return word.includes("'");
 }
 
 /** isHyphenatedCompound(word) -> true if the token contains a hyphen within
- * a run of letters (FR-8 rule 6 / §4 rule 8). */
+ * a run of letters. */
 function isHyphenatedCompound(word) {
   return word.includes("-");
 }

@@ -368,7 +368,7 @@ def check_pair(T, H, R, epigraph):
         for n in g.find("gf-index-q"):
             if n.get("data-kind") == "breadth":
                 R.fail("D3", f"{g.name}: a Breadth entry in the index")
-    # D3 (part) — a section's diagnostics come AFTER its rules (v3.9.0, Luke 2026-09-26)
+    # A section's diagnostics come after its rules.
     for g in both:
         for n in g.find("gf-diagnostics"):
             sibs = n.parent.children if n.parent else []
@@ -500,7 +500,7 @@ def check_pair(T, H, R, epigraph):
         if a != b:
             R.fail("A14", f".{cls} entries differ between the guides")
 
-    # D6 — glyph asymmetry
+    # Glyph asymmetry
     R.ran("D6")
     if T.find("gf-glyph"):
         R.fail("D6", f"{T.name}: carries {len(T.find('gf-glyph'))} theatre glyphs — must be plain")
@@ -597,7 +597,7 @@ HIDDEN_LABELS = {"gf-def": "Definition", "gf-callout": "Key summary", "gf-exampl
 
 
 def check_labels(g, R):
-    # D17 — every kind of element carries its hidden agent label, and none of the names is shown to Luke,
+    # Every kind of element carries its hidden agent label, and none of the names is shown to Luke,
     # except NOTE, whose visible `NOTE —` is the one label both Luke and the agent read
     R.ran("D17")
     for cls, label in HIDDEN_LABELS.items():
@@ -661,7 +661,7 @@ def check_guide(g, R, heading_count):
                 ctx = vis[max(0, m.start() - 30): m.end() + 30]
                 R.fail(crit, f"{g.name}: {m.group(0)!r} in “…{ctx}…”")
 
-    # D2 — glossary appendix: one section after the last heading and before the index, holding
+    # Glossary appendix: one section after the last heading and before the index, holding
     # every definition in alphabetical order; prose links point into it
     R.ran("D2")
     gl = g.find("gf-glossary")
@@ -704,7 +704,7 @@ def check_guide(g, R, heading_count):
                       p.classes & ({"gf-chip", "gf-q", "gf-index", "gf-tagged"} | SPECIMEN)):
             R.fail("D2", f"{g.name}: term {t!r} linked from a heading, chip, question, example or index")
 
-    # D10 — cross-references resolve
+    # cross-references resolve
     R.ran("D10")
     for a in g.all:
         href = a.get("href") or ""
@@ -715,7 +715,7 @@ def check_guide(g, R, heading_count):
         if tgt is not None and not tgt.has("gf-heading"):
             R.fail("D10", f"{g.name}: cross-reference {x.get('href')} is not a heading")
 
-    # D11 — breadth shading and labels; Contains overview on wide headings
+    # Breadth shading and labels; Contains overview on wide headings
     R.ran("D11"); R.ran("D14")
     for h in g.headings:
         tier = h.get("data-breadth-tier")
@@ -725,7 +725,7 @@ def check_guide(g, R, heading_count):
             continue
         if not h.has(f"gf-breadth-{tier}"):
             R.fail("D11", f"{g.name} {sid}: class gf-breadth-{tier} missing")
-        label = h.get("data-breadth-label")     # hidden agent label (D11, D17): an attribute, never shown
+        label = h.get("data-breadth-label")     # hidden agent label: an attribute, never shown
         if g.own(h, "gf-breadth-label"):
             R.fail("D17", f"{g.name} {sid}: the breadth label is shown; it is a hidden data-breadth-label")
         if (tier != "leaf") != bool(label):
@@ -745,7 +745,7 @@ def check_guide(g, R, heading_count):
         elif cont:
             R.fail("D14", f"{g.name} {sid}: Contains overview on a {tier} heading")
 
-    # D12 / D15 — reach marks; D14 Foundations
+    # Reach marks; D14 Foundations
     R.ran("D12"); R.ran("D15")
     ids_to_heading = {}
     for n in g.all:
@@ -816,7 +816,7 @@ def check_guide(g, R, heading_count):
         if fnd and g.headings and g.index_of(fnd[0]) > g.index_of(g.headings[0]):
             R.fail("D14", f"{g.name}: Foundations after the first heading")
 
-    # D13 — niche points hang under their rule, unshaded
+    # Niche points hang under their rule, unshaded
     R.ran("D13")
     for n in g.find("gf-niche"):
         if n.ancestor(lambda p: p.has("gf-rule")) is None:

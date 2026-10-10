@@ -10,6 +10,12 @@ later agent does not "restore" the old behaviour.
 |---|---|---|
 | 2026-09-29 | Promoted from `System/Widgets/Generator/Psychometric/` to a standalone app, per Luke's direction in chat | — |
 
+## Key decisions
+
+| # | Decision | Reason | Rejected alternative |
+|---|---|---|---|
+| D-1 | Abstract-reasoning items are structured rule specs drawn as SVG at display time; the same spec derives the correct option | The drawing and the answer cannot drift apart, and a new item is data, not a drawing job | Hand-authored SVG per item with a recorded answer letter |
+
 ## Rule exceptions
 
 Deliberate breaks from `Memory/Long-Term/Coding/vibe-coding-rules.md`, each granted by Luke after

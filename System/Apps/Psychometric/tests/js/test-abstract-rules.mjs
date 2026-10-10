@@ -1,5 +1,5 @@
-// DECISIONS.md D-3: "the same spec derives the correct option — never
-// hand-record the answer separately." This test proves it: for every
+// The same spec derives the correct option; the answer is never recorded
+// separately, so the two cannot drift. This test proves it: for every
 // Abstract/Diagrammatic Reasoning item in the shipped pool, the letter
 // ENGINE._deriveAnswerId() derives from the item's rule spec must equal
 // the seed content's own answer key (transcribed once, here, purely for
@@ -13,13 +13,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { escapeHtml } from "../../../../Tools/web-shared/escape-html.js";
 import vm from "node:vm";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const buildDir = path.resolve(here, "../../cartridge/build");
 
 const CONTENT = JSON.parse(readFileSync(path.join(buildDir, "pool.json"), "utf8"));
-const sandbox = { CONTENT, console };
+const sandbox = { CONTENT, console, escapeHtml };
 vm.createContext(sandbox);
 vm.runInContext(readFileSync(path.join(buildDir, "engine.js"), "utf8"), sandbox, { filename: "engine.js" });
 const ENGINE = sandbox.ENGINE;

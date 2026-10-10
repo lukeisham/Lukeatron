@@ -40,7 +40,7 @@ def render_rows(records: list[AppRecord]) -> str:
     return "\n".join(_row(index, record) for index, record in enumerate(records))
 
 
-# Panels Home hosts in-page instead of launching an app (Larder home-hooks FR-1). Each name must
+# Panels Home hosts in-page instead of launching an app (Larder's panel). Each name must
 # match a static/panels/<name>.js module that exports mount(); the row opens it via home.js go().
 HOSTED_PANELS = {"Larder": {"title": "Larder", "blurb": "Saved recipes, searchable", "context": "Personal Productivity"}}
 
@@ -89,7 +89,7 @@ def holding(home: Home, name: str, mode: str, status: int = 200) -> Response:
     return html_response(text, status)
 
 
-# Widgets Home hosts; only their web/ folder is ever served (InboxNote and Larder home-hooks FR-2).
+# Widgets Home hosts; only their web/ folder is ever served.
 HOSTED_WIDGETS = ("InboxNote", "Larder")
 
 

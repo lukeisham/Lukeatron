@@ -1,4 +1,4 @@
-"""Validation and the create-only write, per note-save FR-3, FR-5, FR-6 (AC-3 to AC-5).
+"""Validation and the create-only write.
 Mirrors: inbox_note/store.py — always in a temp directory, never the real Inbox/ (TEST-4).
 """
 

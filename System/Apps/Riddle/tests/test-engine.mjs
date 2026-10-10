@@ -13,6 +13,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { escapeHtml } from "../../../Tools/web-shared/escape-html.js";
 import vm from "node:vm";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -20,7 +21,7 @@ const engineSrc = readFileSync(path.join(here, "..", "cartridge", "build", "engi
 const poolSrc = readFileSync(path.join(here, "..", "cartridge", "build", "pool.json"), "utf8");
 
 const CONTENT = JSON.parse(poolSrc);
-const sandbox = { CONTENT };
+const sandbox = { CONTENT, escapeHtml };
 vm.createContext(sandbox);
 vm.runInContext(engineSrc, sandbox, { filename: "engine.js" });
 const ENGINE = sandbox.ENGINE;

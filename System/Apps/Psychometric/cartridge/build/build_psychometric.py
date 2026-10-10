@@ -6,7 +6,7 @@ separated by ATX headings, each carrying ``**field:** value`` lines).
 Four of the five categories (SJT, VCR, DAR, DIR) parse straight out of the
 seed's labelled fields. The fifth, Abstract/Diagrammatic Reasoning, is
 **structured data hand-authored in ``abstract_specs.py``**
-(DECISIONS.md D-3) — its stimulus is a grid/sequence/odd-one-out rule spec,
+— its stimulus is a grid/sequence/odd-one-out rule spec,
 never literal SVG or a hand-recorded answer letter; only its clue,
 explainer prose, and difficulty are pulled from the same seed parse as
 everything else, so that prose can't drift from the shared source.

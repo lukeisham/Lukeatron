@@ -2,7 +2,7 @@
  * Draws a view into the list. Text always goes in through textContent / text nodes, never
  * innerHTML (JS-6), so a `<script>` in a definition shows as literal text.
  *
- * One device-row template serves every view (AC-7). Definitions and examples are always in the
+ * One device-row template serves every view. Definitions and examples are always in the
  * DOM; body classes (list.css) hide them per the toggles (definitions, AI examples, quotes), and `.expanded` overrides both,
  * so toggling a checkbox or expanding a row never re-renders.
  */
@@ -104,7 +104,7 @@ function deviceRow(doc, state, entry, mode) {
   return item;
 }
 
-/** The filing lines under a single device (Category, Form, Function, Labels, Types): where it is filed in each group, one path per filing. */
+/** The filing lines under a single device (Category, Form, Function, Topical): where it is filed in each group, one path per filing. */
 function filingsBlock(doc, filings) {
   const block = make(doc, 'dl', 'device-filings');
   for (const [title, paths] of filings) {

@@ -44,10 +44,15 @@ def on_disk(path):
     return git("hash-object", "--", path).strip() if full.is_file() else None
 
 
+def ignored(path):
+    """True when the working tree's .gitignore now ignores `path`, as when GitHub stops tracking a file it keeps on disk."""
+    return subprocess.run(["git", "-C", str(ROOT), "check-ignore", "-q", "--no-index", "--", path]).returncode == 0
+
+
 def lagging(old, new):
     """Files the incoming commits change whose working copy still matches this Mac's old commit, not GitHub's."""
     paths = [p for p in git("diff", "--name-only", "--no-renames", old, new).splitlines() if p]
-    return [p for p in paths if on_disk(p) == blob(old, p) != blob(new, p)]
+    return [p for p in paths if on_disk(p) == blob(old, p) != blob(new, p) and not (blob(new, p) is None and ignored(p))]
 
 
 def log_issue(message):

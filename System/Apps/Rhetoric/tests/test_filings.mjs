@@ -19,37 +19,27 @@ function draw(state) {
   return container;
 }
 
-test('Labels and Types are off by default: a single device shows no filings', () => {
+test('Groups and Topical are off by default: a single device shows no filings', () => {
   const state = stateOn(2);
-  assert.equal(state.showLabels, false);
+  assert.equal(state.showGroups, false);
   assert.equal(state.showTypes, false);
   assert.equal(findAll(draw(state), withClass('device-filings')).length, 0);
-  assert.doesNotMatch(viewToText(state, currentView(state)), /Labels:|Types:/);
+  assert.doesNotMatch(viewToText(state, currentView(state)), /Category:|Topical:/);
 });
 
-test('Show Labels lists every Grammar label holding the device, as a path', () => {
-  const state = stateOn(2);
-  state.showLabels = true;
-  const [item] = currentView(state).items;
-  assert.deepEqual(item.filings, { groups: null, labels: ['Clause', 'Clause > Independent clause'], types: null });
-  assert.match(viewToText(state, currentView(state)), /Labels: Clause; Clause > Independent clause/);
-  assert.doesNotMatch(viewToText(state, currentView(state)), /Types:/);
-  assert.equal(findAll(draw(state), withClass('device-filings')).length, 1);
-});
-
-test('Show Types lists the Topical Types; the derived Unsorted heading is not a Type', () => {
+test('Show Topical lists the Topical Types; the derived Unsorted heading is not a Type', () => {
   const state = stateOn(1);
   state.showTypes = true;
   assert.deepEqual(currentView(state).items[0].filings.types, ['Irony']);
   const unsorted = stateOn(2);
   unsorted.showTypes = true;
   assert.deepEqual(currentView(unsorted).items[0].filings.types, []);
-  assert.match(viewToText(unsorted, currentView(unsorted)), /Types: none/);
+  assert.match(viewToText(unsorted, currentView(unsorted)), /Topical: none/);
 });
 
 test('filings appear only in a single device view, not in a group list', () => {
   const state = createState(payload());
-  state.showLabels = true;
+  state.showGroups = true;
   state.showTypes = true;
   state.sortOrder = 'topical';
   assert.equal(findAll(draw(state), withClass('device-filings')).length, 0);
@@ -58,9 +48,9 @@ test('filings appear only in a single device view, not in a group list', () => {
 test('both options are saved between visits', () => {
   const store = {};
   const storage = { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; } };
-  saveToggles(storage, { showLabels: true, showTypes: true });
+  saveToggles(storage, { showGroups: true, showTypes: true });
   const saved = loadToggles(storage);
-  assert.equal(saved.showLabels, true);
+  assert.equal(saved.showGroups, true);
   assert.equal(saved.showTypes, true);
 });
 
@@ -72,7 +62,7 @@ test('Show Groups lists every fixed group the device is filed in, as a path, or 
   assert.deepEqual(item.filings.groups.map(([title]) => title), ['Category', 'Form', 'Function']);
   assert.match(viewToText(state, currentView(state)), /Category: .*\n.*Form: .*\n.*Function: /);
   assert.equal(findAll(draw(state), withClass('device-filings')).length, 1);
-  assert.equal(item.filings.labels, null);
+  assert.equal(item.filings.types, null);
 });
 
 test('Show Groups is saved between visits', () => {

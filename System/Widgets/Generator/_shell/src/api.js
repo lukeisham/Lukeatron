@@ -1,5 +1,5 @@
 /* ============================================================
-   SHELL · TIER B — Claude API pool refresh (DECISIONS.md D-2, task E)
+   SHELL · TIER B — Claude API pool refresh
    Never edited per cartridge. THE ONE PLACE ANY fetch() LIVES (JS-5) —
    nothing else in the shell or a cartridge should call fetch directly.
 

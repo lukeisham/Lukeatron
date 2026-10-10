@@ -1,12 +1,12 @@
 /**
  * story-model.js — the only place a story (a graph of beads and ribbons) is changed.
  *
- * No DOM, no storage (story-map AD-C1). A store holds `{ beads, ribbons, activeUid }`, applies each
+ * No DOM, no storage. A store holds `{ beads, ribbons, activeUid }`, applies each
  * operation to a working copy and commits it only when the whole operation succeeds, so a refused
  * operation never leaves a half-changed map. Each commit sends `storytelling:story-changed` on
  * `document` (or an injected event target).
  *
- * Bead   = { uid, elementId, with?, label?, withLabel?, note? }     (key order is fixed, FR-A11)
+ * Bead   = { uid, elementId, with?, label?, withLabel?, note? }     (key order is fixed)
  * Ribbon = [fromUid, toUid]
  * Target = { type: "empty" } | { type: "bead", uid } | { type: "ribbon", from, to } | { type: "dock", uid }
  *
@@ -56,7 +56,7 @@ const elementCount = (bead) => (bead.with ? 2 : 1);
 
 /**
  * The one place a bead's shape is decided: fixed key order, absent fields omitted, a rogue half
- * always carries a label and a non-rogue half never does (AD-C2).
+ * always carries a label and a non-rogue half never does.
  */
 function canonicalBead({ uid, elementId, with: partner, label, withLabel, note }) {
   const bead = { uid, elementId };
@@ -105,7 +105,7 @@ function addRibbon(work, from, to) {
 
 /**
  * Takes a bead out of the ribbon graph and reconnects each bead that led into it to each bead it
- * led to (FR-C6). Healed ribbons take the place of the ribbon that led in, so a parent's first
+ * led to. Healed ribbons take the place of the ribbon that led in, so a parent's first
  * child — which decides its lane — stays the first child. Returns the ribbons it added.
  */
 function disconnect(work, uid, ctx) {
@@ -366,7 +366,7 @@ function mutateSetLabel(work, ctx, uid, text, options) {
   return { ok: true, uid };
 }
 
-/* ---------- loadStory: the one loader (FR-C14, library FR-L3) ---------- */
+/* ---------- loadStory: the one loader ---------- */
 
 function refuseShape(message) {
   console.warn(`story-model loadStory: ${message}`);
@@ -457,7 +457,7 @@ function droppedNote({ beads, halves }) {
 /**
  * Validates a story shape (saved story, draft or library entry) and returns an editable copy with
  * fresh bead uids. Never aliases or mutates its input, so deep-frozen library data is safe.
- * Beads whose element no longer exists are dropped with their ribbons (FR-C12).
+ * Beads whose element no longer exists are dropped with their ribbons.
  *
  * @param {{ beads: object[], ribbons?: string[][], name?: string, agent?: boolean }} shape
  * @param {{ elementExists?: (id: string) => boolean, makeUid?: () => string }} [options]

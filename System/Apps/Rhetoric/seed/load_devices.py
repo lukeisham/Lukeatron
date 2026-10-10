@@ -1,10 +1,10 @@
 """Writes the researched, classified devices from seed/devices.json into `devices` and `examples`
-(seed-pipeline FR-6). One transaction, and nothing is written unless every device is valid.
+in one transaction; nothing is written unless every device is valid.
 
 A device is valid when its Category, Form and Function paths each name an existing node of that
 hierarchy (a path is the node names from the root joined with " > "), so a device with a null
-placement is held back, never forced (AD-2). Popularity is the number of the four scraped lists
-naming the device times 25. Topical rank is left NULL (AD-4). A Flipside device points at its
+placement is held back, never forced. Popularity is the number of the four scraped lists
+naming the device times 25. Topical rank is left NULL. A Flipside device points at its
 fallacy through `flipside_of`.
 
 Run: python3 -m seed.load_devices            (from System/Apps/Rhetoric/)
@@ -93,7 +93,7 @@ def write_devices(conn: sqlite3.Connection, devices: list[dict], ids: dict[str, 
 
 
 def wrong_hierarchy_links(conn: sqlite3.Connection) -> int:
-    """database.spec AC-4 across all three links; 0 means every device sits in the right trees."""
+    """Devices linked into the wrong hierarchy, across all three links; 0 means every device sits in the right trees."""
     wrong = conn.execute(
         "SELECT COUNT(*) FROM device_categories dc JOIN nodes n ON dc.node_id = n.id "
         "WHERE n.hierarchy != 'category'").fetchone()[0]

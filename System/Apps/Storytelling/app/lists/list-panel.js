@@ -8,9 +8,9 @@ const COPY_DONE_TEXT = "Copied";
 const COPY_FAILED_TEXT = "Copy failed — select the text above and copy it by hand";
 
 /**
- * Mounts the Lists panel (lists.spec FR-K2): category chooser, Include examples checkbox,
+ * Mounts the Lists panel: category chooser, Include examples checkbox,
  * live read-only preview, Copy, Print and Close. Opens on EVT_OPEN_LISTS, closes on Esc or Close,
- * and returns focus to the toolbar Lists button (viewport-detail FR-V10).
+ * and returns focus to the toolbar Lists button.
  *
  * @param {HTMLElement} host the `#list-panel` element; the panel is built inside it and hidden with `hidden`
  * @param {{ doc?: Document, output?: { copyText: Function, setPrintTarget: Function } }} [options] test overrides
@@ -166,7 +166,7 @@ const BULLET_PREFIX = "• ";
 const EXAMPLE_INDENT_PATTERN = /^\s+/;
 
 /**
- * Rebuilds `listText` output as print markup, so the printed list and the preview cannot disagree (lists AD-K2).
+ * Rebuilds `listText` output as print markup, so the printed list and the preview cannot disagree.
  * The text is blank-line-separated blocks: category blocks (heading line, then bullet lines, each bullet optionally
  * followed by an indented Example line), and one closing block of footnote and credit lines, which is the last block.
  * Returns `h2` + `ul` per category and a `p` per closing line.

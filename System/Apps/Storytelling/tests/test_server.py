@@ -1,4 +1,4 @@
-"""Test the static server (distribution FR-X1, documentation D-2).
+"""Test the static server.
 
 TEST-7 gates, each with a blocked path and a permitted path:
 (a) serves files from app/  (b) refuses traversal  (c) refuses every write method

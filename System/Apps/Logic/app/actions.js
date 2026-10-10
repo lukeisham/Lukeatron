@@ -1,4 +1,4 @@
-/** Print and Copy — both act on the view currently on screen (FR-9). */
+/** Print and Copy — both act on the view currently on screen. */
 
 import { currentView, viewToText } from './view.js';
 

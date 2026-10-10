@@ -1,4 +1,4 @@
-"""Filenames per note-save FR-4 (AC-1, AC-2). Mirrors: inbox_note/naming.py
+"""Note filenames. Mirrors: inbox_note/naming.py
 
 Run: python3 -m unittest discover -s tests
 """

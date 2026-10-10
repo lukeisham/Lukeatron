@@ -1,4 +1,4 @@
-/** Every event name the modules send on `document` (documentation.spec D-7). One place, so a rename is one edit. */
+/** Every event name the modules send on `document`. One place, so a rename is one edit. */
 export const EVT_SELECT = "storytelling:select";
 export const EVT_OPEN = "storytelling:open";
 export const EVT_STORY_CHANGED = "storytelling:story-changed";

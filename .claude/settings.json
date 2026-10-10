@@ -26,6 +26,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/System/Tools/teaching-app-family/hook.py\" mark",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/System/Tools/hygiene/hook.py\" mark",
+            "timeout": 10
           }
         ]
       }
@@ -59,6 +64,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/System/Tools/teaching-app-family/hook.py\" stop",
             "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/System/Tools/hygiene/hook.py\" stop",
+            "timeout": 40
           }
         ]
       }

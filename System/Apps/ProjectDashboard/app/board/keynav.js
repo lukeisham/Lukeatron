@@ -10,9 +10,9 @@
 // is left exactly as it was. Every card keeps tabindex="0", so Tab order is
 // unchanged: this only ADDS ways to move.
 //
-// FR-12: this file never imports an edit client — it moves focus and clicks
+// This file never imports an edit client — it moves focus and clicks
 // the card's own Copy button, nothing else. The listener lives here, not in
-// board.js: test_board.mjs's AC-3 forbids any listener in that file.
+// board.js: test_board.mjs forbids any listener in that file.
 
 const KEY_TO_MOVE = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
 

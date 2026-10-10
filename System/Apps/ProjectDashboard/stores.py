@@ -1,18 +1,18 @@
 """Turn the four source files into plain records, interpreting nothing.
 
 The read layer (the stores spec, Project Dashboard). Every field comes back as a
-`Field` — its value plus whether the source file actually stated it (FR-3) —
+`Field` — its value plus whether the source file actually stated it —
 so `model` can tell a fact from a gap without re-reading anything. This
-module never derives (AD-2): no lane, no column, no date meaning.
+module never derives: no lane, no column, no date meaning.
 It only parses.
 
 Sources read: `Memory/Medium-Term/Projects/_tracking.yaml`, each project's
 `registry.md` (frontmatter, Next Actions, Events, Documents, People), and a
 listing of `System/Plans/New/`. Never `_links.yaml`, a calendar snapshot, or a
 completion log — those are ProjectDashboard's own concerns, not this app's
-(AD-1's salvage keeps the parsing engine, not the Dashboard's reader set).
+(this app keeps the parsing engine, not the earlier Dashboard's reader set).
 
-One-way dependency (FR-9): this module is never allowed to import `writes`
+One-way dependency: this module is never allowed to import `writes`
 or `model`, so it cannot be enforced here — it is enforced by never writing
 that import in the first place.
 """
@@ -36,13 +36,13 @@ class StoresError(Exception):
     fallback, and for a registry whose frontmatter itself is unreadable.
     A single project's `registry.md` failing this way is NOT surfaced by
     raising past the caller — `load_projects` catches it and turns it into
-    a `SkippedItem` (FR-4, AC-5): one bad project must never take the
+    a `SkippedItem`: one bad project must never take the
     others down.
     """
 
 
 # ---------------------------------------------------------------------------
-# Field — every value paired with whether the source stated it (FR-3)
+# Field — every value paired with whether the source stated it
 # ---------------------------------------------------------------------------
 
 
@@ -52,8 +52,8 @@ class Field(Generic[T]):
 
     A blank cell and an absent column both come back `Field(None, False)` —
     indistinguishable from each other, but never confusable with a real
-    value (FR-3, AC-3). Downstream, `model` marks anything derived from a
-    `stated=False` field as guessed (documentation.spec.md D-3).
+    value. Downstream, `model` marks anything derived from a
+    `stated=False` field as guessed.
     """
 
     value: T | None
@@ -63,7 +63,7 @@ class Field(Generic[T]):
 # Cells written as an em dash (or bare hyphen) are this system's own "nothing
 # here" glyph, used throughout the registries. A cell reading
 # "—" is not a stated value called "—"; it is the file's way of stating
-# nothing, same as leaving the cell blank (AC-3).
+# nothing, same as leaving the cell blank.
 _BLANK_CELL_TEXT = ("", "—", "-")
 
 
@@ -85,7 +85,7 @@ def _field_any(raw: Any) -> Field[Any]:
 
 
 # ---------------------------------------------------------------------------
-# YAML — hand-rolled stdlib subset only (PY-1, FR-1). No PyYAML: not even as
+# YAML — hand-rolled stdlib subset only (PY-1). No PyYAML: not even as
 # an optional accelerator, so the module's behaviour never depends on what
 # happens to be installed.
 # ---------------------------------------------------------------------------
@@ -96,8 +96,8 @@ def _field_any(raw: Any) -> Field[Any]:
 # "#" comments. Deliberately does not handle block scalars ("|", ">"),
 # anchors/aliases, or multi-document streams — none of `_tracking.yaml` or a
 # registry's frontmatter use them (checked against all 42 live projects).
-# Because nothing here ever converts a bare scalar to int/float/date, FR-7's
-# "dates pass through as raw strings" holds for every value, not just dates.
+# Because nothing here ever converts a bare scalar to int/float/date, the
+# "dates pass through as raw strings" rule holds for every value, not just dates.
 
 _MAPPING_KEY_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_ ]*:(\s|$)")
 
@@ -260,7 +260,7 @@ def _fb_unquote(s: str) -> str:
 # ---------------------------------------------------------------------------
 # Markdown table plumbing shared by every registry table.
 # Lines carry their absolute 1-indexed file line number throughout, so a
-# malformed row can be reported at the exact line it lives on (FR-4).
+# malformed row can be reported at the exact line it lives on.
 # ---------------------------------------------------------------------------
 
 _Line = tuple[int, str]
@@ -310,9 +310,9 @@ def _find_table_blocks(lines: list[_Line]) -> list[list[_Line]]:
 
 
 def _split_row(line: str) -> list[str]:
-    """Split a table row on TOP-LEVEL pipes only (FR-2). A `|` inside a
+    """Split a table row on TOP-LEVEL pipes only. A `|` inside a
     backtick span is cell text, not a boundary — CH-15-biblical-commentary-
-    app's Action column carries a backticked, pipe-separated list (AC-2)
+    app's Action column carries a backticked, pipe-separated list
     that a naive split would shred, shifting every later column."""
     s = line.strip()
     if s.startswith("|"):
@@ -355,7 +355,7 @@ def _resolve_columns(header_cells: list[str], aliases: dict[str, str], *, has_in
 
 @dataclass(frozen=True)
 class SkippedItem:
-    """FR-4: a malformed row, or a whole registry that could not be read,
+    """A malformed row, or a whole registry that could not be read,
     reported rather than dropped or raised. `line` is `None` for a
     whole-file failure, where no single line is at fault."""
 
@@ -421,7 +421,7 @@ def _parse_bullet_section(body: list[_Line], heading_fragment: str) -> list[str]
     further down the file never bleeds into this one. Blank lines and any
     non-bullet line (a sub-note, an HTML comment) are simply not bullets and
     are skipped rather than raising — these sections have no table shape to
-    validate against (FR-4's row-count guard does not apply to prose)."""
+    validate against (the row-count guard does not apply to prose)."""
     lines = _find_section(body, heading_fragment)
     items: list[str] = []
     for _lineno, text in lines:
@@ -444,7 +444,7 @@ _NEXT_ACTION_ALIASES = {
     "action": "action",
     "owner": "owner",
     "kind": "kind",
-    "type": "kind",  # older column name for the same cell (FR-8); CH-16/CH-17 still carry it
+    "type": "kind",  # older column name for the same cell; CH-16/CH-17 still carry it
     "status": "status",
     "state": "state",
     "due": "due",
@@ -536,7 +536,7 @@ class PeopleRow:
 
 
 # ---------------------------------------------------------------------------
-# registry.md — frontmatter + the four tables (FR-2, FR-5)
+# registry.md — frontmatter + the four tables
 # ---------------------------------------------------------------------------
 
 
@@ -559,7 +559,7 @@ def _split_frontmatter(text: str) -> tuple[str, list[_Line]]:
 class RegistryRecord:
     project_id: str
     path: Path
-    mtime: float  # a filesystem fact observed just now (FR-5) — never a Field, never something a
+    mtime: float  # a filesystem fact observed just now — never a Field, never something a
     # source file could itself state or omit; `writes` needs it as its concurrency gate.
     multi_stream: bool  # true if Next Actions section has more than one table block
     frontmatter: dict[str, Field[Any]]
@@ -567,8 +567,8 @@ class RegistryRecord:
     events: list[EventRow]
     documents: list[DocumentRow]
     people: list[PeopleRow]
-    definition_of_done: list[str]  # 🎯 Definition of Done — top-level bullets, verbatim (outline-print FR-2)
-    decision_log: list[str]  # 🧾 Decision Log — top-level bullets, verbatim, file order (outline-print FR-2)
+    definition_of_done: list[str]  # 🎯 Definition of Done — top-level bullets, verbatim
+    decision_log: list[str]  # 🧾 Decision Log — top-level bullets, verbatim, file order
     skipped_rows: list[SkippedItem]  # malformed rows found while parsing THIS registry's tables
 
 
@@ -618,7 +618,7 @@ def read_registry(path: Path, project_id: str) -> RegistryRecord:
 
 
 # ---------------------------------------------------------------------------
-# _tracking.yaml (FR-1) + per-project error isolation (FR-4, AC-5)
+# _tracking.yaml + per-project error isolation
 # ---------------------------------------------------------------------------
 
 _TRACKING_FIELDS = (
@@ -722,7 +722,7 @@ def latest_registry_mtime(lukeatron_root: Path) -> float:
 
 
 # ---------------------------------------------------------------------------
-# System/Plans/New/ — a listing only, never opened (FR-5)
+# System/Plans/New/ — a listing only, never opened
 # ---------------------------------------------------------------------------
 
 

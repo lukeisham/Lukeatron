@@ -1,12 +1,12 @@
 // edits.js — the one place POST /api/edit (and POST /api/undo, GET
 // /api/undo-state.json) are called (JS-5: raw fetch calls
 // centralised, the same discipline shared/board-client.js's fetchBoard
-// already keeps for GET /api/board.json). D-14/AD-3/SR-9: the server sends
+// already keeps for GET /api/board.json). SR-9: the server sends
 // a code; this module is the ONLY place that code becomes a sentence Luke
 // can act on. Nothing past this file ever sees `error` or `field` — only
 // console.warn does, for whoever reads the browser console.
 
-// FR-12: one sentence per code in server.spec.md's registry, worded for the
+// One sentence per code in the server's error registry, worded for the
 // person doing the task, not for whoever built it (SR-9).
 const ERROR_SENTENCES = {
   stale_mtime: "This project changed since you opened it — refresh and try again.",
@@ -55,9 +55,9 @@ async function postJson(url, body, what) {
 
 /**
  * POSTs one edit intent (`{project_id, mtime, field, ...}`, per
- * server.spec.md FR-5). Resolves with the server's success payload
+ * the server's write guard). Resolves with the server's success payload
  * (`{ok, mtime, ...}`) or throws an Error whose `.message` is already the
- * plain sentence FR-12 requires — a caller shows `err.message` directly,
+ * plain sentence — a caller shows `err.message` directly,
  * with no translation of its own.
  */
 export function postEdit(body) {

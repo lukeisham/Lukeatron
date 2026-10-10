@@ -1,5 +1,5 @@
 // sections.js — the read-only halves of the project page: purpose,
-// definition of done, events, documents, people, decision log (FR-2).
+// definition of done, events, documents, people, decision log.
 // Next Actions is the only editable section and lives in actions.js — none
 // of the six edits reach this file. A section with nothing to show (no
 // purpose written, no documents listed) renders nothing rather than an
@@ -21,7 +21,7 @@ function hasContent(fields) {
 
 function sectionHeading(title, getSectionText) {
   const children = [el("h2", {}, title)];
-  // FR-7: only sections whose rows are themselves copy targets (events,
+  // Only sections whose rows are themselves copy targets (events,
   // documents, people) get a section-level copy — Purpose/Definition of
   // Done/Decision Log are plain prose lists with no per-row copy of their
   // own for a section copy to mirror.
@@ -61,7 +61,7 @@ export function buildEventsSection(project) {
   ]);
 }
 
-/** FR-7/AC-10: the row shows only the basename (with the full path on
+/** The row shows only the basename (with the full path on
  * hover); the row's own copy and the section copy both still reach for
  * `doc.file` in full — see copy.js's documentCopyText, never this. */
 function basename(fullPath) {
@@ -126,7 +126,7 @@ function buildDecisionLogToggle(entries, showDecisionLog, onToggle) {
 }
 
 export function buildDecisionLogSection(project, showDecisionLog, onToggleDecisionLog) {
-  // D-15/model.py: file order, append-only at the source — never re-sorted
+  // model.py: file order, append-only at the source — never re-sorted
   // here on an assumption about which end is newest.
   const entries = project.decision_log ?? [];
   if (!entries.length) return null;

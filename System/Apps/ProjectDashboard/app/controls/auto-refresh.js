@@ -6,7 +6,7 @@
 // exports no redraw hook to patch into (a real gap, logged separately in
 // Logs/issues.log, not solved here).
 //
-// FR-6-style boundary (controls.js's own convention): this module owns no
+// The same boundary as controls.js: this module owns no
 // toolbar DOM and is wired from controls.js's init() as a plain function
 // call — it is a self-contained poller, not a toolbar control, so it has
 // no user-facing preference and nothing to persist via storage.js.

@@ -7,19 +7,19 @@ and 4 Kind are each one cell in one existing Next Actions row of a project's
 Next Actions table block, and a one-level undo of the latest `set_cell` (which
 is why `set_cell` logs the cell's previous text as `prev=` in this app's `edits.log`).
 
-The four guards, in order, on every call: the **fence** (FR-2) resolves the
+The four guards, in order, on every call: the **fence** resolves the
 target path and refuses anything outside `Memory/Medium-Term/`; the
-**mtime guard** (FR-3) refuses a write against a file that moved on since the
-caller read it; the **re-parse guard** (FR-4) builds the new content in
+**mtime guard** refuses a write against a file that moved on since the
+caller read it; the **re-parse guard** builds the new content in
 memory and re-parses it with `stores` before it ever reaches disk, so a
 write that would corrupt the table is abandoned instead of committed; the
-**record guard** (FR-5) appends one line to this app's `edits.log` and sets
+**record guard** appends one line to this app's `edits.log` and sets
 `pending_sweep: true` on the project's `_tracking.yaml` row. A row whose
-`🔗 Link` cell is not `—` is refused outright (FR-6) — linked rows sync
+`🔗 Link` cell is not `—` is refused outright — linked rows sync
 through `!ProjectSweep`, never through this module.
 
-Depends on `stores` only to locate a cell and to re-parse it (FR-10,
-documentation.spec.md's one-way rule): `stores` never imports this module
+Depends on `stores` only to locate a cell and to re-parse it (a
+one-way rule): `stores` never imports this module
 back, and `model` is never imported here at all. `server` is this module's
 only caller.
 """
@@ -38,9 +38,9 @@ import stores
 
 # ---------------------------------------------------------------------------
 # Errors — FenceError, StaleMtimeError and RowNotFoundError are reused by
-# name from ProjectDashboard's writes.py (FR-9) so edits.log reads the
+# name from ProjectDashboard's writes.py so edits.log reads the
 # same vocabulary across both apps. LinkedRowError is this module's own
-# addition for FR-6, which ProjectDashboard's writes.py has no equivalent
+# addition for linked rows, which the earlier Dashboard's writes.py has no equivalent
 # of.
 # ---------------------------------------------------------------------------
 
@@ -50,11 +50,11 @@ class WritesError(Exception):
 
 
 class FenceError(WritesError):
-    """A path resolved outside Memory/Medium-Term/ (FR-2, AC-2)."""
+    """A path resolved outside Memory/Medium-Term/."""
 
 
 class StaleMtimeError(WritesError):
-    """The target file changed since the caller's mtime was read (FR-3, AC-3)."""
+    """The target file changed since the caller's mtime was read."""
 
 
 class ProjectNotFoundError(WritesError):
@@ -69,14 +69,14 @@ class RowNotFoundError(WritesError):
 
 
 class LinkedRowError(WritesError):
-    """The row's `🔗 Link` cell is not `—` (FR-6, AC-4). `server` turns this
+    """The row's `🔗 Link` cell is not `—`. `server` turns this
     into plain words for Luke rather than syncing or half-editing it."""
 
 
 class TableCorruptionError(WritesError):
     """Re-parsing the rewritten file (before it is committed) did not
     confirm the intended edit — the write is abandoned; nothing is
-    committed (FR-4, the writes.spec.md Risks-table mitigation)."""
+    committed, so a crash mid-write cannot leave a half-written registry."""
 
 
 class ReorderMismatchError(WritesError):
@@ -133,12 +133,12 @@ class ReorderResult:
 # Constants
 # ---------------------------------------------------------------------------
 
-# Edits 1-4 (FR-1). "state" (the lane colour) is deliberately absent: it is
+# Edits 1-4. "state" (the lane colour) is deliberately absent: it is
 # a `model`-derived roll-up in this app, not one of the five edits (contrast
 # ProjectDashboard, where state was directly editable).
 _EDIT_COLUMNS = ("status", "due", "owner", "kind")
 
-# FR-8: the fixed set edit 5 may name, mapped to the heading fragment each
+# The fixed set edit 5 may name, mapped to the heading fragment each
 # resolves to in Template_ProjectNotes.md. Deliberately a dict literal, not
 # derived from the template file, so a template wording change can never
 # silently change what this module accepts.
@@ -159,7 +159,7 @@ _EDITS_LOG_RELATIVE = ("System", "Apps", "ProjectDashboard", "edits.log")
 
 
 # ---------------------------------------------------------------------------
-# The fence (FR-2) — resolved path, checked after symlink/'..' resolution,
+# The fence — resolved path, checked after symlink/'..' resolution,
 # never a string prefix match.
 # ---------------------------------------------------------------------------
 
@@ -178,7 +178,7 @@ def _ensure_within(path: Path, fence_root: Path) -> Path:
 
 
 # ---------------------------------------------------------------------------
-# mtime guard (FR-3)
+# mtime guard
 # ---------------------------------------------------------------------------
 
 
@@ -230,7 +230,7 @@ def _line_ending(raw_line: str) -> str:
 def _atomic_write_verified(path: Path, new_text: str, verify: Callable[[Path], None] | None = None) -> None:
     """Write to a same-directory temp file, re-parse-verify THAT file (never
     the live one) when a verifier is given, then atomically replace the
-    target. This is Guard 3 (FR-4) — `os.replace` also makes the commit
+    target. This is Guard 3 — `os.replace` also makes the commit
     crash-safe, which is why a stale write is a refusal rather than
     something a crash could leave half-applied.
     """
@@ -247,11 +247,11 @@ def _atomic_write_verified(path: Path, new_text: str, verify: Callable[[Path], N
 
 
 # ---------------------------------------------------------------------------
-# Next Actions — locating and rewriting one row's one cell (FR-1, FR-6)
+# Next Actions — locating and rewriting one row's one cell
 #
 # Reuses stores' own heading/table/cell primitives (stores._HEADING_RE,
 # stores._split_row, stores._resolve_columns, stores._NEXT_ACTION_ALIASES)
-# so the backtick-aware pipe split (stores.spec.md FR-2) is handled by
+# so the backtick-aware pipe split is handled by
 # exactly one implementation. What is added here is purely positional:
 # stores' readers hand back parsed values, never line numbers, because
 # `model` and `server` never need them — this is the one caller that does,
@@ -308,7 +308,7 @@ def _locate_next_action_row(lines: list[str], row_id: str) -> tuple[int, list[st
     across every stream in the registry by the house convention of
     suffixing the index per stream (1A/1B, ...). Raises RowNotFoundError if
     zero or more than one row matches — never guesses and never addresses a
-    row positionally (mirrors stores.spec.md's own FR-2a rule)."""
+    row positionally, the same rule `stores` uses."""
     bounds = _find_section_bounds(lines, "next actions")
     if bounds is None:
         raise RowNotFoundError("registry.md has no '# ... Next Actions' section")
@@ -388,7 +388,7 @@ def _row_link_value(cells: list[str], columns: list[str | None]) -> str:
 
 def _mutate_next_action_cell(lines: list[str], row_id: str, column: str, value: str) -> tuple[list[str], str, str]:
     """Returns the new line list, the row's current `🔗 Link` cell text (so
-    the caller can refuse a linked row, FR-6, before anything is written) and
+    the caller can refuse a linked row before anything is written) and
     the cell's raw text before the edit (logged as `prev=` so undo can restore
     it) — this function only builds the replacement in memory."""
     data_idx, cells, columns = _locate_next_action_row(lines, row_id)
@@ -446,7 +446,7 @@ def _reject_unsafe_cell_value(value: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# notes.md — appending one line under a named section (FR-8, AC-6)
+# notes.md — appending one line under a named section
 # ---------------------------------------------------------------------------
 
 _HEADING_ANY_RE = re.compile(r"^(#{1,6})\s+(.*)$")
@@ -496,7 +496,7 @@ def _verify_line_present(tmp_path: Path, expected_line: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# _tracking.yaml — stamping pending_sweep: true on one project's row (FR-5)
+# _tracking.yaml — stamping pending_sweep: true on one project's row
 #
 # Text surgery, not a YAML load+dump: _tracking.yaml opens with a long
 # comment header a round-trip through a generic dumper would discard, and
@@ -557,16 +557,16 @@ def _verify_pending_sweep(tmp_path: Path, project_id: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# edits.log (this app's folder) — one line per mutation, success or refusal (FR-5, AC-7).
+# edits.log (this app's folder) — one line per mutation, success or refusal.
 # ---------------------------------------------------------------------------
 
 
 def _append_edit_log(root: Path, *, action: str, project_id: str, row: str, column: str, outcome: str, detail: str = "") -> None:
-    """Deliberately outside the Memory/Medium-Term/ fence FR-2 otherwise
-    enforces: this path is fixed in source (never built from `project_id`,
+    """Deliberately outside the Memory/Medium-Term/ fence that every other
+    write obeys: this path is fixed in source (never built from `project_id`,
     `row`, or any other caller-supplied value), so the class of attack the
-    fence guards against — an escaping path — cannot reach it. FR-5 names
-    this exact, non-configurable destination: the app's own undo record.
+    fence guards against — an escaping path — cannot reach it. This is one
+    exact, non-configurable destination: the app's own undo record.
     """
     path = root.joinpath(*_EDITS_LOG_RELATIVE)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -651,7 +651,7 @@ def set_cell(
 
 def append_note(root: Path, *, project_id: str, section: str, text: str, mtime: float) -> NoteResult:
     """Edit 5: append one line under a named notes.md section. `section`
-    must be one of exactly scraps/constraints/reference/guidance (FR-8) —
+    must be one of exactly scraps/constraints/reference/guidance —
     an unknown section is a ValueError, never a silent default; defaulting
     to Scraps & ideas is the interface layer's job, not this module's."""
     if section not in _NOTE_SECTIONS:

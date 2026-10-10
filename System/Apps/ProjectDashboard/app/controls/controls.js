@@ -1,4 +1,4 @@
-// controls.js — the toolbar's entry point (controls.spec.md). Wires the
+// controls.js — the toolbar's entry point. Wires the
 // static buttons already in index.html to toolbar.js's pure state functions
 // and to storage.js's guarded persistence. This file holds no rendering
 // logic of its own — it only reads dataset/aria-pressed off the real
@@ -6,11 +6,11 @@
 // directly against a fake DOM (TEST-8, mirroring board.js's own
 // thin-entry-point scope, see that file's header comment).
 //
-// FR-6: every case below except "refresh" only ever calls an apply*()
+// Every case below except "refresh" only ever calls an apply*()
 // function (a dataset write) and a save*() function (a guarded storage
 // write) — never fetchBoard(), never renderBoard(), never a DOM walk over
-// #board-root. test_controls.mjs's AC-2 test greps this file to hold that
-// boundary structurally, the same way test_board.mjs's AC-3 test does for
+// #board-root. test_controls.mjs greps this file to hold that
+// boundary structurally, the same way test_board.mjs does for
 // board.js's own no-listener guarantee.
 
 import {
@@ -87,7 +87,7 @@ function handleClick(event, toolbar, body, storage, state) {
       return;
     }
     case "refresh": {
-      // FR-8: the only control allowed to touch the network. board.js
+      // The only control allowed to touch the network. board.js
       // (see that file's own header comment) only self-invokes once at
       // module load and exports no re-render entry point; calling
       // fetchBoard()+renderBoard() from here would mean re-implementing
@@ -126,7 +126,7 @@ function init() {
   applyDensity(body, state.density);
   setDensityLabel(toolbar, state.density);
 
-  // FR-10: only apply an explicit palette attribute when one was actually
+  // Only apply an explicit palette attribute when one was actually
   // stored — leaving it unset on a true first visit is what lets
   // `prefers-color-scheme` (tokens.css) decide the initial look.
   if (state.palette) applyPalette(body, state.palette);

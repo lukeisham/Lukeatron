@@ -1,10 +1,10 @@
-"""Thin HTTP routing for Project Dashboard. See server.spec.md for the architecture.
+"""Thin HTTP routing for Project Dashboard.
 
 Q11 settled that the browser draws the board, so this module moves data and
-owns no rules (documentation.spec.md §1's `model -> server` row): a handler
+owns no rules (data flows `model -> server`, never back): a handler
 parses input, calls exactly one data function, and shapes the response. No
 derivation happens here — that is `model.py`'s job; `writes.py` is the only
-module that mutates anything, and this is its only caller (FR-9).
+module that mutates anything, and this is its only caller.
 
 The sibling interfaces this module routes to:
 
@@ -39,11 +39,11 @@ import paths
 
 APP_DIR = Path(__file__).resolve().parent / "app"
 
-HOST = "127.0.0.1"  # AD server.spec.md FR-2: never 0.0.0.0
+HOST = "127.0.0.1"  # never 0.0.0.0: the board is for this Mac only
 PORT = 8789  # 8787 is the wiki viewer. Took over :8789 from an earlier, retired Project Dashboard app.
 MAX_BODY_BYTES = 65536  # SR-3: no unbounded read of a request body
 
-# FR-5: the field names a caller may name on an edit, and which of writes.py's
+# The field names a caller may name on an edit, and which of writes.py's
 # functions each routes to. "status"/"due"/"owner"/"kind" are one cell on an
 # existing Next Actions row (writes.set_cell); "note" appends a line to
 # notes.md (writes.append_note); "reorder" reorders data rows of one block
@@ -58,8 +58,8 @@ _EDIT_FIELDS = _CELL_FIELDS + (_NOTE_FIELD, _REORDER_FIELD)
 
 
 # ---------------------------------------------------------------------------
-# Error registry (FR-6, API-3) — every failure response names one of these
-# codes. D-14/SR-9: the server sends a code, never a sentence; the browser
+# Error registry (API-3) — every failure response names one of these
+# codes. SR-9: the server sends a code, never a sentence; the browser
 # is where the words for Luke get written. `field` is the one allowed extra
 # — it names which request field was bad, so the caller can act on it, and is
 # itself just a field name, not a composed sentence.
@@ -93,13 +93,13 @@ def send_error(handler: BaseHTTPRequestHandler, code: str, *, field: str | None 
 
 
 def _log_failure(handler: BaseHTTPRequestHandler, exc: Exception) -> None:
-    """API-6/FR-8: the cause is logged server-side with method and path; the
+    """API-6: the cause is logged server-side with method and path; the
     client only ever sees a registry error via send_error, never this."""
     print(f"[server] {handler.command} {handler.path} failed: {exc}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------
-# JSON shaping (FR-4) — every field on Board/ProjectView/TaskView/Guessable
+# JSON shaping — every field on Board/ProjectView/TaskView/Guessable
 # reaches the client verbatim by walking dataclasses generically rather than
 # hand-listing fields, so a field added to `model.py` reaches the browser
 # for free instead of silently vanishing at this seam.
@@ -150,7 +150,7 @@ def _read_json_body(handler: BaseHTTPRequestHandler) -> tuple[dict[str, Any], st
 
 
 # ---------------------------------------------------------------------------
-# GET /api/board.json (FR-4, FR-7, AD-1) — one clock reading per call, no
+# GET /api/board.json — one clock reading per call, no
 # cache: two sequential GETs always run stores -> model fresh, so a file
 # changed in between is reflected on the very next request.
 # ---------------------------------------------------------------------------
@@ -162,7 +162,7 @@ def _handle_board(handler: BaseHTTPRequestHandler) -> None:
 
         import stores
 
-        today = date.today()  # AD-1: the one clock reading for this whole build
+        today = date.today()  # the one clock reading for this whole build
         sources = stores.load_board_sources(paths.find_lukeatron_root())
         board = model.build_board(sources.projects, today=today)
     except Exception as exc:  # noqa: BLE001 — API-6: one boundary catch, never a raw
@@ -177,7 +177,7 @@ def _handle_board(handler: BaseHTTPRequestHandler) -> None:
 # stores.load_board_sources/model.build_board: this is the stat-only check
 # (stores.latest_registry_mtime) a client can poll every few seconds without
 # paying for a full registry parse on every tick. auto-refresh.js is the
-# only caller (server.spec.md's own "one handler, one data function" rule
+# only caller (API-1's "one handler, one data function" rule
 # still holds — this just calls a cheaper data function than /api/board.json).
 # ---------------------------------------------------------------------------
 
@@ -194,9 +194,9 @@ def _handle_board_changed(handler: BaseHTTPRequestHandler) -> None:
 
 
 # ---------------------------------------------------------------------------
-# POST /api/edit (FR-5, FR-6) — validated here (API-4) before `writes` is
+# POST /api/edit — validated here (API-4) before `writes` is
 # ever imported or called; the mtime/fence/re-parse/record guards themselves
-# live in writes.py (writes.spec.md), never duplicated here.
+# live in writes.py, never duplicated here.
 # ---------------------------------------------------------------------------
 
 
@@ -244,7 +244,7 @@ def _validate_edit_body(body: dict[str, Any]) -> tuple[dict[str, Any] | None, st
         text = body.get("value")
         if not isinstance(text, str) or not text.strip():
             return None, "value"
-        section = body.get("section", "scraps")  # D-9's default; the interface layer's job (writes.py docstring)
+        section = body.get("section", "scraps")  # the default section; the interface layer's job (writes.py docstring)
         if not isinstance(section, str) or not section:
             return None, "section"
         return {"project_id": project_id, "mtime": mtime, "field": field, "text": text, "section": section}, None
@@ -363,9 +363,9 @@ def _handle_undo_state(handler: BaseHTTPRequestHandler) -> None:
 
 def set_cell_for_script(root: Path, *, project_id: str, row: str, column: str, value: str, mtime: float) -> writes.EditResult:
     """The one other caller of `writes.set_cell` besides `_handle_edit` above
-    — `recur.py`'s scheduled cadence reset (README.md D-16). Kept here, not
+    — `recur.py`'s scheduled cadence reset. Kept here, not
     in `recur.py`, so `writes` stays imported by exactly one file on the
-    whole Python side (FR-9,
+    whole Python side (checked by
     `test_server.TestImport.test_imports_writes_and_no_other_module_does`).
     A thin pass-through, same as every other caller in this module (module
     docstring: "moves data; owns no rules") — it validates nothing and
@@ -375,7 +375,7 @@ def set_cell_for_script(root: Path, *, project_id: str, row: str, column: str, v
 
 
 # ---------------------------------------------------------------------------
-# Static serving (FR-3) — the front end (GET /, and every file under app/).
+# Static serving — the front end (GET /, and every file under app/).
 # Fenced to APP_DIR on the resolved path: resolve, then compare; never
 # prefix-match the string, or a relative path or symlink walks around it.
 # ---------------------------------------------------------------------------
@@ -451,25 +451,25 @@ class Handler(BaseHTTPRequestHandler):
         return send_error(self, "not_found")
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002 — stdlib signature
-        pass  # FR-8's logging is _log_failure; a healthy request logs nothing extra
+        pass  # failures are logged by _log_failure; a healthy request logs nothing extra
 
 
 # ---------------------------------------------------------------------------
-# Binding and startup (FR-2, FR-8). Unlike the earlier Project Dashboard's server, this
-# one never bumps to a different port on a bind failure: FR-8 asks for a
+# Binding and startup. Unlike the earlier Project Dashboard's server, this
+# one never bumps to a different port on a bind failure: the launcher needs a
 # loud, non-zero-exit failure instead, since a silently different port is
-# exactly the "launcher appears to do nothing" risk server.spec.md §6 names.
+# otherwise the launcher appears to do nothing.
 # ---------------------------------------------------------------------------
 
 
 def create_httpd(host: str = HOST, port: int = PORT) -> socketserver.TCPServer:
-    """Bind `host:port` — 127.0.0.1 only, never 0.0.0.0 (FR-2, AC-3)."""
+    """Bind `host:port` — 127.0.0.1 only, never 0.0.0.0."""
     return socketserver.TCPServer((host, port), Handler)
 
 
 def run(port: int = PORT) -> None:
     """Callable entry point. A launcher `.command` script calls this after
-    opening the browser to it (AC-5); also directly runnable for local
+    opening the browser to it; also directly runnable for local
     development."""
     try:
         httpd = create_httpd(port=port)

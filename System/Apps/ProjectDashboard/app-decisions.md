@@ -37,6 +37,10 @@ gets its reason; the reason is the point. Append the moment Luke flags one, when
 | D-14 | Screen text serves the reader; build explanation lives in comments | The server sends codes; the browser writes the sentence | — |
 | D-15 | `model`/`stores` carry purpose, definition of done, decision log, events, documents, people and mtime onto `ProjectView` as plain passthrough | Keeps D-2's single point of derivation; avoids a second endpoint or the browser reading files directly | — |
 | D-16 | A row's own 🔁 Recur cell (`recurring_if_done` in `stores`/`model`/`task-row.js`) is read-only in the browser — reopening a Done recurring row is done by a separate `recur.py`, run on a schedule, never by an in-app edit | Keeps D-5's "one place edits happen" — the browser's five edits change what's on the page now; a cadence firing later is a different kind of write and gets its own script rather than a sixth edit path | — |
+| D-17 | Body type is the system serif stack (`ui-serif`, "New York", Georgia); `--font-size-xl` is a fourth size, for the app's `<h1>` only | Luke wanted the app to read as designed, not left at browser defaults | The system-sans default; leaving the `<h1>` at the browser's size |
+| D-18 | Documents and People rows take the accent hue as text colour; Events stays plain ink | Luke's call, 2026-09-14 | All three tables in plain ink |
+| D-19 | The lane-source badge shows only its glyph at rest; the explanation is in `title` and `aria-label` | Luke's call, 2026-09-15 — keeps the row quiet | A visible text label |
+| D-20 | `--motion-flash` (800ms) is a fourth duration token, for flourish washes only | A wash must outlast the 360ms fade to be seen; Luke signed it off 2026-09-20 | Reusing `--motion-slow` |
 
 (D-8 does not exist in this sequence — the gap is preserved from the source record, not a copy error.)
 

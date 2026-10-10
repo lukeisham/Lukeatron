@@ -1,11 +1,11 @@
 /* project.css — the project page shell: header, title, the read-only
-   sections (FR-2), rows, and the copy button they share. Next Actions'
+   sections, rows, and the copy button they share. Next Actions'
    rows/chips/edit controls live in task-row.css, the note box in
    note-box.css (CSS-1: this file was past 150 lines with all of them in
    one). Print rules live in print.css. Every value below is a token from
    ../tokens.css (CSS-2); this file defines none. */
 
-/* FR-1/AC-9: the screen half of the route split — project.js sets this
+/* The screen half of the route split — project.js sets this
    attribute on <body> while a project is open; board.js's own header
    comment carries the other half (skipping its fetch/render on this route). */
 body[data-route="project"] #board-root,
@@ -116,8 +116,7 @@ body[data-route="project"] .app-toolbar {
   flex: 1;
 }
 
-/* Documents and People rows only (Luke's call, 2026-09-14) — Events stays
-   plain ink. The one house accent hue, already used for border-color
+/* Documents and People rows only — Events stays plain ink. The one house accent hue, already used for border-color
    elsewhere in this file/controls.css; this is its first use as text
    colour, so it's covered by its own check_contrast.py pairs (PAIRS +
    PRINT_PAIRS) rather than assumed safe. */

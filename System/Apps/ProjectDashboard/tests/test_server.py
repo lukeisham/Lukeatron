@@ -1,18 +1,18 @@
-"""Acceptance tests for server.py (server.spec.md).
+"""Acceptance tests for server.py.
 
 Runs the real `server.Handler` against an actual `http.server` instance
 bound to an ephemeral `127.0.0.1` port — never the real `Memory/` tree for
 anything that writes (TEST-4): edit tests copy `tests/fixtures/writes_root/`
 fresh into a temp directory per test and point `LUKEATRON_ROOT` at that copy.
-The one exception is AC-1, which reads (never writes) the real live tree, the
-same way `stores.py`'s own AC-1 test does.
+The one exception reads (never writes) the real live tree, the
+same way `stores.py`'s own real-tree test does.
 
 AC coverage:
-  AC-1 (board returns every real project)      -> TestBoardEndpointRealTree
-  AC-2 (stale write refused, file unchanged)   -> TestMtimeGuard
-  AC-3 (non-localhost cannot connect)          -> TestBinding, TestStartupFailure
-  AC-4 (no cache; a mid-flight change is seen) -> TestNoCaching
-  AC-5 (server runnable directly)              -> TestImport, TestStartupFailure
+  board returns every real project      -> TestBoardEndpointRealTree
+  stale write refused, file unchanged   -> TestMtimeGuard
+  non-localhost cannot connect          -> TestBinding, TestStartupFailure
+  no cache; a mid-flight change is seen -> TestNoCaching
+  server runnable directly              -> TestImport, TestStartupFailure
 
 TEST-7 gate tests (blocked / permitted), one pair per guard this module maps:
   fence      -> TestFenceGuard
@@ -110,7 +110,7 @@ class FixtureServerTestCase(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# Import / module shape (TEST-2, FR-9)
+# Import / module shape (TEST-2)
 # ---------------------------------------------------------------------------
 
 
@@ -125,7 +125,7 @@ class TestImport(unittest.TestCase):
         self.assertEqual(server.PORT, 8789)
 
     def test_imports_writes_and_no_other_module_does(self) -> None:
-        # FR-9: server.py is the only importer of writes.py on the whole
+        # server.py is the only importer of writes.py on the whole
         # Python side. Checked here rather than in writes.py's own tests,
         # since writes.py cannot know who imports it.
         source = Path(server.__file__).read_text(encoding="utf-8")
@@ -139,7 +139,7 @@ class TestImport(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-3 / FR-2 — localhost-only binding, demonstrated structurally
+# localhost-only binding, demonstrated structurally
 #
 # A unit test cannot literally dial in from another machine. What it CAN
 # prove: the bound socket's own address is 127.0.0.1 (not 0.0.0.0 or any
@@ -196,8 +196,8 @@ class TestBinding(unittest.TestCase):
 
 class TestStartupFailure(unittest.TestCase):
     def test_port_already_in_use_exits_nonzero(self) -> None:
-        """FR-8: a launcher double-click on a held port fails loudly rather
-        than silently binding elsewhere (server.spec.md §6's own risk)."""
+        """A launcher double-click on a held port fails loudly rather
+        than silently binding elsewhere, which would look like a dead launcher."""
         blocker = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         blocker.bind(("127.0.0.1", 0))
         blocker.listen(1)
@@ -211,7 +211,7 @@ class TestStartupFailure(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# FR-3 — static file serving
+# Static file serving
 # ---------------------------------------------------------------------------
 
 
@@ -252,7 +252,7 @@ class TestStaticServing(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# FR-4 — GET /api/board.json against the fixture tree (shape, not AC-1)
+# GET /api/board.json against the fixture tree (shape)
 # ---------------------------------------------------------------------------
 
 
@@ -323,7 +323,7 @@ class TestBoardChangedEndpoint(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-1 — the real board, read-only, against the live tree (never a fixture)
+# The real board, read-only, against the live tree (never a fixture)
 # ---------------------------------------------------------------------------
 
 
@@ -369,7 +369,7 @@ class TestBoardEndpointRealTree(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-4 — no cache anywhere in this module
+# No cache anywhere in this module
 # ---------------------------------------------------------------------------
 
 
@@ -500,7 +500,7 @@ class TestEditEndpointBadRequest(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 1 — the fence (FR-6)
+# Guard 1 — the fence
 # ---------------------------------------------------------------------------
 
 
@@ -525,7 +525,7 @@ class TestFenceGuard(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 2 — mtime (AC-2)
+# Guard 2 — mtime
 # ---------------------------------------------------------------------------
 
 
@@ -557,7 +557,7 @@ class TestMtimeGuard(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 3 — linked rows (FR-6's own distinct 409 code)
+# Guard 3 — linked rows (their own distinct 409 code)
 # ---------------------------------------------------------------------------
 
 
@@ -585,7 +585,7 @@ class TestLinkedRowGuard(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Row / project not found (FR-6)
+# Row / project not found
 # ---------------------------------------------------------------------------
 
 
@@ -646,7 +646,7 @@ class TestNoteEdits(FixtureServerTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Table-corruption mapping (FR-6) — exercised by monkeypatching writes.py's
+# Table-corruption mapping — exercised by monkeypatching writes.py's
 # own function, since none of the fixture rows can genuinely trigger a
 # re-parse failure (the guard exists for a bug class the fixture cannot
 # author on purpose).

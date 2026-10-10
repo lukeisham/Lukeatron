@@ -1,4 +1,4 @@
-"""Contrast check over the tokens (controls.spec.md AC-4).
+"""Contrast check over the tokens.
 
 "All three palettes pass check_contrast.py." Reads app/tokens.css once,
 computes the real WCAG relative-luminance contrast ratio for every text/ground
@@ -10,7 +10,7 @@ swatches.
 
 tokens.css carries three palettes cycled by `controls` — "default" (the bare
 `:root` block), "paper" and "dark" (each a `body[data-palette="X"]`
-override) — plus a `@media print` override. AC-4 requires PAIRS to pass under
+override) — plus a `@media print` override. PAIRS must pass under
 all three palettes, not just the default one, so this script resolves each
 named override on top of the base tokens (an override wins for whatever it
 redefines; everything else falls through to the default) and runs PAIRS
@@ -75,7 +75,7 @@ MIXED_PAIRS: list[tuple[str, tuple[str, ...], str, str, float, str]] = [
     ("--ink", ("--danger",), "--bg", "--wash-strength", 4.5, "control text on the failed-edit red wash"),
 ]
 
-# The print palette (FR-10/D-13: paper is the print base path) — a second
+# The print palette (paper is the print base path) — a second
 # `:root` override under `@media print`, so it needs its own pass rather than
 # being silently absorbed into the screen tokens above (a naive whole-file
 # scan of every `:root { ... }` block would let this override clobber the
@@ -86,7 +86,7 @@ PRINT_PAIRS: list[tuple[str, str, float, str]] = [
     ("--accent", "--panel-bg", 4.5, "print sheet Documents/People row names on the panel ground"),
 ]
 
-# The three palettes AC-4 requires — "default" has no override block of its
+# The three palettes PAIRS must pass under — "default" has no override block of its
 # own (the base :root IS the default palette); "paper" and "dark" each
 # resolve as the base tokens with their named override layered on top.
 PALETTE_NAMES: tuple[str, ...] = ("paper", "dark")
@@ -128,7 +128,7 @@ def parse_palette_overrides(css_text: str) -> dict[str, dict[str, str]]:
     explicit-attribute form of a named palette (paper, dark, ...).
 
     The `@media (prefers-color-scheme: dark) { body:not(...) { ... } }` block
-    is deliberately not parsed here: FR-10 requires it to carry exactly the
+    is deliberately not parsed here: print must carry exactly the
     same values as `body[data-palette="dark"]` so the explicit toggle always
     wins over the system, and tokens.css's own header comment says as much —
     checking the attribute form once is checking both by construction. A
@@ -178,7 +178,7 @@ def relative_luminance(rgb: tuple[float, float, float]) -> float:
 def contrast_ratio(hex_a: str, hex_b: str) -> float:
     """WCAG contrast ratio between two colours, resolving `hex_a`'s alpha (if
     any) by compositing it over `hex_b` first — the correct treatment for a
-    translucent text colour like `--ink-guessed` (FR-14), never treating it as
+    translucent text colour like `--ink-guessed`, never treating it as
     opaque against an assumed ground."""
     fg = _hex_to_rgb(hex_a)
     bg = _hex_to_rgb(hex_b)

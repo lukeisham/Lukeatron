@@ -1,9 +1,9 @@
 """Smoke tests for model.py, against hand-built fixtures — no filesystem, no
-clock (AC-4). Fixtures are plain dataclasses that structurally match the
+clock. Fixtures are plain dataclasses that structurally match the
 `*Like` protocols in model.py; they are never `stores` objects and this file
-never imports `stores`, matching FR-15's one-way rule from the other side.
+never imports `stores`, matching the one-way rule from the other side.
 
-One test per acceptance criterion in model.spec.md that a fixture can
+One test per behaviour of model that a fixture can
 exercise, plus TEST-2's module-level smoke coverage (imports, happy path, a
 guard path).
 """
@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import model  # noqa: E402  (path must be set up first)
 
-TODAY = date(2026, 9, 11)  # a Friday — fixed so THIS WEEK/NEXT WEEK/OVERDUE are deterministic (AC-2)
+TODAY = date(2026, 9, 11)  # a Friday — fixed so THIS WEEK/NEXT WEEK/OVERDUE are deterministic
 
 
 # ---------------------------------------------------------------------------
@@ -143,7 +143,7 @@ def make_project(
 
 class TestImport(unittest.TestCase):
     def test_imports_cleanly_and_exposes_the_public_api(self) -> None:
-        # PY-3 / AC-4: this module was already imported above, before any
+        # This module was already imported above, before any
         # fixture existed — if importing it touched a file or the clock, a
         # missing path or a nondeterministic value would surface there.
         for name in ("build_board", "build_project", "resolve_lane", "parse_due_text", "Guessable"):
@@ -151,7 +151,7 @@ class TestImport(unittest.TestCase):
 
 
 class TestResolveLane(unittest.TestCase):
-    """FR-1: stated Kind wins; otherwise Owner decides."""
+    """Stated Kind wins; otherwise Owner decides."""
 
     def test_stated_kind_wins_over_owner(self) -> None:
         result = model.resolve_lane(stated("waiting"), stated("Luke"))
@@ -170,7 +170,7 @@ class TestResolveLane(unittest.TestCase):
 
 
 class TestDateParsing(unittest.TestCase):
-    """FR-3: the seven shapes, plus a leading ISO date inside prose."""
+    """The seven shapes, plus a leading ISO date inside prose."""
 
     def test_all_seven_shapes_parse_to_the_same_date(self) -> None:
         expected = date(2026, 8, 1)
@@ -187,7 +187,7 @@ class TestDateParsing(unittest.TestCase):
 
 
 class TestColumnPlacement(unittest.TestCase):
-    """AC-2: a Due cell lands in the expected column, with a fixed today."""
+    """A Due cell lands in the expected column, with a fixed today."""
 
     def test_a_date_this_week_lands_in_this_week(self) -> None:
         action = FakeNextActionRow(action=stated("chase the quote"), due=stated("1 Aug 2026"))
@@ -202,7 +202,7 @@ class TestColumnPlacement(unittest.TestCase):
         self.assertEqual(view.due_column, model.Guessable(model.COLUMN_NEXT_WEEK, False))
 
     def test_asap_is_always_overdue(self) -> None:
-        # FR-4: ASAP is a date, not an absence.
+        # ASAP is a date, not an absence.
         action = FakeNextActionRow(action=stated("call the bank"), due=stated("ASAP"))
         project = make_project("PP-01", [action])
         view = model.build_project(project, today=TODAY)
@@ -210,7 +210,7 @@ class TestColumnPlacement(unittest.TestCase):
         self.assertEqual(view.due_text, "ASAP")
 
     def test_unparseable_due_text_lands_in_no_date_and_carries_the_raw_text(self) -> None:
-        # FR-5: the raw text must survive even though it couldn't be read as a date.
+        # The raw text must survive even though it couldn't be read as a date.
         action = FakeNextActionRow(action=stated("chase the quote"), due=stated("on Keith's reply"))
         project = make_project("PP-01", [action])
         view = model.build_project(project, today=TODAY)
@@ -219,7 +219,7 @@ class TestColumnPlacement(unittest.TestCase):
 
 
 class TestWakeIncoming(unittest.TestCase):
-    """AC-3: a dated wake with no dated actions places the project in INCOMING."""
+    """A dated wake with no dated actions places the project in INCOMING."""
 
     def test_dated_wake_with_no_dated_actions_is_incoming(self) -> None:
         undated_action = FakeNextActionRow(action=stated("wait it out"))  # no due at all
@@ -237,7 +237,7 @@ class TestWakeIncoming(unittest.TestCase):
         self.assertEqual(view.due_text, "on council decision")
 
     def test_a_dated_action_overrides_the_wake_entirely(self) -> None:
-        # Not "all undated" -> FR-6's override never fires, even with a wake present.
+        # Not "all undated" -> the wake override never fires, even with a wake present.
         dated_action = FakeNextActionRow(action=stated("chase the quote"), owner=stated("Luke"), due=stated("ASAP"))
         project = make_project("PP-01", [dated_action], wake=stated("1 Aug 2026"))
         view = model.build_project(project, today=TODAY)
@@ -246,8 +246,8 @@ class TestWakeIncoming(unittest.TestCase):
 
 
 class TestRollup(unittest.TestCase):
-    """AC-1: every open action lands in exactly one lane and one column;
-    FR-7: the project rolls up to the highest-demand lane and soonest column."""
+    """Every open action lands in exactly one lane and one column;
+    The project rolls up to the highest-demand lane and soonest column."""
 
     def test_every_open_action_has_exactly_one_lane_and_column(self) -> None:
         actions = [
@@ -284,7 +284,7 @@ class TestRollup(unittest.TestCase):
         self.assertTrue(view.tasks[1].lane_source)
 
     def test_lane_source_is_unmarked_everywhere_under_the_wake_override(self) -> None:
-        # FR-6: an all-undated project with a dated wake rolls up to INCOMING
+        # An all-undated project with a dated wake rolls up to INCOMING
         # off the wake, bypassing every task — no row drove that answer, so
         # none should claim to.
         undated_action = FakeNextActionRow(action=stated("someday"), owner=stated("Luke"))
@@ -344,7 +344,7 @@ class TestDoneTasks(unittest.TestCase):
 
 
 class TestContextPassthrough(unittest.TestCase):
-    """controls.spec.md FR-1/FR-2's view filter reads ProjectView.context; it
+    """The view filter in controls reads ProjectView.context; it
     must arrive verbatim from _tracking.yaml, stated, never derived."""
 
     def test_stated_context_passes_through_unchanged(self) -> None:
@@ -359,7 +359,7 @@ class TestContextPassthrough(unittest.TestCase):
 
 
 class TestLinkedRows(unittest.TestCase):
-    """AC-7: a linked action is marked linked and carries its key."""
+    """A linked action is marked linked and carries its key."""
 
     def test_linked_action_carries_its_key(self) -> None:
         linked = FakeNextActionRow(action=stated("shared task"), link=stated("LK-04"))
@@ -387,12 +387,12 @@ class TestLinkedRows(unittest.TestCase):
 
 
 class TestProjectDetailPassthrough(unittest.TestCase):
-    """outline-print.spec.md FR-2's project-page fields: purpose, definition
+    """The project page's fields: purpose, definition
     of done, decision log, events, documents and people all cross model
     unchanged — this module derives none of them, it only carries them
-    (D-2's "only model derives a fact" does not apply to plain passthrough).
+    ("only model derives a fact" does not apply to plain passthrough).
     Also RegistryRecord's own `mtime` (writes' concurrency gate, `writes` ->
-    the files row in documentation.spec.md's cross-boundary table), and each
+    the files row in README's cross-boundary table), and each
     task's raw kind/status/state — the current value outline-print's edit
     controls need before Luke changes anything."""
 
@@ -454,7 +454,7 @@ class TestProjectDetailPassthrough(unittest.TestCase):
 
 
 class TestBoardCounts(unittest.TestCase):
-    """FR-12: lane and column counts for the whole board."""
+    """Lane and column counts for the whole board."""
 
     def test_lane_and_column_counts_reflect_every_project(self) -> None:
         mine = make_project("PP-01", [FakeNextActionRow(action=stated("x"), owner=stated("Luke"), due=stated("ASAP"))])
@@ -480,10 +480,10 @@ class TestBoardCounts(unittest.TestCase):
 
 
 class TestNoFilesystemNoClock(unittest.TestCase):
-    """FR-14, AC-4: this whole suite already never touches a disk or the
+    """This whole suite already never touches a disk or the
     clock — `today` is always a literal passed by the test. This test just
     asserts the one guard path TEST-7 asks for: no import of the modules
-    FR-15 forbids."""
+    the one-way rule forbids."""
 
     def test_never_imports_stores_or_writes(self) -> None:
         source = Path(__file__).resolve().parents[1] / "model.py"

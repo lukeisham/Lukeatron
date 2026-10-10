@@ -1,8 +1,8 @@
 // actions.js — the Next Actions section: the only editable part of the
-// project page (FR-2, FR-4). Stem grouping (FR-3/AD-1) is applied here as a
+// project page. Stem grouping is applied here as a
 // pure rendering choice from grouping.js's output — the row handed to
 // task-row.js is always the real TaskView, so every edit still names its
-// own `row` index no matter how the group is drawn (D-12: the store never
+// own `row` index no matter how the group is drawn (the store never
 // learns about the group).
 
 import { el } from "../shared/dom.js";
@@ -28,7 +28,7 @@ function buildStemGroup(group, submitEdit, reorderCtx, nextTask) {
 }
 
 // wishlist #4b: `showDone`/`onToggleDone` are owned by project.js's own
-// `state` object (D-2: one place holds it) — this function only ever reads
+// `state` object (one place holds it) — this function only ever reads
 // the current value and fires the callback on click, the same division of
 // labour `submitEdit` already has with every task-row control.
 function buildDoneToggle(doneTasks, showDone, onToggleDone) {
@@ -68,7 +68,7 @@ export function buildNextActionsSection(project, submitEdit, showDone, onToggleD
       children.push(el("p", { class: "project-multi-stream-note" }, "Reordering isn't available for multi-stream projects yet."));
     }
 
-    // AC-1: three or more siblings sharing a stem become one heading and N
+    // Three or more siblings sharing a stem become one heading and N
     // chips; anything not sharing a stem (including the stray one that only
     // looks alike) renders as its own row (grouping.js's own risk mitigation).
     // The top open row is the Next action — the same task model.py hands the

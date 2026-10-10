@@ -1,4 +1,4 @@
-"""Smoke tests for check_contrast.py (styleguide.spec.md AC-7, TEST-1/TEST-2).
+"""Smoke tests for check_contrast.py (TEST-1/TEST-2).
 
 Confirms the contrast math against the two ratios STYLE.md itself states by
 hand (14.95:1, 11.80:1) — a passing test against a wrong formula proves
@@ -90,7 +90,7 @@ class TestCheckPairsGate(unittest.TestCase):
 
 class TestRealTokens(unittest.TestCase):
     """The actual deliverable: every pair this app really uses, read from the
-    real tokens.css, passes the AC-7 floor today — screen and print alike."""
+    real tokens.css, passes the contrast floor — screen and print alike."""
 
     def test_main_exits_zero_against_the_real_tokens_css(self) -> None:
         self.assertEqual(cc.main(), 0)

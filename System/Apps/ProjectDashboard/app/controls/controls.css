@@ -4,10 +4,10 @@
    from ../tokens.css (CSS-2); this file defines none.
 
    Three jobs, in the order they appear below:
-   1. Header/title chrome — .app-header was unstyled (raw browser <h1>
-      defaults) until 2026-09-14.
+   1. Header/title chrome — .app-header's <h1>, the one user of
+      --font-size-xl.
    2. Toolbar layout and button chrome.
-   3. The six-view filter (FR-1/FR-2) — a rule per view, keyed off
+   3. The six-view filter — a rule per view, keyed off
       body[data-view] and each card's own data-context (card.js already
       stamps this; see board.js's header comment). */
 
@@ -96,14 +96,14 @@
 }
 
 /* ---------------------------------------------------------------------
-   The six-view filter (FR-1/FR-2). "All" (the default) shows every card;
+   The six-view filter. "All" (the default) shows every card;
    the other five hide any card whose data-context doesn't match. Views
    are mutually exclusive by construction (body carries exactly one
    data-view at a time), so no view rule needs :not() chains against the
    others.
 
    Known limitation, not a bug: the lane/column HEADER counts always show
-   the JSON's whole-board totals (board.spec.md FR-7 — board.js never
+   the JSON's whole-board totals (board.js never
    computes its own count, and the fetched Board carries one set of counts
    for the whole board, not one per context). Filtering to one view hides
    the non-matching CARDS; the counts above them stay whole-board counts.
@@ -118,16 +118,12 @@ body[data-view="Lukeatron"] .board-card:not([data-context="Lukeatron"]) {
   display: none;
 }
 
-/* "Lukeatron" was a genuinely different kind of thing at documentation.spec.md
-   §4's writing — no card carried data-context="Lukeatron" yet, so this view
-   showed an empty grid by design. That changed once the Lukeatron context
-   (CLAUDE.md's Types of Contexts) started tagging real projects (PR-01,
-   2026-09-12 onward) — this view now filters like the other four, on the
-   same card attribute. model.py's separate Lukeatron orphaned-plans
-   content (its own report) is still not built; this rule only ever covered
-   project cards, so that gap is unaffected. */
+/* "Lukeatron" filters like the other four, on the same card attribute:
+   projects in the Lukeatron context (CLAUDE.md's Types of Contexts) carry
+   data-context="Lukeatron". It covers project cards only; model.py's
+   Lukeatron orphaned-plans report is not built. */
 
-/* FR-2: "All" marks each card with its context — a label, not a filter.
+/* "All" marks each card with its context — a label, not a filter.
    Every other view leaves this pseudo-element absent (`content: none` is
    the default; only "All" sets `content: attr(...)`), so the badge never
    competes with the per-view filter rules above. */

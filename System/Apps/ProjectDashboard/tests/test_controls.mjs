@@ -6,7 +6,7 @@
 // applied to Web Storage rather than the DOM). controls.js itself (the
 // click-wiring entry point) stays manual-verification-only, the same scope
 // board.js takes in test_board.mjs — its own source is grepped below for
-// the AC-2 structural guarantee instead.
+// the structural guarantee instead.
 //
 // Run: node tests/test_controls.mjs
 
@@ -23,7 +23,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const controlsDir = path.join(here, "..", "app", "controls");
 
 // ---------------------------------------------------------------------------
-// toolbar.js — FR-1, FR-3, FR-4
+// toolbar.js
 // ---------------------------------------------------------------------------
 
 test("FR-1: applyView sets body.dataset.view for one of the six known views", () => {
@@ -72,14 +72,12 @@ test("FR-10: nextPalette treats a never-chosen palette (null/undefined) as 'defa
 
 // applyPalette (toolbar.js) sets the attribute on the object it is handed —
 // the test above only proves that against a fake object, so it cannot catch
-// controls.js handing applyPalette the wrong element. The 2026-09-12 defect
-// (Logs/issues.log) was exactly this: controls.js called
-// applyPalette(document.body, ...), but every palette rule in tokens.css was
-// keyed off `:root[data-palette=...]` (the <html> element), so the attribute
-// landed on an element none of tokens.css's selectors ever matched. This
-// test pins both ends of that contract by static inspection: controls.js
-// must call applyPalette with document.body, and tokens.css must select
-// data-palette off `body`, never `:root`.
+// controls.js handing applyPalette the wrong element. If the caller and
+// tokens.css's selectors target different elements, the attribute lands
+// where no palette rule matches. This test pins both ends of that contract
+// by static inspection: controls.js must call applyPalette with
+// document.body, and tokens.css must select data-palette off `body`, never
+// `:root`.
 test("FR-4/FR-10: applyPalette's caller and tokens.css's palette selectors target the same element (body, not :root)", () => {
   const controlsSource = readFileSync(path.join(controlsDir, "controls.js"), "utf8");
 
@@ -106,7 +104,7 @@ test("FR-4/FR-10: applyPalette's caller and tokens.css's palette selectors targe
   const withoutComments = tokensText.replace(/\/\*[\s\S]*?\*\//g, "");
 
   // Catches both the direct-attribute form (`:root[data-palette="dark"]`)
-  // and the FR-10 guard form (`:root:not([data-palette="default"])...`) —
+  // and the palette guard form (`:root:not([data-palette="default"])...`) —
   // any `:root` selector that ever mentions data-palette before its `{`.
   assert.ok(
     !/:root[^{]*data-palette/.test(withoutComments),
@@ -124,7 +122,7 @@ test("FR-4/FR-10: applyPalette's caller and tokens.css's palette selectors targe
 });
 
 // ---------------------------------------------------------------------------
-// storage.js — FR-7, AD-2
+// storage.js
 // ---------------------------------------------------------------------------
 
 function fakeStorage(initial = {}) {
@@ -183,8 +181,8 @@ test("JS-2: a null storage (localStorage access itself threw) is handled the sam
 });
 
 // ---------------------------------------------------------------------------
-// controls.js — FR-6/AC-2 structural guarantee (mirrors test_board.mjs's own
-// AC-3 grep-based test for board.js): no toggle handler may re-fetch or
+// controls.js — structural guarantee (mirrors test_board.mjs's own
+// grep-based test for board.js): no toggle handler may re-fetch or
 // re-render the board. The strongest proof available without executing the
 // module (which self-invokes init() against a real document) is that it
 // never imports the board's fetch/render functions at all — a handler can
@@ -208,7 +206,7 @@ test("FR-8: refresh is the only action in controls.js that touches the network o
 });
 
 // ---------------------------------------------------------------------------
-// controls.css — AC-8, FR-13, FR-12/AC-7
+// controls.css
 // ---------------------------------------------------------------------------
 
 const CONTROLS_CSS_FILES = ["controls.css"];

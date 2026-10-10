@@ -2,8 +2,8 @@
 // everywhere, instead of copy-pasted per view).
 //
 // Every helper here builds nodes with createElement/createElementNS and sets text
-// with textContent — never innerHTML with dynamic content (HTML-6, FR-14 of
-// monitor.spec.md, JS-6): store text is Luke-authored but still untrusted input to
+// with textContent — never innerHTML with dynamic content (HTML-6,
+// JS-6): store text is Luke-authored but still untrusted input to
 // a renderer, so it never crosses into markup.
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -55,7 +55,7 @@ export function clear(node) {
   while (node.firstChild) node.removeChild(node.firstChild);
 }
 
-/** One click puts `text` on the clipboard (FR-7). Resolves true/false so a caller
+/** One click puts `text` on the clipboard. Resolves true/false so a caller
  * can show a brief confirmation without pretending the copy always succeeds — a
  * guard against a "shouldn't happen" state that still needs a visible outcome. */
 export async function copyToClipboard(text) {

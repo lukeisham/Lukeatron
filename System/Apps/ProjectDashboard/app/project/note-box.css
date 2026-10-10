@@ -1,4 +1,4 @@
-/* note-box.css — FR-8/D-9's note box: the section choice, the always-on
+/* note-box.css — the note box: the section choice, the always-on
    Agent guidance hint, and the submit flow. Split from project.css
    (CSS-1: one file, one job, mirroring note-box.js's own split). Every
    value is a token from ../tokens.css (CSS-2); none defined here. */
@@ -22,7 +22,7 @@
   font-size: var(--font-size-sm);
 }
 
-/* Permanently visible, not a tooltip — FR-8 requires Agent guidance's
+/* Permanently visible, not a tooltip — Agent guidance's
    consequence to be stated before it can be chosen, not discovered after. */
 .project-note-guidance-hint {
   margin: 0;

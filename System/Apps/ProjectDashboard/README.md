@@ -2,11 +2,11 @@
 
 A Kanban board over every tracked Lukeatron project — swimlanes by whose move it is, columns by
 how soon it is due — opened in a browser from Dropbox, with a small set of safe edits that write
-back to the markdown so the board still works when no agent is available. Replaced an earlier, now-retired Project Dashboard app (archived to
-`Archive/ProjectDashboard-app-2026-09-12/`) as the project board kept live on `:8789`.
+back to the markdown so the board still works when no agent is available. It is the project
+board kept live on `:8789`.
 
-This document covers code layout and code behaviour — modules, data flow, decisions, and why the
-tree splits the way it does. It carries no visual or interaction detail; that contract lives in
+This document covers code layout and code behaviour — modules, data flow, and why the tree splits
+the way it does. It carries no visual or interaction detail; that contract lives in
 [StyleGuide.md](StyleGuide.md), which points back here (its "Interaction & UX conventions" section)
 for the *why* behind the decisions it cites.
 
@@ -29,9 +29,6 @@ for the *why* behind the decisions it cites.
 never import `writes`. `model` never imports `stores`. The `board` module never imports the edit
 client. `writes` is imported by `server` and by nothing else.
 
-See [app-decisions.md](app-decisions.md) → Key decisions (D-1–D-16) for why the tree splits this
-way, why the board is read-only, and why nothing here drags and drops. Not copied here.
-
 ## Navigation map
 
 ```
@@ -41,7 +38,7 @@ ProjectDashboard/
 ├── model.py              the only place a fact is derived. No file, no clock, no network
 ├── writes.py             the only place a file changes. Six edits, an undo, four guards
 ├── server.py             moves data; owns no rules
-├── recur.py              scheduled caller, not server.py's — reopens a Done recurring row (D-16)
+├── recur.py              scheduled caller, not server.py's — reopens a Done recurring row
 ├── check_contrast.py     every palette must pass this before it ships
 ├── app/
 │   ├── tokens.css        every colour, space, type size and duration in the app
@@ -63,15 +60,3 @@ Why `app/` splits three ways: `board` draws, `controls` holds state, `project` i
 anything changes. The split is what keeps a toggle a class flip and keeps the edit client out of
 the board's reach.
 
-## Rule exceptions
-
-One granted exception (SR-4 — this app keeps its own copies of modules rather than sharing
-the earlier Project Dashboard's), recorded with its reason in [app-decisions.md](app-decisions.md) → Rule
-exceptions, alongside Luke's approvals.
-
-**Resolved 2026-09-12, reopened 2026-09-14:** the five-lane-hues question was first decided in
-favour of the house two-accent cap (all five `--l-*` tokens sharing one hue), then reopened at
-Luke's own request two days later. `app/tokens.css` now gives each lane its own hue — see
-StyleGuide.md's "Lane colours" section for the actual values and the per-palette contract. The
-`body[data-lane-hues="mono"]` toggle in `board.css`/`board.js` is a real toggle again: it collapses
-all five back to the shared `--ink-muted` rail this app shipped with before.

@@ -1,9 +1,9 @@
-// project.js — outline-print's entry point: routing (FR-1/AC-9), the
+// project.js — outline-print's entry point: routing, the
 // full-page render, and the edit round-trip every control in this module
 // eventually calls through submitEdit/submitNote/submitTagEdit below.
 // board.js owns the opposite half of the same route split (see that file's
-// own header comment on FR-1/AC-9) — this file only ever acts while the
-// hash names a project, and always re-fetches on entry (D-15: a stale
+// own header comment) — this file only ever acts while the
+// hash names a project, and always re-fetches on entry (a stale
 // project view after an edit made elsewhere is a real risk; a fresh GET on
 // every entry is the simpler-to-get-right default).
 
@@ -42,7 +42,7 @@ function projectRoot() {
   return document.getElementById("project-root");
 }
 
-// FR-1/AC-9: the other direction of the route split — board.js's own
+// The other direction of the route split — board.js's own
 // header comment carries the authoritative description of both halves.
 function setRoute(isProject) {
   if (isProject) document.body.dataset.route = "project";
@@ -74,12 +74,12 @@ function clearEditError() {
   if (banner) banner.hidden = true;
 }
 
-// FR-4's four per-row edits (tick, due, owner, lane) all funnel through
+// The four per-row edits (tick, due, owner, lane) all funnel through
 // here. A success re-fetches and re-renders the whole project rather than
 // patching one field locally — model.py, not this module, is what knows
 // how a new due date reshuffles due_column or a new kind reshuffles lane,
 // so a refetch is the only way this page stays correct without duplicating
-// that derivation client-side (D-2 holds: only model derives a fact).
+// that derivation client-side: only model derives a fact.
 async function submitEdit(field, task, value) {
   try {
     const result = await postEdit({ project_id: state.project.id, mtime: state.mtime, field, row: task.index, value });

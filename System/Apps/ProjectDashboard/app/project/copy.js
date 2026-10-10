@@ -1,4 +1,4 @@
-// copy.js — FR-6/FR-7/AC-2/AC-10: every copy target carries the FULL text a
+// copy.js — every copy target carries the FULL text a
 // row's source data carries, never the shortened or grouped text the row
 // happens to display. Wraps shared/dom.js's copyToClipboard (the same call
 // card.js already uses) so every builder below, and their section-level
@@ -9,7 +9,7 @@ import { wash } from "../shared/flourish.js";
 
 export { copyToClipboard };
 
-/** FR-6: a chip's copy is always the stem-and-all action text — grouping.js
+/** A chip's copy is always the stem-and-all action text — grouping.js
  * never rewrites `.action`, so this is simply the field itself. */
 export function taskCopyText(task) {
   return task.action ?? "";
@@ -21,7 +21,7 @@ export function eventCopyText(event) {
   return `${when} — ${event.event ?? ""}${type}`;
 }
 
-/** AC-10: always the full path. A row may show a shortened filename, but
+/** Always the full path. A row may show a shortened filename, but
  * this is never built from what the row displays — only from `doc.file`. */
 export function documentCopyText(doc) {
   return doc.file ?? "";
@@ -32,9 +32,9 @@ export function personCopyText(person) {
   return `${person.person ?? ""}${role}`;
 }
 
-/** FR-7: a section copy is dot points built from the SAME per-item copy
+/** A section copy is dot points built from the SAME per-item copy
  * text as each row's own copy button — never re-derived from what the
- * section visually shows (AC-10's Documents case is the sharpest example). */
+ * section visually shows (the Documents case is the sharpest example). */
 export function sectionCopyText(items, itemCopyText) {
   return items.map((item) => `• ${itemCopyText(item)}`).join("\n");
 }

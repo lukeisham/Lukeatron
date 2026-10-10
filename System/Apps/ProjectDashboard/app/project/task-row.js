@@ -1,6 +1,6 @@
 // task-row.js — one Next Actions row: the four per-row edits (tick done,
 // due date, owner, lane) plus its copy button, or — for a linked row
-// (FR-5/D-7) — a plain-English explanation in place of every control. Used
+// — a plain-English explanation in place of every control. Used
 // both for a solo task and for one chip inside a stem group (actions.js
 // decides which text to show as the row's label; the edit controls and the
 // copy button are identical either way).
@@ -17,7 +17,7 @@ import { markFailed } from "../shared/flourish.js";
 
 // Grounded in the Kind column's own live vocabulary (a scan of registry.md
 // files under Memory/Medium-Term/Projects/), not invented: these five
-// values are what board.spec.md's own five lanes are derived from.
+// values are what the board's five lanes are derived from.
 const LANE_KIND_OPTIONS = [
   { value: "mine", label: "Mine" },
   { value: "delegate", label: "Delegate" },
@@ -63,7 +63,7 @@ function buildDueControl(task, submitEdit) {
 }
 
 function buildOwnerControl(task, submitEdit) {
-  // FR-9: a free-text field, so spellcheck applies.
+  // A free-text field, so spellcheck applies.
   const input = el("input", {
     type: "text",
     class: "project-task-owner",
@@ -116,8 +116,8 @@ function buildLaneControl(task, submitEdit) {
 // Next Actions list, not necessarily the first one) whose own lane the
 // project's board lane was actually rolled up from — the highest-demand
 // lane among every open row, per model.py's `_lane_driver`. Just the glyph
-// at rest (Luke's call, 2026-09-15): title carries the explanation on
-// hover, aria-label carries the same text for anyone not hovering.
+// at rest: title carries the explanation on hover, aria-label carries the
+// same text for anyone not hovering.
 function buildLaneSourceBadge() {
   const label = "This row's lane sets the project's board lane — the highest-demand lane among all open actions, not necessarily the first one listed.";
   return el(
@@ -143,7 +143,7 @@ function buildLinkedRow(task, displayLabel, isNext) {
   return el("li", { class: rowClass, dataset: nextRowAttrs(task, isNext) }, [
     el("span", { class: "project-task-label" }, displayLabel),
     isNext ? buildNextTag() : null,
-    // FR-5/AC-4: plain words, no error code, no spec language.
+    // Plain words, no error code, no spec language.
     el("p", { class: "project-linked-note" }, "This action is shared with another project — edit it there; !ProjectSweep keeps them in sync."),
     task.lane_source ? buildLaneSourceBadge() : null,
     buildCopyButton(`Copy ${task.action}`, () => taskCopyText(task)),
@@ -154,7 +154,7 @@ function buildLinkedRow(task, displayLabel, isNext) {
  * `displayLabel` is the text this row shows — the full action for a solo
  * task, or just the differing tail for one chip inside a stem group
  * (grouping.js's stemDifference). The copy button always reaches for
- * `task.action` itself (FR-6), never `displayLabel`.
+ * `task.action` itself, never `displayLabel`.
  * `reorderCtx` is either null (no drag/move UI) or { submitReorder } for an
  * editable row in a non-multi_stream project.
  */

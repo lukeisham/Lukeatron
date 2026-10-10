@@ -1,5 +1,5 @@
 // storage.js — the three remembered choices, read and written through a
-// guarded wrapper (controls.spec.md FR-7, AD-2: a per-browser convenience,
+// guarded wrapper (a per-browser convenience,
 // never a file `!ProjectSweep` would have to read).
 //
 // Every read and write is wrapped in try/catch (JS-2): private-browsing
@@ -40,7 +40,7 @@ function safeSet(storage, key, value) {
  * The three stored choices, or `null` per field when nothing was ever saved
  * (first visit) or the read failed. Callers apply their own defaults — this
  * function never invents one, so "never stored" and "explicitly chosen"
- * stay distinguishable (needed for FR-10's palette toggle: an unset palette
+ * stay distinguishable (needed for the palette toggle: an unset palette
  * lets `prefers-color-scheme` decide; an explicit one always wins).
  */
 export function loadPreferences(storage) {

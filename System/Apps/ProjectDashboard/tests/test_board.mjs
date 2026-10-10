@@ -5,7 +5,7 @@
 // Scope: render.js and card.js hold all the real DOM-building logic and are
 // what's exercised here. board.js is the thin fetch-and-mount entry point
 // (the same scope ProjectDashboard's own unblock.js takes) — it stays
-// manual-verification-only; its own source is grepped below for AC-3/FR-12
+// manual-verification-only; its own source is grepped below
 // instead, which is the structural evidence the delegating brief asks for.
 //
 // Run: node tests/test_board.mjs
@@ -26,7 +26,7 @@ const moduleUrl = (name) => path.join(boardDir, name);
 // createElement/createElementNS-based exports actually use: creation,
 // className/classList, dataset, textContent, appendChild/removeChild,
 // setAttribute/getAttribute (including "class" and "title"), and a minimal
-// addEventListener/dispatch pair so FR-11's click wiring is testable without
+// addEventListener/dispatch pair so the click wiring is testable without
 // simulating real DOM event bubbling. No innerHTML support anywhere (SR-8:
 // nothing in the source under test uses it either — see the JS-6 test below).
 // ---------------------------------------------------------------------------
@@ -230,7 +230,7 @@ test("AC-3: board.js fetches and renders exactly once, and listens for nothing b
   const source = readFileSync(path.join(boardDir, "board.js"), "utf8");
   assert.equal((source.match(/fetchBoard\(/g) ?? []).length, 1, "fetchBoard() must be called exactly once");
   assert.equal((source.match(/renderBoard\(/g) ?? []).length, 1, "renderBoard() must be called exactly once");
-  // outline-print.spec.md FR-1/AC-9 added board.js's one sanctioned listener:
+  // board.js has one sanctioned listener:
   // it re-runs init() when the hash stops naming a project, never in
   // response to a controls toggle. Strip that one block before checking
   // that no OTHER listener exists that could re-render on a toggle — the
@@ -365,7 +365,7 @@ test("next-action lane colouring: when next_action is null, data-lane is an empt
 });
 
 // ---------------------------------------------------------------------------
-// Static checks — FR-12, FR-13/AC-7, JS-6, grepped rather than left to a
+// Static checks — JS-6 and the rest, grepped rather than left to a
 // manual pass before every change (mirrors test_unblock.mjs's own vocabulary checks).
 // ---------------------------------------------------------------------------
 
@@ -391,7 +391,7 @@ test("JS-6: no innerHTML anywhere in this module", () => {
 });
 
 test("AC-7/FR-13: no external file reference anywhere in this module's own files", () => {
-  // D-13/AD-3: `localhost` is never "external" — controls.spec.md FR-9's
+  // `localhost` is never "external" — the
   // plain <a href="http://localhost:8787"> wiki link (added to app/index.html
   // by the controls module) is a navigational door to another local
   // Lukeatron service, not a loaded asset. What this rule actually forbids

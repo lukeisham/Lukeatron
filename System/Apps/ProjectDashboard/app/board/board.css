@@ -5,10 +5,10 @@
 
    Every colour, space, radius and duration below is a custom property this
    module references but never defines (CSS-2) — `controls`' app/tokens.css
-   is the one place that defines them (documentation.spec.md §1). Full list
+   is the one place that defines them. Full list
    this module (board.css + card.css) needs `controls` to supply:
 
-     Lane colours (fixed convention — board.spec.md FR-3):
+     Lane colours (fixed convention):
        --l-mine  --l-delegate  --l-waiting  --l-incoming  --l-unshaped
 
      Ink / surface:
@@ -18,7 +18,7 @@
      Radii:    --radius-sm  --radius-md
      Motion:   --motion-fast
      Focus:    --focus-ring  --focus-ring-width  --focus-ring-offset
-     Type:     --font-size-sm (outline-print.spec.md FR-11's print trigger)
+     Type:     --font-size-sm (also the print trigger's size)
      Depth:    --shadow-press (card.css .board-card-copy:active)
 
      Board layout (used only in board.css / card.css):
@@ -76,7 +76,7 @@
   color: var(--ink-muted);
 }
 
-/* FR-3: one custom property per lane, set on the row so it inherits into
+/* One custom property per lane, set on the row so it inherits into
    both the rail and every card beneath it (siblings under the same row). */
 .board-lane-row[data-lane="mine"] { --lane-color: var(--l-mine); }
 .board-lane-row[data-lane="delegate"] { --lane-color: var(--l-delegate); }
@@ -104,7 +104,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  min-height: var(--board-cell-min-height); /* FR-8/AD-2: an empty cell keeps the grid's shape */
+  min-height: var(--board-cell-min-height); /* an empty cell keeps the grid's shape */
   padding: var(--space-xs);
 }
 
@@ -133,8 +133,8 @@
   color: var(--ink-muted);
 }
 
-/* board.spec.md §4: the lane-colour-count escape hatch. Default is one
-   distinct hue per lane (tokens.css, 2026-09-14); `controls` can flip this
+/* The lane-colour-count escape hatch. Default is one
+   distinct hue per lane (tokens.css); `controls` can flip this
    attribute to collapse all five back to one shared --ink-muted rail, with
    no change to this module's markup or logic. */
 body[data-lane-hues="mono"] {

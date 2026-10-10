@@ -1,12 +1,11 @@
 // render.js — builds the lane × column grid from a fetched Board object
-// (board.spec.md; the JSON shape is confirmed in server.py's module
+// (the JSON shape is confirmed in server.py's module
 // docstring). Pure DOM construction: every card's placement and every
 // header count comes from the object handed in — this file derives nothing
-// of its own (FR-1, FR-7).
+// of its own.
 //
 // Never fetches, never re-renders on its own. board.js calls renderBoard (or
-// renderLoadError) exactly once per page load (FR-2, documentation.spec.md
-// D-11) — every later density/palette/glyph toggle is a class flip that
+// renderLoadError) exactly once per page load — every later density/palette/glyph toggle is a class flip that
 // `controls` applies to <body>, reacted to only in board.css/card.css.
 
 import { el, clear } from "../shared/dom.js";
@@ -46,7 +45,7 @@ function columnHeaderRow(board) {
     cells.push(
       el("div", { class: "board-column-header", dataset: { column } }, [
         el("span", { class: "board-column-title" }, column),
-        // FR-7: the JSON's own count, verbatim — never a length this module counts itself.
+        // The JSON's own count, verbatim — never a length this module counts itself.
         el("span", { class: "board-count" }, String(board.column_counts[column] ?? 0)),
       ])
     );
@@ -83,7 +82,7 @@ function laneRow(lane, board, byLaneColumn) {
   const cells = [rail];
   for (const column of COLUMN_ORDER) {
     const projects = byLaneColumn.get(`${lane.value} ${column}`) ?? [];
-    // FR-8/AD-2: the cell is always built, even with zero cards, so the
+    // The cell is always built, even with zero cards, so the
     // grid keeps its shape instead of collapsing around what's missing.
     cells.push(
       el("div", { class: "board-cell", dataset: { lane: lane.value, column } }, [
@@ -95,7 +94,7 @@ function laneRow(lane, board, byLaneColumn) {
 }
 
 function nothingNeedsYouBanner(board) {
-  // FR-9: MINE and DELEGATE both empty is the one case worth naming outright.
+  // MINE and DELEGATE both empty is the one case worth naming outright.
   const mineEmpty = (board.lane_counts.mine ?? 0) === 0;
   const delegateEmpty = (board.lane_counts["delegate"] ?? 0) === 0;
   if (!mineEmpty || !delegateEmpty) return null;
@@ -118,14 +117,14 @@ export function renderBoard(container, board) {
   clear(container);
   const byLaneColumn = groupProjectsByLaneColumn(board.projects);
   const banner = nothingNeedsYouBanner(board);
-  // AD-2: the grid is built in full regardless of the banner — an empty
+  // The grid is built in full regardless of the banner — an empty
   // MINE/DELEGATE still shows every other lane and column at full shape.
   const grid = el("section", { class: "board", "aria-label": "Project board" }, [
     columnHeaderRow(board),
     ...LANE_ORDER.map((lane) => laneRow(lane, board, byLaneColumn)),
   ]);
   // wishlist #2: arrow keys between cards, `c` to copy. One delegated listener
-  // on the grid, installed here (not in board.js, whose contract test AC-3
+  // on the grid, installed here (not in board.js, whose contract test
   // forbids any listener) — see keynav.js.
   attachKeynav(grid, { lanes: LANE_ORDER.map((lane) => lane.value), columns: COLUMN_ORDER });
   if (banner) container.appendChild(banner);
@@ -133,7 +132,7 @@ export function renderBoard(container, board) {
 }
 
 /**
- * FR-10: a load failure never renders as emptiness. This names what's known
+ * A load failure never renders as emptiness. This names what's known
  * (the caller's own error message) instead of leaving the mount blank.
  */
 export function renderLoadError(container, message) {

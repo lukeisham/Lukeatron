@@ -1,9 +1,9 @@
-// grouping.js — FR-3/AD-1: where three or more sibling tasks share a leading
+// grouping.js — where three or more sibling tasks share a leading
 // stem, lift it to a heading and leave only what differs. Pure and
-// store-agnostic (D-12): the store keeps every row; this only decides how
+// store-agnostic: the store keeps every row; this only decides how
 // actions.js draws them. Nothing here truncates or clones a task — the same
 // TaskView objects a caller hands in come back out, so a chip's full text
-// (FR-6) is always the source task's own `.action`.
+// is always the source task's own `.action`.
 
 // One shared word ("Email") is not a stem — the risk table's own adversarial
 // case is three actions that happen to open with the same single verb but
@@ -71,8 +71,8 @@ export function groupByStem(tasks) {
 }
 
 /**
- * The part of `task.action` after a group's stem — display only. FR-6
- * requires a chip's *copy* to stay the full action, stem included; callers
+ * The part of `task.action` after a group's stem — display only. A
+ * chip's *copy* must stay the full action, stem included; callers
  * must reach for `task.action` itself for that, never this function.
  */
 export function stemDifference(group, task) {

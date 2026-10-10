@@ -1,13 +1,13 @@
-// card.js — one project card (board.spec.md FR-4..FR-7, FR-11). Pure DOM
+// card.js — one project card. Pure DOM
 // construction from a ProjectView (the confirmed GET /api/board.json shape,
 // documented in server.py's module docstring): every lane, due-text and
-// count comes from the object handed in — this file derives nothing (FR-1's
-// "zero client-side derivation" applies to cards as much as the grid).
+// count comes from the object handed in — this file derives nothing (the
+// "zero client-side derivation" rule applies to cards as much as the grid).
 //
-// FR-12: this file never imports an edit client — there is no code path here
+// This file never imports an edit client — there is no code path here
 // that could reach POST /api/edit.
 //
-// FR-4/D-11: both card densities are built from the SAME markup. board.css's
+// Both card densities are built from the SAME markup. board.css's
 // card.css sibling hides everything but title+due when controls sets
 // body[data-density="condensed"] — there is no separate condensed DOM to
 // build, and no rebuild happens on that toggle.
@@ -41,7 +41,7 @@ function dueDisplayText(project) {
 }
 
 function defaultNavigate(id) {
-  // FR-11's chosen navigation scheme: a hash route, so opening a project
+  // The navigation scheme is a hash route, so opening a project
   // needs no server route of its own yet. `outline-print`/`project` (built
   // later) should listen for `hashchange` against `#project=<id>`.
   location.hash = `project=${encodeURIComponent(id)}`;
@@ -49,7 +49,7 @@ function defaultNavigate(id) {
 
 /**
  * Build one card. `navigate`/`copy` are injectable so tests can assert
- * FR-11's click behaviour without a real location bar or clipboard;
+ * the click behaviour without a real location bar or clipboard;
  * render.js (production) calls this with neither and gets the real ones.
  */
 export function buildCard(project, { navigate = defaultNavigate, copy = copyToClipboard } = {}) {
@@ -75,7 +75,7 @@ export function buildCard(project, { navigate = defaultNavigate, copy = copyToCl
       type: "button",
       "aria-label": `Copy ${displayTitle}`,
       title: "Copy",
-      // FR-11: the copy button never also opens the project — stopping
+      // The copy button never also opens the project — stopping
       // propagation here is what keeps the card's own click listener
       // (on the card, below) from firing for a click that started on this button.
       onclick: async (event) => {
@@ -98,14 +98,14 @@ export function buildCard(project, { navigate = defaultNavigate, copy = copyToCl
     {
       class: "board-card",
       // `context` is exposed here (not just `lane`, `projectId`) because
-      // controls.spec.md FR-1/FR-2's six view buttons filter the board by
+      // The six view buttons in controls filter the board by
       // context — that filter needs a per-card selector to act on, the same
-      // way FR-3's lane colouring needs `data-lane`.
+      // way lane colouring needs `data-lane`.
       dataset: { projectId: project.id ?? "", lane: project.lane?.value ?? "", context: project.context ?? "" },
       tabindex: "0",
       role: "link",
       "aria-label": `${displayTitle} — open project`,
-      // AD-1: the card IS the project — clicking anywhere on it (except the
+      // The card IS the project — clicking anywhere on it (except the
       // copy button below) opens the project view.
       onclick: () => navigate(project.id),
       onkeydown: (event) => {

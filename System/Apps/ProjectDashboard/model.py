@@ -2,22 +2,22 @@
 
 The derivation layer (the model spec). This is the only place a fact is
 derived — if the board, the project view and the print sheet each worked out
-"overdue" for themselves they would disagree within a week (model.spec.md
-§1). This module touches no file, no clock and no network (FR-14): `today`
+"overdue" for themselves they would disagree within a week.
+This module touches no file, no clock and no network: `today`
 is always passed in, never read, which is what keeps every date rule
-testable with no filesystem (AD-2).
+testable with no filesystem.
 
-Never imports `stores` (FR-15) — the seam is described here as `Protocol`s:
+Never imports `stores` — the seam is described here as `Protocol`s:
 plain shape contracts an object satisfies by having the right attributes,
 never by being a particular class. The objects `stores` actually builds
 happen to satisfy these shapes; this module does not know or care that
 `stores` is where they came from.
 
-Every derived value is wrapped in `Guessable(value, guessed)` (FR-13): a
+Every derived value is wrapped in `Guessable(value, guessed)`: a
 consumer can always tell a fact from a guess without re-deriving anything.
 
 Scope note: `stores.BoardSources` also carries a listing of orphaned plans
-(the PRD's fifth "Lukeatron" view). No FR or AC in model.spec.md gives a
+(the fifth "Lukeatron" view). Nothing defines a
 placement rule for it, so this module places only projects and their open
 actions — the thing every acceptance criterion here actually tests. Folding
 the plans into the same lane x column grid is a separate, not-yet-specified
@@ -36,7 +36,7 @@ from typing import Any, Generic, Protocol, TypeVar
 T = TypeVar("T")
 
 # ---------------------------------------------------------------------------
-# The stores -> model seam, as shapes rather than an import (FR-15)
+# The stores -> model seam, as shapes rather than an import
 # ---------------------------------------------------------------------------
 
 
@@ -103,7 +103,7 @@ class TrackingRowLike(Protocol):
 
 class RegistryRecordLike(Protocol):
     project_id: str
-    mtime: float  # a filesystem fact, not a Field — writes' concurrency gate (documentation.spec.md)
+    mtime: float  # a filesystem fact, not a Field — writes' concurrency gate
     multi_stream: bool  # true if Next Actions section has more than one table block
     frontmatter: dict[str, FieldLike[Any]]
     next_actions: Sequence[NextActionRowLike]
@@ -121,7 +121,7 @@ class ProjectSourceLike(Protocol):
 
 @dataclass(frozen=True)
 class Guessable(Generic[T]):
-    """A derived value plus whether it was actually derived (FR-13).
+    """A derived value plus whether it was actually derived.
 
     `guessed=False` means a source file stated this outright, or the
     placement follows deterministically from a value it stated (e.g. a real
@@ -136,7 +136,7 @@ class Guessable(Generic[T]):
 
 
 # ---------------------------------------------------------------------------
-# Lanes and the demand order (FR-1, FR-7)
+# Lanes and the demand order
 # ---------------------------------------------------------------------------
 
 LANE_MINE = "mine"
@@ -145,7 +145,7 @@ LANE_WAITING = "waiting"
 LANE_INCOMING = "incoming"
 LANE_UNSHAPED = "unshaped"
 
-# FR-7: highest demand first. Used both to roll a project up to its
+# Highest demand first. Used both to roll a project up to its
 # highest-demand open action and to rank two lanes against each other.
 _LANE_DEMAND_ORDER: tuple[str, ...] = (LANE_MINE, LANE_DELEGATE, LANE_WAITING, LANE_INCOMING, LANE_UNSHAPED)
 _LANE_DEMAND_RANK: dict[str, int] = {lane: i for i, lane in enumerate(_LANE_DEMAND_ORDER)}
@@ -157,7 +157,7 @@ def _owner_is_luke(owner: str | None) -> bool:
 
 
 def resolve_lane(kind_field: FieldLike[str], owner_field: FieldLike[str]) -> Guessable[str]:
-    """FR-1, AD-1: ported from ProjectDashboard's `resolve_kind`.
+    """Ported from ProjectDashboard's `resolve_kind`.
 
     A stated Kind cell wins outright. `stores` aliases the registry's older
     `Type` column onto this same `kind` field (see
@@ -202,7 +202,7 @@ def _is_archived(status_field: FieldLike[str]) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Columns and date parsing (FR-2, FR-3, FR-4, FR-5)
+# Columns and date parsing
 # ---------------------------------------------------------------------------
 
 COLUMN_OVERDUE = "OVERDUE"
@@ -221,10 +221,10 @@ _MONTH_NAMES: dict[str, int] = {
     "october": 10, "nov": 11, "november": 11, "dec": 12, "december": 12,
 }
 
-# FR-3: a leading ISO date is pulled out of prose ("2026-08-01 pending
-# Keith's reply") — `.match` anchors at the start only, deliberately not the
-# end. Every other shape below is matched whole: FR-3 lists them as complete
-# cell values, never as a prefix inside a longer sentence.
+# A leading ISO date is pulled out of prose ("YYYY-MM-DD pending a
+# reply") — `.match` anchors at the start only, deliberately not the
+# end. Every other shape below is matched whole: each is a complete
+# cell value, never a prefix inside a longer sentence.
 _ISO_LEADING_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})")
 _SLASH_OR_DASH_RE = re.compile(r"^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$")
 _DAY_MONTH_YEAR_RE = re.compile(r"^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$")
@@ -232,7 +232,7 @@ _MONTH_YEAR_RE = re.compile(r"^([A-Za-z]+)\s+(\d{4})$")
 
 
 def parse_due_text(text: str) -> date | None:
-    """FR-3: the seven recognised shapes, in the order that keeps them from
+    """The seven recognised shapes, in the order that keeps them from
     shadowing each other (see the regexes' own anchoring). `01/08/2026` and
     `01-08-2026` read day-first (DD/MM/YYYY) — the FR's own worked examples
     only make sense together under that reading: `01/08/2026`, `1 Aug 2026`
@@ -281,8 +281,8 @@ def parse_due_text(text: str) -> date | None:
 @dataclass(frozen=True)
 class DueOutcome:
     column: Guessable[str]
-    parsed_date: date | None  # None for ASAP (FR-4) and for NO DATE — there is no single calendar day to report
-    raw_text: str | None  # FR-5/FR-6: the cell's own words, carried through whenever something was stated
+    parsed_date: date | None  # None for ASAP and for NO DATE — there is no single calendar day to report
+    raw_text: str | None  # the cell's own words, carried through whenever something was stated
 
 
 def _week_end(day: date) -> date:
@@ -300,13 +300,13 @@ def _classify_due(raw_value: str | None, today: date) -> DueOutcome:
     if not text:
         return DueOutcome(Guessable(COLUMN_NO_DATE, True), None, None)
     if text.upper() == "ASAP":
-        # FR-4: ASAP is a date, not an absence — always OVERDUE, and always
+        # ASAP is a date, not an absence — always OVERDUE, and always
         # confidently so (guessed=False): the file said exactly this.
         return DueOutcome(Guessable(COLUMN_OVERDUE, False), None, text)
 
     parsed = parse_due_text(text)
     if parsed is None:
-        # FR-5: something was written but this module can't read it as a
+        # Something was written but this module can't read it as a
         # date. NO DATE is the honest answer, not a confident one.
         return DueOutcome(Guessable(COLUMN_NO_DATE, True), None, text)
 
@@ -324,13 +324,13 @@ def _classify_due(raw_value: str | None, today: date) -> DueOutcome:
 
 
 # ---------------------------------------------------------------------------
-# Task and project views (FR-1..FR-12)
+# Task and project views
 # ---------------------------------------------------------------------------
 
 # A real 🔗 Link value is a bare kebab-slug — _links.yaml's own schema for a
 # link `key` (e.g. "LK-04"). Some registries reuse the same column for an
 # unrelated pointer (a markdown link to a Sandbox dev registry, say); that
-# text is stated but never a key, so it must not be treated as one (FR-11).
+# text is stated but never a key, so it must not be treated as one.
 _LINK_KEY_RE = re.compile(r"^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$")
 
 
@@ -349,8 +349,8 @@ class TaskView:
     lane: Guessable[str]
     due_column: Guessable[str]
     due_date: date | None
-    due_text: str | None  # FR-5: raw Due cell text, carried through whenever the cell was stated
-    link_key: str | None  # FR-11: the 🔗 Link value when it IS a real key (a bare kebab-slug), else None
+    due_text: str | None  # raw Due cell text, carried through whenever the cell was stated
+    link_key: str | None  # the 🔗 Link value when it IS a real key (a bare kebab-slug), else None
     recurring_if_done: str | None  # raw 🔁 Recur cell ("weekly-tue"/"monthly-1st"), else None
     lane_source: bool = False  # this row's own lane is the one `_lane_driver` rolled the project's lane up from
 
@@ -411,32 +411,32 @@ class ProjectView:
     due_date: date | None
     due_text: str | None  # carried through only when the roll-up landed on a wake trigger or an unparseable cell
     open_count: int
-    tasks: list[TaskView]  # open actions only, in file order (AC-1 lives here, one lane/column per row)
+    tasks: list[TaskView]  # open actions only, in file order, one lane/column per row
     done_tasks: list[TaskView]  # wishlist #4b: completed rows, in file order — never feeds lane/due/count
     next_action: TaskView | None  # first open task in file order, for a card's lead line
     mtime: float  # registry.md's mtime as read this pass — outline-print's edits must send this back verbatim
     multi_stream: bool  # true if Next Actions section has more than one table block
     purpose: str | None  # frontmatter `purpose:` — the one-sentence north star, not the body's fuller paragraph
-    definition_of_done: list[str]  # outline-print FR-2, read-only
-    decision_log: list[str]  # outline-print FR-2, read-only, file order (append-only source)
-    events: list[EventView]  # outline-print FR-2, read-only
-    documents: list[DocumentView]  # outline-print FR-2, read-only; FR-6/FR-7 copy the `file` path, never `file`'s basename
-    people: list[PersonView]  # outline-print FR-2, read-only
+    definition_of_done: list[str]  # read-only
+    decision_log: list[str]  # read-only, file order (append-only source)
+    events: list[EventView]  # read-only
+    documents: list[DocumentView]  # read-only; copy takes the `file` path, never `file`'s basename
+    people: list[PersonView]  # read-only
 
 
 def _resolve_incoming_override(tasks: Sequence[TaskView], wake_field: FieldLike[str]) -> bool:
-    """FR-6: true exactly when every open action is undated and the project
+    """True exactly when every open action is undated and the project
     itself has a dated wake — the one data pattern that reclassifies both the
     lane and the column, regardless of what the actions would otherwise roll
     up to. `all()` over an empty list is vacuously True, so a project with no
-    open actions at all also qualifies, matching FR-6's own wording ("open
+    open actions at all also qualifies ("open
     actions are all undated")."""
     all_undated = all(task.due_column.value == COLUMN_NO_DATE for task in tasks)
     return all_undated and wake_field.stated and bool(wake_field.value)
 
 
 def _lane_driver(tasks: Sequence[TaskView]) -> TaskView | None:
-    """FR-7: the single open task whose own lane sets the project's rolled-up
+    """The single open task whose own lane sets the project's rolled-up
     lane — `min`'s first-of-ties behaviour, so this always names the same
     task `_project_lane` derives its answer from (it calls this too, so the
     two can never disagree about which row it is). None when there is
@@ -447,7 +447,7 @@ def _lane_driver(tasks: Sequence[TaskView]) -> TaskView | None:
 
 
 def _project_lane(tasks: Sequence[TaskView], *, incoming: bool) -> Guessable[str]:
-    """FR-6/FR-7: the lane of the highest-demand open action, unless the
+    """The lane of the highest-demand open action, unless the
     wake override applies. A project with no open actions and no override
     has nothing to roll up — unshaped, and guessed, since there is no action
     here that could have stated anything."""
@@ -460,11 +460,11 @@ def _project_lane(tasks: Sequence[TaskView], *, incoming: bool) -> Guessable[str
 def _project_due(
     tasks: Sequence[TaskView], wake_field: FieldLike[str], today: date, *, incoming: bool
 ) -> tuple[Guessable[str], date | None, str | None]:
-    """FR-6/FR-7: the wake override wins outright when it applies. Otherwise
+    """The wake override wins outright when it applies. Otherwise
     the soonest column among ALL open actions — ranking over every task
     rather than filtering NO DATE ones out first is what lets a fully
     undated, wake-less project still surface one action's own raw text
-    (FR-5) instead of losing it to a bare NO DATE fallback."""
+    instead of losing it to a bare NO DATE fallback."""
     if incoming:
         wake = _classify_due(wake_field.value, today)
         return wake.column, wake.parsed_date, wake.raw_text
@@ -535,7 +535,7 @@ def build_project(source: ProjectSourceLike, *, today: date) -> ProjectView:
 
 
 # ---------------------------------------------------------------------------
-# The board — one call, every derived fact (FR-12)
+# The board — one call, every derived fact
 # ---------------------------------------------------------------------------
 
 
@@ -547,7 +547,7 @@ class Board:
 
 
 def build_board(projects: Sequence[ProjectSourceLike], *, today: date) -> Board:
-    """FR-14: `today` is a required argument, never the clock. The one
+    """`today` is a required argument, never the clock. The one
     function every face (`server`, and whatever else reads this module's
     output) calls to get a whole board from `stores`-shaped records."""
     views = [

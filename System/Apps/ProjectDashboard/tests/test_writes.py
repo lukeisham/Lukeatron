@@ -1,5 +1,5 @@
 """Acceptance tests for writes.py, ported/adapted from ProjectDashboard's
-tests/test_writes.py (writes.spec.md AC-8, PRD Q6): the guard structure,
+tests/test_writes.py (PRD Q6): the guard structure,
 fixture-copy isolation (TEST-4) and AC-labelled test classes are inherited
 as BEHAVIOUR; the assertions are rewritten against this module's own two
 functions (`set_cell`, `append_note`) and its own five edits, since
@@ -67,7 +67,7 @@ class WritesTestCase(unittest.TestCase):
         return path.stat().st_mtime
 
     def assertOneLineChanged(self, before: list[str], after: list[str]) -> int:
-        """AC-1: exactly one line differs; returns its index."""
+        """Exactly one line differs; returns its index."""
         self.assertEqual(len(before), len(after), "a cell/tag edit must never add or remove a line")
         changed = [i for i, (a, b) in enumerate(zip(before, after)) if a != b]
         self.assertEqual(len(changed), 1, f"expected exactly one changed line, got {len(changed)}")
@@ -89,7 +89,7 @@ class TestImport(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 1 — the fence (FR-2, AC-2)
+# Guard 1 — the fence
 # ---------------------------------------------------------------------------
 
 
@@ -116,7 +116,7 @@ class TestFenceGuard(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 2 — mtime (FR-3, AC-3)
+# Guard 2 — mtime
 # ---------------------------------------------------------------------------
 
 
@@ -135,7 +135,7 @@ class TestMtimeGuard(WritesTestCase):
         self.assertIn("refused:stale_mtime", log_lines[0])
 
     def test_permitted_two_callers_first_wins_second_is_stale(self) -> None:
-        """AC-3's own scenario: two callers read the same mtime; the first
+        """Two callers read the same mtime; the first
         write succeeds and the second (holding the now-stale mtime) is
         refused, never merged."""
         path = self.registry_path("ZZ-10")
@@ -149,7 +149,7 @@ class TestMtimeGuard(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 3 — re-parse before commit (FR-4)
+# Guard 3 — re-parse before commit
 # ---------------------------------------------------------------------------
 
 
@@ -187,7 +187,7 @@ class TestReparseGuard(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# Guard 4 — record: edits.log + pending_sweep (FR-5, AC-7)
+# Guard 4 — record: edits.log + pending_sweep
 # ---------------------------------------------------------------------------
 
 
@@ -226,7 +226,7 @@ class TestRecordGuard(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-1 — each of the six edits changes the intended bytes and nothing else.
+# Each of the six edits changes the intended bytes and nothing else.
 # ---------------------------------------------------------------------------
 
 
@@ -283,7 +283,7 @@ class TestSixEditsAC1(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-4 — a linked row is refused with a distinct error (FR-6)
+# A linked row is refused with a distinct error
 # ---------------------------------------------------------------------------
 
 
@@ -306,7 +306,7 @@ class TestLinkedRowAC4(WritesTestCase):
 
 
 # ---------------------------------------------------------------------------
-# AC-6 — notes.md gains the line under the requested heading; no other
+# notes.md gains the line under the requested heading; no other
 # heading moves or changes.
 # ---------------------------------------------------------------------------
 
@@ -361,7 +361,7 @@ class TestNoteSectionsAC6(WritesTestCase):
 
 # ---------------------------------------------------------------------------
 # Row addressing — by header name and row identity, never by position
-# (writes.spec.md's own Risks-table mitigation).
+# (so a crash mid-write cannot leave a half-written registry).
 # ---------------------------------------------------------------------------
 
 

@@ -1,9 +1,8 @@
-// note-box.js — FR-8/D-9: a note names its target section of notes.md,
+// note-box.js — a note names its target section of notes.md,
 // defaulting to Scraps & ideas. What "Agent guidance" does is stated
 // permanently on the page next to the choice, not tucked into a tooltip —
 // a line landing there steers every future agent working on this project,
-// so choosing it has to be deliberate (documentation.spec.md's own line on
-// the notes.md hand-off).
+// so choosing it has to be deliberate.
 
 import { el } from "../shared/dom.js";
 
@@ -20,7 +19,7 @@ function buildSectionChoice() {
       type: "radio",
       name: "project-note-section",
       value: section.value,
-      checked: i === 0 ? "true" : null, // D-9: Scraps & ideas is the default
+      checked: i === 0 ? "true" : null, // Scraps & ideas is the default
     })
   );
   const labels = SECTIONS.map((section, i) => el("label", { class: "project-note-section-option" }, [inputs[i], ` ${section.label}`]));
@@ -32,7 +31,7 @@ function buildSectionChoice() {
  * network round-trip and the mtime. Returns `{ ok, message? }`.
  */
 export function buildNoteBox(submitNote) {
-  const textarea = el("textarea", { class: "project-note-text", spellcheck: "true", "aria-label": "Note text", rows: "3" }); // FR-9
+  const textarea = el("textarea", { class: "project-note-text", spellcheck: "true", "aria-label": "Note text", rows: "3" });
   const { container: sectionChoice, inputs } = buildSectionChoice();
   const submit = el("button", { type: "button", class: "project-note-submit" }, "Add note");
   const status = el("p", { class: "project-note-status", role: "status" }, "");

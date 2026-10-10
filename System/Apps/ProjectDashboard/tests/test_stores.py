@@ -1,7 +1,7 @@
 """Smoke tests for stores.py, against in-repo fixtures (TEST-4) plus one
-real-tree integration test for AC-1 (this app's own board, not a fixture).
+real-tree integration test (this app's own board, not a fixture).
 
-One test per acceptance criterion in stores.spec.md that a fixture can
+One test per behaviour of stores that a fixture can
 exercise, the module-level smoke tests TEST-2 asks for (imports, happy path,
 one guard path), and the read-only gate test TEST-7 requires.
 """
@@ -22,7 +22,7 @@ FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
 class TestImport(unittest.TestCase):
     def test_imports_cleanly_and_exposes_the_public_api(self) -> None:
-        # AC-4 / PY-3: this module was already imported at the top of this
+        # This module was already imported at the top of this
         # file, before any fixture path was constructed — if importing it
         # touched the filesystem, a wrong or missing path would have raised
         # there instead of inside a test. Reaching this line is the proof.
@@ -49,7 +49,7 @@ projects:
         self.assertEqual(data["projects"][1]["title"], "Bare Title")
 
     def test_dates_pass_through_as_raw_strings(self) -> None:
-        # FR-7: no engine here ever promotes a bare scalar to a date object,
+        # No engine here ever promotes a bare scalar to a date object,
         # so this holds for every value, not just the ones named "date".
         data = stores.yaml_load("created: 2026-06-22\nwake: ASAP\n")
         self.assertEqual(data["created"], "2026-06-22")
@@ -59,7 +59,7 @@ projects:
 
 class TestField(unittest.TestCase):
     def test_blank_cell_and_absent_column_both_not_stated_but_distinct_from_a_value(self) -> None:
-        # AC-3's actual requirement: blank and absent must not be mistaken
+        # Blank and absent must not be mistaken
         # for a value. They needn't be distinguishable from each other.
         self.assertEqual(stores._field(None), stores.Field(None, False))
         self.assertEqual(stores._field(""), stores.Field(None, False))
@@ -88,7 +88,7 @@ class TestRegistryMultiStream(unittest.TestCase):
 
 
 class TestRegistryLegacyColumns(unittest.TestCase):
-    """AC-3 (this app's numbering) — a Next Actions table missing optional
+    """A Next Actions table missing optional
     columns returns them as not-stated; the columns that DO exist still
     parse correctly, resolved by name."""
 
@@ -109,7 +109,7 @@ class TestRegistryLegacyColumns(unittest.TestCase):
 
 
 class TestNextActionKindTypeAlias(unittest.TestCase):
-    """FR-8 — the older `Type: Human|Agent`-era column name aliases onto the
+    """The older `Type: Human|Agent`-era column name aliases onto the
     same `kind` field as the modern `Kind` header (real registries CH-16 and
     CH-17 still carry the old header)."""
 
@@ -126,7 +126,7 @@ class TestNextActionKindTypeAlias(unittest.TestCase):
 
 
 class TestRegistryPipeHazard(unittest.TestCase):
-    """AC-2 — a row with a backticked pipe (CH-15's Action column carries a
+    """A row with a backticked pipe (CH-15's Action column carries a
     real one) parses into the header's cell count, not a shredded one."""
 
     def test_backticked_pipes_are_not_cell_boundaries(self) -> None:
@@ -143,7 +143,7 @@ class TestRegistryPipeHazard(unittest.TestCase):
     def test_a_genuinely_shifted_row_is_reported_with_file_and_line_not_guessed(self) -> None:
         path = FIXTURES / "registry_full_sections.md"
         record = stores.read_registry(path, "ZZ-06")
-        # The Events table's third row is missing a cell (FR-4 fixture).
+        # The Events table's third row is missing a cell.
         self.assertEqual(len(record.events), 2)  # the two well-formed rows, not the shifted one
         self.assertEqual(len(record.skipped_rows), 1)
         skipped = record.skipped_rows[0]
@@ -195,7 +195,7 @@ class TestRegistryFullSections(unittest.TestCase):
 
 
 class TestProjectIsolation(unittest.TestCase):
-    """AC-5 — a corrupt registry is reported in `skipped`, and the other
+    """A corrupt registry is reported in `skipped`, and the other
     fixture projects still load."""
 
     def test_one_corrupt_project_does_not_block_the_rest(self) -> None:
@@ -243,7 +243,7 @@ class TestPlansNew(unittest.TestCase):
 class TestLatestMtime(unittest.TestCase):
     """wishlist #5 — a stat-only change check. Every assertion here sets
     mtimes explicitly with os.utime (fixed values, no real clock/sleep —
-    AC-4's own no-clock discipline applied to a filesystem timestamp) so
+    the no-clock discipline applied to a filesystem timestamp) so
     the tests are deterministic and fast."""
 
     def _make_project_tree(self, root: Path, *, project_id: str, registry_mtime: float, notes_mtime: float | None = None) -> None:
@@ -328,7 +328,7 @@ class TestLatestMtime(unittest.TestCase):
 
 
 class TestRealTreeAC1(unittest.TestCase):
-    """AC-1 — against the real Lukeatron board (not a fixture): every live
+    """Against the real Lukeatron board (not a fixture): every live
     project loads, with zero unexplained skips. `find_lukeatron_root()` runs
     with no override, exactly as the shipped app will call it."""
 

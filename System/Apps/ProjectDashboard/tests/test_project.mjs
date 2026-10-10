@@ -230,7 +230,7 @@ function project(overrides = {}) {
 }
 
 // ---------------------------------------------------------------------------
-// grouping.js — FR-3/AD-1
+// grouping.js
 // ---------------------------------------------------------------------------
 
 test("AC-1: 3+ siblings sharing a stem lift to one group; the stem is the shared words", () => {
@@ -294,7 +294,7 @@ test("grouping.js: a missing/non-string action is warned about and treated as em
 });
 
 // ---------------------------------------------------------------------------
-// copy.js — FR-6/FR-7/AC-2/AC-10
+// copy.js
 // ---------------------------------------------------------------------------
 
 test("FR-6: taskCopyText is the raw action, never a grouped/truncated form", () => {
@@ -339,7 +339,7 @@ test("buildCopyButton shows a failure state when the clipboard API refuses, with
 });
 
 // ---------------------------------------------------------------------------
-// edits.js — FR-12/AC-8, SR-9/D-14
+// edits.js — SR-9
 // ---------------------------------------------------------------------------
 
 test("postEdit resolves the server's success payload on a 2xx response", async () => {
@@ -384,7 +384,7 @@ test("JS-2: a network failure (fetch itself rejects) still resolves to a sentenc
 });
 
 // ---------------------------------------------------------------------------
-// sections.js — FR-2, FR-7, AC-10, FR-13
+// sections.js
 // ---------------------------------------------------------------------------
 
 test("AC-10: the Documents row shows a basename with the full path on hover, but the row's own copy is the full path", () => {
@@ -457,7 +457,7 @@ test("FR-13/JS-6: a document description containing <script> renders as literal 
 });
 
 // ---------------------------------------------------------------------------
-// actions.js / task-row.js — FR-3, FR-4, FR-5/AC-4
+// actions.js / task-row.js
 // ---------------------------------------------------------------------------
 
 test("AC-1: buildNextActionsSection renders one stem group for 3+ shared-stem tasks, no loose duplicates", () => {
@@ -586,7 +586,7 @@ test("model.py's lane_source: the row that drove the project's board lane carrie
   const badges = driverRow.querySelectorAll("project-task-lane-source");
   assert.equal(badges.length, 1);
   assert.equal(otherRow.querySelectorAll("project-task-lane-source").length, 0);
-  // Luke's call, 2026-09-15: just the glyph at rest, the explanation on hover.
+  // Just the glyph at rest; the explanation is on hover.
   assert.equal(badges[0].textContent, "⚑");
   assert.match(badges[0].getAttribute("title"), /sets the project's board lane/i);
   assert.match(badges[0].getAttribute("aria-label"), /sets the project's board lane/i);
@@ -664,7 +664,7 @@ test("a refused edit reverts the control's value rather than leaving the screen 
 });
 
 // ---------------------------------------------------------------------------
-// note-box.js — FR-8/D-9
+// note-box.js
 // ---------------------------------------------------------------------------
 
 test("D-9: the note box defaults to Scraps & ideas, and Agent guidance's consequence is stated before it can be chosen", async () => {
@@ -699,7 +699,7 @@ test("AC-5: an empty note is refused client-side without ever calling submitNote
 });
 
 // ---------------------------------------------------------------------------
-// print.js — FR-10
+// print.js
 // ---------------------------------------------------------------------------
 
 test("FR-10: printProject calls window.print() and touches nothing else", () => {
@@ -710,7 +710,7 @@ test("FR-10: printProject calls window.print() and touches nothing else", () => 
 });
 
 // ---------------------------------------------------------------------------
-// Static checks — FR-1/AC-9 (board.js's other half), FR-12, JS-6, FR-13/FR-14
+// Static checks — board.js's other half, JS-6
 // mirroring test_board.mjs's/test_controls.mjs's own grepped vocabulary
 // checks for the files that self-invoke and so stay manual-verification-only.
 // ---------------------------------------------------------------------------

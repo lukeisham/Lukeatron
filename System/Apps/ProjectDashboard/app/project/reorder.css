@@ -1,0 +1,36 @@
+/* reorder.css — the drag handle and move-up/down controls that reorder.js
+   wires onto Next Actions rows. Every value is a token from ../tokens.css
+   (CSS-2); none defined here. */
+
+.project-task-row[draggable="true"] {
+  cursor: grab;
+}
+
+.project-task-row--drag-over {
+  outline: var(--border-width) dashed var(--accent);
+  outline-offset: calc(-1 * var(--border-width));
+}
+
+.project-task-drag-handle {
+  color: var(--ink-muted);
+  padding-inline: var(--space-2xs);
+  cursor: grab;
+}
+
+.project-task-move-up,
+.project-task-move-down {
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--ink);
+  background: var(--panel-bg-alt);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2xs);
+  cursor: pointer;
+}
+
+.project-task-move-up:focus-visible,
+.project-task-move-down:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}

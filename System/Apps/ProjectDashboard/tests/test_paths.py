@@ -20,8 +20,8 @@ class TestFindRoot(unittest.TestCase):
         "outside it — including a temporary one. Covered in _template/.",
     )
     def test_finds_a_root_by_its_markers_not_by_counting_levels(self) -> None:
-        """Regression: this used to be parents[3], which broke the moment the
-        app moved one level deeper into _template/."""
+        """Counting parents breaks whenever the app folder moves; markers
+        find the root from any depth."""
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "_Lukeatron"
             (root / ".claude").mkdir(parents=True)

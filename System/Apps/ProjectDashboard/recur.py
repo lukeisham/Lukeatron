@@ -6,18 +6,17 @@ to Open the moment this script runs WITH that matching cadence, and its Due
 cell rolls forward to the next occurrence of that cadence. This script never
 guesses which cadence "now" is — the caller (a cron-scheduled task, one per
 cadence) says which one fired, the same way `writes.set_cell` never guesses
-which column an edit means (writes.py FR-1).
+which column an edit means (writes.py).
 
 Reuses `stores.load_board_sources` (read) and, for the write itself,
 `server.set_cell_for_script` — a thin pass-through to the same
-`writes.set_cell` the browser's own "tick done" edit calls (README.md
-D-15/D-16). This module never imports `writes` directly: `writes` is
-imported by `server.py` alone, on the whole Python side (FR-9,
+`writes.set_cell` the browser's own "tick done" edit calls (the browser itself never edits Recur). This module never imports `writes` directly: `writes` is
+imported by `server.py` alone, on the whole Python side (checked by
 `test_server.TestImport.test_imports_writes_and_no_other_module_does`), and
 `set_cell_for_script` is the one exception server.py grants a second
 caller. Kept as its own script, not a sixth in-app edit path, because a
 cadence firing later is a different kind of write than the five edits the
-browser already owns (README.md D-16).
+browser already owns.
 """
 
 from __future__ import annotations

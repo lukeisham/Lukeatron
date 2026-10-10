@@ -99,11 +99,11 @@ function entryRow(doc, state, listing, mode) {
 
   if (entry.examples.length > 0) {
     const examples = make(doc, 'ul', 'examples');
-    for (const example of entry.examples) {
-      const item = make(doc, 'li', 'example');
+    entry.examples.forEach((example, index) => {
+      const item = make(doc, 'li', `example example-${entry.exampleKinds[index]}`);
       item.append(marker(doc, 'marker-small'), exampleText(doc, example));
       examples.appendChild(item);
-    }
+    });
     item.appendChild(examples);
   }
   const filings = filingLines(listing.filings);
@@ -111,7 +111,7 @@ function entryRow(doc, state, listing, mode) {
   return item;
 }
 
-/** The Labels line under a single entry: the labels it is filed under, one path per filing. */
+/** The filing lines under a single entry (the fixed groups, then Labels): where it is filed in each, one path per filing. */
 function filingsBlock(doc, filings) {
   const block = make(doc, 'dl', 'entry-filings');
   for (const [title, paths] of filings) {
@@ -239,11 +239,11 @@ function nodeRow(doc, state, node, mode, depth) {
 
   if (node.entry && node.entry.examples.length > 0) {
     const examples = make(doc, 'ul', 'examples node-examples');
-    for (const example of node.entry.examples) {
-      const line = make(doc, 'li', 'example');
+    node.entry.examples.forEach((example, index) => {
+      const line = make(doc, 'li', `example example-${node.entry.exampleKinds[index]}`);
       line.append(marker(doc, 'marker-small'), exampleText(doc, example));
       examples.appendChild(line);
-    }
+    });
     item.appendChild(examples);
   }
 

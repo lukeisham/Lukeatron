@@ -25,12 +25,13 @@ const EMPTY_LABELS_HINT = 'No labels yet. Add one above, then add patterns to it
 
 const entryItem = (entry, { draggable = false, removeFrom = null } = {}) => ({ kind: 'entry', entry, draggable, removeFrom });
 
-/** Every path (`Parent > Child`) of an editable group's tree that holds the entry directly. */
+/** Every path (`Parent > Child`) of a group's tree that holds the entry directly, or, for a type heading, the path to the heading itself. */
 function pathsHolding(state, hierarchy, entryId) {
   const out = [];
   const walk = (nodes, path) => {
     for (const node of nodes.filter((child) => child.kind === 'node')) {
       const here = [...path, stripInline(node.name)];
+      if (node.type && node.id === entryId) out.push(here.join(' > '));
       if (node.children.some((child) => child.kind === 'entry' && child.id === entryId)) out.push(here.join(' > '));
       walk(node.children, here);
     }
@@ -39,9 +40,12 @@ function pathsHolding(state, hierarchy, entryId) {
   return out;
 }
 
-/** How a single entry is filed, for the Show Labels option: `labels` is the list of paths, or null while that option is off. */
+/** How a single entry is filed, for the Display options: `groups` (the fixed groups, as `[title, paths]` pairs) and `labels` are lists of paths, or null while that option is off. */
 export function filingsOf(state, entryId) {
-  return { labels: state.showLabels ? pathsHolding(state, LABELS, entryId) : null };
+  return {
+    groups: state.showGroups ? GROUPS.map(({ hierarchy, name }) => [name, pathsHolding(state, hierarchy, entryId)]) : null,
+    labels: state.showLabels ? pathsHolding(state, LABELS, entryId) : null,
+  };
 }
 
 function countEntries(node) {
@@ -149,13 +153,21 @@ export function currentView(state) {
   return { mode: 'flat', items };
 }
 
-/** Whether an entry shows its definition and examples: the global toggle, or the row was clicked open. */
+/** Whether an entry shows its definition, AI examples and quotes: each global toggle, or the row was clicked open. */
 export function showsDetail(state, entry, mode) {
   const opened = mode === 'entry' || state.expanded.has(entry.id);
   return {
     definition: opened || state.showDefinitions,
-    examples: opened || state.showExamples,
+    aiExamples: opened || state.showAiExamples,
+    quotes: opened || state.showQuotes,
   };
+}
+
+/** The entry's examples that `shown` (from `showsDetail`) lets through, each with its kind. */
+export function shownExamples(entry, shown) {
+  return entry.examples
+    .map((text, index) => ({ text, kind: entry.exampleKinds[index] }))
+    .filter(({ kind }) => (kind === 'quote' ? shown.quotes : shown.aiExamples));
 }
 
 /** The Index as text: a line per group heading, then each quote's first line, source and year, or with Full display the whole quote, its source line and its entry. */
@@ -203,9 +215,9 @@ function tableToText(table, pad) {
   return lines;
 }
 
-/** The [title, paths] pairs of an entry's filings that are switched on. */
+/** The [title, paths] pairs of an entry's filings that are switched on: the fixed groups, then Labels. */
 export function filingLines(filings) {
-  return [['Labels', filings?.labels]].filter(([, paths]) => paths != null);
+  return [...(filings?.groups ?? []), ['Labels', filings?.labels]].filter(([, paths]) => paths != null);
 }
 
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
@@ -218,7 +230,7 @@ export function viewToText(state, view) {
     if (item.kind === 'node') {
       const note = item.about ? ' (link to About)' : item.definition ? ` — ${stripInline(item.definition)}` : '';
       lines.push(`${pad}• ${stripInline(item.name)}${note}`);
-      if (item.entry && showsDetail(state, item.entry, view.mode).examples) item.entry.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
+      if (item.entry) shownExamples(item.entry, showsDetail(state, item.entry, view.mode)).forEach(({ text }) => lines.push(`${pad}  · ${stripInline(text)}`));
       (item.tables ?? []).forEach((table) => lines.push(...tableToText(table, `${pad}  `)));
       item.children.forEach((child) => write(child, depth + 1));
       return;
@@ -227,7 +239,7 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, entry, view.mode);
     lines.push(`${pad}• ${entry.label}`);
     if (shown.definition && entry.definition) lines.push(`${pad}  ${entry.definition}`);
-    if (shown.examples) entry.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
+    shownExamples(entry, shown).forEach(({ text }) => lines.push(`${pad}  · ${stripInline(text)}`));
     for (const [title, paths] of filingLines(item.filings)) lines.push(`${pad}  ${title}: ${paths.length > 0 ? paths.join('; ') : 'none'}`);
   };
   view.items.forEach((item) => write(item, 0));

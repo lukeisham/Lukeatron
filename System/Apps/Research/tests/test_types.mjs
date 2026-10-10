@@ -73,11 +73,13 @@ test('copy text carries a type heading, its example when examples are on, then w
   const state = typedState();
   setSortOrder(state, 'templates');
   state.showDefinitions = false;
-  state.showExamples = true;
+  state.showAiExamples = true;
+  state.showQuotes = true;
   const lines = viewToText(state, currentView(state)).split('\n');
   assert.equal(lines[0], '• Figures — devices of style');
   assert.equal(lines[1], '  · a figure of speech');
   assert.ok(lines.includes('  • Tropes — figures of meaning'));
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   assert.ok(!viewToText(state, currentView(state)).includes('a figure of speech'));
 });

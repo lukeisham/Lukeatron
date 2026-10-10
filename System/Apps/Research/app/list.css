@@ -98,7 +98,7 @@
 }
 
 
-/* A single entry's Labels line (Display options, off by default): small grey type under its examples. */
+/* A single entry's group and Labels lines (Display options, off by default): small grey type under its examples. */
 .entry-filings {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -177,8 +177,10 @@
 .source { color: var(--color-ink-soft); }
 
 body.hide-definitions .entry:not(.expanded) .entry-definition,
-body.hide-examples .entry:not(.expanded) .examples,
-body.hide-examples .node-examples { display: none; }
+body.hide-ai-examples .entry:not(.expanded) .example-ai,
+body.hide-quotes .entry:not(.expanded) .example-quote,
+body.hide-ai-examples .node-examples .example-ai,
+body.hide-quotes .node-examples .example-quote { display: none; }
 body.hide-confidence .confidence-badge { display: none; }
 
 .heading-row:focus-visible,

@@ -85,6 +85,7 @@ def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[s
             "ai_confidence_rating": row[7],
             "flipside_of": row[8],
             "examples": [],
+            "example_kinds": [],
         }
         for row in devices
     }
@@ -92,6 +93,7 @@ def _device_map(devices: list[tuple], examples: list[tuple]) -> dict[str, dict[s
     # order): the AI example goes first whatever the row ids, ties keep id order (sort is stable).
     for device_id, body, attribution in sorted(examples, key=lambda row: quotes.is_real_quote(row[2], row[1])):
         by_id[str(device_id)]["examples"].append(body)
+        by_id[str(device_id)]["example_kinds"].append("quote" if quotes.is_real_quote(attribution, body) else "ai")
     return by_id
 
 

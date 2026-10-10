@@ -10,7 +10,7 @@ function fakeStorage(initial = {}) {
 }
 
 const allOff = {
-  showDefinitions: false, showExamples: false, showConfidence: false, showLabels: false, reveal: false,
+  showDefinitions: false, showAiExamples: false, showQuotes: false, showConfidence: false, showGroups: false, showLabels: false, reveal: false,
   tableNames: false, tableDefinitions: false, tableExamples: false, indexFull: false, editMode: false,
 };
 
@@ -23,7 +23,7 @@ test('the display and table toggles survive a save and a reload', () => {
 test('nothing saved, or junk saved, leaves the defaults alone', () => {
   assert.deepEqual(loadToggles(fakeStorage()), {});
   assert.deepEqual(loadToggles(fakeStorage({ 'logic.toggles': 'not json' })), {});
-  assert.deepEqual(loadToggles(fakeStorage({ 'logic.toggles': '{"reveal":"yes","showExamples":false}' })), { showExamples: false });
+  assert.deepEqual(loadToggles(fakeStorage({ 'logic.toggles': '{"reveal":"yes","showQuotes":false}' })), { showQuotes: false });
 });
 
 test('blocked storage never throws', () => {

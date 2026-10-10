@@ -80,7 +80,8 @@ test('the pickers that name a place to file or nest never offer a link', () => {
 test('Copy writes a link as its name and says it goes to About', () => {
   const state = linkState();
   state.showDefinitions = false;
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   const lines = viewToText(state, currentView(state)).split('\n');
   assert.equal(lines.at(-1), '• On clauses (link to About)');
 });

@@ -62,6 +62,7 @@ def _entry_map(entries: list[tuple], examples: list[tuple]) -> dict[str, dict[st
             "ai_confidence_rating": row[3],
             "counterpart_of": row[4],
             "examples": [],
+            "example_kinds": [],
         }
         for row in entries
     }
@@ -69,6 +70,7 @@ def _entry_map(entries: list[tuple], examples: list[tuple]) -> dict[str, dict[st
     # order): the AI example goes first whatever the row ids, ties keep id order (sort is stable).
     for entry_id, body, attribution in sorted(examples, key=lambda row: quotes.is_real_quote(row[2], row[1])):
         by_id[str(entry_id)]["examples"].append(body)
+        by_id[str(entry_id)]["example_kinds"].append("quote" if quotes.is_real_quote(attribution, body) else "ai")
     return by_id
 
 

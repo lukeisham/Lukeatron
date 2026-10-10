@@ -38,9 +38,10 @@ function pathsHolding(state, hierarchy, deviceId) {
   return out;
 }
 
-/** How a single device is filed, for the two Display options: `labels` (Grammar) and `types` (Topical) are lists of paths, or null while that option is off. */
+/** How a single device is filed, for the Display options: `groups` (Category, Form, Function, as `[title, paths]` pairs), `labels` (Grammar) and `types` (Topical) are lists of paths, or null while that option is off. */
 export function filingsOf(state, deviceId) {
   return {
+    groups: state.showGroups ? GROUPS.map(({ hierarchy, name }) => [name, pathsHolding(state, hierarchy, deviceId)]) : null,
     labels: state.showLabels ? pathsHolding(state, GRAMMAR, deviceId) : null,
     types: state.showTypes ? pathsHolding(state, TOPICAL, deviceId) : null,
   };
@@ -150,13 +151,21 @@ export function currentView(state) {
   return { mode: 'flat', items };
 }
 
-/** Whether a device shows its definition and examples: the global toggle, or the row was clicked open. */
+/** Whether a device shows its definition, AI examples and quotes: each global toggle, or the row was clicked open. */
 export function showsDetail(state, device, mode) {
   const opened = mode === 'device' || state.expanded.has(device.id);
   return {
     definition: opened || state.showDefinitions,
-    examples: opened || state.showExamples,
+    aiExamples: opened || state.showAiExamples,
+    quotes: opened || state.showQuotes,
   };
+}
+
+/** The device's examples that `shown` (from `showsDetail`) lets through, each with its kind. */
+export function shownExamples(device, shown) {
+  return device.examples
+    .map((text, index) => ({ text, kind: device.exampleKinds[index] }))
+    .filter(({ kind }) => (kind === 'quote' ? shown.quotes : shown.aiExamples));
 }
 
 /** The Index as text: a line per group heading, then each quote's first line, source and year, or with Full display the whole quote, its source line and its device. */
@@ -204,9 +213,9 @@ function tableToText(table, pad) {
   return lines;
 }
 
-/** The [title, paths] pairs of a device's filings that are switched on, Labels before Types. */
+/** The [title, paths] pairs of a device's filings that are switched on: the fixed groups, then Labels, then Types. */
 export function filingLines(filings) {
-  return [['Labels', filings?.labels], ['Types', filings?.types]].filter(([, paths]) => paths != null);
+  return [...(filings?.groups ?? []), ['Labels', filings?.labels], ['Types', filings?.types]].filter(([, paths]) => paths != null);
 }
 
 /** Plain-text rendering of a view, honouring the same toggles the screen does. */
@@ -227,7 +236,7 @@ export function viewToText(state, view) {
     const shown = showsDetail(state, device, view.mode);
     lines.push(`${pad}• ${device.label}`);
     if (shown.definition && device.definition) lines.push(`${pad}  ${device.definition}`);
-    if (shown.examples) device.examples.forEach((example) => lines.push(`${pad}  · ${stripInline(example)}`));
+    shownExamples(device, shown).forEach(({ text }) => lines.push(`${pad}  · ${stripInline(text)}`));
     for (const [title, paths] of filingLines(item.filings)) lines.push(`${pad}  ${title}: ${paths.length > 0 ? paths.join('; ') : 'none'}`);
   };
   view.items.forEach((item) => write(item, 0));

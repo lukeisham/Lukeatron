@@ -22,7 +22,7 @@ import { currentView } from './view.js';
 const $ = (id) => document.getElementById(id);
 const els = {
   list: $('list'), sort: $('sort'), search: $('search'), fuzzy: $('fuzzy'),
-  showDefinitions: $('show-definitions'), showExamples: $('show-examples'), showLabels: $('show-labels'), showImages: $('show-images'),
+  showDefinitions: $('show-definitions'), showAiExamples: $('show-ai-examples'), showQuotes: $('show-quotes'), showGroups: $('show-groups'), showLabels: $('show-labels'), showImages: $('show-images'),
   showConfidence: $('show-confidence'), reveal: $('reveal'), editMode: $('edit-mode'), defaultSort: $('default-sort'),
   displayButton: $('display-button'), displayPanel: $('display-panel'),
   gridBar: $('grid-bar'), gridRoles: $('grid-roles'),
@@ -283,7 +283,8 @@ function aimEntryFormAt(button) {
 
 function applyToggles() {
   document.body.classList.toggle('hide-definitions', !state.showDefinitions);
-  document.body.classList.toggle('hide-examples', !state.showExamples);
+  document.body.classList.toggle('hide-ai-examples', !state.showAiExamples);
+  document.body.classList.toggle('hide-quotes', !state.showQuotes);
   document.body.classList.toggle('hide-confidence', !state.showConfidence);
   document.body.classList.toggle('hide-images', !state.showImages);
   document.body.classList.toggle('hide-table-names', !state.tableNames);
@@ -434,7 +435,9 @@ function bindControls() {
   els.fuzzy.addEventListener('change', () => { state.fuzzy = els.fuzzy.checked; refresh(); });
   els.editMode.addEventListener('change', () => { state.editMode = els.editMode.checked; applyToggles(); saveToggles(storage, state); });
   els.showDefinitions.addEventListener('change', () => { state.showDefinitions = els.showDefinitions.checked; applyToggles(); saveToggles(storage, state); });
-  els.showExamples.addEventListener('change', () => { state.showExamples = els.showExamples.checked; applyToggles(); saveToggles(storage, state); });
+  els.showAiExamples.addEventListener('change', () => { state.showAiExamples = els.showAiExamples.checked; applyToggles(); saveToggles(storage, state); });
+  els.showQuotes.addEventListener('change', () => { state.showQuotes = els.showQuotes.checked; applyToggles(); saveToggles(storage, state); });
+  els.showGroups.addEventListener('change', () => { state.showGroups = els.showGroups.checked; refresh(); saveToggles(storage, state); });
   els.showLabels.addEventListener('change', () => { state.showLabels = els.showLabels.checked; refresh(); saveToggles(storage, state); });
   // Like the group buttons, pressing Compare again leaves it for the everything-search state.
   els.compare.addEventListener('click', () => { setSortOrder(state, state.sortOrder === COMPARE ? EVERYTHING : COMPARE); refresh(); });
@@ -470,7 +473,9 @@ async function start() {
   Object.assign(state, loadToggles(storage));
   applyOpenChoices(state, loadOpenChoices(storage));
   els.showDefinitions.checked = state.showDefinitions;
-  els.showExamples.checked = state.showExamples;
+  els.showAiExamples.checked = state.showAiExamples;
+  els.showQuotes.checked = state.showQuotes;
+  els.showGroups.checked = state.showGroups;
   els.showConfidence.checked = state.showConfidence;
   els.showImages.checked = state.showImages;
   els.showLabels.checked = state.showLabels;

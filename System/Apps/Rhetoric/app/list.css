@@ -99,7 +99,7 @@
 }
 
 
-/* A single device's Labels and Types (Display options, off by default): small grey lines under its examples. */
+/* A single device's Category, Form, Function, Labels and Types (Display options, off by default): small grey lines under its examples. */
 .device-filings {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -164,7 +164,8 @@
 .source { color: var(--color-ink-soft); }
 
 body.hide-definitions .device:not(.expanded) .device-definition,
-body.hide-examples .device:not(.expanded) .examples { display: none; }
+body.hide-ai-examples .device:not(.expanded) .example-ai,
+body.hide-quotes .device:not(.expanded) .example-quote { display: none; }
 body.hide-confidence .confidence-badge { display: none; }
 
 .heading-row:focus-visible,

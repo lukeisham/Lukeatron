@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createState, deviceView, setActiveView } from '../app/state.js';
 import { renderList } from '../app/render.js';
-import { currentView, viewToText } from '../app/view.js';
+import { currentView, shownExamples, showsDetail, viewToText } from '../app/view.js';
 import { loadToggles, saveToggles } from '../app/settings.js';
 import { fakeDoc, findAll, withClass } from './fake-dom.mjs';
 import { payload } from './fixture.mjs';
@@ -31,7 +31,7 @@ test('Show Labels lists every Grammar label holding the device, as a path', () =
   const state = stateOn(2);
   state.showLabels = true;
   const [item] = currentView(state).items;
-  assert.deepEqual(item.filings, { labels: ['Clause', 'Clause > Independent clause'], types: null });
+  assert.deepEqual(item.filings, { groups: null, labels: ['Clause', 'Clause > Independent clause'], types: null });
   assert.match(viewToText(state, currentView(state)), /Labels: Clause; Clause > Independent clause/);
   assert.doesNotMatch(viewToText(state, currentView(state)), /Types:/);
   assert.equal(findAll(draw(state), withClass('device-filings')).length, 1);
@@ -62,4 +62,40 @@ test('both options are saved between visits', () => {
   const saved = loadToggles(storage);
   assert.equal(saved.showLabels, true);
   assert.equal(saved.showTypes, true);
+});
+
+test('Show Groups lists every fixed group the device is filed in, as a path, or none', () => {
+  const state = stateOn(1);
+  assert.equal(state.showGroups, false);
+  state.showGroups = true;
+  const [item] = currentView(state).items;
+  assert.deepEqual(item.filings.groups.map(([title]) => title), ['Category', 'Form', 'Function']);
+  assert.match(viewToText(state, currentView(state)), /Category: .*\n.*Form: .*\n.*Function: /);
+  assert.equal(findAll(draw(state), withClass('device-filings')).length, 1);
+  assert.equal(item.filings.labels, null);
+});
+
+test('Show Groups is saved between visits', () => {
+  const store = {};
+  const storage = { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; } };
+  saveToggles(storage, { showGroups: true });
+  assert.equal(loadToggles(storage).showGroups, true);
+});
+
+test('AI examples and quotes are separate options; a single device shows both', () => {
+  const state = createState(payload());
+  const device = state.devices.get(1);
+  device.examples = ['a made-up line', '"a real line" (Someone, 1900)'];
+  device.exampleKinds = ['ai', 'quote'];
+  state.showAiExamples = false;
+  assert.deepEqual(shownExamples(device, showsDetail(state, device, 'flat')).map(({ kind }) => kind), ['quote']);
+  state.showAiExamples = true;
+  state.showQuotes = false;
+  assert.deepEqual(shownExamples(device, showsDetail(state, device, 'flat')).map(({ kind }) => kind), ['ai']);
+  assert.deepEqual(shownExamples(device, showsDetail(state, device, 'device')).map(({ kind }) => kind), ['ai', 'quote']);
+  state.sortOrder = 'alphabetical';
+  assert.match(viewToText(state, currentView(state)), /· a made-up line/);
+  assert.doesNotMatch(viewToText(state, currentView(state)), /a real line/);
+  const row = findAll(draw(state), withClass('example-quote'));
+  assert.equal(row.length, 1);
 });

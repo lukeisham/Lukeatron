@@ -103,7 +103,8 @@ test('Copy writes the Grid as a line per thumbnail, and an entry lists its image
   ].join('\n'));
   setSortOrder(state, 'alphabetical');
   state.showDefinitions = false;
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   assert.match(viewToText(state, currentView(state)), /▣ issue: Cramped leading\n\s+▣ fix: Leading opened up/);
   state.showImages = false;
   assert.doesNotMatch(viewToText(state, currentView(state)), /▣/);

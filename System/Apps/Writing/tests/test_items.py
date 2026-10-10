@@ -92,8 +92,9 @@ class ItemsTest(unittest.TestCase):
         db.execute("INSERT INTO examples (entry_id, body) VALUES (2, 'carpe *diem*')")  # higher id, still listed first
         db.commit()
         db.close()
-        self.assertEqual(items.load_items(self.db_path)["entries"]["2"]["examples"],
-                         ["carpe *diem*", '"Ask not" (Kennedy, 1961)'])
+        entry = items.load_items(self.db_path)["entries"]["2"]
+        self.assertEqual(entry["examples"], ["carpe *diem*", '"Ask not" (Kennedy, 1961)'])
+        self.assertEqual(entry["example_kinds"], ["ai", "quote"])
 
     def test_labels_group_is_empty_until_a_label_is_added(self):
         build_db(self.db_path)

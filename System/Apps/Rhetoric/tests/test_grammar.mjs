@@ -80,7 +80,8 @@ test('searching keeps empty labels as places to add a found device', () => {
 test('Copy writes each label with its explanation and the devices under it', () => {
   const state = grammarState();
   state.showDefinitions = false;
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   assert.equal(viewToText(state, currentView(state)), [
     '• Clause — a group of words with a subject and a verb',
     '  • Independent clause — can stand alone',
@@ -179,7 +180,8 @@ test('a label cannot be dropped onto itself or onto a label beneath it', () => {
 test('a label name and explanation draw their *starred* pieces as italics, and Copy drops the stars', () => {
   const state = grammarState();
   state.showDefinitions = false;
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   setEditableTree(state, 'grammar', [{ kind: 'node', id: 1, name: 'The *Clause*', definition: 'a group of words with a *subject* and a *verb*', children: [] }]);
   const container = draw(state);
   const [name] = findAll(container, withClass('node-name'));

@@ -86,7 +86,8 @@ test('copy text follows the toggles, but an expanded entry shows both', () => {
   const state = plainState();
   setSortOrder(state, 'alphabetical');
   state.showDefinitions = false;
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   assert.equal(viewToText(state, currentView(state)), '• Anaphora\n• Metaphor');
   toggleExpanded(state, 1);
   assert.equal(
@@ -98,7 +99,8 @@ test('copy text follows the toggles, but an expanded entry shows both', () => {
 test('copy of a tree view carries headings with definitions, indented', () => {
   const state = plainState();
   state.sortOrder = 'templates';
-  state.showExamples = false;
+  state.showAiExamples = false;
+  state.showQuotes = false;
   state.showDefinitions = false;
   assert.equal(
     viewToText(state, currentView(state)).split('\n')[0],

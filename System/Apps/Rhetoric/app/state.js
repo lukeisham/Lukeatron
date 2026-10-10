@@ -96,6 +96,7 @@ export function createState(payload) {
         aiConfidenceRating: record.ai_confidence_rating,
         flipsideOf: record.flipside_of ?? null,
         examples: record.examples,
+        exampleKinds: record.example_kinds ?? record.examples.map(() => 'ai'), // 'ai' (constructed) or 'quote' (real), one per example
       },
     ]),
   );
@@ -127,10 +128,12 @@ export function createState(payload) {
     query: '',
     fuzzy: false,
     showDefinitions: true,
-    showExamples: true,
+    showAiExamples: true, // the constructed examples
+    showQuotes: true, // the real, credited quotes
     showConfidence: true,
     showLabels: false, // a single device's view also lists where it is filed in Grammar (its labels); off by default
     showTypes: false, // ...and in Topical (its Types); off by default
+    showGroups: false, // ...and in the fixed groups (Category, Form, Function); off by default
     tableNames: true, // the Compare table's own switches: its Name, Definition and Examples rows
     tableDefinitions: true,
     tableExamples: true,

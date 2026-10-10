@@ -10,6 +10,7 @@
  * walks `parentNode` by hand instead, which real DOM elements support too.
  */
 import { el } from "./ui.js";
+import { escapeHtml } from "./escape-html.js";
 
 const PREVIEW_LEAD_LEN = 100;
 const SHOW_DELAY_MS = 150;
@@ -40,13 +41,6 @@ function formatPreviewHtml(article) {
   const lead = (article.lead || "").slice(0, PREVIEW_LEAD_LEN);
   const ellipsis = (article.lead || "").length > PREVIEW_LEAD_LEN ? "…" : "";
   return `<strong>${escapeHtml(article.title)}</strong>` + (lead ? `<br><span class="mw-preview-lead">${escapeHtml(lead)}${ellipsis}</span>` : "");
-}
-
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 /** computePosition(rect, popoverHeight, viewportHeight) -> {top, left}.

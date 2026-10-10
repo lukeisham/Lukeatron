@@ -7,14 +7,7 @@
  * escape untrusted text, then apply a handful of inline markers.
  */
 
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+import { escapeHtml } from "./escape-html.js";
 
 /** renderInline(text) -> escaped HTML with bold/italic markers applied. */
 function renderInline(text) {
@@ -35,4 +28,4 @@ function renderParagraphs(text) {
     .join("");
 }
 
-export { escapeHtml, renderInline, renderParagraphs };
+export { renderInline, renderParagraphs };

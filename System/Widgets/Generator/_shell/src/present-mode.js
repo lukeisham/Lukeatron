@@ -166,7 +166,7 @@ var PresentMode = (function () {
     var html = '<span class="muted">Category</span>' +
       '<button class="fv on" data-cat="">All</button>';
     CONFIG.generator.categories.forEach(function (cat) {
-      html += '<button class="fv" data-cat="' + esc(cat.id) + '">' + esc(cat.label) + "</button>";
+      html += '<button class="fv" data-cat="' + escapeHtml(cat.id) + '">' + escapeHtml(cat.label) + "</button>";
     });
     bar.innerHTML = html;
     bar.style.display = "flex";
@@ -178,8 +178,6 @@ var PresentMode = (function () {
       });
     });
   }
-
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
   /** Called by ApiSeam after a successful Tier B refresh (task E) — merges
    * newly-fetched items into the live pool, skipping any id already

@@ -17,7 +17,6 @@ var UI = (function () {
   var view = levels[Math.min(1, levels.length - 1)];
 
   var $ = function (id) { return document.getElementById(id); };
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
   // Renders footer attribution text into safe HTML, turning any
   // [label](url) markdown-style link into a real target=_blank anchor
   // (e.g. "CC-BY-SA" -> a link to the licence's own description page).
@@ -28,11 +27,11 @@ var UI = (function () {
     var out = "", last = 0, m;
     LINK_RE.lastIndex = 0;
     while ((m = LINK_RE.exec(text))) {
-      out += esc(text.slice(last, m.index));
-      out += '<a href="' + esc(m[2]).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + "</a>";
+      out += escapeHtml(text.slice(last, m.index));
+      out += '<a href="' + escapeHtml(m[2]).replace(/"/g, "&quot;") + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(m[1]) + "</a>";
       last = m.index + m[0].length;
     }
-    return out + esc(text.slice(last));
+    return out + escapeHtml(text.slice(last));
   }
   function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function levelIndex(v) { return levels.indexOf(v); }
@@ -53,7 +52,7 @@ var UI = (function () {
     var bar = $("focusbar");
     var html = '<span class="muted">Focus</span>';
     levels.forEach(function (lv) {
-      html += '<button class="fv' + (lv === view ? " on" : "") + '" data-v="' + esc(lv) + '">' + esc(titleCase(lv)) + "</button>";
+      html += '<button class="fv' + (lv === view ? " on" : "") + '" data-v="' + escapeHtml(lv) + '">' + escapeHtml(titleCase(lv)) + "</button>";
     });
     bar.innerHTML = html;
     bar.querySelectorAll(".fv").forEach(function (b) {
@@ -70,10 +69,10 @@ var UI = (function () {
     var html = '<span class="muted">Sweeps</span>';
     CONFIG.sweeps.items.forEach(function (s) {
       html += '<label class="muted" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;">' +
-        '<input type="checkbox" class="sweep-on" data-id="' + esc(s.id) + '"> ' + esc(s.label) + '</label>';
+        '<input type="checkbox" class="sweep-on" data-id="' + escapeHtml(s.id) + '"> ' + escapeHtml(s.label) + '</label>';
       if (s.category === "genre" && s.oppositeLabel) {
-        html += '<label class="muted sweep-opp-label" data-for="' + esc(s.id) + '" style="display:none;align-items:center;gap:4px;cursor:pointer;font-size:12px;">' +
-          '<input type="checkbox" class="sweep-opp" data-id="' + esc(s.id) + '" disabled> Opposite (' + esc(s.oppositeLabel) + ')</label>';
+        html += '<label class="muted sweep-opp-label" data-for="' + escapeHtml(s.id) + '" style="display:none;align-items:center;gap:4px;cursor:pointer;font-size:12px;">' +
+          '<input type="checkbox" class="sweep-opp" data-id="' + escapeHtml(s.id) + '" disabled> Opposite (' + escapeHtml(s.oppositeLabel) + ')</label>';
       }
     });
     bar.innerHTML = html;
@@ -204,7 +203,7 @@ var UI = (function () {
     $("capwarn").style.display = "none";
     $("focusbar").style.display = "flex"; $("key").style.display = "block"; $("hoverhint").style.display = "block";
     var pal = CONFIG.clausePalette;
-    $("sline").innerHTML = R.summary.classifications.map(function (c) { return esc(c.label) + " (" + c.id.replace(/[a-z]$/, "") + ")"; }).join(" · ");
+    $("sline").innerHTML = R.summary.classifications.map(function (c) { return escapeHtml(c.label) + " (" + c.id.replace(/[a-z]$/, "") + ")"; }).join(" · ");
     var toks = R._toks, clauses = R._clauses;
     var html = "", ci = -1, openCl = false, openPh = null;
     for (var i = 0; i < toks.length; i++) {
@@ -216,7 +215,7 @@ var UI = (function () {
         if (cx !== null) {
           var cl = clauses[cx], hue = pal[cx % pal.length];
           var lbl = cl.abbr || (cl.role === "dependent" ? "DEP" : "IND " + (clauses.filter(function (c, k) { return !c.dep && k <= cx; }).length));
-          html += '<span class="cl" data-ci="' + cx + '" style="--h50:' + hue.h50 + ';--h100:' + hue.h100 + ';--h600:' + hue.h600 + ';--h800:' + hue.h800 + ';--hf:' + hue.hf + ';"><span class="lbl">' + esc(lbl) + "</span>";
+          html += '<span class="cl" data-ci="' + cx + '" style="--h50:' + hue.h50 + ';--h100:' + hue.h100 + ';--h600:' + hue.h600 + ';--h800:' + hue.h800 + ';--hf:' + hue.hf + ';"><span class="lbl">' + escapeHtml(lbl) + "</span>";
           openCl = true;
         } else openCl = false;
       }
@@ -229,9 +228,9 @@ var UI = (function () {
       if (t.isWord) {
         var tag = R.tokens[i].tags[0];
         var tent = tag.confidence < CONFIG.tentativeThreshold;
-        html += '<span class="w' + (tent ? " tentW" : "") + '" data-i="' + i + '">' + esc(t.text) + '<span class="pos">' + esc(EXPLAINER.posShort(t)) + "</span></span>";
+        html += '<span class="w' + (tent ? " tentW" : "") + '" data-i="' + i + '">' + escapeHtml(t.text) + '<span class="pos">' + escapeHtml(EXPLAINER.posShort(t)) + "</span></span>";
       } else {
-        html += '<span class="' + (cx === null ? "noclause" : "") + '">' + esc(t.text) + "</span>";
+        html += '<span class="' + (cx === null ? "noclause" : "") + '">' + escapeHtml(t.text) + "</span>";
       }
       if (i < toks.length - 1 && EXPLAINER.needSpace(toks[i], toks[i + 1])) html += " ";
     }
@@ -249,7 +248,7 @@ var UI = (function () {
     return (R._clauses || []).map(function (cl, cx) {
       var hue = pal[cx % pal.length];
       var label = cl.abbr ? cl.abbr : (cl.typeName || cl.type || "clause");
-      return '<span class="chip" style="background:' + hue.h50 + ';color:' + hue.h800 + ';">' + esc(hue.name) + " — " + esc(String(label).toLowerCase()) + (cl.modifies ? " (modifies “" + esc(cl.modifies) + "”)" : "") + "</span>";
+      return '<span class="chip" style="background:' + hue.h50 + ';color:' + hue.h800 + ';">' + escapeHtml(hue.name) + " — " + escapeHtml(String(label).toLowerCase()) + (cl.modifies ? " (modifies “" + escapeHtml(cl.modifies) + "”)" : "") + "</span>";
     }).join(" ");
   }
 
@@ -264,7 +263,7 @@ var UI = (function () {
     else if (p === PH_HOME) desc = "sub-units shown in shades of their parent hue";
     else if (p === W_HOME) desc = "word-level tints inherit the parent hue · tag = word class · dashed underline = tentative";
     else desc = "colour intensity increases at finer focus levels · dashed underline = tentative";
-    k.innerHTML = (showHeading ? "<strong>" + esc(label) + "</strong> — " + desc + (chips ? " · " : "") : "") + chips;
+    k.innerHTML = (showHeading ? "<strong>" + escapeHtml(label) + "</strong> — " + desc + (chips ? " · " : "") : "") + chips;
   }
 
   function renderIcons() {
@@ -279,7 +278,7 @@ var UI = (function () {
       var g = groups[k], f = g.f;
       var mark = icons[f.severity] || "◦";
       var col = f.severity === "flag" ? "#A32D2D" : (f.severity === "check" ? "#3B6D11" : "var(--ink2)");
-      return '<span class="ic"><span style="color:' + col + ';">' + mark + "</span> " + esc(f.label.toLowerCase()) + " " + f.id.replace(/[a-z]$/, "") + (g.n > 1 ? " ×" + g.n : "") + '<span class="tt"><strong>How this was calculated</strong><br>' + esc(f.explain) + "</span></span>";
+      return '<span class="ic"><span style="color:' + col + ';">' + mark + "</span> " + escapeHtml(f.label.toLowerCase()) + " " + f.id.replace(/[a-z]$/, "") + (g.n > 1 ? " ×" + g.n : "") + '<span class="tt"><strong>How this was calculated</strong><br>' + escapeHtml(f.explain) + "</span></span>";
     }).join("");
   }
 
@@ -321,7 +320,7 @@ var UI = (function () {
       if (!w) { tip.style.display = "none"; return; }
       var i = +w.dataset.i;
       var h = hoverText(i);
-      tip.innerHTML = "<b>" + esc(h.head) + "</b>" + esc(h.txt);
+      tip.innerHTML = "<b>" + escapeHtml(h.head) + "</b>" + escapeHtml(h.txt);
       tip.style.display = "block";
       var x = ev.pageX + 14, y = ev.pageY + 16;
       if (x + 310 > document.body.clientWidth) x = ev.pageX - 310;
@@ -335,7 +334,7 @@ var UI = (function () {
       ev.preventDefault();
       var i = +w.dataset.i, t = R._toks[i], cid = R.tokens[i].tags[0].id, c = CONTENT[cid];
       var ctx = $("ctx");
-      ctx.innerHTML = '<div class="h">“' + esc(t.text) + '” — ' + esc(EXPLAINER.posShort(t)) + '</div><div>' + (c ? esc(c.d) : "") + '</div><div class="muted" style="padding-top:0;">Role here: ' + esc(EXPLAINER.funcOf(R, i)) + " · confidence " + Math.round(R.tokens[i].tags[0].confidence * 100) + "%</div>";
+      ctx.innerHTML = '<div class="h">“' + escapeHtml(t.text) + '” — ' + escapeHtml(EXPLAINER.posShort(t)) + '</div><div>' + (c ? escapeHtml(c.d) : "") + '</div><div class="muted" style="padding-top:0;">Role here: ' + escapeHtml(EXPLAINER.funcOf(R, i)) + " · confidence " + Math.round(R.tokens[i].tags[0].confidence * 100) + "%</div>";
       ctx.style.left = (ev.pageX + 4) + "px"; ctx.style.top = (ev.pageY + 4) + "px"; ctx.style.display = "block";
     });
     document.addEventListener("click", function (ev) {

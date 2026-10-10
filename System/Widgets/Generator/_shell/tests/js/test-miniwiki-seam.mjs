@@ -15,6 +15,7 @@ import vm from "node:vm";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { escapeHtml } from "../../src/escape-html.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SEAM_SRC = fs.readFileSync(path.join(__dirname, "..", "..", "src", "miniwiki-seam.js"), "utf-8");
@@ -40,6 +41,7 @@ function makeSandbox({ bundleSrc = SAMPLE_BUNDLE_SRC, articles = SAMPLE_ARTICLES
     MINIWIKI_BUNDLE_SRC: bundleSrc,
     MINIWIKI_ARTICLES: articles,
     MINIWIKI_CARTRIDGE_NAME: cartridgeName,
+    escapeHtml, // assemble.py inlines src/escape-html.js as a global ahead of the shell scripts
     console,
     JSON,
     String,

@@ -21,6 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createFakeDOM } from "./fake-dom.mjs";
+import { escapeHtml } from "../../src/escape-html.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UI_SRC = fs.readFileSync(path.join(__dirname, "..", "..", "src", "ui.js"), "utf-8");
@@ -102,6 +103,7 @@ function makeSandbox({ levels = ["sentential", "clausal", "phrasal", "lexical"],
   const sandbox = {
     document: doc,
     CONFIG, ENGINE, EXPLAINER, LEX: { count: 0, morphOnly: false }, SpellingSeam,
+    escapeHtml, // assemble.py inlines src/escape-html.js as a global ahead of the shell scripts
     navigator: {},
     console,
     Math,

@@ -34,6 +34,7 @@ DEFAULT_OUT = MODULE_DIR / "dist" / "miniwiki.bundle.js"
 # function bodies, never at module-evaluation time) — this list is ordered
 # leaves-first purely for readability, not because the bundler requires it.
 ORDER = [
+    "escape-html.js",
     "tree.js",
     "autolink.js",
     "search-terms.js",
@@ -53,6 +54,7 @@ ORDER = [
 
 IMPORT_RE = re.compile(r"^import\s*\{([^}]*)\}\s*from\s*[\"'][^\"']+[\"'];\s*$", re.MULTILINE)
 EXPORT_RE = re.compile(r"^export\s*\{[^}]*\};\s*$", re.MULTILINE)
+EXPORT_FUNCTION_RE = re.compile(r"^export (?=function )", re.MULTILINE)
 ALIAS_RE = re.compile(r"^\s*(\S+)\s+as\s+(\S+)\s*$")
 
 
@@ -73,6 +75,7 @@ def collect_aliases(text: str) -> list[str]:
 def strip_module_syntax(text: str, name: str) -> str:
     stripped = IMPORT_RE.sub("", text)
     stripped = EXPORT_RE.sub("", stripped)
+    stripped = EXPORT_FUNCTION_RE.sub("", stripped)
     if "import " in stripped or re.search(r"^export\b", stripped, re.MULTILINE):
         raise BundleError(
             f"{name}: import/export syntax survived stripping — bundler regex didn't match "

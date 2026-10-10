@@ -124,6 +124,12 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
     api_js = _read(SHELL_DIR / "api.js")
     spelling_seam_js = _read(SHELL_DIR / "spelling-seam.js")
     miniwiki_seam_js = _read(SHELL_DIR / "miniwiki-seam.js")
+    # escape-html.js is the verbatim ES-module copy of System/Tools/web-shared/escape-html.js;
+    # the widget is classic scripts, so its one `export` keyword is stripped here.
+    escape_html_js = _read_required(SHELL_DIR / "escape-html.js", "escape-html.js")
+    escape_html_js = re.sub(r"^export function ", "function ", escape_html_js, flags=re.MULTILINE)
+    if re.search(r"^(export|import)\b", escape_html_js, re.MULTILINE):
+        raise CartridgeError("escape-html.js: module syntax survived stripping")
 
     generator_mode = config["generator"]["mode"]
 
@@ -270,6 +276,7 @@ def assemble(cartridge_dir: Path, output: Path | None) -> Path:
         "__SPELLDB_B64__": spelldb_b64,
         "__SQLJS__": sqljs_js,
         "__LEXICON_JS__": lexicon_js,
+        "__ESCAPE_HTML_JS__": escape_html_js,
         "__ENGINE_JS__": engine_js,
         "__EXPLAINER_JS__": explainer_js,
         "__SPELLING_SEAM_JS__": spelling_js,

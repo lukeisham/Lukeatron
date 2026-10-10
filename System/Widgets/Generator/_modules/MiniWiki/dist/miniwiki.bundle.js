@@ -5,6 +5,23 @@
 (function (global) {
 "use strict";
 
+/* ---- src/escape-html.js ---- */
+
+// The one HTML escaper for Lukeatron pages (JS-6). Each app serves only its own folder, so an app
+// copies this file verbatim to its own escape-html.js; tests/escape-html.test.js fails on any drift.
+
+const HTML_ENTITIES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+
+/**
+ * Safe for element text and for quoted attribute values. Not for URLs, inline scripts or styles.
+ * @param {unknown} value
+ * @returns {string}
+ */
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => HTML_ENTITIES[character]);
+}
+
+
 /* ---- src/tree.js ---- */
 
 /**
@@ -394,14 +411,6 @@ function copyToClipboard(text, doc) {
  * escape untrusted text, then apply a handful of inline markers.
  */
 
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 /** renderInline(text) -> escaped HTML with bold/italic markers applied. */
 function renderInline(text) {
@@ -809,6 +818,7 @@ function renderSearchBox(doc, opts) {
  * walks `parentNode` by hand instead, which real DOM elements support too.
  */
 
+
 const PREVIEW_LEAD_LEN = 100;
 const SHOW_DELAY_MS = 150;
 
@@ -838,13 +848,6 @@ function formatPreviewHtml(article) {
   const lead = (article.lead || "").slice(0, PREVIEW_LEAD_LEN);
   const ellipsis = (article.lead || "").length > PREVIEW_LEAD_LEN ? "…" : "";
   return `<strong>${escapeHtml(article.title)}</strong>` + (lead ? `<br><span class="mw-preview-lead">${escapeHtml(lead)}${ellipsis}</span>` : "");
-}
-
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 /** computePosition(rect, popoverHeight, viewportHeight) -> {top, left}.

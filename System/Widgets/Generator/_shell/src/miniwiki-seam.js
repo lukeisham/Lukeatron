@@ -94,14 +94,6 @@ var MiniWikiSeam = (function () {
     return String(text).replace(/<\/script/gi, "<\\/script");
   }
 
-  function escapeHtml(text) {
-    return String(text)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
   /** open() -> boolean. Opens the wiki as a new, independent tab; returns
    * false (never throws) when the browser blocked the pop-up, so the
    * caller can show its own "allow pop-ups" message (JS-2). */

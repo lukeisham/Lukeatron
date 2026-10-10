@@ -1,7 +1,7 @@
 """
 Test suite for seal.py — comprehensive coverage of sealing logic.
 
-Tests AC-1 through AC-5 and the near-miss risk from seal.spec.md §6.
+Tests the seal contract and the near-miss risk of a lookalike path.
 """
 
 import tempfile
@@ -23,7 +23,7 @@ class TestSealBasics(unittest.TestCase):
     """Test core sealing logic."""
 
     def test_load_returns_dict_with_stores_and_files(self):
-        """AC-1: load() returns the expected structure."""
+        """load() returns the expected structure."""
         manifest = load()
         self.assertIsInstance(manifest, dict)
         self.assertIn("stores", manifest)
@@ -32,7 +32,7 @@ class TestSealBasics(unittest.TestCase):
         self.assertIsInstance(manifest["files"], set)
 
     def test_ac1_all_eleven_launch_entries_sealed(self):
-        """AC-1: is_sealed() returns True for all eleven launch entries."""
+        """is_sealed() returns True for all eleven launch entries."""
         # Ten sealed stores
         sealed_stores = [
             "People",
@@ -58,7 +58,7 @@ class TestSealBasics(unittest.TestCase):
         self.assertTrue(is_sealed(sealed_file), f"File {sealed_file} should be sealed")
 
     def test_ac2_file_inside_sealed_store_is_sealed(self):
-        """AC-2: A file inside a sealed store is sealed without individual listing."""
+        """A file inside a sealed store is sealed without individual listing."""
         # Test a path inside a sealed store
         test_paths = [
             "People/Alice.md",
@@ -97,7 +97,7 @@ class TestSealBasics(unittest.TestCase):
         self.assertFalse(is_sealed_store("NonExistent"))
 
     def test_ac3_sealed_link_renders_plain_text(self):
-        """AC-3: A wikilink to a sealed slug is considered sealed."""
+        """A wikilink to a sealed slug is considered sealed."""
         # Test sealed store hubs (kebab-case versions)
         sealed_slugs = [
             "people",  # People -> people
@@ -148,7 +148,7 @@ class TestSealBasics(unittest.TestCase):
         self.assertEqual(counts["total"], 11)
 
     def test_ac4_hand_edit_reflected_immediately(self):
-        """AC-4: Hand-editing _sealed.yaml and re-checking (no restart) reflects the change."""
+        """Hand-editing _sealed.yaml and re-checking (no restart) reflects the change."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a temporary _sealed.yaml
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
@@ -226,7 +226,7 @@ class TestNoWritePath(unittest.TestCase):
     """Verify seal.py has no write functionality."""
 
     def test_no_write_to_sealed_yaml(self):
-        """AC-5: Verify no function in seal.py opens _sealed.yaml for writing."""
+        """Verify no function in seal.py opens _sealed.yaml for writing."""
         import inspect
         import seal
 
@@ -249,7 +249,7 @@ class TestNoWritePath(unittest.TestCase):
 
 
 class TestFR7ManifestFailureStates(unittest.TestCase):
-    """Test FR-7 failure handling: absent, unreadable, or malformed manifests."""
+    """Fail-closed handling: absent, unreadable, or malformed manifests."""
 
     def setUp(self):
         """Save original SEALED_YAML path."""
@@ -260,7 +260,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
         paths.SEALED_YAML = self.original_sealed_yaml
 
     def test_ac6_manifest_deleted_seals_everything(self):
-        """AC-6 (FR-7): manifest deleted → is_sealed() returns True for all paths."""
+        """Manifest deleted → is_sealed() returns True for all paths."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Point to a non-existent file
             fake_path = Path(tmpdir) / "nonexistent_sealed.yaml"
@@ -289,7 +289,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
                 )
 
     def test_ac6_manifest_deleted_count_reads_as_failure(self):
-        """AC-6 (FR-7): count() returns None values when manifest is missing."""
+        """count() returns None values when manifest is missing."""
         with tempfile.TemporaryDirectory() as tmpdir:
             fake_path = Path(tmpdir) / "nonexistent_sealed.yaml"
             with patch.object(paths, "SEALED_YAML", fake_path):
@@ -300,7 +300,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
                 self.assertTrue(counts.get("_failure"), "_failure flag should be True")
 
     def test_ac7_manifest_truncated_mid_document_seals_everything(self):
-        """AC-7 (FR-7): truncated manifest (parsing fails) seals everything."""
+        """Truncated manifest (parsing fails) seals everything."""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
             # Write truncated YAML (invalid)
@@ -324,7 +324,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
                 self.assertTrue(counts.get("_failure"), "_failure flag should be True")
 
     def test_manifest_with_invalid_structure_fails_closed(self):
-        """FR-7: manifest with stores/files not being lists → fail closed."""
+        """Manifest with stores/files not being lists → fail closed."""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
             # Write YAML where stores is a string, not a list
@@ -345,7 +345,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
                 self.assertTrue(counts.get("_failure"), "_failure should be True")
 
     def test_manifest_with_wrong_top_level_structure(self):
-        """FR-7: manifest that is valid YAML but wrong structure (e.g., top-level list) fails closed."""
+        """Manifest that is valid YAML but wrong structure (e.g., top-level list) fails closed."""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
             # Write valid YAML but a top-level list instead of a dict
@@ -364,7 +364,7 @@ class TestFR7ManifestFailureStates(unittest.TestCase):
 
 
 class TestFR8LegitimateEmptyManifest(unittest.TestCase):
-    """Test FR-8: explicitly-empty manifest is different from absent manifest."""
+    """explicitly-empty manifest is different from absent manifest."""
 
     def setUp(self):
         """Save original SEALED_YAML path."""
@@ -375,7 +375,7 @@ class TestFR8LegitimateEmptyManifest(unittest.TestCase):
         paths.SEALED_YAML = self.original_sealed_yaml
 
     def test_ac8_empty_manifest_seals_nothing(self):
-        """AC-8 (FR-8): manifest with stores: [] and files: [] seals nothing."""
+        """Manifest with stores: [] and files: [] seals nothing."""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
             temp_sealed.write_text("stores: []\nfiles: []\n")
@@ -400,7 +400,7 @@ class TestFR8LegitimateEmptyManifest(unittest.TestCase):
                 )
 
     def test_ac8_empty_manifest_count_returns_zero(self):
-        """AC-8 (FR-8): count() returns 0 for empty manifest (no failure)."""
+        """count() returns 0 for empty manifest (no failure)."""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_sealed = Path(tmpdir) / "_sealed.yaml"
             temp_sealed.write_text("stores: []\nfiles: []\n")
@@ -416,7 +416,7 @@ class TestFR8LegitimateEmptyManifest(unittest.TestCase):
                 )
 
     def test_empty_manifest_is_visibly_distinct_from_missing(self):
-        """FR-8 contrast with FR-7: empty-manifest counts vs missing-manifest counts."""
+        """Empty-manifest counts vs missing-manifest counts."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Case 1: empty manifest
             empty_sealed = Path(tmpdir) / "empty_sealed.yaml"

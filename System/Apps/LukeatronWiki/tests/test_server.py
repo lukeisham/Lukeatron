@@ -1,7 +1,7 @@
 """
 Test suite for server.py — the thin stdlib HTTP dispatcher.
 
-Covers server.spec.md's AC-1 through AC-9 that are testable without a real
+Covers the server's behaviours that are testable without a real
 browser or network egress: bind address, POST-only /do/* routes, no
 /do/mode route, a traversal attempt refused, every GET route returning 200
 or a deliberate 404 (never a stack trace), and a grep for direct
@@ -152,7 +152,7 @@ class TestAC1BindAddress(ServerFixtureTestCase):
         self.assertEqual(sockname[0], "127.0.0.1")
 
     def test_never_binds_all_interfaces(self):
-        # A direct assertion against the contract's own wording: FR-1 rules
+        # A direct assertion against the contract's own wording: the rules
         # out "0.0.0.0" categorically, not just "happens not to be it".
         self.assertNotEqual(self.httpd.server_address[0], "0.0.0.0")
 
@@ -185,7 +185,7 @@ class TestAC6PostOnlyDoRoutes(ServerFixtureTestCase):
 
     def test_post_on_do_capture_does_not_405(self):
         # capture.py may not exist yet (sibling module owned elsewhere) —
-        # the important thing per FR-7/AC-6 is that POST is accepted as a
+        # the important thing is that POST is accepted as a
         # method (never 405), whatever the eventual body-level outcome is.
         status, _, _ = self._request(
             "POST", "/do/capture",
@@ -204,8 +204,8 @@ class TestDoRoutesEndToEnd(ServerFixtureTestCase):
     no remaining bytes silently returns an empty fields dict. A 405/"not a
     500" check alone (TestAC6) can't catch either failure mode; these tests
     drive the routes with real form data and assert the actual file-level
-    effect, matching enrich.spec.md's own AC-1 (idempotent request) and
-    capture.spec.md's AC (a real queue-row write).
+    effect: an idempotent enrich request and a real capture queue-row
+    write.
     """
 
     def _post_form(self, path, **fields):
@@ -297,9 +297,57 @@ class TestTraversalRefused(ServerFixtureTestCase):
         self.assertTrue(server._is_safe_relpath("BalaclavaPC/ Marketing and Ministry Plan/notes:extra.md"))
 
 
+class TestStoreFileView(ServerFixtureTestCase):
+    """A Long-Term file opens as a readable page; a sealed one answers exactly like a missing one."""
+
+    def setUp(self):
+        super().setUp()
+        _write(
+            self.lt / "Theology" / "notes" / "grace.md",
+            '---\ntitle: "On Grace"\n---\n# Grace\n\n- **free** gift\n- see [[theology]]\n\n'
+            "| a | b |\n|---|---|\n| 1 | 2 |\n\n<script>alert(1)</script>\n",
+        )
+        _write(self.lt / "Theology" / "page.html", "<p>hi</p>")
+        _write(self.lt / "Secret" / "x.md", "hidden")
+        _write(self.sealed_yaml, "stores:\n  - Secret\nfiles: []\n")
+
+    def test_markdown_renders_as_html(self):
+        status, _, body = self._request("GET", "/store/Theology/notes/grace.md")
+        self.assertEqual(status, 200)
+        text = body.decode("utf-8")
+        self.assertIn("<h1>On Grace</h1>", text)
+        self.assertIn("<strong>free</strong>", text)
+        self.assertIn('href="/page/theology"', text)
+        self.assertIn("<table>", text)
+        self.assertNotIn("<script>alert(1)</script>", text)
+
+    def test_html_file_is_framed_from_sandboxed_raw_route(self):
+        status, _, body = self._request("GET", "/store/Theology/page.html")
+        self.assertEqual(status, 200)
+        self.assertIn(b'src="/raw/Theology/page.html"', body)
+        status, headers, raw = self._request("GET", "/raw/Theology/page.html")
+        self.assertEqual(status, 200)
+        self.assertEqual(raw, b"<p>hi</p>")
+        self.assertIn("sandbox", headers.get("Content-Security-Policy", ""))
+
+    def test_sealed_file_looks_exactly_like_a_missing_one(self):
+        for prefix in ("/store/", "/raw/"):
+            with self.subTest(prefix=prefix):
+                sealed = self._request("GET", prefix + "Secret/x.md")
+                missing = self._request("GET", prefix + "Secret/nope.md")
+                self.assertEqual((sealed[0], sealed[2]), (missing[0], missing[2]))
+                self.assertNotIn(b"hidden", sealed[2])
+
+    def test_traversal_is_refused(self):
+        for route in ("/store/Theology/../Secret/x.md", "/raw/Theology/%2e%2e/Secret/x.md"):
+            with self.subTest(route=route):
+                status, _, _ = self._request("GET", route)
+                self.assertEqual(status, 404)
+
+
 class TestEveryGetRouteRespondsCleanly(ServerFixtureTestCase):
     """
-    AC-9-adjacent sanity check: every GET route returns 200 or a deliberate
+    Sanity check: every GET route returns 200 or a deliberate
     404/503 — never an unhandled exception / raw stack trace to the client
     — regardless of whether render.py exists yet.
     """

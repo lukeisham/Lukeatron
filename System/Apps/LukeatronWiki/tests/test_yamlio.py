@@ -428,10 +428,8 @@ class TestYamlioRealFiles(unittest.TestCase):
         """The live index parses into real structures.
 
         Counts are NOT hardcoded here. This is a parser test, and the live wiki
-        legitimately grows — it went from 25 pages / 13 themes to 30 / 18 when the
-        rebuilt nodes were promoted on 2026-09-12, which broke the pinned numbers
-        that used to be asserted here. Pin the SHAPE and the internal consistency
-        (pages == count), not the size of Luke's wiki on one particular day.
+        grows, so pinned numbers would break on every new page. Pin the SHAPE
+        and the internal consistency (pages == count), not the wiki's size.
         """
         idx = yamlio.load(self.ROOT / "Memory/Long-Term/LukeatronWiki/_index.yaml")
         self.assertEqual(idx["wiki"], "LukeatronWiki")
@@ -473,8 +471,8 @@ class TestYamlioRealFiles(unittest.TestCase):
     def test_sandbox_rebuild_index_yaml(self):
         """The sandbox rebuild staging file, while it still exists.
 
-        This folder is pending cleanup now that its contents were promoted into
-        Memory/ on 2026-09-12, so skip rather than fail once it is gone.
+        The folder is a leftover awaiting cleanup, so skip rather than fail
+        once it is gone.
         """
         path = self.ROOT / "System/Sandbox/LukeatronWiki/_nodes-rebuild/_index.yaml"
         if not path.exists():

@@ -3,29 +3,23 @@ render.py — pure read-to-HTML. Turns library's verbatim data into the
 three-column page Luke looks at (nav rail / content / Tufte margin), the
 generation-gate slots, the ink legend, and the integrity footer.
 
-FR-11 / AC-8: this module NEVER opens a file for writing — every read goes
+This module NEVER opens a file for writing — every read goes
 through `library` (the one module allowed to touch Long-Term / LukeatronWiki
 on disk). render.py itself performs zero direct file I/O of any kind.
 
-FR-1: body content is shown verbatim. This module emits headings, links and
+Body content is shown verbatim. This module emits headings, links and
 structure only — it never summarises, paraphrases, or adds a lead-in
 sentence over material it did not write itself.
 
-Build-time decisions this module had to make that neither CONTRACT.md nor
-render.spec.md pin down (see the build report for the full list):
+Design choices this module makes:
 
-  - render_slot's signature follows CONTRACT.md's
-    `render_slot(slug, slot_name, state, payload)` — NOT render.spec.md's
-    FR-2 draft signature `render_slot(store, slug, slot_name)`, which would
-    have render decide the state itself. CONTRACT.md's own prose ("render
-    calls enrich.slot_state(...); it never decides the state itself") and
-    this build's task brief both confirm the state-is-passed-in shape, so
-    that is what is implemented; the spec's own signature line is stale.
+  - render_slot's signature is `render_slot(slug, slot_name, state, payload)`:
+    render calls enrich.slot_state(...) and never decides the state itself,
+    so the state is passed in.
   - "filled" is the one slot state whose *content* render reads for itself
     rather than asking `enrich` for it — enrich's contract exposes no "read
-    the accepted content" function. render.spec.md AD-2 / enrich.spec.md
-    AC-9 both say state is decided by the `.p-gen` block in the node's
-    STORE file (accept()'s one write target), so this module reads that
+    the accepted content" function. State is decided by the `.p-gen` block
+    in the node's STORE file (accept()'s one write target), so this module reads that
     same block, from that same file, for content — never the node's own
     body, which accept() never touches. State and content now come from
     the identical place (see `_read_filled_slot_payload`).
@@ -44,23 +38,25 @@ render.spec.md pin down (see the build report for the full list):
     not carried by any field `library` returns. This module uses one small,
     explicit, overridable convention (`_provenance_class_for_store`):
     `Bible/` is someone else's words (`.p-source`); everything else is
-    Luke's own Long-Term notes (`.p-luke`). Flagged in the build report as
-    an open decision, not a spec requirement.
-  - The per-file route implied by "links... resolve" in the URL-encoding
-    requirement (`/store/<store>/<file>`) is not in CONTRACT.md's route
-    table, which only lists `/store/<store>` (the contents page). This
-    module emits links to that assumed route for contents-page files and
-    search hits; `server.py` needs to add it or this needs reconciling.
+    Luke's own Long-Term notes (`.p-luke`). This convention is open to
+    revision.
+  - `/store/<store>/<file>` is the reading view of one store file
+    (`render_store_file`). Markdown goes through `mdview`, which turns
+    markup into HTML without touching a word; HTML, PDF and image files
+    are embedded from `/raw/<store>/<file>`; any other text is shown as
+    numbered source lines. Every view carries `#L<n>` anchors for search.
 """
 
 import html
+import posixpath
 import re
 from urllib.parse import quote
 
 try:
-    from . import library, yamlio
+    from . import library, mdview, yamlio
 except ImportError:  # pragma: no cover - direct execution / test harness
     import library
+    import mdview
     import yamlio
 
 
@@ -137,7 +133,7 @@ def _slot_state_and_payload(slug, slot_name, node):
     """
     Resolve one slot's (state, payload, degraded_note).
 
-    render never decides slot state (CONTRACT.md, "Slot states"): empty /
+    render never decides slot state: empty /
     requested / draft / filled all come straight from `enrich.slot_state()`,
     called with the FULL slot name — the canonical argument type `enrich`
     validates against `SLOTS` (see the module docstring's slot-argument
@@ -263,7 +259,7 @@ def _split_body_and_slots(body_text):
     The three slot heading names are reserved: a "## References" /
     "## Supporting Quotes" / "## See Also" line never flows into the
     generic body renderer — it is drawn exclusively by render_slot, so a
-    `.p-gen` block can never end up outside a slot by construction (FR-3).
+    `.p-gen` block can never end up outside a slot by construction.
     """
     lines = (body_text or "").split("\n")
     main_lines = []
@@ -291,7 +287,7 @@ def _split_body_and_slots(body_text):
 
 def _render_wikilink(slug):
     """
-    Render exactly one of the three renderings FR-5 allows for a [[slug]]
+    Render exactly one of the three allowed renderings for a [[slug]]
     wikilink — never a red link for a sealed target.
     """
     res = library.resolve_wikilink(slug)
@@ -406,7 +402,7 @@ def _render_store_text(text, ink_class):
 
 
 # ============================================================================
-# Generation-gate payload rendering (FR-3, FR-4, AC-3, AC-4)
+# Generation-gate payload rendering
 # ============================================================================
 
 
@@ -432,7 +428,7 @@ def _render_gen_payload(payload):
     """
     Render one slot's generated content. Returns (html, ok). ok is False —
     and html is discarded by the caller — whenever a `verified` stamp
-    cannot be established for every item (FR-4 / AC-3): a `.p-gen` block is
+    cannot be established for every item: a `.p-gen` block is
     never emitted for an item lacking one, enforced here at the point of
     construction rather than left to hope.
 
@@ -444,12 +440,12 @@ def _render_gen_payload(payload):
         "draft" and "filled" share one code path here. ANY item missing a
         non-empty stamp refuses the WHOLE payload — the same all-or-nothing
         rule `enrich.write_draft()`/`accept()` already enforce at write
-        time (FR-3/FR-8) — not a silent per-item drop.
+        time — not a silent per-item drop.
       - the simple/legacy shape — a dict with one top-level "verified"
         stamp covering a list of plain-string "items" (or free text under
         "content"/"text"/"body", parsed by `_parse_gen_text`), or a bare
         string in that same free-text form. Kept for callers that hand
-        `render_slot()` a payload directly (see tests/test_render.py's AC-3
+        `render_slot()` a payload directly (see tests/test_render.py's
         coverage, which exercises this shape on purpose, independent of
         enrich's real one).
     """
@@ -512,7 +508,7 @@ def render_slot(slug, slot_name, state, payload=None):
 
     Every `.p-gen`-bearing element this module ever emits is emitted here,
     inside `.slot-container` — nowhere else in render.py uses that class,
-    which is what makes FR-3 checkable rather than a promise.
+    which is what makes the gate checkable rather than a promise.
     """
     if slot_name not in SLOTS:
         raise ValueError(f"Unknown slot: {slot_name!r}")
@@ -639,7 +635,7 @@ _CAPTURE_INTENTS = ("read", "watch", "write")
 
 def _capture_form_html():
     """
-    The quick-capture form (PRD Key behaviours; capture.spec.md FR-1). A
+    The quick-capture form (PRD Key behaviours). A
     fixed form posting to POST /do/capture: title, kind (free text), intent
     (fixed read/watch/write), source, page (a dropdown of existing unsealed
     nodes — Luke makes the link, not an agent), and an optional note.
@@ -680,10 +676,9 @@ def _capture_form_html():
 
 def _ink_legend_html():
     # Swatches use wiki-page.css's own .key-swatch classes (kl/ks/kg/ke) so the
-    # legend's colours come from that stylesheet unmodified (FR-10) — app.css
+    # legend's colours come from that stylesheet unmodified — app.css
     # must never define its own rules against the ink CSS variables directly
-    # (CONTRACT.md house rule: no --edge-luke/--wash-luke/--edge-source/--edge-gen
-    # in static/app.css).
+    # (no --edge-luke/--wash-luke/--edge-source/--edge-gen in static/app.css).
     return (
         '<div class="ink-legend">'
         '<div class="ink-legend-title">Ink</div>'
@@ -792,7 +787,7 @@ def _page_shell(title, content_html, rail_html, margin_html, counts, search_q=""
 
 def _seal_failure_page():
     """
-    FR-13 / AC-10: the whole-app failure banner. Shown on every route when
+    The whole-app failure banner. Shown on every route when
     `seal`'s manifest is missing, unreadable, or malformed — no store
     content, no node body, no search results, no integrity counts (they
     would be lies), until the manifest is restored.
@@ -902,7 +897,7 @@ def render_page(slug):
             # would otherwise show it a second time here — HTML-escaped,
             # un-classed, right below the slot that already shows it
             # properly. Strip it before this generic render; the slot
-            # container remains its one true home (FR-3).
+            # container remains its one true home.
             text_html = _render_store_text(_strip_gen_blocks(content.get("text")), ink)
         ref_sections.append(
             f'<section id="{anchor_id}"><h2><span class="label">{_esc(ref["label"])}</span></h2>{text_html}</section>'
@@ -963,6 +958,140 @@ def render_store(store):
         content_html = f"<h1>{_esc(store)}</h1>{note}" f'<ul class="margin-items">{items}</ul>'
 
     return _page_shell(store, content_html, rail_html, margin_html, counts)
+
+
+_MARKDOWN_SUFFIXES = (".md", ".markdown")
+_EMBED_SUFFIXES = (".html", ".htm", ".pdf")
+_IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp")
+_LT_PREFIX = "Memory/Long-Term/"
+
+
+def _store_file_resolver(store, relpath):
+    """
+    Map a link written inside a store file to a wiki URL. Lukeatron notes
+    link three ways: relative to the file, from the repo root
+    (`Memory/Long-Term/<store>/...`), or to the open web.
+    """
+    base_dir = posixpath.dirname(f"{store}/{relpath}")
+
+    def resolve(href, embed=False):
+        if href.startswith(("http://", "https://", "mailto:", "#", "/")):
+            return href
+        target, _, fragment = href.partition("#")
+        if target.startswith(_LT_PREFIX):
+            joined = posixpath.normpath(target[len(_LT_PREFIX):])
+        else:
+            joined = posixpath.normpath(posixpath.join(base_dir, target))
+        if joined.startswith("..") or "/" not in joined:
+            return href
+        prefix = "/raw/" if embed else "/store/"
+        return prefix + _qpath(joined) + (f"#{fragment}" if fragment else "")
+
+    return resolve
+
+
+def _wikilink_with_label(slug, label=None):
+    if not label:
+        return _render_wikilink(slug)
+    res = library.resolve_wikilink(slug)
+    if res["state"] == "sealed":
+        return _esc(label)
+    cls = ' class="redlink"' if res["state"] == "unresolved" else ""
+    return f'<a{cls} href="/page/{_qseg(slug)}">{_esc(label)}</a>'
+
+
+def _source_lines_html(text):
+    rows = "".join(
+        f'<span id="L{n}" class="src-line"><a class="src-num" href="#L{n}">{n}</a>{_esc(line)}</span>'
+        for n, line in enumerate(text.split("\n"), start=1)
+    )
+    return f'<pre class="md-code src-view">{rows}</pre>'
+
+
+def _frontmatter_box(fm_text):
+    rows = []
+    for line in fm_text.split("\n"):
+        key, sep, value = line.partition(":")
+        if sep and key.strip() and not key.startswith((" ", "\t", "-")):
+            rows.append(
+                f'<tr><td style="font-weight:600;">{_esc(key.strip())}</td>'
+                f"<td>{_esc(value.strip().strip(chr(34)))}</td></tr>"
+            )
+    if not rows:
+        return ""
+    return f'<div class="margin-box"><div class="margin-box-title">Info</div><table>{"".join(rows)}</table></div>'
+
+
+def _title_from_frontmatter(fm_text):
+    for line in (fm_text or "").split("\n"):
+        if line.startswith("title:"):
+            return line[len("title:"):].strip().strip("\"'") or None
+    return None
+
+
+def render_store_file(store, relpath):
+    counts = library.integrity_counts()
+    if counts.get("sealed") is None:
+        return _seal_failure_page()
+
+    content = library.read_store_file(store, relpath)
+    if content is library.SEALED or content is None:
+        return render_404("No such file.")
+
+    suffix = relpath.lower().rsplit("/", 1)[-1]
+    raw_url = f"/raw/{_qseg(store)}/{_qpath(relpath)}"
+    name = relpath.rsplit("/", 1)[-1]
+    title = name
+    margin_parts = []
+
+    if content.get("binary") or suffix.endswith(_EMBED_SUFFIXES + _IMAGE_SUFFIXES):
+        if suffix.endswith(_IMAGE_SUFFIXES):
+            body = f'<figure class="file-embed"><img src="{raw_url}" alt="{_esc(name)}"></figure>'
+        elif suffix.endswith(_EMBED_SUFFIXES):
+            page_title = re.search(r"<title>(.*?)</title>", content.get("text") or "", re.S | re.I)
+            if page_title and page_title.group(1).strip():
+                title = html.unescape(page_title.group(1).strip())
+            body = (
+                f'<iframe class="file-embed-frame" src="{raw_url}" title="{_esc(name)}" '
+                'sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>'
+            )
+        else:
+            body = f'<p class="p-seam">This file cannot be shown here. <a href="{raw_url}">Download it</a>.</p>'
+    elif suffix.endswith(_MARKDOWN_SUFFIXES):
+        fm_text, md_body, first_line = mdview.split_frontmatter(_strip_gen_blocks(content["text"]))
+        title = _title_from_frontmatter(fm_text) or title
+        lines = md_body.split("\n")
+        lead = next((k for k, ln in enumerate(lines) if ln.strip()), None)
+        if lead is not None and re.match(r"#\s", lines[lead]):
+            heading = lines[lead].lstrip("#").strip()
+            if title in (name, heading):
+                # The note's own top heading becomes the page title; the line
+                # is blanked, not removed, so #L<n> anchors still match the file.
+                title = heading
+                lines[lead] = ""
+                md_body = "\n".join(lines)
+        if fm_text:
+            margin_parts.append(_frontmatter_box(fm_text))
+        body = mdview.to_html(
+            md_body, _store_file_resolver(store, relpath), _wikilink_with_label, first_line
+        )
+    else:
+        body = _source_lines_html(content["text"])
+
+    crumbs = [f'<a href="/store/{_qseg(store)}">{_esc(store)}</a>']
+    crumbs += [_esc(part) for part in relpath.split("/")[:-1]]
+    content_html = (
+        f'<p class="eyebrow">{" › ".join(crumbs)}</p>'
+        f"<h1>{_esc(title)}</h1>"
+        f'<article class="store-doc">{body}</article>'
+    )
+    margin_parts.append(
+        '<div class="margin-box"><div class="margin-box-title">File</div>'
+        f'<p class="file-path">{_esc(store)}/{_esc(relpath)}</p>'
+        f'<a href="{raw_url}" target="_blank" rel="noopener">Open raw</a></div>'
+    )
+    margin_parts.append(_ink_legend_html())
+    return _page_shell(title, content_html, _rail_html(), "".join(margin_parts), counts)
 
 
 def render_backlog():

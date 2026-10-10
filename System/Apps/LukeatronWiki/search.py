@@ -1,7 +1,7 @@
 """
 search.py — ranked full-text search across every unsealed store.
 
-Reaches disk ONLY through `library` (FR-2/AC-6). The ranking and matching come
+Reaches disk ONLY through `library`. The ranking and matching come
 from the shared memory-search engine (`library.search_index()`): every query
 term must match, a term matches inside a word, "quoted phrases" stay together,
 and results are ranked with filename matches first. The engine refreshes

@@ -1,6 +1,6 @@
 /**
  * app.js — minimal click-only vanilla JS for LukeatronWiki
- * Per render.spec.md AD-1: "a small click-only JS layer posts to the server
+ * "a small click-only JS layer posts to the server
  * and reloads — no client-side state computation."
  *
  * Scope:
@@ -194,6 +194,25 @@ function initCaptureForm() {
   // Server returns 303 redirect, page reloads with new queue row.
 }
 
+// ── search-hit line jump ───────────────────────────────────────────────
+// Only the first line of each rendered block carries an id, so a hit on a
+// line inside a table or list lands on the block that holds it.
+function initLineJump() {
+  const m = location.hash.match(/^#L(\d+)$/);
+  if (!m || document.getElementById('L' + m[1])) return;
+  const line = Number(m[1]);
+  let best = null;
+  document.querySelectorAll('.store-doc [id^="L"]').forEach(function (el) {
+    const n = Number(el.id.slice(1));
+    if (n <= line && (!best || n > Number(best.id.slice(1)))) best = el;
+  });
+  if (!best) return;
+  best.classList.add('line-hit');
+  window.addEventListener('load', function () {
+    best.scrollIntoView({ block: 'start' });
+  });
+}
+
 // ── init all ───────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
   initTheme();
@@ -203,4 +222,5 @@ document.addEventListener('DOMContentLoaded', function () {
   initForms();
   initSlotActions();
   initCaptureForm();
+  initLineJump();
 });

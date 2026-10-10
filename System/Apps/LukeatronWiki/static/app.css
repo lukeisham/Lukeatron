@@ -363,7 +363,7 @@ body { margin: 0; background: var(--paper); }
 }
 
 /* Swatch colour/sizing comes from wiki-page.css's own .key-swatch (kl/ks/kg/ke)
-   classes, unmodified (FR-10) — app.css never defines rules against
+   classes, unmodified — app.css never defines rules against
    --edge-luke/--wash-luke/--edge-source/--wash-source/--edge-gen itself. */
 
 /* ── slot states ───────────────────────────────────────────────────────── */
@@ -824,3 +824,58 @@ a.redlink:hover {
    keep them on one row so the split is invisible to the reader. */
 .slot-draft-actions { display: flex; gap: 0.5rem; align-items: center; }
 .slot-action-form { display: inline; margin: 0; }
+
+/* ── store file reading view ───────────────────────────────────────────── */
+/* The shell already supplies the margin column, so the article drops
+   wiki-page.css's own reserved sidenote gutter. */
+.store-doc { padding-right: 0; max-width: var(--measure); color: var(--ink-verbatim); }
+.store-doc > * { max-width: 100%; }
+.store-doc h1, .store-doc h2 { font-size: var(--t-h2); }
+.store-doc h4, .store-doc h5, .store-doc h6 {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: var(--t-small); font-weight: 600; color: var(--ink-seam);
+  margin: 1.3rem 0 0.4rem;
+}
+.store-doc ul, .store-doc ol { margin: 0 0 1.05rem; padding-left: 1.4rem; }
+.store-doc li { margin: 0.2rem 0; }
+.store-doc li > ul, .store-doc li > ol { margin: 0.2rem 0 0; }
+.store-doc hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
+.store-doc img { max-width: 100%; height: auto; }
+.store-doc code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.88em;
+  background: var(--paper-sunk); padding: 0.05em 0.3em; border-radius: 2px;
+}
+.store-doc .md-quote {
+  margin: 1.2rem 0; padding: 0.4rem 0 0.4rem 1rem;
+  border-left: 2px solid var(--rule); color: var(--ink-gen);
+}
+.store-doc .md-quote > :last-child { margin-bottom: 0; }
+.md-code {
+  background: var(--paper-sunk); border: 1px solid var(--rule-faint); border-radius: 2px;
+  padding: 0.75rem 1rem; overflow-x: auto; margin: 0 0 1.05rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: var(--t-small); line-height: 1.5;
+}
+.md-code code { background: none; padding: 0; font-size: inherit; }
+.md-table { overflow-x: auto; margin: 0 0 1.25rem; }
+.md-table table {
+  border-collapse: collapse; width: 100%;
+  font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: var(--t-small); line-height: 1.45;
+}
+.md-table th, .md-table td {
+  text-align: left; vertical-align: top; padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--rule-faint);
+}
+.md-table th { border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink-gen); }
+.store-doc :target, .store-doc .line-hit { background: var(--ui-hover-bg); transition: background var(--motion-smooth); }
+.src-line { display: block; white-space: pre-wrap; }
+.src-num {
+  display: inline-block; width: 3.2em; margin-right: 1em; text-align: right;
+  color: var(--ink-quiet); border: 0; user-select: none;
+}
+.file-embed { margin: 0; }
+.file-embed img { max-width: 100%; height: auto; }
+.file-embed-frame {
+  width: 100%; height: 80vh; border: 1px solid var(--rule); border-radius: 2px; background: white;
+}
+.file-path { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: var(--t-micro);
+             word-break: break-all; margin: 0 0 0.4rem; color: var(--ink-quiet); }

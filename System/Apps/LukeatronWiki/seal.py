@@ -3,11 +3,11 @@ Seal module — loads _sealed.yaml and provides privacy checks for sealed paths.
 
 A sealed path is not read, not rendered, not searched, not linked, not listed.
 
-Critical behaviour (spec AD-1): re-parse _sealed.yaml on EVERY call.
+Critical behaviour: re-parse _sealed.yaml on EVERY call.
 No caching of any kind. A hand-edit must be seen with no restart.
 
-FR-7/FR-8 Failure handling: distinguish between manifest-missing/unreadable/malformed (FR-7: fail closed,
-seal everything) and manifest-present-but-empty (FR-8: legitimate empty state, seal nothing).
+Failure handling: distinguish between manifest-missing/unreadable/malformed (fail closed,
+seal everything) and manifest-present-but-empty (a legitimate empty state, seal nothing).
 """
 
 from pathlib import Path
@@ -23,31 +23,31 @@ except ImportError:
 
 def load():
     """
-    Load and parse _sealed.yaml. Re-parsed on every call (spec AD-1).
+    Load and parse _sealed.yaml. Re-parsed on every call.
 
     Returns:
         {
             "stores": set[str],
             "files": set[str],
-            "_failure": bool  # True if manifest absent, unreadable, or malformed (FR-7)
+            "_failure": bool  # True if manifest absent, unreadable, or malformed
         }
 
-    FR-7 failure states: file doesn't exist, file unreadable, file has invalid YAML,
+    Fail-closed states: file doesn't exist, file unreadable, file has invalid YAML,
     file has valid YAML but wrong structure (stores/files not lists).
 
-    FR-8 legitimate state: file exists, parses cleanly, stores and files are lists
+    Legitimate state: file exists, parses cleanly, stores and files are lists
     (even if empty).
     """
     # Check if file exists
     if not paths.SEALED_YAML.exists():
-        # File doesn't exist - FR-7 failure
+        # File doesn't exist: fail closed
         _log_manifest_failure("manifest file not found")
         return {"stores": set(), "files": set(), "_failure": True}
 
     # File exists; try to parse it
     data = yamlio.load(paths.SEALED_YAML)
 
-    # If yamlio returned empty dict, parsing failed - FR-7 failure
+    # If yamlio returned empty dict, parsing failed: fail closed
     if data == {}:
         _log_manifest_failure("manifest file failed to parse (invalid YAML)")
         return {"stores": set(), "files": set(), "_failure": True}
@@ -63,9 +63,9 @@ def load():
                 if isinstance(store_name, str):
                     stores.add(store_name)
         else:
-            # stores key exists but is not a list - malformed - FR-7 failure
+            # stores key exists but is not a list - malformed: fail closed
             is_malformed = True
-    # If "stores" key is missing, that's OK — it defaults to empty list (FR-8)
+    # If "stores" key is missing, that's OK — it defaults to empty list
 
     # Load sealed files (normalize to POSIX paths relative to LT)
     if "files" in data:
@@ -74,15 +74,15 @@ def load():
                 if isinstance(file_path, str):
                     files.add(file_path)
         else:
-            # files key exists but is not a list - malformed - FR-7 failure
+            # files key exists but is not a list - malformed: fail closed
             is_malformed = True
-    # If "files" key is missing, that's OK — it defaults to empty list (FR-8)
+    # If "files" key is missing, that's OK — it defaults to empty list
 
     if is_malformed:
         _log_manifest_failure("manifest file has invalid structure (stores/files must be lists)")
         return {"stores": set(), "files": set(), "_failure": True}
 
-    # File exists, parsed successfully, structure is valid - FR-8 (legitimate state, even if empty)
+    # File exists, parsed successfully, structure is valid: a legitimate state, even if empty
     return {"stores": stores, "files": files, "_failure": False}
 
 
@@ -90,11 +90,11 @@ def is_sealed(path):
     """
     Check if a path is sealed.
 
-    Rules (spec AD-2):
+    Rules:
     - File seals match exactly (relative to LT)
     - Store seals match by folder-path prefix (full path segment matching, not raw prefix)
 
-    FR-7 behavior: if manifest is absent/unreadable/malformed, EVERY path is sealed.
+    If manifest is absent/unreadable/malformed, EVERY path is sealed.
 
     Args:
         path: str, Path, or pathlib.Path (absolute or relative to LT)
@@ -107,7 +107,7 @@ def is_sealed(path):
 
     manifest = load()
 
-    # FR-7: If manifest failed to load, everything is sealed
+    # If manifest failed to load, everything is sealed
     if manifest.get("_failure", False):
         return True
 
@@ -135,7 +135,7 @@ def is_sealed_store(store):
     """
     Check if a store folder is sealed.
 
-    FR-7 behavior: if manifest is absent/unreadable/malformed, EVERY store is sealed.
+    If manifest is absent/unreadable/malformed, EVERY store is sealed.
 
     Args:
         store: str (folder name, e.g., "People", "Tone")
@@ -145,7 +145,7 @@ def is_sealed_store(store):
     """
     manifest = load()
 
-    # FR-7: If manifest failed to load, everything is sealed
+    # If manifest failed to load, everything is sealed
     if manifest.get("_failure", False):
         return True
 
@@ -160,7 +160,7 @@ def is_sealed_link(slug, refs):
     - The slug is the kebab-case hub slug of a sealed store, OR
     - refs is non-empty and EVERY ref is sealed
 
-    FR-7 behavior: if manifest is absent/unreadable/malformed, EVERY link is sealed.
+    If manifest is absent/unreadable/malformed, EVERY link is sealed.
 
     Args:
         slug: str (kebab-case hub slug, e.g., "people", "tone")
@@ -171,7 +171,7 @@ def is_sealed_link(slug, refs):
     """
     manifest = load()
 
-    # FR-7: If manifest failed to load, everything is sealed
+    # If manifest failed to load, everything is sealed
     if manifest.get("_failure", False):
         return True
 
@@ -197,9 +197,9 @@ def count():
     """
     Return counts of sealed stores and files for the integrity footer.
 
-    FR-7 behavior: if manifest is absent/unreadable/malformed, return None for counts
+    If manifest is absent/unreadable/malformed, return None for counts
     and add "_failure": True to signal the failure state to the caller (render module).
-    This is distinct from the legitimate FR-8 state (empty manifest), which returns
+    This is distinct from the legitimate empty manifest, which returns
     all counts as 0.
 
     Returns:
@@ -212,7 +212,7 @@ def count():
     """
     manifest = load()
 
-    # FR-7: If manifest failed to load, return error indicator
+    # If manifest failed to load, return error indicator
     if manifest.get("_failure", False):
         return {
             "stores": None,
@@ -221,7 +221,7 @@ def count():
             "_failure": True
         }
 
-    # FR-8: Normal state (manifest exists, parsed cleanly)
+    # Normal state (manifest exists, parsed cleanly)
     stores = len(manifest["stores"])
     files = len(manifest["files"])
     total = stores + files
@@ -237,7 +237,7 @@ def count():
 def _log_manifest_failure(reason):
     """
     Log a manifest failure to stderr (visible in server logs).
-    Called when FR-7 failure conditions are detected.
+    Called when a fail-closed condition is detected.
 
     Args:
         reason: str describing why the manifest failed

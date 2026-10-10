@@ -2,10 +2,10 @@
 Test suite for enrich.py — the request -> draft -> accept file protocol
 behind the PRD's generation gate (References / Supporting Quotes / See Also).
 
-Covers enrich.spec.md AC-1 through AC-11, plus the extra coverage this
+Covers the enrich contract, plus the extra coverage this
 project's build brief called for: a full fixture-walk lifecycle test, the
-double verified-stamp check (write_draft AND accept), FR-11/FR-12's
-directory-creation and graceful-empty behaviour, the FR-10 route-table
+double verified-stamp check (write_draft AND accept), the
+directory-creation and graceful-empty behaviour, the route-table
 cross-check against server.py, and atomicity under a simulated crash on
 accept()'s store write — the most dangerous write in the app.
 
@@ -53,7 +53,7 @@ class EnrichFixtureTestCase(unittest.TestCase):
     through. Fresh fixture per test.
 
     Deliberately does NOT pre-create System/Sandbox/wiki-enrich/ or its
-    _requests/ subfolder — FR-11/FR-12 require enrich.py to create them
+    _requests/ subfolder — enrich.py must create them
     itself on write and degrade gracefully on read when absent.
     """
 
@@ -117,7 +117,7 @@ class EnrichFixtureTestCase(unittest.TestCase):
             '---\n\n'
             '# Theology\n',
         )
-        # "plain-node": a second unsealed page, used for AC-1's isolated
+        # "plain-node": a second unsealed page, used for the isolated
         # double-click test so it never touches theology's own state.
         _write(
             self.nodes / "plain-node.md",
@@ -206,7 +206,7 @@ class TestFullLifecycleWalk(EnrichFixtureTestCase):
         self.assertTrue(r3["ok"], r3.get("error"))
         self.assertEqual(enrich.slot_state(slug, slot), "filled")
 
-        # AC-9: neither a request file nor a draft file survives accept().
+        # Neither a request file nor a draft file survives accept().
         self.assertFalse(self._req_path(slug, slot).exists())
         self.assertFalse(self._draft_path(slug, slot).exists())
 
@@ -253,7 +253,7 @@ class TestFullLifecycleWalk(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-1 — two clicks, one request file
+# Two clicks, one request file
 # ============================================================================
 
 
@@ -273,7 +273,7 @@ class TestAC1DoubleClickOneFile(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-2 — list_pending() shape
+# list_pending() shape
 # ============================================================================
 
 
@@ -294,7 +294,7 @@ class TestAC2ListPendingShape(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-3 / AC-4 — the verified: stamp check runs TWICE: in write_draft() AND
+# The verified: stamp check runs TWICE: in write_draft() AND
 # again in accept(). A draft with one unstamped item among several stamped
 # ones is refused by BOTH.
 # ============================================================================
@@ -319,7 +319,7 @@ class TestAC3AC4DoubleVerifiedStampCheck(EnrichFixtureTestCase):
     def test_accept_independently_refuses_a_crafted_draft_with_unstamped_item(self):
         """
         write_draft() would never let this draft exist — so to prove
-        accept()'s OWN check (FR-8: belt-and-suspenders, not reliance on
+        accept()'s OWN check (belt-and-suspenders, not reliance on
         write_draft's check alone) actually runs, we write the draft file
         directly, bypassing write_draft() entirely, then call accept().
         """
@@ -349,7 +349,7 @@ class TestAC3AC4DoubleVerifiedStampCheck(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-6 — slot name outside the fixed three, refused, zero writes
+# Slot name outside the fixed three, refused, zero writes
 # ============================================================================
 
 
@@ -378,7 +378,7 @@ class TestAC6InvalidSlotRefused(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-7 — a crafted call naming a sealed page is refused, zero writes
+# A crafted call naming a sealed page is refused, zero writes
 # ============================================================================
 
 
@@ -415,7 +415,7 @@ class TestAC7SealedPageRefused(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# AC-8 — no agent/LLM invocation anywhere in the module
+# No agent/LLM invocation anywhere in the module
 # ============================================================================
 
 
@@ -433,7 +433,7 @@ class TestAC8NoAgentOrLLMInvocation(unittest.TestCase):
 
 
 # ============================================================================
-# FR-11 — wiki-enrich/ and _requests/ are created ONLY on write, and only
+# wiki-enrich/ and _requests/ are created ONLY on write, and only
 # inside this temp fixture — never at the real path.
 # ============================================================================
 
@@ -460,7 +460,7 @@ class TestFR11DirectoryCreatedOnWrite(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# FR-12 — list_pending() returns [] (not an error) when _requests/ is absent
+# list_pending() returns [] (not an error) when _requests/ is absent
 # ============================================================================
 
 
@@ -478,7 +478,7 @@ class TestFR12GracefulEmptyWhenAbsent(EnrichFixtureTestCase):
 
 
 # ============================================================================
-# FR-10 — list_pending()/write_draft() are agent-facing only, never reachable
+# list_pending()/write_draft() are agent-facing only, never reachable
 # from an HTTP route. Cross-check server.py's route table.
 # ============================================================================
 
@@ -558,7 +558,7 @@ class TestAcceptAtomicity(EnrichFixtureTestCase):
         self.assertIn("cleanup failed", result["error"])
         # The store write itself DID land despite the cleanup failure.
         self.assertIn('<!-- p-gen:start slot="References" -->', self.theology_list.read_text(encoding="utf-8"))
-        # slot_state still reads "filled" — AD-2's store-check-wins priority
+        # slot_state still reads "filled" — the store-check-wins priority
         # means the leftover draft file cannot pull it back to "draft".
         self.assertEqual(enrich.slot_state(slug, slot), "filled")
 

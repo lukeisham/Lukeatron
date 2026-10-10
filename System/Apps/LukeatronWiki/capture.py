@@ -1,16 +1,15 @@
 """
 capture.py — the fixed quick-capture form's write path.
 
-One of exactly two modules in this app permitted to write into Memory/Long-Term/
-(the other is enrich.py's accept()). Granted by Luke 2026-09-11 (registry D5,
-Rule Exceptions row 1 against PY-12/API-5): the click IS the approval — no
-agent call, no !Checkpoint call anywhere in this module (FR-7/AC-9).
+One of exactly two modules in this app that write into Memory/Long-Term/
+(the other is enrich.py's accept()), under PY-12. The click is the approval,
+so there is no agent call and no !Checkpoint call anywhere in this module.
 
 capture_submit() performs AT MOST TWO writes, in this fixed order:
-  (a) append one row to _queue.yaml, from a fixed template (FR-1a);
+  (a) append one row to _queue.yaml, from a fixed template;
   (b) if `note` is given, append it byte-for-byte to the chosen page's first
       unsealed store list file, under a dated heading marked `.p-luke`
-      (FR-1b, AD-1).
+      (the pick is `_pick_note_ref`).
 
 Both writes go through an atomic write-to-temp-then-replace so a crash or a
 disk error can never leave a store file half-written (spec "Atomicity").
@@ -22,7 +21,7 @@ write, and an orphaned "queued" row is harmless and human-recoverable,
 whereas rolling back is not obviously safer. The failure is reported, never
 swallowed: the returned dict's "ok" is False, "error" names what failed, and
 "writes" lists exactly what actually landed on disk. When the note's target
-can't be resolved at all (FR-8's structural check), the WHOLE submission is
+can't be resolved at all (the structural check), the WHOLE submission is
 refused before either write executes — no half-done state is possible for
 that failure mode.
 """
@@ -56,11 +55,11 @@ def capture_submit(title, kind, intent, source, page, note=None):
 
     Args:
         title, kind, source: free text, written verbatim into the queue row.
-        intent: must be "read", "watch", or "write" (FR-2/AC-2).
+        intent: must be "read", "watch", or "write".
         page: a node slug from library.list_nodes() — the dropdown's only
-              source (FR-3/FR-9/AC-3). Never guessed, never created.
+              source. Never guessed, never created.
         note: optional. If given, appended byte-for-byte to page's store
-              file (FR-6/AC-5).
+              file.
 
     Returns:
         {"ok": bool, "error": str|None, "writes": [relpath, ...]}
@@ -80,7 +79,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
             "writes": [],
         }
 
-    # FR-8: structural target validation, resolved and checked BEFORE any
+    # Structural target validation, resolved and checked BEFORE any
     # write executes — not caught after a write fails. Only two targets are
     # ever permitted: QUEUE_YAML, and page's own resolved, unsealed store
     # file (only when a note is given at all).
@@ -101,7 +100,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
                 "writes": [],
             }
 
-    # ---- Load queue state (FR-10: graceful create on true absence only) ----
+    # ---- Load queue state (graceful create on true absence only) ----
     today = dt.date.today().isoformat()
     if paths.QUEUE_YAML.exists():
         try:
@@ -112,7 +111,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
         items = data.get("items") if isinstance(data, dict) else None
         if not isinstance(items, list):
             # A malformed, hand-edited file is a different failure mode than
-            # "missing" — FR-10 only asks us to self-heal true absence.
+            # "missing" — only true absence is self-healed.
             # Refusing here (rather than clobbering an existing file's
             # content) fails closed per CLAUDE.md's Failure Handling ladder.
             return {
@@ -121,7 +120,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
                 "writes": [],
             }
     else:
-        # FR-10: create a minimal, valid document with proper structure.
+        # Create a minimal, valid document with proper structure.
         # The recreated document includes all header keys from the real file
         # to be consistent with its expected shape. The items: list is
         # formatted as a block list (not inline "[]") so the first appended
@@ -151,7 +150,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
     )
     new_queue_text = raw_queue_text.rstrip("\n") + "\n" + row_text
 
-    # Update the count field to reflect the new item count (FR-1, AC-1 determinism).
+    # Update the count field to reflect the new item count.
     # The count must stay accurate so the file remains consistent.
     new_count = len(items) + 1
     new_queue_text = re.sub(
@@ -204,7 +203,7 @@ def capture_submit(title, kind, intent, source, page, note=None):
 
 
 def _find_page_node(page):
-    """FR-3/FR-9: the page dropdown's only source is library.list_nodes()."""
+    """The page dropdown's only source is library.list_nodes()."""
     for node in library.list_nodes():
         if node.get("slug") == page:
             return node
@@ -213,7 +212,7 @@ def _find_page_node(page):
 
 def _pick_note_ref(node):
     """
-    AD-1 target choice: the node's FIRST unsealed `.list.md` longterm_ref,
+    Target choice: the node's FIRST unsealed `.list.md` longterm_ref,
     else its first unsealed ref of any kind. None if no unsealed ref exists.
     """
     refs = node.get("longterm_refs") or []
@@ -228,7 +227,7 @@ def _pick_note_ref(node):
 
 def _resolve_permitted_target(relpath):
     """
-    FR-8/FR-9: resolve a longterm_ref's relpath to an absolute path, refusing
+    Resolve a longterm_ref's relpath to an absolute path, refusing
     anything that doesn't land, contained, inside Memory/Long-Term/, as an
     existing unsealed file. This is a second, independent check — capture
     never trusts a single layer (here: the caller's already-seal-filtered
@@ -250,7 +249,7 @@ def _resolve_permitted_target(relpath):
 
 
 def _next_queue_id(items):
-    """FR-5: the next free q-NNN, computed from the current queue state."""
+    """The next free q-NNN, computed from the current queue state."""
     import re
 
     max_n = 0

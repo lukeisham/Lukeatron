@@ -37,6 +37,7 @@ System/Apps/LukeatronWiki/
 ├── seal.py                               Loads _sealed.yaml, enforces the seal check
 ├── library.py                            Read access to Long-Term stores + Nodes graph
 ├── render.py                             Data → three-column HTML (rail / content / Tufte margin)
+├── mdview.py                             Markdown → reading HTML for one store file (markup only, words untouched)
 ├── search.py                             Ranked search across unsealed stores (shared engine)
 ├── capture.py                            Fixed-template quick-capture writes
 ├── enrich.py                             ⊕ request → draft → accept flow
@@ -58,9 +59,6 @@ See [StyleGuide.md](StyleGuide.md) before touching any colour, space, radius, du
 value in `static/app.css` — it's the app-local record of how `!HouseStyle` and
 `Templates/wiki-page.css`'s shared tokens land there.
 
-`CONTRACT.md`, cited in comments in `render.py` and `enrich.py`, was the build-time contract; it
-is retired to `Archive/appdevelopment-restructure-2026-09-28/LukeatronWiki/CONTRACT.md`.
-
 The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores live in `Memory/Long-Term/<store>/`. See `Memory/Long-Term/Lukeatron/memory-structure.md` for the full store directory.
 
 ## Cross-boundary behaviour
@@ -69,17 +67,13 @@ The wiki graph lives in `Memory/Long-Term/LukeatronWiki/Nodes/`; the 44 stores l
 |---|---|---|---|
 | seal | library | a deny/allow check on every path before any read | a sealed store becomes reachable through render or search |
 | library | render | raw store-file content + node/edge graph, verbatim | render silently starts transforming — the verbatim guarantee breaks |
+| library | server `/raw/` | a store file's bytes, seal-checked, served under a CSP sandbox | a store page's own scripts gain the wiki's origin and could post to `/do/*` |
 | library | search | `search_index()`: the shared memory-search engine, plus seal-filtered listings every hit is re-checked against | search surfaces a sealed store because it bypassed library |
 | capture | library (write side) | one fixed-template queue row + one verbatim store-note append | any parsing or "where this belongs" guessing creeps in |
 | enrich | `!Checkpoint` → library (write side) | an accepted draft, as a `.p-gen` block with a `verified:` stamp | a draft lands in a store without Luke's Accept click |
 | server | seal, library, render, search, capture, enrich | HTTP routing only — server owns `:8787` and dispatches | a module assumes a host other than localhost |
 | migration | server | nothing at runtime — only the SessionStart hook and archive path | if migration and server disagree on the entrypoint, the hook fails |
 
-## Decisions and exceptions
-
-See [app-decisions.md](app-decisions.md) → Key decisions (D-1–D-3: the seal/library boundary,
-`server`'s thin-dispatcher shape, and the capture/enrich split) and → Rule exceptions. Not copied
-here.
 
 The app writes to disk in exactly three places — capture (queue row + verbatim store note),
 enrich request (a ⊕ file in `System/Sandbox/wiki-enrich/_requests/`), and enrich accept (a draft

@@ -3,7 +3,7 @@ Test suite for render.py — pure read-to-HTML, the three-column page shell,
 the four generation-gate slot states, wikilink rendering, the ink legend,
 and the integrity footer.
 
-Covers render.spec.md's AC-1 through AC-8 (AC-9 belongs to server.py's
+Covers the render contract (route behaviour belongs to server.py's
 startup check, not this module — render.py never references
 paths.WIKI_CSS at all, so there is nothing here to test; see the report).
 
@@ -109,7 +109,7 @@ def assert_well_formed(testcase, html_text, label=""):
 
 
 # ============================================================================
-# The FR-3/FR-4 automated gate check: zero .p-gen blocks outside the three
+# The automated gate check: zero .p-gen blocks outside the three
 # named slot containers, and zero slot items lacking a verified: stamp.
 # ============================================================================
 
@@ -365,7 +365,7 @@ class RenderFixtureTestCase(unittest.TestCase):
 
 
 # ============================================================================
-# AC-1 / FR-1 — verbatim body + provenance ink + margin column structure
+# Verbatim body + provenance ink + margin column structure
 # ============================================================================
 
 
@@ -403,7 +403,7 @@ class TestAC1VerbatimBodyAndStructure(RenderFixtureTestCase):
 
 
 # ============================================================================
-# AC-2 / FR-2 — all four slot states, read from enrich, not decided locally
+# All four slot states, read from enrich, not decided locally
 # ============================================================================
 
 
@@ -469,25 +469,14 @@ class TestAC2SlotStates(RenderFixtureTestCase):
 
 
 # ============================================================================
-# FIXED BUG (was the most severe found) — render.py used to call
-# enrich.slot_state(slug, slot_id) with the SHORT id ("see-also",
-# "references", "supporting-quotes"), but enrich.slot_state()'s own
-# contract (enrich.py SLOTS tuple, checked with `if slot not in SLOTS`)
-# only recognises the three FULL slot names ("References", "Supporting
-# Quotes", "See Also"). Passing the short id meant `slot not in SLOTS` was
-# True on every single call, so enrich.slot_state() took its very first
-# branch and returned "empty" — not an exception, so render's own `except
-# Exception` degraded-note path never fired either; the slot just silently
-# looked unrequested forever.
-#
-# Fix: the full slot name is the canonical argument type at the
-# render/enrich boundary (it is what the spec, the PRD and the store
-# headings all use); render.py now passes it straight through to every
-# enrich.* call, and only ever converts to `SLOT_IDS[...]` when building its
-# own filenames/DOM ids/hidden-form values (see render.py's module
-# docstring). enrich.slot_state() also now raises loudly on an unrecognised
-# slot instead of quietly reporting "empty", so this exact mismatch can
-# never again hide behind a plausible-looking state.
+# The full slot name ("References", "Supporting Quotes", "See Also") is the
+# argument type at the render/enrich boundary; enrich.slot_state() checks it
+# against its SLOTS tuple. render.py passes the full name to every enrich.*
+# call and converts to the short `SLOT_IDS[...]` form only for its own
+# filenames, DOM ids and hidden-form values. Handing enrich the short id
+# would make every slot look unrequested, so these tests pin that a
+# requested slot's state reaches the rendered page, and enrich.slot_state()
+# raises on an unrecognised slot rather than reporting "empty".
 # ============================================================================
 
 
@@ -583,33 +572,22 @@ class TestSlotStateReachesRenderPage(RenderFixtureTestCase):
 
 
 # ============================================================================
-# FIXED BUG — enrich's real draft/accept payload shapes didn't match what
-# render._render_gen_payload() expected, so genuinely verified content was
-# discarded.
+# enrich's real draft and accept payload shapes must render: a mismatch with
+# render._render_gen_payload() silently discards verified content.
 # ============================================================================
 
 
 class TestDraftAndFilledPayloadShapeMatch(RenderFixtureTestCase):
     """
     enrich.read_draft() returns {"slug","slot","items":[{"text","verified"},...]}
-    — no top-level "verified" key. render._render_gen_payload() used to only
-    ever look at payload.get("verified") (never present) before even
-    inspecting `items`; failing that check, it discarded the whole payload
-    regardless of what the items themselves carried. So a "draft" slot's
-    real, correctly-verified content could never actually render — the
-    generation gate hid good content, not just bad content.
+    with no top-level "verified" key. _render_gen_payload() reads each
+    item's own "verified" stamp and renders nothing unless every item
+    carries a non-empty one: all-or-nothing, checked per item.
 
-    Fix: _render_gen_payload() now recognises this item-level-stamp shape
-    directly (each item's own "verified" key), requiring every item to
-    carry a non-empty stamp before rendering ANY of them — still
-    all-or-nothing, just checked at the right level.
-
-    Separately, "filled" state's payload used to be read out of the NODE's
-    own body ("## References" section) rather than the STORE file
-    enrich.accept() actually writes the accepted p-gen block into. Fix:
-    render._read_filled_slot_payload() now reads that same store block —
-    state (enrich.slot_state()) and content (render's own read) come from
-    the identical place.
+    A "filled" slot's payload is read from the STORE file that
+    enrich.accept() writes the accepted p-gen block into, never from the
+    node's own body, so state (enrich.slot_state()) and content (render's
+    own read) come from the same place.
     """
 
     def test_draft_with_valid_verified_items_renders_them(self):
@@ -743,7 +721,7 @@ class TestEndToEndGenerationGateThroughRenderPage(RenderFixtureTestCase):
         self.assertIn("Checked source A, 2026-09-12", chunk)
         self.assertIn("p-gen", chunk)
         # No request/draft file survives acceptance, and no leftover file
-        # can pull the slot back to an earlier state (AD-2 store-check-wins).
+        # can pull the slot back to an earlier state.
         self.assertFalse((self.req_dir / f"{slug}.{slot_id}.yaml").exists())
         self.assertFalse((self.enrich_dir / f"{slug}.{slot_id}.md").exists())
 
@@ -776,7 +754,7 @@ class TestEndToEndGenerationGateThroughRenderPage(RenderFixtureTestCase):
         self.assertNotIn("Quote A", chunk)
 
     def test_cancel_is_a_noop_from_filled_state_gate_stays_filled(self):
-        # cancel() never touches the store (FR-5) — once filled, the PRD's
+        # cancel() never touches the store — once filled, the PRD's
         # own state diagram has no arrow back to empty; confirm render_page
         # agrees rather than silently reverting.
         slug, slot, slot_id = "gate-node", "References", "references"
@@ -792,7 +770,7 @@ class TestEndToEndGenerationGateThroughRenderPage(RenderFixtureTestCase):
 
 
 # ============================================================================
-# AC-3 / FR-3 / FR-4 — the generation gate: zero .p-gen outside slots, zero
+# The generation gate: zero.p-gen outside slots, zero
 # slot items missing a verified: stamp. This is the module's highest-value
 # check per the build brief.
 # ============================================================================
@@ -844,7 +822,7 @@ class TestAC3GenerationGate(RenderFixtureTestCase):
 
 
 # ============================================================================
-# AC-4 / FR-5 — the three wikilink renderings; sealed is NEVER a red link
+# The three wikilink renderings; sealed is NEVER a red link
 # ============================================================================
 
 
@@ -881,7 +859,7 @@ class TestAC4Wikilinks(RenderFixtureTestCase):
 
 
 # ============================================================================
-# AC-5 / FR-6 — contents pages: real files, no prose, nested-path encoding
+# Contents pages: real files, no prose, nested-path encoding
 # ============================================================================
 
 
@@ -923,7 +901,7 @@ class TestAC5ContentsPages(RenderFixtureTestCase):
 
 
 # ============================================================================
-# AC-6 / FR-7 — integrity footer matches library.integrity_counts() exactly
+# Integrity footer matches library.integrity_counts() exactly
 # ============================================================================
 
 
@@ -982,7 +960,7 @@ class TestDashboardLink(RenderFixtureTestCase):
 
 
 # ============================================================================
-# PRD Key behaviours / capture.spec.md FR-1 — the quick-capture form on the
+# The quick-capture form on the
 # backlog page. Regression coverage for a gap where capture.py, server.py's
 # POST /do/capture route, and the CSS/JS for .capture-form all existed and
 # were individually tested, but render_backlog() never actually emitted the
@@ -1023,7 +1001,7 @@ class TestBacklogCaptureForm(RenderFixtureTestCase):
 
 
 # ============================================================================
-# FR-13 / AC-10 — the seal-failure banner
+# The seal-failure banner
 # ============================================================================
 
 
@@ -1066,7 +1044,7 @@ class TestFR13CorruptManifest(RenderFixtureTestCase):
 
 
 # ============================================================================
-# FR-8 — the ink legend is present on every page type
+# The ink legend is present on every page type
 # ============================================================================
 
 
@@ -1086,7 +1064,7 @@ class TestFR8InkLegendEverywhere(RenderFixtureTestCase):
 
 
 # ============================================================================
-# FR-11 / AC-8 — render.py never opens a file for writing
+# render.py never opens a file for writing
 # ============================================================================
 
 
@@ -1200,14 +1178,12 @@ if __name__ == "__main__":
 class TestRejectButtonRoutesToCancel(unittest.TestCase):
     """Regression: Reject must never post to /do/accept.
 
-    Found 2026-09-12. The draft slot was one <form action="/do/accept"> holding
-    both buttons, distinguished only by a name="action" field. server.py routes
-    purely on the URL and never reads that field, so clicking Reject called
-    enrich.accept() -- writing the draft into a Long-Term store, the exact
-    opposite of the user's intent, on the most dangerous write path in the app.
-
-    The fix is structural: each button gets its own form with its own action URL,
-    so the destination cannot drift away from the label.
+    server.py routes purely on the URL and never reads a form's name="action"
+    field. If Accept and Reject shared one <form action="/do/accept">, Reject
+    would call enrich.accept() and write the draft into a Long-Term store, on
+    the most dangerous write path in the app. Each button therefore has its
+    own form with its own action URL, so the destination cannot drift away
+    from the label.
     """
 
     DRAFT = {"items": [{"text": "a claim", "verified": "quote found in fetched source"}]}

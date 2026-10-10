@@ -1,7 +1,7 @@
 """
 Test suite for library.py — the single read chokepoint for Long-Term / LukeatronWiki.
 
-Covers AC-1 through AC-6 (library.spec.md), the traversal-escape guard, the
+Covers the library contract, the traversal-escape guard, the
 sealed-vs-unresolved wikilink distinction, a real-filesystem sanity check
 (len(list_stores()) == 33, no sealed store present), and the §6
 direct-disk-access grep check from CONTRACT.md.
@@ -211,7 +211,7 @@ class LibraryFixtureTestCase(unittest.TestCase):
 
 
 class TestAC1SealedFileReturnsSentinel(LibraryFixtureTestCase):
-    """AC-1: read_store_file on a sealed path returns the SEALED sentinel, never bytes."""
+    """read_store_file on a sealed path returns the SEALED sentinel, never bytes."""
 
     def test_sealed_whole_store(self):
         result = library.read_store_file("SealedStore", "secret.md")
@@ -229,7 +229,7 @@ class TestAC1SealedFileReturnsSentinel(LibraryFixtureTestCase):
 
 
 class TestAC2ListStoreSealedReturnsNothing(LibraryFixtureTestCase):
-    """AC-2: list_store on a sealed store returns None, not an empty-with-reason value."""
+    """list_store on a sealed store returns None, not an empty-with-reason value."""
 
     def test_sealed_store_returns_none(self):
         self.assertIsNone(library.list_store("SealedStore"))
@@ -251,7 +251,7 @@ class TestAC2ListStoreSealedReturnsNothing(LibraryFixtureTestCase):
 
 
 class TestAC3BacklinksLiveAndStable(LibraryFixtureTestCase):
-    """AC-3: backlinks() called twice with no change is identical, and sees a same-session edit."""
+    """backlinks() called twice with no change is identical, and sees a same-session edit."""
 
     def test_stable_across_two_calls(self):
         first = library.backlinks("theology")
@@ -296,7 +296,7 @@ class TestAC3BacklinksLiveAndStable(LibraryFixtureTestCase):
 
 
 class TestAC4ContentsPageZeroNodeStore(LibraryFixtureTestCase):
-    """AC-4: a store with zero wiki nodes returns a non-empty contents_page() file listing."""
+    """A store with zero wiki nodes returns a non-empty contents_page() file listing."""
 
     def test_store_with_files_but_no_hub_node(self):
         result = library.contents_page("Mixed")
@@ -319,7 +319,7 @@ class TestAC4ContentsPageZeroNodeStore(LibraryFixtureTestCase):
 
 
 class TestAC5IntegrityCountsMatchesSeal(LibraryFixtureTestCase):
-    """AC-5: integrity_counts()'s sealed figure matches seal.count() exactly, every run."""
+    """integrity_counts()'s sealed figure matches seal.count() exactly, every run."""
 
     def test_matches(self):
         counts = library.integrity_counts()
@@ -333,7 +333,7 @@ class TestAC5IntegrityCountsMatchesSeal(LibraryFixtureTestCase):
 
 
 class TestAC6NoCacheEditReflected(LibraryFixtureTestCase):
-    """AC-6: editing a store file on disk and re-reading (no restart) returns the new content."""
+    """Editing a store file on disk and re-reading (no restart) returns the new content."""
 
     def test_edit_reflected_immediately(self):
         first = library.read_store_file("Theology", "theology.md")
@@ -372,7 +372,7 @@ class TestTraversalSafety(LibraryFixtureTestCase):
         # still denied — seal.is_sealed() normalises (and so resolves) the
         # requested path before the traversal check ever runs, so this
         # particular shape is caught earlier and returns SEALED rather
-        # than None. Either sentinel is a refusal (FR-9: never content for
+        # than None. Either sentinel is a refusal (never content for
         # a sealed path under any name); this test pins that behaviour
         # rather than assuming a specific sentinel.
         result = library.read_store_file("Theology", "Sub Folder/../../SealedStore/secret.md")
@@ -494,7 +494,7 @@ class TestBinaryFileHandling(LibraryFixtureTestCase):
 
 
 class TestResolveWikilinkThreeStates(LibraryFixtureTestCase):
-    """FR-4: resolve_wikilink returns exactly one of live / sealed / unresolved."""
+    """resolve_wikilink returns exactly one of live / sealed / unresolved."""
 
     def test_live(self):
         result = library.resolve_wikilink("theology")
@@ -572,7 +572,7 @@ class TestListNodesSealFiltered(LibraryFixtureTestCase):
 
 
 class TestQueueIndexMediaGracefulEmpty(LibraryFixtureTestCase):
-    """FR-10: missing/malformed control files degrade to empty, never an exception."""
+    """missing/malformed control files degrade to empty, never an exception."""
 
     def test_read_queue_normal(self):
         result = library.read_queue()
@@ -652,7 +652,7 @@ class TestRealFilesystemDrift(unittest.TestCase):
 
 
 # ============================================================================
-# §6 risk-row grep check (CONTRACT.md / library.spec.md §6): no module other
+# Containment grep check: no module other
 # than library.py/seal.py may open a Memory/Long-Term or LukeatronWiki path
 # directly. paths.py is exempt too — it is the canonical, contract-mandated
 # home for those literals (it only ever constructs Path objects as module
@@ -719,8 +719,8 @@ class TestNoDirectDiskAccessOutsideLibrary(unittest.TestCase):
 
 class TestRealFilesystemZeroDeadRefs(unittest.TestCase):
     """No monkey-patching — exercises library.py against the real, on-disk
-    Memory/Long-Term/. Read-only. Checks the live nodes (promoted out of the
-    old Sandbox staging folder on 2026-09-12); skips only if they are absent."""
+    Memory/Long-Term/. Read-only. Checks the live nodes; skips only if they
+    are absent."""
 
     REBUILD_NODES_DIR = paths.ROOT / "Memory" / "Long-Term" / "LukeatronWiki" / "Nodes"
 

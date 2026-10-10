@@ -1,15 +1,15 @@
 """
 server.py — the thin stdlib HTTP dispatcher for LukeatronWiki.
 
-Binds 127.0.0.1 only (FR-1), stdlib only (FR-2: `http.server`, `urllib`,
-`mimetypes`, `pathlib` — nothing else), single-threaded `HTTPServer` (AD-1 —
+Binds 127.0.0.1 only, stdlib only (`http.server`, `urllib`,
+`mimetypes`, `pathlib` — nothing else), single-threaded `HTTPServer` (so
 no lock needed for capture/enrich's writes because there is never a second
 request in flight). Because one thread serves everything, each connection is
 closed after its response (HTTP/1.0) and a silent one is dropped after a short
 timeout (AD-1a) — otherwise a browser's idle preconnects would block every
 real request queued behind them. Every handler dispatches to `seal` / `library` /
 `render` / `search` / `capture` / `enrich`; it holds no business logic and
-opens no Long-Term store or wiki control-surface file itself (FR-3) — the
+opens no Long-Term store or wiki control-surface file itself — the
 one exception being `static/` assets and the wiki page stylesheet template,
 which live outside that tree entirely and are served as raw bytes.
 
@@ -52,8 +52,8 @@ for _name in ("render", "capture", "enrich"):
     try:
         _mod = __import__(_name)
         globals()[_name] = _mod
-    except Exception as _e:  # noqa: BLE001 — deliberately broad: FR-3's
-        # "Failure handling" requires surviving a raise at import time too,
+    except Exception as _e:  # noqa: BLE001 — deliberately broad: the
+        # server must survive a raise at import time too,
         # not just a missing file.
         _import_errors[_name] = _e
 
@@ -134,8 +134,8 @@ class Handler(BaseHTTPRequestHandler):
     # ---- quiet, no-network logging -----------------------------------
     # BaseHTTPRequestHandler.address_string() calls socket.getfqdn(), which
     # can trigger a resolver lookup. This is a purely local tool bound to
-    # 127.0.0.1 (FR-1) that must make zero outbound network calls of any
-    # kind (FR-10) — overriding this avoids even an incidental one when a
+    # 127.0.0.1 that must make zero outbound network calls of any
+    # kind — overriding this avoids even an incidental one when a
     # request is merely logged.
     def address_string(self):
         return self.client_address[0]
@@ -145,9 +145,11 @@ class Handler(BaseHTTPRequestHandler):
 
     # ---- small response helpers ----------------------------------------
 
-    def _send_bytes(self, status, data, content_type):
+    def _send_bytes(self, status, data, content_type, extra_headers=()):
         self.send_response(status)
         self.send_header("Content-Type", content_type)
+        for name, value in extra_headers:
+            self.send_header(name, value)
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
@@ -228,11 +230,18 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path.startswith("/store/"):
-            store = path[len("/store/"):]
-            if not _is_safe_segment(store):
+            store, _, rel = path[len("/store/"):].partition("/")
+            if not _is_safe_segment(store) or (rel and not _is_safe_relpath(rel)):
                 self._not_found("Not found.")
                 return
-            self._render_or_error("render_store", store)
+            if rel:
+                self._render_or_error("render_store_file", store, rel)
+            else:
+                self._render_or_error("render_store", store)
+            return
+
+        if path.startswith("/raw/"):
+            self._handle_raw(path[len("/raw/"):])
             return
 
         if path == "/backlog":
@@ -279,6 +288,22 @@ class Handler(BaseHTTPRequestHandler):
             return
         data, mimetype = result
         self._send_bytes(200, data, mimetype)
+
+    def _handle_raw(self, rest):
+        store, _, rel = rest.partition("/")
+        if not _is_safe_segment(store) or not _is_safe_relpath(rel):
+            self._not_found("Not found.")
+            return
+        result = library.store_file_bytes(store, rel)
+        if result is None:
+            self._not_found("Not found.")
+            return
+        data, mimetype = result
+        # A store page's own scripts run in an opaque origin, so they can
+        # never post to /do/* as the wiki, whether framed or opened alone.
+        self._send_bytes(200, data, mimetype, [
+            ("Content-Security-Policy", "sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox"),
+        ])
 
     def _handle_static(self, rel):
         # Refusal #1 (route layer).
@@ -399,7 +424,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def _startup_seal_log():
     """
-    FR-11: log the seal state at startup, before the socket accepts its
+    Log the seal state at startup, before the socket accepts its
     first request — in addition to (not instead of) seal's own per-request
     re-parse. A missing/corrupt manifest must be visible in the server's own
     boot output immediately, not only on the first page load.
@@ -438,7 +463,7 @@ class _QuietHTTPServer(HTTPServer):
 def build_server(port=None):
     """
     Log the startup seal state and bind the socket. Returns the bound
-    `HTTPServer`, or `None` if the port is already taken (FR-4: idempotent
+    `HTTPServer`, or `None` if the port is already taken (idempotent
     start — `ensure-wiki.sh` probes first, but a race window remains, and
     this must not crash ugly if raced).
 

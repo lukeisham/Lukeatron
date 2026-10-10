@@ -2,16 +2,15 @@
 enrich.py — the request -> draft -> accept file protocol behind the PRD's
 generation gate (References / Supporting Quotes / See Also).
 
-One of exactly two modules in this app permitted to write into Memory/Long-Term/
-(the other is capture.py). accept() is that one write path here, granted by
-Luke 2026-09-11 (registry D13, Rule Exceptions row 3 against PY-12/API-5):
-Luke's Accept click IS the !Checkpoint approval — no separate approval step
-exists inside accept() itself. request_enrich()'s write (registry D6, row 2)
-lands only in System/Sandbox/wiki-enrich/_requests/, outside Long-Term.
+One of exactly two modules in this app that write into Memory/Long-Term/
+(the other is capture.py); accept() is the one write path here (PY-12).
+Luke's Accept click is the !Checkpoint approval, so accept() has no
+approval step of its own. request_enrich()'s write lands only in
+System/Sandbox/wiki-enrich/_requests/, outside Long-Term.
 
-This module never calls an agent or an LLM (FR-7/AC-8). Two of its seven
+This module never calls an agent or an LLM. Two of its seven
 functions are AGENT-FACING ONLY and must never be reached from an HTTP route
-(FR-10) — see the clearly marked section below, each also carrying an
+ — see the clearly marked section below, each also carrying an
 `is_agent_only = True` attribute so a grep or a test can check this
 structurally rather than by convention alone:
 
@@ -21,14 +20,13 @@ structurally rather than by convention alone:
 Everything else (request_enrich, accept, cancel, slot_state, read_draft) is
 safe to call from server.py's routes / render.py's reads.
 
-File scheme (confirmed against enrich.spec.md AD-2 / render.spec.md OQ-1):
+File scheme:
     request : System/Sandbox/wiki-enrich/_requests/<slug>.<slot_id>.yaml
     draft   : System/Sandbox/wiki-enrich/<slug>.<slot_id>.md
 
-Raw-file marker convention (my own design decision — see the build report's
-disagreements section: neither capture.spec.md, enrich.spec.md, nor
-CONTRACT.md fixes the literal text syntax a `.p-gen` block uses inside a
-plain-text store file; only the CSS class names are specified). Draft and
+Raw-file marker convention (only the CSS class names are fixed elsewhere;
+this module fixes the literal text syntax a `.p-gen` block uses inside a
+plain-text store file). Draft and
 accepted content share one small, deterministic, yamlio-parseable shape:
 
     items:
@@ -75,8 +73,8 @@ SLOT_IDS = {
 
 def request_enrich(slug, slot):
     """
-    The ⊕ click handler (FR-1). Writes one pending request file if none
-    already exists for this slug+slot; otherwise a no-op (AC-1: two clicks,
+    The ⊕ click handler. Writes one pending request file if none
+    already exists for this slug+slot; otherwise a no-op (two clicks,
     one file). Also a no-op if a draft (or the store) already holds this
     slot — clicking ⊕ again once past "requested" should not resurrect a
     second request file behind the scenes.
@@ -111,11 +109,11 @@ def request_enrich(slug, slot):
 
 def accept(slug, slot):
     """
-    The Accept-click handler (FR-4). Writes the current draft's content into
+    The Accept-click handler. Writes the current draft's content into
     the slot's store file as a `.p-gen` block with its `verified:` stamps
     intact, then deletes both the request and draft files for this slug+slot.
 
-    FR-8: re-checks the verified-stamp requirement on the way into the
+    re-checks the verified-stamp requirement on the way into the
     store, independent of write_draft()'s own check on the way in.
 
     Atomicity decision: the store write itself is the dangerous one (a
@@ -125,7 +123,7 @@ def accept(slug, slot):
     is NOT undone (undoing a committed Long-Term write is worse than a
     leftover scratch file) and "ok" stays True since the write itself
     succeeded, but "error" reports the cleanup failure so it isn't silently
-    lost. slot_state()'s store-check-wins priority (AD-2) means a leftover
+    lost. slot_state()'s store-check-wins priority means a leftover
     file can never pull the slot back to "requested"/"draft" after this.
 
     Returns: {"ok": bool, "error": str|None, "writes": [relpath, ...]}
@@ -198,7 +196,7 @@ def accept(slug, slot):
 def cancel(slug, slot):
     """
     Withdraw (from "requested") and reject (from "draft ready") are the same
-    call (FR-5/AD-1): delete whatever request/draft files exist for this
+    call: delete whatever request/draft files exist for this
     slug+slot. Never touches the store.
 
     Returns: {"ok": bool, "error": str|None, "removed": [str, ...]}
@@ -225,14 +223,14 @@ def cancel(slug, slot):
 
 def slot_state(slug, slot):
     """
-    empty | requested | draft | filled — priority per render.spec.md AD-2:
+    empty | requested | draft | filled — in this priority:
     a `.p-gen` block already in the store WINS over any leftover request or
     draft file, else draft file present -> "draft", else request file
     present -> "requested", else "empty". render.py calls this; it never
-    decides the state itself (CONTRACT.md).
+    decides the state itself.
 
     `slot` MUST be one of the three full names in `SLOTS` — the domain
-    value every other entry point in this module also requires (FR-6). This
+    value every other entry point in this module also requires. This
     is the one function in the module whose return type is a bare `str`
     with no `{"ok": False, "error": ...}` shape to carry a refusal, so an
     invalid slot here used to return "empty" — indistinguishable from a
@@ -296,16 +294,16 @@ def read_draft(slug, slot):
 
 
 # ============================================================================
-# Agent-facing entry points ONLY — FR-10: never called from an HTTP route.
-# server.py's route table (built against CONTRACT.md) correctly omits both.
+# Agent-facing entry points ONLY — never called from an HTTP route.
+# server.py's route table omits both.
 # ============================================================================
 
 
 def list_pending():
     """
-    Every pending request's slug/slot/page/when (FR-2). Returns [] — never
+    Every pending request's slug/slot/page/when. Returns [] — never
     raises — when System/Sandbox/wiki-enrich/_requests/ doesn't exist yet
-    (FR-12/AC-11): "no folder" and "folder exists but empty" both mean
+    "no folder" and "folder exists but empty" both mean
     "nothing pending".
     """
     if not paths.REQ_DIR.is_dir():
@@ -339,8 +337,8 @@ list_pending.is_agent_only = True
 def write_draft(slug, slot, content):
     """
     Called BY an agent session once it has produced verified content — never
-    the reverse (FR-7). Refuses to write (zero bytes) if any item in
-    `content` lacks a non-empty `verified` stamp (FR-3/AC-3).
+    the reverse. Refuses to write (zero bytes) if any item in
+    `content` lacks a non-empty `verified` stamp.
 
     `content`: list of {"text": str, "verified": str} — see module docstring
     for why this shape was chosen over raw markdown text.
@@ -380,8 +378,8 @@ write_draft.is_agent_only = True
 
 
 def _find_unsealed_node(slug):
-    """FR-9: every entry point validates the page against library's
-    seal-filtered node list — the same discipline capture.py's FR-9 uses."""
+    """Every entry point validates the page against library's
+    seal-filtered node list — the same discipline capture.py uses."""
     for node in library.list_nodes():
         if node.get("slug") == slug:
             return node
@@ -399,7 +397,7 @@ def _validate_slot_and_page(slug, slot):
 
 def _validate_items(content):
     """
-    FR-3/FR-8: every item must be a dict with non-empty "text" and
+    Every item must be a dict with non-empty "text" and
     "verified" strings. Returns a clean list, or None if content is not a
     list or ANY item fails the check (belt-and-suspenders: the same
     function backs both write_draft's and accept's stamp check).
@@ -457,7 +455,7 @@ def _store_has_gen_block(node, slot):
 
 
 def _pick_store_ref(node):
-    """Same AD-1-style target choice as capture.py's _pick_note_ref: the
+    """Same target choice as capture.py's _pick_note_ref: the
     node's first unsealed `.list.md` ref, else its first unsealed ref."""
     refs = node.get("longterm_refs") or []
     unsealed = [r for r in refs if not r.get("sealed")]
@@ -470,7 +468,7 @@ def _pick_store_ref(node):
 
 
 def _resolve_permitted_target(relpath):
-    """FR-9: independent, defense-in-depth containment + seal re-check on
+    """Independent, defense-in-depth containment + seal re-check on
     the resolved absolute path — mirrors capture.py's own helper."""
     if not relpath:
         return None
@@ -489,7 +487,7 @@ def _resolve_permitted_target(relpath):
 
 def _atomic_write(path: Path, text: str):
     """Write text to path via temp-file + os.replace — never a half file.
-    Creates parent directories as needed (FR-11: this module owns and
+    Creates parent directories as needed (this module owns and
     creates its own Sandbox working directories, unlike _sealed.yaml)."""
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")

@@ -1,7 +1,7 @@
 """
 Test suite for capture.py — the fixed quick-capture form's write path.
 
-Covers capture.spec.md AC-1 through AC-10, plus the extra coverage this
+Covers the capture contract, plus the extra coverage this
 project's build brief called for: determinism, the TEST-7 blocked/permitted
 pair, atomicity under a simulated crash, and sequential-id collision safety.
 
@@ -119,7 +119,7 @@ class CaptureFixtureTestCase(unittest.TestCase):
         _write(self.queue_yaml, QUEUE_START)
 
         # ---- nodes -----------------------------------------------------------
-        # "theology": one unsealed .list.md ref -> AD-1's preferred pick.
+        # "theology": one unsealed .list.md ref -> the preferred pick.
         _write(
             self.nodes / "theology.md",
             '---\n'
@@ -132,7 +132,7 @@ class CaptureFixtureTestCase(unittest.TestCase):
             '# Theology\n',
         )
         # "plain-node": one unsealed ref, NOT .list.md -> the "else first
-        # unsealed ref of any kind" branch of AD-1's pick logic.
+        # unsealed ref of any kind" branch of the pick logic.
         _write(
             self.nodes / "plain-node.md",
             '---\n'
@@ -158,7 +158,7 @@ class CaptureFixtureTestCase(unittest.TestCase):
         )
         # "escape-node": its one ref is not sealed per seal.is_sealed() (it
         # doesn't match any manifest entry), but resolving it lands OUTSIDE
-        # Memory/Long-Term/ entirely -> FR-8's structural check must catch
+        # Memory/Long-Term/ entirely -> the structural check must catch
         # this independently of the seal check.
         _write(
             self.nodes / "escape-node.md",
@@ -173,7 +173,7 @@ class CaptureFixtureTestCase(unittest.TestCase):
         )
         # "fully-sealed": its only ref is sealed -> the WHOLE node is
         # excluded from library.list_nodes(), i.e. structurally unselectable
-        # from the page dropdown (AC-3's whole point).
+        # from the page dropdown.
         _write(
             self.nodes / "fully-sealed.md",
             '---\n'
@@ -208,7 +208,7 @@ class CaptureFixtureTestCase(unittest.TestCase):
 
 
 # ============================================================================
-# AC-2 — invalid intent, zero writes
+# Invalid intent, zero writes
 # ============================================================================
 
 
@@ -237,7 +237,7 @@ class TestAC2InvalidIntent(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-3 — page dropdown cross-checked against seal.is_sealed()
+# Page dropdown cross-checked against seal.is_sealed()
 # ============================================================================
 
 
@@ -281,7 +281,7 @@ class TestAC3DropdownNeverShowsSealedEntries(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-4 — no needs_absorb key, ever
+# No needs_absorb key, ever
 # ============================================================================
 
 
@@ -301,7 +301,7 @@ class TestAC4NoNeedsAbsorbKey(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-5 — verbatim, byte-for-byte note append, awkward content included
+# Verbatim, byte-for-byte note append, awkward content included
 # ============================================================================
 
 
@@ -327,7 +327,7 @@ class TestAC5NoteAppendedVerbatim(CaptureFixtureTestCase):
         # Original content untouched (still present, nothing removed).
         self.assertIn(orig_text.strip("\n"), new_text)
         # The note is present with EVERY character intact — the whole
-        # point of AC-5. No stripping, no reformatting.
+        # point. No stripping, no reformatting.
         self.assertIn(self.AWKWARD_NOTE, new_text)
         # A dated heading, today's date.
         import datetime as dt
@@ -363,7 +363,7 @@ class TestAC5NoteAppendedVerbatim(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-6 — no note given, store file byte-identical
+# No note given, store file byte-identical
 # ============================================================================
 
 
@@ -383,7 +383,7 @@ class TestAC6NoNoteStoreUntouched(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-7 / AC-8 — the TEST-7 pair (blocked path / permitted path)
+# The TEST-7 pair (blocked path / permitted path)
 # ============================================================================
 
 
@@ -392,7 +392,7 @@ class TestAC7AC8Test7Pair(CaptureFixtureTestCase):
         """
         escape-node's ref resolves OUTSIDE Memory/Long-Term/ entirely. It is
         not caught by the seal check (it matches nothing in the manifest) —
-        only FR-8's structural containment check catches it. Zero writes on
+        only the structural containment check catches it. Zero writes on
         both the queue and the escape target.
         """
         before_queue = self.queue_yaml.read_bytes()
@@ -427,7 +427,7 @@ class TestAC7AC8Test7Pair(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# AC-9 — no agent call, no !Checkpoint call anywhere in the module
+# No agent call, no !Checkpoint call anywhere in the module
 # ============================================================================
 
 
@@ -445,14 +445,14 @@ class TestAC9NoAgentOrCheckpointCall(unittest.TestCase):
 
 
 # ============================================================================
-# AC-10 — missing _queue.yaml self-heals to a minimal valid document
+# Missing _queue.yaml self-heals to a minimal valid document
 # ============================================================================
 
 
 class TestAC10MissingQueueYamlSelfHeals(CaptureFixtureTestCase):
     def test_missing_queue_recreated_no_crash_reports_ok(self):
         """
-        The part of AC-10 that DOES hold: capture_submit does not crash and
+        What DOES hold: capture_submit does not crash and
         reports ok=True when _queue.yaml is missing.
         """
         self.queue_yaml.unlink()
@@ -466,7 +466,7 @@ class TestAC10MissingQueueYamlSelfHeals(CaptureFixtureTestCase):
 
     def test_missing_queue_recreated_document_is_actually_valid_yaml(self):
         """
-        AC-10 requirement: the self-healed queue file must be valid YAML,
+        The self-healed queue file must be valid YAML,
         not malformed. The recreated document uses block-list syntax
         ("items:\n" with NO inline "[]") so the first appended row is a
         normal, valid nested list item. This test verifies the fix.
@@ -485,7 +485,7 @@ class TestAC10MissingQueueYamlSelfHeals(CaptureFixtureTestCase):
 
     def test_missing_queue_recreated_has_correct_header_keys(self):
         """
-        AC-10 / task requirement: the recreated minimal document should carry
+        The recreated minimal document should carry
         the same header keys as the real file: wiki, type, last_updated, count.
         """
         self.queue_yaml.unlink()
@@ -545,7 +545,7 @@ class TestAC10MissingQueueYamlSelfHeals(CaptureFixtureTestCase):
 
     def test_missing_queue_determinism_two_runs_from_same_missing_state(self):
         """
-        AC-1 / determinism requirement: the same input against two separate
+        Determinism: the same input against two separate
         missing-file starting states should produce byte-identical output.
         """
         def run_from_missing():
@@ -563,7 +563,7 @@ class TestAC10MissingQueueYamlSelfHeals(CaptureFixtureTestCase):
 
 
 # ============================================================================
-# Determinism — AC-1
+# Determinism
 # ============================================================================
 
 

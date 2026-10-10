@@ -3,9 +3,9 @@ library.py — the ONLY module that touches Long-Term / LukeatronWiki on disk.
 
 Every read anywhere else in the app (render, search, ...) must go through this
 module's functions. Every function here consults `seal` before returning
-anything (FR-9): there is exactly one place the privacy gate can go wrong.
+anything: there is exactly one place the privacy gate can go wrong.
 
-No cache, no database, no module-level memoisation of content (FR-8). Every
+No cache, no database, no module-level memoisation of content. Every
 call hits disk fresh, every time. One exception, owned here so it stays behind
 the gate: `search_index()` hands search the shared memory-search engine, whose
 index leaves sealed paths out at build time and refreshes changed files on
@@ -371,12 +371,11 @@ def read_store_file(store, filename):
                   set, so callers can offer a download/media link instead of
                   crashing or mangling bytes with a guessed codec.
 
-    FR-1: content is returned verbatim — no normalising, no stripping.
+    Content is returned verbatim — no normalising, no stripping.
     Binary-file decision: files are UTF-8 (per the build brief); a decode
     failure is handled explicitly (UnicodeDecodeError caught, "text": None,
     "binary": True) rather than silently reading with errors="ignore", which
-    would quietly corrupt the very "untouched words" guarantee FR-1 exists
-    for. This is not in the contract's dict shape verbatim, but a dict may
+    would quietly corrupt the very "untouched words" guarantee. This is not in the contract's dict shape verbatim, but a dict may
     carry additional keys without violating it.
     """
     if _is_hidden(filename or ""):
@@ -421,6 +420,30 @@ def read_store_file(store, filename):
     }
 
 
+def store_file_bytes(store, filename):
+    """
+    Return (bytes, mimetype) for a store file, or None when it is missing,
+    unsafe, hidden or sealed. Serves embedded HTML pages, PDFs and images,
+    which the reading view cannot inline as escaped text. A sealed file
+    answers exactly like a missing one, so its existence is never revealed.
+    """
+    if any(_is_hidden(part) for part in (filename or "").split("/")):
+        return None
+    if seal.is_sealed_store(store) or seal.is_sealed(f"{store}/{filename}"):
+        return None
+    resolved = _resolve_store_path(store, filename)
+    if resolved is None or not resolved.is_file() or seal.is_sealed(resolved):
+        return None
+    try:
+        data = resolved.read_bytes()
+    except OSError:
+        return None
+    mimetype, _ = mimetypes.guess_type(resolved.name)
+    if mimetype and mimetype.startswith("text/"):
+        mimetype += "; charset=utf-8"
+    return data, (mimetype or "application/octet-stream")
+
+
 def list_store(store):
     """
     List every file in a store, at any depth.
@@ -434,7 +457,7 @@ def list_store(store):
     for every row this returns.
 
     Returns:
-        None        — the store is sealed (FR-2: nothing at all, not an
+        None        — the store is sealed (nothing at all, not an
                       empty list with a reason — its existence must not be
                       inferable from the return shape)
         list[dict]  — [{"filename","relpath","suffix"}], possibly empty,
@@ -447,7 +470,7 @@ def list_store(store):
     for filename, path in _iter_store_files(store):
         relpath = f"{store}/{filename}"
         if seal.is_sealed(relpath):
-            # A single sealed file inside an otherwise-unsealed store: FR-9
+            # A single sealed file inside an otherwise-unsealed store: the seal
             # applies per-file too, so it is simply omitted from the listing.
             continue
         out.append({
@@ -505,7 +528,7 @@ def read_node(slug):
                 "wikilinks":[slug],"emoji","type","format","status","tags",
                 "updated","thumbnail"}
 
-    Note: this never returns store-file CONTENT (FR-9's concern) — only the
+    Note: this never returns store-file CONTENT — only the
     node's own body text (Luke's/the wiki's connective prose) and pointer
     metadata about where store content lives, with each pointer already
     flagged sealed/unsealed so callers never have to re-derive that.
@@ -549,7 +572,7 @@ def resolve_wikilink(slug):
         {"state": "sealed", "slug": slug, "title": None}
         {"state": "unresolved", "slug": slug, "title": None}
 
-    FR-4 / privacy requirement: a sealed target NEVER returns "unresolved" —
+    Privacy requirement: a sealed target NEVER returns "unresolved" —
     that would let render draw a red link, which reveals the target exists
     and invites someone to create it. The sealed check runs first and does
     not depend on whether a node file happens to exist.
@@ -573,7 +596,7 @@ def _backlink_index():
     Same rules as backlinks() — hidden files and fully sealed nodes skipped,
     a link is a body [[wikilink]] or a frontmatter `related:` entry — but
     built once for all targets. The result lives only for the caller's
-    duration: nothing is cached between requests (AD-1). The stem is kept so
+    duration: nothing is cached between requests. The stem is kept so
     a caller can drop a node's link to itself, as backlinks() does.
     """
     index = {}
@@ -600,7 +623,7 @@ def backlinks(slug):
     """
     "What links here" — every OTHER node whose body contains [[slug]] or
     whose frontmatter `related:` list names it, computed live by re-walking
-    every node on every call (AD-1: no index, no cache, no memo).
+    every node on every call (no index, no cache, no memo: a hand-edit shows at once).
 
     Returns:
         list[dict] — [{"slug","title"}], for unsealed linking nodes only,
@@ -631,14 +654,12 @@ def backlinks(slug):
 
 def contents_page(store):
     """
-    A store's plain contents page (PRD/OQ-1): distinguishes a genuinely
+    A store's plain contents page: distinguishes a genuinely
     empty store from one with files but no matching wiki node.
 
     Returns:
-        SEALED — the store is sealed (FR-9: no content, no state hint, for
-                 a sealed path under any name — the contract's documented
-                 shape doesn't show this branch, but FR-9 requires it; see
-                 the disagreement note in the build report)
+        SEALED — the store is sealed (no content, no state hint, for
+                 a sealed path under any name)
         dict   — {"store","state","files"} where state is one of:
                  "empty"         — zero files in the store
                  "has-node"      — files present AND a wiki hub node exists
@@ -648,8 +669,8 @@ def contents_page(store):
     — a FLAT list of {"filename","relpath","suffix"} rows, where "filename"
     may itself contain "/" for a nested file (e.g.
     "2_Corinthians/2_Cor_Series_prep.md"), rather than a tree grouped by
-    subfolder. Chosen over grouping because render.spec.md's FR-6 is
-    explicit that contents-page rendering uses `library.contents_page()`
+    subfolder. Chosen over grouping because the contents page is
+    defined so that contents-page rendering uses `library.contents_page()`
     "verbatim — a file listing, no prose added"; a flat list needs no
     interpretation to render, a grouped tree would. This keeps the return
     shape's existing keys unchanged from before this fix — no additive key
@@ -684,7 +705,7 @@ def integrity_counts():
         {"stores","files","rendered","sealed","unindexed","dead_links",
          "one_way_edges"}
 
-    FR-7 / AC-5: "sealed" is read from seal.count()["total"], never
+    "sealed" is read from seal.count()["total"], never
     recomputed independently — there is exactly one source of truth for
     that number.
     """
@@ -742,9 +763,9 @@ def read_queue():
     """
     Read _queue.yaml (the read/watch/write backlog).
 
-    FR-10: graceful-empty, not fail-closed — a missing, empty, or
+    graceful-empty, not fail-closed — a missing, empty, or
     unparseable _queue.yaml (a pre-existing !IdeaWiki fixture this project
-    doesn't create — FR-11) degrades to an empty backlog, never an
+    doesn't create) degrades to an empty backlog, never an
     exception. This is deliberately the opposite direction from seal's
     fail-closed behaviour on a bad _sealed.yaml: the risk here is a blank
     backlog panel, not an exposed sealed store.
@@ -764,7 +785,7 @@ def read_index():
     """
     Read _index.yaml (the node catalogue: themes/tags/pages).
 
-    FR-10: graceful-empty on a missing/malformed _index.yaml — returns an
+    graceful-empty on a missing/malformed _index.yaml — returns an
     empty index structure, never an exception.
     """
     data = yamlio.load(paths.INDEX_YAML)
@@ -784,7 +805,7 @@ def media_bytes(name):
         (bytes, mimetype) — on success
         None — the file is missing, `_media/` itself is missing, the
               filename (or any segment of a nested subpath) is hidden, or
-              the request tries to escape `_media/` (FR-10 graceful-empty;
+              the request tries to escape `_media/` (graceful-empty;
               also the same allow-nested/reject-escape discipline as
               `read_store_file` — see `_is_safe_relative_subpath` and
               `_resolve_store_path` — applied to this second untrusted-name

@@ -11,7 +11,7 @@ Failure philosophy: a construct this parser cannot recognise is never silently
 dropped or turned into a `None` that looks like valid content. It raises
 internally (`YamlParseError`), and `parse()`/`load()` translate that into the
 existing "empty dict" failure signal the rest of the app already treats as
-"this file did not parse" (see seal.py's FR-7 handling, which checks for an
+"this file did not parse" (see seal.py's fail-closed handling, which checks for an
 empty dict as its invalid-YAML signal). So the external contract — parse(text)
 -> dict, load(path) -> dict, {} on failure — is unchanged, but a failure now
 means "the whole document was flagged as unparseable," never "a field quietly

@@ -2,8 +2,8 @@
 Test suite for search.py — plain substring search over library's
 already-seal-filtered reads.
 
-Covers search.spec.md's AC-1 through AC-7, plus a benchmark against the
-real Memory/Long-Term/ tree (AC-4) and the direct-file-access grep (AC-6).
+Covers the search contract, plus a benchmark against the
+real Memory/Long-Term/ tree and the direct-file-access grep.
 
 Like test_library.py, the fixture-based tests build a tempfile tree shaped
 like Memory/Long-Term/ and monkey-patch `paths`' constants — nothing here
@@ -160,7 +160,7 @@ class TestAC3TitleVsBodyDistinction(SearchFixtureTestCase):
 
 class TestAC4Performance(unittest.TestCase):
     """
-    AC-4 — a benchmark run at the PRD's declared scale records a result
+    A benchmark run at the PRD's declared scale records a result
     with no perceptible delay. Run against the REAL Memory/Long-Term/ tree
     (no monkey-patch) since that's the actual scale this needs to hold at:
     per the build brief, 33 stores / 187 reachable files / 26 MB, with
@@ -211,7 +211,7 @@ class TestAC5NoCacheLiveEdit(SearchFixtureTestCase):
 
 class TestAC6NoDirectFileAccess(unittest.TestCase):
     """
-    AC-6 — a grep of search.py's own module code finds zero direct
+    A grep of search.py's own module code finds zero direct
     Memory/Long-Term or LukeatronWiki file opens. search must reach disk
     only through library's already-seal-filtered reads.
     """
@@ -230,7 +230,7 @@ class TestAC6NoDirectFileAccess(unittest.TestCase):
 
 
 class TestAC7NoWritePath(unittest.TestCase):
-    """AC-7 — no function in this module ever opens a file for writing."""
+    """No function in this module ever opens a file for writing."""
 
     def test_no_write_mode_opens(self):
         source = (APP_DIR / "search.py").read_text(encoding="utf-8")

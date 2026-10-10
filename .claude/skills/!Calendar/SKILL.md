@@ -68,8 +68,6 @@ The MCP server id is the connected Google Calendar connector. Verbs map to its t
 
 ## ✅ OUTPUT
 - Returns the MCP tool's native JSON (calendar/event objects) to the caller verbatim.
-- Log: `[WORKER: !Calendar] [SUCCESS|FAIL] <verb> | <eventId/summary>`
-  → `Memory/Long-Term/Logs/skills.log`.
 
 ## 🔌 BACKEND NOTES
 - If the MCP connector is not authenticated in a given session (e.g. a headless/cron run),

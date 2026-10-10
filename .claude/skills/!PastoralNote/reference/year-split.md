@@ -69,6 +69,5 @@
 
   REPORT to Luke: "Pastoral log split for {YEAR}. {OLDYEAR} → {path} ({n} entries, verified
                    byte-identical). New year file created, instructions verified intact."
-  LOG → python3 System/Tools/skilllog/skilllog.py write '!PastoralNote' SUCCESS "split {OLDYEAR}→{YEAR} rows:{n} verified"
   RETURN NEWFILE
 ```

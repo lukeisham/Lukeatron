@@ -55,21 +55,16 @@ STEP 4 — EXECUTE THE APPROVED PLAN (only after approval; order matters — des
        update the source store's _index.yaml.
   3. DELETE ➔ only the deletes Luke explicitly approved; remove the item and update its index.
   4. PROJECT CLOSEOUT ONLY ➔
-       a. LOG the closure: `skilllog.py complete 'project:<id>' "<title> closed; promoted: <items or none>"`
-          → one line in Memory/Long-Term/Logs/history.log, title verbatim from registry.md frontmatter,
-          promoted items from its 📦 Closeout section. The registry itself is in Archive/ (STEP 3), so the
-          full record survives. This step runs BEFORE any deletion.
-       b. Set status: Archived in Projects/_tracking.yaml.
-       c. Delete the now-emptied project folder. Folder deletion is the LAST action — never the first.
+       a. Set status: Archived in Projects/_tracking.yaml. The registry in Archive/ (STEP 3) is the record.
+       b. Delete the now-emptied project folder. Folder deletion is the LAST action — never the first.
 
 STEP 5 — VERIFY. Indexes consistent (no dangling _index.yaml / _tracking.yaml entries); Archive/ holds what was moved;
   Long-Term holds the promoted keepers; nothing approved was skipped and nothing unapproved changed.
 
 ## ✅ OUTPUT
 State: Every target was double-checked and reviewed by Luke; only approved changes were made — keepers promoted,
-  archived items moved (reversibly) to Archive/, explicit deletes removed, indexes updated. On a project closeout a
-  COMPLETED line has been appended to Memory/Long-Term/Logs/history.log, the registry is in Archive/,
+  archived items moved (reversibly) to Archive/, explicit deletes removed, indexes updated. On a project closeout the
+  registry is in Archive/,
   _tracking.yaml reads Archived, and the project folder is gone. Nothing unreviewed changed.
-Log: "[AGENT: !ArchiveMemory] [SUCCESS] mode=<longterm|project-closeout> promoted=[N] archived=[N] deleted=[N] held=<none|...> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: A target can't be read/verified, its content contradicts the stated reason, or Luke is unreachable for review
   ➔ FAIL CLOSED — defer the change, leave memory untouched, report the blocker. Never delete or archive unreviewed.

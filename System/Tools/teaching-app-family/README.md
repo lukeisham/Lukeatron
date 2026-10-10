@@ -36,7 +36,7 @@ teaching-app-family/
         ▼
  sync.py finish  →  every touched file becomes the baseline; the loop is quiet again
 ```
-- **Settings.** The two hooks are entries in `.claude/settings.json` (`PostToolUse` matching `Edit|Write|MultiEdit|NotebookEdit|Bash`, and `Stop`) that run `hook.py`. A hook that fails writes to `Memory/Long-Term/Logs/workers.log` and exits quietly; it can never stop a turn by itself failing.
+- **Settings.** The two hooks are entries in `.claude/settings.json` (`PostToolUse` matching `Edit|Write|MultiEdit|NotebookEdit|Bash`, and `Stop`) that run `hook.py`. A hook that fails writes one `Memory/Long-Term/Logs/issues.log` line and exits quietly; it can never stop a turn by itself failing.
 - **What is function.** `family.json`: `function_globs` are the shared code, `data_globs` are never tracked, and `only` lists files that exist in one app alone (Style's image grid) and so are never carried. A new app is added to `members` (database name, port, item noun and its `mode`).
 - **Merge mode.** `port.forward` puts the source's app name, database file, settings keys and port into the target's, then `git merge-file` merges the source's baseline, the source's new file and the target's file. The item noun (pattern, form, topic, element) is not renamed, because a word like "form" is also code; lines that arrive speaking of the source's noun are marked `review`, and lines that both apps changed are a `conflict`. Neither is written; `apply` writes only what merged cleanly.
 - **Manual mode.** Rhetoric has diverged (devices, Topical and Grammar groups), so a change from or to it is reported as a note, never merged.

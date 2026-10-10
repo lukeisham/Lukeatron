@@ -128,8 +128,6 @@ convenience — re-derive it only if both sources stop working.
 - A verified three-column chat table (Address · Summary · Link), or a plain "nothing matched"
   statement with a concrete suggestion — never an empty or unverified table.
 - Optionally, on Luke's yes, a saved `System/Sandbox/RealEstateSearch_<suburb>_<date>.md` file.
-- Log: `[SKILL: !RealEstateSearch] [SUCCESS|EMPTY|FAIL] suburbs=[...] bedrooms=[n] results=[n]`
-  → `Memory/Long-Term/Logs/skills.log`.
 
 **Validation Check (Self-Test)**
 ```

@@ -174,7 +174,6 @@ Validation: every Explanation block is in ONE mode (catch-up or impact), impact 
   omitted for having nothing live; the lead context is ordered first; no context To-Do block still holds
   a non-blank open to-do that wasn't either promoted, matched-and-cleared, or flagged as ambiguous;
   no duplicate project was created.
-Log: "[AGENT: !Review] [SUCCESS] focus=<mon|fri|full> projects=<N> promoted=<N> cleared=<N> flagged=<N> events=<N> tasks=<N> decisions=<N> outbox=<N> sent=<yes|no> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: _tracking.yaml unreachable → fail closed (ASSERT). A context file unreachable → skip it, note in digest, continue.
   Calendar unreachable → degrade, note it, continue. AgentMail send fails → leave the digest in Sandbox,
   log the failure, do not silently drop it.

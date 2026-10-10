@@ -508,9 +508,6 @@ runs straight into asking for Phase 2's source material.
 count, and a pointer to `outline.md` / `notes.md` / `scenes/` for direct review. The registry and
 `_instructions.md` are never the deliverable — summarise their state, never dump them.
 
-**Log**: `[AGENT: !POVScript] [PHASE n] slug=<slug> phase_status=<status> scenes_done=<n>/<total>`
-→ `Memory/Long-Term/Logs/skills.log` after every phase transition.
-
 **Error Path**
 ```
 CATCH [session ends mid-scene]                      ➔ registry already reflects every scene

@@ -60,7 +60,6 @@ On a hit: the saved `_media/<slug>.jpg` file + `thumbnail` / `thumbnail_caption`
 On a miss (no result, no cover_i, or fetch failure) at any step: return nothing — `!IdeaWiki`
 proceeds to the next rung of its `SET_THUMBNAIL` ladder (Thumbnails store → one lightweight
 web search → none). A miss here costs exactly one search + one fetch, never more.
-Log: "[AGENT: !BookCover] [SUCCESS|MISS] slug=[slug] title=[title]" → Memory/Long-Term/Logs/skills.log
 
 ## 🎨 House style — UNCLASSIFIED
 

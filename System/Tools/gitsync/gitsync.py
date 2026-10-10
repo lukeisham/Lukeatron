@@ -19,7 +19,7 @@ from pathlib import Path
 
 LUKEATRON = Path(__file__).resolve().parents[3]
 ROOT = Path(os.environ.get("GITSYNC_ROOT", LUKEATRON))  # set only by the tests
-SKILLLOG = LUKEATRON / "System/Tools/skilllog/skilllog.py"
+LOGS = LUKEATRON / "System/Tools/logs/logs.py"
 FETCH_TIMEOUT = 15
 
 
@@ -50,8 +50,8 @@ def lagging(old, new):
     return [p for p in paths if on_disk(p) == blob(old, p) != blob(new, p)]
 
 
-def log(status, message):
-    subprocess.run([sys.executable, str(SKILLLOG), "worker", "gitsync", status, message], capture_output=True, timeout=10)
+def log_issue(message):
+    subprocess.run([sys.executable, str(LOGS), "issue", "gitsync", message, "--severity", "Medium"], capture_output=True, timeout=10)
 
 
 def report(user, context=None):
@@ -75,14 +75,12 @@ def sync(dry_run):
     if behind == 0:
         return None
     if ahead > 0:
-        log("FAIL", f"held: {ahead} local and {behind} remote commits")
         return report(f"held: this Mac has {ahead} unpushed commit(s) and GitHub has {behind} new one(s)",
                       f"this Mac's main has {ahead} commit(s) GitHub lacks and is {behind} behind origin/main. Nothing was "
                       "reset. Tell Luke and ask before rebasing or resetting.")
     old = git("rev-parse", "HEAD").strip()
     stale = lagging(old, "origin/main")
     if stale:
-        log("FAIL", f"held: Dropbox still copying {len(stale)} file(s)")
         shown = ", ".join(stale[:5]) + (" …" if len(stale) > 5 else "")
         return report(f"held: Dropbox has not finished copying {len(stale)} file(s); start a new session shortly",
                       f"{behind} commit(s) on GitHub, but these files still hold this Mac's old version: {shown}. Nothing "
@@ -91,7 +89,6 @@ def sync(dry_run):
         return report(f"would catch up {behind} commit(s)")
     git("reset", "-q", "origin/main")
     changed = len([line for line in git("status", "--porcelain").splitlines() if line])
-    log("SUCCESS", f"caught up {behind} commit(s); {changed} file(s) changed")
     tail = f"; {changed} file(s) still uncommitted" if changed else "; nothing uncommitted"
     return report(f"caught up {behind} commit(s) from the other Mac{tail}",
                   f"this Mac's git was reset (index only) to origin/main, {behind} commit(s) ahead of the old HEAD{tail}.")
@@ -101,7 +98,7 @@ def main():
     try:
         sync("--dry-run" in sys.argv[1:])
     except Exception as error:  # a hook must never block the session
-        log("FAIL", str(error)[:200])
+        log_issue(f"SessionStart sync crashed: {str(error)[:200]} — System/Tools/gitsync/gitsync.py — run it with --dry-run to reproduce")
         report(f"failed ({error}); left alone")
 
 

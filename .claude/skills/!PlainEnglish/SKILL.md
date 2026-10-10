@@ -171,6 +171,5 @@ Self-check before a substantive reply or a freeform internal document:
   ☐ Quotes sourced; emotive phrases and emojis each doing a job?
   ☐ Anything cuttable without losing meaning?
 
-Log: not logged — it runs on every reply; logging would flood `Memory/Long-Term/Logs/skills.log`.
 Error: none possible. A rule conflicting with an explicit instruction from Luke yields for that piece
   only; the default returns on the next.

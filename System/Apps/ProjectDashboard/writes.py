@@ -5,7 +5,7 @@ and 4 Kind are each one cell in one existing Next Actions row of a project's
 `registry.md`; 5 is a note appended under a named section of that project's
 `notes.md`. Two operations are built on the same guards: a reorder of one
 Next Actions table block, and a one-level undo of the latest `set_cell` (which
-is why `set_cell` logs the cell's previous text as `prev=` in `Logs/edits.log`).
+is why `set_cell` logs the cell's previous text as `prev=` in this app's `edits.log`).
 
 The four guards, in order, on every call: the **fence** (FR-2) resolves the
 target path and refuses anything outside `Memory/Medium-Term/`; the
@@ -13,7 +13,7 @@ target path and refuses anything outside `Memory/Medium-Term/`; the
 caller read it; the **re-parse guard** (FR-4) builds the new content in
 memory and re-parses it with `stores` before it ever reaches disk, so a
 write that would corrupt the table is abandoned instead of committed; the
-**record guard** (FR-5) appends one line to `Logs/edits.log` and sets
+**record guard** (FR-5) appends one line to this app's `edits.log` and sets
 `pending_sweep: true` on the project's `_tracking.yaml` row. A row whose
 `🔗 Link` cell is not `—` is refused outright (FR-6) — linked rows sync
 through `!ProjectSweep`, never through this module.
@@ -38,7 +38,7 @@ import stores
 
 # ---------------------------------------------------------------------------
 # Errors — FenceError, StaleMtimeError and RowNotFoundError are reused by
-# name from ProjectDashboard's writes.py (FR-9) so Logs/edits.log reads the
+# name from ProjectDashboard's writes.py (FR-9) so edits.log reads the
 # same vocabulary across both apps. LinkedRowError is this module's own
 # addition for FR-6, which ProjectDashboard's writes.py has no equivalent
 # of.
@@ -155,7 +155,7 @@ _UNLINKED_VALUES = ("", "—", "-")
 
 _MTIME_EPSILON = 1e-6  # JSON float round-trip tolerance, not a real time window
 
-_EDITS_LOG_RELATIVE = ("Memory", "Long-Term", "Logs", "edits.log")
+_EDITS_LOG_RELATIVE = ("System", "Apps", "ProjectDashboard", "edits.log")
 
 
 # ---------------------------------------------------------------------------
@@ -557,7 +557,7 @@ def _verify_pending_sweep(tmp_path: Path, project_id: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Logs/edits.log — one line per mutation, success or refusal (FR-5, AC-7).
+# edits.log (this app's folder) — one line per mutation, success or refusal (FR-5, AC-7).
 # ---------------------------------------------------------------------------
 
 
@@ -566,7 +566,7 @@ def _append_edit_log(root: Path, *, action: str, project_id: str, row: str, colu
     enforces: this path is fixed in source (never built from `project_id`,
     `row`, or any other caller-supplied value), so the class of attack the
     fence guards against — an escaping path — cannot reach it. FR-5 names
-    this exact, non-configurable Long-Term destination.
+    this exact, non-configurable destination: the app's own undo record.
     """
     path = root.joinpath(*_EDITS_LOG_RELATIVE)
     path.parent.mkdir(parents=True, exist_ok=True)

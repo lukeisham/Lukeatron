@@ -319,7 +319,7 @@ def _handle_edit(handler: BaseHTTPRequestHandler) -> None:
 def _validate_undo_body(body: dict[str, Any]) -> tuple[dict[str, Any] | None, str | None]:
     """Undo names only a project and the mtime the caller last saw. Anything
     else in the body (a row, a value) is ignored on purpose: what gets undone
-    is re-derived from `Logs/edits.log`, never taken from the client."""
+    is re-derived from the app's `edits.log`, never taken from the client."""
     project_id = body.get("project_id")
     if not isinstance(project_id, str) or not project_id:
         return None, "project_id"

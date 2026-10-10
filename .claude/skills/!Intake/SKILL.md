@@ -157,5 +157,4 @@ CATCH cannot-classify (context or outcome unclear) ➔ leave in Inbox/, flag Luk
 CATCH checkpoint-unavailable / Luke-unreachable    ➔ FAIL CLOSED: hold outgoing in Outbox/ unsent,
                                                      defer the Long-Term write; non-outgoing outcomes may still apply.
 CATCH [*]                                          ➔ report what failed on which item; leave that item unprocessed.
-Log one line per handled batch to Memory/Long-Term/Logs/skills.log.
 ```

@@ -91,8 +91,6 @@ State: `<Store>/cartridge/` builds cleanly to `<Store>_parser.html` via the shar
 Validation Check (Self-Test):
   `VERIFY <Store>_parser.html exists AND assemble.py exit code == 0 AND no "__PLACEHOLDER__" string
   survives in the output ELSE fix the assembler-named field and re-run.`
-Log: `[AGENT: !BuildParserCartridge] [SUCCESS] cartridge=<Store> | tokens≈[N]` →
-  `Memory/Long-Term/Logs/skills.log`
 Error path: Content still DRAFT / `[UNVERIFIED]` / `[PROPOSED SCOPE]` ➔ stop and route to Luke —
   never build a shipped widget against unreviewed content.
 

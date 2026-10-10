@@ -13,7 +13,7 @@ calibration:
   scope: Local
 memory_footprint:
   read: ["System/Apps/Fact-checking/tag-criteria.md", "System/Apps/Fact-checking/_build/specs/tag-criteria.spec.md", "System/Apps/Fact-checking/_build/prd.md"]
-  write: ["System/Apps/Fact-checking/tag-criteria.md", "System/Apps/Fact-checking/_build/specs/tag-criteria.spec.md", "Memory/Long-Term/Logs/skills.log"]
+  write: ["System/Apps/Fact-checking/tag-criteria.md", "System/Apps/Fact-checking/_build/specs/tag-criteria.spec.md"]
 ---
 
 ## ⚡ TRIGGER
@@ -120,11 +120,7 @@ STEP 7 — Apply (only after approve)
     do not drift, unless Luke says the spec is retired.
   Do not edit prd.md, the app code, or any threshold Luke did not approve.
 
-STEP 8 — Log
-  APPEND to Memory/Long-Term/Logs/skills.log:
-  `<date time> [AGENT: !UpdateTagCriteria] [SUCCESS|REJECTED|NO-EDIT] <failure kind> <node> | case: "<P>" ➔ <CORRECT>`
-
-STEP 9 — Report
+STEP 8 — Report
   Short brief: what changed (or why nothing did), the new version, and whether the classifier
   will pick it up on its next run (it reads the file every run; no restart needed).
 
@@ -156,5 +152,5 @@ VERIFY the change tests a property, not the case's own words               ELSE 
 CATCH [criteria file missing]  ➔ STOP, name the file, propose nothing
 CATCH [case incomplete]        ➔ ask Luke for the missing field, do not guess
 CATCH [not a criteria problem] ➔ say which component owns it (phrase-finding harness / PRD / search)
-CATCH [*]                      ➔ log to Memory/Long-Term/Logs/skills.log, leave the criteria file unchanged, report to Luke
+CATCH [*]                      ➔ leave the criteria file unchanged, report to Luke
 ```

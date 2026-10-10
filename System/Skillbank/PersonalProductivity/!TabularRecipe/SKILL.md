@@ -95,7 +95,6 @@ ASSERT recipe source exists
      INSERT one line at top of the list in recipes.md: "- [<Dish>](<slug>.md) — <serves/time> · <source or 'own'> · saved <YYYY-MM-DD>"
        (targeted single-line insert; never rewrite the file)
      Recipes/_index.yaml is NOT touched — it describes the store's pattern, not each recipe; recipes.md is the one list
-     APPEND Memory/Long-Term/Logs/skills.log: trigger + outcome
 // EXECUTION_END
 ```
 

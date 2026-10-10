@@ -179,13 +179,8 @@ The two use the same words but mean different things and are ranked in different
 - [ ] **Step 13 — Luke's sign-off on the feel** (live; tune tokens only). [human input — LU-02]
 - [ ] **Verify** — every line in **Success criteria** holds and the result matches the **Objective**. [pass/fail]
 
-## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
-  `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
-
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:projectkanban-state-merge-bulk-suggest' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.
 
 ## Notes

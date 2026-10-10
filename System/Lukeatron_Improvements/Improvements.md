@@ -11,7 +11,7 @@
 3. **No plan or project Next Action may be instigated from a row until both Luke and the agent are happy with it.** Agreement means Luke explicitly says the row is ready (or marks it so). The agent must never spin up a plan (`!CreatePlan`) or a Next Action from a row still under discussion.
 4. **When a row is agreed:** create the plan (Major → `System/Plans/New/`) or a Next Action in the best-fit project per the normal CLAUDE.md routing gate, and put a link to it in col 5.
 5. **If the comments in a row change after a plan/Next Action exists,** the linked plan or Next Action **must be updated** to match the revised discussion — the row is the source of intent; the plan follows it.
-6. **When the linked plan/minor task is completed,** mark the row completed: set its Status to ✅ and strike through the task name (`~~Name~~`). Once marked ✅, log it with `skilllog.py complete improvement "<#> <Task name>"` (one line in `Memory/Long-Term/Logs/history.log`) and then remove the row from this table — the log is the permanent record, not this live discussion doc.
+6. **When the linked plan/minor task is completed,** mark the row completed: set its Status to ✅ and strike through the task name (`~~Name~~`). Once marked ✅, remove the row from this table; any DECISION it made that reaches beyond one file is a `logs.py decide` line in `Memory/Long-Term/Logs/history.log`.
 
 **Status legend (col 6):** 💬 discussing · 🤝 agreed (plan/task created, col 5 linked) · 🚧 in progress · ✅ completed · ❌ dropped.
 

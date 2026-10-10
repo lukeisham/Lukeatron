@@ -65,9 +65,5 @@ STEP 5 — REPORT to Luke: chosen context, one-line reasoning, confidence, and a
 ## ✅ OUTPUT
 State: One PRIMARY context selected; its readme + relevant Memory loaded (unless --dry);
   secondary contexts named; confidence recorded. Agent is oriented for the minor/major routing gate.
-Log: ONLY when the call is noteworthy — confidence = low, a readme was missing (degraded), or an
-  Inbox/ item was left unclassified. A routine high-confidence call is NOT logged: this skill runs on
-  every task, and logging each one would bury the signal. Write via
-  `python3 System/Tools/skilllog/skilllog.py write '!DetermineContext' <SUCCESS|FAIL> "primary=<context> secondary=[<…>] confidence=low reason=<…>"`
-  → Memory/Long-Term/Logs/skills.log
+Issue: a missing context readme is one `logs.py issue '!DetermineContext' "…"` line.
 Error: Readme unreachable → degrade on the Quick Decision Guide + flag the gap. Inbox item won't classify → leave in Inbox/ and flag (do not guess).

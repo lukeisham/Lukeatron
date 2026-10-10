@@ -10,7 +10,6 @@
     "System/Context/personal-research.md",
     "System/Context/lukeatron.md"
   ],
-  "output_path": "Memory/Long-Term/Logs/skills.log",
   "eval": "skills/!DetermineContext/EVAL.md",
   "evals": "skills/!DetermineContext/evals/evals.json"
 }

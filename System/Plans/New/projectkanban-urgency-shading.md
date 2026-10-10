@@ -60,13 +60,8 @@ A permanently pulsing overdue card would break all of these, so the animation's 
 - [ ] **Step 11 — Docs + project.** Update `StyleGuide.md` (Flourishes table row, new tokens, budget line; and its *Layout scope, by file* table if Step 6 created `urgency.css`), `README.md` (`urgency` field), an `app-decisions.md` Approvals row only if Luke's sign-off reverses an earlier decision; tick LU-02 Next Action #2 as done in its `registry.md` and log it in the Decision log. [inline]
 - [ ] **Verify** — every line in **Success criteria** holds and the result matches the **Objective**. [pass/fail]
 
-## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
-  `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
-
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:projectkanban-urgency-shading' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.
 
 ## Notes

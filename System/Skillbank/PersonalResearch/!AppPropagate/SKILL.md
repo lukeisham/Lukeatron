@@ -15,7 +15,7 @@ calibration:
   scope: Local
 memory_footprint:
   read: [System/Apps, System/Tools/teaching-app-family]
-  write: [System/Apps, System/Tools/teaching-app-family/state, System/Tools/teaching-app-family/policy.json, Memory/Long-Term/Logs/skills.log]
+  write: [System/Apps, System/Tools/teaching-app-family/state, System/Tools/teaching-app-family/policy.json]
 ---
 
 ## ⚡ TRIGGER
@@ -78,7 +78,6 @@ data and never starts this.
 
 **STEP 5 — Close and report**
   RUN `T finish <id>`: every touched file becomes the baseline again, so nothing looks changed.
-  APPEND one line to `Memory/Long-Term/Logs/skills.log`: date, `!AppPropagate`, change id, source, targets, outcome.
   REPORT to Luke in `!PlainEnglish` shape — what went where, anything left out and why, anything he must decide. Do not commit
   unless he asks; the family tool's undo copies are the safety net until then.
 

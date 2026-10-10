@@ -105,7 +105,6 @@ IF mode == ABSORB THEN
                    (type: theme, format: topic — no content body; SET_THUMBNAIL; SET_FORMAT)
               e. Update _index.yaml pages: (add the hub) and tags:
               f. RESUME ABSORB from step 3 (WRITE CONTENT → THE NEW STORE)
-         6. LOG the new theme creation in Memory/Long-Term/Logs/skills.log.
        WRITE verbatim into that store, matching the store's house style:
          // ── SMALL ITEM (aphorism / maxim / one-line formula / bare quote) ──
          IF item is small THEN APPEND it VERBATIM as a bullet (bold-label for maxims) to the store's

@@ -86,12 +86,6 @@ VERIFY [metric/state == expected_value] ELSE [error_path]
 CATCH [*] ➔ [Fallback action, user alert protocol, or graceful degradation script]
 ```
 
-**Log Line**
-```
-Log: python3 System/Tools/skilllog/skilllog.py write '!SkillName' <SUCCESS|FAIL|HELD> "<key=value outcome>"
-  → Memory/Long-Term/Logs/skills.log   (one line per RUN; never per step — script chatter goes to workers.log)
-```
-
 ## 📏 PROGRESSIVE DISCLOSURE
 Keep SKILL.md to what EVERY run needs (aim ≤ 150 lines). Move material only some runs need — long
 examples, rubrics, rare branches, rendering specs — into `reference/<topic>.md` beside it, and leave a

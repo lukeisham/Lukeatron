@@ -4,7 +4,7 @@
 Catches the classes of defect found in the 2026-10-09 audit before they reach a live run:
   frontmatter   every skill has a parseable `name` + `description` the harness can show
   contexts      every System/Context/*.md is known to !DetermineContext, !Tone and !Review
-  logging       no skill points at a log other than Memory/Long-Term/Logs/skills.log
+  logging       no skill points at a removed log or tool (skills.log, workers.log, skilllog.py); the logs are history.log and issues.log
   evals         safety-critical skills ship a valid evals/evals.json (skill-creator schema)
   disclosure    every reference/ file a skill points at exists, and none is orphaned
   fixtures      every eval fixture address ends in .test (cannot reach a real person)
@@ -119,8 +119,8 @@ def main() -> int:
             warn(folder.name, "description over 1024 chars (%d) — may be truncated" % len(desc))
 
         # logging
-        for m in re.finditer(r"(?<![\w/-])Logs/skills\.log", text):
-            fail(folder.name, "points at bare Logs/skills.log (line %d) — use Memory/Long-Term/Logs/skills.log" % (text[:m.start()].count("\n") + 1))
+        for m in re.finditer(r"skills\.log|workers\.log|skilllog", text):
+            fail(folder.name, "points at removed %s (line %d) — the logs are history.log and issues.log, written by System/Tools/logs/logs.py" % (m.group(0), text[:m.start()].count("\n") + 1))
 
         # progressive disclosure
         ref_dir = folder / "reference"
@@ -140,7 +140,7 @@ def main() -> int:
             warn(folder.name, "%d lines — consider moving rare branches into reference/" % lines)
 
     if (ROOT / "Logs").exists():
-        fail("(root)", "a root Logs/ folder exists again — the only skills log is Memory/Long-Term/Logs/skills.log")
+        fail("(root)", "a root Logs/ folder exists again — the logs live only in Memory/Long-Term/Logs/")
 
     # contexts
     ctx = contexts()

@@ -69,5 +69,4 @@ State: A verdict — APPROVED (plan reviewed, cleared for execution) or RETURNED
   tagged by lens (alignment / efficiency / measurability) and paired with a concrete fix. An approved plan
   has measurable Success criteria, the right tool per step (deterministic→skill/script/template, dynamic→agent),
   and a Verify-before-logging step confirming results will match the purpose.
-Log: "[AGENT: !ReviewPlan] [SUCCESS] plan=<name> verdict=<approved|returned> flags=<N> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: Plan unreadable → stop + name it. purpose.md or context readme unreachable → review on the references available, flag the gap, never invent the missing standard.

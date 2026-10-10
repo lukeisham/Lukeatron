@@ -51,7 +51,7 @@ Active, hands-on work **on Lukeatron itself** — the agent system Luke runs thi
 - Never modify a **Key Skill, Checkpoint, or Template** (per CLAUDE.md's list) without Luke's explicit sign-off.
 - Never modify **CLAUDE.md** itself without Luke's explicit sign-off.
 - Anything that leaves the system or changes Long-Term memory clears `!Checkpoint`.
-- Log every skill failure to `Memory/Long-Term/Logs/skills.log`, per *Failure Handling*.
+- Record every failure as one `issues.log` line, per *Failure Handling*.
 
 ---
 

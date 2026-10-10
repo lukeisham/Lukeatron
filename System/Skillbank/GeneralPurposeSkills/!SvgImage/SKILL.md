@@ -294,8 +294,6 @@ Error:
   CATCH [the style-picker widget fails to render] ➔ fall back gracefully to a numbered text list built
   from `style-guide/_index.md`'s row names only (still just the index, not the individual files), one
   per line, and proceed exactly the same way.
-Log: "[SKILL: !SvgImage] [SUCCESS] file=[path] size=[WxH] style=[name|none] groups=[N]" →
-  Memory/Long-Term/Logs/skills.log
 
 ## 🎨 House style — EXEMPT
 

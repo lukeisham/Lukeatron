@@ -445,10 +445,6 @@ Report format (mandatory, every run): "Target: `<X>` | Before: `<N>` | After: `<
   restate the Phase 1 research's original claimed targets (78 riddles, 38 tales) as if they were
   reached — Phase 1 delivered 61 and 36; this skill reports only what it itself verified on disk, this
   run.
-Log: `[AGENT: !HarvestWidgetContent] [SUCCESS|FAIL|BLOCKED] target=<X> before=<N> after=<N> added=<N>
-  blocked=<N> | tokens≈[N]` → `Memory/Long-Term/Logs/skills.log`. Use `BLOCKED` (not `FAIL`) when the
-  run completed cleanly but one or more slots hit the Blocker Protocol's ceiling — that is a bounded,
-  reported outcome, not a crash, and the log line should say so precisely.
 Error path: Build or test failure ➔ stop, report the exact failing step/message, leave the seed
   addition in place but do NOT report the pool as grown until a rerun passes clean — report this as a
   BLOCKED run. Missing/unclear licence on a candidate ➔ drop the candidate (consumes a Blocker Protocol

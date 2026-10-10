@@ -65,5 +65,4 @@ STEP 5 — VERIFY. Medium-Term holds only live/relevant items; `_tracking.yaml` 
 ## ✅ OUTPUT
 State: Medium-Term pruned to live items only; stale scratch removed with Luke's approval; every keeper rescued via
   `!ArchiveMemory` before deletion; indexes consistent. Nothing pruned without review; Long-Term untouched.
-Log: "[AGENT: !PruneMemory] [SUCCESS] scanned=[N] pruned=[N] keepers→archive=[N] held=<none|...> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: A candidate can't be read/verified, or Luke is unreachable for review ➔ FAIL CLOSED — prune nothing, report the blocker.

@@ -62,5 +62,4 @@ STEP 5 — REPORT to Luke: the verdict (skill / no skill + why), the placement +
 State: A clear verdict — either "leave it to the agent" with the dynamic reason named, OR a skill
   outline (TRIGGER / LOGIC / OUTPUT) plus a placement recommendation (Skillbank vs .claude/skills) and why.
   On --build + approval: the SKILL.md exists at the recommended path, registered if Skillbank.
-Log: "[AGENT: !Suggest] [SUCCESS] verdict=<skill|no-skill> placement=<skillbank|.claude/skills|n-a> built=<yes|no> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: Template unreachable → outline from the three-part structure + flag. Ambiguous repetitive-vs-dynamic call → state it is a judgement call, give the leaning, and let Luke decide (do not force a skill).

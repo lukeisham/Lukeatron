@@ -5,7 +5,7 @@
 
 LUKEATRON="/Users/lukeishammacbookair/Library/CloudStorage/Dropbox/_Lukeatron"
 CLAUDE="/Users/lukeishammacbookair/.local/bin/claude"
-LOG="$LUKEATRON/Memory/Long-Term/Logs/cron-review-monday.log"
+LOG="$LUKEATRON/System/Tools/cron/out/review-monday.log"; mkdir -p "${LOG:h}"
 export HOME="/Users/lukeishammacbookair"
 export PATH="/Users/lukeishammacbookair/.local/bin:/usr/local/bin:/usr/bin:/bin"
 

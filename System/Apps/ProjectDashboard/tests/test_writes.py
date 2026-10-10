@@ -59,7 +59,9 @@ class WritesTestCase(unittest.TestCase):
         return self.root / "Memory/Medium-Term/Projects/_tracking.yaml"
 
     def edits_log_path(self) -> Path:
-        return self.root / "Memory/Long-Term/Logs/edits.log"
+        path = self.root / "System/Apps/ProjectDashboard/edits.log"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        return path
 
     def mtime_of(self, path: Path) -> float:
         return path.stat().st_mtime

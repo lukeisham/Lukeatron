@@ -107,7 +107,6 @@ Authorship contract returned to the caller:
                        ⚠️ ALWAYS staged in `Outbox/` — NEVER auto-sent, whatever the trust tier.
                        This floor is not overridable per-person and !Tone must always report it.
 
-Log: "[AGENT: !Tone] [SUCCESS] mode=<internal|person> resolved=<path(s)> authorship=<value>@<layer> register=<formal|-> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: A resource in the chain is missing ➔ fall through to the next layer, flag the gap in the reply,
   never invent tone content. If `authorship` cannot be resolved for ANY reason ➔ return
   `agent-disclosed` (the safe default — never default to impersonating Luke).

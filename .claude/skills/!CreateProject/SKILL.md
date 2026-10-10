@@ -2,7 +2,7 @@
 name: create-project
 description: >
   Create ONE new tracked project: build registry.md + notes.md from the templates, fill Purpose
-  and Definition of Done, add a _tracking.yaml row, and log it. Never matches against or updates
+  and Definition of Done, and add a _tracking.yaml row. Never matches against or updates
   an existing project — that decision belongs to the caller. Project Dashboard's own auto-refresh
   (polled every 30s) picks up the new project on its own; nothing further to trigger. Called by
   !Intake when its ① Project axis decides a brand-new project is warranted. Also invocable
@@ -91,8 +91,6 @@ APPEND a row to Memory/Medium-Term/Projects/_tracking.yaml:
 // stats _tracking.yaml and every registry.md it references. Steps 2 and 4 just touched both, so
 // the next poll (≤30s) reloads the board on its own. There is nothing else to trigger.
 
-LOG "[AGENT: !CreateProject] [SUCCESS] Created {ID}-{SLUG} ({context}) | tracking row added" → Memory/Long-Term/Logs/skills.log
-
 RETURN {id: ID, path: FOLDER} to the caller
 // EXECUTION_END
 ```
@@ -120,5 +118,4 @@ CATCH title, context, or purpose missing        → ASK Luke; do not create a pa
 CATCH _tracking.yaml unreachable                → fail closed: report "could not register — tracking unreachable"; delete any folder already written
 CATCH ID collision (race with another create)   → recompute NN, retry once, else fail closed and report
 CATCH [*]                                       → report what failed; leave no half-written project folder behind
-LOG "[AGENT: !CreateProject] [FAIL] {error}" → Memory/Long-Term/Logs/skills.log
 ```

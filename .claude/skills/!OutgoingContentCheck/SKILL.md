@@ -84,5 +84,4 @@ STEP 5 — EXECUTE THE CHOICE.
 
 ## ✅ OUTPUT
 State: Every external target was resolved to a tier (GOLD / WHITE / NON-LISTED / BLACK). Gold proceeded silently. Black was hard-blocked (or unblocked only on an explicit named Luke override, carried out once only). White/non-listed received Luke's four-way choice, which was carried out. No content left the system without clearance.
-Log: "[AGENT: !OutgoingContentCheck] [SUCCESS] targets=[N] gold=[N] white=[N] non-listed=[N] black=[N] choice=<auto|send|send+tier|hold|abandon|blocked> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error: Gate can't run or Luke unreachable for a needed approval ➔ FAIL CLOSED — hold content in Outbox/ unsent, perform no web action, report the blocker. Never bypass this checkpoint.

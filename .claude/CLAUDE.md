@@ -192,7 +192,7 @@ The catalog's `path:` field is authoritative for each skill's location — the d
 3. Several match → pick the most specific. None match → proceed without one.
 4. Never load a skill body until its trigger fires — the catalog is enough to decide.
 
-**Adding a skill:** create `<Domain>/!SkillName/SKILL.md`, then add a one-line entry to `_index.yaml` (with its `path:`). Record the change with `skilllog.py decide '!SkillName' "…"`, never as comments in `_index.yaml` — the catalog loads every session, so history there costs tokens every time. Each `intent` is one line of 150 characters or less; the triggers do the matching. The catalog is the source of truth for what is discoverable — a skill missing from it is invisible. Skillbank skills use the same `SKILL.md` frontmatter as `.claude/skills/`, so a heavily-used one can be promoted to a true command by moving its folder.
+**Adding a skill:** create `<Domain>/!SkillName/SKILL.md`, then add a one-line entry to `_index.yaml` (with its `path:`). Record the change with `logs.py decide '!SkillName' "…"`, never as comments in `_index.yaml` — the catalog loads every session, so history there costs tokens every time. Each `intent` is one line of 150 characters or less; the triggers do the matching. The catalog is the source of truth for what is discoverable — a skill missing from it is invisible. Skillbank skills use the same `SKILL.md` frontmatter as `.claude/skills/`, so a heavily-used one can be promoted to a true command by moving its folder.
 
 ## Information Flow
 
@@ -257,9 +257,14 @@ When something breaks, two rules override everything: **never stall silently**, 
 | A safety checkpoint can't run (`!Checkpoint`/`!OutgoingContentCheck` unavailable, or Luke unreachable for approval) | **Fail closed** — hold the action. Outgoing content stays in `Outbox/` unsent; memory changes are deferred. |
 | An item won't classify (Inbox disposition or context unclear) | Fall back to the safe default — leave it in `Inbox/` and flag for Luke rather than guessing. |
 
-Log every failure to `Memory/Long-Term/Logs/skills.log` with its trigger and outcome — write it with `python3 System/Tools/skilllog/skilllog.py write '!Skill' FAIL "…"`, which stamps the canonical line. That is the only skills log; script and hook chatter goes to `workers.log` beside it.
+**Logs.** `Memory/Long-Term/Logs/` holds two logs, both written for an AI reader: one line each, present tense, exact paths and names, no narration. Write and read them only with `python3 System/Tools/logs/logs.py`.
 
-**History lives in one place: `Memory/Long-Term/Logs/history.log`.** Every decision Luke makes, every permission he grants, and every plan, project or improvement completed is one line there (`skilllog.py decide|permit|complete '<scope>' "…"`, ≤240 characters; read it with `skilllog.py history`). CLAUDE.md, `memory.md`, skills, indexes and code state only the current rule — no dates, "was/now", "retired on" or "replaced" notes. Superseded decisions stay in the log; a reversal is a new line that names the date it reverses.
+| Log | Holds | Write | Read |
+| :-- | :-- | :-- | :-- |
+| `history.log` | Every DECISION Luke makes and PERMISSION he grants whose effect reaches beyond one file, plus every Vibe-Coding rule-exception PERMISSION. A decision confined to one file is never logged. | `logs.py decide\|permit '<scope>' "<rule> — <why>"` (≤240 chars) | `logs.py history` |
+| `issues.log` | Anything that could make Lukeatron better: a failed skill step, a script fault, drift, a gap. Staleness is fine. | `logs.py issue '<scope>' "<problem> — <where> — <fix hint>" --severity X` | `logs.py issues --open` |
+
+Record every failure from the ladder above as one `issues.log` line. Skill runs are not logged: usage comes from Claude Code's own transcripts, summarised weekly into `Logs/usage.md` by `System/Tools/usage/usage.py`, and `!Improve` turns `usage.md` + open issues into proposed edits each month. CLAUDE.md, `memory.md`, skills, indexes and code state only the current rule — no dates, "was/now", "retired on" or "replaced" notes. A reversal is a new `history.log` line beginning "Reverses YYYY-MM-DD:".
 
 ---
 
@@ -317,7 +322,7 @@ Two persistent stores, both read **on demand** (each carries its own `_index.yam
 | `Skillbank/` | On-demand skills: `_index.yaml`, `<Domain>/!Name/SKILL.md` |
 | `Suggestions/` | Idea write-ups not yet adopted — skill outlines (`!Suggest`), app ideas, specs |
 | `Templates/` | The templates listed above |
-| `Tools/` | Scripts and local tools (`skilllog/`, `skill-evals/`, `cron/`, `Search/`, …) |
+| `Tools/` | Scripts and local tools (`logs/`, `usage/`, `skill-evals/`, `cron/`, `Search/`, …) |
 | `System_guide.md` | Visual companion to this file |
 | `Viewer-Launch-Guide.md` | Plain guide to opening the Project Dashboard and LukeatronWiki |
 

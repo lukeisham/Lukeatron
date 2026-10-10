@@ -514,9 +514,6 @@ target tool(s) and aspect ratio, and whether it is marked provisional (parent sc
 stitched). The registry and `_instructions.md` are never the deliverable — summarise their state,
 never dump them.
 
-**Log**: `[AGENT: !POVStyleGuide] [PHASE n] slug=<slug> phase_status=<status> levels_done=<n>/<total> stale=<n>`
-→ `Memory/Long-Term/Logs/skills.log` after every phase transition.
-
 **Error Path**
 ```
 CATCH [no parent script folder exists]                ➔ STOP. Report no such script exists. Never

@@ -4,13 +4,13 @@
     hook.py stop   when a turn ends: if an app was noted, look for a real function change and, if there is one that Luke has
                    not already ruled on, hold the turn open once with a message sending Claude to the !AppPropagate skill
 
-Both fail open: any trouble is written to Memory/Long-Term/Logs/workers.log and the hook exits quietly, so it can never block his work."""
+Both fail open: any trouble becomes one Memory/Long-Term/Logs/issues.log line and the hook exits quietly, so it can never block his work."""
 
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 
 import changes
@@ -75,9 +75,9 @@ def stop(family: Family, event: dict) -> dict | None:
 
 
 def _log(family: Family, text: str) -> None:
-    log = family.root / "Memory" / "Long-Term" / "Logs" / "workers.log"
-    with log.open("a", encoding="utf-8") as stream:
-        stream.write(f"[{datetime.now():%Y-%m-%dT%H:%M:%S}] [WORKER: teaching-app-family hook] [FAIL] {text}\n")
+    tool = family.root / "System" / "Tools" / "logs" / "logs.py"
+    issue = f"hook {text} — System/Tools/teaching-app-family/hook.py — reproduce with the same hook event and fix the cause"
+    subprocess.run([sys.executable, str(tool), "issue", "teaching-app-family", issue, "--severity", "Medium"], capture_output=True, timeout=10)
 
 
 def main(argv: list[str]) -> int:

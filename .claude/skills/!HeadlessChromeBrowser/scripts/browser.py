@@ -24,7 +24,6 @@ import os
 import shlex
 import subprocess
 import sys
-from datetime import datetime
 
 WORKER = "!HeadlessChromeBrowser"
 
@@ -43,14 +42,13 @@ def registry_path():
     return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "registry.md")
 
 
-def log_event(status, message):
-    path = os.path.join(repo_root(), "Memory", "Long-Term", "Logs", "workers.log")
-    line = "[%s] [WORKER: %s] [%s] %s\n" % (datetime.now().isoformat(), WORKER, status, message)
+def log_issue(message):
+    """An environment fault (not a failed page action, which the caller already sees) goes to issues.log."""
+    tool = os.path.join(repo_root(), "System", "Tools", "logs", "logs.py")
     try:
-        with open(path, "a", encoding="utf-8") as fh:
-            fh.write(line)
-    except OSError:
-        pass  # logging is best-effort; never block the action
+        subprocess.run([sys.executable, tool, "issue", WORKER, message, "--severity", "Medium"], capture_output=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        pass  # best-effort; never block the action
 
 
 def _backend_blocks(md):
@@ -211,17 +209,13 @@ def main():
         msg = ("Backend binary '%s' not found. Install per registry.md "
                "(default: npm install -g agent-browser && agent-browser install)." % backend.get("bin"))
         sys.stderr.write("⚠️ %s\n" % msg)
-        log_event("FAIL", "%s: binary missing" % backend["name"])
+        log_issue("%s binary not found on this Mac — PATH of browser.py — install per .claude/skills/!HeadlessChromeBrowser/registry.md" % backend["name"])
         sys.exit(127)
 
     if proc.stdout:
         sys.stdout.write(proc.stdout)
     if proc.stderr:
         sys.stderr.write(proc.stderr)
-    label = action or "raw"
-    soft_fail = proc.stdout.lstrip().startswith("✗") if proc.stdout else False
-    status = "FAIL" if (proc.returncode != 0 or soft_fail) else "SUCCESS"
-    log_event(status, "%s %s rc=%s" % (backend["name"], label, proc.returncode))
     sys.exit(proc.returncode)
 
 

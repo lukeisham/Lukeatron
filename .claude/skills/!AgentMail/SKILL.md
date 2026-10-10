@@ -75,7 +75,6 @@ Recipients are comma-separated. Prefer `--text-file` / `--html-file` for any bod
 ## ✅ OUTPUT
 Success: `{"ok": true, "verb": "<verb>", "data": <api-payload>}` (exit 0)
 Failure: `{"ok": false, "verb": "<verb>", "error": "<msg>", "status": <int|null>}` (exit 1)
-Log: `[AGENT: !AgentMail] [SUCCESS|FAIL] <verb> | tokens≈[N]` → `Memory/Long-Term/Logs/skills.log`
 
 ## 🔌 BACKEND NOTES
 - API base `https://api.agentmail.to/v0`; `inbox_id` is the email address itself.

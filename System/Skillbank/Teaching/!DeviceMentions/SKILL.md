@@ -86,7 +86,6 @@ devices ranked via an alias (check for leaks the stoplist missed), zeros, and er
 **HARD RULES**
   · Never write `rhetoric.db`, `devices.json` or `popularity.json`. · Never invent or smooth a number.
   · A fetch error is an error, never zero. · Polite use only: one request at a time, ≥1.2 s apart, identifying User-Agent.
-  · Log a failure to `Memory/Long-Term/Logs/skills.log` with its trigger and outcome.
 
 // EXECUTION_END
 

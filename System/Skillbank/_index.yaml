@@ -2,13 +2,18 @@
 # On-demand skill catalog. Loaded at boot (triggers only); skill bodies load when a trigger fires.
 # Add a one-line entry here for every !SkillName/SKILL.md, or the skill is invisible.
 # Change history lives in Memory/Long-Term/Logs/history.log — keep this catalog to entries only.
-last_updated: 2026-10-09
+last_updated: 2026-10-10
 skills:
   - name: "!GenerateSupportiveContent"
     path: "System/Skillbank/GeneralPurposeSkills/!GenerateSupportiveContent/SKILL.md"
     domain: "GeneralPurpose"
     intent: "Write content that supports an existing target in its own voice; verifies every claim against a primary source and abstains rather than produce slop."
     triggers: ["generate supportive content", "write something to back this up", "make the case for this", "add supporting content to", "illustrate this", "defend this", "write a companion piece for", "expand on this in its own voice", "support this argument", "!GenerateSupportiveContent"]
+  - name: "!Improve"
+    path: "System/Skillbank/GeneralPurposeSkills/!Improve/SKILL.md"
+    domain: "GeneralPurpose"
+    intent: "Monthly: turn usage.md and open issues into at most five evidence-backed proposed edits to skills and instructions."
+    triggers: ["!Improve", "run improve", "how am I using lukeatron", "what should we improve", "monthly improvement pass", "which skills do I use", "which skills never fire"]
   - name: "!Magpie"
     path: "System/Skillbank/GeneralPurposeSkills/!Magpie/SKILL.md"
     domain: "GeneralPurpose"

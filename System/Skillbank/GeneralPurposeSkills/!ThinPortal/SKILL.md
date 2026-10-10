@@ -53,8 +53,8 @@ sprawl).
 6. **Credentials by convention.** Read keys from `System/Credentials/` (dotenv `*.md` or
    `credentials.json`), env-var override first. Never inline a secret in the skill body.
 7. **Zero/few dependencies.** Stdlib-only scripts where possible (e.g. Python `urllib`, no SDK).
-8. **Log every call** to `Memory/Long-Term/Logs/skills.log`:
-   `[WORKER: !Name] [SUCCESS|FAIL] <verb> | …`.
+8. **Faults, not calls.** An environment fault (missing binary, bad credentials) is one `logs.py issue` line;
+   a failed call is only returned to the caller.
 9. **Register it** — `.claude/skills/` auto-registers; a Skillbank skill MUST be added to
    `System/Skillbank/_index.yaml` or it is invisible.
 

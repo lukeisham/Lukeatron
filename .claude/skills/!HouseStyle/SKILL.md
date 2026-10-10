@@ -104,8 +104,6 @@ surface: tokens/motion/glyphs changed, layout and structure untouched.
 
 **Register:** Any newly encountered surface is added to `reference/sources.md` with its verdict.
 
-**Log:** `[AGENT: !HouseStyle] [SUCCESS] surface=<name> verdict=<exempt|subordinate|unclassified> budget=<pass|breach> | tokens≈[N]` → `Memory/Long-Term/Logs/skills.log`
-
 **Error:** `tokens.css` unreachable → say so and stop; never invent a palette. A flourish-budget
 breach that the surface genuinely needs → declare it locally, name it, say why (ProjectDashboard's
 urgency channels are the standing precedent). Silent on anything failing STEP 1, 2 or 3.

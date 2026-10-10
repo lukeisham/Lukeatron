@@ -16,11 +16,11 @@ Each invocation selects exactly one PRIMARY context drawn from the five canonica
 * **Standard 5:** Inbox/ material that won't classify is left in Inbox/ and flagged — not force-guessed.
 * **Standard 6:** A missing context readme degrades to the Quick Decision Guide with the gap flagged; the readme's content is never invented.
 * **Standard 7:** Coding / amateur builds route to Personal Research; work on Lukeatron itself routes to Lukeatron (CLAUDE.md Quick Decision Guide).
-* **Standard L:** A low-confidence, degraded, or left-in-Inbox call writes one line to Memory/Long-Term/Logs/skills.log; a routine high-confidence call writes nothing.
+* **Standard L:** A missing context readme writes one `issues.log` line; no other call writes anything.
 
 ## 🔎 VERIFICATION LOGIC
 0. **SCENARIOS:** Run the cases in `evals/evals.json` (skill-creator schema) with `--dry`.
-1. **LOOK:** For a noteworthy call, run `python3 System/Tools/skilllog/skilllog.py recent --skill '!DetermineContext'`.
+1. **LOOK:** Read the reply's context line; for a degraded call, run `python3 System/Tools/logs/logs.py issues --scope '!DetermineContext'`.
 2. **MATCH:** `primary=<one of the five contexts>`; `secondary=[…]` lists only named (unloaded) contexts.
 3. **ASSERT:** when not --dry, the chosen readme was read; secondary readmes were not.
 4. **ASSERT:** `confidence` ∈ {high, low}; if low and the source was a direct prompt, the task proceeded.

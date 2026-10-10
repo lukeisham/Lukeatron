@@ -75,8 +75,7 @@ python3 ".claude/skills/!HeadlessChromeBrowser/scripts/browser.py" --list-backen
 
 ## ✅ OUTPUT
 - Backend stdout/stderr streamed through verbatim; process exit code propagated.
-- Log: `[WORKER: !HeadlessChromeBrowser] [SUCCESS|FAIL] <backend> <verb> rc=<n>`
-  → `Memory/Long-Term/Logs/skills.log`.
+- A missing backend binary is written to `issues.log` by `browser.py`; a failed page action is only returned.
 
 ## 🔌 BACKEND NOTES
 - Backends are defined in `registry.md` (`## BACKEND:` json blocks). Default:

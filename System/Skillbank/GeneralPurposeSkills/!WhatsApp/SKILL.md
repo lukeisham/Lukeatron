@@ -67,7 +67,7 @@ Skill 16). For project routing, match contact names against `Memory/Long-Term/Pe
   path before using the file.
 - WhatsApp message content may be sensitive. Do not write raw conversation content to
   `Memory/Long-Term/` without Luke's explicit approval — summarise or abstract instead.
-- JIDs are phone-number-based identifiers. Do not log JIDs to `skills.log` — log chat names
+- JIDs are phone-number-based identifiers. Never write a JID into any Lukeatron file — use chat names
   or initials only.
 
 ## ⚡ FAILURE MODES
@@ -77,7 +77,3 @@ Skill 16). For project routing, match contact names against `Memory/Long-Term/Pe
 | DB locked (bridge restarting) | Wait 2s, retry once, then fail with "DB locked" |
 | MCP server not found | Check `claude mcp list` — re-add if missing |
 | Empty results | Confirm bridge has synced — check DB row count via Bash if needed |
-
-## 📝 LOG
-Every call logs to `Memory/Long-Term/Logs/skills.log`:
-`[WORKER: !WhatsApp] [SUCCESS|FAIL] <verb> <brief-description> | tokens≈[N]`

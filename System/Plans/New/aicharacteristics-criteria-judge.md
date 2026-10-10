@@ -81,11 +81,6 @@ The Scrape moved out of the app into the Skillbank skill `!ScrapeAiCharacteristi
 - [ ] 17 — Rewrite README (Purpose; Navigation; Cross-app behaviour — Home routes, key location, retired shell dependency, what breaks if either changes); remove the "no refresh action" and "fixed at build time" lines. Append Luke's approval (and any granted exception) to `app-decisions.md`. Delete the wishlist row via !AppWishlist. [inline · !AppWishlist]
 - [ ] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pass/fail]
 
-## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
-  `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
-
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:aicharacteristics-criteria-judge' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.

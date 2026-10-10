@@ -52,4 +52,3 @@ break the house default is reported as a conflict for Luke, not applied.
 
 ## ✅ OUTPUT
 The chosen lens (or lenses), its score or diagnosis, and fixes expressed in house tokens.
-Log: `python3 System/Tools/skilllog/skilllog.py write '!DesignCheck' SUCCESS "lens=<visual|usability|theory|interaction> score=<n/10|diagnosis> surface=<path>"`

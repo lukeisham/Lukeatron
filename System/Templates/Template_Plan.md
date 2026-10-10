@@ -6,7 +6,7 @@ created: <YYYY-MM-DD>
 status: New                              # New → Completed (move file to System/Plans/Completed/ when done)
 major_because: "<multi-step | multi-domain | touches Outbox/external | modifies Long-Term memory>"
 project: ""                              # Memory/Medium-Term/Projects/<id> if this plan needs human input; else empty
-skills_used: []                          # filled as steps run; the final logging step reads this list
+skills_used: []                          # skills the steps call
 ---
 
 # Plan — <Task title>
@@ -39,11 +39,6 @@ Bite-sized and ordered. Each box is one action. Tag the skill/tool/mode in brack
 - [ ] …
 - [ ] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pass/fail]
 
-## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
-  `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
-
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter.
-- [ ] Log completion: `python3 System/Tools/skilllog/skilllog.py complete 'plan:<slug>' "<title> (<project>)"` → `Memory/Long-Term/Logs/history.log`. Write this BEFORE moving the file.
 - [ ] Move the file from `System/Plans/New/` to `System/Plans/Completed/`.

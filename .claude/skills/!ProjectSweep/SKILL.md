@@ -257,7 +257,6 @@ Validation:
   VERIFY every advancement made this run traces to the project's 🎯 Purpose and stays inside its
     🎯 Definition of Done, and does not contradict a 🧭 Agent guidance note in notes.md ELSE do not
     apply it — hold it as a DECIDE point (Human action) instead and say why in the Decision Log line.
-Log: "[AGENT: !ProjectSweep] [SUCCESS] mode=<live|dry> projects=<N> incoming=<N> mine=<N> waiting=<N> delegate=<N> undefined=<N> advancements=<N> unblocked=<N> held=<N> linked=<N> synced=<N> sent=<yes|no> | tokens≈[N]" → Memory/Long-Term/Logs/skills.log
 Error:
   CATCH _tracking.yaml unreachable ➔ fail closed (ASSERT), tell Luke, STOP.
   CATCH a registry unreadable ➔ skip that project, mark it "needs your eye" in the digest, continue — never fabricate its state.

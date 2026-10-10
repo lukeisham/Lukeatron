@@ -36,9 +36,5 @@ Research viable options for monitoring Balaclava PC's LAN (device MAC addresses 
 - [ ] Step 4 — On Keith's reply, revise `documents/lan-monitoring-solutions-research.md` to reflect his feedback and firm up the recommendation [pending Keith's reply]
 - [ ] Verify — outputs meet every line in **Success criteria**, and the result matches the **Objective**? [pending Step 4]
 
-## Final step — Logging (always present)
-- [ ] Append one line per skill in `skills_used` to `Memory/Long-Term/Logs/skills.log`, format:
-  `[AGENT: !<SkillName>] [<SUCCESS|FAIL>] <one-line outcome> | tokens≈[N]`
-
 ## Final step — Close out (always present)
 - [ ] Update `status: Completed` in this plan's frontmatter, then move the file from `System/Plans/New/` to `System/Plans/Completed/` — once Step 4 (revision on Keith's reply) is done.

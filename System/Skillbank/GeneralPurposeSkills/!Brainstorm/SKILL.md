@@ -329,8 +329,5 @@ Every shape carries the same five parts, in `!PlainEnglish` form:
    did, say the field is first-principles and analogy only, with no outside source consulted.
 5. **Handoff** — the named next station (STEP 6), and nothing beyond it.
 
-Log: `Memory/Long-Term/Logs/skills.log` — trigger, input type (and any re-typing after a REFRAME), path, methods run
-  in sequence, swaps, pivots with their STEP 0 signal, whether an outward method was offered and
-  whether it ran, what ended the session, handoff.
 Error: if `!HeadlessChromeBrowser` is unavailable, methods 4–9 degrade to what is in `Memory/` and
   the report says so — never invent a source, a Reddit thread, or an article that was not verified.

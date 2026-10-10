@@ -64,6 +64,4 @@ ON any gate held/blocked ➔ report to Luke which gate fired and why; do NOT pro
 State: Each applicable gate fired and resolved — outgoing content approved or held in Outbox/; memory
   change reviewed or deferred; pastoral-sourced content held unless Luke lifted the seal for that item; Sandbox promotion allowed only on a passed/justified test, else blocked.
   Nothing unsafe left the system or changed durable state.
-Log: `python3 System/Tools/skilllog/skilllog.py write '!Checkpoint' <SUCCESS|HELD|FAIL> "gates=[P?,A?,B?,C?] held=<none|P|A|B|C>"`
-  → Memory/Long-Term/Logs/skills.log (never put pastoral content itself in the log line)
 Error: A required gate can't run, or Luke is unreachable for approval ➔ FAIL CLOSED — hold the action, report the blocker. Never bypass a checkpoint.

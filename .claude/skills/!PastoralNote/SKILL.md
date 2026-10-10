@@ -147,10 +147,6 @@ IF NOTE concerns a minor's safety, an allegation, abuse, or a disclosure:
   DO NOT generate any outward action, advice, notification or draft off the back of it
   // Luke decides every outward step in a safeguarding matter, from his own instruction, always.
 
-LOG one line → Memory/Long-Term/Logs/skills.log:
-  "[AGENT: !PastoralNote] [SUCCESS] Logged {DATE} | refs:{IDs} | followup:{project ID, reported, or none}"
-  // The log line carries IDs and the date ONLY — never the note text. skills.log is not sealed.
-
 // EXECUTION_END
 ```
 
@@ -189,5 +185,5 @@ CATCH Projects/ unreadable         → write the row; report the follow-up to Lu
                                      never drop it silently, never leave it only in the log
 CATCH ambiguous name (two matches) → ask Luke which person; do not guess an ID
 CATCH [*]                          → report what failed; do NOT silently continue
-                                     LOG "[AGENT: !PastoralNote] [FAIL] {error}" to skills.log
+                                     an issues.log line names the step and error, never the note text
 ```

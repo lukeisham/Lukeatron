@@ -1,4 +1,65 @@
 {
   "default": "ask",
-  "rules": []
+  "rules": [
+    {
+      "app": "Rhetoric",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Rhetoric",
+      "files": "app/list.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Grammar",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Grammar",
+      "files": "app/list.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Logic",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Logic",
+      "files": "app/list.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Research",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Research",
+      "files": "app/list.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Writing",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Writing",
+      "files": "app/list.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Style",
+      "files": "app/tokens.css",
+      "propagate": "none"
+    },
+    {
+      "app": "Style",
+      "files": "app/list.css",
+      "propagate": "none"
+    }
+  ]
 }

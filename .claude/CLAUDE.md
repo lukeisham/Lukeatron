@@ -299,6 +299,8 @@ Two persistent stores, both read **on demand** (each carries its own `_index.yam
 
 # Folder Reference
 
+**Where Lukeatron lives** — `_Lukeatron/` is one Dropbox folder (`~/Library/CloudStorage/Dropbox/_Lukeatron/`), shared by two machines: Luke's Mac laptop and his Mac mini. Luke runs Claude on both, so a session on either Mac may have made the latest changes. Dropbox's own sync keeps the files identical on both machines, so both always see the same working tree. Git history does not travel with the files: each Mac keeps its own git directory outside Dropbox (`~/.gitdirs/Lukeatron.git`, pointed to by the `.git` file), and GitHub (`lukeisham/Lukeatron`) is the only link between the two git histories. Before committing on either Mac, run `git fetch` and work on top of `origin/main`. After pushing, the other Mac must fetch and reset its index to `origin/main` (files untouched), or it will show the other machine's work as uncommitted changes.
+
 **Top-level areas** — `.claude/` (CLAUDE.md, memory.md, skills/, settings.json, settings.local.json) · `System/` (below) · `Memory/` (Long-Term/ + Medium-Term/) · `Archive/` · `Inbox/` · `Outbox/`
 
 **`System/` folders**

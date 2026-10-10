@@ -69,6 +69,15 @@ class SearchTest(unittest.TestCase):
         self.assertEqual(found[0], "Memory/Long-Term/Theology/atonement.md")
         self.assertIn("Memory/Long-Term/Theology/grace.md", found)
 
+    def test_label_uses_frontmatter_title_only_from_frontmatter(self):
+        self.write("Theology/nicaea.md", '---\ntype: note\ntitle: "Council of Nicaea"\n---\nCreed of 325.\n')
+        self.write("Theology/notes.md", "Creed notes\n---\ntitle: not frontmatter\n---\n")
+        self.index.refresh()
+        labels = {h["path"]: h["title"] for h in self.index.search("creed")}
+        self.assertEqual(labels["Memory/Long-Term/Theology/nicaea.md"], "Council of Nicaea — nicaea.md")
+        self.assertEqual(labels["Memory/Long-Term/Theology/notes.md"], "notes.md")
+        self.assertEqual(self.paths("Council Nicaea"), ["Memory/Long-Term/Theology/nicaea.md"])
+
     def test_all_terms_must_match_and_phrases_hold(self):
         self.assertEqual(self.paths("atonement Romans"), ["Memory/Long-Term/Theology/atonement.md"])
         self.assertEqual(self.paths('"word on atonement"'), ["Memory/Long-Term/Theology/grace.md"])

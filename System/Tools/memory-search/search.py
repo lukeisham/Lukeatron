@@ -20,7 +20,8 @@ indexed and the command fails.
 Matching: SQLite FTS5 with the trigram tokenizer, so a term matches anywhere inside a word
 ("atone" finds "atonement"), case-insensitive. Every term must match; "quoted phrases" stay
 together; terms under 3 characters are checked by plain substring. Results are ranked with
-BM25, a filename match counting five times a body match. Each query first refreshes changed
+BM25, a label match counting five times a body match. The label is the file name, led by the
+frontmatter `title` when a Markdown file has one. Each query first refreshes changed
 files, so an edit is searchable at once.
 
 The sealed search is a parallel, separate index of exactly the paths the main index leaves
@@ -47,7 +48,9 @@ EXTENSIONS = {".md", ".txt", ".yaml", ".yml", ".csv", ".html", ".log"}
 MAX_BYTES = 2_000_000
 PASTORAL = "BalaclavaPC/Pastoral_Notes.table.md"
 SNIPPET = 200
-SCHEMA = "1"
+SCHEMA = "2"
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
+FM_TITLE = re.compile(r"^title:\s*[\"']?(.+?)[\"']?\s*$", re.MULTILINE)
 
 
 class SealError(Exception):
@@ -126,6 +129,12 @@ def walk(root, long_term_stores, long_term_files):
             yield path, "medium", "Projects", rel
 
 
+def label_of(path, text):
+    block = FRONTMATTER.match(text) if path.suffix.lower() == ".md" else None
+    title = FM_TITLE.search(block.group(1)) if block else None
+    return f"{title.group(1)} — {path.name}" if title else path.name
+
+
 def text_of(path):
     raw = path.read_bytes()
     if len(raw) > MAX_BYTES or b"\0" in raw[:4096]:
@@ -178,7 +187,7 @@ class Index:
             text = text_of(path)
             if text is not None:
                 self.db.execute("INSERT INTO docs (title, body, path, area, store) VALUES (?, ?, ?, ?, ?)",
-                                (path.name, text, key, area, store))
+                                (label_of(path, text), text, key, area, store))
             self.db.execute("INSERT OR REPLACE INTO files VALUES (?, ?, ?)", (key, stat.st_mtime, stat.st_size))
             added += 1
         for key in set(known) - seen:
@@ -284,7 +293,7 @@ def main(argv=None):
     else:
         for hit in hits:
             where = f"{hit['path']}:{hit['line']}" if hit["line"] else hit["path"]
-            print(f"{where}\n    {hit['snippet']}")
+            print(f"{where}  · {hit['title']}\n    {hit['snippet']}")
         print(f"— {len(hits)} result{'s' if len(hits) != 1 else ''}")
     return 0
 

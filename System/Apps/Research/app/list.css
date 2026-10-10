@@ -35,8 +35,9 @@
 
 .list-message { color: var(--color-ink-soft); }
 
-/* Every marker is a round black dot centred in one --marker-slot: large for a label holding anything, medium for an entry,
-   small for an example. An outlined circle marks a label holding nothing. */
+/* Every marker is a round black dot centred in one --marker-slot. A label holding anything is a large dot (largest at the top
+   level), an entry a medium one and an example a small one; an outlined circle marks a label holding nothing. Within its band
+   a dot grows with --fill (0 to 1, set by render.js from what it holds), so a dot is never larger than the one above it. */
 .marker {
   flex-shrink: 0;
   align-self: flex-start;
@@ -50,8 +51,9 @@
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
-.marker-large { --marker-size: var(--marker-large); }
-.marker-medium { --marker-size: var(--marker-medium); }
+.marker-top { --marker-size: calc(var(--marker-top-min) + (var(--marker-top-max) - var(--marker-top-min)) * var(--fill, 1)); }
+.marker-large { --marker-size: calc(var(--marker-large-min) + (var(--marker-large-max) - var(--marker-large-min)) * var(--fill, 1)); }
+.marker-medium { --marker-size: calc(var(--marker-medium-min) + (var(--marker-medium-max) - var(--marker-medium-min)) * var(--fill, 0)); }
 .marker-small { --marker-size: var(--marker-small); }
 .marker-empty { --marker-size: var(--marker-empty); border: var(--marker-edge) solid #000; background: none; }
 

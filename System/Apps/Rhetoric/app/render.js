@@ -23,8 +23,16 @@ function wrapIn(parent, child) {
   return parent;
 }
 
-function marker(doc, size) {
+const MOST_EXAMPLES = 8; // an entry with this many examples or more draws its dot at full size
+
+/** How far a dot grows within its band, 0 to 1: the log of what it holds against the log of `most`, so it grows gently. */
+function fullness(count, most) {
+  return most > 0 ? Math.min(1, Math.log1p(count) / Math.log1p(most)) : 0;
+}
+
+function marker(doc, size, fill) {
   const node = make(doc, 'span', `marker ${size}`);
+  if (fill !== undefined) node.style.setProperty('--fill', fill.toFixed(3));
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
@@ -75,7 +83,7 @@ function deviceRow(doc, state, entry, mode) {
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
-  row.append(marker(doc, 'marker-medium'), make(doc, 'span', 'device-name', device.label));
+  row.append(marker(doc, 'marker-medium', fullness(device.examples.length, MOST_EXAMPLES)), make(doc, 'span', 'device-name', device.label));
   if (RATING_TITLES[device.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, device.aiConfidenceRating));
   if (entry.removeFrom != null) row.appendChild(removeButton(doc, device, stripInline(entry.removeFrom.name)));
   item.appendChild(row);
@@ -203,9 +211,13 @@ function nodeRow(doc, state, node, mode, depth) {
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
   }
-  // A label holding sub-labels, entries or tables is a large dot, a type holding nothing a medium dot (it is an entry),
-  // and any other label holding nothing an outlined circle.
-  const dot = marker(doc, !node.empty ? 'marker-large' : node.entry ? 'marker-medium' : 'marker-empty');
+  // A label holding sub-labels, devices or tables is a large dot, sized by how many devices it holds, and largest at the top level;
+  // a type holding nothing is a medium dot (it is an entry); any other label holding nothing is an outlined circle.
+  const band = depth === 0 || node.group ? 'marker-top' : 'marker-large';
+  const dot = node.group ? marker(doc, band, 1)
+    : !node.empty ? marker(doc, band, fullness(node.deviceCount, state.devices.size))
+    : node.entry ? marker(doc, 'marker-medium', fullness(node.entry.examples.length, MOST_EXAMPLES))
+    : marker(doc, 'marker-empty');
   row.append(dot, isLink ? aboutLink(doc, node) : inlineSpan(doc, 'node-name', node.name));
   if (node.definition) row.appendChild(inlineSpan(doc, 'node-definition', node.definition));
   if (node.editable) {

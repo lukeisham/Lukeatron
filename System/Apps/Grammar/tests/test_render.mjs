@@ -133,13 +133,13 @@ test('the entry count names the types separately once there are any', () => {
   assert.equal(span.textContent, '· 3 patterns, 1 type');
 });
 
-test('markers: a label holding anything is a large dot, an empty label an outlined circle, an entry medium, an example small', () => {
+test('markers: a top-level label is the largest dot, a label below it large, an empty label an outlined circle, an entry medium, an example small', () => {
   const state = plainState();
   state.sortOrder = 'labels';
   const container = draw(state);
   const sizeOf = (marker) => marker.className.split(' ').find((name) => name.startsWith('marker-'));
   const headingMarkers = findAll(container, withClass('heading-row')).map((row) => sizeOf(findAll(row, withClass('marker'))[0]));
-  assert.deepEqual(headingMarkers, ['marker-large', 'marker-large', 'marker-empty']);
+  assert.deepEqual(headingMarkers, ['marker-top', 'marker-large', 'marker-empty']);
   assert.ok(findAll(container, withClass('entry-row')).every((row) => sizeOf(findAll(row, withClass('marker'))[0]) === 'marker-medium'));
   assert.ok(findAll(container, withClass('example')).every((item) => sizeOf(findAll(item, withClass('marker'))[0]) === 'marker-small'));
 });

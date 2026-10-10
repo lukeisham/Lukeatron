@@ -34,11 +34,15 @@
   --font-size-body: 14px;
   --font-size-definition: 12.5px;
   --font-size-example: 13px;
-  --marker-large: 11px; /* a label holding sub-labels, entries or tables */
-  --marker-medium: 7px; /* an entry */
-  --marker-small: 4px; /* an example */
-  --marker-empty: 9px; /* the outlined circle of a label holding nothing */
-  --marker-edge: 1.5px;
+  --marker-top-min: 7.5px; /* a top-level label; it grows toward its max with the entries it holds */
+  --marker-top-max: 8.5px;
+  --marker-large-min: 6.5px; /* a label below the top, never larger than a top-level one */
+  --marker-large-max: 7.5px;
+  --marker-medium-min: 5px; /* an entry, growing with its examples, never larger than a label */
+  --marker-medium-max: 5.5px;
+  --marker-small: 3.5px; /* an example */
+  --marker-empty: 6.5px; /* the outlined circle of a label holding nothing */
+  --marker-edge: 1.25px;
   --marker-slot: 12px; /* every marker is centred in one slot, so the names of a layer start at the same x */
   --font-size-table-min: 11px; /* the smallest a label table's text shrinks to; past it the table scrolls sideways instead */
   --table-char-width: 0.6; /* em a character of table text is reckoned to take, used to size the text from the room the table has */

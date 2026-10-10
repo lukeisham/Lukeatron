@@ -23,8 +23,16 @@ function wrapIn(parent, child) {
   return parent;
 }
 
-function marker(doc, size) {
+const MOST_EXAMPLES = 8; // an entry with this many examples or more draws its dot at full size
+
+/** How far a dot grows within its band, 0 to 1: the log of what it holds against the log of `most`, so it grows gently. */
+function fullness(count, most) {
+  return most > 0 ? Math.min(1, Math.log1p(count) / Math.log1p(most)) : 0;
+}
+
+function marker(doc, size, fill) {
   const node = make(doc, 'span', `marker ${size}`);
+  if (fill !== undefined) node.style.setProperty('--fill', fill.toFixed(3));
   node.setAttribute('aria-hidden', 'true');
   return node;
 }
@@ -113,7 +121,7 @@ function entryRow(doc, state, listing, mode) {
   row.setAttribute('role', 'button');
   row.setAttribute('tabindex', '0');
   row.setAttribute('aria-expanded', String(expanded));
-  row.append(marker(doc, 'marker-medium'), make(doc, 'span', 'entry-name', entry.label));
+  row.append(marker(doc, 'marker-medium', fullness(entry.examples.length, MOST_EXAMPLES)), make(doc, 'span', 'entry-name', entry.label));
   if (entry.kind === 'type') row.appendChild(kindBadge(doc));
   if (RATING_TITLES[entry.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, entry.aiConfidenceRating));
   if (listing.removeFrom != null) row.appendChild(removeButton(doc, entry, stripInline(listing.removeFrom.name)));
@@ -243,9 +251,13 @@ function nodeRow(doc, state, node, mode, depth) {
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
   }
-  // A label holding sub-labels, entries or tables is a large dot, a type holding nothing a medium dot (it is an entry),
-  // and any other label holding nothing an outlined circle.
-  const dot = marker(doc, !node.empty ? 'marker-large' : node.entry ? 'marker-medium' : 'marker-empty');
+  // A label holding sub-labels, entries or tables is a large dot, sized by how many entries it holds, and largest at the top level;
+  // a type holding nothing is a medium dot (it is an entry); any other label holding nothing is an outlined circle.
+  const band = depth === 0 || node.group ? 'marker-top' : 'marker-large';
+  const dot = node.group ? marker(doc, band, 1)
+    : !node.empty ? marker(doc, band, fullness(node.entryCount, state.entries.size))
+    : node.entry ? marker(doc, 'marker-medium', fullness(node.entry.examples.length, MOST_EXAMPLES))
+    : marker(doc, 'marker-empty');
   row.append(dot, isLink ? aboutLink(doc, node) : inlineSpan(doc, 'node-name', node.name));
   if (node.entry) row.appendChild(kindBadge(doc));
   if (node.entry && RATING_TITLES[node.entry.aiConfidenceRating]) row.appendChild(confidenceBadge(doc, node.entry.aiConfidenceRating));
